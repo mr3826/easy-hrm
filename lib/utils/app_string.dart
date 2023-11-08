@@ -3,6 +3,26 @@ class AppString {
   AppString._();
 
   // Apps string here
+
+  static String text_mange_your_employee = 'Manage your employee';
+  static String text_track_your_time = 'Track your time';
+  static String text_manage_your_leave = 'Manage your leave';
+  static String text_leave_management_etc = 'Leave management is one of the key features of Payrun. You can customize your leave anytime. You can take multiple days\' leave as well as hourly leave.';
+  static String text_with_the_help_etc = 'With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.';
+  static String text_mange_your_employee_with = 'Manage your employee with so many advanced fratures.Like, Leave management, Time log, Employee hiring, and much more.';
+
+
+
+
+
+
+
+
+
+
+
+
+
   static String text_take_break='Take Break';
   static String text_on_break='On Break';
   static String text_in = "In";
@@ -128,7 +148,6 @@ class AppString {
   static String text_out_time = "Out Time";
   static String text_select_time = "Select Time";
   static String text_please_provite_a_leave_note = "Please, provide a leave note";
-  static String onboardTileMainAttend = 'Maintain\nAttendance';
   static String onboardTileEasy = 'Easy\nLeave apply';
   static String onboardTileReceivePay = 'Receive\nPayments';
   static String onboardTileMainAttendDes =
