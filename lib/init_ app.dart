@@ -1,3 +1,5 @@
+import 'package:payrun_mobile/common/input_controller.dart';
+import 'package:payrun_mobile/modules/auth/presentation/controller/password_view_controller.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +16,8 @@ Future<void> initApp() async {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
 
+  Get.put(PasswordController(), permanent: true);
   Get.put(SplashController(), permanent: true);
+  Get.put(InputController(), permanent: true);
 
 }

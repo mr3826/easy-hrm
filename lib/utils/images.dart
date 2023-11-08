@@ -10,4 +10,9 @@ static String employee_on="assets/images/employee_on.png";
 static String leave_on="assets/images/leave _on.png";
 static String time_log_on="assets/images/timelog_on.png";
 
+static String forgot="assets/images/forgot_src.png";
+static String otp="assets/images/otp_src.png";
+static String reset_password="assets/images/reset pas_src.png";
+static String pass_update_done="assets/images/pass_update_src.png";
+
 }

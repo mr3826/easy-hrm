@@ -40,6 +40,7 @@ dependencies:
   get_storage: ^2.1.1
   google_fonts: ^6.1.0
   dots_indicator:
+  flutter_otp_text_field: ^1.1.1
 
 dev_dependencies:
   flutter_test:

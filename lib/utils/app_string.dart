@@ -11,7 +11,10 @@ class AppString {
   static String text_with_the_help_etc = 'With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.';
   static String text_mange_your_employee_with = 'Manage your employee with so many advanced fratures.Like, Leave management, Time log, Employee hiring, and much more.';
 
-
+  static String text_password='Password';
+  static String text_back_to_login='Back to login';
+  static String text_dont_not_worry='Don’t worry! It happens. Please enter the email';
+  static String text_associated='address associated with your account';
 
 
 
@@ -102,7 +105,7 @@ class AppString {
   static String text_overtime = "Overtime";
   static String text_remember_me = "Remember me";
   static String text_forgot_password = "Forgot password?";
-  static String text_log_in = "Log In";
+  static String text_sign_in = "Sign In";
   static String text_attendance = "Attendance";
   static String text_leave = "Leave";
   static String text_payslip = "Payslip";

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/input_controller.dart';
+import 'package:payrun_mobile/common/widget/custom_app_button.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_text_field.dart';
+import 'package:payrun_mobile/modules/auth/presentation/controller/password_view_controller.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../starting/view/onboarding_screen.dart';
 
@@ -13,13 +20,11 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-
   final _formKey = GlobalKey<FormState>();
   final ExitAppController _controller = Get.put(ExitAppController());
-
+  var controller = Get.find<InputController>();
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
     return WillPopScope(
       onWillPop: () => _controller.willPop(),
       child: Scaffold(
@@ -27,15 +32,31 @@ class _SignInScreenState extends State<SignInScreen> {
         body: SafeArea(
           child: Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(child: Image.asset(Images.app_logo)),
-
-
-
-                  ],
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      customSpacerHeight(height: 100),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                         _logoLayout(),
+                          customSpacerHeight(height: 70),
+                          _emailAddressLayout(),
+                          Obx(() => _userPasswordField()),
+                          customSpacerHeight(height: 12),
+                          _forgotPassword(),
+                          customSpacerHeight(height: 34),
+                          _logInBtnLayout(),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               )),
         ),
@@ -43,18 +64,67 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  _userPasswordField() {
+    return AppInputField(
+        hint: AppString.text_password.tr,
+        controller: controller.passwordController,
+        isPasswordField: true,
+        prefixIcon: Icons.lock_open_outlined,
+        obsValue: Get.find<PasswordController>().isValue.value,
+        weight: IconButton(
+          onPressed: () => Get.find<PasswordController>().changeVal(),
+          icon: Get.find<PasswordController>().isValue.isTrue
+              ? const Icon(
+                  Icons.visibility_off_outlined,
+                  color: AppColor.hintColor,
+                )
+              : const Icon(
+                  Icons.remove_red_eye_outlined,
+                  color: AppColor.hintColor,
+                ),
+        ));
+  }
 
+  _forgotPassword() {
+    return GestureDetector(
+      onTap: () => Get.toNamed(Routes.FIRGIR_PASSWORD_SCREEN),
+      child: Align(
+          alignment: Alignment.topRight,
+          child: Text(
+            AppString.forgotPassword,
+            style: AppStyle.normal_text_grey,
+          )),
+    );
+  }
 
-  // _logIn() {
-  //   return Get.find<AuthController>().isLoading.value
-  //       ? const LoadingButtonLayout() // Show loading indicator
-  //       : logInButton(onAction: () {
-  //           FocusScope.of(context).requestFocus(FocusNode());
-  //           if (_formKey.currentState!.validate()) {
-  //             Get.find<AuthController>().logIn();
-  //           }
-  //         });
-  // }
+  _emailAddressLayout() {
+    return AppInputField(
+      hint: AppString.text_email,
+      prefixIcon: Icons.email_outlined,
+      controller: controller.emailController,
+    );
+  }
+
+  _logInBtnLayout() {
+    return AppButton(
+      buttonText: AppString.text_sign_in,
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          // Get.find<AuthController>().logIn();
+        }
+      },
+      buttonColor: AppColor.primaryColor,
+      isButtonExpanded: false,
+    );
+  }
+
+  _logoLayout() {
+    return  Center(
+        child: Image.asset(
+          Images.app_logo,
+          fit: BoxFit.cover,
+        ));
+  }
 }
 
 emailExp() {
@@ -67,20 +137,4 @@ passwordExp() {
   return r"(?=.*\d)(?=.*[a-z])(?=.*\W)";
 }
 
-// RoundedRectangleBorder get _roundedRectangleBorder {
-//   return RoundedRectangleBorder(
-//       borderRadius: BorderRadius.circular(Dimensions.radiusSmall));
-// }
-//
-// EdgeInsets get _padding {
-//   return EdgeInsets.only(
-//       left: Dimensions.paddingLarge,
-//       right: Dimensions.paddingLarge,
-//       bottom: Dimensions.paddingDefault + 4,
-//       top: Dimensions.paddingDefaultExtra + 3);
-// }
-//
-// EdgeInsets get _checkBoxPadding {
-//   return EdgeInsets.only(
-//       left: AppLayout.getWidth(13), right: AppLayout.getWidth(18), top: 0);
-// }
+

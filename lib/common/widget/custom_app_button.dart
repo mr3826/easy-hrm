@@ -1,5 +1,7 @@
+import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:flutter/material.dart';
+import 'package:payrun_mobile/utils/dimensions.dart';
 
 class AppButton extends StatelessWidget {
   final bool? hasOutline;
@@ -35,7 +37,7 @@ class AppButton extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: buttonColor,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(Dimensions.radiusMid)),
                     side: BorderSide(width: 1, color: borderColor!)),
                 onPressed: () async {
                   onPressed();
@@ -57,13 +59,13 @@ class AppButton extends StatelessWidget {
           )
         : SizedBox(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height / 18,
+            height: AppLayout.getHeight(56),
             child: TextButton.icon(
               icon: iconsData == null ? Container() : Icon(iconsData,color: textColor),
               style: ElevatedButton.styleFrom(
                   backgroundColor: buttonColor,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
                   side: BorderSide(width: 1, color: borderColor!)),
               onPressed: () async {
                 onPressed();
@@ -73,11 +75,13 @@ class AppButton extends StatelessWidget {
                 style: textColor != null
                     ? AppStyle.normal_text.copyWith(
                         color: textColor,
+                        fontSize: Dimensions.fontSizeMid,
                         fontWeight: hasOutline == false
                             ? FontWeight.w600
                             : FontWeight.w400)
                     : AppStyle.normal_text.copyWith(
                         fontWeight: FontWeight.w600,
+                  fontSize: Dimensions.fontSizeMid
                       ),
               ),
             ),

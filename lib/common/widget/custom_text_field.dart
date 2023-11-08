@@ -8,30 +8,31 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppInputField extends StatelessWidget {
-  final String title;
+  final String ?title;
   final String hint;
   final TextEditingController? controller;
   final Widget? weight;
   final bool? isButtonExpanded;
   final bool? isFieldTitleHide;
-  final bool? isFieldElevationHide;
+  final bool? isPasswordField;
   final bool? obsValue;
   final bool? isReadVal;
   final Function?onAction;
+  final IconData?prefixIcon;
 
   const AppInputField(
       {super.key,
-      required this.title,
+       this.title,
       required this.hint,
       this.controller,
       this.weight,
+      this.prefixIcon,
       this.isButtonExpanded = false,
-      this.isFieldElevationHide = false,
+      this.isPasswordField = false,
       this.isFieldTitleHide = false,
       this.obsValue = false,
         this.isReadVal = false,
         this.onAction,
-
 
       });
 
@@ -41,7 +42,7 @@ class AppInputField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         isFieldTitleHide != true
-            ? Text(title,
+            ? Text(title??"",
                 style: _titleStyle(context.isDarkMode
                     ? AppColor.cardColor
                     : AppColor.normalTextColor))
@@ -49,20 +50,9 @@ class AppInputField extends StatelessWidget {
 
         isFieldTitleHide != true ? customSpacerHeight(height: 10) : Container(),
 
-        isFieldElevationHide != true
-            ? Card(
-                elevation: 3,
-                shadowColor: Colors.grey.withOpacity(0.2),
-                shape: _cardStyle,
-                child: _textFieldLayout(context),
-              )
-            : Card(
-                color: Theme.of(context).hintColor.withOpacity(0.1),
-                elevation: 0,
-                shadowColor: Colors.grey.withOpacity(0.2),
-                shape: _cardStyle,
-                child: _passwordFieldLayout(context,obsValue),
-              )
+        isPasswordField != true
+            ? _textFieldLayout(context)
+            : _passwordFieldLayout(context,obsValue)
       ],
     );
   }
@@ -70,7 +60,6 @@ class AppInputField extends StatelessWidget {
   _textFieldLayout(context) {
     return Row(
       children: [
-        customSpacerWidth(width: 12),
         isFieldTitleHide != true
             ? Expanded(
                 child: TextFormField(
@@ -80,15 +69,17 @@ class AppInputField extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: hint,
                     hintStyle: GoogleFonts.poppins(
-                      color: Theme.of(context).hintColor,
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault+1
                     ),
-                    focusColor: Theme.of(context).primaryColor,
+                    prefixIcon: Icon(prefixIcon,color: AppColor.hintColor,),
+                    focusColor: AppColor.primaryColor,
                     focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent)),
+                        borderSide: BorderSide(color: AppColor.disableColor)),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderSide: const BorderSide(color: AppColor.disableColor),
                         borderRadius: BorderRadius.circular(
-                            Dimensions.radiusDefault + 7)),
+                            Dimensions.radiusDefault)),
                   ),
                   maxLines: isButtonExpanded == true ? 8 : 1,
                   minLines: isButtonExpanded == true ? 6 : 1,
@@ -139,17 +130,19 @@ class AppInputField extends StatelessWidget {
             obscureText: obsValue,
             decoration: InputDecoration(
               hintText: hint,
-              suffixIcon: weight,
               hintStyle: GoogleFonts.poppins(
-                color: Theme.of(context).hintColor,
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault+1
               ),
-              focusColor: Theme.of(context).primaryColor,
+              suffixIcon: weight,
+              prefixIcon: Icon(prefixIcon,color: AppColor.hintColor,),
+              focusColor: AppColor.primaryColor,
               focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent)),
+                  borderSide: BorderSide(color: AppColor.disableColor)),
               enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.transparent),
-                  borderRadius:
-                      BorderRadius.circular(Dimensions.radiusDefault + 5)),
+                  borderSide: const BorderSide(color: AppColor.disableColor),
+                  borderRadius: BorderRadius.circular(
+                      Dimensions.radiusDefault)),
             ),
             maxLines: isButtonExpanded == true ? 8 : 1,
             minLines: isButtonExpanded == true ? 6 : 1,
@@ -169,7 +162,8 @@ class AppInputField extends StatelessWidget {
 
 RoundedRectangleBorder get _cardStyle {
   return RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(Dimensions.radiusMid-5));
+   // side: const BorderSide(width: 1,color: AppColor.disableColor),
+      borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
 }
 
 TextStyle _titleStyle(color) {
