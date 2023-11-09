@@ -10,6 +10,7 @@ abstract class Routes {
    static const OTP = _Paths.OTP;
    static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
    static const PASSWORD_UPDATE_SCRREN = _Paths.PASSWORD_UPDATE_SCRREN;
+   static const MAIN_SCREEN = _Paths.MAIN_SCREEN;
 
 }
 
@@ -23,5 +24,6 @@ abstract class _Paths {
   static const OTP = '/otp-screen';
   static const RESET_PASSWORD = '/reset_password-screen';
   static const PASSWORD_UPDATE_SCRREN = '/password_update-screen';
+  static const MAIN_SCREEN = '/main-screen';
 
 }

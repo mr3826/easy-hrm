@@ -43,6 +43,7 @@ dependencies:
   flutter_otp_text_field: ^1.1.1
   http:
   persistent_bottom_nav_bar: ^5.0.2
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
