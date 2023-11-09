@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/input_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -12,54 +14,35 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
-class OTPScreen extends StatefulWidget {
-  const OTPScreen({super.key});
+class ResetPasswordScreen extends StatelessWidget {
+  const ResetPasswordScreen({super.key});
 
-  @override
-  State<OTPScreen> createState() => _OTPScreenState();
-}
-
-class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      body: Container(
-        padding: marginLayout,
+   body: Container(
+      padding: marginLayout,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            customSpacerHeight(height: 50),
+
             _imageLayout(),
             customSpacerHeight(height: 50),
 
             _codeTitleText(),
             customSpacerHeight(height: 6),
 
-            Center(child: Text(AppString.text_a_5_digit_has_been_etc.tr,style: style,)),
-            customSpacerHeight(height: 30),
-
-            OtpTextField(
-              numberOfFields: 5,
-              borderColor: AppColor.primaryColor,
-              //set to true to show as box or false to show as dash
-              showFieldAsBox: true,
-              //runs when a code is typed in
-              margin: const EdgeInsets.all(6),
-              fieldWidth: AppLayout.getWidth(60),
-              onCodeChanged: (String code) {
-                //handle validation or checks here
-              },
-              onSubmit: (String verificationCode) {
-
-
-              }, // end onSubmit
-            ),
+            Center(child: Text(AppString.text_setup_your_code_etc.tr,style: style,)),
+            customSpacerHeight(height: 16),
+            _newPasswordLayout(),
+            _confirmPasswordLayout(),
             customSpacerHeight(height: 36),
             customSpacerHeight(height: 12),
-
-            _resendCodeBtnLayout(),
+            _submitBtnLayout(),
             customSpacerHeight(height: 22),
 
             _backToLoginLayout(),
@@ -68,9 +51,9 @@ class _OTPScreenState extends State<OTPScreen> {
           ],
         ),
       ),
+    ),
     );
   }
-
   _codeTitleText() {
     return   Center(child: Text(AppString.text_enter_code.tr,style:  TextStyle(
       fontWeight: FontWeight.w600,
@@ -82,13 +65,14 @@ class _OTPScreenState extends State<OTPScreen> {
     ),));
   }
 
-  _resendCodeBtnLayout() {
+  _submitBtnLayout() {
     return AppButton(
-      buttonText: AppString.text_resend_code.tr,
-      onPressed: ()=>Get.toNamed(Routes.RESET_PASSWORD),
+      buttonText: AppString.text_submit.tr,
+      onPressed: ()=>Get.toNamed(Routes.PASSWORD_UPDATE_SCRREN),
       buttonColor: AppColor.primaryColor,
-      btnTextSize: Dimensions.fontSizeMid+2,
       isButtonExpanded: false,
+      btnTextSize: Dimensions.fontSizeMid+2,
+
     );
   }
 
@@ -104,10 +88,27 @@ class _OTPScreenState extends State<OTPScreen> {
       child: SizedBox(
           height: AppLayout.getHeight(200),
           width: AppLayout.getWidth(200),
-          child: Image(image: AssetImage(Images.otp),fit: BoxFit.cover,)),
+          child: Image(image: AssetImage(Images.reset_password),fit: BoxFit.cover,)),
     );}
-}
-EdgeInsets get marginLayout {
-  return EdgeInsets.only(
-      left: AppLayout.getHeight(20), right: AppLayout.getWidth(20));
+
+  _newPasswordLayout() {
+    var controller = Get.find<InputController>();
+
+    return AppInputField(
+      hint: AppString.text_new_password.tr,
+      prefixIcon: Icons.lock_open,
+      controller: controller.newPasswordController,
+    );
+  }
+  _confirmPasswordLayout() {
+    var controller = Get.find<InputController>();
+
+    return AppInputField(
+      hint: AppString.text_confirm_password,
+      prefixIcon: Icons.lock_open,
+      controller: controller.confirmPasswordController,
+    );
+  }
+
+
 }

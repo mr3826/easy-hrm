@@ -12,6 +12,7 @@ class AppButton extends StatelessWidget {
   final Color? textColor;
   final bool? isButtonExpanded;
   final IconData? iconsData;
+  final double? btnTextSize;
 
   const AppButton({super.key,
     this.hasOutline = false,
@@ -22,6 +23,7 @@ class AppButton extends StatelessWidget {
     this.borderColor = Colors.grey,
     this.isButtonExpanded = true,
     this.iconsData,
+    this.btnTextSize,
 
   });
 
@@ -75,9 +77,9 @@ class AppButton extends StatelessWidget {
                 style: textColor != null
                     ? AppStyle.normal_text.copyWith(
                         color: textColor,
-                        fontSize: Dimensions.fontSizeMid,
+                        fontSize: btnTextSize??Dimensions.fontSizeMid,
                         fontWeight: hasOutline == false
-                            ? FontWeight.w600
+                            ? FontWeight.w400
                             : FontWeight.w400)
                     : AppStyle.normal_text.copyWith(
                         fontWeight: FontWeight.w600,

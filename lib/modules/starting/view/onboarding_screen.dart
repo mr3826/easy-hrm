@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
 
@@ -65,6 +64,7 @@ class OnboardScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                           children: [
                                 Obx(
                                       () => _dotsDecorator(
@@ -93,9 +93,10 @@ Widget _skipButton({context}) {
     onPressed: (){},
     child: Text(
       AppString.text_skip,
-      style: GoogleFonts.poppins(
+      style: TextStyle(
           fontSize: Dimensions.fontSizeDefault,
           color: AppColor.primaryColor,
+          fontFamily: "Poppins",
           fontWeight: FontWeight.w500),
     ),
   );
@@ -156,8 +157,9 @@ Widget _onboardByImage({required imageUrl}) {
 Widget _descriptionText({required text}) {
   return Text(
     text,
-    style: GoogleFonts.poppins(
-      color: AppColor.normalTextColor.withOpacity(0.7),
+    style: TextStyle(
+      color: AppColor.normalTextColor.withOpacity(0.5),
+        fontFamily: "Poppins",
         fontSize: Dimensions.fontSizeMid-2, fontWeight: FontWeight.w300),
   );
 }
@@ -165,8 +167,9 @@ Widget _descriptionText({required text}) {
 Widget _onboardTitleText({text}) {
   return Text(
     text,
-    style: GoogleFonts.poppins(
+    style: TextStyle(
         fontWeight: FontWeight.w600,
+      fontFamily: "Poppins",
         fontSize: Dimensions.fontSizeLarge+2,
         color: AppColor.normalTextColor,
 

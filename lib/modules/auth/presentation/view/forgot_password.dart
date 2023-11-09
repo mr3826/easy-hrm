@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:payrun_mobile/common/input_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -26,6 +23,7 @@ class ForgotScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(Dimensions.paddingLarge),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -41,17 +39,10 @@ class ForgotScreen extends StatelessWidget {
                 _emailAddressLayout(),
                 customSpacerHeight(height: 40),
 
-
                 _sendCodeBtnLayout(),
                 customSpacerHeight(height: 40),
-
                 _backToLoginLayout(),
 
-
-
-
-                
-                
               ],
             ),
           ),
@@ -80,9 +71,10 @@ class ForgotScreen extends StatelessWidget {
 
   _sendCodeBtnLayout() {
     return AppButton(
-      buttonText: AppString.text_sign_in,
-      onPressed: () {},
+      buttonText: AppString.text_send_code.tr,
+      onPressed: ()=>Get.toNamed(Routes.OTP),
       buttonColor: AppColor.primaryColor,
+      btnTextSize: Dimensions.fontSizeMid+2,
       isButtonExpanded: false,
     );
   }
@@ -90,15 +82,16 @@ class ForgotScreen extends StatelessWidget {
   _backToLoginLayout() {
     return GestureDetector(
         onTap: ()=>Get.toNamed(Routes.SIGN_IN_SCREEN),
-        child: Center(child: Text(AppString.text_back_to_login.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),)));
+        child: Center(child: Text(AppString.text_back_to_login.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+2),)));
 
   }
 
   _forgotTitleText() {
-    return   Center(child: Text(AppString.text_forgot_password,style:  GoogleFonts.poppins(
+    return   Center(child: Text(AppString.text_forgot_password,style:  TextStyle(
       fontWeight: FontWeight.w600,
       fontSize: Dimensions.fontSizeLarge+2,
       color: AppColor.normalTextColor,
+        fontFamily: "Poppins"
 
 
     ),));
@@ -107,7 +100,8 @@ class ForgotScreen extends StatelessWidget {
 }
 
 TextStyle get style{
-  return   GoogleFonts.poppins(
+  return   TextStyle(
   color: AppColor.normalTextColor.withOpacity(0.7),
-  fontSize: Dimensions.fontSizeMid-3, fontWeight: FontWeight.w300);
+      fontFamily: "Poppins",
+  fontSize: Dimensions.fontSizeMid-5, fontWeight: FontWeight.w300);
 }

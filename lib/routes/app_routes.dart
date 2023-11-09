@@ -8,6 +8,8 @@ abstract class Routes {
    static const SIGN_IN_SCREEN = _Paths.SIGN_IN_SCREEN;
    static const FIRGIR_PASSWORD_SCREEN = _Paths.FIRGIR_PASSWORD_SCREEN;
    static const OTP = _Paths.OTP;
+   static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
+   static const PASSWORD_UPDATE_SCRREN = _Paths.PASSWORD_UPDATE_SCRREN;
 
 }
 
@@ -19,5 +21,7 @@ abstract class _Paths {
   static const SIGN_IN_SCREEN = '/sign_in-screen';
   static const FIRGIR_PASSWORD_SCREEN = '/forgot_password-screen';
   static const OTP = '/otp-screen';
+  static const RESET_PASSWORD = '/reset_password-screen';
+  static const PASSWORD_UPDATE_SCRREN = '/password_update-screen';
 
 }

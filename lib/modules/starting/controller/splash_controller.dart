@@ -1,4 +1,3 @@
-import 'package:payrun_mobile/modules/starting/view/view.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,7 @@ class SplashController extends GetxController {
   final box = GetStorage();
   @override
   void onReady() {
- //   Future.delayed(const Duration(seconds: 3), ()=>chooseScreen());
+   Future.delayed(const Duration(seconds: 3), ()=>chooseScreen());
     super.onReady();
   }
 

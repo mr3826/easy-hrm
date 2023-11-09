@@ -15,6 +15,16 @@ class AppString {
   static String text_back_to_login='Back to login';
   static String text_dont_not_worry='Don’t worry! It happens. Please enter the email';
   static String text_associated='address associated with your account';
+  static String text_enter_code='Enter your code';
+  static String text_a_5_digit_has_been_etc='An 5 digit code has been sent to demouser@gmail.com';
+  static String text_setup_your_code_etc='Setup your new password now. Minimum 8 letter or digits';
+  static String text_resend_code='Resend code';
+  static String text_submit='Submit';
+  static String text_continue='Continue';
+  static String text_send_code='Send a code';
+  static String text_password_update='Password updated';
+  static String text_your_password_has_been_etc='Your password has been changed successfully. Use your';
+  static String text_password_to_log_in='new password to log in.';
 
 
 
