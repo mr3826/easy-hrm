@@ -25,6 +25,7 @@ class AppString {
   static String text_password_update='Password updated';
   static String text_your_password_has_been_etc='Your password has been changed successfully. Use your';
   static String text_password_to_log_in='new password to log in.';
+  static String text_organization_name='Organization name';
 
 
 
@@ -485,6 +486,7 @@ class AppString {
   static const String forgotPassword = "Forgot password?";
   static const String rememberMe = "Remember me";
   static const String fieldIsRequired = "Field is required !";
+  static const String organization_name_requird = "Organization name is required.";
   static const String the_first_name_field_is_required = "The first name field is required.";
   static const String the_password_field_is_required = "The password field is required.";
   static const String please_insert_a_valid_email_address = "Please insert a valid email address";

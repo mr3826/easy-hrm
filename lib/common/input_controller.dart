@@ -14,6 +14,7 @@ class InputController extends GetxController{
   TextEditingController aboutMeController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController orgNameController = TextEditingController();
 
 
 }

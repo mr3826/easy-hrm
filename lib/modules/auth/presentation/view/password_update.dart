@@ -7,9 +7,10 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+
 class PasswordUpdateScreen extends StatelessWidget {
   const PasswordUpdateScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +18,10 @@ class PasswordUpdateScreen extends StatelessWidget {
         margin: marginLayout,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-
           children: [
+
             _passwordUpdateText(),
+
             customSpacerHeight(height: 12),
 
             Center(child: Text(AppString.text_your_password_has_been_etc.tr,style: style,)),

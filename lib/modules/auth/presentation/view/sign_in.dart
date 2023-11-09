@@ -49,6 +49,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         children: [
                          _logoLayout(),
                           customSpacerHeight(height: 70),
+                          _organizationNameLayout(),
                           _emailAddressLayout(),
                           Obx(() => _userPasswordField()),
                           customSpacerHeight(height: 12),
@@ -106,7 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Align(
           alignment: Alignment.topRight,
           child: Text(
-            AppString.forgotPassword,
+            AppString.forgotPassword.tr,
             style: AppStyle.normal_text_grey.copyWith(color: AppColor.normalTextColor.withOpacity(0.7),fontSize: Dimensions.fontSizeDefault-1),
           )),
     );
@@ -114,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   _emailAddressLayout() {
     return AppInputField(
-      hint: AppString.text_email,
+      hint: AppString.text_email.tr,
       prefixIcon: Icons.email_outlined,
       controller: controller.emailController,
         validator: (value) {
@@ -128,6 +129,21 @@ class _SignInScreenState extends State<SignInScreen> {
       } else {
         return null;
       }
+    },
+    );
+  }
+  _organizationNameLayout() {
+    return AppInputField(
+      hint: AppString.text_organization_name.tr,
+      prefixIcon: Icons.home_work_outlined,
+      controller: controller.orgNameController,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return AppString
+                .organization_name_requird.tr;
+          }else {
+            return null;
+          }
     },
     );
   }
