@@ -4,7 +4,7 @@ class AppColor {
   AppColor._();
   static const Color primaryColor = Color(0xFF2C67FF);
   static const Color backgroundColor = Color(0xFFFFFFFF);
-  static const Color secondaryColor = Color(0xFF4D4D4D);
+  static const Color secondaryColor = Color(0xFF1A3AA1);
   static const Color pendingBgColor = Color(0xFFF3C568);
   static const Color alertDgIconBgColor = Color(0xFFfed8b1);
   static const Color successColor = Color(0xFF3EAC55);

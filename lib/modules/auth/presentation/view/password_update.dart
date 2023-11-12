@@ -6,6 +6,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dar
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 
@@ -50,7 +51,12 @@ class PasswordUpdateScreen extends StatelessWidget {
 
   _continueBtnLayout() {
     return AppButton(
-      buttonText: AppString.text_continue.tr,
+      buttonText: Text(
+        AppString.text_continue.tr,overflow: TextOverflow.ellipsis,
+        style: AppStyle.normal_text.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       btnTextSize: Dimensions.fontSizeMid+2,
       onPressed: (){},
       buttonColor: AppColor.primaryColor,

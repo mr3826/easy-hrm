@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -35,8 +36,11 @@ class ResetPasswordScreen extends StatelessWidget {
             _codeTitleText(),
             customSpacerHeight(height: 6),
             Center(child: Text(AppString.text_setup_your_code_etc.tr,style: style,)),
-            customSpacerHeight(height: 16),
+            customSpacerHeight(height: 40),
+
             _newPasswordLayout(),
+            customSpacerHeight(height: 20),
+
             _confirmPasswordLayout(),
             customSpacerHeight(height: 36),
             customSpacerHeight(height: 12),
@@ -65,7 +69,12 @@ class ResetPasswordScreen extends StatelessWidget {
 
   _submitBtnLayout() {
     return AppButton(
-      buttonText: AppString.text_submit.tr,
+      buttonText: Text(
+        AppString.text_submit.tr,overflow: TextOverflow.ellipsis,
+        style: AppStyle.normal_text.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       onPressed: ()=>Get.toNamed(Routes.PASSWORD_UPDATE_SCRREN),
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,
@@ -86,19 +95,20 @@ class ResetPasswordScreen extends StatelessWidget {
       child: SizedBox(
           height: AppLayout.getHeight(200),
           width: AppLayout.getWidth(200),
-          child: Image(image: AssetImage(Images.reset_password),fit: BoxFit.cover,)),
+          child:SvgPicture.asset(Images.reset_password,fit: BoxFit.cover)
+      ),
     );}
 
   _newPasswordLayout() {
 
-    return AppInputField(
+    return CustomInputField(
       hint: AppString.text_new_password.tr,
       prefixIcon: Icons.lock_open,
       controller: newPasswordController,
     );
   }
   _confirmPasswordLayout() {
-    return AppInputField(
+    return CustomInputField(
       hint: AppString.text_confirm_password,
       prefixIcon: Icons.lock_open,
       controller: confirmPasswordController,

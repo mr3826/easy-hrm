@@ -1,18 +1,21 @@
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
+import 'package:payrun_mobile/modules/leave/presentation/view/leave_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../modules/auth/presentation/view/otp_screen.dart';
 import '../modules/auth/presentation/view/reset_password.dart';
+import '../modules/home/presentation/main_screen.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
   static const INITIAL = Routes.SPLASH_SCREEN;
+
   static final routes = [
     GetPage(
       name: _Paths.SPLASH_SCREEN,
@@ -41,9 +44,19 @@ class AppPages {
     GetPage(
       name: _Paths.RESET_PASSWORD,
       page: ()=> const ResetPasswordScreen(),
-    ),    GetPage(
+    ),
+
+    GetPage(
       name: _Paths.PASSWORD_UPDATE_SCRREN,
       page: ()=> const PasswordUpdateScreen(),
+    ),
+
+    GetPage(
+      name: _Paths.MAIN_SCREEN,
+      page: ()=>  MainScreen(),
+    ), GetPage(
+      name: _Paths.LEAVE_SCREEN,
+      page: ()=> const LeaveScreen(),
     ),
 
   ];

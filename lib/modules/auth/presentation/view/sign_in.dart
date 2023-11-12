@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -15,6 +14,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../utils/utils.dart';
 import '../../../starting/view/onboarding_screen.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -50,20 +50,35 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  customSpacerHeight(height: 100),
+                  customSpacerHeight(height: 36),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _logoLayout(),
-                      customSpacerHeight(height: 70),
-                      _organizationNameLayout(),
-                      _emailAddressLayout(),
-                      Obx(() => _userPasswordField()),
-                      customSpacerHeight(height: 12),
-                      _forgotPassword(),
-                      customSpacerHeight(height: 34),
-                      _logInBtnLayout(),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+
+                        children: [
+                          customSpacerHeight(height: 50),
+                         _logoLayout(),
+                          customSpacerHeight(height: 70),
+                          _organizationNameLayout(),
+                          customSpacerHeight(height: 8),
+                           Text("Organization field is required !",style: AppStyle.normal_text_black.copyWith(color: AppColor.errorColor,fontSize: Dimensions.fontSizeDefault-2),),
+                          customSpacerHeight(height: 20),
+
+                          _emailAddressLayout(),
+                          customSpacerHeight(height: 20),
+                          Obx(() => _userPasswordField()),
+                          customSpacerHeight(height: 12),
+                          _forgotPassword(),
+                          customSpacerHeight(height: 34),
+                          _logInBtnLayout(),
+
+                        ],
+                      ),
+
                     ],
                   ),
                 ],
@@ -74,10 +89,9 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   _userPasswordField() {
-    return AppInputField(
+    return CustomPassInputField(
       hint: AppString.text_password.tr,
       controller: passwordController,
-      isPasswordField: true,
       prefixIcon: Icons.lock_open_outlined,
       obsValue: Get.find<PasswordController>().isValue.value,
       validator: (value) {
@@ -119,7 +133,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   _emailAddressLayout() {
-    return AppInputField(
+    return CustomInputField(
       hint: AppString.text_email.tr,
       prefixIcon: Icons.email_outlined,
       controller: emailController,
@@ -136,27 +150,35 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   _organizationNameLayout() {
-    return AppInputField(
+    RxBool isLoading=false.obs;
+    return Obx(() => CustomInputField(
       hint: AppString.text_organization_name.tr,
       prefixIcon: Icons.home_work_outlined,
       controller: orgNameController,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return AppString.organization_name_requird.tr;
-        } else {
-          return null;
-        }
-      },
-    );
+      weight:  SizedBox(
+          height: 2,
+          width: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: isLoading.value?const Center(child: CircularProgressIndicator(strokeWidth: 2,)):Container(),
+          )),
+    ));
   }
 
   _logInBtnLayout() {
+    RxBool isLoading=false.obs;
+
     return AppButton(
-      buttonText: AppString.text_sign_in,
+      buttonText: Text(
+        AppString.text_sign_in.tr,overflow: TextOverflow.ellipsis,
+        style: AppStyle.normal_text.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       onPressed: () {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-          log("done");
+          Get.toNamed(Routes.MAIN_SCREEN);
         }
       },
       buttonColor: AppColor.primaryColor,
@@ -165,14 +187,15 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   _logoLayout() {
-    return SizedBox(
-      height: AppLayout.getHeight(100),
-      width: double.infinity,
-      child: Image(
-        image: AssetImage(
-          Images.app_logo,
-        ),
-        fit: BoxFit.fitHeight,
+
+    double height = AppLayout.getHeight(120);
+    double width = MediaQuery.of(context).size.width;
+    return  SizedBox(
+      height: height,
+      width: width,
+      child:  SvgPicture.asset(
+        Images.app_logo,fit: BoxFit.fitHeight,
+
       ),
     );
   }

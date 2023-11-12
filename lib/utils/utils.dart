@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import '../modules/leave/presentation/view/leave_screen.dart';
 
 //global items here
 TextEditingController _searchController=TextEditingController();
@@ -30,3 +33,21 @@ TextEditingController get aboutMeController => _aboutMeController;
 TextEditingController get newPasswordController => _newPasswordController;
 TextEditingController get confirmPasswordController => _confirmPasswordController;
 TextEditingController get orgNameController => _orgNameController;
+
+
+
+
+List<Widget> Function()  get buildScreens=>_buildScreens;
+
+
+List<Widget> _buildScreens() {
+  return [
+    const LeaveScreen(),
+    const LeaveScreen(),
+    const LeaveScreen(),
+    const LeaveScreen(),
+    const LeaveScreen(),
+
+  ];
+}
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -36,6 +37,8 @@ class ForgotScreen extends StatelessWidget {
 
                 Center(child: Text(AppString.text_dont_not_worry.tr,style: style,)),
                 Center(child: Text(AppString.text_associated.tr,style: style,)),
+                customSpacerHeight(height: 40),
+
                 _emailAddressLayout(),
                 customSpacerHeight(height: 40),
 
@@ -56,12 +59,14 @@ class ForgotScreen extends StatelessWidget {
       child: SizedBox(
           height: AppLayout.getHeight(200),
           width: AppLayout.getWidth(200),
-          child: Image(image: AssetImage(Images.forgot),fit: BoxFit.cover,)),
+          child:SvgPicture.asset(Images.forgot,fit: BoxFit.cover)
+
+      ),
     );
   }
   _emailAddressLayout() {
 
-    return AppInputField(
+    return CustomInputField(
       hint: AppString.text_email,
       prefixIcon: Icons.email_outlined,
       controller: restPasswordController,
@@ -70,7 +75,12 @@ class ForgotScreen extends StatelessWidget {
 
   _sendCodeBtnLayout() {
     return AppButton(
-      buttonText: AppString.text_send_code.tr,
+      buttonText: Text(
+        AppString.text_send_code.tr,overflow: TextOverflow.ellipsis,
+        style: AppStyle.normal_text.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       onPressed: ()=>Get.toNamed(Routes.OTP),
       buttonColor: AppColor.primaryColor,
       btnTextSize: Dimensions.fontSizeMid+2,

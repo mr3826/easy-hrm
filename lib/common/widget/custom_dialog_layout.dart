@@ -111,7 +111,15 @@ _buttonLayout({ required context,required onAction}) {
     child: Row(
       children: [
         AppButton(
-          buttonText: AppString.text_no,
+          buttonText: Text(
+           AppString.text_no,overflow: TextOverflow.ellipsis,
+            style: AppStyle.normal_text.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+
+
           onPressed: () {
             Get.back();
           },
@@ -122,7 +130,12 @@ _buttonLayout({ required context,required onAction}) {
         ),
         customSpacerWidth(width: 10),
         AppButton(
-            buttonText: AppString.text_yes,
+              buttonText: Text(
+  AppString.text_yes,overflow: TextOverflow.ellipsis,
+  style: AppStyle.normal_text.copyWith(
+  fontWeight: FontWeight.w600,
+  ),
+  ),
             onPressed: ()=>onAction(),
             hasOutline: false,
             borderColor: AppColor.iconBoxColor,
