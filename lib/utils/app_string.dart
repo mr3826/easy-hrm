@@ -32,6 +32,8 @@ class AppString {
   static String text_token='Token';
   static String text_balance='Balance';
   static String text_pendding='Pending';
+  static String text_event='Events';
+  static String text_approved='Approved';
 
 
 
@@ -67,7 +69,6 @@ class AppString {
   static String text_select_time_range = "Select Time Range";
   static String text_leave_status = "Leave Status";
   static String text_leave_duration = "Leave Duration";
-  static String text_approved = "Approved";
   static String text_jpeg_format_not_support = "The file is too big! Maximum allowed 5MB";
   static String text_duration = "Duration";
   static String text_pending = "Pending";
