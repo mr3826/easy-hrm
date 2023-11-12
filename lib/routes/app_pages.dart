@@ -28,7 +28,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SIGN_IN_SCREEN,
-      page: ()=> const SignInScreen(),
+      page: ()=> SignInScreen(),
     ),
 
     GetPage(

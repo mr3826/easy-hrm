@@ -2,6 +2,11 @@
 class AppString {
   AppString._();
 
+
+  //storage key here
+
+  static const ORGANIZATION_ID="organizationId";
+
   // Apps string here
 
   static String text_mange_your_employee = 'Manage your employee';

@@ -1,5 +1,7 @@
 class Api{
   Api._();
-  static String BASE_URL = "";
+  static const String PUBLIC_URL = "https://api.local.payrun.app";
 
+  static const COMPANY_DOMAIN="/organization";
+  static const LOGIN="/auth/login";
 }

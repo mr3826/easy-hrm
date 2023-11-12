@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
@@ -14,16 +15,11 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../utils/utils.dart';
 import '../../../starting/view/onboarding_screen.dart';
+import '../controller/signin_controller.dart';
 
+class SignInScreen extends GetView<SignInController> {
+  SignInScreen({Key? key}) : super(key: key);
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
-
-  @override
-  State<SignInScreen> createState() => _SignInScreenState();
-}
-
-class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final ExitAppController _controller = Get.put(ExitAppController());
 
@@ -33,18 +29,18 @@ class _SignInScreenState extends State<SignInScreen> {
       onWillPop: () => _controller.willPop(),
       child: Scaffold(
         backgroundColor: AppColor.backgroundColor,
-        body: _body(),
+        body: _body(context),
       ),
     );
   }
 
-  _body() {
+  _body(BuildContext context) {
     return SafeArea(
       child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,36 +51,31 @@ class _SignInScreenState extends State<SignInScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-
                         children: [
                           customSpacerHeight(height: 50),
-                         _logoLayout(),
+                          _logoLayout(context),
                           customSpacerHeight(height: 70),
                           _organizationNameLayout(),
                           customSpacerHeight(height: 8),
-                           Text("Organization field is required !",style: AppStyle.normal_text_black.copyWith(color: AppColor.errorColor,fontSize: Dimensions.fontSizeDefault-2),),
+                          // Text("Organization field is required !",style: AppStyle.normal_text_black.copyWith(color: AppColor.errorColor,fontSize: Dimensions.fontSizeDefault-2),),
                           customSpacerHeight(height: 20),
-
                           _emailAddressLayout(),
                           customSpacerHeight(height: 20),
                           Obx(() => _userPasswordField()),
                           customSpacerHeight(height: 12),
                           _forgotPassword(),
                           customSpacerHeight(height: 34),
-                          _logInBtnLayout(),
-
+                          _logInBtnLayout(context),
                         ],
                       ),
-
                     ],
                   ),
                 ],
-              ),
-            ),
-          )),
+              )),
+        ),
+      ),
     );
   }
 
@@ -150,27 +141,40 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   _organizationNameLayout() {
-    RxBool isLoading=false.obs;
-    return Obx(() => CustomInputField(
-      hint: AppString.text_organization_name.tr,
-      prefixIcon: Icons.home_work_outlined,
-      controller: orgNameController,
-      weight:  SizedBox(
-          height: 2,
-          width: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: isLoading.value?const Center(child: CircularProgressIndicator(strokeWidth: 2,)):Container(),
-          )),
+    FocusNode focusNode=FocusNode();
+    return Obx(() => RawKeyboardListener(
+      focusNode: focusNode,
+      onKey: (value) {
+        print(value);
+        if(value.isKeyPressed(LogicalKeyboardKey.enter)){
+          controller.getOrganizationDomain();
+        }
+      },
+      child: CustomInputField(
+            hint: AppString.text_organization_name.tr,
+            prefixIcon: Icons.home_work_outlined,
+            controller: orgNameController,
+            weight: SizedBox(
+                height: 2,
+                width: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: controller.isLoading.value
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ))
+                      : Container(),
+                )),
+          ),
     ));
   }
 
-  _logInBtnLayout() {
-    RxBool isLoading=false.obs;
-
+  _logInBtnLayout(BuildContext context) {
     return AppButton(
       buttonText: Text(
-        AppString.text_sign_in.tr,overflow: TextOverflow.ellipsis,
+        AppString.text_sign_in.tr,
+        overflow: TextOverflow.ellipsis,
         style: AppStyle.normal_text.copyWith(
           fontWeight: FontWeight.w600,
         ),
@@ -186,16 +190,15 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  _logoLayout() {
-
+  _logoLayout(BuildContext context) {
     double height = AppLayout.getHeight(120);
     double width = MediaQuery.of(context).size.width;
-    return  SizedBox(
+    return SizedBox(
       height: height,
       width: width,
-      child:  SvgPicture.asset(
-        Images.app_logo,fit: BoxFit.fitHeight,
-
+      child: SvgPicture.asset(
+        Images.app_logo,
+        fit: BoxFit.fitHeight,
       ),
     );
   }
