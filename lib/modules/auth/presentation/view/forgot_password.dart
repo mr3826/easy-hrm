@@ -74,7 +74,7 @@ class ForgotScreen extends StatelessWidget {
   }
 
   _sendCodeBtnLayout() {
-    return AppButton(
+    return CustomAppButton(
       buttonText: Text(
         AppString.text_send_code.tr,overflow: TextOverflow.ellipsis,
         style: AppStyle.normal_text.copyWith(

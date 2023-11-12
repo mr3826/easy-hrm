@@ -68,7 +68,7 @@ class ResetPasswordScreen extends StatelessWidget {
   }
 
   _submitBtnLayout() {
-    return AppButton(
+    return CustomAppButton(
       buttonText: Text(
         AppString.text_submit.tr,overflow: TextOverflow.ellipsis,
         style: AppStyle.normal_text.copyWith(

@@ -126,8 +126,6 @@ class CustomPassInputField extends StatelessWidget {
   }
   }
 
-
-
   _subTitleStyle1(BuildContext context) {
     return AppStyle.mid_large_text.copyWith(
         fontWeight: FontWeight.w400,

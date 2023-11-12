@@ -1,4 +1,4 @@
-import 'package:payrun_mobile/modules/auth/presentation/controller/password_view_controller.dart';
+import 'package:payrun_mobile/modules/auth/presentation/controller/password_showing_controller.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

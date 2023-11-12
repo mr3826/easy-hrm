@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/auth/presentation/controller/password_view_controller.dart';
+import 'package:payrun_mobile/modules/auth/presentation/controller/password_showing_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -168,7 +168,7 @@ class _SignInScreenState extends State<SignInScreen> {
   _logInBtnLayout() {
     RxBool isLoading=false.obs;
 
-    return AppButton(
+    return CustomAppButton(
       buttonText: Text(
         AppString.text_sign_in.tr,overflow: TextOverflow.ellipsis,
         style: AppStyle.normal_text.copyWith(

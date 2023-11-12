@@ -84,7 +84,7 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   _resendCodeBtnLayout() {
-    return AppButton(
+    return CustomAppButton(
       buttonText: Text(
         AppString.text_resend_code.tr,overflow: TextOverflow.ellipsis,
         style: AppStyle.normal_text.copyWith(

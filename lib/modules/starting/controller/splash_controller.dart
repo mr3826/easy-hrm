@@ -14,9 +14,9 @@ class SplashController extends GetxController {
 
 
   Future chooseScreen() async {
-    final idStore = box.read(AppString.ID_STORE);
-    dynamic remValue = box.read(AppString.REMEMBER_KEY);
-    dynamic logValue = box.read(AppString.LOGIN_CHECK_KEY);
+    final idStore = box.read(AppString.ACCESS_TOKEN);
+    dynamic remValue = box.read(AppString.ACCESS_TOKEN);
+    dynamic logValue = box.read(AppString.ACCESS_TOKEN);
     if (idStore == null) {
       await Get.toNamed(Routes.ONBOARD_SCRREN);
     } else if (logValue != null && remValue != null) {
