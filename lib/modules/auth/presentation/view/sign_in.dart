@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/input_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
@@ -42,11 +43,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      customSpacerHeight(height: 100),
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          customSpacerHeight(height: 50),
                          _logoLayout(),
                           customSpacerHeight(height: 70),
                           _organizationNameLayout(),
@@ -154,7 +153,7 @@ class _SignInScreenState extends State<SignInScreen> {
       onPressed: () {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-          print("Done !");
+          Get.toNamed(Routes.MAIN_SCREEN);
         }
       },
       buttonColor: AppColor.primaryColor,
@@ -163,11 +162,14 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   _logoLayout() {
+    double height = AppLayout.getHeight(120);
+    double width = MediaQuery.of(context).size.width;
     return  SizedBox(
-      height: AppLayout.getHeight(100),
-      width: double.infinity,
-      child: Image(image: AssetImage( Images.app_logo,
-        ),fit: BoxFit.fitHeight,),
+      height: height,
+      width: width,
+      child:  SvgPicture.asset(
+        Images.app_logo,fit: BoxFit.fitHeight,
+      ),
     );
   }
 }

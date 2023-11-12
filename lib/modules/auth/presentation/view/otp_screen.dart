@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -46,7 +47,7 @@ class _OTPScreenState extends State<OTPScreen> {
               //set to true to show as box or false to show as dash
               showFieldAsBox: true,
               //runs when a code is typed in
-              margin: const EdgeInsets.all(6),
+              margin: const EdgeInsets.all(4),
               fieldWidth: AppLayout.getWidth(60),
               onCodeChanged: (String code) {
                 //handle validation or checks here
@@ -104,7 +105,7 @@ class _OTPScreenState extends State<OTPScreen> {
       child: SizedBox(
           height: AppLayout.getHeight(200),
           width: AppLayout.getWidth(200),
-          child: Image(image: AssetImage(Images.otp),fit: BoxFit.cover,)),
+          child:SvgPicture.asset(Images.otp,fit: BoxFit.cover)),
     );}
 }
 EdgeInsets get marginLayout {

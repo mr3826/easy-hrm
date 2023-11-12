@@ -47,7 +47,7 @@ class AppInputField extends StatelessWidget {
                     ? AppColor.cardColor
                     : AppColor.normalTextColor))
             : Container(),
-        isFieldTitleHide != true ? customSpacerHeight(height: 10) : Container(),
+        isFieldTitleHide != true ? customSpacerHeight(height: 4) : Container(),
         isPasswordField != true
             ? _textFieldLayout(context)
             : _passwordFieldLayout(context, obsValue)

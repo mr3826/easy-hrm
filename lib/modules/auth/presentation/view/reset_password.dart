@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/input_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
@@ -88,7 +89,8 @@ class ResetPasswordScreen extends StatelessWidget {
       child: SizedBox(
           height: AppLayout.getHeight(200),
           width: AppLayout.getWidth(200),
-          child: Image(image: AssetImage(Images.reset_password),fit: BoxFit.cover,)),
+          child:SvgPicture.asset(Images.reset_password,fit: BoxFit.cover)
+      ),
     );}
 
   _newPasswordLayout() {

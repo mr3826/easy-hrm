@@ -1,4 +1,5 @@
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -147,7 +148,7 @@ Widget _dotsDecorator({required onboardImg, required currentIndex}) {
 
 Widget _onboardByImage({required imageUrl}) {
   return Center(
-    child: Image.asset(
+    child: SvgPicture.asset(
       imageUrl.toString(),fit: BoxFit.cover,
     ),
   );

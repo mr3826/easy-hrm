@@ -8,7 +8,7 @@ class SplashController extends GetxController {
   final box = GetStorage();
   @override
   void onReady() {
-   //Future.delayed(const Duration(seconds: 3), ()=>chooseScreen());
+   Future.delayed(const Duration(seconds: 3), ()=>chooseScreen());
     super.onReady();
   }
 
