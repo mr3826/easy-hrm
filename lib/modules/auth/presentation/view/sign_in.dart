@@ -33,12 +33,12 @@ class _SignInScreenState extends State<SignInScreen> {
       onWillPop: () => _controller.willPop(),
       child: Scaffold(
         backgroundColor: AppColor.backgroundColor,
-        body: _body(),
+        body: _bodyLayout(),
       ),
     );
   }
 
-  _body() {
+  _bodyLayout() {
     return SafeArea(
       child: Form(
           key: _formKey,
@@ -63,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           customSpacerHeight(height: 50),
                          _logoLayout(),
                           customSpacerHeight(height: 70),
-                          _organizationNameLayout(),
+                         Obx(() =>  _organizationNameLayout(),),
                           customSpacerHeight(height: 8),
                            Text("Organization field is required !",style: AppStyle.normal_text_black.copyWith(color: AppColor.errorColor,fontSize: Dimensions.fontSizeDefault-2),),
                           customSpacerHeight(height: 20),
@@ -149,25 +149,34 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+
   _organizationNameLayout() {
     RxBool isLoading=false.obs;
-    return Obx(() => CustomInputField(
-      hint: AppString.text_organization_name.tr,
-      prefixIcon: Icons.home_work_outlined,
+    return TextFormField(
       controller: orgNameController,
-      weight:  SizedBox(
-          height: 2,
-          width: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: isLoading.value?const Center(child: CircularProgressIndicator(strokeWidth: 2,)):Container(),
-          )),
-    ));
+      style: subTextFieldTitleStyle,
+      autofocus: false,
+      decoration: InputDecoration(
+        hintText: AppString.text_organization_name.tr,
+        hintStyle: hintStyle,
+        prefixIcon: prefixIcon,
+        suffixIcon:  SizedBox(
+            height: 2,
+            width: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: isLoading.value?const Center(child: CircularProgressIndicator(strokeWidth: 2,)):Container(),
+            )),
+        border:outlinedBorder,
+        focusColor: AppColor.primaryColor,
+        focusedBorder: outlinedBorder,
+        enabledBorder: enableOutLineBorder,
+      ),
+    );
   }
 
   _logInBtnLayout() {
     RxBool isLoading=false.obs;
-
     return CustomAppButton(
       buttonText: Text(
         AppString.text_sign_in.tr,overflow: TextOverflow.ellipsis,
@@ -187,7 +196,6 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   _logoLayout() {
-
     double height = AppLayout.getHeight(120);
     double width = MediaQuery.of(context).size.width;
     return  SizedBox(
@@ -209,4 +217,34 @@ emailExp() {
 
 passwordExp() {
   return r"(?=.*\d)(?=.*[a-z])(?=.*\W)";
+}
+
+TextStyle get hintStyle{
+  return TextStyle(
+      color: AppColor.hintColor,
+      fontFamily: "Poppins",
+      fontSize: Dimensions.fontSizeDefault + 1);
+}
+
+Icon get prefixIcon{
+  return const Icon(
+    Icons.home_work_outlined,
+    color: AppColor.hintColor,
+  );
+}
+
+OutlineInputBorder get outlinedBorder{
+  return  OutlineInputBorder(
+borderSide:
+const BorderSide(width: 0.0, color: AppColor.hintColor),
+borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+);
+}
+
+OutlineInputBorder get enableOutLineBorder{
+  return OutlineInputBorder(
+      borderSide:
+      const BorderSide(color: AppColor.disableColor),
+      borderRadius:
+      BorderRadius.circular(Dimensions.radiusDefault));
 }

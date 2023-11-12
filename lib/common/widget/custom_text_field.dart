@@ -32,7 +32,7 @@ class CustomInputField extends StatelessWidget {
   _textFieldLayout(context) {
     return TextFormField(
       controller: controller,
-      style: _subTitleStyle,
+      style: subTextFieldTitleStyle,
       validator: validator,
       autofocus: false,
       decoration: InputDecoration(
@@ -150,6 +150,73 @@ class CustomPassInputField extends StatelessWidget {
 
 
 
+class OrganizationInputField extends StatelessWidget {
+
+  final String hint;
+  final TextEditingController? controller;
+  final Widget? weight;
+  final Function? onAction;
+  final IconData? prefixIcon;
+  final String? Function(String?)? validator;
+
+  const OrganizationInputField({
+    super.key,
+    required this.hint,
+    this.controller,
+    this.weight,
+    this.validator,
+    this.prefixIcon,
+    this.onAction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _textFieldLayout(context);
+  }
+
+  _textFieldLayout(context) {
+    return TextFormField(
+      controller: controller,
+      style: subTextFieldTitleStyle,
+      validator: validator,
+      autofocus: false,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(
+            color: AppColor.hintColor,
+            fontFamily: "Poppins",
+            fontSize: Dimensions.fontSizeDefault + 1),
+        prefixIcon: Icon(
+          prefixIcon,
+          color: AppColor.hintColor,
+        ),
+        suffixIcon: weight,
+        border: OutlineInputBorder(
+          borderSide:
+          const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+        ),
+        focusColor: AppColor.primaryColor,
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.disableColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide:
+            const BorderSide(color: AppColor.disableColor),
+            borderRadius:
+            BorderRadius.circular(Dimensions.radiusDefault)),
+      ),
+    );
+  }
+
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -174,7 +241,7 @@ TextStyle _titleStyle(color) {
       fontSize: Dimensions.fontSizeDefault + 2);
 }
 
-TextStyle get _subTitleStyle {
+TextStyle get subTextFieldTitleStyle {
   return AppStyle.mid_large_text.copyWith(
       fontWeight: FontWeight.w400,
       color: AppColor.normalTextColor,
