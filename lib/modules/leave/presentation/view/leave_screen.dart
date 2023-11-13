@@ -10,7 +10,6 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../../../../common/widget/custom_buttom_sheet.dart';
 
 class LeaveScreen extends StatelessWidget {
@@ -26,7 +25,7 @@ class LeaveScreen extends StatelessWidget {
     );
     
   }
-
+//component
   _applyLeaveBtn(context) {
     return GestureDetector(
       onTap: ()=>customButtonSheet(context: context,child: ApplyLeaveScreen()),

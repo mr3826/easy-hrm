@@ -24,8 +24,6 @@ class LeaveRecordScreen extends StatelessWidget {
     );
   }
 
-
-
   _leaveRecordViewLayout() {
     return Expanded(
         child: ListView.builder(
@@ -66,6 +64,7 @@ class LeaveRecordScreen extends StatelessWidget {
       ],
     );
   }
+
   _infoLayoutView() {
     return Card(
       elevation: 0,
