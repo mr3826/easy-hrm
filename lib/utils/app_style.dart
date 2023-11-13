@@ -48,7 +48,7 @@ class AppStyle {
       fontFamily: "Poppins");
   static TextStyle normal_text_black = TextStyle(
       fontSize: Dimensions.fontSizeDefault,
-      color: Colors.black,
+      color: AppColor.normalTextColor,
       fontWeight: FontWeight.w500,
       fontFamily: "Poppins");
   static TextStyle normal_text_grey = TextStyle(

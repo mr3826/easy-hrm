@@ -77,36 +77,3 @@ class IndividualEventView extends StatelessWidget {
   }
 
 }
-class DottedBorderText extends StatelessWidget {
-  final String text;
-
-  DottedBorderText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.black,
-            width: 2.0,
-            style: BorderStyle.none,
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 5.0), // Adjust the spacing as needed
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(width: 5.0), // Adjust the spacing as needed
-        ],
-      ),
-    );
-  }
-}

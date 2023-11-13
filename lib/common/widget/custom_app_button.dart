@@ -1,12 +1,11 @@
 import 'package:payrun_mobile/utils/app_layout.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-class AppButton extends StatelessWidget {
+class CustomAppButton extends StatelessWidget {
   final bool? hasOutline;
   final Color? borderColor;
-  final String buttonText;
+  final Widget buttonText;
   final Function onPressed;
   final Color buttonColor;
   final Color? textColor;
@@ -14,7 +13,7 @@ class AppButton extends StatelessWidget {
   final IconData? iconsData;
   final double? btnTextSize;
 
-  const AppButton({super.key,
+  const CustomAppButton({super.key,
     this.hasOutline = false,
     required this.buttonText,
     required this.onPressed,
@@ -44,18 +43,7 @@ class AppButton extends StatelessWidget {
                 onPressed: () async {
                   onPressed();
                 },
-                label: Text(
-                  buttonText,overflow: TextOverflow.ellipsis,
-                  style: textColor != null
-                      ? AppStyle.normal_text.copyWith(
-                          color: textColor,
-                          fontWeight: hasOutline == false
-                              ? FontWeight.w600
-                              : FontWeight.w400)
-                      : AppStyle.normal_text.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                ),
+                label:buttonText
               ),
             ),
           )
@@ -72,21 +60,9 @@ class AppButton extends StatelessWidget {
               onPressed: () async {
                 onPressed();
               },
-              label: Text(
-                buttonText,
-                style: textColor != null
-                    ? AppStyle.normal_text.copyWith(
-                        color: textColor,
-                        fontSize: btnTextSize??Dimensions.fontSizeMid,
-                        fontWeight: hasOutline == false
-                            ? FontWeight.w400
-                            : FontWeight.w400)
-                    : AppStyle.normal_text.copyWith(
-                        fontWeight: FontWeight.w600,
-                  fontSize: Dimensions.fontSizeMid
-                      ),
-              ),
+              label: buttonText,
             ),
           );
   }
 }
+

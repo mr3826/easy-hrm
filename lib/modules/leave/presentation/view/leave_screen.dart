@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/calender_widget.dart';
+import 'package:payrun_mobile/modules/leave/presentation/view/apply_leave.dart';
 import 'package:payrun_mobile/modules/leave/presentation/widget/individual_event_view.dart';
 import 'package:payrun_mobile/modules/leave/presentation/widget/widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -11,6 +10,8 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../../../../common/widget/custom_buttom_sheet.dart';
 
 class LeaveScreen extends StatelessWidget {
   const LeaveScreen({super.key});
@@ -21,14 +22,14 @@ class LeaveScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [sliverAppBar, sliverToBoxAdapter],
       ),
-      floatingActionButton: _applyLeaveBtn(),
+      floatingActionButton: _applyLeaveBtn(context),
     );
     
   }
 
-  _applyLeaveBtn() {
+  _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: (){},
+      onTap: ()=>customButtonSheet(context: context,child: ApplyLeaveScreen()),
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0,bottom: 18),
         child: Container(
@@ -81,16 +82,6 @@ SliverAppBar get sliverAppBar {
     ),
   );
 }
-
-
-
-
-
-
-
-
-
-
 _buttonRadiusLayout() {
   return PreferredSize(
     preferredSize: const Size.fromHeight(20),

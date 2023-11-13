@@ -1,6 +1,7 @@
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
+import 'package:payrun_mobile/modules/leave/presentation/view/leave_record.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/leave_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
@@ -54,9 +55,14 @@ class AppPages {
     GetPage(
       name: _Paths.MAIN_SCREEN,
       page: ()=>  MainScreen(),
-    ), GetPage(
+    ),
+
+    GetPage(
       name: _Paths.LEAVE_SCREEN,
       page: ()=> const LeaveScreen(),
+    ), GetPage(
+      name: _Paths.LEAVE_RECORD_SCREEN,
+      page: ()=> const LeaveRecordScreen(),
     ),
 
   ];

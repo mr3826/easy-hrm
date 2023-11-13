@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/input_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
@@ -12,6 +11,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../utils/utils.dart';
 
 class ForgotScreen extends StatelessWidget {
   const ForgotScreen({Key? key}) : super(key: key);
@@ -37,6 +37,8 @@ class ForgotScreen extends StatelessWidget {
 
                 Center(child: Text(AppString.text_dont_not_worry.tr,style: style,)),
                 Center(child: Text(AppString.text_associated.tr,style: style,)),
+                customSpacerHeight(height: 40),
+
                 _emailAddressLayout(),
                 customSpacerHeight(height: 40),
 
@@ -63,18 +65,22 @@ class ForgotScreen extends StatelessWidget {
     );
   }
   _emailAddressLayout() {
-    var controller = Get.find<InputController>();
 
-    return AppInputField(
+    return CustomInputField(
       hint: AppString.text_email,
       prefixIcon: Icons.email_outlined,
-      controller: controller.restPasswordController,
+      controller: restPasswordController,
     );
   }
 
   _sendCodeBtnLayout() {
-    return AppButton(
-      buttonText: AppString.text_send_code.tr,
+    return CustomAppButton(
+      buttonText: Text(
+        AppString.text_send_code.tr,overflow: TextOverflow.ellipsis,
+        style: AppStyle.normal_text.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       onPressed: ()=>Get.toNamed(Routes.OTP),
       buttonColor: AppColor.primaryColor,
       btnTextSize: Dimensions.fontSizeMid+2,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/input_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
@@ -14,6 +13,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+
+import '../../../../utils/utils.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
@@ -30,16 +31,16 @@ class ResetPasswordScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             customSpacerHeight(height: 50),
-
             _imageLayout(),
             customSpacerHeight(height: 50),
-
             _codeTitleText(),
             customSpacerHeight(height: 6),
-
             Center(child: Text(AppString.text_setup_your_code_etc.tr,style: style,)),
-            customSpacerHeight(height: 16),
+            customSpacerHeight(height: 40),
+
             _newPasswordLayout(),
+            customSpacerHeight(height: 20),
+
             _confirmPasswordLayout(),
             customSpacerHeight(height: 36),
             customSpacerHeight(height: 12),
@@ -67,8 +68,13 @@ class ResetPasswordScreen extends StatelessWidget {
   }
 
   _submitBtnLayout() {
-    return AppButton(
-      buttonText: AppString.text_submit.tr,
+    return CustomAppButton(
+      buttonText: Text(
+        AppString.text_submit.tr,overflow: TextOverflow.ellipsis,
+        style: AppStyle.normal_text.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       onPressed: ()=>Get.toNamed(Routes.PASSWORD_UPDATE_SCRREN),
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,
@@ -94,21 +100,18 @@ class ResetPasswordScreen extends StatelessWidget {
     );}
 
   _newPasswordLayout() {
-    var controller = Get.find<InputController>();
 
-    return AppInputField(
+    return CustomInputField(
       hint: AppString.text_new_password.tr,
       prefixIcon: Icons.lock_open,
-      controller: controller.newPasswordController,
+      controller: newPasswordController,
     );
   }
   _confirmPasswordLayout() {
-    var controller = Get.find<InputController>();
-
-    return AppInputField(
+    return CustomInputField(
       hint: AppString.text_confirm_password,
       prefixIcon: Icons.lock_open,
-      controller: controller.confirmPasswordController,
+      controller: confirmPasswordController,
     );
   }
 

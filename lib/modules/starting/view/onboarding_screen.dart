@@ -91,7 +91,7 @@ class OnboardScreen extends StatelessWidget {
 
 Widget _skipButton({context}) {
   return TextButton(
-    onPressed: (){},
+    onPressed: ()=>Get.toNamed(Routes.SIGN_IN_SCREEN),
     child: Text(
       AppString.text_skip,
       style: TextStyle(

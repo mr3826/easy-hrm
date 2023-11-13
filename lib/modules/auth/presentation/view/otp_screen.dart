@@ -84,8 +84,13 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   _resendCodeBtnLayout() {
-    return AppButton(
-      buttonText: AppString.text_resend_code.tr,
+    return CustomAppButton(
+      buttonText: Text(
+        AppString.text_resend_code.tr,overflow: TextOverflow.ellipsis,
+        style: AppStyle.normal_text.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       onPressed: ()=>Get.toNamed(Routes.RESET_PASSWORD),
       buttonColor: AppColor.primaryColor,
       btnTextSize: Dimensions.fontSizeMid+2,

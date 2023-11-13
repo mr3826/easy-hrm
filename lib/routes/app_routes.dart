@@ -12,6 +12,7 @@ abstract class Routes {
    static const PASSWORD_UPDATE_SCRREN = _Paths.PASSWORD_UPDATE_SCRREN;
    static const MAIN_SCREEN = _Paths.MAIN_SCREEN;
    static const LEAVE_SCREEN = _Paths.LEAVE_SCREEN;
+   static const LEAVE_RECORD_SCREEN = _Paths.LEAVE_RECORD_SCREEN;
 
 }
 
@@ -27,5 +28,6 @@ abstract class _Paths {
   static const PASSWORD_UPDATE_SCRREN = '/password_update-screen';
   static const MAIN_SCREEN = '/main-screen';
   static const LEAVE_SCREEN = '/leave-screen';
+  static const LEAVE_RECORD_SCREEN = '/leave_record-screen';
 
 }
