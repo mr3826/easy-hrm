@@ -47,8 +47,12 @@ class AppString {
   static String notification = "Notification";
   static String text_log_out = "Log Out";
   static String text_deleted = "Delete";
+  static String text_date = "Date";
+  static String text_save = "Save";
+  static String text_select_date = "Selected date";
 
   static String textCustom = "Custom";
+  static String text_select_time = "Selected time";
   static String textMonth = "This Month";
   static String text_end = "End";
   static String textYear = "This Year";
@@ -87,7 +91,6 @@ class AppString {
   static String text_attendance = "Attendance";
   static String note_text = "Note (optional)";
   static String text_cancel = "Cancel";
-  static String text_save = "Save";
   static String text_no_data_found = "No data found !";
   static String onboardTileMainAttendDes =
       'Manage your daily attendance, keep track of your goal and easily request for a new log or changing the existing log data. ';

@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'common/controller/date_time_helper_controller.dart';
+
 
 Future<void> initApp() async {
   await GetStorage.init();
@@ -17,5 +19,6 @@ Future<void> initApp() async {
 
   Get.put(PasswordController());
   Get.put(SplashController());
+  Get.put(DateTimeController());
 
 }

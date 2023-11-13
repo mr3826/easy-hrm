@@ -24,6 +24,11 @@ static String calendar_out_nav="assets/images/calendar_out_nav.svg";
 static String profile_nav="assets/images/profile_nav.svg";
 static String profile_out_nav="assets/images/profile_out_nav.svg";
 static String calendar_nav="assets/images/calendar_nav.svg";
+static String calendar_outline_lav="assets/images/calander_outline_lev.svg";
+static String calendar_lav="assets/images/calander_lev.svg";
+static String full_day_lav="assets/images/full_day_lev.svg";
+static String half_day_lav="assets/images/half_day_lav.svg";
+static String last_half_day_lav="assets/images/last_hlaf_day.svg";
 
 
 }
