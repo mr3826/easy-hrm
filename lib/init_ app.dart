@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'common/controller/date_time_helper_controller.dart';
+import 'modules/leave/presentation/controller/file_upload_controller.dart';
+import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
 
 
 Future<void> initApp() async {
@@ -20,5 +22,7 @@ Future<void> initApp() async {
   Get.put(PasswordController());
   Get.put(SplashController());
   Get.put(DateTimeController());
+  Get.put(FileUploadController());
+  Get.put(PickedFileFormStorage());
 
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import '../modules/leave/presentation/view/leave_screen.dart';
 
 //global items here
@@ -15,6 +18,7 @@ TextEditingController _aboutMeController = TextEditingController();
 TextEditingController _newPasswordController = TextEditingController();
 TextEditingController _confirmPasswordController = TextEditingController();
 TextEditingController _orgNameController = TextEditingController();
+TextEditingController _leaveNoteController = TextEditingController();
 
 
 //global getter
@@ -30,10 +34,14 @@ TextEditingController get aboutMeController => _aboutMeController;
 TextEditingController get newPasswordController => _newPasswordController;
 TextEditingController get confirmPasswordController => _confirmPasswordController;
 TextEditingController get orgNameController => _orgNameController;
+TextEditingController get leaveNoteController => _leaveNoteController;
 
 
 
 List<Widget> Function()  get buildScreens=>_buildScreens;
+
+List   get selectedDayIndex=>_selectedDay;
+List   get selectedDayIconIndex=>_selectedDayIcon;
 
 
 List<Widget> _buildScreens() {
@@ -47,4 +55,21 @@ List<Widget> _buildScreens() {
   ];
 }
 
-//refactoring
+
+List _selectedDay=[
+    AppString.text_full_day.tr,
+    AppString.text_first_half.tr,
+    AppString.text_last_half.tr,
+
+
+
+  ];
+
+List _selectedDayIcon=[
+  Images.full_day_lav,
+  Images.half_day_lav,
+  Images.last_half_day_lav
+
+  ];
+
+

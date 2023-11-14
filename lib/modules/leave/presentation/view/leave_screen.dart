@@ -25,10 +25,11 @@ class LeaveScreen extends StatelessWidget {
     );
     
   }
-//component
+  //component
   _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,child: ApplyLeaveScreen()),
+      onTap: ()=>customButtonSheet(context: context,child: const ApplyLeaveScreen(),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0,bottom: 18),
         child: Container(

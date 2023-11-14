@@ -29,11 +29,11 @@ Widget timerTextField(
         ),
         focusedBorder: OutlineInputBorder(
           borderSide:
-          const BorderSide(width: 0.0, color: AppColor.hintColor),
+          const BorderSide( color: AppColor.solidGray),
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         ),
         enabledBorder: OutlineInputBorder(
-            borderSide:  BorderSide(color: AppColor.hintColor.withOpacity(0.5), width: 0.8),
+            borderSide:  const BorderSide(color: AppColor.hintColor),
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault)
         ),
 

@@ -155,7 +155,7 @@ TextStyle get titleTextStyle {
 
 RoundedRectangleBorder get roundedRectangleBorder {
   return RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(Dimensions.radiusMid - 2),
+    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
   );
 }
 

@@ -19,6 +19,7 @@ class AppString {
   static String text_a_5_digit_has_been_etc='An 5 digit code has been sent to demouser@gmail.com';
   static String text_setup_your_code_etc='Setup your new password now. Minimum 8 letter or digits';
   static String text_resend_code='Resend code';
+  static String text_replace_file='Replace File';
   static String text_submit='Submit';
   static String text_continue='Continue';
   static String text_send_code='Send a code';
@@ -32,6 +33,11 @@ class AppString {
   static String text_token='Token';
   static String text_balance='Balance';
   static String text_pendding='Pending';
+  static String text_jpeg_jpg_png_etc='pdf,image or doc file';
+  static String text_document='Document';
+  static String text_storage_permission='Storage permission needed';
+  static String text_file_upload_file='File upload file';
+  static String text_file_upload_update_successfully='File upload update successfully';
 
   static String text_event='Events';
   static String text_approved='Approved';
@@ -47,7 +53,10 @@ class AppString {
   static String notification = "Notification";
   static String text_log_out = "Log Out";
   static String text_deleted = "Delete";
+  static String text_description = "Description";
   static String text_date = "Date";
+  static String text_from = "From";
+  static String text_to = "To";
   static String text_save = "Save";
   static String text_select_date = "Selected date";
 
@@ -59,7 +68,7 @@ class AppString {
   static String text_filter = "Filter";
   static String mark_read = "Mark as Read";
   static String select_leave_type = "Select Leave Type";
-  static String text_select_time_range = "Select Time Range";
+  static String text_select_starting_time = "Select starting time";
   static String text_leave_status = "Leave Status";
   static String text_leave_duration = "Leave Duration";
   static String text_jpeg_format_not_support = "The file is too big! Maximum allowed 5MB";
@@ -68,13 +77,15 @@ class AppString {
   static String text_rejected = "Rejected";
   static String text_rejection = "Rejection";
   static String text_hours = "Hours";
-  static const String text_add_note_here = "Add Note Here";
+  static const String text_add_description = "Add description";
   static const String text_edit_text_hint = "Add Note Here (minimum 10 characters)";
   static String text_note = "Note";
   static String text_single_day = "Single Day";
   static String text_multi_day = "Multi Day";
   static String text_first_half = "First Half";
   static String text_last_half = "Last Half";
+  static String text_full_day = "Full day";
+  static String text_slected_an_option = "Selected an option";
 
   static const String text_are_you_sure = "Are you sure?";
   static const String text_are_you_sure_want_to_exit_from_app = "Are you sure you want to exit from App";
@@ -106,7 +117,10 @@ class AppString {
   static const String text_confirm_password = "Confirm Password";
   static const String text_leave_records = "Leave record";
   static const String text_leave = "Leave";
+  static const String text_leave_type = "Leave type *";
   static const String text_apply_leve = "Apply leave";
+  static const String text_apply = "Apply";
+  static const String text_upload_image = "Upload Image";
 
 
 // Auth String

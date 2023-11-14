@@ -16,7 +16,7 @@ class AppColor {
   static const Color disableColor = Color(0xFFDFDFDF);
   static const Color normalTextColor = Color(0xFF24235F);
   static const Color bgColor = Color(0xFFFFFFFF);
-  static const Color solidGray = Colors.grey;
+  static const Color solidGray = Color(0xFF8F99AD);
   static const Color alertBgColor = Color(0xfffdfbed);
   static const Color iconBoxColor = Color(0xffFF6347);
 
