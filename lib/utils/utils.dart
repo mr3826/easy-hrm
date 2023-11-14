@@ -1,6 +1,4 @@
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
@@ -22,22 +20,6 @@ TextEditingController _newPasswordController = TextEditingController();
 TextEditingController _confirmPasswordController = TextEditingController();
 TextEditingController _orgNameController = TextEditingController();
 
-
-
-void setLastInputData() {
-  if (GetStorage().read(AppString.LAST_INPUT) != null) {
-    Map<String, dynamic> jsonMap =
-    json.decode(GetStorage().read(AppString.LAST_INPUT));
-    LastInput lastInput = LastInput.fromJson(jsonMap);
-    emailController.text = lastInput.email ?? "";
-    passwordController.text = lastInput.password ?? "";
-    orgNameController.text = lastInput.orgName ?? "";
-  }
-}
-
-
-
-
 //global getter
 TextEditingController get searchController=>_searchController;
 TextEditingController get emailController=>_emailController;
@@ -51,6 +33,7 @@ TextEditingController get aboutMeController => _aboutMeController;
 TextEditingController get newPasswordController => _newPasswordController;
 TextEditingController get confirmPasswordController => _confirmPasswordController;
 TextEditingController get orgNameController => _orgNameController;
+
 
 
 

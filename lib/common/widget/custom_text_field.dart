@@ -31,7 +31,7 @@ class CustomInputField extends StatelessWidget {
   _textFieldLayout(context) {
     return TextFormField(
       controller: controller,
-      style: _subTitleStyle,
+      style: subTextFieldTitleStyle,
       validator: validator,
       autofocus: false,
       obscureText: isObscureText == null ? false : true,
@@ -48,7 +48,7 @@ class CustomInputField extends StatelessWidget {
         suffixIcon: weight,
         border: OutlineInputBorder(
           borderSide:
-              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          const BorderSide(width: 0.0, color: AppColor.primaryColor),
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
         ),
         focusColor: AppColor.primaryColor,
@@ -60,6 +60,7 @@ class CustomInputField extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class CustomPassInputField extends StatelessWidget {
@@ -141,7 +142,7 @@ TextStyle _titleStyle(color) {
       fontSize: Dimensions.fontSizeDefault + 2);
 }
 
-TextStyle get _subTitleStyle {
+TextStyle get subTextFieldTitleStyle {
   return AppStyle.mid_large_text.copyWith(
       fontWeight: FontWeight.w400,
       color: AppColor.normalTextColor,

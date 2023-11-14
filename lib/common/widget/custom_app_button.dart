@@ -1,9 +1,8 @@
 import 'package:payrun_mobile/utils/app_layout.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-class AppButton extends StatelessWidget {
+class CustomAppButton extends StatelessWidget {
   final bool? hasOutline;
   final Color? borderColor;
   final Widget buttonText;
@@ -14,7 +13,7 @@ class AppButton extends StatelessWidget {
   final IconData? iconsData;
   final double? btnTextSize;
 
-  const AppButton({super.key,
+  const CustomAppButton({super.key,
     this.hasOutline = false,
     required this.buttonText,
     required this.onPressed,
