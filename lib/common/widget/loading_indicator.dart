@@ -1,6 +1,5 @@
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,12 +50,4 @@ _android() {
   ));
 }
 
-_ios() {
-  return Center(
-      child: SizedBox(
-          height: AppLayout.getHeight(60),
-          width: AppLayout.getWidth(60),
-          child: const CupertinoActivityIndicator(
-            color: AppColor.primaryColor,
-          )));
-}
+

@@ -1,7 +1,6 @@
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_layout.dart';
 
 
@@ -12,28 +11,34 @@ class AppStyle {
       fontSize: AppLayout.getWidth(Dimensions.paddingExtraLarge),
       color: Colors.white,
       fontWeight: FontWeight.w600,
-      fontFamily: "Poppins");
+      fontFamily: "Poppins"
+
+  );
+
   static TextStyle timer_text = TextStyle(
       fontSize: AppLayout.getWidth(Dimensions.fontSizeDoubleLarge),
       color: Colors.white,
       fontWeight: FontWeight.w600,
       fontFamily: "Poppins");
 
-  static TextStyle small_text = GoogleFonts.poppins(
+  static TextStyle small_text = TextStyle(
       fontSize: AppLayout.getWidth(Dimensions.fontSizeSmall),
       color: AppColor.cardColor,
       fontWeight: FontWeight.w500,
+      fontFamily: "Poppins"
    );
 
-  static TextStyle small_text_grey = GoogleFonts.poppins(
+  static TextStyle small_text_grey = TextStyle(
     fontSize: AppLayout.getWidth(12),
     color: Colors.grey,
     fontWeight: FontWeight.w500,
+      fontFamily: "Poppins"
   );
-  static TextStyle small_text_black = GoogleFonts.poppins(
+  static TextStyle small_text_black = TextStyle(
       fontSize: AppLayout.getWidth(Dimensions.fontSizeSmall),
       color: AppColor.normalTextColor,
       fontWeight: FontWeight.w500,
+      fontFamily: "Poppins"
       );
 
   static TextStyle normal_text = TextStyle(
@@ -43,7 +48,7 @@ class AppStyle {
       fontFamily: "Poppins");
   static TextStyle normal_text_black = TextStyle(
       fontSize: Dimensions.fontSizeDefault,
-      color: Colors.black,
+      color: AppColor.normalTextColor,
       fontWeight: FontWeight.w500,
       fontFamily: "Poppins");
   static TextStyle normal_text_grey = TextStyle(
