@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
   _logoLayout() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [SvgPicture.asset(Images.splash_logo), customSpacerHeight(height: 200)],
+      children: [SvgPicture.asset(Images.splash_logo), customSpacerHeight(height: 50)],
     );
   }
 }

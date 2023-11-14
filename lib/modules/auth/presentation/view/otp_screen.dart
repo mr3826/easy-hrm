@@ -90,7 +90,7 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   _resendCodeBtnLayout() {
-    return AppButton(
+    return CustomAppButton(
       buttonText: Get.find<ForgotPasswordController>().isLoading.isTrue
           ? const CupertinoActivityIndicator(
               color: Colors.white,

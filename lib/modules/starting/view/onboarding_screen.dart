@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -12,19 +13,19 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
-
 class OnboardScreen extends StatelessWidget {
-   OnboardScreen({super.key});
+  OnboardScreen({super.key});
+
   final List _onboardImage = [
-     Images.employee_on,
-     Images.time_log_on,
-     Images.leave_on,
+    Images.employee_on,
+    Images.time_log_on,
+    Images.leave_on,
   ];
 
   final List _title = [
-     AppString.text_mange_your_employee,
-     AppString.text_track_your_time,
-     AppString.text_manage_your_leave,
+    AppString.text_mange_your_employee,
+    AppString.text_track_your_time,
+    AppString.text_manage_your_leave,
   ];
 
   final List _description = [
@@ -39,7 +40,7 @@ class OnboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () =>_controller. willPop(),
+      onWillPop: () => _controller.willPop(),
       child: Scaffold(
           backgroundColor: AppColor.backgroundColor,
           body: Padding(
@@ -48,40 +49,41 @@ class OnboardScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Obx(() => Expanded(
-                  flex: 2,
-                  child: _onboardByImage(
-                      imageUrl: _onboardImage[_currentIndex.toInt()]),
-                )),
+                      flex: 2,
+                      child: _onboardByImage(
+                          imageUrl: _onboardImage[_currentIndex.toInt()]),
+                    )),
                 customSpacerHeight(height: 25),
-
                 Expanded(
                     flex: 2,
                     child: Container(
                       width: double.infinity,
-                     decoration: AppStyle.ContainerStyle.copyWith(color: AppColor.primaryColor.withOpacity(0.2)),
+                      decoration: AppStyle.ContainerStyle.copyWith(
+                          color: AppColor.primaryColor.withOpacity(0.2)),
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                           children: [
-                                Obx(
-                                      () => _dotsDecorator(
-                                      onboardImg: _onboardImage.length,
-                                      currentIndex: _currentIndex.toInt()),
-                                ),
-
-                            Obx(() => _onboardTitleText(text: '${_title[_currentIndex.toInt()]}')),
+                            Obx(
+                              () => _dotsDecorator(
+                                  onboardImg: _onboardImage.length,
+                                  currentIndex: _currentIndex.toInt()),
+                            ),
+                            Obx(() => _onboardTitleText(
+                                text: '${_title[_currentIndex.toInt()]}')),
                             Obx(() => _descriptionText(
-                                text: '${_description[_currentIndex.toInt()]}')),
-                            _buttonLayout(titleText: _title,context: context,currentIndex: _currentIndex)
-
+                                text:
+                                    '${_description[_currentIndex.toInt()]}')),
+                            _buttonLayout(
+                                titleText: _title,
+                                context: context,
+                                currentIndex: _currentIndex)
                           ],
                         ),
                       ),
-                )),
+                    )),
               ],
             ),
           )),
@@ -91,7 +93,8 @@ class OnboardScreen extends StatelessWidget {
 
 Widget _skipButton({context}) {
   return TextButton(
-    onPressed: (){
+    onPressed: () async {
+      await GetStorage().write(AppString.IS_LOGGED_IN_FIRST_TIME, false);
       Get.toNamed(Routes.SIGN_IN_SCREEN);
     },
     child: Text(
@@ -110,18 +113,21 @@ Widget _buttonLayout({context, currentIndex, titleText}) {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       GestureDetector(
-        onTap: (){
+        onTap: () async{
           if (currentIndex == titleText.length - 1) {
+            await GetStorage().write(AppString.IS_LOGGED_IN_FIRST_TIME, false);
             Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
           } else {
             currentIndex + 1;
           }
         },
-
         child: const CircleAvatar(
           radius: 27,
           backgroundColor: AppColor.primaryColor,
-          child: Icon(Icons.arrow_forward,color: AppColor.backgroundColor,),
+          child: Icon(
+            Icons.arrow_forward,
+            color: AppColor.backgroundColor,
+          ),
         ),
       ),
       customSpacerHeight(height: 8),
@@ -129,9 +135,6 @@ Widget _buttonLayout({context, currentIndex, titleText}) {
     ],
   );
 }
-
-
-
 
 Widget _dotsDecorator({required onboardImg, required currentIndex}) {
   return DotsIndicator(
@@ -151,19 +154,20 @@ Widget _dotsDecorator({required onboardImg, required currentIndex}) {
 Widget _onboardByImage({required imageUrl}) {
   return Center(
     child: SvgPicture.asset(
-      imageUrl.toString(),fit: BoxFit.cover,
+      imageUrl.toString(),
+      fit: BoxFit.cover,
     ),
   );
 }
-
 
 Widget _descriptionText({required text}) {
   return Text(
     text,
     style: TextStyle(
-      color: AppColor.normalTextColor.withOpacity(0.5),
+        color: AppColor.normalTextColor.withOpacity(0.5),
         fontFamily: "Poppins",
-        fontSize: Dimensions.fontSizeMid-2, fontWeight: FontWeight.w300),
+        fontSize: Dimensions.fontSizeMid - 2,
+        fontWeight: FontWeight.w300),
   );
 }
 
@@ -171,27 +175,21 @@ Widget _onboardTitleText({text}) {
   return Text(
     text,
     style: TextStyle(
-        fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w600,
       fontFamily: "Poppins",
-        fontSize: Dimensions.fontSizeLarge+2,
-        color: AppColor.normalTextColor,
-
-
+      fontSize: Dimensions.fontSizeLarge + 2,
+      color: AppColor.normalTextColor,
     ),
   );
 }
 
 class ExitAppController extends GetxController {
-  Future<bool> willPop() async{
+  Future<bool> willPop() async {
     if (Platform.isAndroid) {
       SystemNavigator.pop();
     } else if (Platform.isIOS) {
-      exit(0);}
+      exit(0);
+    }
     return false;
   }
 }
-
-
-
-
-

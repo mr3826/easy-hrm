@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
+import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/organization_info.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -31,7 +32,7 @@ class SignInController extends GetxController with StateMixin {
   void setLastInputData() {
     if (GetStorage().read(AppString.LAST_INPUT) != null) {
       Map<String, dynamic> jsonMap =
-      json.decode(GetStorage().read(AppString.LAST_INPUT));
+          json.decode(GetStorage().read(AppString.LAST_INPUT));
       LastInput lastInput = LastInput.fromJson(jsonMap);
       emailController.text = lastInput.email ?? "";
       passwordController.text = lastInput.password ?? "";
@@ -44,12 +45,12 @@ class SignInController extends GetxController with StateMixin {
     try {
       Response response = await NetworkClient().getRequest(
           "${Api.COMPANY_DOMAIN}?sub_domain=${orgNameController.text}");
-      log("getOrganizationDomain::: ${response.body}");
       if (response.status.hasError) {
-        ErrorModel errorModel = ErrorModel.fromJson(response.body);
+        logErrorMessage(logName: "getOrganizationDomain", response: response);
         organizationAvailabilityMessage.value =
-            errorModel.message ?? "Some Error occur!";
+            ErrorModel.fromJson(response.body).message ?? "Some Error occur!";
       } else {
+        logSuccessMessage(logName: "getOrganizationDomain", response: response);
         organizationAvailabilityMessage("");
         OrganizationInfo organizationInfo =
             OrganizationInfo.fromJson(response.body);
@@ -62,7 +63,7 @@ class SignInController extends GetxController with StateMixin {
     isLoading(false);
   }
 
-  void login({required String email, required String password}) async {
+  Future<void> login({required String email, required String password}) async {
     isSignInLoading(true);
     try {
       Response response = await NetworkClient().postRequest(Api.LOGIN, {
@@ -70,12 +71,13 @@ class SignInController extends GetxController with StateMixin {
         "password": password,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
-
-      log(response.body.toString());
-
       if (response.hasError) {
+        logErrorMessage(logName: "login", response: response);
 
+        showErrorMessage(
+            message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
+        logSuccessMessage(logName: "login", response: response);
         _saveData();
       }
     } catch (e) {
@@ -89,7 +91,7 @@ class SignInController extends GetxController with StateMixin {
         email: emailController.text,
         password: passwordController.text,
         orgName: orgNameController.text);
-    Map<String, dynamic>jsonModel=myInput.toJson();
+    Map<String, dynamic> jsonModel = myInput.toJson();
     String jsonObject = jsonEncode(jsonModel);
     GetStorage().write(AppString.LAST_INPUT, jsonObject);
   }

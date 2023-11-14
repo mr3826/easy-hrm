@@ -54,7 +54,7 @@ class PasswordUpdateScreen extends StatelessWidget {
   }
 
   _continueBtnLayout() {
-    return AppButton(
+    return CustomAppButton(
       buttonText: Text(
         AppString.text_continue.tr,
         overflow: TextOverflow.ellipsis,

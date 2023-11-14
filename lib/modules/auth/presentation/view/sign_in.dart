@@ -192,7 +192,7 @@ class SignInScreen extends GetView<SignInController> {
   }
 
   _logInBtnLayout(BuildContext context) {
-    return AppButton(
+    return CustomAppButton(
       buttonText: controller.isSignInLoading.isFalse
           ? Text(
               AppString.text_sign_in.tr,
@@ -204,11 +204,12 @@ class SignInScreen extends GetView<SignInController> {
           : const CupertinoActivityIndicator(
               color: Colors.white,
             ),
-      onPressed: () {
+      onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-          controller.login(
+          await controller.login(
               email: emailController.text, password: passwordController.text);
+          Get.toNamed(Routes.MAIN_SCREEN);
         }
       },
       buttonColor: AppColor.primaryColor,

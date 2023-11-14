@@ -74,7 +74,7 @@ class ResetPasswordScreen extends StatelessWidget {
   }
 
   _submitBtnLayout() {
-    return AppButton(
+    return CustomAppButton(
       buttonText: Get.find<ForgotPasswordController>().isLoading.isTrue
           ? const CupertinoActivityIndicator(color: Colors.white)
           : Text(

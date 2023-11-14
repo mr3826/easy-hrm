@@ -78,7 +78,7 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
   }
 
   _sendCodeBtnLayout() {
-    return Obx(() => AppButton(
+    return Obx(() => CustomAppButton(
           buttonText: controller.isLoading.isTrue
               ? const CupertinoActivityIndicator(
                   color: Colors.white,
