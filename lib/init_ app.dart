@@ -1,4 +1,4 @@
-import 'package:payrun_mobile/modules/auth/presentation/controller/password_view_controller.dart';
+import 'package:payrun_mobile/modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'package:payrun_mobile/modules/auth/presentation/controller/signin_controller.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,8 @@ Future<void> initApp() async {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
 
-  Get.put(PasswordController());
   Get.put(SplashController());
   Get.put(SignInController());
+  Get.put(ForgotPasswordController());
 
 }

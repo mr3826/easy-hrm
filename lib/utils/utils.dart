@@ -1,7 +1,12 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_storage/get_storage.dart';
+import '../common/domain/last_input_model.dart';
 import '../modules/leave/presentation/view/leave_screen.dart';
+import 'app_string.dart';
 
 //global items here
 TextEditingController _searchController=TextEditingController();
@@ -16,6 +21,19 @@ TextEditingController _aboutMeController = TextEditingController();
 TextEditingController _newPasswordController = TextEditingController();
 TextEditingController _confirmPasswordController = TextEditingController();
 TextEditingController _orgNameController = TextEditingController();
+
+
+
+void setLastInputData() {
+  if (GetStorage().read(AppString.LAST_INPUT) != null) {
+    Map<String, dynamic> jsonMap =
+    json.decode(GetStorage().read(AppString.LAST_INPUT));
+    LastInput lastInput = LastInput.fromJson(jsonMap);
+    emailController.text = lastInput.email ?? "";
+    passwordController.text = lastInput.password ?? "";
+    orgNameController.text = lastInput.orgName ?? "";
+  }
+}
 
 
 

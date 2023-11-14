@@ -1,11 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/auth/presentation/controller/password_view_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -57,9 +56,9 @@ class SignInScreen extends GetView<SignInController> {
                           customSpacerHeight(height: 50),
                           _logoLayout(context),
                           customSpacerHeight(height: 70),
-                          _organizationNameLayout(),
+                          Obx(() => _organizationNameLayout()),
                           customSpacerHeight(height: 8),
-                          // Text("Organization field is required !",style: AppStyle.normal_text_black.copyWith(color: AppColor.errorColor,fontSize: Dimensions.fontSizeDefault-2),),
+                          Obx(() => _organizationNameErrorLayout()),
                           customSpacerHeight(height: 20),
                           _emailAddressLayout(),
                           customSpacerHeight(height: 20),
@@ -67,7 +66,7 @@ class SignInScreen extends GetView<SignInController> {
                           customSpacerHeight(height: 12),
                           _forgotPassword(),
                           customSpacerHeight(height: 34),
-                          _logInBtnLayout(context),
+                          Obx(() => _logInBtnLayout(context)),
                         ],
                       ),
                     ],
@@ -84,7 +83,7 @@ class SignInScreen extends GetView<SignInController> {
       hint: AppString.text_password.tr,
       controller: passwordController,
       prefixIcon: Icons.lock_open_outlined,
-      obsValue: Get.find<PasswordController>().isValue.value,
+      obsValue: controller.isValue.value,
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_password_field_is_required;
@@ -95,8 +94,8 @@ class SignInScreen extends GetView<SignInController> {
         }
       },
       weight: IconButton(
-        onPressed: () => Get.find<PasswordController>().changeVal(),
-        icon: Get.find<PasswordController>().isValue.isTrue
+        onPressed: () => controller.changeVal(),
+        icon: controller.isValue.isTrue
             ? const Icon(
                 Icons.visibility_off_outlined,
                 color: AppColor.hintColor,
@@ -141,48 +140,75 @@ class SignInScreen extends GetView<SignInController> {
   }
 
   _organizationNameLayout() {
-    FocusNode focusNode=FocusNode();
-    return Obx(() => RawKeyboardListener(
-      focusNode: focusNode,
-      onKey: (value) {
-        print(value);
-        if(value.isKeyPressed(LogicalKeyboardKey.enter)){
+    return Focus(
+      onFocusChange: (value) {
+        if (value == false) {
           controller.getOrganizationDomain();
         }
       },
-      child: CustomInputField(
-            hint: AppString.text_organization_name.tr,
-            prefixIcon: Icons.home_work_outlined,
-            controller: orgNameController,
-            weight: SizedBox(
-                height: 2,
-                width: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: controller.isLoading.value
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ))
-                      : Container(),
-                )),
+      child: TextFormField(
+        controller: orgNameController,
+        style: AppStyle.mid_large_text.copyWith(
+            fontWeight: FontWeight.w400,
+            color: AppColor.normalTextColor,
+            fontSize: Dimensions.fontSizeDefault),
+        autofocus: false,
+        decoration: InputDecoration(
+          hintText: AppString.text_organization_name.tr,
+          hintStyle: TextStyle(
+              color: AppColor.hintColor,
+              fontFamily: "Poppins",
+              fontSize: Dimensions.fontSizeDefault + 1),
+          prefixIcon: const Icon(
+            Icons.home_work_outlined,
+            color: AppColor.hintColor,
           ),
-    ));
+          suffixIcon: SizedBox(
+              height: 2,
+              width: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: controller.isLoading.value
+                    ? const Center(
+                        child: CupertinoActivityIndicator(
+                        animating: true,
+                      ))
+                    : Container(),
+              )),
+          border: OutlineInputBorder(
+            borderSide:
+                const BorderSide(width: 0.0, color: AppColor.primaryColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+          ),
+          focusColor: AppColor.primaryColor,
+          focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: AppColor.disableColor)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColor.disableColor),
+              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+        ),
+      ),
+    );
   }
 
   _logInBtnLayout(BuildContext context) {
     return AppButton(
-      buttonText: Text(
-        AppString.text_sign_in.tr,
-        overflow: TextOverflow.ellipsis,
-        style: AppStyle.normal_text.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      buttonText: controller.isSignInLoading.isFalse
+          ? Text(
+              AppString.text_sign_in.tr,
+              overflow: TextOverflow.ellipsis,
+              style: AppStyle.normal_text.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          : const CupertinoActivityIndicator(
+              color: Colors.white,
+            ),
       onPressed: () {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-          Get.toNamed(Routes.MAIN_SCREEN);
+          controller.login(
+              email: emailController.text, password: passwordController.text);
         }
       },
       buttonColor: AppColor.primaryColor,
@@ -201,6 +227,15 @@ class SignInScreen extends GetView<SignInController> {
         fit: BoxFit.fitHeight,
       ),
     );
+  }
+
+  _organizationNameErrorLayout() {
+    return controller.organizationAvailabilityMessage.value.isNotEmpty
+        ? Text(controller.organizationAvailabilityMessage.value,
+            style: AppStyle.normal_text_black.copyWith(
+                color: AppColor.errorColor,
+                fontSize: Dimensions.fontSizeDefault - 2))
+        : Container();
   }
 }
 

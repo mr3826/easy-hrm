@@ -6,6 +6,7 @@ class AppString {
   //storage key here
 
   static const ORGANIZATION_ID="organizationId";
+  static const LAST_INPUT="last_input";
 
   // Apps string here
 
@@ -24,6 +25,7 @@ class AppString {
   static String text_a_5_digit_has_been_etc='An 5 digit code has been sent to demouser@gmail.com';
   static String text_setup_your_code_etc='Setup your new password now. Minimum 8 letter or digits';
   static String text_resend_code='Resend code';
+  static String text_reset_password='Reset Password';
   static String text_submit='Submit';
   static String text_continue='Continue';
   static String text_send_code='Send a code';

@@ -43,7 +43,7 @@ class AppPages {
 
     GetPage(
       name: _Paths.RESET_PASSWORD,
-      page: ()=> const ResetPasswordScreen(),
+      page: ()=> ResetPasswordScreen(),
     ),
 
     GetPage(
