@@ -28,8 +28,7 @@ class LeaveScreen extends StatelessWidget {
   //component
   _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,child: const ApplyLeaveScreen(),
-      ),
+      onTap: ()=>customButtonSheet(context: context,child: const ApplyLeaveScreen()),
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0,bottom: 18),
         child: Container(
@@ -56,7 +55,7 @@ class LeaveScreen extends StatelessWidget {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(299),
+    expandedHeight: AppLayout.getHeight(250),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,
@@ -74,7 +73,6 @@ SliverAppBar get sliverAppBar {
               customSpacerHeight(height: 6),
               leaveLayout(),
               customSpacerHeight(height: 14),
-              leaveRecordBtnLayout()
             ],
           ),
         ),

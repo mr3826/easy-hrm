@@ -40,6 +40,7 @@ class AppString {
   static String text_file_upload_update_successfully='File upload update successfully';
 
   static String text_event='Events';
+  static String text_today='Today';
   static String text_approved='Approved';
 
   static String text_take_break='Take Break';
@@ -121,6 +122,8 @@ class AppString {
   static const String text_apply_leve = "Apply leave";
   static const String text_apply = "Apply";
   static const String text_upload_image = "Upload Image";
+  static const String text_avaiable = "Available";
+  static const String text_tab_to_view_leave_record = "Tab to view leave record";
 
 
 // Auth String
