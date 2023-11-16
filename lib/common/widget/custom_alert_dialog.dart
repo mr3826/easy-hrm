@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'custom_spacer.dart';
 
 
-Future exitDialog({context, yesAction}) {
+Future customAlertDialog({context, yesAction}) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -17,10 +17,7 @@ Future exitDialog({context, yesAction}) {
         child: AlertDialog(
           title: _titleText(titleText: AppString.text_are_you_sure),
           shape: roundedRectangleBorder,
-          icon: _iconBox(
-              iconColor: AppColor.pendingTextColor,
-              icon: Icons.logout,
-              iconBgColor: Colors.orange.shade50),
+          icon: _iconBox(iconColor: AppColor.pendingColor, icon: Icons.logout,iconBgColor: Colors.orange.shade50),
           content: _contentText(
               contentText: AppString.text_are_you_sure_want_to_exit_from_app),
           actionsAlignment: MainAxisAlignment.center,

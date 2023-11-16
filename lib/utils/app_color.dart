@@ -5,14 +5,14 @@ class AppColor {
   static const Color primaryColor = Color(0xFF2C67FF);
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color secondaryColor = Color(0xFF1A3AA1);
-  static const Color pendingBgColor = Color(0xFFF3C568);
   static const Color alertDgIconBgColor = Color(0xFFfed8b1);
   static const Color successColor = Color(0xFF3EAC55);
   static const Color noColor = Color(0x0fffff00);
-  static const Color pendingTextColor = Color(0xFFFFA500);
+  static const Color pendingColor = Color(0xFFFFA500);
   static const Color hintColor = Color(0xFF8F99AD);
   static const Color cardColor = Color(0xFFFFFFFF);
   static const Color errorColor = Color(0xFFFF0000);
+  static const Color errorColorLight = Color(0xFFFE475B);
   static const Color disableColor = Color(0xFFDFDFDF);
   static const Color normalTextColor = Color(0xFF24235F);
   static const Color bgColor = Color(0xFFFFFFFF);

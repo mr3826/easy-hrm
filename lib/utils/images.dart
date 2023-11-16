@@ -13,9 +13,7 @@ static String time_log_on="assets/images/timelog_on.svg";
 static String forgot="assets/images/forgot_src.svg";
 static String otp="assets/images/otp_src.svg";
 static String reset_password="assets/images/reset pas_src.svg";
-static String pass_update_done="assets/images/pass_update_src.png";
 static String airplane_nav="assets/images/airplane_nav.svg";
-static String home_nav="assets/images/home_nav.png";
 static String airplane_outline_nav="assets/images/airplane_outline_nav.svg";
 static String clock_nav="assets/images/clock_nav.svg";
 static String clock_nav_svg="assets/images/clock_nav.svg";
@@ -29,6 +27,8 @@ static String calendar_lav="assets/images/calander_lev.svg";
 static String full_day_lav="assets/images/full_day_lev.svg";
 static String half_day_lav="assets/images/half_day_lav.svg";
 static String last_half_day_lav="assets/images/last_hlaf_day.svg";
+
+
 
 
 }

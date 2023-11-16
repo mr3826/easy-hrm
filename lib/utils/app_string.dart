@@ -12,6 +12,7 @@ class AppString {
   static String text_mange_your_employee_with = 'Manage your employee with so many advanced features.Like, Leave management, Time log, Employee hiring, and much more.';
 
   static String text_password='Password';
+  static String text_remove='Remove';
   static String text_back_to_login='Back to login';
   static String text_dont_not_worry='Don’t worry! It happens. Please enter the email';
   static String text_associated='address associated with your account';
@@ -22,6 +23,7 @@ class AppString {
   static String text_replace_file='Replace File';
   static String text_submit='Submit';
   static String text_continue='Continue';
+  static String text_close='Close';
   static String text_send_code='Send a code';
   static String text_password_update='Password updated';
   static String text_your_password_has_been_etc='Your password has been changed successfully. Use your';
@@ -60,6 +62,10 @@ class AppString {
   static String text_to = "To";
   static String text_save = "Save";
   static String text_select_date = "Selected date";
+  static String text_type_dot = "Type:";
+  static String text_duration = "Duration:";
+  static String text_satus = "Status:";
+  static String text_date_of_application = "Date of application:";
 
   static String textCustom = "Custom";
   static String text_select_time = "Selected time";
@@ -73,7 +79,6 @@ class AppString {
   static String text_leave_status = "Leave Status";
   static String text_leave_duration = "Leave Duration";
   static String text_jpeg_format_not_support = "The file is too big! Maximum allowed 5MB";
-  static String text_duration = "Duration";
   static String text_pending = "Pending";
   static String text_rejected = "Rejected";
   static String text_rejection = "Rejection";
@@ -81,6 +86,7 @@ class AppString {
   static const String text_add_description = "Add description";
   static const String text_edit_text_hint = "Add Note Here (minimum 10 characters)";
   static String text_note = "Note";
+  static String text_edit = "Edit";
   static String text_single_day = "Single Day";
   static String text_multi_day = "Multi Day";
   static String text_first_half = "First Half";
@@ -121,6 +127,10 @@ class AppString {
   static const String text_leave_type = "Leave type *";
   static const String text_apply_leve = "Apply leave";
   static const String text_apply = "Apply";
+  static const String text_remove_time_log = "Remove timelog";
+  static const String text_sure_you_want_to_deleted_this_log = "Sure you want to deleted this log?";
+  static const String text_if_you_deleted_this_time_log_etc = "If you delete this timelog you can't recover it again.";
+
   static const String text_upload_image = "Upload Image";
   static const String text_avaiable = "Available";
   static const String text_tab_to_view_leave_record = "Tab to view leave record";

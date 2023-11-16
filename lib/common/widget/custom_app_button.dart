@@ -49,14 +49,14 @@ class CustomAppButton extends StatelessWidget {
           )
         : SizedBox(
             width: double.infinity,
-            height: AppLayout.getHeight(56),
+            height: AppLayout.getHeight(50),
             child: TextButton.icon(
               icon: iconsData == null ? Container() : Icon(iconsData,color: textColor),
               style: ElevatedButton.styleFrom(
                   backgroundColor: buttonColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
-                  side: BorderSide(width: 1, color: borderColor!)),
+                  side: BorderSide(width: 1, color: buttonColor)),
               onPressed: () async {
                 onPressed();
               },

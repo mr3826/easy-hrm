@@ -7,6 +7,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/widget/calender_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/widget/single_date_picker_calendar.dart';
+import 'package:payrun_mobile/modules/leave/presentation/widget/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -19,13 +20,14 @@ class IndividualEventView extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Column(
       children: [
-        customSpacerHeight(height: 5),
 
+        customSpacerHeight(height: 5),
         Obx(() =>   _dateCalendarLayout(),),
         customSpacerHeight(height: 8),
         _eventText(),
         _eventViewLayout(),
         customSpacerHeight(height: 100),
+
         ],
 
     );
@@ -129,7 +131,7 @@ class IndividualEventView extends StatelessWidget {
                   Text("Full day",style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1),)
                 ],
               ),
-              CustomStatusButton(textColor: AppColor.successColor,bgColor: AppColor.successColor.withOpacity(0.1),text: AppString.text_approved.tr,)
+              approvedStatusBtn()
             ],
           ),
 
@@ -138,5 +140,6 @@ class IndividualEventView extends StatelessWidget {
 
     },);
   }
+
 
 }
