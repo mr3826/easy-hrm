@@ -27,6 +27,11 @@ static String calendar_lav="assets/images/calander_lev.svg";
 static String full_day_lav="assets/images/full_day_lev.svg";
 static String half_day_lav="assets/images/half_day_lav.svg";
 static String last_half_day_lav="assets/images/last_hlaf_day.svg";
+static String notification_out_nav="assets/images/notification_nav_out.svg";
+static String notification_nav="assets/images/notification_nav.svg";
+static String leave_notification="assets/images/leave_notification.svg";
+static String department_notification="assets/images/department_notification.svg";
+static String time_log_notification="assets/images/time_log_notification.svg";
 
 
 

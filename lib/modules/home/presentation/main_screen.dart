@@ -31,7 +31,7 @@ class MainScreen extends StatelessWidget {
           color: AppColor.cardColor,
         ),
       ),
-      _navbarIcon(activeIcon: Images.calendar_nav,unActiveIcon: Images.calendar_out_nav),
+      _navbarIcon(activeIcon: Images.notification_nav,unActiveIcon: Images.notification_out_nav),
       _navbarIcon(activeIcon: Images.profile_nav,unActiveIcon: Images.profile_out_nav),
 
     ];

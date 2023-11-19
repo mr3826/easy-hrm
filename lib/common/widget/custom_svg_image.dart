@@ -8,7 +8,6 @@ SizedBox customSvgImage({required imageUrl ,double ?height, double ?width}){
    height: AppLayout.getHeight(height??30),width: AppLayout.getWidth(width??30),
    child: SvgPicture.asset(
      imageUrl,
-
     ),
  );
 }

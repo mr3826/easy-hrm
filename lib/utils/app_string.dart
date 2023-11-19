@@ -93,6 +93,8 @@ class AppString {
   static String text_last_half = "Last Half";
   static String text_full_day = "Full day";
   static String text_slected_an_option = "Selected an option";
+  static String text_new = "New";
+  static String text_seen = "Seen";
 
   static const String text_are_you_sure = "Are you sure?";
   static const String text_are_you_sure_want_to_exit_from_app = "Are you sure you want to exit from App";
@@ -132,6 +134,7 @@ class AppString {
   static const String text_if_you_deleted_this_time_log_etc = "If you delete this timelog you can't recover it again.";
 
   static const String text_upload_image = "Upload Image";
+  static const String text_mark_all_as_seen = "Mark all as seen";
   static const String text_avaiable = "Available";
   static const String text_tab_to_view_leave_record = "Tab to view leave record";
 

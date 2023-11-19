@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../modules/leave/presentation/view/leave_screen.dart';
@@ -42,6 +43,7 @@ List<Widget> Function()  get buildScreens=>_buildScreens;
 
 List   get selectedDayIndex=>_selectedDay;
 List   get selectedDayIconIndex=>_selectedDayIcon;
+List   get notificationTabBarIndex=>_notificationTabBarIndex;
 
 
 List<Widget> _buildScreens() {
@@ -49,7 +51,7 @@ List<Widget> _buildScreens() {
     const LeaveScreen(),
     const LeaveScreen(),
     const LeaveScreen(),
-    const LeaveScreen(),
+    const NotificationScreen(),
     const LeaveScreen(),
 
   ];
@@ -71,5 +73,8 @@ List _selectedDayIcon=[
   Images.last_half_day_lav
 
   ];
+
+
+List _notificationTabBarIndex=[AppString.text_new.tr,AppString.text_seen.tr];
 
 
