@@ -30,7 +30,6 @@ class NotificationViewLayout extends StatelessWidget {
             onAction: (){},
             unselectedColor: AppColor.backgroundColor,
             dateText: "2 Dec 2023"
-
         ),
       );
     }
