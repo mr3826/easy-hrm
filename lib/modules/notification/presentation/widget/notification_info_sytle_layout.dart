@@ -7,11 +7,11 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget  notificationInfoLayout({required context,required titleText,required subtext,required min,required Color iconColor,required iconUrl, unselectedColor=AppColor.backgroundColor,required onAction}){
+Widget  notificationInfoLayout({required context,required titleText,required subtext,required min,required Color iconColor,required iconUrl,required dateText, unselectedColor=AppColor.backgroundColor,required onAction}){
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: AppLayout.getHeight(130),
+      height: AppLayout.getHeight(160),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: unselectedColor.withOpacity(0.06),
@@ -31,8 +31,9 @@ Widget  notificationInfoLayout({required context,required titleText,required sub
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("$titleText",style: AppStyle.mid_large_text.copyWith(color: AppColor.secondaryColor),),
+                    Text("$titleText",style: AppStyle.mid_large_text.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeMid-3,fontWeight: FontWeight.w500),),
                     Text("$subtext",maxLines: 3,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault,overflow: TextOverflow.ellipsis,),),
+                    Text("$dateText",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeMid-4,fontWeight: FontWeight.w600),),
                     Text("$min",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1),)
                   ],
                 ),

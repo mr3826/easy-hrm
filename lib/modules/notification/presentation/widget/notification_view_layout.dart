@@ -28,7 +28,9 @@ class NotificationViewLayout extends StatelessWidget {
         padding: marginLayout.copyWith(top: 1),
         child: notificationInfoLayout(context: context,titleText: "Agnes Neslihan",subtext:"has added you as a Department head on Laravel department", min: "2 mins",iconColor: AppColor.primaryColor,iconUrl: Images.department_notification,
             onAction: (){},
-            unselectedColor: AppColor.backgroundColor
+            unselectedColor: AppColor.backgroundColor,
+            dateText: "2 Dec 2023"
+
         ),
       );
     }
@@ -42,8 +44,9 @@ class NotificationViewLayout extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: marginLayout.copyWith(top: 1),
-            child: notificationInfoLayout(context: context,titleText: "Agnes Neslihan",subtext:"has added you as a Department head on Laravel department", min: "2 mins",iconColor: AppColor.errorColorLight,iconUrl: Images.leave_notification,onAction: (){},
+            child: notificationInfoLayout(context: context,titleText: "Agnes Neslihan",subtext:"has added you as a Department head on Laravel department", min: "2 mins",iconColor: AppColor.successColor,iconUrl: Images.leave_notification,onAction: (){},
                 unselectedColor: AppColor.backgroundColor,
+              dateText: "2 Dec 2023"
             ),
           );
         }
