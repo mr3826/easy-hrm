@@ -35,6 +35,9 @@ class AppString {
   static String text_token='Token';
   static String text_balance='Balance';
   static String text_pendding='Pending';
+  static String text_phone='Phone';
+  static String text_emergency_phone='Emergency phone';
+  static String text_address='Address';
   static String text_jpeg_jpg_png_etc='pdf,image or doc file';
   static String text_document='Document';
   static String text_storage_permission='Storage permission needed';
@@ -44,6 +47,8 @@ class AppString {
   static String text_event='Events';
   static String text_today='Today';
   static String text_approved='Approved';
+  static String text_profile='Profile';
+  static String text_action='Actions';
 
   static String text_take_break='Take Break';
   static String text_on_break='On Break';
@@ -87,6 +92,7 @@ class AppString {
   static const String text_edit_text_hint = "Add Note Here (minimum 10 characters)";
   static String text_note = "Note";
   static String text_edit = "Edit";
+  static String text_edit_profile = "Edit profile";
   static String text_single_day = "Single Day";
   static String text_multi_day = "Multi Day";
   static String text_first_half = "First Half";
@@ -95,6 +101,11 @@ class AppString {
   static String text_slected_an_option = "Selected an option";
   static String text_new = "New";
   static String text_seen = "Seen";
+  static String text_leave_balance = "Leave balance";
+  static String text_monthly_goal = "Monthly goal";
+  static String text_logged_time = "Logged time";
+  static String text_view_more = "View more";
+  static String text_view_less = "View less";
 
   static const String text_are_you_sure = "Are you sure?";
   static const String text_are_you_sure_want_to_exit_from_app = "Are you sure you want to exit from App";
@@ -122,6 +133,8 @@ class AppString {
   static const String text_unpaid = "Unpaid";
   static const String text_sent = "Sent";
   static const String text_email = "Email";
+  static const String text_change_email = "Change email";
+  static const String text_change_password = "Change password";
   static const String text_new_password = "New Password";
   static const String text_confirm_password = "Confirm Password";
   static const String text_leave_records = "Leave record";

@@ -5,6 +5,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/leave_record.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
+import 'package:payrun_mobile/modules/profile/presentation/view/profile.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -17,7 +18,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPLASH_SCREEN;
+  static const INITIAL = Routes.MAIN_SCREEN;
 
   static final routes = [
     GetPage(
@@ -84,6 +85,12 @@ class AppPages {
       name: _Paths.LEAVE_RECORD_SCREEN,
       transition: Transition.size,
       page: ()=> const NotificationScreen(),
+    ),
+
+    GetPage(
+      name: _Paths.PROFILE_SCREEN,
+      transition: Transition.size,
+      page: ()=> const ProfileScreen(),
     ),
 
   ];

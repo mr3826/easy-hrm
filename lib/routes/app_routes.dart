@@ -14,6 +14,7 @@ abstract class Routes {
    static const LEAVE_SCREEN = _Paths.LEAVE_SCREEN;
    static const LEAVE_RECORD_SCREEN = _Paths.LEAVE_RECORD_SCREEN;
    static const NOTIFICATION_SCREEN = _Paths.NOTIFICATION_SCREEN;
+   static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
 
 }
 
@@ -31,5 +32,6 @@ abstract class _Paths {
   static const LEAVE_SCREEN = '/leave-screen';
   static const LEAVE_RECORD_SCREEN = '/leave_record-screen';
   static const NOTIFICATION_SCREEN = '/notification-screen';
+  static const PROFILE_SCREEN = '/profile-screen';
 
 }
