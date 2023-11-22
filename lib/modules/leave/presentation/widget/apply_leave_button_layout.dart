@@ -321,11 +321,14 @@ _selectedImageViewLayout() {
     decoration: BoxDecoration(
       color: AppColor.disableColor.withOpacity(0.4),
       image: DecorationImage(
-        image: FileImage(File(Get.find<FileUploadController>()
+        image: FileImage(
+            File(Get.find<FileUploadController>()
             .storageForUpload
             .filePath
             .value)
-            .absolute),
+            .absolute
+
+        ),
         fit: BoxFit.cover,
       ),
     ),

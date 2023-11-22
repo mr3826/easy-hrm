@@ -5,6 +5,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/leave_record.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
+import 'package:payrun_mobile/modules/profile/presentation/view/edit_profile.dart';
 import 'package:payrun_mobile/modules/profile/presentation/view/profile.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
@@ -91,6 +92,12 @@ class AppPages {
       name: _Paths.PROFILE_SCREEN,
       transition: Transition.size,
       page: ()=> const ProfileScreen(),
+    ),
+
+    GetPage(
+      name: _Paths.EDIT_PROFILE_SCREEN,
+      transition: Transition.size,
+      page: ()=> const EditProfileScreen(),
     ),
 
   ];

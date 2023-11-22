@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/presentation/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/action_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/user_info_section_layout.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -31,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               customSpacerHeight(height: 20),
-              _userInfoLayout(),
+              Obx(() => _userInfoLayout(),),
               customSpacerHeight(height: 30),
               _monthlyStatusLayout(),
               customSpacerHeight(height: 30),
@@ -80,7 +84,29 @@ class ProfileScreen extends StatelessWidget {
             backgroundColor: AppColor.backgroundColor,
             child: CircleAvatar(
               radius: 30,
-              backgroundImage: AssetImage(Images.user),
+              backgroundColor: AppColor.backgroundColor,
+              child:Get.find<PikedProfileImgController>()
+                  .storageForUpload
+                  .filePath
+                  .value.isNotEmpty?
+
+              CircleAvatar(
+                radius: 37,
+                backgroundImage:
+                FileImage(
+                    File(Get.find<PikedProfileImgController>()
+                        .storageForUpload
+                        .filePath
+                        .value
+
+                    )
+                        .absolute
+
+                ),
+              ): CircleAvatar(
+                radius: 37,
+                backgroundImage:AssetImage(Images.user),
+              ),
             ),
           ),
         ),
@@ -135,7 +161,7 @@ class ProfileScreen extends StatelessWidget {
 
   _actionBtnLayout(context) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,height: .5,child:actionLayout(userName: "Agens Neilson",departmentText: "Laravel department",) ),
+      onTap: ()=>customButtonSheet(context: context,height: .5,child:actionLayout(userName: "Agens Neilson",departmentText: "Laravel department",editAction: (){},changePassAction: (){}) ),
       child: Container(
         height: AppLayout.getHeight(44),
         width: double.infinity,

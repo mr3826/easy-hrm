@@ -13,6 +13,7 @@ class AppString {
 
   static String text_password='Password';
   static String text_remove='Remove';
+  static String text_remove_photo='Remove photo';
   static String text_back_to_login='Back to login';
   static String text_dont_not_worry='Don’t worry! It happens. Please enter the email';
   static String text_associated='address associated with your account';
@@ -24,6 +25,7 @@ class AppString {
   static String text_submit='Submit';
   static String text_continue='Continue';
   static String text_close='Close';
+  static String text_bio='Bio';
   static String text_send_code='Send a code';
   static String text_password_update='Password updated';
   static String text_your_password_has_been_etc='Your password has been changed successfully. Use your';
@@ -45,6 +47,8 @@ class AppString {
   static String text_file_upload_update_successfully='File upload update successfully';
 
   static String text_event='Events';
+  static String text_update_your_profile='Update your profile photo';
+  static String text_upload_a_photo_undar_2mb='Upload a photo under 2 MB';
   static String text_today='Today';
   static String text_approved='Approved';
   static String text_profile='Profile';
@@ -95,8 +99,11 @@ class AppString {
   static String text_edit_profile = "Edit profile";
   static String text_single_day = "Single Day";
   static String text_multi_day = "Multi Day";
+  static String text_first_name = "First name";
   static String text_first_half = "First Half";
-  static String text_last_half = "Last Half";
+  static String text_last_half = "Last half";
+  static String text_last_name = "Last name";
+  static String text_email = "Email";
   static String text_full_day = "Full day";
   static String text_slected_an_option = "Selected an option";
   static String text_new = "New";
@@ -132,7 +139,6 @@ class AppString {
   static const String text_paid = "Paid";
   static const String text_unpaid = "Unpaid";
   static const String text_sent = "Sent";
-  static const String text_email = "Email";
   static const String text_change_email = "Change email";
   static const String text_change_password = "Change password";
   static const String text_new_password = "New Password";
@@ -144,9 +150,11 @@ class AppString {
   static const String text_apply = "Apply";
   static const String text_remove_time_log = "Remove timelog";
   static const String text_sure_you_want_to_deleted_this_log = "Sure you want to deleted this log?";
+  static const String text_sure_you_want_to_deleted_this_photo = "Sure you want to deleted this photo?";
   static const String text_if_you_deleted_this_time_log_etc = "If you delete this timelog you can't recover it again.";
 
   static const String text_upload_image = "Upload Image";
+  static const String text_upload = "Upload ";
   static const String text_mark_all_as_seen = "Mark all as seen";
   static const String text_avaiable = "Available";
   static const String text_tab_to_view_leave_record = "Tab to view leave record";

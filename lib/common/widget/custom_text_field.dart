@@ -26,7 +26,9 @@ class CustomInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _textFieldLayout(context);
+    return prefixIcon !=null?
+
+      _textFieldLayout(context):_noPrefixIconField();
   }
 
   _textFieldLayout(context) {
@@ -57,6 +59,35 @@ class CustomInputField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
             borderSide:
             const BorderSide(color: AppColor.disableColor),
+            borderRadius:
+            BorderRadius.circular(Dimensions.radiusDefault)),
+      ),
+    );
+  }
+
+  _noPrefixIconField() {
+    return  TextFormField(
+      controller: controller,
+      style: subTextFieldTitleStyle,
+      validator: validator,
+      autofocus: false,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(
+            color: AppColor.hintColor,
+            fontFamily: "Poppins",
+            fontSize: Dimensions.fontSizeDefault + 1),
+        border: OutlineInputBorder(
+          borderSide:
+          const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+        ),
+        focusColor: AppColor.primaryColor,
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.normalTextColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide:
+            const BorderSide(color: AppColor.hintColor),
             borderRadius:
             BorderRadius.circular(Dimensions.radiusDefault)),
       ),
@@ -208,37 +239,6 @@ class OrganizationInputField extends StatelessWidget {
     );
   }
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-RoundedRectangleBorder get _cardStyle {
-  return RoundedRectangleBorder(
-      // side: const BorderSide(width: 1,color: AppColor.disableColor),
-      borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
-}
-
-TextStyle _titleStyle(color) {
-  return AppStyle.mid_large_text.copyWith(
-      fontWeight: FontWeight.w400,
-      color: color,
-      fontSize: Dimensions.fontSizeDefault + 2);
 }
 
 TextStyle get subTextFieldTitleStyle {

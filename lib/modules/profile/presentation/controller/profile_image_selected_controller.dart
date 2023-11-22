@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import '../../../../common/widget/error_message.dart';
 import '../../../../common/widget/success_message.dart';
 import '../../../../common/widget/warning_message.dart';
@@ -9,8 +8,14 @@ import '../../../../utils/app_string.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
+class PikedProfileImgController extends GetxController {
+  //picked document path here
+  PickedProfileFormStorage storageForUpload = PickedProfileFormStorage();
+}
 
-class PickedFileFormStorage {
+
+class PickedProfileFormStorage {
+
 
   Rx<File?> selectedFile = Rx<File?>(null);
   RxString filePath = ''.obs;

@@ -22,6 +22,13 @@ TextEditingController _confirmPasswordController = TextEditingController();
 TextEditingController _orgNameController = TextEditingController();
 TextEditingController _leaveNoteController = TextEditingController();
 
+TextEditingController _editFirstNameController = TextEditingController();
+TextEditingController _editLastNameController = TextEditingController();
+TextEditingController _editEmailController = TextEditingController();
+TextEditingController  _editAddressController = TextEditingController();
+TextEditingController _editPhoneController = TextEditingController();
+TextEditingController _editEmergencyPhoneController = TextEditingController();
+TextEditingController _editBioController = TextEditingController();
 
 //global getter
 TextEditingController get searchController=>_searchController;
@@ -37,6 +44,14 @@ TextEditingController get newPasswordController => _newPasswordController;
 TextEditingController get confirmPasswordController => _confirmPasswordController;
 TextEditingController get orgNameController => _orgNameController;
 TextEditingController get leaveNoteController => _leaveNoteController;
+
+TextEditingController get editFirstNameController => _editFirstNameController;
+TextEditingController get editLastNameController => _editLastNameController;
+TextEditingController get editEmailController => _editEmailController;
+TextEditingController get editAddressController => _editAddressController;
+TextEditingController get editPhoneController => _editPhoneController;
+TextEditingController get editEmergencyPhoneController => _editEmergencyPhoneController;
+TextEditingController get editBioController => _editBioController;
 
 
 
