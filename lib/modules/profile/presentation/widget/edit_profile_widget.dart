@@ -39,7 +39,7 @@ Widget textFiledLayout(){
 }
 
 
-userTextFieldLayout({required titleText,required TextEditingController controller,hintText,isNoteFieldVisible=false}) {
+userTextFieldLayout({required titleText,required TextEditingController controller,hintText,isNoteFieldVisible=false,validator}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -47,7 +47,7 @@ userTextFieldLayout({required titleText,required TextEditingController controlle
       customSpacerHeight(height: 12),
       isNoteFieldVisible !=false?   InputNote(controller: editBioController,hintText: AppString.text_bio.tr,):
 
-      CustomInputField(hint: hintText??titleText,controller: controller,),
+      CustomInputField(hint: hintText??titleText,controller: controller,validator:validator ,),
       customSpacerHeight(height: 12),
     ],
   );

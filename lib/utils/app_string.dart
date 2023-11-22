@@ -26,6 +26,7 @@ class AppString {
   static String text_continue='Continue';
   static String text_close='Close';
   static String text_bio='Bio';
+  static String text_set_new_password='Set new password';
   static String text_send_code='Send a code';
   static String text_password_update='Password updated';
   static String text_your_password_has_been_etc='Your password has been changed successfully. Use your';
@@ -53,6 +54,12 @@ class AppString {
   static String text_approved='Approved';
   static String text_profile='Profile';
   static String text_action='Actions';
+
+  static String text_current_password='Current Password';
+  static String text_new_password='New Password';
+  static String text_confirm_password='Confirm Password';
+  static String text_confirm_your_password='Confirm your password';
+  static String text_min_8_character='Min. 8 characters';
 
   static String text_take_break='Take Break';
   static String text_on_break='On Break';
@@ -141,8 +148,6 @@ class AppString {
   static const String text_sent = "Sent";
   static const String text_change_email = "Change email";
   static const String text_change_password = "Change password";
-  static const String text_new_password = "New Password";
-  static const String text_confirm_password = "Confirm Password";
   static const String text_leave_records = "Leave record";
   static const String text_leave = "Leave";
   static const String text_leave_type = "Leave type *";

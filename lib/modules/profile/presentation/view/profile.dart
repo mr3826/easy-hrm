@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -7,19 +6,19 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/presentation/controller/profile_image_selected_controller.dart';
+import 'package:payrun_mobile/modules/profile/presentation/view/chnage_email.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/action_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/user_info_section_layout.dart';
-import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
-
 import '../widget/profile_appbar.dart';
+
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -45,10 +44,8 @@ class ProfileScreen extends StatelessWidget {
               customSpacerHeight(height: 15),
               const Divider(thickness: .6,),
 
-
-              userInfoSectionLayout(staticText: AppString.text_email.tr,dynamicText: "rifatal@gmail.com",isChangeEmailVisible: true,onAction: (){}),
+              userInfoSectionLayout(staticText: AppString.text_email.tr,dynamicText: "rifatal@gmail.com",isChangeEmailVisible: true,onAction: ()=>customButtonSheet(context: context,height: .5, child: ChangeEmailScreen() )),
               customSpacerHeight(height: 15),
-
 
               userInfoSectionLayout(staticText: AppString.text_phone.tr,dynamicText: "+0884523452345",),
               customSpacerHeight(height: 15),
@@ -56,12 +53,8 @@ class ProfileScreen extends StatelessWidget {
               userInfoSectionLayout(staticText: AppString.text_emergency_phone.tr,dynamicText: "+0884523452345",),
               customSpacerHeight(height: 15),
 
+
               userInfoSectionLayout(staticText: AppString.text_address.tr,dynamicText: "Personal added one"),
-
-
-
-
-
 
             ],
           ),
@@ -161,7 +154,7 @@ class ProfileScreen extends StatelessWidget {
 
   _actionBtnLayout(context) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,height: .5,child:actionLayout(userName: "Agens Neilson",departmentText: "Laravel department",editAction: (){},changePassAction: (){}) ),
+      onTap: ()=>customButtonSheet(context: context,height: .5,child:actionLayout(context: context,userName: "Agens Neilson",departmentText: "Laravel department",editAction: (){},changePassAction: (){}) ),
       child: Container(
         height: AppLayout.getHeight(44),
         width: double.infinity,

@@ -29,6 +29,7 @@ TextEditingController  _editAddressController = TextEditingController();
 TextEditingController _editPhoneController = TextEditingController();
 TextEditingController _editEmergencyPhoneController = TextEditingController();
 TextEditingController _editBioController = TextEditingController();
+TextEditingController _currentPassController = TextEditingController();
 
 //global getter
 TextEditingController get searchController=>_searchController;
@@ -52,6 +53,7 @@ TextEditingController get editAddressController => _editAddressController;
 TextEditingController get editPhoneController => _editPhoneController;
 TextEditingController get editEmergencyPhoneController => _editEmergencyPhoneController;
 TextEditingController get editBioController => _editBioController;
+TextEditingController get currentPassword => _currentPassController;
 
 
 

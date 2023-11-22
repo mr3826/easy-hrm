@@ -26,6 +26,13 @@ class CustomInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final focusedCtx = FocusManager.instance.primaryFocus?.context;
+    Future.delayed(const Duration(milliseconds: 200))
+        .then((value) => Scrollable.ensureVisible(
+      focusedCtx??context,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.bounceInOut,
+    ));
     return prefixIcon !=null?
 
       _textFieldLayout(context):_noPrefixIconField();
@@ -66,6 +73,7 @@ class CustomInputField extends StatelessWidget {
   }
 
   _noPrefixIconField() {
+
     return  TextFormField(
       controller: controller,
       style: subTextFieldTitleStyle,
@@ -119,6 +127,13 @@ class CustomPassInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final focusedCtx = FocusManager.instance.primaryFocus?.context;
+    Future.delayed(const Duration(milliseconds: 200))
+        .then((value) => Scrollable.ensureVisible(
+      focusedCtx??context,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.bounceInOut,
+    ));
     return _passwordFieldLayout(context,obsValue);
   }
 
@@ -135,6 +150,7 @@ class CustomPassInputField extends StatelessWidget {
             color: AppColor.hintColor,
             fontFamily: "Poppins",
             fontSize: Dimensions.fontSizeDefault + 1),
+
         suffixIcon: weight,
         prefixIcon: Icon(
           prefixIcon,

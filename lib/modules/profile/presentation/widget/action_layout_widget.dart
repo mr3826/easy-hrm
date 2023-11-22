@@ -9,8 +9,10 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../view/change_password.dart';
 
-Widget actionLayout({required userName,required departmentText,required editAction,changePassAction}){
+
+Widget actionLayout({required userName,required departmentText,required editAction,changePassAction,required context}){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -20,9 +22,8 @@ Widget actionLayout({required userName,required departmentText,required editActi
           onTap: ()=>Get.toNamed(Routes.EDIT_PROFILE_SCREEN),
           child: _fieldLayout(hintText:AppString.text_edit_profile.tr,prefixIcon: Icons.edit ,onAction: editAction)),
       InkWell(
-        onTap: (){},
+        onTap: ()=>customButtonSheet(context: context,height: .7,child:  ChangePasswordScreen()),
           child: _fieldLayout(hintText:AppString.text_change_password.tr,prefixIcon: Icons.key,onAction:changePassAction  )),
-
     ],
   );
 }
