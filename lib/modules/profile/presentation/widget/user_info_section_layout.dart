@@ -19,8 +19,6 @@ Widget userInfoSectionLayout({required staticText,required dynamicText,isChangeE
       isChangeEmailVisible ==true?  GestureDetector(
           onTap: onAction,
           child: Text(AppString.text_change_email.tr,style: AppStyle.normal_text_grey.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeDefault-2),)):Container(),
-      isChangeEmailVisible ==true?  customSpacerHeight(height: 12):Container(),
-      isChangeEmailVisible ==true?   _alertMessageLayout(message:""):Container()
 
     ],
   );
@@ -28,15 +26,4 @@ Widget userInfoSectionLayout({required staticText,required dynamicText,isChangeE
 }
 //message
 
-_alertMessageLayout({required String message}) {
-  return  Card(
-    elevation: 0,
-    shape: roundedRectangleBorder,
-    color: AppColor.pendingColor.withOpacity(0.08),
-    child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Text("Email change request is in pending.Need verification.",style: AppStyle.mid_large_text.copyWith(color: AppColor.pendingColor,fontSize: Dimensions.fontSizeDefault),),
-    ),
-  );
 
-}

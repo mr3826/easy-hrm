@@ -23,6 +23,7 @@ class CustomDialog extends StatelessWidget {
   final Color iconBgColor;
   final Color btnBgColor;
   final Function saveBtnAction;
+  final isOTPVisible=false;
 
   const CustomDialog({super.key,required this.icon,required this.titleText,required this.iconBgColor,required this.btnBgColor, this.subtext="",required this.saveBtnAction,required this.btnText,required this.drcText});
   @override
@@ -68,7 +69,7 @@ class CustomDialog extends StatelessWidget {
                 child:  Icon(icon,size: 40,color: AppColor.cardColor,),
               ))
         ],
-      ),
+      )
     );
   }
 }

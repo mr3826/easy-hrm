@@ -33,6 +33,7 @@ static String leave_notification="assets/images/leave_notification.svg";
 static String department_notification="assets/images/department_notification.svg";
 static String time_log_notification="assets/images/time_log_notification.svg";
 static String user="assets/images/user.jpeg";
+static String EMAIL_POP="assets/images/email_pop.svg";
 
 
 

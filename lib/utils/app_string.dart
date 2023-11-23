@@ -61,6 +61,15 @@ class AppString {
   static String text_confirm_your_password='Confirm your password';
   static String text_min_8_character='Min. 8 characters';
 
+
+  static String text_verify_your_email_address='Verify your email address';
+  static String text_we_have_sent_a_verification_etc="We have sent a Verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
+  static String text_do_not_receive_email="Don't receive email? ";
+  static String text_resend="Resend";
+  static String text_verify_email="Verify email";
+  static String text_revert_change="Revert changes";
+  static String text_email_change_request_is_in_pendding_etc="Email change request is in pending.Need verification.";
+
   static String text_take_break='Take Break';
   static String text_on_break='On Break';
   static String text_in = "In";

@@ -8,6 +8,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/presentation/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/presentation/view/chnage_email.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/action_layout_widget.dart';
+import 'package:payrun_mobile/modules/profile/presentation/widget/chnage_email_notify_layout.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/user_info_section_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -24,6 +25,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MyController myController = Get.put(MyController());
     return Scaffold(
       appBar:profileAppbar(onAction: (){}),
       body: Padding(
@@ -44,7 +46,9 @@ class ProfileScreen extends StatelessWidget {
               customSpacerHeight(height: 15),
               const Divider(thickness: .6,),
 
-              userInfoSectionLayout(staticText: AppString.text_email.tr,dynamicText: "rifatal@gmail.com",isChangeEmailVisible: true,onAction: ()=>customButtonSheet(context: context,height: .5, child: ChangeEmailScreen() )),
+               ChangeEmailNotifyLayout(),
+
+
               customSpacerHeight(height: 15),
 
               userInfoSectionLayout(staticText: AppString.text_phone.tr,dynamicText: "+0884523452345",),
@@ -55,6 +59,13 @@ class ProfileScreen extends StatelessWidget {
 
 
               userInfoSectionLayout(staticText: AppString.text_address.tr,dynamicText: "Personal added one"),
+
+
+
+
+
+
+
 
             ],
           ),
@@ -187,11 +198,56 @@ class ProfileScreen extends StatelessWidget {
 
 
 
+class MyController extends GetxController {
+  var selectedValue = "Option 1".obs; // Observable variable to store the selected value
+
+  void onItemSelected(String value) {
+    selectedValue.value = value; // Update the selected value when an item is selected
+  }
+}
 
 
 
 
 
+class DropdownController extends GetxController {
+  RxBool isDropdownOpen = false.obs;
+}
 
 
+
+class DropdownMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text('Option 1'),
+            onTap: () {
+              // Handle selection for Option 1
+            },
+          ),
+          ListTile(
+            title: Text('Option 2'),
+            onTap: () {
+              // Handle selection for Option 2
+            },
+          ),
+          ListTile(
+            title: Text('Option 3'),
+            onTap: () {
+              // Handle selection for Option 3
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
 

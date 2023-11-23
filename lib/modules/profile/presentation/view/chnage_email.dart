@@ -7,7 +7,6 @@ import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/modules/auth/presentation/controller/password_showing_controller.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/change_email_widget.dart';
-import 'package:payrun_mobile/modules/profile/presentation/widget/edit_profile_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -17,7 +16,6 @@ import 'package:payrun_mobile/utils/utils.dart';
 class ChangeEmailScreen extends StatelessWidget {
    ChangeEmailScreen({super.key});
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return  Form(
@@ -41,10 +39,8 @@ class ChangeEmailScreen extends StatelessWidget {
                   customSpacerHeight(height: 30),
                   CustomDoubleAppButton(buttonText: AppString.text_continue.tr, onAction: (){
                     if (_formKey.currentState!.validate()) {
-                      customButtonSheet(context: context,child: ChangEmailFieldLayout(),height: .6);
-
+                      customButtonSheet(context: context,child: ChangEmailFieldLayout(),height: .7);
                     }
-
                   }, cancelAction: (){
                     Navigator.pop(context);
                   }),
@@ -91,5 +87,11 @@ class ChangeEmailScreen extends StatelessWidget {
   }
 
 
+
+}
+
+class SelectedOtpVerifyController extends GetxController {
+
+  RxBool isSelected=false.obs;
 
 }
