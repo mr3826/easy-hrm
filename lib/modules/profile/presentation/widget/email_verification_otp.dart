@@ -55,8 +55,6 @@ Future otpVerificationLayout(context) {
           ),
 
           customSpacerHeight(height: 12),
-
-
           Row(
             children: [
               Expanded(

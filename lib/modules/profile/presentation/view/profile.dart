@@ -6,9 +6,10 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/presentation/controller/profile_image_selected_controller.dart';
-import 'package:payrun_mobile/modules/profile/presentation/view/chnage_email.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/action_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/chnage_email_notify_layout.dart';
+import 'package:payrun_mobile/modules/profile/presentation/widget/department_layout_widget.dart';
+import 'package:payrun_mobile/modules/profile/presentation/widget/employee_stauts_layout.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/modules/profile/presentation/widget/user_info_section_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -41,16 +42,13 @@ class ProfileScreen extends StatelessWidget {
               _monthlyStatusLayout(),
               customSpacerHeight(height: 30),
               _actionBtnLayout(context),
-              customSpacerHeight(height: 15),
+              customSpacerHeight(height: 25),
               _descriptionTextLayout(),
               customSpacerHeight(height: 15),
               const Divider(thickness: .6,),
-
                ChangeEmailNotifyLayout(),
 
-
               customSpacerHeight(height: 15),
-
               userInfoSectionLayout(staticText: AppString.text_phone.tr,dynamicText: "+0884523452345",),
               customSpacerHeight(height: 15),
 
@@ -59,13 +57,11 @@ class ProfileScreen extends StatelessWidget {
 
 
               userInfoSectionLayout(staticText: AppString.text_address.tr,dynamicText: "Personal added one"),
-
-
-
-
-
-
-
+              customSpacerHeight(height: 15),
+              departmentLayout(context),
+              customSpacerHeight(height: 5),
+              employeeStatusLayout(),
+              customSpacerHeight(height: 50),
 
             ],
           ),
@@ -192,6 +188,10 @@ class ProfileScreen extends StatelessWidget {
       return Text(drc,style: AppStyle.mid_large_text.copyWith(color: AppColor.primaryColor),);
     }
   }
+
+
+
+
 
 
 }

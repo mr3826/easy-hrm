@@ -34,6 +34,8 @@ static String department_notification="assets/images/department_notification.svg
 static String time_log_notification="assets/images/time_log_notification.svg";
 static String user="assets/images/user.jpeg";
 static String EMAIL_POP="assets/images/email_pop.svg";
+static String EMPLOYEE_STATUS="assets/images/employee_status.svg";
+static String FLAG="assets/images/flag.svg";
 
 
 

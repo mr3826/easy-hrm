@@ -122,6 +122,7 @@ class AppString {
   static String text_email = "Email";
   static String text_full_day = "Full day";
   static String text_slected_an_option = "Selected an option";
+  static String text_child_of_deparmtnet = "Child of Main department";
   static String text_new = "New";
   static String text_seen = "Seen";
   static String text_leave_balance = "Leave balance";

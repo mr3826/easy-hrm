@@ -31,7 +31,7 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
                   AppString.text_email.tr,
                   style: AppStyle.normal_text_grey.copyWith(
                     color: AppColor.normalTextColor,
-                    fontSize: Dimensions.fontSizeDefault,
+                    fontSize: Dimensions.fontSizeDefault+1,
                   ),
                 ),
                 customSpacerHeight(height: 2),
@@ -39,7 +39,7 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
                   "rifat@gmail.com",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault - 2),
+                      fontSize: Dimensions.fontSizeDefault - 1),
                 ),
                 customSpacerHeight(height: 8),
                 GestureDetector(
@@ -51,7 +51,7 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
                       AppString.text_change_email.tr,
                       style: AppStyle.normal_text_grey.copyWith(
                           color: AppColor.secondaryColor,
-                          fontSize: Dimensions.fontSizeDefault - 2),
+                          fontSize: Dimensions.fontSizeDefault - 1),
                     )),
                 customSpacerHeight(height: 12),
               ],

@@ -12,18 +12,16 @@ Widget userInfoSectionLayout({required staticText,required dynamicText,isChangeE
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text("$staticText",style: AppStyle.normal_text_grey.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault,),),
+      Text("$staticText",style: AppStyle.normal_text_grey.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1,),),
       customSpacerHeight(height: 2),
-      Text("$dynamicText",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-2),),
+      Text("$dynamicText",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1),),
       customSpacerHeight(height: 8),
       isChangeEmailVisible ==true?  GestureDetector(
           onTap: onAction,
           child: Text(AppString.text_change_email.tr,style: AppStyle.normal_text_grey.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeDefault-2),)):Container(),
-
     ],
   );
-
 }
-//message
+
 
 
