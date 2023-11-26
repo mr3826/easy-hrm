@@ -79,7 +79,8 @@ class AppString {
   static String text_no = "No";
   static String text_error = "Error!";
   static String notification = "Notification";
-  static String text_log_out = "Log Out";
+  static String text_log_out = "Logout";
+  static String text_language = "Language: ";
   static String text_deleted = "Delete";
   static String text_description = "Description";
   static String text_date = "Date";
@@ -87,6 +88,7 @@ class AppString {
   static String text_to = "To";
   static String text_save = "Save";
   static String text_select_date = "Selected date";
+  static String text_select_language = "Selected language";
   static String text_type_dot = "Type:";
   static String text_duration = "Duration:";
   static String text_satus = "Status:";

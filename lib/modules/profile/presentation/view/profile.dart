@@ -18,6 +18,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../widget/language_widget.dart';
 import '../widget/profile_appbar.dart';
 
 
@@ -26,9 +27,36 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MyController myController = Get.put(MyController());
     return Scaffold(
       appBar:profileAppbar(onAction: (){}),
+      endDrawer: Drawer(
+        child: Column(
+          children: [
+            customSpacerHeight(height: 40),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                height: 216,
+                width: 800,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                      color: AppColor.primaryColor.withOpacity(0.07),
+                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault)
+                  ),
+                  child:_userProfileImgLayout(),
+                ),
+              ),
+            ),
+            const Spacer(),
+            _languageLayout(context),
+            customSpacerHeight(height: 30),
+
+            _logoutLayout(context)
+
+          ],
+        ),
+      ),
+
       body: Padding(
         padding: marginLayout,
         child: SingleChildScrollView(
@@ -132,6 +160,61 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  _userProfileImgLayout() {
+    return  Column(
+      children: [
+        CircleAvatar(
+          radius: 48,
+          backgroundColor: AppColor.disableColor,
+          child: CircleAvatar(
+            radius: 47,
+            backgroundColor: AppColor.backgroundColor,
+            child: CircleAvatar(
+              radius: 47,
+              backgroundColor: AppColor.primaryColor.withOpacity(0.08),
+              child:Get.find<PikedProfileImgController>()
+                  .storageForUpload
+                  .filePath
+                  .value.isNotEmpty?
+
+              CircleAvatar(
+                radius: 45,
+                backgroundImage:
+                FileImage(
+                    File(Get.find<PikedProfileImgController>()
+                        .storageForUpload
+                        .filePath
+                        .value
+
+                    )
+                        .absolute
+
+                ),
+              ): CircleAvatar(
+                radius: 45,
+                backgroundImage:AssetImage(Images.user),
+              ),
+            ),
+          ),
+        ),
+        customSpacerWidth(width: 18),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Agens Neilson",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
+            Text("Laravel department",style: AppStyle.normal_text_grey,),
+            customSpacerHeight(height: 8),
+          ],
+        ),
+
+
+
+
+
+      ],
+    );
+  }
+
   _monthlyStatusLayout() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,6 +270,49 @@ class ProfileScreen extends StatelessWidget {
     } else {
       return Text(drc,style: AppStyle.mid_large_text.copyWith(color: AppColor.primaryColor),);
     }
+  }
+
+  _logoutLayout(context) {
+    return Container(
+      height: AppLayout.getHeight(110),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(color: AppColor.secondaryColor.withOpacity(0.4)),
+      child: Padding(
+        padding: marginLayout,
+        child: Row(
+          children: [
+            const Icon(Icons.logout_rounded,color: AppColor.cardColor,),
+            customSpacerWidth(width: 12),
+            Text(AppString.text_log_out.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor),),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _languageLayout(context) {
+    return InkWell(
+      onTap: ()=>customButtonSheet(child: LanguageLayout(),context: context,height: .5),
+      child: Container(
+        padding: marginLayout.copyWith(left: 8,right: 8),
+        child: Row(
+          children: [
+             SizedBox(height: 20,child: Image.asset(Images.FLAG_PNG)),
+            customSpacerWidth(width: 8),
+            Row(
+              children: [
+                Text(AppString.text_language.tr,style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeDefault+1,color: AppColor.hintColor),),
+                Text("English",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),)
+              ],
+            ),
+            const Spacer(),
+            const Icon(Icons.arrow_forward_ios_sharp,color: AppColor.hintColor,size: 20,)
+
+
+          ],
+        ),
+      ),
+    );
   }
 
 

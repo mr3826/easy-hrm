@@ -36,6 +36,7 @@ static String user="assets/images/user.jpeg";
 static String EMAIL_POP="assets/images/email_pop.svg";
 static String EMPLOYEE_STATUS="assets/images/employee_status.svg";
 static String FLAG="assets/images/flag.svg";
+static String FLAG_PNG="assets/images/flag.png";
 
 
 

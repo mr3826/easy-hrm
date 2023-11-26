@@ -15,12 +15,6 @@ AppBar profileAppbar({onAction}){
       padding: const EdgeInsets.only(top: 16.0,left: 18),
       child: Text(AppString.text_profile.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontWeight: FontWeight.w600,fontSize: Dimensions.fontSizeMid+1),),
     ),
-  actions: [
-    Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: IconButton(onPressed: (){}, icon: const Icon(Icons.menu,color: AppColor.hintColor,)),
-    )
-  ],
 
   );
 }
