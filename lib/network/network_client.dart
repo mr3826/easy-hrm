@@ -17,6 +17,7 @@ class NetworkClient extends GetConnect {
     }).timeout(const Duration(seconds: 15));
   }
 
+
   Future<http.Response> getReq(String apiEndPoint) async {
     return await http.get(Uri.parse(_getRequestUrl(apiEndPoint)), headers: {
       "Content-Type": "application/json",

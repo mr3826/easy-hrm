@@ -138,6 +138,7 @@ class AppString {
   static String error_text = "Something went wrong! Please try again";
   static String text_skip = "Skip";
   static String text_please_valid_file = "Please selected valid document";
+  static String text_please_valid_photo = "Please selected valid profile image";
   static String text_field_is_requird = "Field is required !";
   static String text_document_name_is_required = "Document name is required !";
   static String text_next = "Next";

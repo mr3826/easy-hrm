@@ -41,15 +41,13 @@ class PickedProfileFormStorage {
       if (result != null) {
         if (result.files.single.path!.length > 500.toInt()) {
           showWarningMessage(message: AppString.text_jpeg_format_not_support);
-        }else if(result.files.single.path!.endsWith(".png") || result.files.single.path!.endsWith(".jpg")||result.files.single.path!.endsWith(".jpeg")||result.files.single.path!.endsWith(".pdf")){
+        }else if(result.files.single.path!.endsWith(".png") || result.files.single.path!.endsWith(".jpg")||result.files.single.path!.endsWith(".jpeg")){
           File file = File(result.files.single.path!);
           selectedFile.value = file;
           filePath.value = result.files.single.path!;
         }
         else {
-          showWarningMessage(message: AppString.text_please_valid_file);
-          filePath.value = "";
-
+          showWarningMessage(message: AppString.text_please_valid_photo.tr);
         }
       }
     } else if (permissionStatus.isPermanentlyDenied) {
