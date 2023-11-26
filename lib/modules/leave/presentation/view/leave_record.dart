@@ -39,36 +39,32 @@ class LeaveRecordScreen extends StatelessWidget {
   }
 
   _dateTextLayout({required date}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        customSpacerHeight(height: 50),
-        Container(
-          height: 1,
-          width: AppLayout.getWidth(120),
-          color: AppColor.disableColor,
-        ),
-        Padding(
-          padding: marginLayout,
-          child: Text(
-            date,
-            style: AppStyle.normal_text_black.copyWith(
-                color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault),
+    return Padding(
+      padding: marginLayout.copyWith(left: 6,right: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _divider(),
+          Padding(
+            padding: marginLayout.copyWith(top: 6,bottom: 6),
+            child: Text(
+              date,
+              style: AppStyle.normal_text_black.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault),
+            ),
           ),
-        ),
-        Container(
-          height: 1,
-          width: AppLayout.getWidth(120),
-          color: AppColor.disableColor,
-        ),
-      ],
+
+          _divider()
+
+        ],
+      ),
     );
   }
 
   _infoLayoutView({required BuildContext context}) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,child: const LeaveRecordDetails(status: "rejected",) ,height: 0.5),
+      onTap: ()=>customButtonSheet(context: context,child: const LeaveRecordDetails(status: "rejected",) ,height: 0.6),
       child: SizedBox(
         height: AppLayout.getHeight(110),
         child: Card(
@@ -135,12 +131,18 @@ class LeaveRecordScreen extends StatelessWidget {
 
 
 
+
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  _divider() {
+    return const Expanded(child: Divider(thickness: 1,color: AppColor.disableColor,));
+
   }
 
 }

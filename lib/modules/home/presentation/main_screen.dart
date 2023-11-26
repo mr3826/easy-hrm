@@ -15,7 +15,6 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../../common/widget/custom_spacer.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
-import '../../profile/presentation/widget/profile_appbar.dart';
 
 class MainScreen extends StatelessWidget {
    MainScreen({Key? key}) : super(key: key);

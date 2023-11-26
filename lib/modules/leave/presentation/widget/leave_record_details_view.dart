@@ -20,20 +20,24 @@ class LeaveRecordDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        customButtonSheetAppbar(text: "08 March, 2023",subtext: "Wednesday"),
-        customSpacerHeight(height: 12),
-        _infoLayout(text: AppString.text_type_dot.tr,dynamicText: "Sick leave"),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          customButtonSheetAppbar(text: "08 March, 2023",subtext: "Wednesday"),
+          customSpacerHeight(height: 12),
+          _infoLayout(text: AppString.text_type_dot.tr,dynamicText: "Sick leave"),
 
-        _infoLayout(text: AppString.text_duration.tr,dynamicText: "1 Day"),
-        _infoLayout(text: AppString.text_satus.tr,widget:   _statusBtn()),
-        _infoLayout(text: AppString.text_date_of_application.tr,dynamicText: "02 March 2023"),
-        customSpacerHeight(height: 50),
+          _infoLayout(text: AppString.text_duration.tr,dynamicText: "1 Day"),
+          _infoLayout(text: AppString.text_satus.tr,widget:   _statusBtn()),
+          _infoLayout(text: AppString.text_date_of_application.tr,dynamicText: "02 March 2023"),
+          customSpacerHeight(height: 50),
 
-        _buttonLayout(context)
+          _buttonLayout(context),
 
-      ],
+          customSpacerHeight(height: 20),
+        ],
+      ),
     );
   }
 
