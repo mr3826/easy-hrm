@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
+import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -19,6 +20,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../widget/language_widget.dart';
+import '../widget/organisation_widget.dart';
 import '../widget/profile_appbar.dart';
 
 
@@ -31,22 +33,16 @@ class ProfileScreen extends StatelessWidget {
       appBar:profileAppbar(onAction: (){}),
       endDrawer: Drawer(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
+            customSpacerHeight(height: 70),
+
+            _profileLayout(),
             customSpacerHeight(height: 40),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                height: 216,
-                width: 800,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                      color: AppColor.primaryColor.withOpacity(0.07),
-                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault)
-                  ),
-                  child:_userProfileImgLayout(),
-                ),
-              ),
-            ),
+
+            _organisationLayout(context),
+
             const Spacer(),
             _languageLayout(context),
             customSpacerHeight(height: 30),
@@ -82,7 +78,6 @@ class ProfileScreen extends StatelessWidget {
 
               userInfoSectionLayout(staticText: AppString.text_emergency_phone.tr,dynamicText: "+0884523452345",),
               customSpacerHeight(height: 15),
-
 
               userInfoSectionLayout(staticText: AppString.text_address.tr,dynamicText: "Personal added one"),
               customSpacerHeight(height: 15),
@@ -162,15 +157,16 @@ class ProfileScreen extends StatelessWidget {
 
   _userProfileImgLayout() {
     return  Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 48,
+          radius: 45,
           backgroundColor: AppColor.disableColor,
           child: CircleAvatar(
-            radius: 47,
+            radius: 44,
             backgroundColor: AppColor.backgroundColor,
             child: CircleAvatar(
-              radius: 47,
+              radius: 44,
               backgroundColor: AppColor.primaryColor.withOpacity(0.08),
               child:Get.find<PikedProfileImgController>()
                   .storageForUpload
@@ -178,7 +174,7 @@ class ProfileScreen extends StatelessWidget {
                   .value.isNotEmpty?
 
               CircleAvatar(
-                radius: 45,
+                radius: 41,
                 backgroundImage:
                 FileImage(
                     File(Get.find<PikedProfileImgController>()
@@ -191,7 +187,7 @@ class ProfileScreen extends StatelessWidget {
 
                 ),
               ): CircleAvatar(
-                radius: 45,
+                radius: 41,
                 backgroundImage:AssetImage(Images.user),
               ),
             ),
@@ -202,7 +198,7 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Agens Neilson",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
-            Text("Laravel department",style: AppStyle.normal_text_grey,),
+            Text("Laravel department",style: AppStyle.normal_text_grey.copyWith(fontSize: Dimensions.fontSizeDefault-1),),
             customSpacerHeight(height: 8),
           ],
         ),
@@ -261,7 +257,6 @@ class ProfileScreen extends StatelessWidget {
     return  _filterTextLengthLayout();
   }
 
-
   _filterTextLengthLayout(){
     var drc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book";
     final wordCount = drc.split(' ').length;
@@ -273,18 +268,35 @@ class ProfileScreen extends StatelessWidget {
   }
 
   _logoutLayout(context) {
-    return Container(
-      height: AppLayout.getHeight(110),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(color: AppColor.secondaryColor.withOpacity(0.4)),
-      child: Padding(
-        padding: marginLayout,
-        child: Row(
-          children: [
-            const Icon(Icons.logout_rounded,color: AppColor.cardColor,),
-            customSpacerWidth(width: 12),
-            Text(AppString.text_log_out.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor),),
-          ],
+    return GestureDetector(
+      onTap: (){
+        customDialog(context: context,saveBtnAction: (){
+         Get.back();
+        },
+            icon: Icons.logout,
+            titleText: AppString.text_are_you_sure.tr,
+            subText: AppString.text_if_you_do_this_etc.tr,
+            iconBgColor: AppColor.errorColorLight,
+            btnBgColor: AppColor.errorColorLight,
+            btnText: AppString.text_log_out.tr,
+            drcText: "",
+            drcFontSize: Dimensions.fontSizeDefault,
+        );
+      },
+      child: Container(
+        height: AppLayout.getHeight(90),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(color: AppColor.secondaryColor.withOpacity(0.4)),
+        child: Padding(
+          padding: marginLayout.copyWith(top: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.logout_rounded,color: AppColor.cardColor,),
+              customSpacerWidth(width: 12),
+              Text(AppString.text_log_out.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor),),
+            ],
+          ),
         ),
       ),
     );
@@ -315,65 +327,46 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-
-
-
-
-
-}
-
-
-
-class MyController extends GetxController {
-  var selectedValue = "Option 1".obs; // Observable variable to store the selected value
-
-  void onItemSelected(String value) {
-    selectedValue.value = value; // Update the selected value when an item is selected
-  }
-}
-
-
-
-
-
-class DropdownController extends GetxController {
-  RxBool isDropdownOpen = false.obs;
-}
-
-
-
-class DropdownMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-      ),
+  _organisationLayout(context) {
+    return Padding(
+      padding: marginLayout,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [
-          ListTile(
-            title: Text('Option 1'),
-            onTap: () {
-              // Handle selection for Option 1
-            },
-          ),
-          ListTile(
-            title: Text('Option 2'),
-            onTap: () {
-              // Handle selection for Option 2
-            },
-          ),
-          ListTile(
-            title: Text('Option 3'),
-            onTap: () {
-              // Handle selection for Option 3
-            },
-          ),
+          Text("Your organisation",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault,letterSpacing: 3.5),),
+          customSpacerHeight(height: 12),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 22,
+                backgroundImage: AssetImage(Images.ORG),
+              ),
+              customSpacerWidth(width: 12),
+              
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("TrueCoders",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontWeight: FontWeight.w900,fontSize: Dimensions.fontSizeDefault+1),),
+                  Text("Senior Developer",style: AppStyle.normal_text_grey.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1),),
+                  customSpacerHeight(height: 6),
+                  GestureDetector(
+                      onTap: ()=>customButtonSheet(context: context,height: .7,child:  OrganisationView()),
+                      child: Text(AppString.text_swich_organisation.tr,style: AppStyle.normal_text_grey.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeDefault-1),)),
+                ],
+              )
+            ],
+          )
+
         ],
       ),
     );
   }
-}
 
+  _profileLayout() {
+    return   Center(
+      child: _userProfileImgLayout(),
+    );
+  }
+}

@@ -32,6 +32,7 @@ class AppString {
   static String text_your_password_has_been_etc='Your password has been changed successfully. Use your';
   static String text_password_to_log_in='new password to log in.';
   static String text_organization_name='Organization name';
+  static String text_organization='Organization';
   static String text_total_leave='Total leave';
   static String text_paid_leave='Paid leave';
   static String text_unpaid_leave='Unpaid leave';
@@ -72,6 +73,7 @@ class AppString {
 
   static String text_take_break='Take Break';
   static String text_on_break='On Break';
+  static String text_swich_organisation='Switch organisation';
   static String text_in = "In";
   static String text_out = "Out";
   static String text_total = "Total";
@@ -170,6 +172,7 @@ class AppString {
   static const String text_sure_you_want_to_deleted_this_log = "Sure you want to deleted this log?";
   static const String text_sure_you_want_to_deleted_this_photo = "Sure you want to deleted this photo?";
   static const String text_if_you_deleted_this_time_log_etc = "If you delete this timelog you can't recover it again.";
+  static const String text_if_you_do_this_etc = "If you do this, you cannot turn back";
 
   static const String text_upload_image = "Upload Image";
   static const String text_upload = "Upload ";
