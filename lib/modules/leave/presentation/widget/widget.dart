@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
  Widget leaveLayout() {
   return SizedBox(
-    height: AppLayout.getHeight(124),
+    height: AppLayout.getHeight(115),
     width: double.infinity,
     child: Padding(
       padding: EdgeInsets.only(left: AppLayout.getHeight(12)),
@@ -23,54 +23,32 @@ import 'package:payrun_mobile/utils/dimensions.dart';
         color: AppColor.cardColor.withOpacity(0.2),
         child: Padding(
           padding: marginLayout.copyWith(top: 12, bottom: 12),
-          child: Row(
+          child: Column(
             children: [
-
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
                       dynamicText: "12d",
-                      staticText: AppString.text_total_leave.tr),
-
+                      staticText: AppString.text_total.tr),
                   const Spacer(),
-
+                  _divider(),
+                  const Spacer(),
                   _countLayout(
-                      dynamicText: "12d",
+                      dynamicText: "12d 06h",
                       staticText: AppString.text_token.tr),
-                ],
-              ),
-              const Spacer(),
-              _dividerLayout(),
-              const Spacer(),
-
-
-              Column(
-                children: [
-                  _countLayout(
-                      dynamicText: "12d",
-                      staticText: AppString.text_paid_leave.tr),
+                  const Spacer(),
+                  _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: "12d",
-                      staticText: AppString.text_balance.tr),
+                      dynamicText: "12d 03h",
+                      staticText: AppString.text_avaiable.tr),
+
+
                 ],
               ),
-
               const Spacer(),
-              _dividerLayout(),
-              const Spacer(),
-
-              Column(
-                children: [
-                  _countLayout(
-                      dynamicText: "12d",
-                      staticText: AppString.text_unpaid_leave.tr),
-                  const Spacer(),
-                  _countLayout(
-                      dynamicText: "12d",
-                      staticText: AppString.text_pendding.tr),
-                ],
-              ),
+              _tabToViewLeaveRecord()
             ],
           ),
         ),
@@ -79,37 +57,24 @@ import 'package:payrun_mobile/utils/dimensions.dart';
   );
 }
 
-
- Widget leaveRecordBtnLayout() {
-  return GestureDetector(
-    onTap: ()=>Get.toNamed(Routes.LEAVE_RECORD_SCREEN),
-    child: Container(
-      height: AppLayout.getHeight(36),
-      width: AppLayout.getWidth(200),
-      decoration: BoxDecoration(
-        color: AppColor.secondaryColor,
-        borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
-      ),
-      child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                AppString.text_leave_records.tr,
-                style:
-                AppStyle.normal_text_black.copyWith(color: AppColor.cardColor),
-              ),
-              customSpacerWidth(width: 6),
-              const Icon(
-                Icons.arrow_forward,
-                color: AppColor.cardColor,
-                size: 17,
-              )
-            ],
-          )),
-    ),
-  );
+_tabToViewLeaveRecord() {
+   return GestureDetector(
+     onTap: ()=>Get.toNamed(Routes.LEAVE_RECORD_SCREEN),
+     child: Row(
+       mainAxisAlignment: MainAxisAlignment.center,
+       children: [
+         Text(AppString.text_tab_to_view_leave_record.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor, decoration: TextDecoration.underline,
+           fontSize: Dimensions.fontSizeDefault,
+         ),),
+         customSpacerWidth(width: 10),
+         const Icon(Icons.arrow_forward,color: AppColor.cardColor,size: 18,)
+       ],
+     ),
+   );
 }
+
+
+
 
 AppBar get appBar {
   return AppBar(
@@ -118,12 +83,6 @@ AppBar get appBar {
       AppString.text_leave,
       style: AppStyle.mid_large_text.copyWith(fontSize: 20),
     ),
-    actions: const [
-      Icon(
-        Icons.menu,
-        color: AppColor.cardColor,
-      )
-    ],
   );
 }
 
@@ -133,27 +92,19 @@ _countLayout({required dynamicText, required staticText}) {
       Text(
         "$dynamicText",
         style: AppStyle.normal_text_black
-            .copyWith(color: AppColor.cardColor, fontWeight: FontWeight.bold),
+            .copyWith(color: AppColor.cardColor, fontWeight: FontWeight.bold,fontSize: Dimensions.fontSizeMid-2),
       ),
       Text(
         "$staticText",
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor.withOpacity(0.9),
-            fontSize: Dimensions.fontSizeDefault - 2),
+            fontSize: Dimensions.fontSizeDefault-1),
       ),
     ],
   );
 }
 
-_dividerLayout() {
-  return   Column(
-    children: [
-      _divider(),
-      const Spacer(),
-      _divider(),
-    ],
-  );
-}
+
 _divider() {
   return Container(
     width: 0.8,

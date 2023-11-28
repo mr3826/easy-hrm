@@ -1,3 +1,6 @@
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -8,9 +11,10 @@ class CustomStatusButton extends StatelessWidget {
   final Color bgColor;
   final String? text;
   final Color textColor;
+  final IconData? statusIcon;
 
   const CustomStatusButton(
-      {super.key, required this.bgColor, this.text,required this.textColor});
+      {super.key, required this.bgColor, this.text,required this.textColor,this.statusIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,13 @@ class CustomStatusButton extends StatelessWidget {
           vertical: AppLayout.getWidth(3),
 
       ),
-      child: Text(text??"", style: AppStyle.small_text.copyWith(color: textColor)),
+      child: Row(
+        children: [
+           Icon(statusIcon,color: textColor,size: 16,),
+          customSpacerWidth(width: 4),
+          Text(text??"", style: AppStyle.small_text.copyWith(color: textColor)),
+        ],
+      ),
     );
   }
 }

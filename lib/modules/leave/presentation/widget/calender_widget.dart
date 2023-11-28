@@ -22,33 +22,51 @@ class _HorizontalCalendarState extends State<HorizontalCalendar> {
     return TableCalendar(
       locale: "en_US",
       rowHeight: AppLayout.getHeight(70),
+
       availableGestures: AvailableGestures.all,
       firstDay: firstDate,
       lastDay: lastDate,
       focusedDay: today,
       calendarFormat: CalendarFormat.week,
+
       calendarStyle: CalendarStyle(
           isTodayHighlighted: true,
           outsideTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 26),
           outsideDecoration: defaultTableDecoration,
           weekNumberTextStyle:
+
           AppStyle.normal_text_black.copyWith(fontSize: 26),
+
           weekendDecoration: defaultTableDecoration,
+
           disabledTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 26),
+
           disabledDecoration: defaultTableDecoration,
+
           weekendTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 26),
+
           withinRangeDecoration: defaultTableDecoration,
+
           holidayTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 26),
+
           holidayDecoration: defaultTableDecoration,
+
           defaultTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 26),
+
           defaultDecoration: defaultTableDecoration,
+
           selectedTextStyle: AppStyle.normal_text_black
               .copyWith(fontSize: 30, color: Colors.white),
+
           selectedDecoration:
           defaultTableDecoration.copyWith(color: AppColor.primaryColor),
+
           todayDecoration: const BoxDecoration(color: Colors.transparent),
+
           todayTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 26)),
+
       onHeaderTapped: (focusedDay) {},
+
       headerStyle: HeaderStyle(
           titleTextStyle: AppStyle.normal_text.copyWith(
               fontSize: 18,
@@ -56,6 +74,7 @@ class _HorizontalCalendarState extends State<HorizontalCalendar> {
               fontWeight: FontWeight.bold),
           titleCentered: true,
           formatButtonVisible: false),
+
       selectedDayPredicate: (day) => isSameDay(day, today),
       onDaySelected: (selectedDay, focusedDay) async {
         setState(() {

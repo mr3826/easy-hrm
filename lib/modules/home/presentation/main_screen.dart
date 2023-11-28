@@ -60,7 +60,7 @@ class MainScreen extends StatelessWidget {
 }
 
 Future<bool> _onWillPop(BuildContext context) async {
-  return await exitDialog(
+  return await customAlertDialog(
       context: context,
       yesAction: () {
         if (Platform.isAndroid) {

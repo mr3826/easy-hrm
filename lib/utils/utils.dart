@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import '../modules/leave/presentation/view/leave_screen.dart';
+import 'app_string.dart';
+import 'images.dart';
 
 //global items here
 TextEditingController _searchController = TextEditingController();
@@ -19,6 +21,7 @@ TextEditingController _aboutMeController = TextEditingController();
 TextEditingController _newPasswordController = TextEditingController();
 TextEditingController _confirmPasswordController = TextEditingController();
 TextEditingController _orgNameController = TextEditingController();
+TextEditingController _leaveNoteController = TextEditingController();
 
 //global getter
 TextEditingController get searchController => _searchController;
@@ -45,8 +48,15 @@ TextEditingController get confirmPasswordController =>
     _confirmPasswordController;
 
 TextEditingController get orgNameController => _orgNameController;
+TextEditingController get leaveNoteController => _leaveNoteController;
 
-List<Widget> Function() get buildScreens => _buildScreens;
+
+
+List<Widget> Function()  get buildScreens=>_buildScreens;
+
+List   get selectedDayIndex=>_selectedDay;
+List   get selectedDayIconIndex=>_selectedDayIcon;
+
 
 List<Widget> _buildScreens() {
   return [
@@ -55,6 +65,7 @@ List<Widget> _buildScreens() {
     const LeaveScreen(),
     const LeaveScreen(),
     const LeaveScreen(),
+
   ];
 }
 
@@ -66,3 +77,22 @@ void logSuccessMessage(
         {required String logName, Response? response, String? message}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
+
+
+List _selectedDay=[
+    AppString.text_full_day.tr,
+    AppString.text_first_half.tr,
+    AppString.text_last_half.tr,
+
+
+
+  ];
+
+List _selectedDayIcon=[
+  Images.full_day_lav,
+  Images.half_day_lav,
+  Images.last_half_day_lav
+
+  ];
+
+

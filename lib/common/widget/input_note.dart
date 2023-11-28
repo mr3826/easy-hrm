@@ -12,7 +12,7 @@ class InputNote extends StatelessWidget {
   const InputNote(
       {super.key,
       required this.controller,
-      this.hintText = AppString.text_add_note_here,
+      this.hintText = AppString.text_add_description,
       this.validator});
 
   @override
@@ -40,7 +40,9 @@ class InputNote extends StatelessWidget {
               borderSide: const BorderSide(color: AppColor.solidGray),
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
           border: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.solidGray))),
+              borderSide: BorderSide(color: AppColor.solidGray))
+
+      ),
       maxLines: 4,
       maxLength: 150,
       minLines: 4,
