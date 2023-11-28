@@ -1,10 +1,14 @@
+
 class AppString {
   AppString._();
 
+
   //storage key here
-  static const ORGANIZATION_ID = "organizationId";
-  static const LAST_INPUT = "last_input";
-  static const IS_LOGGED_IN_FIRST_TIME = "is_logged_in_first_time";
+
+  static const ORGANIZATION_ID="organizationId";
+  static const LAST_INPUT="last_input";
+  static const IS_LOGGED_IN_FIRST_TIME="is_logged_in_first_time";
+  static const String ACCESS_TOKEN = "access_token";
 
   // Apps string here
 
@@ -48,11 +52,11 @@ class AppString {
   static String text_balance = 'Balance';
   static String text_pendding = 'Pending';
 
-  static String text_event = 'Events';
-  static String text_approved = 'Approved';
+  static String text_event='Events';
+  static String text_approved='Approved';
 
-  static String text_take_break = 'Take Break';
-  static String text_on_break = 'On Break';
+  static String text_take_break='Take Break';
+  static String text_on_break='On Break';
   static String text_in = "In";
   static String text_out = "Out";
   static String text_total = "Total";

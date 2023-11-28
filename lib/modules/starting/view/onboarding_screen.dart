@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -109,6 +110,7 @@ Widget _skipButton({context}) {
 }
 
 Widget _buttonLayout({context, currentIndex, titleText}) {
+  Get.find<ForgotPasswordController>().fetchData();
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
