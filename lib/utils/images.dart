@@ -29,6 +29,4 @@ static String half_day_lav="assets/images/half_day_lav.svg";
 static String last_half_day_lav="assets/images/last_hlaf_day.svg";
 
 
-
-
 }

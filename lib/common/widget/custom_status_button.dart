@@ -1,6 +1,4 @@
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/success_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -88,62 +87,5 @@ class ForgotPasswordController extends GetxController {
     isLoading(false);
   }
 
-  void fetchData() async {
-    gql.QueryResult queryResult = await NetworkClient().getGraphQuery(getSelectionQuery);
-//     // ...
-//
-//     final MutationOptions options = MutationOptions(
-//       document: gql.gql(addStar),
-//       variables: <String, dynamic>{
-//         'starrableId': "",
-//       },
-//     );
-//     // ...
-//
-//     final QueryResult result = await qlClient.mutate(options);
-//
-// // ...
 
-    print(queryResult.data?["getFromSections"].toString());
-    print(GetFromSections.fromJson(queryResult.data?["getFromSections"]).data);
-  }
-}
-
-class GetFromSections {
-  List<Data>? data;
-
-  GetFromSections({this.data});
-
-  GetFromSections.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Data {
-  String? name;
-
-  Data({this.name});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    return data;
-  }
 }

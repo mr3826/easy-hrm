@@ -65,7 +65,6 @@ List<Widget> _buildScreens() {
     const LeaveScreen(),
     const LeaveScreen(),
     const LeaveScreen(),
-
   ];
 }
 
@@ -92,7 +91,6 @@ List _selectedDayIcon=[
   Images.full_day_lav,
   Images.half_day_lav,
   Images.last_half_day_lav
-
   ];
 
 
