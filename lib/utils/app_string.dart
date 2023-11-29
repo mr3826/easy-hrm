@@ -85,6 +85,8 @@ class AppString {
   static String text_language = "Language: ";
   static String text_deleted = "Delete";
   static String text_description = "Description";
+  static String text_designation = "Designation";
+  static String text_employment = "Employment status";
   static String text_date = "Date";
   static String text_from = "From";
   static String text_to = "To";
