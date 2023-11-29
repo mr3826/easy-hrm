@@ -83,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
               customSpacerHeight(height: 15),
               departmentLayout(context),
               customSpacerHeight(height: 5),
-              employeeStatusLayout(context),
+              employeeStatusLayout(context: context),
               customSpacerHeight(height: 50),
 
             ],

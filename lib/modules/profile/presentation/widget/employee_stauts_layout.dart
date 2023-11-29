@@ -11,13 +11,13 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
-Widget employeeStatusLayout(context){
+Widget employeeStatusLayout({BuildContext ?context}){
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      GestureDetector(
-         onTap: ()=>customButtonSheet(child:const DesignationLayout(),height: .7,context: context),
-        child: Expanded(
+      Expanded(
+        child: GestureDetector(
+          onTap: ()=>customButtonSheet(child:const DesignationLayout(),height: .7,context: context),
           child: Card(
             elevation: 0,
             color: AppColor.primaryColor.withOpacity(0.05),
