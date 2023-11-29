@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/organization_info.dart';
+import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 
@@ -78,6 +79,8 @@ class SignInController extends GetxController with StateMixin {
             message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
         logSuccessMessage(logName: "login", response: response);
+        GetStorage().write(AppString.ACCESS_TOKEN,
+            SignInResponse.fromJson(response.body).data?.idToken ?? "");
         _saveData();
       }
     } catch (e) {

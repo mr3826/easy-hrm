@@ -7,6 +7,7 @@ ThemeData get appTheme => _themeData;
 
 ThemeData _themeData = ThemeData(
   appBarTheme: const AppBarTheme(
+    centerTitle: false,
     iconTheme: IconThemeData(color: Colors.black),
      foregroundColor: Colors.black,
     systemOverlayStyle: SystemUiOverlayStyle(

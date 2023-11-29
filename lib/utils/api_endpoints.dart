@@ -11,6 +11,7 @@ class Api {
   static const RESET_PASSWORD = "/auth/verify-forgot-password-code";
 }
 
+
 const getSelectionQuery = """
 query GetFromSections {
   getFromSections {
