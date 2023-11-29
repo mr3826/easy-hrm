@@ -9,9 +9,8 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/controller/file_upload_controller.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/apply_leave_multi_day.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/custom_title_text_widget.dart';
+import 'package:payrun_mobile/modules/leave/view/widget/apply_leave_multi_day.dart';
+import 'package:payrun_mobile/modules/leave/view/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -19,9 +18,8 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
+import '../../controller/file_upload_controller.dart';
 import 'apply_leave_single_day.dart';
-
 
 class ApplyLeaveButtonLayout extends StatefulWidget {
   const ApplyLeaveButtonLayout({Key? key}) : super(key: key);
@@ -36,12 +34,10 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
   List buttonText = [
     AppString.text_single_day.tr,
     AppString.text_multi_day.tr,
-
   ];
   final _selectedFieldIndex = [
     const ApplyLeaveDobSingleDay(),
     const ApplyLeaveDobMultiDay(),
-
   ];
   String? dropdownValue;
 
@@ -54,7 +50,6 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             SizedBox(
               height: AppLayout.getHeight(80),
               child: GridView.builder(
@@ -75,7 +70,7 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.circular(Dimensions.radiusDefault),
+                              BorderRadius.circular(Dimensions.radiusDefault),
                           side: BorderSide(
                               color: currentIndex == index
                                   ? AppColor.primaryColor
@@ -85,66 +80,61 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
                           : AppColor.disableColor.withOpacity(0.4),
                       child: Center(
                           child: Row(
-                            children: [
-                              customSpacerWidth(width: 12),
-
-                              customSvgImage(imageUrl: currentIndex == index?
-                              Images.calendar_lav:   Images.calendar_outline_lav),
-                              customSpacerWidth(width: 12),
-                              Text(
-                                buttonText[index],
-                                style: AppStyle.small_text_black.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Dimensions.fontSizeDefault,
-                                    letterSpacing: 0.2,
-                                    color: currentIndex == index
-                                        ? AppColor.primaryColor
-                                        : AppColor.normalTextColor),
-                              ),
-                            ],
-                          )),
+                        children: [
+                          customSpacerWidth(width: 12),
+                          customSvgImage(
+                              imageUrl: currentIndex == index
+                                  ? Images.calendar_lav
+                                  : Images.calendar_outline_lav),
+                          customSpacerWidth(width: 12),
+                          Text(
+                            buttonText[index],
+                            style: AppStyle.small_text_black.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Dimensions.fontSizeDefault,
+                                letterSpacing: 0.2,
+                                color: currentIndex == index
+                                    ? AppColor.primaryColor
+                                    : AppColor.normalTextColor),
+                          ),
+                        ],
+                      )),
                     ),
                   );
                 },
               ),
             ),
-
             _selectedFieldIndex[currentIndex],
-
             customSpacerHeight(height: 20),
-
             customTitleText(text: AppString.text_leave_type.tr),
-
             customSpacerHeight(height: 8),
-
             _leaveTypeDropDown(),
-
             customSpacerHeight(height: 20),
-
             customTitleText(text: AppString.text_description.tr),
-
             customSpacerHeight(height: 8),
-
             _noteTextField(),
-
             customTitleText(text: AppString.text_document.tr),
             customSpacerHeight(height: 6),
-            Text(AppString.text_jpeg_jpg_png_etc,style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor.withOpacity(0.7)),),
+            Text(
+              AppString.text_jpeg_jpg_png_etc,
+              style: AppStyle.normal_text_black
+                  .copyWith(color: AppColor.hintColor.withOpacity(0.7)),
+            ),
             customSpacerHeight(height: 8),
             _addAttachment(),
             customSpacerHeight(height: 20),
-
-            CustomDoubleAppButton(onAction: (){
-            },buttonText: AppString.text_apply.tr,cancelAction: (){
-              Navigator.pop(context);
-              Get.find<FileUploadController>()
-                  .storageForUpload
-                  .filePath
-                  .value = "";
-            },),
-
+            CustomDoubleAppButton(
+              onAction: () {},
+              buttonText: AppString.text_apply.tr,
+              cancelAction: () {
+                Navigator.pop(context);
+                Get.find<FileUploadController>()
+                    .storageForUpload
+                    .filePath
+                    .value = "";
+              },
+            ),
             customSpacerHeight(height: 100),
-
           ],
         ),
       ),
@@ -171,7 +161,6 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
         iconEnabledColor: AppColor.normalTextColor,
         hint: Row(
           children: [
-
             Text(
               AppString.text_slected_an_option.tr,
               style: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
@@ -182,13 +171,11 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         items: leaveType.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
+              value: value,
+              child: Text(
                 value,
                 style: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
-              )
-
-          );
+              ));
         }).toList(),
         onChanged: (String? newValue) {
           setState(() {
@@ -199,36 +186,37 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
     );
   }
 
-   _noteTextField() {
-    return
-      InputNote(controller: leaveNoteController);
+  _noteTextField() {
+    return InputNote(controller: leaveNoteController);
   }
 
   _addAttachment() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-
-      _dottedBorderLayout(
-          child: GestureDetector(
-              onTap: () {
-                Get.find<FileUploadController>().storageForUpload.pickFile();
-              },
-              child: Obx(() => Get.find<FileUploadController>()
-                  .storageForUpload
-                  .filePath
-                  .isNotEmpty
-                  ? Get.find<FileUploadController>()
-                  .storageForUpload
-                  .filePath
-                  .endsWith(".pdf")
-                  ? _replaceFileLayout()
-                  : _selectedImageViewLayout()
-                  : _emptyBox()))),
-      customSpacerHeight(height: 8),
-     Obx(() =>  _pathNameText(),),
-
-    ],
-  );
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _dottedBorderLayout(
+              child: GestureDetector(
+                  onTap: () {
+                    Get.find<FileUploadController>()
+                        .storageForUpload
+                        .pickFile();
+                  },
+                  child: Obx(() => Get.find<FileUploadController>()
+                          .storageForUpload
+                          .filePath
+                          .isNotEmpty
+                      ? Get.find<FileUploadController>()
+                              .storageForUpload
+                              .filePath
+                              .endsWith(".pdf")
+                          ? _replaceFileLayout()
+                          : _selectedImageViewLayout()
+                      : _emptyBox()))),
+          customSpacerHeight(height: 8),
+          Obx(
+            () => _pathNameText(),
+          ),
+        ],
+      );
 
   _replaceFileLayout() {
     return Row(
@@ -236,7 +224,8 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
       children: [
         Card(
           elevation: 0,
-          shape: roundedRectangleBorder.copyWith(side: BorderSide(color: AppColor.hintColor.withOpacity(0.3))),
+          shape: roundedRectangleBorder.copyWith(
+              side: BorderSide(color: AppColor.hintColor.withOpacity(0.3))),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -269,7 +258,8 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
           children: [
             Card(
               elevation: 0,
-              shape: roundedRectangleBorder.copyWith(side: BorderSide(color: AppColor.hintColor.withOpacity(0.3))),
+              shape: roundedRectangleBorder.copyWith(
+                  side: BorderSide(color: AppColor.hintColor.withOpacity(0.3))),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -289,7 +279,6 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -308,10 +297,7 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
             color: AppColor.primaryColor,
             fontSize: Dimensions.fontSizeDefault - 2));
   }
-
 }
-
-
 
 _selectedImageViewLayout() {
   return Container(
@@ -320,9 +306,9 @@ _selectedImageViewLayout() {
       color: AppColor.disableColor.withOpacity(0.4),
       image: DecorationImage(
         image: FileImage(File(Get.find<FileUploadController>()
-            .storageForUpload
-            .filePath
-            .value)
+                .storageForUpload
+                .filePath
+                .value)
             .absolute),
         fit: BoxFit.cover,
       ),

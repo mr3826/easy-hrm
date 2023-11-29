@@ -4,13 +4,14 @@ import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/leave_record_details_view.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../widget/leave_record_details_view.dart';
+import '../widget/status_btn_widget.dart';
 
 class LeaveRecordScreen extends StatelessWidget {
   const LeaveRecordScreen({super.key});

@@ -2,7 +2,7 @@ class Api {
   Api._();
 
   static const String PUBLIC_URL = "https://api.local.payrun.app";
-  static const String PRIVATE_URL = "https://api.local.payrun.app/graphql";
+  static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
 
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
@@ -11,19 +11,33 @@ class Api {
   static const RESET_PASSWORD = "/auth/verify-forgot-password-code";
 }
 
+//leave module
+const getLeaveSummaryForDashboardQuery = """
+query Query {
+  getLeaveSummaryForDashboard {
+    total_leave_day
+    taken_leave
+    balance_leave
+    
+  }
+}
+        """;
 
-const getSelectionQuery = """
-query GetFromSections {
-  getFromSections {
-    data {
-      name
+const getLeaveDetailsByDateQuery = r"""
+query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
+  getLeaveDetailsByDate(queryData: $queryData) {
+    leave_requests {
+      status
+      leaveType {
+        type
+      }
+      duration
     }
   }
 }
         """;
 
-
-    const String addStar = r'''
+const String addStar = r'''
   mutation AddStar($starrableId: ID!) {
     action: addStar(input: {starrableId: $starrableId}) {
       starrable {

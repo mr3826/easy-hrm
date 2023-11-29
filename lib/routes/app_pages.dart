@@ -1,8 +1,7 @@
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/leave_record.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/leave_screen.dart';
+import 'package:payrun_mobile/modules/leave/view/screen/leave_record.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -10,6 +9,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import '../modules/auth/presentation/view/otp_screen.dart';
 import '../modules/auth/presentation/view/reset_password.dart';
 import '../modules/home/presentation/main_screen.dart';
+import '../modules/leave/view/screen/leave_screen.dart';
 
 part 'app_routes.dart';
 

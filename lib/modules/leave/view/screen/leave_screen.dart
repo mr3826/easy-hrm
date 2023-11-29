@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/apply_leave.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/individual_event_view.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/widget.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../widget/individual_event_view.dart';
+import '../widget/widget.dart';
 
-class LeaveScreen extends StatelessWidget {
+class LeaveScreen extends GetView<LeaveScreenController> {
   const LeaveScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return controller.obx((state) => Scaffold(
       body: CustomScrollView(
         slivers: [sliverAppBar, sliverToBoxAdapter],
       ),
       floatingActionButton: _applyLeaveBtn(context),
-    );
+    ),onLoading: const LoadingIndicator());
     
   }
   //component

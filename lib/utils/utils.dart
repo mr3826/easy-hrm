@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
-import '../modules/leave/presentation/view/leave_screen.dart';
+import '../modules/leave/view/screen/leave_screen.dart';
 import 'app_string.dart';
 import 'images.dart';
 
