@@ -18,6 +18,8 @@ class AppColor {
   static const Color bgColor = Color(0xFFFFFFFF);
   static const Color solidGray = Color(0xFF8F99AD);
   static const Color alertBgColor = Color(0xfffdfbed);
+  static const Color pureOrange = Color(0xffFFAB00);
+
   static const Color iconBoxColor = Color(0xffFF6347);
 
   static const Color primaryGreen = Color(0xFF3EAC55);

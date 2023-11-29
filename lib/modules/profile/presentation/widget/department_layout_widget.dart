@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
+import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -11,37 +12,50 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
+import 'department_history.dart';
+
 Widget departmentLayout(context) {
-  return SizedBox(
-    height: AppLayout.getHeight(289),
+  return GestureDetector(
+    onTap: ()=>customButtonSheet(context: context,height: .7,child:  DepartmentHistory(
+      date: "02 Jan,2022",
+      departmentName: "Laravel Department",
+      employeeDptStatus: "Manager",
+      employeeStatus: "Present",
+      imageUrl: Images.user,
+      name: "Noah",
+      itemCount: 2,
+    )),
+    child: SizedBox(
+      height: AppLayout.getHeight(289),
 
-    child: Card(
-      elevation: 0,
-      shape: roundedRectangleBorder,
-      color: AppColor.primaryColor.withOpacity(0.05),
-      child: Padding(
-        padding: marginLayout.copyWith(top: 12,bottom: 14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            customSvgImage(imageUrl: Images.department_notification,color: AppColor.primaryColor,height: 25,width: 25),
-            customSpacerHeight(height: 12),
-            Text("Laravel Department",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
+      child: Card(
+        elevation: 0,
+        shape: roundedRectangleBorder,
+        color: AppColor.primaryColor.withOpacity(0.05),
+        child: Padding(
+          padding: marginLayout.copyWith(top: 12,bottom: 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              customSvgImage(imageUrl: Images.department_notification,color: AppColor.primaryColor,height: 25,width: 25),
+              customSpacerHeight(height: 12),
+              Text("Laravel Department",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
 
-            Row(
-              children: [
-                Text(AppString.text_child_of_deparmtnet.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeDefault-1),),
-               _divider(),
-                Expanded(child: Text("From - 01 Jan,2021",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1,overflow: TextOverflow.ellipsis),))
-              ],
-            ),
-            _workingShiftLayout(context),
+              Row(
+                children: [
+                  Text(AppString.text_child_of_deparmtnet.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeDefault-1),),
+                 _divider(),
+                  Expanded(child: Text("From - 01 Jan,2021",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1,overflow: TextOverflow.ellipsis),))
+                ],
+              ),
+              _workingShiftLayout(context),
 
-          ],
+            ],
+          ),
         ),
       ),
-    ),
 
+    ),
   );
 }
 
