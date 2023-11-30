@@ -64,7 +64,7 @@ class LeaveRecordScreen extends StatelessWidget {
 
   _infoLayoutView({required BuildContext context}) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,child: const LeaveRecordDetails(status: "rejected",) ,height: 0.6),
+      onTap: ()=>customButtonSheet(context: context,child: const LeaveRecordDetails(status: "rejected",) ,height: 0.6,duration: 700,reverseDuration: 500),
       child: SizedBox(
         height: AppLayout.getHeight(110),
         child: Card(

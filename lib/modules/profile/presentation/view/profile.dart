@@ -32,6 +32,8 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar:profileAppbar(onAction: (){}),
       endDrawer: Drawer(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -69,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
               customSpacerHeight(height: 25),
               _descriptionTextLayout(),
               customSpacerHeight(height: 15),
-              const Divider(thickness: .6,),
+              const Divider(thickness: .6,color: AppColor.disableColor,),
                ChangeEmailNotifyLayout(),
 
               customSpacerHeight(height: 15),
