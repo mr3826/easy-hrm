@@ -1,9 +1,9 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 
-void showErrorMessage({String? message}) async =>
+void showErrorMessage({required String message}) async =>
     Fluttertoast.showToast(
-        msg: "$message",
+        msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

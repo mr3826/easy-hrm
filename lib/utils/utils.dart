@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -5,14 +6,16 @@ import 'package:payrun_mobile/modules/notification/presentation/view/notificatio
 import 'package:payrun_mobile/modules/profile/presentation/view/profile.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import 'package:payrun_mobile/common/domain/error_model.dart';
 import '../modules/leave/presentation/view/leave_screen.dart';
 
+
 //global items here
-TextEditingController _searchController=TextEditingController();
-TextEditingController _emailController=TextEditingController();
-TextEditingController _passwordController=TextEditingController();
-TextEditingController _userNameController=TextEditingController();
-TextEditingController _restPasswordController=TextEditingController();
+TextEditingController _searchController = TextEditingController();
+TextEditingController _emailController = TextEditingController();
+TextEditingController _passwordController = TextEditingController();
+TextEditingController _userNameController = TextEditingController();
+TextEditingController _restPasswordController = TextEditingController();
 TextEditingController _addCountyController = TextEditingController();
 TextEditingController _phoneController = TextEditingController();
 TextEditingController _addressController = TextEditingController();
@@ -21,6 +24,7 @@ TextEditingController _newPasswordController = TextEditingController();
 TextEditingController _confirmPasswordController = TextEditingController();
 TextEditingController _orgNameController = TextEditingController();
 TextEditingController _leaveNoteController = TextEditingController();
+
 
 TextEditingController _editFirstNameController = TextEditingController();
 TextEditingController _editLastNameController = TextEditingController();
@@ -31,18 +35,32 @@ TextEditingController _editEmergencyPhoneController = TextEditingController();
 TextEditingController _editBioController = TextEditingController();
 TextEditingController _currentPassController = TextEditingController();
 
+
+
 //global getter
-TextEditingController get searchController=>_searchController;
-TextEditingController get emailController=>_emailController;
-TextEditingController get passwordController=>_passwordController;
-TextEditingController get userNameController=>_userNameController;
-TextEditingController get restPasswordController=>_restPasswordController;
+TextEditingController get searchController => _searchController;
+
+TextEditingController get emailController => _emailController;
+
+TextEditingController get passwordController => _passwordController;
+
+TextEditingController get userNameController => _userNameController;
+
+TextEditingController get restPasswordController => _restPasswordController;
+
 TextEditingController get addCountyController => _addCountyController;
+
 TextEditingController get phoneController => _phoneController;
+
 TextEditingController get addressController => _addressController;
+
 TextEditingController get aboutMeController => _aboutMeController;
+
 TextEditingController get newPasswordController => _newPasswordController;
-TextEditingController get confirmPasswordController => _confirmPasswordController;
+
+TextEditingController get confirmPasswordController =>
+    _confirmPasswordController;
+
 TextEditingController get orgNameController => _orgNameController;
 TextEditingController get leaveNoteController => _leaveNoteController;
 
@@ -71,9 +89,17 @@ List<Widget> _buildScreens() {
     const LeaveScreen(),
     const NotificationScreen(),
     const ProfileScreen(),
-
   ];
 }
+
+void logErrorMessage({required String logName, Response? response}) =>
+    log("${response?.statusCode} :  ${response?.request?.url.toString()}",
+        name: logName, error: ErrorModel.fromJson(response?.body).message);
+
+void logSuccessMessage(
+        {required String logName, Response? response, String? message}) =>
+    log("${response?.statusCode} :  ${response?.request?.url.toString()}",
+        name: logName, error: message);
 
 
 List _selectedDay=[
@@ -89,7 +115,6 @@ List _selectedDayIcon=[
   Images.full_day_lav,
   Images.half_day_lav,
   Images.last_half_day_lav
-
   ];
 
 

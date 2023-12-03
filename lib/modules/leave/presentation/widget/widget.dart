@@ -44,7 +44,6 @@ import 'package:payrun_mobile/utils/dimensions.dart';
                       dynamicText: "12d 03h",
                       staticText: AppString.text_avaiable.tr),
 
-
                 ],
               ),
               const Spacer(),
@@ -78,7 +77,8 @@ _tabToViewLeaveRecord() {
 
 AppBar get appBar {
   return AppBar(
-    elevation: 0,
+    backgroundColor: Colors.transparent,
+    elevation: 1,
     title: Text(
       AppString.text_leave,
       style: AppStyle.mid_large_text.copyWith(fontSize: 20),

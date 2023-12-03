@@ -3,26 +3,20 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-
 class SplashController extends GetxController {
-  final box = GetStorage();
   @override
   void onReady() {
- //  Future.delayed(const Duration(seconds: 3), ()=>chooseScreen());
+    Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
     super.onReady();
   }
 
-
   Future chooseScreen() async {
-    final idStore = box.read(AppString.ACCESS_TOKEN);
-    dynamic remValue = box.read(AppString.ACCESS_TOKEN);
-    dynamic logValue = box.read(AppString.ACCESS_TOKEN);
-    if (idStore == null) {
-      await Get.toNamed(Routes.ONBOARD_SCRREN);
-    } else if (logValue != null && remValue != null) {
-      await Get.toNamed(Routes.ONBOARD_SCRREN);
+    final box = GetStorage();
+    if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
+        box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
+      Get.offNamed(Routes.ONBOARD_SCRREN);
     } else {
-      await Get.toNamed(Routes.ONBOARD_SCRREN);
+      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
     }
   }
 }
