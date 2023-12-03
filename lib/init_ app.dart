@@ -10,6 +10,7 @@ import 'modules/auth/presentation/controller/signin_controller.dart';
 import 'modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'modules/leave/presentation/controller/file_upload_controller.dart';
 import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
+import 'modules/profile/presentation/controller/password_controller.dart';
 import 'modules/profile/presentation/controller/profile_image_selected_controller.dart';
 
 
@@ -30,5 +31,6 @@ Future<void> initApp() async {
   Get.put(PickedFileFormStorage());
   Get.put(DateController());
   Get.put(PikedProfileImgController());
+  Get.put(PasswordController());
 
 }
