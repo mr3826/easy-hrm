@@ -9,7 +9,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-import '../view/change_password.dart';
+import '../screen/change_password.dart';
+
 
 
 Widget actionLayout({required userName,required departmentText,required editAction,changePassAction,required context}){

@@ -4,14 +4,14 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/auth/presentation/controller/password_showing_controller.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/profile/presentation/widget/change_email_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../controller/password_controller.dart';
+import '../widget/change_email_widget.dart';
 
 class ChangeEmailScreen extends StatelessWidget {
    ChangeEmailScreen({super.key});

@@ -6,14 +6,15 @@ import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/profile/presentation/controller/profile_image_selected_controller.dart';
-import 'package:payrun_mobile/modules/profile/presentation/widget/edit_profile_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+
+import '../../controller/profile_image_selected_controller.dart';
+import '../widget/edit_profile_widget.dart';
 
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});

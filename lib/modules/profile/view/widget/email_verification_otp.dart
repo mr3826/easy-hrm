@@ -5,7 +5,7 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/profile/presentation/view/chnage_email.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/chnage_email.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';

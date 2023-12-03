@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
-import 'package:payrun_mobile/modules/profile/presentation/view/profile.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/profile.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';

@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/profile/presentation/widget/edit_profile_widget.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+
 import '../../../auth/presentation/view/otp_screen.dart';
+import '../widget/edit_profile_widget.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
    ChangePasswordScreen({super.key});
