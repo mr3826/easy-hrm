@@ -188,6 +188,7 @@ RoundedRectangleBorder get _cardStyle {
 
 
 
+
 TextStyle get subTextFieldTitleStyle {
   return AppStyle.mid_large_text.copyWith(
       fontWeight: FontWeight.w400,

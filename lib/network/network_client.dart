@@ -18,8 +18,6 @@ class NetworkClient extends GetConnect {
   }
 
 
-
-
   Future<Response> postRequest(String apiEndPoint, dynamic body) async {
     Response response = await post(_getRequestUrl(apiEndPoint), body, headers: {
       "Content-Type": "application/json",

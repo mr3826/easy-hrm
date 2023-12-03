@@ -23,6 +23,7 @@ class AppString {
       'Manage your employee with so many advanced features.Like, Leave management, Time log, Employee hiring, and much more.';
 
   static String text_password='Password';
+  static String text_reset_password=' Rest password';
   static String text_remove='Remove';
   static String text_remove_photo='Remove photo';
   static String text_back_to_login='Back to login';
@@ -63,9 +64,6 @@ class AppString {
   static String text_update_your_profile='Update your profile photo';
   static String text_upload_a_photo_undar_2mb='Upload a photo under 2 MB';
   static String text_today='Today';
-
-  static String text_reset_password = 'Reset Password';
-
 
   static String text_approved='Approved';
   static String text_profile='Profile';
@@ -256,6 +254,5 @@ class AppString {
   static const String enterYourPassword = "Enter your password";
   static const String enterYourEmail = "Enter your email";
   static const String password = "Password";
-
 
 }
