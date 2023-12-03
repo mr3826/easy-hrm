@@ -42,7 +42,6 @@ class NetworkClient extends GetConnect {
       document: gql.gql(mutationQuery),
       variables: variables,
     );
-
     return await qlClient.mutate(options);
   }
 }

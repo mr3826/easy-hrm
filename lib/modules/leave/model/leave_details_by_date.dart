@@ -11,7 +11,6 @@ class LeaveDetailsByDate {
       });
     }
   }
-
 }
 
 class GetLeaveDetailsByDate {
@@ -27,15 +26,15 @@ class GetLeaveDetailsByDate {
       });
     }
   }
-
 }
 
 class LeaveRequests {
   String? status;
   LeaveType? leaveType;
   dynamic duration;
+  String? createdAt;
 
-  LeaveRequests({this.status, this.leaveType, this.duration});
+  LeaveRequests({this.status, this.leaveType, this.duration, this.createdAt});
 
   LeaveRequests.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -43,8 +42,8 @@ class LeaveRequests {
         ? LeaveType.fromJson(json['leaveType'])
         : null;
     duration = json['duration'];
+    createdAt = json['createdAt'];
   }
-
 }
 
 class LeaveType {
@@ -55,5 +54,4 @@ class LeaveType {
   LeaveType.fromJson(Map<String, dynamic> json) {
     type = json['type'];
   }
-
 }

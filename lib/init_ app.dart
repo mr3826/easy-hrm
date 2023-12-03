@@ -1,3 +1,4 @@
+import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 import 'package:flutter/material.dart';
@@ -28,4 +29,5 @@ Future<void> initApp() async {
   Get.put(PickedFileFormStorage());
   Get.put(DateController());
   Get.lazyPut(() => LeaveScreenController(), fenix: true);
+  Get.lazyPut(() => LeaveRecordsController(), fenix: true);
 }

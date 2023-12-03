@@ -37,12 +37,17 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
 }
         """;
 
-const String addStar = r'''
-  mutation AddStar($starrableId: ID!) {
-    action: addStar(input: {starrableId: $starrableId}) {
-      starrable {
-        viewerHasStarred
-      }
-    }
+const getLeaveRecordsQuery = r'''
+
+query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
+  getLeaveRecords(queryData: $queryData) {
+    description
+    end_date
+    start_date
+    status
+    type
+    duration
   }
+}
+
 ''';

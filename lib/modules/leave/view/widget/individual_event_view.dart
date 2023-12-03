@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
@@ -12,6 +14,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 import '../../controller/calendar_date_controller.dart';
+import 'leave_record_details_view.dart';
 
 class IndividualEventView extends StatelessWidget {
   const IndividualEventView({super.key});
@@ -143,37 +146,87 @@ class IndividualEventView extends StatelessWidget {
                     ?.length ??
                 0,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Card(
-                  elevation: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Sick leave",
-                            style: AppStyle.mid_large_text.copyWith(
-                                color: AppColor.normalTextColor,
-                                fontSize: Dimensions.fontSizeDefault + 1,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            "Full day",
-                            style: AppStyle.normal_text_black.copyWith(
-                                color: AppColor.hintColor,
-                                fontSize: Dimensions.fontSizeDefault - 1),
-                          )
-                        ],
-                      ),
-                      approvedStatusBtn()
-                    ],
+              return InkWell(
+                onTap: () {
+                  print(Get.find<LeaveScreenController>()
+                      .leaveDetailsByDate
+                      ?.getLeaveDetailsByDate![0]
+                      .leaveRequests?[index]);
+
+                  customButtonSheet(
+                    context: context,
+                    child: LeaveRecordDetails(status: Get.find<LeaveScreenController>()
+                        .leaveDetailsByDate
+                        ?.getLeaveDetailsByDate![0]
+                        .leaveRequests?[index].status?.toLowerCase()??""),
+                    height: 0.6,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Card(
+                    elevation: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              Get.find<LeaveScreenController>()
+                                      .leaveDetailsByDate
+                                      ?.getLeaveDetailsByDate![0]
+                                      .leaveRequests?[index]
+                                      .leaveType
+                                      ?.type ??
+                                  "",
+                              style: AppStyle.mid_large_text.copyWith(
+                                  color: AppColor.normalTextColor,
+                                  fontSize: Dimensions.fontSizeDefault + 1,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              Get.find<LeaveScreenController>()
+                                      .leaveDetailsByDate
+                                      ?.getLeaveDetailsByDate![0]
+                                      .leaveRequests?[index]
+                                      .duration
+                                      .toString() ??
+                                  "",
+                              style: AppStyle.normal_text_black.copyWith(
+                                  color: AppColor.hintColor,
+                                  fontSize: Dimensions.fontSizeDefault - 1),
+                            )
+                          ],
+                        ),
+                        _getStatusButton(Get.find<LeaveScreenController>()
+                                .leaveDetailsByDate
+                                ?.getLeaveDetailsByDate?[0]
+                                .leaveRequests?[index]
+                                .status ??
+                            ""),
+                      ],
+                    ),
                   ),
                 ),
               );
             },
           );
+  }
+
+  _getStatusButton(String leaveStatus) {
+    if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
+      return approvedStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
+      return rejectedStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
+      return pendingStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
+      return tokenStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
+      return canceledStatusBtn();
+    } else {
+      return Container();
+    }
   }
 }

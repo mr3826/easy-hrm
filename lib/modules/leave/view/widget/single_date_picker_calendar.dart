@@ -5,6 +5,8 @@ import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../utils/app_color.dart';
@@ -20,7 +22,7 @@ class SingleDatePicker extends StatefulWidget {
 }
 
 class _SingleDatePickerState extends State<SingleDatePicker> {
-  DateTime today = DateTime.now().toUtc();
+  DateTime today = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,8 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
           horizontal: AppLayout.getWidth(Dimensions.paddingLarge)),
       child: Column(
         children: [
-
-          customButtonSheetAppbar(text: AppString.text_select_date.tr,subtext: ""),
-
+          customButtonSheetAppbar(
+              text: AppString.text_select_date.tr, subtext: ""),
           TableCalendar(
             calendarStyle: CalendarStyle(
                 selectedDecoration: const BoxDecoration(
@@ -68,10 +69,14 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
           const Spacer(),
           Padding(
             padding: marginLayout,
-            child: CustomDoubleAppButton(buttonText: AppString.text_save.tr, onAction: (){
-              Navigator.pop(Get.context!);
-              Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(today);
-            }, cancelAction: ()=>Get.back()),
+            child: CustomDoubleAppButton(
+                buttonText: AppString.text_save.tr,
+                onAction: () {
+                  Get.find<DateController>().currentDate.value = today;
+                  Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                  Navigator.pop(Get.context!);
+                },
+                cancelAction: () => Get.back()),
           ),
           const Spacer(),
         ],
@@ -79,6 +84,3 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
     );
   }
 }
-
-
-

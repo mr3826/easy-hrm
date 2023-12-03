@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -13,17 +16,19 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../widget/leave_record_details_view.dart';
 import '../widget/status_btn_widget.dart';
 
-class LeaveRecordScreen extends StatelessWidget {
+class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   const LeaveRecordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppbar(title: AppString.text_leave_records),
-      body: Column(
-        children: [_leaveRecordViewLayout()],
-      ),
-    );
+    return controller.obx(
+        (state) => Scaffold(
+              appBar: customAppbar(title: AppString.text_leave_records),
+              body: Column(
+                children: [_leaveRecordViewLayout()],
+              ),
+            ),
+        onLoading: const LoadingIndicator());
   }
 
   _leaveRecordViewLayout() {
@@ -33,7 +38,10 @@ class LeaveRecordScreen extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         return Column(
-          children: [_dateTextLayout(date: "April,2022"), _infoLayoutView(context: context)],
+          children: [
+            _dateTextLayout(date: "April,2022"),
+            _infoLayoutView(context: context)
+          ],
         );
       },
     ));
@@ -69,7 +77,12 @@ class LeaveRecordScreen extends StatelessWidget {
 
   _infoLayoutView({required BuildContext context}) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,child: const LeaveRecordDetails(status: "rejected",) ,height: 0.5),
+      onTap: () => customButtonSheet(
+          context: context,
+          child: const LeaveRecordDetails(
+            status: "rejected",
+          ),
+          height: 0.5),
       child: SizedBox(
         height: AppLayout.getHeight(110),
         child: Card(
@@ -128,14 +141,11 @@ class LeaveRecordScreen extends StatelessWidget {
                     )
                   ],
                 ),
-               approvedStatusBtn(),
+                approvedStatusBtn(),
 
                 // rejectedStatusBtn(),
                 // pendingStatusBtn(),
                 // tokenStatusBtn(),
-
-
-
               ],
             ),
           ),
@@ -143,5 +153,4 @@ class LeaveRecordScreen extends StatelessWidget {
       ),
     );
   }
-
 }

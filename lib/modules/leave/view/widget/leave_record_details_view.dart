@@ -5,6 +5,7 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
@@ -15,71 +16,76 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
   final String? status;
-  const LeaveRecordDetails({super.key,this.status});
+
+  const LeaveRecordDetails({super.key, this.status});
 
   @override
   Widget build(BuildContext context) {
+    print(status);
     return Column(
       children: [
-        customButtonSheetAppbar(text: "08 March, 2023",subtext: "Wednesday"),
+        customButtonSheetAppbar(text: "08 March, 2023", subtext: "Wednesday"),
         customSpacerHeight(height: 12),
-        _infoLayout(text: AppString.text_type_dot.tr,dynamicText: "Sick leave"),
-
-        _infoLayout(text: AppString.text_duration.tr,dynamicText: "1 Day"),
-        _infoLayout(text: AppString.text_satus.tr,widget:   _statusBtn()),
-        _infoLayout(text: AppString.text_date_of_application.tr,dynamicText: "02 March 2023"),
+        _infoLayout(
+            text: AppString.text_type_dot.tr, dynamicText: "Sick leave"),
+        _infoLayout(text: AppString.text_duration.tr, dynamicText: "1 Day"),
+        _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
+        _infoLayout(
+            text: AppString.text_date_of_application.tr,
+            dynamicText: "02 March 2023"),
         customSpacerHeight(height: 50),
-
         _buttonLayout(context)
-
       ],
     );
   }
 
-  _buttonLayout(context){
-
-   if(status=="rejected"){
-     return _rejectedBtn(context);
-   }
-   else if(status=="pending"){
-     return  _pendingLayout(context);
-   }
-   else if(status=="token"){
-     return Container();
-   }
-   else{
-     return _approvedLayout(context);
-   }
-
+  _buttonLayout(context) {
+    if (status == "rejected") {
+      return _rejectedBtn(context);
+    } else if (status == "pending") {
+      return _pendingLayout(context);
+    } else if (status == "token") {
+      return Container();
+    } else if (status == LeaveStatus.approved.name) {
+      return _approvedLayout(context);
+    } else if (status == LeaveStatus.cancelled.name) {
+      return _rejectedBtn(context);
+    } else {
+      return Container();
+    }
   }
 
-  _statusBtn(){
-    if(status=="rejected"){
+  _statusBtn() {
+    if (status == "rejected") {
       return rejectedStatusBtn();
-    }
-    else if(status=="pending"){
+    } else if (status == "pending") {
       return pendingStatusBtn();
-    }
-    else if(status=="token"){
+    } else if (status == "token") {
       return tokenStatusBtn();
-    }
-    else{
+    } else {
       return approvedStatusBtn();
     }
-
-
   }
 
-  _infoLayout({required text,dynamicText,widget}) {
+  _infoLayout({required text, dynamicText, widget}) {
     return Padding(
-      padding: marginLayout.copyWith(left: 20,right: 20,top: 12,bottom: 4),
+      padding: marginLayout.copyWith(left: 20, right: 20, top: 12, bottom: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("$text",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault+1),),
-          widget??
-          Text("$dynamicText",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),),
-
+          Text(
+            "$text",
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.hintColor,
+                fontSize: Dimensions.fontSizeDefault + 1),
+          ),
+          widget ??
+              Text(
+                "$dynamicText",
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeDefault + 1),
+              ),
         ],
       ),
     );
@@ -89,46 +95,60 @@ class LeaveRecordDetails extends StatelessWidget {
     return Padding(
       padding: marginLayout,
       child: CustomAppButton(
-        buttonText: Text(AppString.text_remove.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor,fontSize: Dimensions.fontSizeDefault+2),), onPressed: (){
-        customDialog(context: context,saveBtnAction: ()=>Get.back(),
-            icon: Icons.delete_outline_outlined,
-            titleText: AppString.text_remove_time_log.tr,
-            subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
-            drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
-            iconBgColor: AppColor.errorColorLight,
-            btnBgColor: AppColor.errorColorLight,
-            btnText: AppString.text_remove.tr);
-      }, buttonColor: AppColor.errorColor.withOpacity(0.6),isButtonExpanded: false,),
+        buttonText: Text(
+          AppString.text_remove.tr,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.cardColor,
+              fontSize: Dimensions.fontSizeDefault + 2),
+        ),
+        onPressed: () {
+          customDialog(
+              context: context,
+              saveBtnAction: () => Get.back(),
+              icon: Icons.delete_outline_outlined,
+              titleText: AppString.text_remove_time_log.tr,
+              subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
+              drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
+              iconBgColor: AppColor.errorColorLight,
+              btnBgColor: AppColor.errorColorLight,
+              btnText: AppString.text_remove.tr);
+        },
+        buttonColor: AppColor.errorColor.withOpacity(0.6),
+        isButtonExpanded: false,
+      ),
     );
   }
 
   _pendingLayout(context) {
     return Padding(
       padding: marginLayout,
-      child: CustomDoubleAppButton(cancelAction: (){}, buttonText: AppString.text_edit.tr, onAction: ()=>customButtonSheet(context: context,child: const ApplyLeaveScreen()),btnColor: AppColor.primaryColor),
+      child: CustomDoubleAppButton(
+          cancelAction: () {
+            Navigator.pop(context);
+          },
+          buttonText: AppString.text_edit.tr,
+          onAction: () => customButtonSheet(
+              context: context, child: const ApplyLeaveScreen()),
+          btnColor: AppColor.primaryColor),
     );
   }
 
   _approvedLayout(context) {
-    return  Padding(
+    return Padding(
       padding: marginLayout,
       child: CustomAppButton(
-        buttonText: Text(AppString.text_cancel.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor,fontSize: Dimensions.fontSizeDefault+2),), onPressed: (){
-        customDialog(context: context
-            ,saveBtnAction: ()=>Get.back(),
-            icon: Icons.close,
-            titleText: AppString.text_remove_time_log.tr,
-            subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
-            drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
-            iconBgColor: AppColor.hintColor,
-            btnBgColor: AppColor.hintColor,
-            btnText: AppString.text_cancel.tr);
-      }, buttonColor: AppColor.hintColor,isButtonExpanded: false,),
+        buttonText: Text(
+          AppString.text_back.tr,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.cardColor,
+              fontSize: Dimensions.fontSizeDefault + 2),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        buttonColor: AppColor.hintColor,
+        isButtonExpanded: false,
+      ),
     );
   }
 }
-
-
-
-
-

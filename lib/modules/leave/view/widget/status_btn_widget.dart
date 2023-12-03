@@ -39,3 +39,12 @@ Widget tokenStatusBtn() {
     statusIcon: Icons.task_alt,
   );
 }
+
+Widget canceledStatusBtn() {
+  return CustomStatusButton(
+    textColor: AppColor.bgColor,
+    bgColor: AppColor.errorColor.withOpacity(0.6),
+    text: AppString.text_canceled.tr,
+    statusIcon: Icons.block_flipped,
+  );
+}
