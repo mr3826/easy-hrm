@@ -125,7 +125,7 @@ class ApplyLeaveDobMultiDay extends StatelessWidget {
   }
   _selectedDayScheduleLayout() {
     var currentIndex=0.obs;
-    List _day=[
+    List day=[
       "02 day",
       "03 day",
       "04 day",
@@ -134,7 +134,7 @@ class ApplyLeaveDobMultiDay extends StatelessWidget {
     return SizedBox(
       height: AppLayout.getHeight(50),
       child: ListView.builder(
-        itemCount: _day.length,
+        itemCount: day.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -150,7 +150,7 @@ class ApplyLeaveDobMultiDay extends StatelessWidget {
                 child: Row(
                   children: [
                     customSpacerWidth(width: 12),
-                    Text(_day[index],style: AppStyle.normal_text_black.copyWith(color:currentIndex.value==index? AppColor.primaryColor: AppColor.hintColor),),
+                    Text(day[index],style: AppStyle.normal_text_black.copyWith(color:currentIndex.value==index? AppColor.primaryColor: AppColor.hintColor),),
                     customSpacerWidth(width: 12),
 
                   ],

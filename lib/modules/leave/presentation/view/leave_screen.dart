@@ -58,7 +58,6 @@ class LeaveScreen extends StatelessWidget {
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
     expandedHeight: AppLayout.getHeight(250),
-
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,

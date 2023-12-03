@@ -18,8 +18,7 @@ part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
-
-  static const INITIAL = Routes.MAIN_SCREEN;
+  static const INITIAL = Routes.SPLASH_SCREEN;
 
   static final routes = [
     GetPage(
@@ -36,7 +35,8 @@ class AppPages {
     GetPage(
       name: _Paths.SIGN_IN_SCREEN,
       transition: Transition.size,
-      page: ()=> const SignInScreen(),
+      page: ()=>  SignInScreen(),
+
     ),
 
     GetPage(
@@ -53,8 +53,9 @@ class AppPages {
 
     GetPage(
       name: _Paths.RESET_PASSWORD,
+
       transition: Transition.size,
-      page: ()=> const ResetPasswordScreen(),
+      page: ()=>  ResetPasswordScreen(),
     ),
 
     GetPage(

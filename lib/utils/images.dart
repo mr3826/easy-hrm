@@ -40,6 +40,4 @@ static String FLAG_PNG="assets/images/flag.png";
 static String ORG="assets/images/org.png";
 
 
-
-
 }
