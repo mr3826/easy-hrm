@@ -10,7 +10,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
- Widget leaveLayout() {
+Widget timelineLayout() {
   return SizedBox(
     height: AppLayout.getHeight(115),
     width: double.infinity,
@@ -29,25 +29,31 @@ import 'package:payrun_mobile/utils/dimensions.dart';
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
-                      dynamicText: "12d",
-                      staticText: AppString.text_total.tr),
+                      dynamicText: "120h",
+                      staticText: AppString.text_schedule.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: "12d 06h",
-                      staticText: AppString.text_token.tr),
+                      dynamicText: "122h+",
+                      staticText: AppString.text_logged.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: "12d 03h",
-                      staticText: AppString.text_avaiable.tr),
+                      dynamicText: "0.8h+",
+                      staticText: AppString.text_paid_leave.tr),
+                  const Spacer(),
+                  _divider(),
+                  const Spacer(),
+                  _countLayout(
+                      dynamicText: "30h",
+                      staticText: AppString.text_balance.tr),
 
                 ],
               ),
               const Spacer(),
-              _tabToViewLeaveRecord()
+              _tabToViewTimeLogSummery()
             ],
           ),
         ),
@@ -56,31 +62,18 @@ import 'package:payrun_mobile/utils/dimensions.dart';
   );
 }
 
-_tabToViewLeaveRecord() {
-   return GestureDetector(
-     onTap: ()=>Get.toNamed(Routes.LEAVE_RECORD_SCREEN),
-     child: Row(
-       mainAxisAlignment: MainAxisAlignment.center,
-       children: [
-         Text(AppString.text_tab_to_view_leave_record.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor, decoration: TextDecoration.underline,
-           fontSize: Dimensions.fontSizeDefault,
-         ),),
-         customSpacerWidth(width: 10),
-         const Icon(Icons.arrow_forward,color: AppColor.cardColor,size: 18,)
-       ],
-     ),
-   );
-}
-
-
-
-AppBar  appBar({required text}) {
-  return AppBar(
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    title: Text(
-    "$text",
-      style: AppStyle.mid_large_text.copyWith(fontSize: 20),
+_tabToViewTimeLogSummery() {
+  return GestureDetector(
+    onTap: (){},
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(AppString.text_tab_to_view_timelog_summary.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor, decoration: TextDecoration.underline,
+          fontSize: Dimensions.fontSizeDefault,
+        ),),
+        customSpacerWidth(width: 10),
+        const Icon(Icons.arrow_forward,color: AppColor.cardColor,size: 18,)
+      ],
     ),
   );
 }

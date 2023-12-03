@@ -50,6 +50,8 @@ class AppString {
   static String text_unpaid_leave='Unpaid leave';
   static String text_token='Token';
   static String text_balance='Balance';
+  static String text_stat_timer='Start timer';
+  static String text_add_time_entry='Add time entry';
   static String text_pendding='Pending';
   static String text_phone='Phone';
   static String text_emergency_phone='Emergency phone';
@@ -90,6 +92,8 @@ class AppString {
   static String text_in = "In";
   static String text_out = "Out";
   static String text_total = "Total";
+  static String text_schedule = "Schedule";
+  static String text_logged = "Logged";
   static const String text_yes = "Yes";
   static String text_no = "No";
   static String text_error = "Error!";
@@ -153,6 +157,7 @@ class AppString {
   static String text_leave_balance = "Leave balance";
   static String text_monthly_goal = "Monthly goal";
   static String text_logged_time = "Logged time";
+  static String text_time_line = "Timeline";
   static String text_view_more = "View more";
   static String text_view_less = "View less";
 
@@ -204,6 +209,9 @@ class AppString {
   static const String text_avaiable = "Available";
   static const String text_tab_to_view_leave_record =
       "Tab to view leave record";
+
+  static const String text_tab_to_view_timelog_summary =
+      "Tab to view timelog summary";
 
 // Auth String
 

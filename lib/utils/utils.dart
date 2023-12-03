@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import '../modules/leave/presentation/view/leave_screen.dart';
+import '../modules/timeline/view/screen/timeline.dart';
 
 
 //global items here
@@ -84,7 +85,7 @@ List   get notificationTabBarIndex=>_notificationTabBarIndex;
 
 List<Widget> _buildScreens() {
   return [
-    const LeaveScreen(),
+    const TimelineScreen(),
     const LeaveScreen(),
     const LeaveScreen(),
     const NotificationScreen(),
