@@ -16,6 +16,7 @@ abstract class Routes {
    static const NOTIFICATION_SCREEN = _Paths.NOTIFICATION_SCREEN;
    static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
    static const EDIT_PROFILE_SCREEN = _Paths.EDIT_PROFILE_SCREEN;
+   static const TIME_LOG_SUMMARY = _Paths.TIME_LOG_SUMMARY;
 
 }
 
@@ -35,5 +36,6 @@ abstract class _Paths {
   static const NOTIFICATION_SCREEN = '/notification-screen';
   static const PROFILE_SCREEN = '/profile-screen';
   static const EDIT_PROFILE_SCREEN = '/edit_profile-screen';
+  static const TIME_LOG_SUMMARY = '/time_log_summary-screen';
 
 }

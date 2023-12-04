@@ -10,6 +10,7 @@ import 'package:payrun_mobile/modules/profile/presentation/view/profile.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
 import '../modules/auth/presentation/view/otp_screen.dart';
 import '../modules/auth/presentation/view/reset_password.dart';
 import '../modules/home/presentation/main_screen.dart';
@@ -96,6 +97,10 @@ class AppPages {
       name: _Paths.EDIT_PROFILE_SCREEN,
       transition: Transition.size,
       page: ()=> const EditProfileScreen(),
+    ),    GetPage(
+      name: _Paths.TIME_LOG_SUMMARY,
+      transition: Transition.size,
+      page: ()=> const TimeLogSummary(),
     ),
 
   ];

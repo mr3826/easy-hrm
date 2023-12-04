@@ -10,9 +10,9 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget timelineLayout() {
+Widget workingScheduleLayout() {
   return SizedBox(
-    height: AppLayout.getHeight(115),
+    height: AppLayout.getHeight(80),
     width: double.infinity,
     child: Padding(
       padding: EdgeInsets.only(left: AppLayout.getHeight(12)),
@@ -52,8 +52,7 @@ Widget timelineLayout() {
 
                 ],
               ),
-              const Spacer(),
-              _tabToViewTimeLogSummery()
+
             ],
           ),
         ),
@@ -62,21 +61,7 @@ Widget timelineLayout() {
   );
 }
 
-_tabToViewTimeLogSummery() {
-  return GestureDetector(
-    onTap: ()=>Get.toNamed(Routes.TIME_LOG_SUMMARY),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(AppString.text_tab_to_view_timelog_summary.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor, decoration: TextDecoration.underline,
-          fontSize: Dimensions.fontSizeDefault,
-        ),),
-        customSpacerWidth(width: 10),
-        const Icon(Icons.arrow_forward,color: AppColor.cardColor,size: 18,)
-      ],
-    ),
-  );
-}
+
 
 _countLayout({required dynamicText, required staticText}) {
   return Column(
@@ -84,12 +69,12 @@ _countLayout({required dynamicText, required staticText}) {
       Text(
         "$dynamicText",
         style: AppStyle.normal_text_black
-            .copyWith(color: AppColor.cardColor, fontWeight: FontWeight.bold,fontSize: Dimensions.fontSizeMid-2),
+            .copyWith(color: AppColor.normalTextColor, fontWeight: FontWeight.bold,fontSize: Dimensions.fontSizeMid-2),
       ),
       Text(
         "$staticText",
         style: AppStyle.normal_text_black.copyWith(
-            color: AppColor.cardColor.withOpacity(0.9),
+            color: AppColor.normalTextColor.withOpacity(0.5),
             fontSize: Dimensions.fontSizeDefault-1),
       ),
     ],

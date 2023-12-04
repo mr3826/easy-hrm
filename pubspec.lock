@@ -535,14 +535,7 @@ packages:
       sha256: f4f88d4a900933e7267e2b353594774fc0d07fb072b47eedcd5b54e1ea3269f8
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-<<<<<<< HEAD
     version: "2.1.7"
-=======
-    version: "2.1.6"
-=======
-    version: "2.1.7"
->>>>>>> 3a33ae06379f696873238de5d45aac9fd19a941a
   rxdart:
     dependency: transitive
     description:
@@ -551,10 +544,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
-<<<<<<< HEAD
->>>>>>> cb38dc41dfddfa65e0d11868dbe978c9d18ee335
-=======
->>>>>>> 3a33ae06379f696873238de5d45aac9fd19a941a
   simple_gesture_detector:
     dependency: transitive
     description:

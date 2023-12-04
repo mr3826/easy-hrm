@@ -191,6 +191,7 @@ class AppString {
   static const String text_change_email = "Change email";
   static const String text_change_password = "Change password";
   static const String text_leave_records = "Leave record";
+  static const String text_time_log_summary = "Timelog summary";
   static const String text_leave = "Leave";
   static const String text_leave_type = "Leave type *";
   static const String text_apply_leve = "Apply leave";

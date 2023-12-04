@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -18,7 +19,7 @@ class LeaveRecordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppbar(title: AppString.text_leave_records),
+      appBar: customAppbar(title: AppString.text_leave_records.tr),
       body: Column(
         children: [_leaveRecordViewLayout()],
       ),
