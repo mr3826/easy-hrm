@@ -10,6 +10,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../timeline/view/widget/horizontal_dotted_style.dart';
+
 class IndividualEventView extends StatelessWidget {
   const IndividualEventView({super.key});
 
@@ -53,7 +55,6 @@ class IndividualEventView extends StatelessWidget {
      child: Padding(
        padding: marginLayout,
        child: Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,21 +90,23 @@ class IndividualEventView extends StatelessWidget {
 
 
   _eventText() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        customSpacerHeight(height: 50),
-        Container(height: 1,width: 140,color: AppColor.disableColor,),
+    return Padding(
+      padding: marginLayout,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          customSpacerHeight(height: 50),
+          horizontalDottedLayout(dottedLength: 3,dottedSpace: 8),
+          Padding(
+            padding: marginLayout,
+            child: Text(AppString.text_event.tr,style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),),
+          ),
+          horizontalDottedLayout(dottedLength: 3,dottedSpace: 8),
 
-        Padding(
-          padding: marginLayout,
-          child: Text(AppString.text_event.tr,style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),),
-        ),
-        Container(height: 1,width: 140,color: AppColor.disableColor,),
 
 
-
-      ],
+        ],
+      ),
     );
   }
 

@@ -6,16 +6,14 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../utils/app_color.dart';
 import 'horizontal_dotted_style.dart';
 
-
-
 Widget weekTextLayout({required date}) {
   return Padding(
-    padding: marginLayout.copyWith(top: 12,bottom: 12),
+    padding: marginLayout.copyWith(top: 12, bottom: 12,left: 25,right: 25),
     child: Row(
       children: [
         _divider(),
         Padding(
-          padding: marginLayout.copyWith(top: 6,bottom: 6),
+          padding: marginLayout.copyWith(top: 6, bottom: 6),
           child: Text(
             date,
             style: AppStyle.normal_text_black.copyWith(
@@ -23,18 +21,12 @@ Widget weekTextLayout({required date}) {
                 fontSize: Dimensions.fontSizeDefault),
           ),
         ),
-
-
-        _divider()
-
+        _divider(),
       ],
     ),
   );
 }
+
 _divider() {
-  return  Expanded(child: Container(height: .7,color: AppColor.hintColor.withOpacity(0.3),
-  
-
-  ),);
-
+  return horizontalDottedLayout();
 }

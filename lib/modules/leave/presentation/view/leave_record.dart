@@ -13,6 +13,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../timeline/view/widget/horizontal_dotted_style.dart';
+
 class LeaveRecordScreen extends StatelessWidget {
   const LeaveRecordScreen({super.key});
 
@@ -142,7 +144,7 @@ class LeaveRecordScreen extends StatelessWidget {
   }
 
   _divider() {
-    return const Expanded(child: Divider(thickness: 1,color: AppColor.disableColor,));
+    return horizontalDottedLayout();
 
   }
 

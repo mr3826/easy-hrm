@@ -1,14 +1,18 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
-import '../../../../utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 
-Widget horizontalDottedLayout({required double height}){
-  return  DottedBorder(
-    customPath: (p0) => Path()..lineTo(AppLayout.getHeight(height), 0),
-    color: AppColor.hintColor.withOpacity(0.6),
-    dashPattern: const [4, 4],
-    strokeWidth: 1.2,
-    child:Container(),
+Widget horizontalDottedLayout({double dottedSpace=6,double dottedLength=3}){
+  return Expanded(
+    child: Container(
+      height: 0,
+      decoration:  BoxDecoration(
+        border: RDottedLineBorder.symmetric(
+            horizontal: const BorderSide(width: 0,color: AppColor.hintColor),
+            dottedSpace: dottedSpace,
+            dottedLength: dottedLength,
+        ),
+      ),
+    ),
   );
 }
