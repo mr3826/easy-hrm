@@ -27,11 +27,15 @@ const getLeaveDetailsByDateQuery = r"""
 query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
   getLeaveDetailsByDate(queryData: $queryData) {
     leave_requests {
+      createdAt
       status
+      duration
       leaveType {
         type
       }
-      duration
+      leave_status
+      end_date
+      start_date
     }
   }
 }

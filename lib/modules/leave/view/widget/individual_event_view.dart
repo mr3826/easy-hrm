@@ -164,7 +164,7 @@ class IndividualEventView extends StatelessWidget {
                               .status
                               ?.toLowerCase() ??
                           "",
-                      leaveRecords: Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate?[0].leaveRequests?[index] as GetLeaveRecords,
+                      leaveRecords: Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate?[0].leaveRequests?[index],
                     ),
                     height: 0.6,
                   );
