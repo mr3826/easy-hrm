@@ -47,7 +47,7 @@ jobs:
         
     - name: Set Teams Message
       id: teams_message
-      run: echo "::set-output name=message::Download the APK [here](https://your-s3-bucket-name.s3.amazonaws.com/payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk)"
+      run: echo "::set-output name=message::Download the APK [here](https://payrun-local-app-build.s3.amazonaws.com/payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk)"
 
   Notification:
     if: ${{ always() }}
