@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -16,18 +17,19 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
   final String? status;
+  final GetLeaveRecords? leaveRecords;
 
-  const LeaveRecordDetails({super.key, this.status});
+  const LeaveRecordDetails({super.key, this.status, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
-    print(status);
     return Column(
       children: [
         customButtonSheetAppbar(text: "08 March, 2023", subtext: "Wednesday"),
         customSpacerHeight(height: 12),
         _infoLayout(
-            text: AppString.text_type_dot.tr, dynamicText: "Sick leave"),
+            text: AppString.text_type_dot.tr,
+            dynamicText: leaveRecords?.leaveType ?? ""),
         _infoLayout(text: AppString.text_duration.tr, dynamicText: "1 Day"),
         _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
         _infoLayout(

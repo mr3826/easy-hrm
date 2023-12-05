@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import '../modules/leave/view/screen/leave_screen.dart';
 import 'app_string.dart';
@@ -56,6 +57,16 @@ List<Widget> Function()  get buildScreens=>_buildScreens;
 
 List   get selectedDayIndex=>_selectedDay;
 List   get selectedDayIconIndex=>_selectedDayIcon;
+
+
+String dateAndMonthFromDatetime(String dateString) {
+  // Parse the string to DateTime
+  DateTime dateTime = DateTime.parse(dateString);
+  // Format the DateTime to "dd, MMM"
+  String formattedDate = DateFormat('dd, MMM').format(dateTime);
+  return formattedDate;
+}
+
 
 
 List<Widget> _buildScreens() {

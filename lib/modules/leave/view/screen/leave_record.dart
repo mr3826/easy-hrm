@@ -7,12 +7,15 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../enum.dart';
+import '../../../../utils/utils.dart';
 import '../widget/leave_record_details_view.dart';
 import '../widget/status_btn_widget.dart';
 
@@ -23,68 +26,77 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   Widget build(BuildContext context) {
     return controller.obx(
         (state) => Scaffold(
-              appBar: customAppbar(title: AppString.text_leave_records),
-              body: Column(
-                children: [_leaveRecordViewLayout()],
-              ),
-            ),
+            appBar: customAppbar(title: AppString.text_leave_records),
+            body: ListView.builder(
+              itemCount: controller.monthsList?.length ?? 0,
+              itemBuilder: (context, index) => Column(children: [
+                _dateTextLayout(date: controller.monthsList?[index].monthName),
+                _leaveRecordViewLayout(index)
+              ]),
+            )),
         onLoading: const LoadingIndicator());
   }
 
-  _leaveRecordViewLayout() {
-    return Expanded(
-        child: ListView.builder(
+  _leaveRecordViewLayout(int monthIndex) {
+    return ListView.builder(
+      shrinkWrap: true,
       padding: marginLayout,
-      physics: const BouncingScrollPhysics(),
+      itemCount: controller.monthsList?[monthIndex].leaveRecords.length ?? 0,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return Column(
-          children: [
-            _dateTextLayout(date: "April,2022"),
-            _infoLayoutView(context: context)
-          ],
-        );
+        return _infoLayoutView(
+            context: context,
+            leaveRecord:
+                controller.monthsList?[monthIndex].leaveRecords[index] ??
+                    GetLeaveRecords());
       },
-    ));
-  }
-
-  _dateTextLayout({required date}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        customSpacerHeight(height: 50),
-        Container(
-          height: 1,
-          width: AppLayout.getWidth(120),
-          color: AppColor.disableColor,
-        ),
-        Padding(
-          padding: marginLayout,
-          child: Text(
-            date,
-            style: AppStyle.normal_text_black.copyWith(
-                color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault),
-          ),
-        ),
-        Container(
-          height: 1,
-          width: AppLayout.getWidth(120),
-          color: AppColor.disableColor,
-        ),
-      ],
     );
   }
 
-  _infoLayoutView({required BuildContext context}) {
+  _dateTextLayout({required date}) {
+    return Padding(
+      padding: marginLayout,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          customSpacerHeight(height: 50),
+          Expanded(
+            child: Container(
+              height: 1,
+              color: AppColor.disableColor,
+            ),
+          ),
+          Padding(
+            padding: marginLayout,
+            child: Text(
+              date,
+              style: AppStyle.normal_text_black.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 1,
+              color: AppColor.disableColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _infoLayoutView(
+      {required BuildContext context, required GetLeaveRecords leaveRecord}) {
     return GestureDetector(
       onTap: () => customButtonSheet(
           context: context,
-          child: const LeaveRecordDetails(
-            status: "rejected",
+          child: LeaveRecordDetails(
+            status: leaveRecord.status ?? "",
+            leaveRecords: leaveRecord,
           ),
           height: 0.5),
       child: SizedBox(
-        height: AppLayout.getHeight(110),
         child: Card(
           elevation: 0,
           shape: roundedRectangleBorder.copyWith(
@@ -92,7 +104,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
           color: AppColor.primaryColor.withOpacity(0.05),
           child: Padding(
             padding:
-                marginLayout.copyWith(top: 10, bottom: 10, left: 10, right: 10),
+                marginLayout.copyWith(top: 20, bottom: 20, left: 10, right: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -100,7 +112,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Sick leave",
+                      leaveRecord.leaveType?.type ?? "",
                       style: AppStyle.mid_large_text.copyWith(
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeDefault + 1,
@@ -110,47 +122,56 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "22Apr -24 Apr",
-                          style: AppStyle.mid_large_text.copyWith(
-                              color: AppColor.secondaryColor.withOpacity(0.7),
-                              fontSize: Dimensions.fontSizeDefault - 2,
-                              fontWeight: FontWeight.w600),
-                        ),
+                        _showDateDurationText(leaveRecord),
                         customSpacerWidth(width: 8),
-                        Container(
-                          height: 12,
-                          width: 1,
-                          color: AppColor.hintColor.withOpacity(0.8),
-                        ),
-                        customSpacerWidth(width: 8),
-                        Text(
-                          "2 days",
-                          style: AppStyle.normal_text_black.copyWith(
-                              color: AppColor.hintColor,
-                              fontSize: Dimensions.fontSizeDefault - 1),
-                        )
                       ],
                     ),
-                    customSpacerHeight(height: 6),
-                    Text(
-                      "Paid",
-                      style: AppStyle.normal_text_black.copyWith(
-                          color: AppColor.hintColor,
-                          fontSize: Dimensions.fontSizeDefault - 1),
-                    )
                   ],
                 ),
-                approvedStatusBtn(),
-
-                // rejectedStatusBtn(),
-                // pendingStatusBtn(),
-                // tokenStatusBtn(),
+                _showStatusButton(leaveRecord.status ?? ""),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  _showDateDurationText(GetLeaveRecords leaveRecord) {
+    String? leaveDate;
+    String starDate =
+        leaveRecord.startDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
+    String endDate =
+        leaveRecord.endDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
+    if (starDate == endDate) {
+      leaveDate = dateAndMonthFromDatetime(
+          leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z");
+    } else {
+      leaveDate =
+          "${dateAndMonthFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateAndMonthFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
+    }
+    return Text(
+      "$leaveDate | ${leaveRecord.duration}",
+      style: AppStyle.mid_large_text.copyWith(
+          color: AppColor.secondaryColor.withOpacity(0.7),
+          fontSize: Dimensions.fontSizeDefault - 2,
+          fontWeight: FontWeight.w600),
+    );
+  }
+
+  _showStatusButton(String leaveStatus) {
+    if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
+      return approvedStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
+      return rejectedStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
+      return pendingStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
+      return tokenStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
+      return canceledStatusBtn();
+    } else {
+      return Container();
+    }
   }
 }

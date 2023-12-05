@@ -41,12 +41,19 @@ const getLeaveRecordsQuery = r'''
 
 query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
   getLeaveRecords(queryData: $queryData) {
-    description
     end_date
     start_date
-    status
-    type
+    id
+    createdAt
+    leaveType {
+      type
+    }
     duration
+    files {
+      name
+      id
+    }
+    status
   }
 }
 
