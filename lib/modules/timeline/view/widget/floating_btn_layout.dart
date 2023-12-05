@@ -8,7 +8,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 Widget  floatingButton({required Color bgBtnColor,required btnText,required onAction}) {
   return  Expanded(
     child: InkWell(
-      onTap: ()=>onAction,
+      onTap: ()=>onAction(),
       child: Container(
         decoration: BoxDecoration(
             color: bgBtnColor,

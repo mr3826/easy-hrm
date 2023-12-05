@@ -50,6 +50,8 @@ class AppString {
   static String text_unpaid_leave='Unpaid leave';
   static String text_token='Token';
   static String text_balance='Balance';
+  static String text_tomorrow='Tomorrow';
+  static String text_yesterday='Yesterday';
   static String text_stat_timer='Start timer';
   static String text_add_time_entry='Add time entry';
   static String text_pendding='Pending';
@@ -63,6 +65,7 @@ class AppString {
   static String text_file_upload_update_successfully='File upload update successfully';
 
   static String text_event='Events';
+  static String text_add='Add';
   static String text_update_your_profile='Update your profile photo';
   static String text_upload_a_photo_undar_2mb='Upload a photo under 2 MB';
   static String text_today='Today';
@@ -93,6 +96,12 @@ class AppString {
   static String text_out = "Out";
   static String text_total = "Total";
   static String text_schedule = "Schedule";
+  static String text_set_start_time = "Set start time *";
+  static String text_set_end_time = "Set end time *";
+  static String text_project_or_task = "Project or task *";
+
+
+
   static String text_logged = "Logged";
   static const String text_yes = "Yes";
   static String text_no = "No";
@@ -110,6 +119,7 @@ class AppString {
   static String text_to = "To";
   static String text_save = "Save";
   static String text_select_date = "Selected date";
+  static String text_select_option = "Selected option";
   static String text_select_language = "Selected language";
   static String text_type_dot = "Type:";
   static String text_duration = "Duration:";
@@ -192,6 +202,7 @@ class AppString {
   static const String text_change_password = "Change password";
   static const String text_leave_records = "Leave record";
   static const String text_time_log_summary = "Timelog summary";
+  static const String text_new_entry = "New entry";
   static const String text_leave = "Leave";
   static const String text_leave_type = "Leave type *";
   static const String text_apply_leve = "Apply leave";

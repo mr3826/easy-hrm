@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/apply_leave.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/individual_event_view.dart';
 import 'package:payrun_mobile/modules/leave/presentation/widget/widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/time_log_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_widget.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/widget/custom_buttom_sheet.dart';
 
 class TimelineScreen extends StatelessWidget {
   const TimelineScreen({super.key});
@@ -38,7 +35,7 @@ class TimelineScreen extends StatelessWidget {
           floatingButton(bgBtnColor: AppColor.secondaryColor,onAction: (){},btnText: AppString.text_stat_timer),
           customSpacerWidth(width: 18),
 
-          floatingButton(bgBtnColor: AppColor.primaryColor,onAction: (){},btnText: AppString.text_add_time_entry),
+          floatingButton(bgBtnColor: AppColor.primaryColor,onAction: ()=>Get.toNamed(Routes.NEW_ENTRY_SCREEN),btnText: AppString.text_add_time_entry),
 
         ],
       ),

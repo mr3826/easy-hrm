@@ -69,13 +69,13 @@ _countLayout({required dynamicText, required staticText}) {
       Text(
         "$dynamicText",
         style: AppStyle.normal_text_black
-            .copyWith(color: AppColor.normalTextColor, fontWeight: FontWeight.bold,fontSize: Dimensions.fontSizeMid-2),
+            .copyWith(color: AppColor.normalTextColor, fontWeight: FontWeight.bold,fontSize: Dimensions.fontSizeMid-3),
       ),
       Text(
         "$staticText",
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.normalTextColor.withOpacity(0.5),
-            fontSize: Dimensions.fontSizeDefault-1),
+            fontSize: Dimensions.fontSizeDefault-2),
       ),
     ],
   );
@@ -85,7 +85,7 @@ _countLayout({required dynamicText, required staticText}) {
 _divider() {
   return Container(
     width: 0.8,
-    height: AppLayout.getHeight(25),
-    color: AppColor.cardColor,
+    height: AppLayout.getHeight(28),
+    color: AppColor.disableColor,
   );
 }

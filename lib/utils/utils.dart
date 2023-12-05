@@ -35,11 +35,14 @@ TextEditingController _editPhoneController = TextEditingController();
 TextEditingController _editEmergencyPhoneController = TextEditingController();
 TextEditingController _editBioController = TextEditingController();
 TextEditingController _currentPassController = TextEditingController();
+TextEditingController _taskController = TextEditingController();
+TextEditingController _descriptionController = TextEditingController();
 
 
 
 //global getter
 TextEditingController get searchController => _searchController;
+TextEditingController get taskSearchController => _taskController;
 
 TextEditingController get emailController => _emailController;
 
@@ -48,6 +51,7 @@ TextEditingController get passwordController => _passwordController;
 TextEditingController get userNameController => _userNameController;
 
 TextEditingController get restPasswordController => _restPasswordController;
+TextEditingController get descriptionController => _descriptionController;
 
 TextEditingController get addCountyController => _addCountyController;
 
@@ -81,6 +85,8 @@ List<Widget> Function()  get buildScreens=>_buildScreens;
 List   get selectedDayIndex=>_selectedDay;
 List   get selectedDayIconIndex=>_selectedDayIcon;
 List   get notificationTabBarIndex=>_notificationTabBarIndex;
+List get selectedBeforeDayAndAfterDay => _selectedBeforeDayAndAfterDay;
+
 
 
 List<Widget> _buildScreens() {
@@ -116,6 +122,12 @@ List _selectedDayIcon=[
   Images.full_day_lav,
   Images.half_day_lav,
   Images.last_half_day_lav
+  ];
+List _selectedBeforeDayAndAfterDay=[
+  AppString.text_yesterday.tr,
+  AppString.text_today.tr,
+  AppString.text_tomorrow.tr,
+
   ];
 
 

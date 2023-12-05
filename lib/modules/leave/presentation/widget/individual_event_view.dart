@@ -37,6 +37,7 @@ class IndividualEventView extends StatelessWidget {
 
   _dateCalendarLayout() {
    var controller= Get.find<DateController>();
+   var textColor=controller.getFormattedDate()==controller.getFormattedCurrentData()?AppColor.secondaryColor:AppColor.normalTextColor;
 
    return  GestureDetector(
      onTap: (){
@@ -57,28 +58,29 @@ class IndividualEventView extends StatelessWidget {
        child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+
               children: [
                 GestureDetector(
                     onTap: (){
                       controller.decrementDate();
-
                     },
-
                     child: const Icon(Icons.arrow_back_ios,color: AppColor.normalTextColor,size: 20,)),
-                Text(controller.getFormattedDate()==controller.getFormattedCurrentData()?AppString.text_today:controller.getFormattedDate(),style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontWeight: FontWeight.bold),),
+               const Spacer(),
+
+                Text(controller.getFormattedDate()==controller.getFormattedCurrentData()?AppString.text_today:controller.getFormattedDate(),style: AppStyle.mid_large_text.copyWith(color:textColor,fontSize: Dimensions.fontSizeMid-1,fontWeight: FontWeight.bold),),
+                const Spacer(),
                 GestureDetector(
                     onTap: (){
                       controller.incrementMonth();
-
                     },
-
                     child: const Icon(Icons.arrow_forward_ios_sharp,color: AppColor.normalTextColor,size: 20,)),
               ],
             ),
+            customSpacerHeight(height: 2),
 
-            Center(child: Text(controller.getOnlyDay().toString(),style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1),))
-
+            Center(child: Text(controller.getOnlyDay().toString(),style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-2),))
+          ,  customSpacerHeight(height: 6),
 
 
           ],
@@ -86,8 +88,6 @@ class IndividualEventView extends StatelessWidget {
      ),
    );
   }
-
-
 
   _eventText() {
     return Padding(

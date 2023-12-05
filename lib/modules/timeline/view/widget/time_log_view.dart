@@ -5,6 +5,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/presentation/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -21,6 +22,7 @@ class TimeLogView extends StatelessWidget {
         customSpacerHeight(height: 5),
         Obx(() =>   _dateCalendarLayout(),),
         customSpacerHeight(height: 8),
+        workingScheduleLayout(),
 
 
       ],
@@ -33,6 +35,8 @@ class TimeLogView extends StatelessWidget {
 
   _dateCalendarLayout() {
     var controller= Get.find<DateController>();
+    var textColor=controller.getFormattedDate()==controller.getFormattedCurrentData()?AppColor.secondaryColor:AppColor.normalTextColor;
+
     return  GestureDetector(
       onTap: (){
         showDialog(
@@ -50,31 +54,29 @@ class TimeLogView extends StatelessWidget {
       child: Padding(
         padding: marginLayout,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                     onTap: (){
                       controller.decrementDate();
-
                     },
-
                     child: const Icon(Icons.arrow_back_ios,color: AppColor.normalTextColor,size: 20,)),
-                Text(controller.getFormattedDate()==controller.getFormattedCurrentData()?AppString.text_today:controller.getFormattedDate(),style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontWeight: FontWeight.bold),),
+                const Spacer(),
+
+                Text(controller.getFormattedDate()==controller.getFormattedCurrentData()?AppString.text_today:controller.getFormattedDate(),style: AppStyle.mid_large_text.copyWith(color:textColor,fontSize: Dimensions.fontSizeMid-1,fontWeight: FontWeight.bold),),
+                const Spacer(),
                 GestureDetector(
                     onTap: (){
                       controller.incrementMonth();
-
                     },
-
                     child: const Icon(Icons.arrow_forward_ios_sharp,color: AppColor.normalTextColor,size: 20,)),
               ],
             ),
+            customSpacerHeight(height: 2),
 
-            Center(child: Text(controller.getOnlyDay().toString(),style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1),))
-
+            Center(child: Text(controller.getOnlyDay().toString(),style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-2),))
+            ,  customSpacerHeight(height: 6),
 
 
           ],

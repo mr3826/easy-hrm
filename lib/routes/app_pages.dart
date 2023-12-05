@@ -14,6 +14,7 @@ import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart'
 import '../modules/auth/presentation/view/otp_screen.dart';
 import '../modules/auth/presentation/view/reset_password.dart';
 import '../modules/home/presentation/main_screen.dart';
+import '../modules/timeline/view/screen/new_entry.dart';
 part 'app_routes.dart';
 
 
@@ -97,10 +98,18 @@ class AppPages {
       name: _Paths.EDIT_PROFILE_SCREEN,
       transition: Transition.size,
       page: ()=> const EditProfileScreen(),
-    ),    GetPage(
+    ),
+
+
+    GetPage(
       name: _Paths.TIME_LOG_SUMMARY,
       transition: Transition.size,
       page: ()=> const TimeLogSummary(),
+    ),
+    GetPage(
+      name: _Paths.NEW_ENTRY_SCREEN,
+      transition: Transition.size,
+      page: ()=> const NewEntryScreen(),
     ),
 
   ];

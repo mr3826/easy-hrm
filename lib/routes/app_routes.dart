@@ -17,6 +17,7 @@ abstract class Routes {
    static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
    static const EDIT_PROFILE_SCREEN = _Paths.EDIT_PROFILE_SCREEN;
    static const TIME_LOG_SUMMARY = _Paths.TIME_LOG_SUMMARY;
+   static const NEW_ENTRY_SCREEN = _Paths.NEW_ENTRY_SCREEN;
 
 }
 
@@ -37,5 +38,6 @@ abstract class _Paths {
   static const PROFILE_SCREEN = '/profile-screen';
   static const EDIT_PROFILE_SCREEN = '/edit_profile-screen';
   static const TIME_LOG_SUMMARY = '/time_log_summary-screen';
+  static const NEW_ENTRY_SCREEN = '/new_entry-screen';
 
 }
