@@ -15,30 +15,54 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../utils/utils.dart';
+
 class LeaveRecordDetails extends StatelessWidget {
   final String? status;
   final GetLeaveRecords? leaveRecords;
+  String? leaveDate;
+  String? leaveWeekday;
 
-  const LeaveRecordDetails({super.key, this.status, this.leaveRecords});
+  LeaveRecordDetails({super.key, this.status, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
+    _checkLeaveDateDuration(leaveRecords ?? GetLeaveRecords());
     return Column(
       children: [
-        customButtonSheetAppbar(text: "08 March, 2023", subtext: "Wednesday"),
+        customButtonSheetAppbar(text: leaveDate, subtext: leaveWeekday),
         customSpacerHeight(height: 12),
         _infoLayout(
             text: AppString.text_type_dot.tr,
-            dynamicText: leaveRecords?.leaveType ?? ""),
-        _infoLayout(text: AppString.text_duration.tr, dynamicText: "1 Day"),
+            dynamicText: leaveRecords?.leaveType?.type ?? ""),
+        _infoLayout(
+            text: AppString.text_duration.tr,
+            dynamicText: leaveRecords?.duration.toString() ?? ""),
         _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
         _infoLayout(
             text: AppString.text_date_of_application.tr,
-            dynamicText: "02 March 2023"),
+            dynamicText:
+                dateMonthYearFormatFromDatetime(leaveRecords?.createdAt ?? "")),
         customSpacerHeight(height: 50),
         _buttonLayout(context)
       ],
     );
+  }
+
+  void _checkLeaveDateDuration(GetLeaveRecords leaveRecord) {
+    String starDate =
+        leaveRecord.startDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
+    String endDate =
+        leaveRecord.endDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
+    if (starDate == endDate) {
+      leaveDate = dateMonthYearFormatFromDatetime(leaveRecord.startDate ?? "");
+      leaveWeekday = findWeekdayFormDateString(leaveRecord.startDate ?? "");
+    } else {
+      leaveDate =
+          "${dateMonthYearFormatFromDatetime(leaveRecord.startDate ?? "")} - ${dateMonthYearFormatFromDatetime(leaveRecord.endDate ?? "")}";
+      leaveWeekday =
+          "${leaveWeekday = findWeekdayFormDateString(leaveRecord.startDate ?? "")} - ${leaveWeekday = findWeekdayFormDateString(leaveRecord.endDate ?? "")}";
+    }
   }
 
   _buttonLayout(context) {

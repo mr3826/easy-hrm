@@ -144,11 +144,11 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     String endDate =
         leaveRecord.endDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
     if (starDate == endDate) {
-      leaveDate = dateAndMonthFromDatetime(
+      leaveDate = dateMonthFormatFromDatetime(
           leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z");
     } else {
       leaveDate =
-          "${dateAndMonthFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateAndMonthFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
+          "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
     }
     return Text(
       "$leaveDate | ${leaveRecord.duration}",

@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -155,10 +156,16 @@ class IndividualEventView extends StatelessWidget {
 
                   customButtonSheet(
                     context: context,
-                    child: LeaveRecordDetails(status: Get.find<LeaveScreenController>()
-                        .leaveDetailsByDate
-                        ?.getLeaveDetailsByDate![0]
-                        .leaveRequests?[index].status?.toLowerCase()??""),
+                    child: LeaveRecordDetails(
+                      status: Get.find<LeaveScreenController>()
+                              .leaveDetailsByDate
+                              ?.getLeaveDetailsByDate![0]
+                              .leaveRequests?[index]
+                              .status
+                              ?.toLowerCase() ??
+                          "",
+                      leaveRecords: Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate?[0].leaveRequests?[index] as GetLeaveRecords,
+                    ),
                     height: 0.6,
                   );
                 },
