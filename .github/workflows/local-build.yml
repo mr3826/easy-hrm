@@ -44,3 +44,13 @@ jobs:
     - name: Upload to S3 Bucket
       run: |
         aws s3 cp build/app/outputs/flutter-apk/app-release.apk s3://payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk
+        
+    - name: Set Teams Message
+      id: teams_message
+      run: echo "::set-output name=message::Download the APK [here](https://your-s3-bucket-name.s3.amazonaws.com/payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk)"
+
+    - name: Send to Microsoft Teams
+      uses: mshick/action-microsoft-teams@v0.5
+      with:
+        webhook-url: https://gainmedia.webhook.office.com/webhookb2/fe23f5fe-c652-4b7c-b277-eb724145aab3@14a3762e-7aff-45dd-a271-abbd15b79d9c/IncomingWebhook/2c7e366d6403490ea75df3ecc4b9a20b/d5d5098d-5ff6-4c8e-ae2b-bca174902873
+        message: ${{ steps.teams_message.outputs.message }}
