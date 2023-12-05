@@ -1,0 +1,46 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - local
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.17.0-18.0.pre.2'
+
+    - name: Install Dependencies
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk
+
+    - name: Set Date and Time
+      id: datetime
+      run: echo "::set-output name=datetime::$(date +'%d%m%Y-%H:%M')"
+
+    - name: Upload to S3
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.LOCAL_PAYRUN_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.LOCAL_PAYRUN_AWS_SECRET_ACCESS_KEY }}
+        aws-region: LOCAL_PAYRUN_AWS_REGION  # Change this to your S3 bucket region
+
+    - name: Upload to S3 Bucket
+      run: |
+        aws s3 cp build/app/outputs/flutter-apk/app-release.apk s3://your-s3-bucket-name/payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk
