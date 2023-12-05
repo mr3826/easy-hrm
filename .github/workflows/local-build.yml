@@ -43,4 +43,4 @@ jobs:
 
     - name: Upload to S3 Bucket
       run: |
-        aws s3 cp build/app/outputs/flutter-apk/app-release.apk s3://your-s3-bucket-name/payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk
+        aws s3 cp build/app/outputs/flutter-apk/app-release.apk s3://payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk
