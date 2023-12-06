@@ -115,6 +115,7 @@ class AppString {
   static String text_canceled = "Canceled";
   static String text_back = "Back";
   static String text_no_data_found = "No data found !";
+  static String no_event_found_text = "No events for today!";
   static String onboardTileMainAttendDes =
       'Manage your daily attendance, keep track of your goal and easily request for a new log or changing the existing log data. ';
   static String onboardTileEasyDes =
