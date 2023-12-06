@@ -3,7 +3,10 @@ import 'package:intl/intl.dart';
 
 class DateController extends GetxController {
   Rx<DateTime> currentDate = DateTime.now().obs;
+  Rx<DateTime> toDate = DateTime.now().obs;
+  Rx<DateTime> fromDate = DateTime.now().obs;
   Rx<DateTime> getCurrentDate = DateTime.now().obs;
+
   String? formattedDateTime;
 
   final DateFormat formatter = DateFormat('dd MMM yyyy');
@@ -31,8 +34,8 @@ class DateController extends GetxController {
   }
 
   String getOnlyDay() {
-    // Parse the input date string
     DateTime dateTime = DateFormat("dd MMM yyyy").parse(getFormattedDate());
     return onlyDay.format(dateTime);
   }
+
 }

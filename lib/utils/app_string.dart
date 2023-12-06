@@ -107,6 +107,7 @@ class AppString {
   static String text_from = "From";
   static String text_to = "To";
   static String text_save = "Save";
+  static String text_ok = "Ok";
   static String text_select_date = "Selected date";
   static String text_select_language = "Selected language";
   static String text_type_dot = "Type:";
@@ -133,6 +134,7 @@ class AppString {
   static String text_rejection = "Rejection";
   static String text_hours = "Hours";
   static const String text_add_description = "Add description";
+  static const String text_add_note = "Add note";
   static const String text_edit_text_hint =
       "Add Note Here (minimum 10 characters)";
   static String text_note = "Note";
