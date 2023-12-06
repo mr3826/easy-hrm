@@ -136,89 +136,7 @@ class IndividualEventView extends StatelessWidget {
             color: Colors.blueAccent,
             radius: 20,
           )
-        : ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: marginLayout,
-            itemCount: Get.find<LeaveScreenController>()
-                    .leaveDetailsByDate
-                    ?.getLeaveDetailsByDate?[0]
-                    .leaveRequests
-                    ?.length ??
-                0,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  print(Get.find<LeaveScreenController>()
-                      .leaveDetailsByDate
-                      ?.getLeaveDetailsByDate![0]
-                      .leaveRequests?[index]);
-
-                  customButtonSheet(
-                    context: context,
-                    child: LeaveRecordDetails(
-                      status: Get.find<LeaveScreenController>()
-                              .leaveDetailsByDate
-                              ?.getLeaveDetailsByDate![0]
-                              .leaveRequests?[index]
-                              .status
-                              ?.toLowerCase() ??
-                          "",
-                      leaveRecords: Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate?[0].leaveRequests?[index],
-                    ),
-                    height: 0.6,
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Card(
-                    elevation: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveDetailsByDate![0]
-                                      .leaveRequests?[index]
-                                      .leaveType
-                                      ?.type ??
-                                  "",
-                              style: AppStyle.mid_large_text.copyWith(
-                                  color: AppColor.normalTextColor,
-                                  fontSize: Dimensions.fontSizeDefault + 1,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Text(
-                              Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveDetailsByDate![0]
-                                      .leaveRequests?[index]
-                                      .duration
-                                      .toString() ??
-                                  "",
-                              style: AppStyle.normal_text_black.copyWith(
-                                  color: AppColor.hintColor,
-                                  fontSize: Dimensions.fontSizeDefault - 1),
-                            )
-                          ],
-                        ),
-                        _getStatusButton(Get.find<LeaveScreenController>()
-                                .leaveDetailsByDate
-                                ?.getLeaveDetailsByDate?[0]
-                                .leaveRequests?[index]
-                                .status ??
-                            ""),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
+        : _eventList();
   }
 
   _getStatusButton(String leaveStatus) {
@@ -236,4 +154,93 @@ class IndividualEventView extends StatelessWidget {
       return Container();
     }
   }
+
+  _eventList() => Get.find<LeaveScreenController>().leaveDetailsByDate == null
+      ? Text(
+          AppString.no_event_found_text,
+          style: AppStyle.mid_large_text.copyWith(
+              fontSize: Dimensions.fontSizeDefault, color: AppColor.hintColor),
+        )
+      : ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: marginLayout,
+          itemCount: Get.find<LeaveScreenController>()
+                  .leaveDetailsByDate
+                  ?.getLeaveDetailsByDate?[0]
+                  .leaveRequests
+                  ?.length ??
+              0,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+
+                customButtonSheet(
+                  context: context,
+                  child: LeaveRecordDetails(
+                    status: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests?[index]
+                            .status
+                            ?.toLowerCase() ??
+                        "",
+                    leaveRecords: Get.find<LeaveScreenController>()
+                        .leaveDetailsByDate
+                        ?.getLeaveDetailsByDate?[0]
+                        .leaveRequests?[index],
+                  ),
+                  height: 0.6,
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Card(
+                  elevation: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            Get.find<LeaveScreenController>()
+                                    .leaveDetailsByDate
+                                    ?.getLeaveDetailsByDate![0]
+                                    .leaveRequests?[index]
+                                    .leaveType
+                                    ?.type ??
+                                "",
+                            style: AppStyle.mid_large_text.copyWith(
+                                color: AppColor.normalTextColor,
+                                fontSize: Dimensions.fontSizeDefault + 1,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            Get.find<LeaveScreenController>()
+                                    .leaveDetailsByDate
+                                    ?.getLeaveDetailsByDate![0]
+                                    .leaveRequests?[index]
+                                    .duration
+                                    .toString() ??
+                                "",
+                            style: AppStyle.normal_text_black.copyWith(
+                                color: AppColor.hintColor,
+                                fontSize: Dimensions.fontSizeDefault - 1),
+                          )
+                        ],
+                      ),
+                      _getStatusButton(Get.find<LeaveScreenController>()
+                              .leaveDetailsByDate
+                              ?.getLeaveDetailsByDate?[0]
+                              .leaveRequests?[index]
+                              .status ??
+                          ""),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
 }

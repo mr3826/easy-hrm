@@ -30,6 +30,9 @@ class LeaveScreenController extends GetxController with StateMixin {
 
   getLeaveDetailsByDate() async {
     isLoading(true);
+    // "startDate": "${Get.find<DateController>().formattedDateTime}T00:00:00",
+    // "endDate": "${Get.find<DateController>().formattedDateTime}T23:59:00"
+    print("startDate": "${Get.find<DateController>().formattedDateTime}T00:00:00");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getLeaveDetailsByDateQuery, variables: {
       "queryData": {
