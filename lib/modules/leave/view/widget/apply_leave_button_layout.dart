@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
@@ -43,14 +44,11 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
             customSpacerHeight(height: 8),
             _leaveTypeDropDown(),
 
-
-            customSpacerHeight(height: 20),
-
+            customSpacerHeight(height: 8),
 
             _leaveCountStyleLayout(),
 
-
-
+            customSpacerHeight(height: 20),
             customTitleText(text: "${AppString.text_from.tr} *"),
             customSpacerHeight(height: 8),
            Obx(() =>  _fromDateTimeLayout(),),
@@ -59,7 +57,10 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
             customSpacerHeight(height: 8),
             Obx(() => _toDateTimeLayout(),),
 
-            customSpacerHeight(height: 20),
+            customSpacerHeight(height: 12),
+            _errorAlertLayout(),
+
+            customSpacerHeight(height: 18),
             customTitleText(text: AppString.text_note.tr),
             customSpacerHeight(height: 8),
             _noteTextField(),
@@ -211,12 +212,66 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
 
   _leaveCountStyleLayout() {
     return SizedBox(
-      height: 100,
-      child: Column(
-        children: [
-          Text("01",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
-          Text("Balance (No.of days)",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault),),
-        ],
+      width: double.infinity,
+      child: Card(
+        elevation: 0,
+        shape: roundedRectangleBorder,
+        color: AppColor.primaryColor.withOpacity(0.05),
+        child: Padding(
+          padding: marginLayout.copyWith(top: 8,bottom: 8,left: 16,right: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("01",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
+              Text("Balance (No.of days)",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault),),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _errorAlertLayout() {
+    return SizedBox(
+      child: Card(
+        elevation: 0,
+        shape: roundedRectangleBorder,
+        color: AppColor.errorColorLight.withOpacity(0.08),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                customSpacerWidth(width: 12),
+                const Icon(Icons.error_outline,color: AppColor.errorColorLight,size: 18,),
+                 Expanded(
+                  child: Padding(
+                    padding: marginLayout.copyWith(bottom: 12,top: 12,left: 12),
+                    child:  Text("Out of balance.The selected leave duration is out of the facility.Tou may have some Taken,approved or pending leave that affect your new request.",style: AppStyle.mid_large_text.copyWith(color: AppColor.errorColorLight,fontSize: Dimensions.fontSizeDefault-2),),
+                  ),
+                ),
+              ],
+            ),
+
+
+            // Row(
+            //   children: [
+            //     Container(
+            //         height: 180,
+            //         width: 70,
+            //         child: Icon(Icons.error_outline,color: AppColor.errorColorLight,)),
+            //     Container(
+            //       height: 180,
+            //       width: 500,
+            //       child: Column(
+            //         children: [
+            //           Text("Out of balance.The selected leave duration is out of the acaility.Tou may have some Taken,approved or pending leave that affect your new request."),
+            //         ],
+            //       ),
+            //     )
+            //   ],
+            // ),
+          ],
+        ),
       ),
     );
   }

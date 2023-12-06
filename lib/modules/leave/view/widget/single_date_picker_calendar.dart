@@ -168,9 +168,9 @@ class _FromDatePickerState extends State<FromDatePicker> {
             ),
 
 
-
-            Divider(color: AppColor.hintColor.withOpacity(0.5),),
             const Spacer(),
+            Divider(color: AppColor.hintColor.withOpacity(0.5),),
+
 
             _buttonLayout(onAction: (){
               Get.find<DateController>().fromDate.value = today;

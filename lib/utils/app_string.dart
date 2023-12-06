@@ -124,7 +124,7 @@ class AppString {
   static String text_filter = "Filter";
   static String mark_read = "Mark as Read";
   static String select_leave_type = "Select Leave Type";
-  static String text_select_starting_time = "Select starting time";
+  static String text_select_starting_time = "Select time";
   static String text_leave_status = "Leave Status";
   static String text_leave_duration = "Leave Duration";
   static String text_jpeg_format_not_support =
