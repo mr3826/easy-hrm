@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -10,7 +11,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
- Widget leaveLayout() {
+Widget leaveLayout() {
   return SizedBox(
     height: AppLayout.getHeight(115),
     width: double.infinity,
@@ -28,22 +29,15 @@ import 'package:payrun_mobile/utils/dimensions.dart';
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _countLayout(
-                      dynamicText: "12d",
-                      staticText: AppString.text_total.tr),
+                  _totalLeave(),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
-                  _countLayout(
-                      dynamicText: "12d 06h",
-                      staticText: AppString.text_token.tr),
+                  _takenLeave(),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
-                  _countLayout(
-                      dynamicText: "12d 03h",
-                      staticText: AppString.text_avaiable.tr),
-
+                  _balanceLeave(),
                 ],
               ),
               const Spacer(),
@@ -56,23 +50,62 @@ import 'package:payrun_mobile/utils/dimensions.dart';
   );
 }
 
-_tabToViewLeaveRecord() {
-   return GestureDetector(
-     onTap: ()=>Get.toNamed(Routes.LEAVE_RECORD_SCREEN),
-     child: Row(
-       mainAxisAlignment: MainAxisAlignment.center,
-       children: [
-         Text(AppString.text_tab_to_view_leave_record.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor, decoration: TextDecoration.underline,
-           fontSize: Dimensions.fontSizeDefault,
-         ),),
-         customSpacerWidth(width: 10),
-         const Icon(Icons.arrow_forward,color: AppColor.cardColor,size: 18,)
-       ],
-     ),
-   );
+_takenLeave() {
+  return _countLayout(
+      dynamicText: Get.find<LeaveScreenController>()
+              .leaveSummaryForDashboard
+              ?.getLeaveSummaryForDashboard
+              ?.takenLeave ??
+          "",
+      staticText: AppString.text_token.tr);
+}
+
+_balanceLeave() {
+  return _countLayout(
+      dynamicText: Get.find<LeaveScreenController>()
+              .leaveSummaryForDashboard
+              ?.getLeaveSummaryForDashboard
+              ?.balanceLeave ??
+          "",
+      staticText: AppString.text_token.tr);
+}
+
+_totalLeave() {
+  return _countLayout(
+      dynamicText: Get.find<LeaveScreenController>()
+              .leaveSummaryForDashboard
+              ?.getLeaveSummaryForDashboard
+              ?.totalLeaveDay ??
+          "",
+      staticText: AppString.text_total.tr);
 }
 
 
+_tabToViewLeaveRecord() {
+  return GestureDetector(
+    onTap: () => Get.toNamed(Routes.LEAVE_RECORD_SCREEN),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          AppString.text_tab_to_view_leave_record.tr,
+          style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.cardColor,
+            decorationColor: AppColor.cardColor,
+            decoration: TextDecoration.underline,
+            fontSize: Dimensions.fontSizeDefault,
+          ),
+        ),
+        customSpacerWidth(width: 10),
+        const Icon(
+          Icons.arrow_forward,
+          color: AppColor.cardColor,
+          size: 18,
+        )
+      ],
+    ),
+  );
+}
 
 AppBar get appBar {
   return AppBar(
@@ -90,19 +123,20 @@ _countLayout({required dynamicText, required staticText}) {
     children: [
       Text(
         "$dynamicText",
-        style: AppStyle.normal_text_black
-            .copyWith(color: AppColor.cardColor, fontWeight: FontWeight.bold,fontSize: Dimensions.fontSizeMid-2),
+        style: AppStyle.normal_text_black.copyWith(
+            color: AppColor.cardColor,
+            fontWeight: FontWeight.bold,
+            fontSize: Dimensions.fontSizeMid - 2),
       ),
       Text(
         "$staticText",
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor.withOpacity(0.9),
-            fontSize: Dimensions.fontSizeDefault-1),
+            fontSize: Dimensions.fontSizeDefault - 1),
       ),
     ],
   );
 }
-
 
 _divider() {
   return Container(

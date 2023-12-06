@@ -1,24 +1,24 @@
+import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/reset_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/leave_record.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/leave_screen.dart';
+import 'package:payrun_mobile/modules/home/presentation/main_screen.dart';
+import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/profile.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
-import '../modules/auth/presentation/view/otp_screen.dart';
-import '../modules/auth/presentation/view/reset_password.dart';
-import '../modules/home/presentation/main_screen.dart';
-import '../modules/profile/view/screen/edit_profile.dart';
+import '../modules/leave/view/screen/leave_record.dart';
 part 'app_routes.dart';
 
 
 class AppPages {
   AppPages._();
-  static const INITIAL = Routes.MAIN_SCREEN;
+  static const INITIAL = Routes.SPLASH_SCREEN;
 
   static final routes = [
     GetPage(
@@ -80,11 +80,11 @@ class AppPages {
       name: _Paths.LEAVE_RECORD_SCREEN,
       transition: Transition.size,
 
-      page: ()=> const LeaveRecordScreen(),
+      page: ()=>  LeaveRecordScreen(),
     ),
 
     GetPage(
-      name: _Paths.LEAVE_RECORD_SCREEN,
+      name: _Paths.NOTIFICATION_SCREEN,
       transition: Transition.size,
       page: ()=> const NotificationScreen(),
     ),
