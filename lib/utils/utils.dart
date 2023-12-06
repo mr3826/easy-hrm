@@ -1,12 +1,17 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/profile.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
+import 'package:intl/intl.dart';
 import '../modules/leave/view/screen/leave_screen.dart';
-import 'app_string.dart';
-import 'images.dart';
+
+
+
 
 //global items here
 TextEditingController _searchController = TextEditingController();
@@ -22,6 +27,17 @@ TextEditingController _newPasswordController = TextEditingController();
 TextEditingController _confirmPasswordController = TextEditingController();
 TextEditingController _orgNameController = TextEditingController();
 TextEditingController _leaveNoteController = TextEditingController();
+
+
+TextEditingController _editFirstNameController = TextEditingController();
+TextEditingController _editLastNameController = TextEditingController();
+TextEditingController _editEmailController = TextEditingController();
+TextEditingController  _editAddressController = TextEditingController();
+TextEditingController _editPhoneController = TextEditingController();
+TextEditingController _editEmergencyPhoneController = TextEditingController();
+TextEditingController _editBioController = TextEditingController();
+TextEditingController _currentPassController = TextEditingController();
+
 
 //global getter
 TextEditingController get searchController => _searchController;
@@ -48,23 +64,88 @@ TextEditingController get confirmPasswordController =>
     _confirmPasswordController;
 
 TextEditingController get orgNameController => _orgNameController;
+
 TextEditingController get leaveNoteController => _leaveNoteController;
 
 
+TextEditingController get editFirstNameController => _editFirstNameController;
+TextEditingController get editLastNameController => _editLastNameController;
+TextEditingController get editEmailController => _editEmailController;
+TextEditingController get editAddressController => _editAddressController;
+TextEditingController get editPhoneController => _editPhoneController;
+TextEditingController get editEmergencyPhoneController => _editEmergencyPhoneController;
+TextEditingController get editBioController => _editBioController;
+TextEditingController get currentPassword => _currentPassController;
 
-List<Widget> Function()  get buildScreens=>_buildScreens;
 
-List   get selectedDayIndex=>_selectedDay;
-List   get selectedDayIconIndex=>_selectedDayIcon;
+List<Widget> Function() get buildScreens => _buildScreens;
 
+
+List get selectedDayIndex => _selectedDay;
+
+List get selectedDayIconIndex => _selectedDayIcon;
+
+
+// List   get selectedDayIndex=>_selectedDay;
+// List   get selectedDayIconIndex=>_selectedDayIcon;
+
+List   get notificationTabBarIndex=>_notificationTabBarIndex;
+
+String dateMonthFormatFromDatetime(String dateString) {
+  // Parse the string to DateTime
+  DateTime dateTime = DateTime.parse(dateString);
+  // Format the DateTime to "dd, MMM"
+  String formattedDate = DateFormat('dd, MMM').format(dateTime);
+  return formattedDate;
+}
+
+
+String dateMonthYearFormatFromDatetime(String dateString) {
+  if (dateString.isEmpty) return "";
+  // Parse the string to DateTime
+  DateTime dateTime = DateTime.parse(dateString);
+  // Format the DateTime to "dd, MMM"
+  String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
+  return formattedDate;
+}
+
+String findWeekdayFormDateString(String dateString) {
+  if (dateString.isEmpty) return "";
+  DateTime dateTime = DateTime.parse(dateString);
+
+  String weekday = _getWeekday(dateTime.weekday);
+
+  return weekday;
+}
+
+String _getWeekday(int weekday) {
+  switch (weekday) {
+    case 1:
+      return "Monday";
+    case 2:
+      return "Tuesday";
+    case 3:
+      return "Wednesday";
+    case 4:
+      return "Thursday";
+    case 5:
+      return "Friday";
+    case 6:
+      return "Saturday";
+    case 7:
+      return "Sunday";
+    default:
+      return "Invalid weekday";
+  }
+}
 
 List<Widget> _buildScreens() {
   return [
     const LeaveScreen(),
     const LeaveScreen(),
     const LeaveScreen(),
-    const LeaveScreen(),
-    const LeaveScreen(),
+    const NotificationScreen(),
+    const ProfileScreen(),
   ];
 }
 
@@ -77,20 +158,22 @@ void logSuccessMessage(
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
 
+List _selectedDay = [
+  AppString.text_full_day.tr,
+  AppString.text_first_half.tr,
+  AppString.text_last_half.tr,
+];
 
-List _selectedDay=[
-    AppString.text_full_day.tr,
-    AppString.text_first_half.tr,
-    AppString.text_last_half.tr,
-
-
-
-  ];
-
-List _selectedDayIcon=[
+List _selectedDayIcon = [
   Images.full_day_lav,
   Images.half_day_lav,
   Images.last_half_day_lav
+
   ];
+
+
+List _notificationTabBarIndex=[AppString.text_new.tr,AppString.text_seen.tr];
+
+
 
 

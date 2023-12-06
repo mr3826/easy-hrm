@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -19,40 +20,52 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx((state) => Scaffold(
-      body: CustomScrollView(
-        slivers: [sliverAppBar, sliverToBoxAdapter],
-      ),
-      floatingActionButton: _applyLeaveBtn(context),
-    ),onLoading: const LoadingIndicator());
-    
+    return controller.obx(
+        (state) => Scaffold(
+              body: CustomScrollView(
+                slivers: [sliverAppBar, sliverToBoxAdapter],
+              ),
+              floatingActionButton: _applyLeaveBtn(context),
+            ),
+        onLoading: const LoadingIndicator());
   }
+
   //component
   _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: ()=>customButtonSheet(context: context,child: const ApplyLeaveScreen()),
+      onTap: () =>
+          customButtonSheet(context: context, child: const ApplyLeaveScreen()),
       child: Padding(
-        padding: const EdgeInsets.only(left: 35.0,bottom: 18),
+        padding: const EdgeInsets.only(left: 35.0, bottom: 18),
         child: Container(
           decoration: BoxDecoration(
               color: AppColor.primaryColor,
-              borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)
-          ),
+              borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
           height: AppLayout.getHeight(50),
           width: double.infinity,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.add,color: AppColor.cardColor,size: 17,),
+              const Icon(
+                Icons.add,
+                color: AppColor.cardColor,
+                size: 17,
+              ),
               customSpacerWidth(width: 4),
-              Center(child: Text(AppString.text_apply_leve.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor,fontWeight: FontWeight.w700,fontSize: Dimensions.radiusMid-1),)),
+              Center(
+                  child: Text(
+                AppString.text_apply_leve.tr,
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.cardColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: Dimensions.radiusMid - 1),
+              )),
             ],
           ),
         ),
       ),
     );
   }
-  
 }
 
 SliverAppBar get sliverAppBar {
@@ -82,14 +95,16 @@ SliverAppBar get sliverAppBar {
     ),
   );
 }
+
 _buttonRadiusLayout() {
   return PreferredSize(
     preferredSize: const Size.fromHeight(20),
     child: Container(
         decoration: BoxDecoration(
-            color: AppColor.cardColor,
+            color: AppColor.backgroundColor,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid+10), topLeft: Radius.circular(Dimensions.radiusMid+10))),
+                topRight: Radius.circular(Dimensions.radiusMid + 10),
+                topLeft: Radius.circular(Dimensions.radiusMid + 10))),
         width: double.maxFinite,
         padding: const EdgeInsets.only(top: 5, bottom: 5),
         child: const Center(
@@ -101,9 +116,5 @@ _buttonRadiusLayout() {
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(
-    child: IndividualEventView()
-  );
+  return const SliverToBoxAdapter(child: IndividualEventView());
 }
-
-
