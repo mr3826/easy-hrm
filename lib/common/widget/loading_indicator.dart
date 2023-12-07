@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({Key? key}) : super(key: key);
@@ -11,8 +11,10 @@ class LoadingIndicator extends StatelessWidget {
     return Center(
       child: Container(
         height: AppLayout.getSize(context).height,
+        width: AppLayout.getSize(context).width,
         color: Colors.white,
-        child: _android(),
+        child: const CupertinoActivityIndicator(
+            radius: 20, color: Colors.blueAccent),
       ),
     );
   }
@@ -33,9 +35,8 @@ loadingIndicatorLayout({double height = 100}) {
     height: AppLayout.getHeight(height),
     child: Center(
       child: Image.asset(
-        // Images.loading,
-       ""
-      ),
+          // Images.loading,
+          ""),
     ),
   );
 }
@@ -48,5 +49,3 @@ _android() {
     child: Image.asset(""),
   ));
 }
-
-

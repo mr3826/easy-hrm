@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/time_log_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_widget.dart';
@@ -11,6 +10,8 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../../../leave/view/widget/widget.dart';
 
 class TimelineScreen extends StatelessWidget {
   const TimelineScreen({super.key});
@@ -32,7 +33,7 @@ class TimelineScreen extends StatelessWidget {
       padding: const EdgeInsets.only(left: 35.0,bottom: 18),
       child: Row(
         children: [
-          floatingButton(bgBtnColor: AppColor.secondaryColor,onAction: (){},btnText: AppString.text_stat_timer),
+          floatingButton(bgBtnColor: AppColor.secondaryColor,onAction: ()=>Get.toNamed(Routes.TIMER_SCREEN),btnText: AppString.text_stat_timer),
           customSpacerWidth(width: 18),
 
           floatingButton(bgBtnColor: AppColor.primaryColor,onAction: ()=>Get.toNamed(Routes.NEW_ENTRY_SCREEN),btnText: AppString.text_add_time_entry),

@@ -23,10 +23,12 @@ class AppString {
       'Manage your employee with so many advanced features.Like, Leave management, Time log, Employee hiring, and much more.';
 
   static String text_password='Password';
+  static String text_timer='Timer';
   static String text_reset_password=' Rest password';
   static String text_remove='Remove';
   static String text_remove_photo='Remove photo';
   static String text_back_to_login='Back to login';
+  static String text_done_of_save='Done and Save';
   static String text_dont_not_worry='Don’t worry! It happens. Please enter the email';
   static String text_associated='address associated with your account';
   static String text_enter_code='Enter your code';
@@ -118,6 +120,7 @@ class AppString {
   static String text_from = "From";
   static String text_to = "To";
   static String text_save = "Save";
+  static String text_ok = "Ok";
   static String text_select_date = "Selected date";
   static String text_select_option = "Selected option";
   static String text_select_language = "Selected language";
@@ -135,7 +138,7 @@ class AppString {
   static String text_filter = "Filter";
   static String mark_read = "Mark as Read";
   static String select_leave_type = "Select Leave Type";
-  static String text_select_starting_time = "Select starting time";
+  static String text_select_starting_time = "Select time";
   static String text_leave_status = "Leave Status";
   static String text_leave_duration = "Leave Duration";
   static String text_jpeg_format_not_support =
@@ -145,6 +148,7 @@ class AppString {
   static String text_rejection = "Rejection";
   static String text_hours = "Hours";
   static const String text_add_description = "Add description";
+  static const String text_add_note = "Add note";
   static const String text_edit_text_hint =
       "Add Note Here (minimum 10 characters)";
   static String text_note = "Note";
@@ -188,7 +192,10 @@ class AppString {
   static String text_attendance = "Attendance";
   static String note_text = "Note (optional)";
   static String text_cancel = "Cancel";
+  static String text_canceled = "Canceled";
+  static String text_back = "Back";
   static String text_no_data_found = "No data found !";
+  static String no_event_found_text = "No events for today!";
   static String onboardTileMainAttendDes =
       'Manage your daily attendance, keep track of your goal and easily request for a new log or changing the existing log data. ';
   static String onboardTileEasyDes =

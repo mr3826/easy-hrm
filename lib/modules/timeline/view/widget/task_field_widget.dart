@@ -1,44 +1,47 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:payrun_mobile/common/widget/custom_text_field.dart';
+import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../controller/selected_task_controller.dart';
+
 Widget taskInputFieldLayout(
-    {required TextEditingController controller,
-    hint,
-    suffixIcon,
-    required onAction}) {
-  return SizedBox(
-    height: AppLayout.getHeight(55),
-    child: TextFormField(
-      controller: controller,
-      style: subTextFieldTitleStyle,
-      autofocus: false,
-      readOnly: true,
-      onTap: () => onAction(),
-      decoration: InputDecoration(
-        hintText: hint,
-        suffixIcon: suffixIcon,
-        hintStyle: TextStyle(
-            color: AppColor.hintColor,
-            fontFamily: "Poppins",
-            fontSize: Dimensions.fontSizeDefault + 1),
-        border: OutlineInputBorder(
-          borderSide:
-              const BorderSide(width: 0.0, color: AppColor.primaryColor),
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+    {required onAction}) {
+  return InkWell(
+    onTap: ()=>onAction(),
+    child: Card(
+      elevation: 0,
+      color: Colors.transparent,
+      shape: roundedRectangleBorder.copyWith(side: const BorderSide(width: .8,color: AppColor.hintColor)),
+      child: Padding(
+        padding: marginLayout.copyWith(left: 12,right: 8,top: 12,bottom: 12),
+        child:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Get.find<SelectedTaskController>().selectedTaskIndex.value.isNotEmpty?
+            Row(
+              children: [
+                Icon(Icons.circle,size: 14,color:  Get.find<SelectedTaskController>().hexColor.value,),
+                customSpacerWidth(width: 12),
+                Text( Get.find<SelectedTaskController>().selectedTaskIndex.value,style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeDefault+1,color: AppColor.normalTextColor),),
+              ],
+            ):Text( AppString.text_select_option.tr,style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeDefault+1,color: AppColor.hintColor),),
+
+
+            const Icon(CupertinoIcons.search,size: 30,color: AppColor.hintColor,)
+          ],
         ),
-        focusColor: AppColor.primaryColor,
-        focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: AppColor.hintColor,
-            ),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-        enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColor.hintColor),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
       ),
+
     ),
   );
 }
+
+

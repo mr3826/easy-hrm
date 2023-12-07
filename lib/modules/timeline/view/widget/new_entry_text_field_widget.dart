@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/controller/timer_picker.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
@@ -11,8 +10,6 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/custom_title_text_widget.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/timmer_text_field_dob.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -21,8 +18,10 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../leave/presentation/widget/apply_leave_multi_day.dart';
-import '../../../leave/presentation/widget/single_date_picker_calendar.dart';
+import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../../leave/view/widget/single_date_picker_calendar.dart';
+import '../../../leave/view/widget/timmer_text_field_dob.dart';
+import '../../../starting/view/splash_screen.dart';
 import 'duration_time_widget.dart';
 
 
@@ -30,21 +29,18 @@ import 'duration_time_widget.dart';
 class NewEntryTextField extends StatelessWidget {
    NewEntryTextField({super.key});
      final currentIndex=0.obs;
-   final SelectedTaskController selectionController = Get.put(SelectedTaskController());
 
 
    @override
   Widget build(BuildContext context) {
-     //Color convertColor = HexColor(GetStorage().read("color")) ;
-     var code=selectionController.colorIndex;
-      const Color greyDk = Color(code);
 
      return Padding(
       padding: marginLayout,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          durationTimeLayout(bgColor: AppColor.primaryColor),
+          durationTimeLayout(bgColor: AppColor.primaryColor.withOpacity(0.04)),
+          customSpacerHeight(height: 12),
 
           Obx(() => _timerLayout(context),),
           customSpacerHeight(height: 20),
@@ -57,12 +53,9 @@ class NewEntryTextField extends StatelessWidget {
           customTitleText(text: AppString.text_project_or_task.tr),
 
           customSpacerHeight(height: 8),
+          Obx(() => _selectedTaskLayout(context),),
 
-          _selectedTaskLayout(context),
 
-
-          Obx(() => Text('Selected Data: ${selectionController.selectedData}',)),
-        //  Icon(Icons.circle,color: convertColor,),
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),
@@ -71,7 +64,9 @@ class NewEntryTextField extends StatelessWidget {
 
           CustomDoubleAppButton(buttonText: AppString.text_add.tr, onAction: (){}, cancelAction: (){
             Navigator.pop(context);
-          })
+          }),
+          
+          customSpacerHeight(height: 40)
 
         ],
       ),
@@ -94,7 +89,7 @@ class NewEntryTextField extends StatelessWidget {
         children: [
         Container(
         width: double.infinity,
-        decoration: decorationStyle,
+        decoration: decorationStyle.copyWith(border: Border.all(width: .8,color: AppColor.hintColor),borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
         padding: marginLayout.copyWith(
             top: 14, bottom: 14, left: 14, right: 14),
         child: Row(
@@ -166,10 +161,9 @@ class NewEntryTextField extends StatelessWidget {
   }
 
   _selectedTaskLayout(context) {
-    return  taskInputFieldLayout(controller:taskSearchController ,suffixIcon: const Icon(CupertinoIcons.search,size: 28,color: AppColor.hintColor,),hint: AppString.text_select_option.tr,
+    return  taskInputFieldLayout(
 
     onAction: (){
-
       customButtonSheet(context: context,
 
       child: const TaskViewLayout()

@@ -38,6 +38,6 @@ static String EMPLOYEE_STATUS="assets/images/employee_status.svg";
 static String FLAG="assets/images/flag.svg";
 static String FLAG_PNG="assets/images/flag.png";
 static String ORG="assets/images/org.png";
-
+static String timer_animation="assets/json/timer.json";
 
 }

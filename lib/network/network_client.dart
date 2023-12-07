@@ -25,14 +25,15 @@ class NetworkClient extends GetConnect {
     return response;
   }
 
-  Future<gql.QueryResult> getGraphQuery(String queryString) async {
+  Future<gql.QueryResult> getGraphQuery(
+      {required String queryString, Map<String, dynamic>? variables}) async {
     gql.GraphQLClient qlClient = gql.GraphQLClient(
         link: gql.HttpLink(Api.PRIVATE_URL, defaultHeaders: {
           "Authorization": GetStorage().read(AppString.ACCESS_TOKEN)
         }),
         cache: gql.GraphQLCache());
-    return await qlClient
-        .query(gql.QueryOptions(document: gql.gql(queryString)));
+    return await qlClient.query(
+        gql.QueryOptions(document: gql.gql(queryString), variables: variables??{}));
   }
 
   Future<gql.QueryResult> mutationGraphData(
@@ -46,7 +47,6 @@ class NetworkClient extends GetConnect {
       document: gql.gql(mutationQuery),
       variables: variables,
     );
-
     return await qlClient.mutate(options);
   }
 }

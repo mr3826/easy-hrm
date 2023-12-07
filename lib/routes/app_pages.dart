@@ -1,14 +1,18 @@
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/reset_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/leave_record.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/leave_screen.dart';
+import 'package:payrun_mobile/modules/home/presentation/main_screen.dart';
+import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
-import 'package:payrun_mobile/modules/profile/presentation/view/edit_profile.dart';
-import 'package:payrun_mobile/modules/profile/presentation/view/profile.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/profile.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
+import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
+import '../modules/leave/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
 import '../modules/auth/presentation/view/otp_screen.dart';
@@ -31,6 +35,9 @@ class AppPages {
     GetPage(
       name: _Paths.ONBOARD_SCRREN,
       page: ()=> OnboardScreen(),
+    ),   GetPage(
+      name: _Paths.TIMER_SCREEN,
+      page: ()=> TimerScreen(),
     ),
     GetPage(
       name: _Paths.SIGN_IN_SCREEN,
@@ -79,11 +86,11 @@ class AppPages {
       name: _Paths.LEAVE_RECORD_SCREEN,
       transition: Transition.size,
 
-      page: ()=> const LeaveRecordScreen(),
+      page: ()=>  LeaveRecordScreen(),
     ),
 
     GetPage(
-      name: _Paths.LEAVE_RECORD_SCREEN,
+      name: _Paths.NOTIFICATION_SCREEN,
       transition: Transition.size,
       page: ()=> const NotificationScreen(),
     ),

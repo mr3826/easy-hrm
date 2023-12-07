@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/custom_title_text_widget.dart';
+import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+
+import '../../../leave/view/widget/custom_title_text_widget.dart';
 
 class TaskViewLayout extends StatefulWidget {
   const TaskViewLayout({super.key});
@@ -71,66 +71,75 @@ List<dynamic> color=[
           .toList();
     });
   }
-  final SelectedTaskController selectionController = Get.put(SelectedTaskController());
-
 
   @override
   Widget build(BuildContext context) {
-    print(selectionController.selectedData.toString()??"dfj");
-    //print(selectionController.colorIndex.toString()??"dfj");
     return Padding(
       padding: marginLayout.copyWith(top: 20, bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          customTitleText(text: AppString.text_project_or_task.tr),
-          customSpacerHeight(height: 8),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customTitleText(text: AppString.text_project_or_task.tr),
+                  customSpacerHeight(height: 8),
 
-          taskSearchInputField(),
-          customSpacerHeight(height: 12),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredList.length,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                Color convertColor = HexColor(color[index]) ;
-                return InkWell(
-                  onTap: ()async {
-                    if (filteredList[index] != null) {
-                      selectionController.setSelectedData(filteredList[index]);
+                  taskSearchInputField(),
+                  customSpacerHeight(height: 12),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: filteredList.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        Color convertColor = HexColor(color[index]) ;
+                        return InkWell(
+                          onTap: ()async {
+                            if (filteredList[index] != null) {
+                              Get.find<SelectedTaskController>().addTaskText(filteredList[index]);
+                              Get.find<SelectedTaskController>().selectedTaskIndex.isNotEmpty?Get.back():Container();
+                            }
 
-                      selectionController.setSelectedColor(color[index]);
+                            if(color[index] !=null){
+                              Get.find<SelectedTaskController>().taskAccordingToColor(color[index]);
+                              print("color main index ==> ${color[index]}");
+                            }
 
-                      selectionController.selectedData.isNotEmpty?Get.back():Container();
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
 
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: Icon(Icons.circle,size: 13,color: convertColor,),
-                        ),
-                        customSpacerWidth(width: 6),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(filteredList[index].toString(),style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeMid-3,color: AppColor.normalTextColor),),
-                            Text("Some random text as a description",style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeMid-4,color: AppColor.hintColor),),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 5.0),
+                                  child: Icon(Icons.circle,size: 13,color: convertColor,),
+                                ),
+                                customSpacerWidth(width: 6),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(filteredList[index].toString(),style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeMid-3,color: AppColor.normalTextColor),),
+                                    Text("Some random text as a description",style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeMid-4,color: AppColor.hintColor),),
 
-                          ],
-                        ),
-                      ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -180,19 +189,14 @@ Widget taskSearchInputField() {
 }
 
 
-class SelectedTaskController extends GetxController{
-  RxString selectedData = ''.obs;
-   Rx<MaterialColor> colorIndex = Colors.blue.obs;
-   setSelectedData(String data) {
-    selectedData.value=data;
-   }
-   setSelectedColor(color) {
-    colorIndex.value=color;
-    print(colorIndex);
-    print("Color is normal $color");
+
+
+class HexColor extends Color {
+  static int _getColor(String hex) {
+    String formattedHex = "FF${hex.toUpperCase().replaceAll("#", "")}";
+    return int.parse(formattedHex, radix: 16);
   }
 
-
-
+  HexColor(final String hex) : super(_getColor(hex));
 }
 

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/presentation/controller/calendar_date_controller.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/single_date_picker_calendar.dart';
-import 'package:payrun_mobile/modules/leave/presentation/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 import '../../../timeline/view/widget/horizontal_dotted_style.dart';
+import '../../view/widget/single_date_picker_calendar.dart';
+import '../../view/widget/status_btn_widget.dart';
 
 class IndividualEventView extends StatelessWidget {
   const IndividualEventView({super.key});
