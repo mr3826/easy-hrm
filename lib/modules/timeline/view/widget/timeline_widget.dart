@@ -69,6 +69,8 @@ _tabToViewTimeLogSummery() {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(AppString.text_tab_to_view_timelog_summary.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor, decoration: TextDecoration.underline,
+          decorationColor: AppColor.cardColor,
+
           fontSize: Dimensions.fontSizeDefault,
         ),),
         customSpacerWidth(width: 10),

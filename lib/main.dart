@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'modules/timeline/view/screen/calender.dart';
 
 
 void main() async {
@@ -20,14 +19,13 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      home: Calender(),
       locale: GetStorage().read("languageCode") != null
           ? Locale(GetStorage().read("languageCode"),
           GetStorage().read("countryCode"))
           : const Locale("en", "US"),
       fallbackLocale: const Locale("en", "US"),
-      //initialRoute: AppPages.INITIAL,
-      //getPages: AppPages.routes,
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
     );
   }
 }
