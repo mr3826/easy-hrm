@@ -12,7 +12,6 @@ import '../../../../utils/utils.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 
 
-
 class AddToTaskScreen extends StatelessWidget {
   const AddToTaskScreen({super.key});
 
@@ -47,10 +46,16 @@ class AddToTaskScreen extends StatelessWidget {
   }
 
   _selectedTaskLayout(context) {
+
     return  taskInputFieldLayout(
         onAction: (){
           customButtonSheet(context: context,
-              child: const TaskViewLayout()
+              child: LayoutBuilder(
+              builder:(context, constraints) {
+                return  const TaskViewLayout();
+              },
+              ),
+              height: .7
           );
         }
 

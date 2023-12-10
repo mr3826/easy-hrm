@@ -55,6 +55,7 @@ dependencies:
   lottie: ^2.6.0
   stop_watch_timer: ^3.0.2
   circular_countdown_timer: ^0.2.3
+  syncfusion_flutter_calendar: ^23.2.7
 
 dev_dependencies:
   flutter_test:

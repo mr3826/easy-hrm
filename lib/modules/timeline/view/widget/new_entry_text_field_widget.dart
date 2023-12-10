@@ -165,6 +165,7 @@ class NewEntryTextField extends StatelessWidget {
 
     onAction: (){
       customButtonSheet(context: context,
+      height: .7,
 
       child: const TaskViewLayout()
       );

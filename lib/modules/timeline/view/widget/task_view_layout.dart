@@ -26,32 +26,12 @@ class _TaskViewLayoutState extends State<TaskViewLayout> {
   List<dynamic> dataList = [
     'Project name one',
     'Project name two',
-    'Project name three',
-    'Project name four',
-    'Project name five',
-    'Project name six',
-    'Orange',
-    'Peach',
-    'Pear',
-    'Pineapple',
-    'Strawberry',
-    'Watermelon',
+
   ];
 List<dynamic> color=[
     "#FF5733",
     "#1B4242",
-    "#FFAD84",
-    "#191919",
-    "#B31312",
-    "#B31312",
-    "#B31312",
-    "#FF5733",
-    "#1B4242",
-    "#FFAD84",
-    "#191919",
-    "#B31312",
-    "#B31312",
-    "#B31312",
+
   ];
 
   List<dynamic> filteredList = [];

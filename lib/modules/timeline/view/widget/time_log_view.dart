@@ -23,6 +23,46 @@ class TimeLogView extends StatelessWidget {
         Obx(() =>   _dateCalendarLayout(),),
         customSpacerHeight(height: 8),
         workingScheduleLayout(),
+        // Expanded(
+        //   child: SfCalendar(
+        //     view: CalendarView.day,
+        //     // appointmentTimeTextFormat: 'H:mm',
+        //     onTap: (details) {
+        //       if (details.appointments == null) {
+        //         return;
+        //       }
+        //       final event = details.appointments!.first;
+        //       print("object");
+        //     },
+        //     //  headerHeight: 0,
+        //     dataSource: MeetingDataSource(getAppointment()),
+        //     allowDragAndDrop: true,
+        //     showCurrentTimeIndicator: false,
+        //     appointmentTextStyle: TextStyle(color: Colors.black),
+        //     showNavigationArrow: true,
+        //     selectionDecoration: BoxDecoration(
+        //       color: Colors.transparent,
+        //       border:
+        //       Border.all(color: Colors.white60,
+        //         width: 1,),
+        //       borderRadius: const BorderRadius.all(Radius.circular(4)),
+        //       shape: BoxShape.rectangle,
+        //     ),
+        //     headerStyle: const CalendarHeaderStyle(
+        //       textAlign: TextAlign.center,
+        //     ),
+        //
+        //
+        //     viewHeaderStyle: const ViewHeaderStyle(dateTextStyle: TextStyle(color: Colors.blue)),
+        //
+        //
+        //     //cellEndPadding: 200,
+        //   ),
+        // ),
+
+
+
+
 
 
       ],
@@ -88,3 +128,49 @@ class TimeLogView extends StatelessWidget {
 
 
 }
+
+
+// List<Appointment> getAppointment() {
+//   final DateTime today = DateTime.now();
+//   final DateTime startTime =
+//   DateTime(today.year, today.month, today.day, 9, 0, 0);
+//   final DateTime endTime = startTime.add(const Duration(hours: 2));
+//
+//   List<Appointment> metting = <Appointment>[
+//
+//     Appointment(
+//       startTime: startTime,
+//       endTime: endTime,
+//       subject: "Conference",
+//       color: Colors.blue.withOpacity(0.2),
+//
+//     ),
+//     Appointment(
+//       startTime: DateTime.now(),
+//       endTime: DateTime.now().add(Duration(hours: 2)),
+//       subject: "Conference",
+//       color: Colors.blue.withOpacity(0.2),
+//
+//     ),
+//   ];
+//
+//
+//
+//   // metting.add(
+//   //   Appointment(
+//   //     startTime: startTime,
+//   //     endTime: endTime,
+//   //     subject: "Conference",
+//   //     color: Colors.blue.withOpacity(0.2),
+//   //
+//   //   ),
+//   // );
+//
+//   return metting;
+// }
+//
+// class MeetingDataSource extends CalendarDataSource {
+//   MeetingDataSource(List<Appointment> source) {
+//     appointments = source;
+//   }
+// }
