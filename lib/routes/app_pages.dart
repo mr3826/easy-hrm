@@ -4,7 +4,8 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/reset_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
-import 'package:payrun_mobile/modules/home/presentation/main_screen.dart';
+import 'package:payrun_mobile/modules/home/view/screen/home.dart';
+import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
@@ -15,9 +16,6 @@ import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../modules/leave/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
-import '../modules/auth/presentation/view/otp_screen.dart';
-import '../modules/auth/presentation/view/reset_password.dart';
-import '../modules/home/presentation/main_screen.dart';
 import '../modules/timeline/view/screen/new_entry.dart';
 part 'app_routes.dart';
 
@@ -93,6 +91,11 @@ class AppPages {
       name: _Paths.NOTIFICATION_SCREEN,
       transition: Transition.size,
       page: ()=> const NotificationScreen(),
+    ),
+    GetPage(
+      name: _Paths.HOME_SCREEN,
+      transition: Transition.size,
+      page: ()=>  HomeScreen(),
     ),
 
     GetPage(

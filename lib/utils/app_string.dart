@@ -40,6 +40,8 @@ class AppString {
   static String text_continue='Continue';
   static String text_close='Close';
   static String text_bio='Bio';
+  static String text_welcome='Welcome';
+  static String text_progress='Progress';
   static String text_set_new_password='Set new password';
   static String text_send_code='Send a code';
   static String text_password_update='Password updated';
@@ -67,10 +69,16 @@ class AppString {
   static String text_file_upload_update_successfully='File upload update successfully';
 
   static String text_event='Events';
+  static String text_upcoming_leave='Upcoming leave';
   static String text_add='Add';
   static String text_update_your_profile='Update your profile photo';
   static String text_upload_a_photo_undar_2mb='Upload a photo under 2 MB';
   static String text_today='Today';
+  static String text_today_goal="Today's goal";
+  static String text_monthly_goal="Monthly goal";
+  static String text_logged_time="Logged time";
+  static String text_daily_summary="Daily summary";
+  static String text_monthly_summary="Monthly summary";
 
   static String text_approved='Approved';
   static String text_profile='Profile';
@@ -169,8 +177,6 @@ class AppString {
   static String text_new = "New";
   static String text_seen = "Seen";
   static String text_leave_balance = "Leave balance";
-  static String text_monthly_goal = "Monthly goal";
-  static String text_logged_time = "Logged time";
   static String text_time_line = "Timeline";
   static String text_view_more = "View more";
   static String text_view_less = "View less";

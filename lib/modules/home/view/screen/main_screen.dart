@@ -9,13 +9,13 @@ import 'package:flutter/services.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import '../../../common/widget/custom_spacer.dart';
-import '../../../utils/app_style.dart';
-import '../../../utils/dimensions.dart';
-import '../../profile/controller/profile_image_selected_controller.dart';
+import '../../../../common/widget/custom_spacer.dart';
+import '../../../../utils/app_style.dart';
+import '../../../../utils/dimensions.dart';
+import '../../../profile/controller/profile_image_selected_controller.dart';
 
 class MainScreen extends StatelessWidget {
-   MainScreen({Key? key}) : super(key: key);
+    MainScreen({Key? key}) : super(key: key);
 
   final controller = PersistentTabController(initialIndex: 2);
 

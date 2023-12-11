@@ -9,6 +9,8 @@ static String splash_logo="assets/images/splash_logo.svg";
 static String employee_on="assets/images/employee_on.svg";
 static String leave_on="assets/images/leave _on.svg";
 static String time_log_on="assets/images/timelog_on.svg";
+static String start_time="assets/images/start_time.svg";
+static String add_time_entry="assets/images/add_time_entry.svg";
 
 static String forgot="assets/images/forgot_src.svg";
 static String otp="assets/images/otp_src.svg";
