@@ -25,35 +25,34 @@ class DepartmentHistory extends StatelessWidget {
       {super.key,
       required this.departmentName,
       required this.date,
-        required this.itemCount,
+      required this.itemCount,
       required this.employeeStatus,
       required this.name,
       required this.employeeDptStatus,
       required this.imageUrl});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         customButtonSheetAppbar(
             text: AppString.text_deparmtnet.tr,
             subtext: AppString.text_history.tr),
-        Expanded(child: ListView.builder(
+        Expanded(
+            child: ListView.builder(
           itemCount: itemCount,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-          return  _departmentSectionInfoLayout(
-              imageUrl: imageUrl,
-              date: date,
-              departmentName: departmentName,
-              employeeDptStatus: employeeDptStatus,
-              employeeStatus: employeeStatus,
-              name: name);
-        },))
-        
-        
-       
+            return _departmentSectionInfoLayout(
+                imageUrl: imageUrl,
+                date: date,
+                departmentName: departmentName,
+                employeeDptStatus: employeeDptStatus,
+                employeeStatus: employeeStatus,
+                name: name);
+          },
+        ))
       ],
     );
   }
@@ -103,7 +102,7 @@ class DepartmentHistory extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          AppString.text_child_of_deparmtnet.tr,
+                          "${AppString.text_child_of_deparmtnet.tr} ",
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.secondaryColor,
                               fontSize: Dimensions.fontSizeDefault - 2),
@@ -195,7 +194,6 @@ class DepartmentHistory extends StatelessWidget {
                                 ),
                               ),
                               _departmentCircleLayout()
-                              
                             ],
                           ),
                         ],
@@ -224,11 +222,9 @@ class DepartmentHistory extends StatelessWidget {
           radius: 8,
           backgroundColor: AppColor.pureOrange,
           child: customSvgImage(
-              imageUrl:
-              Images.department_notification,
+              imageUrl: Images.department_notification,
               color: AppColor.cardColor,
               height: 10),
         ));
-    
   }
 }

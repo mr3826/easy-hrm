@@ -9,7 +9,7 @@ import 'package:payrun_mobile/modules/home/presentation/main_screen.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
-import 'package:payrun_mobile/modules/profile/view/screen/profile.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import '../modules/leave/view/screen/leave_record.dart';

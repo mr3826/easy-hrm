@@ -16,19 +16,13 @@ class CustomStatusButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-
-      Container(
+    return Container(
       decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.all(
             Radius.circular(Dimensions.radiusMid),
           )),
-      padding: EdgeInsets.symmetric(
-          horizontal: AppLayout.getHeight(Dimensions.paddingDefault+3),
-          vertical: AppLayout.getWidth(3),
-
-      ),
+      padding: EdgeInsets.fromLTRB(AppLayout.getWidth(11), AppLayout.getHeight(3), AppLayout.getWidth(11), AppLayout.getHeight(4)),
       child:
 
       Row(

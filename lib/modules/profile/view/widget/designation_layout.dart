@@ -4,12 +4,14 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import 'package:payrun_mobile/utils/utils.dart';
 
 class DesignationLayout extends StatelessWidget {
   const DesignationLayout({super.key});
@@ -22,15 +24,47 @@ class DesignationLayout extends StatelessWidget {
         customButtonSheetAppbar(
             text: AppString.text_designation.tr,
             subtext: AppString.text_history.tr),
-        Expanded(child: ListView.builder(
+        Expanded(
+            child: ListView.builder(
           physics: const BouncingScrollPhysics(),
-          itemCount: 2,
+          itemCount: Get.find<UserProfileController>()
+                  .employeeWorkHistory
+                  ?.getOrganizationUserHistory
+                  ?.designationHistories
+                  ?.length ??
+              0,
           itemBuilder: (context, index) {
             return _employeeStatusInfoLayout(
-                developerStatus: "Senior Developer",
-                date: "01 Jan,2031",
-                durationText: "Form last 9 month",
-                employeeCurrentStatus: "present");
+                developerStatus: Get.find<UserProfileController>()
+                        .employeeWorkHistory
+                        ?.getOrganizationUserHistory
+                        ?.designationHistories?[index]
+                        .designation
+                        ?.name ??
+                    "",
+                date: dateMonthYearFormatFromDatetime(
+                    Get.find<UserProfileController>()
+                            .employeeWorkHistory
+                            ?.getOrganizationUserHistory
+                            ?.designationHistories?[index]
+                            .startDate ??
+                        ""),
+                durationText:
+                    "Form last ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index].startDate ?? "")}",
+                employeeCurrentStatus: Get.find<UserProfileController>()
+                            .employeeWorkHistory
+                            ?.getOrganizationUserHistory
+                            ?.designationHistories?[index]
+                            .endDate ==
+                        null
+                    ? "present"
+                    : dateMonthYearFormatFromDatetime(
+                        Get.find<UserProfileController>()
+                                .employeeWorkHistory
+                                ?.getOrganizationUserHistory
+                                ?.designationHistories?[index]
+                                .endDate ??
+                            ""));
           },
         ))
       ],

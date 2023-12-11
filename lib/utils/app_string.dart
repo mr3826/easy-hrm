@@ -1,13 +1,11 @@
-
 class AppString {
   AppString._();
 
-
   //storage key here
 
-  static const ORGANIZATION_ID="organizationId";
-  static const LAST_INPUT="last_input";
-  static const IS_LOGGED_IN_FIRST_TIME="is_logged_in_first_time";
+  static const ORGANIZATION_ID = "organizationId";
+  static const LAST_INPUT = "last_input";
+  static const IS_LOGGED_IN_FIRST_TIME = "is_logged_in_first_time";
   static const String ACCESS_TOKEN = "access_token";
 
   // Apps string here
@@ -22,73 +20,80 @@ class AppString {
   static String text_mange_your_employee_with =
       'Manage your employee with so many advanced features.Like, Leave management, Time log, Employee hiring, and much more.';
 
-  static String text_password='Password';
-  static String text_reset_password=' Rest password';
-  static String text_remove='Remove';
-  static String text_remove_photo='Remove photo';
-  static String text_back_to_login='Back to login';
-  static String text_dont_not_worry='Don’t worry! It happens. Please enter the email';
-  static String text_associated='address associated with your account';
-  static String text_enter_code='Enter your code';
-  static String text_a_5_digit_has_been_etc='An 5 digit code has been sent to demouser@gmail.com';
-  static String text_setup_your_code_etc='Setup your new password now. Minimum 8 letter or digits';
-  static String text_resend_code='Resend code';
-  static String text_replace_file='Replace File';
-  static String text_submit='Submit';
-  static String text_continue='Continue';
-  static String text_close='Close';
-  static String text_bio='Bio';
-  static String text_set_new_password='Set new password';
-  static String text_send_code='Send a code';
-  static String text_password_update='Password updated';
-  static String text_your_password_has_been_etc='Your password has been changed successfully. Use your';
-  static String text_password_to_log_in='new password to log in.';
-  static String text_organization_name='Organization name';
-  static String text_organization='Organization';
-  static String text_total_leave='Total leave';
-  static String text_paid_leave='Paid leave';
-  static String text_unpaid_leave='Unpaid leave';
-  static String text_token='Token';
-  static String text_balance='Balance';
-  static String text_pendding='Pending';
-  static String text_phone='Phone';
-  static String text_emergency_phone='Emergency phone';
-  static String text_address='Address';
-  static String text_jpeg_jpg_png_etc='pdf,image or doc file';
-  static String text_document='Document';
-  static String text_storage_permission='Storage permission needed';
-  static String text_file_upload_file='File upload file';
-  static String text_file_upload_update_successfully='File upload update successfully';
+  static String text_password = 'Password';
+  static String text_reset_password = ' Rest password';
+  static String text_remove = 'Remove';
+  static String text_remove_photo = 'Remove photo';
+  static String text_back_to_login = 'Back to login';
+  static String text_variable_time = 'Variable time';
+  static String text_see_details = 'See Details';
+  static String text_dont_not_worry =
+      'Don’t worry! It happens. Please enter the email';
+  static String text_associated = 'address associated with your account';
+  static String text_enter_code = 'Enter your code';
+  static String text_a_5_digit_has_been_etc =
+      'An 5 digit code has been sent to demouser@gmail.com';
+  static String text_setup_your_code_etc =
+      'Setup your new password now. Minimum 8 letter or digits';
+  static String text_resend_code = 'Resend code';
+  static String text_replace_file = 'Replace File';
+  static String text_submit = 'Submit';
+  static String text_continue = 'Continue';
+  static String text_close = 'Close';
+  static String text_bio = 'Bio';
+  static String text_set_new_password = 'Set new password';
+  static String text_send_code = 'Send a code';
+  static String text_password_update = 'Password updated';
+  static String text_your_password_has_been_etc =
+      'Your password has been changed successfully. Use your';
+  static String text_password_to_log_in = 'new password to log in.';
+  static String text_organization_name = 'Organization name';
+  static String text_organization = 'Organization';
+  static String text_total_leave = 'Total leave';
+  static String text_paid_leave = 'Paid leave';
+  static String text_unpaid_leave = 'Unpaid leave';
+  static String text_token = 'Token';
+  static String text_balance = 'Balance';
+  static String text_pendding = 'Pending';
+  static String text_phone = 'Phone';
+  static String text_emergency_phone = 'Emergency phone';
+  static String text_address = 'Address';
+  static String text_jpeg_jpg_png_etc = 'pdf,image or doc file';
+  static String text_document = 'Document';
+  static String text_storage_permission = 'Storage permission needed';
+  static String text_file_upload_file = 'File upload file';
+  static String text_file_upload_update_successfully =
+      'File upload update successfully';
 
-  static String text_event='Events';
-  static String text_update_your_profile='Update your profile photo';
-  static String text_upload_a_photo_undar_2mb='Upload a photo under 2 MB';
-  static String text_today='Today';
+  static String text_event = 'Events';
+  static String text_update_your_profile = 'Update your profile photo';
+  static String text_upload_a_photo_undar_2mb = 'Upload a photo under 2 MB';
+  static String text_today = 'Today';
 
+  static String text_approved = 'Approved';
+  static String text_profile = 'Profile';
+  static String text_action = 'Actions';
+  static String text_from = 'From';
 
+  static String text_current_password = 'Current Password';
+  static String text_new_password = 'New Password';
+  static String text_confirm_password = 'Confirm Password';
+  static String text_confirm_your_password = 'Confirm your password';
+  static String text_min_8_character = 'Min. 8 characters';
 
-  static String text_approved='Approved';
-  static String text_profile='Profile';
-  static String text_action='Actions';
+  static String text_verify_your_email_address = 'Verify your email address';
+  static String text_we_have_sent_a_verification_etc =
+      "We have sent a Verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
+  static String text_do_not_receive_email = "Don't receive email? ";
+  static String text_resend = "Resend";
+  static String text_verify_email = "Verify email";
+  static String text_revert_change = "Revert changes";
+  static String text_email_change_request_is_in_pendding_etc =
+      "Email change request is in pending.Need verification.";
 
-  static String text_current_password='Current Password';
-  static String text_new_password='New Password';
-  static String text_confirm_password='Confirm Password';
-  static String text_confirm_your_password='Confirm your password';
-  static String text_min_8_character='Min. 8 characters';
-
-
-  static String text_verify_your_email_address='Verify your email address';
-  static String text_we_have_sent_a_verification_etc="We have sent a Verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
-  static String text_do_not_receive_email="Don't receive email? ";
-  static String text_resend="Resend";
-  static String text_verify_email="Verify email";
-  static String text_revert_change="Revert changes";
-  static String text_email_change_request_is_in_pendding_etc="Email change request is in pending.Need verification.";
-
-  static String text_take_break='Take Break';
-  static String text_on_break='On Break';
-  static String text_swich_organisation='Switch organisation';
+  static String text_take_break = 'Take Break';
+  static String text_on_break = 'On Break';
+  static String text_swich_organisation = 'Switch organisation';
   static String text_in = "In";
   static String text_out = "Out";
   static String text_total = "Total";
@@ -104,7 +109,6 @@ class AppString {
   static String text_designation = "Designation";
   static String text_employment = "Employment status";
   static String text_date = "Date";
-  static String text_from = "From";
   static String text_to = "To";
   static String text_save = "Save";
   static String text_select_date = "Selected date";
@@ -113,7 +117,6 @@ class AppString {
   static String text_duration = "Duration:";
   static String text_satus = "Status:";
   static String text_date_of_application = "Date of application:";
-
 
   static String textCustom = "Custom";
   static String text_select_time = "Selected time";
@@ -147,7 +150,7 @@ class AppString {
   static String text_email = "Email";
   static String text_full_day = "Full day";
   static String text_slected_an_option = "Selected an option";
-  static String text_child_of_deparmtnet = "Child of Main department";
+  static String text_child_of_deparmtnet = "Child of";
   static String text_deparmtnet = "Department";
   static String text_history = "History";
   static String text_new = "New";
@@ -197,10 +200,14 @@ class AppString {
   static const String text_apply = "Apply";
   static const String text_remove_time_log = "Remove timelog";
 
-  static const String text_sure_you_want_to_deleted_this_log = "Sure you want to deleted this log?";
-  static const String text_sure_you_want_to_deleted_this_photo = "Sure you want to deleted this photo?";
-  static const String text_if_you_deleted_this_time_log_etc = "If you delete this timelog you can't recover it again.";
-  static const String text_if_you_do_this_etc = "If you do this, you cannot turn back";
+  static const String text_sure_you_want_to_deleted_this_log =
+      "Sure you want to deleted this log?";
+  static const String text_sure_you_want_to_deleted_this_photo =
+      "Sure you want to deleted this photo?";
+  static const String text_if_you_deleted_this_time_log_etc =
+      "If you delete this timelog you can't recover it again.";
+  static const String text_if_you_do_this_etc =
+      "If you do this, you cannot turn back";
 
   static const String text_upload_image = "Upload Image";
   static const String text_upload = "Upload ";
@@ -258,5 +265,4 @@ class AppString {
   static const String enterYourPassword = "Enter your password";
   static const String enterYourEmail = "Enter your email";
   static const String password = "Password";
-
 }

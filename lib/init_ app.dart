@@ -1,6 +1,7 @@
 import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,5 +35,6 @@ Future<void> initApp() async {
   Get.put(PasswordController());
   Get.lazyPut(() => LeaveScreenController(), fenix: true);
   Get.lazyPut(() => LeaveRecordsController(), fenix: true);
+  Get.lazyPut(() => UserProfileController(), fenix: true);
 
 }
