@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
@@ -14,14 +15,13 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../../../../utils/utils.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
-  final String? status;
+  dynamic  status;
   final GetLeaveRecords? leaveRecords;
-  String? leaveDate;
-  String? leaveWeekday;
+  dynamic leaveDate;
+  dynamic leaveWeekday;
 
   LeaveRecordDetails({super.key, this.status, this.leaveRecords});
 
@@ -50,9 +50,9 @@ class LeaveRecordDetails extends StatelessWidget {
   }
 
   void _checkLeaveDateDuration(GetLeaveRecords leaveRecord) {
-    String starDate =
+    final starDate =
         leaveRecord.startDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
-    String endDate =
+    final endDate =
         leaveRecord.endDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
     if (starDate == endDate) {
       leaveDate = dateMonthYearFormatFromDatetime(leaveRecord.startDate ?? "");

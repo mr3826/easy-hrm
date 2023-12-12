@@ -21,7 +21,6 @@ import '../widget/status_btn_widget.dart';
 
 class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   const LeaveRecordScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return controller.obx(

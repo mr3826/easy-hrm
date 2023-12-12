@@ -51,6 +51,7 @@ dependencies:
   device_info_plus: ^9.1.0
   intl: ^0.18.1
   graphql_flutter:
+  syncfusion_flutter_calendar: 
 
 dev_dependencies:
   flutter_test:

@@ -11,6 +11,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 
 class PickedFileFormStorage {
+
   final box = GetStorage();
 
   Rx<File?> selectedFile = Rx<File?>(null);

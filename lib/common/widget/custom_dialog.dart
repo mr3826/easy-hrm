@@ -10,8 +10,11 @@ import '../../utils/app_color.dart';
 
 
 
-customDialog({required context,required icon,required titleText, required subText,required saveBtnAction,required btnText,drcText,required iconBgColor,required btnBgColor }) {
-  showDialog(context: context, builder:(context) =>  CustomDialog(subtext: subText,titleText: titleText,icon: icon, saveBtnAction: saveBtnAction,btnText: btnText,drcText: drcText,iconBgColor: btnBgColor,btnBgColor: btnBgColor),);
+customDialog({required context,required icon,drcFontSize,required titleText, required subText,required saveBtnAction,required btnText,drcText,required iconBgColor,required btnBgColor }) {
+  showDialog(context: context, builder:(context) =>  CustomDialog(subtext: subText,
+
+      drcFontSize:drcFontSize,
+      titleText: titleText,icon: icon, saveBtnAction: saveBtnAction,btnText: btnText,drcText: drcText,iconBgColor: btnBgColor,btnBgColor: btnBgColor),);
 }
 
 class CustomDialog extends StatelessWidget {
@@ -22,9 +25,11 @@ class CustomDialog extends StatelessWidget {
   final String btnText;
   final Color iconBgColor;
   final Color btnBgColor;
+  final double? drcFontSize;
   final Function saveBtnAction;
+  final isOTPVisible=false;
 
-  const CustomDialog({super.key,required this.icon,required this.titleText,required this.iconBgColor,required this.btnBgColor, this.subtext="",required this.saveBtnAction,required this.btnText,required this.drcText});
+  const CustomDialog({super.key,required this.icon,required this.titleText,this.drcFontSize,required this.iconBgColor,required this.btnBgColor, this.subtext="",required this.saveBtnAction,required this.btnText,required this.drcText});
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -47,7 +52,10 @@ class CustomDialog extends StatelessWidget {
                     customSpacerHeight(height: 50),
                     Text(titleText,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontWeight: FontWeight.w600),),
                     customSpacerHeight(height: 12),
-                    Center(child: Text(subtext,style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-3),)),
+                    Center(child: Text(subtext,style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: drcFontSize?? Dimensions.fontSizeDefault-3
+
+
+                    ),)),
                     Center(child: Text(drcText,style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-3),)),
 
 
@@ -68,7 +76,7 @@ class CustomDialog extends StatelessWidget {
                 child:  Icon(icon,size: 40,color: AppColor.cardColor,),
               ))
         ],
-      ),
+      )
     );
   }
 }

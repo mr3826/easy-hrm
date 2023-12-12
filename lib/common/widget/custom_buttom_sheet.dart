@@ -1,3 +1,4 @@
+import 'package:get/route_manager.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -6,9 +7,19 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 
 
-Future customButtonSheet({context,double? height=0.9, child}) {
+
+Future customButtonSheet({context,double? height=0.9, child,int duration=500, int reverseDuration=400}) {
+  final AnimationController controller = AnimationController(
+    duration:   Duration(milliseconds: duration),
+    reverseDuration: Duration(milliseconds: reverseDuration),
+
+    vsync: Navigator.of(context),
+  );
   return showModalBottomSheet(
     context: context,
+    transitionAnimationController: controller,
+
+
     isScrollControlled: true,
     backgroundColor: AppColor.backgroundColor,
     shape: RoundedRectangleBorder(

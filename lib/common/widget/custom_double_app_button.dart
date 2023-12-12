@@ -54,7 +54,7 @@ class CustomDoubleAppButton extends StatelessWidget {
                     BorderRadius.circular(Dimensions.radiusExtraLarge),
               ),
               child: Center(
-                  child: Text(
+                  child:  Text(
                     buttonText,
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.cardColor,

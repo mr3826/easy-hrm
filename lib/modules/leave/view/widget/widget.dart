@@ -80,6 +80,7 @@ _totalLeave() {
       staticText: AppString.text_total.tr);
 }
 
+
 _tabToViewLeaveRecord() {
   return GestureDetector(
     onTap: () => Get.toNamed(Routes.LEAVE_RECORD_SCREEN),
@@ -109,7 +110,7 @@ _tabToViewLeaveRecord() {
 AppBar get appBar {
   return AppBar(
     backgroundColor: Colors.transparent,
-    elevation: 1,
+    elevation: 0,
     title: Text(
       AppString.text_leave,
       style: AppStyle.mid_large_text.copyWith(fontSize: 20),

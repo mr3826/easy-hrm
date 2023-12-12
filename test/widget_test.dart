@@ -28,3 +28,10 @@ void main() {
     expect(find.text('1'), findsOneWidget);
   });
 }
+
+
+
+// OperationException(linkException: ServerException(originalException: null, originalStackTrace: null,
+//   parsedResponse: Response(data: null, errors: null,
+//       response {message: Authorization failed, error: Token expired at 2023-12-07T12:56:40.000Z})),
+//         graphqlErrors: [])

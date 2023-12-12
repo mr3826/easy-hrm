@@ -22,14 +22,12 @@ class CustomStatusButton extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(Dimensions.radiusMid),
           )),
-      padding: EdgeInsets.symmetric(
-          horizontal: AppLayout.getHeight(Dimensions.paddingDefault+3),
-          vertical: AppLayout.getWidth(3),
+      padding: EdgeInsets.fromLTRB(AppLayout.getWidth(11), AppLayout.getHeight(3), AppLayout.getWidth(11), AppLayout.getHeight(4)),
+      child:
 
-      ),
-      child: Row(
+      Row(
         children: [
-           Icon(statusIcon,color: textColor,size: 16,),
+          statusIcon !=null? Icon(statusIcon,color: textColor,size: 16,):Container(),
           customSpacerWidth(width: 4),
           Text(text??"", style: AppStyle.small_text.copyWith(color: textColor)),
         ],

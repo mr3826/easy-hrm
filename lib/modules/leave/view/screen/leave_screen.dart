@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -100,7 +101,7 @@ _buttonRadiusLayout() {
     preferredSize: const Size.fromHeight(20),
     child: Container(
         decoration: BoxDecoration(
-            color: AppColor.cardColor,
+            color: AppColor.backgroundColor,
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(Dimensions.radiusMid + 10),
                 topLeft: Radius.circular(Dimensions.radiusMid + 10))),
