@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
@@ -36,8 +37,11 @@ class UpdateProfileController extends GetxController {
       {required String currentPassword, required String newPassword}) async {
     isLoading(true);
     try {
-      final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD,
-          {"oldPassword": currentPassword, "newPassword": newPassword});
+      final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
+        "oldPassword": currentPassword,
+        "newPassword": newPassword,
+        "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
+      });
 
       if (response.status.hasError) {
         logErrorMessage(logName: "changePassword", response: response);
