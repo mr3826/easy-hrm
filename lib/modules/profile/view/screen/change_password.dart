@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/error_message.dart';
+import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
@@ -10,7 +13,8 @@ import '../../../auth/presentation/view/otp_screen.dart';
 import '../widget/edit_profile_widget.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
-   ChangePasswordScreen({super.key});
+  ChangePasswordScreen({super.key});
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -28,17 +32,22 @@ class ChangePasswordScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   customSpacerHeight(height: 12),
-                  userTextFieldLayout(titleText: AppString.text_current_password.tr,controller: currentPassword,hintText: AppString.text_min_8_character.tr,
-
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return AppString.the_password_field_is_required;
-                    } else {
-                      return null;
-                    }
-                  },
+                  userTextFieldLayout(
+                    titleText: AppString.text_current_password.tr,
+                    controller: currentPassword,
+                    hintText: AppString.text_min_8_character.tr,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return AppString.the_password_field_is_required;
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
-                  userTextFieldLayout(titleText: AppString.text_new_password.tr,controller: newPasswordController,hintText: AppString.text_min_8_character.tr,
+                  userTextFieldLayout(
+                    titleText: AppString.text_new_password.tr,
+                    controller: newPasswordController,
+                    hintText: AppString.text_min_8_character.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return AppString.the_new_password_field_is_required;
@@ -47,7 +56,10 @@ class ChangePasswordScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  userTextFieldLayout(titleText: AppString.text_confirm_password.tr,controller: confirmPasswordController,hintText: AppString.text_min_8_character.tr,
+                  userTextFieldLayout(
+                    titleText: AppString.text_confirm_password.tr,
+                    controller: confirmPasswordController,
+                    hintText: AppString.text_min_8_character.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return AppString.the_confirm_password_field_is_required;
@@ -55,21 +67,34 @@ class ChangePasswordScreen extends StatelessWidget {
                         return null;
                       }
                     },
-
                   ),
-
                   customSpacerHeight(height: 20),
-
-                  CustomDoubleAppButton(buttonText: AppString.text_save.tr, onAction: (){
-
-                  if (_formKey.currentState!.validate()) {
-                    
-                  }
-                  }, cancelAction: (){
-                    Navigator.pop(context);
-                  }),
+                  Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
+                      ? const Center(
+                          child: CupertinoActivityIndicator(
+                              radius: 16, color: Colors.blueAccent),
+                        )
+                      : CustomDoubleAppButton(
+                          buttonText: AppString.text_save.tr,
+                          onAction: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (newPasswordController.text ==
+                                  confirmPasswordController.text) {
+                                Get.find<UpdateProfileController>()
+                                    .changePassword(
+                                        currentPassword: currentPassword.text,
+                                        newPassword:
+                                            confirmPasswordController.text);
+                              } else {
+                                showErrorMessage(
+                                    message: AppString.password_not_matched.tr);
+                              }
+                            }
+                          },
+                          cancelAction: () {
+                            Navigator.pop(context);
+                          })),
                   customSpacerHeight(height: 300),
-
                 ],
               ),
             ),
@@ -78,7 +103,4 @@ class ChangePasswordScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
-

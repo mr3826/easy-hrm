@@ -16,6 +16,7 @@ class NetworkClient extends GetConnect {
   Future<Response> postRequest(String apiEndPoint, dynamic body) async {
     Response response = await post(_getRequestUrl(apiEndPoint), body, headers: {
       "Content-Type": "application/json",
+      "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
     }).timeout(const Duration(seconds: 15));
     return response;
   }
@@ -27,8 +28,8 @@ class NetworkClient extends GetConnect {
           "Authorization": GetStorage().read(AppString.ACCESS_TOKEN)
         }),
         cache: gql.GraphQLCache());
-    return await qlClient.query(
-        gql.QueryOptions(document: gql.gql(queryString), variables: variables??{}));
+    return await qlClient.query(gql.QueryOptions(
+        document: gql.gql(queryString), variables: variables ?? {}));
   }
 
   Future<gql.QueryResult> mutationGraphData(

@@ -14,6 +14,7 @@ import '../modules/leave/view/screen/leave_screen.dart';
 TextEditingController _searchController = TextEditingController();
 TextEditingController _emailController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
+TextEditingController _editMailPasswordController = TextEditingController();
 TextEditingController _userNameController = TextEditingController();
 TextEditingController _restPasswordController = TextEditingController();
 TextEditingController _addCountyController = TextEditingController();
@@ -33,11 +34,16 @@ TextEditingController _editPhoneController = TextEditingController();
 TextEditingController _editEmergencyPhoneController = TextEditingController();
 TextEditingController _editBioController = TextEditingController();
 TextEditingController _currentPassController = TextEditingController();
+TextEditingController _changeEmailController = TextEditingController();
 
 //global getter
 TextEditingController get searchController => _searchController;
 
+TextEditingController get editMailPasswordController =>
+    _editMailPasswordController;
+
 TextEditingController get emailController => _emailController;
+TextEditingController get changeEmailController => _changeEmailController;
 
 TextEditingController get passwordController => _passwordController;
 

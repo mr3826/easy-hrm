@@ -41,6 +41,7 @@ class AppString {
   static String text_continue = 'Continue';
   static String text_close = 'Close';
   static String text_bio = 'Bio';
+  static String password_not_matched = 'Password not matched';
   static String text_set_new_password = 'Set new password';
   static String text_send_code = 'Send a code';
   static String text_password_update = 'Password updated';
@@ -64,6 +65,8 @@ class AppString {
   static String text_file_upload_file = 'File upload file';
   static String text_file_upload_update_successfully =
       'File upload update successfully';
+  static String profile_update_successfully_text =
+      'Profile updated successfully';
 
   static String text_event = 'Events';
   static String text_update_your_profile = 'Update your profile photo';
@@ -86,6 +89,7 @@ class AppString {
       "We have sent a Verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
   static String text_do_not_receive_email = "Don't receive email? ";
   static String text_resend = "Resend";
+  static String resend_otp_text = "Otp Send to your email";
   static String text_verify_email = "Verify email";
   static String text_revert_change = "Revert changes";
   static String text_email_change_request_is_in_pendding_etc =

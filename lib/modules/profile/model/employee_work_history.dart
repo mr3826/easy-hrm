@@ -84,13 +84,15 @@ class EmploymentHistories {
 }
 
 class EmploymentStatus {
+  String? id;
   String? name;
   String? color;
 
-  EmploymentStatus({this.name, this.color});
+  EmploymentStatus({this.id,this.name, this.color});
 
   EmploymentStatus.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     color = json['color'];
+    id = json['id'];
   }
 }

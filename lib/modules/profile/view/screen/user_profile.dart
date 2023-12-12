@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -60,9 +61,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       customSpacerHeight(height: 20),
-                      Obx(
-                        () => _userInfoLayout(),
-                      ),
+                      _userInfoLayout(),
                       customSpacerHeight(height: 30),
                       _monthlyStatusLayout(),
                       customSpacerHeight(height: 30),
@@ -97,34 +96,28 @@ class ProfileScreen extends GetView<UserProfileController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
-          radius: 33,
+          radius: 40,
           backgroundColor: AppColor.disableColor,
-          child: CircleAvatar(
-            radius: 32,
-            backgroundColor: AppColor.backgroundColor,
-            child: CircleAvatar(
-              radius: 30,
-              backgroundColor: AppColor.backgroundColor,
-              child: Get.find<PikedProfileImgController>()
-                      .storageForUpload
-                      .filePath
-                      .value
-                      .isNotEmpty
-                  ? CircleAvatar(
-                      radius: 37,
-                      backgroundImage: FileImage(File(
-                              Get.find<PikedProfileImgController>()
-                                  .storageForUpload
-                                  .filePath
-                                  .value)
-                          .absolute),
-                    )
-                  : CircleAvatar(
-                      radius: 37,
-                      backgroundImage: NetworkImage(
-                          "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${controller.userDetails?.getOrganizationUserDetails?.profile?.image}"),
-                    ),
-            ),
+          child: Get.find<UserProfileController>()
+              .userDetails
+              ?.getOrganizationUserDetails
+              ?.profile
+              ?.image !=
+              null
+              ? CircleAvatar(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.green,
+            radius: 37,
+            backgroundImage: NetworkImage(
+                "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}"),
+            child: const CupertinoActivityIndicator(),
+          )
+              : CircleAvatar(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.green,
+            radius: 37,
+            backgroundImage: AssetImage(Images.user),
+            child: const CupertinoActivityIndicator(),
           ),
         ),
         customSpacerWidth(width: 18),

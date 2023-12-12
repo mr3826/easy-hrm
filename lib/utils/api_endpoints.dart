@@ -11,6 +11,10 @@ class Api {
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/resend-verification-code";
   static const RESET_PASSWORD = "/auth/verify-forgot-password-code";
+  static const VERIFY_PASSWORD = "/auth/verify-password";
+  static const CHANGE_MAIL = "/auth/change-email";
+  static const VERIFY_CHANGE_MAIL_OTP = "/auth/confirm-change-email";
+  static const CHANGE_PASSWORD = "/auth/change-password";
 }
 
 //leave module
@@ -127,6 +131,7 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
       employment_status {
         name
         color
+        id
       }
     }
   }
@@ -140,6 +145,14 @@ query GeTimelogAndLeaveAvailabilityForApp {
     total_logged
     total_schedule
     balance_leave
+  }
+}
+''';
+
+const updateUserProfileMutation = r'''
+mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
+  updateOrganizationUser(inputData: $inputData) {
+    id
   }
 }
 ''';
