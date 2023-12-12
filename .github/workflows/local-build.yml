@@ -26,7 +26,7 @@ jobs:
 
     - name: Set Date and Time
       id: datetime
-      run: echo "::set-output name=datetime::$(date +'%d%m%Y-%H:%M')"
+      run: echo "::set-output name=datetime::$(date +'%d%m%Y-%H%M')"
 
     - name: Upload to S3
       uses: actions/upload-artifact@v2
