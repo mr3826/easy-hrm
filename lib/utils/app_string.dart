@@ -6,6 +6,7 @@ class AppString {
   static const ORGANIZATION_ID = "organizationId";
   static const LAST_INPUT = "last_input";
   static const IS_LOGGED_IN_FIRST_TIME = "is_logged_in_first_time";
+  static const String ID_TOKEN = "id_token";
   static const String ACCESS_TOKEN = "access_token";
 
   // Apps string here

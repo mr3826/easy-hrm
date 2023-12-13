@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
+import 'package:payrun_mobile/modules/notification/view/screen/notification.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
@@ -222,3 +222,6 @@ List _selectedDayIcon = [
 ];
 
 List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
+
+
+

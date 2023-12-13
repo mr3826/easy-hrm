@@ -7,7 +7,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/reset_password.dart
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
 import 'package:payrun_mobile/modules/home/presentation/main_screen.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
-import 'package:payrun_mobile/modules/notification/presentation/view/notification.dart';
+import 'package:payrun_mobile/modules/notification/view/screen/notification.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';

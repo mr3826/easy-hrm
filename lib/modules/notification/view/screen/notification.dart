@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/modules/notification/presentation/widget/notification_custom_tabbar.dart';
-import 'package:payrun_mobile/modules/notification/presentation/widget/notification_appbar_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../widget/notification_appbar_widget.dart';
+import '../widget/notification_custom_tabbar.dart';
 
 
 
