@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -13,6 +18,8 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
+import '../../../../utils/api_endpoints.dart';
+import '../../../../utils/utils.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../widget/edit_profile_widget.dart';
 
@@ -22,21 +29,37 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customInsideAppbar(title: AppString.text_edit_profile.tr),
-      body: Padding(
-        padding: marginLayout,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-             Obx(() =>  _profileSectionLayout(context),),
-              customSpacerHeight(height: 30),
-              textFiledLayout()
-            ],
-          ),
-        ),
-      ),
+      appBar: customInsideAppbar(
+          title: AppString.text_edit_profile.tr,
+          onPressAction: () {
+            _clearInputField();
+            Get.back();
+          }),
+      body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
+          ? const LoadingIndicator()
+          : Padding(
+              padding: marginLayout,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    _profileSectionLayout(context),
+                    customSpacerHeight(height: 30),
+                    textFiledLayout()
+                  ],
+                ),
+              ),
+            )),
     );
+  }
+
+  void _clearInputField() {
+    editBioController.clear();
+    editEmergencyPhoneController.clear();
+    editPhoneController.clear();
+    editAddressController.clear();
+    editLastNameController.clear();
+    editFirstNameController.clear();
   }
 
   _profileSectionLayout(context) {
@@ -46,35 +69,28 @@ class EditProfileScreen extends StatelessWidget {
         CircleAvatar(
           radius: 40,
           backgroundColor: AppColor.disableColor,
-          child: CircleAvatar(
-            radius: 39,
-            backgroundColor: AppColor.backgroundColor,
-            child:Get.find<PikedProfileImgController>()
-                .storageForUpload
-                .filePath
-                .value.isNotEmpty?
-
-            CircleAvatar(
-              radius: 37,
-              backgroundImage:
-              FileImage(
-                      File(Get.find<PikedProfileImgController>()
-                          .storageForUpload
-                          .filePath
-                          .value
-
-                      )
-                          .absolute
-
-              ),
-            ): CircleAvatar(
-              radius: 37,
-              backgroundImage:AssetImage(Images.user),
-            ),
-          ),
+          child: Get.find<UserProfileController>()
+                      .userDetails
+                      ?.getOrganizationUserDetails
+                      ?.profile
+                      ?.image !=
+                  null
+              ? CircleAvatar(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.green,
+                  radius: 37,
+                  backgroundImage: NetworkImage(
+                      "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}"),
+                  child: const CupertinoActivityIndicator(),
+                )
+              : CircleAvatar(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.green,
+                  radius: 37,
+                  backgroundImage: AssetImage(Images.user),
+                  child: const CupertinoActivityIndicator(),
+                ),
         ),
-
-
         customSpacerWidth(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +102,9 @@ class EditProfileScreen extends StatelessWidget {
             ),
             Text(
               AppString.text_upload_a_photo_undar_2mb.tr,
-              style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault-1),
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault - 1),
             ),
             customSpacerHeight(height: 8),
             Row(
@@ -94,21 +112,18 @@ class EditProfileScreen extends StatelessWidget {
                 _uploadBtnLayout(),
                 customSpacerWidth(width: 12),
                 _removeBtnLayout(context)
-
               ],
             )
           ],
         ),
       ],
     );
-    ;
   }
 
   _uploadBtnLayout() {
     return GestureDetector(
-      onTap: (){
-        Get.find<PikedProfileImgController>()
-            .storageForUpload.pickFile();
+      onTap: () {
+        Get.find<PikedProfileImgController>().storageForUpload.pickFile();
       },
       child: SizedBox(
         height: AppLayout.getHeight(36),
@@ -116,8 +131,8 @@ class EditProfileScreen extends StatelessWidget {
         child: Card(
           elevation: 0,
           color: AppColor.secondaryColor,
-          shape: roundedRectangleBorder.copyWith(borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
-
+          shape: roundedRectangleBorder.copyWith(
+              borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
           child: Center(
             child: Text(
               AppString.text_upload.tr,
@@ -132,27 +147,35 @@ class EditProfileScreen extends StatelessWidget {
 
   _removeBtnLayout(context) {
     return GestureDetector(
-        onTap: (){
-
-          customDialog(context: context,saveBtnAction: (){
-            Get.find<PikedProfileImgController>()
-                .storageForUpload
-                .filePath.value="";
-            Get.find<PikedProfileImgController>()
-                .storageForUpload
-                .filePath.value.isEmpty?Get.back():Container();
-          },
+        onTap: () {
+          customDialog(
+              context: context,
+              saveBtnAction: () {
+                Get.find<PikedProfileImgController>()
+                    .storageForUpload
+                    .filePath
+                    .value = "";
+                Get.find<PikedProfileImgController>()
+                        .storageForUpload
+                        .filePath
+                        .value
+                        .isEmpty
+                    ? Get.back()
+                    : Container();
+              },
               icon: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_photo.tr,
               subText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
               iconBgColor: AppColor.errorColorLight,
               btnBgColor: AppColor.errorColorLight,
               btnText: AppString.text_remove.tr,
-            drcText: ""
-
-          );
-
+              drcText: "");
         },
-        child: Text(AppString.text_remove_photo.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.pendingColor,fontSize: Dimensions.fontSizeDefault),));
+        child: Text(
+          AppString.text_remove_photo.tr,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.pendingColor,
+              fontSize: Dimensions.fontSizeDefault),
+        ));
   }
 }

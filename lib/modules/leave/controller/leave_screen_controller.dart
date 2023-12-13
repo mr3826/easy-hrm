@@ -16,30 +16,25 @@ class LeaveScreenController extends GetxController with StateMixin {
 
   getLeaveSummaryForDashboard() async {
     change(null, status: RxStatus.loading());
-    QueryResult<Object?> resonse = await NetworkClient()
+    final response = await NetworkClient()
         .getGraphQuery(queryString: getLeaveSummaryForDashboardQuery);
 
-    if (resonse.hasException) {
-      log(resonse.exception.toString());
+    if (response.hasException) {
+      log(response.exception.toString());
     } else {
       leaveSummaryForDashboard =
-          LeaveSummaryForDashboard.fromJson(resonse.data!);
+          LeaveSummaryForDashboard.fromJson(response.data!);
     }
     change(null, status: RxStatus.success());
   }
 
   getLeaveDetailsByDate() async {
     isLoading(true);
-    // "startDate": "${Get.find<DateController>().formattedDateTime}T00:00:00",
-    // "endDate": "${Get.find<DateController>().formattedDateTime}T23:59:00"
-  //  print("startDate": "${Get.find<DateController>().formattedDateTime}T00:00:00");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getLeaveDetailsByDateQuery, variables: {
       "queryData": {
-        // "startDate": "${Get.find<DateController>().formattedDateTime}T00:00:00",
-        // "endDate": "${Get.find<DateController>().formattedDateTime}T23:59:00"
-        "startDate": "2023-10-26T00:00:00",
-        "endDate": "2023-10-26T23:59:00"
+        "startDate": "${Get.find<DateController>().formattedDateTime}T00:00:00",
+        "endDate": "${Get.find<DateController>().formattedDateTime}T23:59:00"
       }
     });
 
