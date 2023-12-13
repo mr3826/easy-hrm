@@ -7,6 +7,8 @@ import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
+import '../modules/home/view/screen/home.dart';
+import '../modules/timeline/view/screen/timeline.dart';
 import 'package:intl/intl.dart';
 import '../modules/leave/view/screen/leave_screen.dart';
 
@@ -34,15 +36,21 @@ TextEditingController _editPhoneController = TextEditingController();
 TextEditingController _editEmergencyPhoneController = TextEditingController();
 TextEditingController _editBioController = TextEditingController();
 TextEditingController _currentPassController = TextEditingController();
+TextEditingController _taskController = TextEditingController();
+TextEditingController _descriptionController = TextEditingController();
+
 TextEditingController _changeEmailController = TextEditingController();
 
 //global getter
 TextEditingController get searchController => _searchController;
 
+TextEditingController get taskSearchController => _taskController;
+
 TextEditingController get editMailPasswordController =>
     _editMailPasswordController;
 
 TextEditingController get emailController => _emailController;
+
 TextEditingController get changeEmailController => _changeEmailController;
 
 TextEditingController get passwordController => _passwordController;
@@ -50,6 +58,8 @@ TextEditingController get passwordController => _passwordController;
 TextEditingController get userNameController => _userNameController;
 
 TextEditingController get restPasswordController => _restPasswordController;
+
+TextEditingController get descriptionController => _descriptionController;
 
 TextEditingController get addCountyController => _addCountyController;
 
@@ -91,10 +101,9 @@ List get selectedDayIndex => _selectedDay;
 
 List get selectedDayIconIndex => _selectedDayIcon;
 
-// List   get selectedDayIndex=>_selectedDay;
-// List   get selectedDayIconIndex=>_selectedDayIcon;
-
 List get notificationTabBarIndex => _notificationTabBarIndex;
+
+List get selectedBeforeDayAndAfterDay => _selectedBeforeDayAndAfterDay;
 
 String dateMonthFormatFromDatetime(String dateString) {
   // Parse the string to DateTime
@@ -192,9 +201,9 @@ String _getWeekday(int weekday) {
 
 List<Widget> _buildScreens() {
   return [
+    const TimelineScreen(),
     const LeaveScreen(),
-    const LeaveScreen(),
-    const LeaveScreen(),
+    HomeScreen(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];
@@ -221,7 +230,10 @@ List _selectedDayIcon = [
   Images.last_half_day_lav
 ];
 
+List _selectedBeforeDayAndAfterDay = [
+  AppString.text_yesterday.tr,
+  AppString.text_today.tr,
+  AppString.text_tomorrow.tr,
+];
+
 List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
-
-
-

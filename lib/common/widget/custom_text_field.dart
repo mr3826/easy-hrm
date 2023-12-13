@@ -124,6 +124,7 @@ class CustomPassInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final focusedCtx = FocusManager.instance.primaryFocus?.context;
     Future.delayed(const Duration(milliseconds: 200))
         .then((value) => Scrollable.ensureVisible(
@@ -183,6 +184,10 @@ RoundedRectangleBorder get _cardStyle {
       // side: const BorderSide(width: 1,color: AppColor.disableColor),
       borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
 }
+
+
+
+
 
 TextStyle get subTextFieldTitleStyle {
   return AppStyle.mid_large_text.copyWith(

@@ -84,7 +84,7 @@ SliverAppBar get sliverAppBar {
           child: Column(
             children: [
               customSpacerHeight(height: 6),
-              appBar,
+              appBar(text: AppString.text_leave.tr),
               customSpacerHeight(height: 6),
               leaveLayout(),
               customSpacerHeight(height: 14),

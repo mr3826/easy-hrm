@@ -9,17 +9,18 @@ import 'package:flutter/services.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import '../../../common/widget/custom_spacer.dart';
-import '../../../utils/app_style.dart';
-import '../../../utils/dimensions.dart';
-import '../../profile/controller/profile_image_selected_controller.dart';
+import '../../../../common/widget/custom_spacer.dart';
+import '../../../../utils/app_style.dart';
+import '../../../../utils/dimensions.dart';
+import '../../../profile/controller/profile_image_selected_controller.dart';
 
 class MainScreen extends StatelessWidget {
-   MainScreen({Key? key}) : super(key: key);
+    MainScreen({Key? key}) : super(key: key);
 
   final controller = PersistentTabController(initialIndex: 2);
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
+
     return [
       _navbarIcon(activeIcon: Images.clock_nav_svg,unActiveIcon: Images.clock_outline_nav),
       _navbarIcon(activeIcon: Images.airplane_nav,unActiveIcon: Images.airplane_outline_nav),
@@ -36,6 +37,7 @@ class MainScreen extends StatelessWidget {
           color: AppColor.cardColor,
         ),
       ),
+
       _navbarIcon(activeIcon: Images.notification_nav,unActiveIcon: Images.notification_out_nav),
       _navbarIcon(activeIcon: Images.profile_nav,unActiveIcon: Images.profile_out_nav),
 
@@ -49,42 +51,6 @@ class MainScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
-
-        endDrawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 14.0,right: 14,bottom: 14,top: 14),
-                child: SizedBox(
-                  height: AppLayout.getHeight(400), // Set the desired height
-                  child: DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: AppColor.primaryColor.withOpacity(0.07),
-                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault)
-                    ),
-                    child:_userProfileImgLayout(),
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text('Item 1'),
-                onTap: () {
-                  // Do something
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Item 2'),
-                onTap: () {
-                  // Do something
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-
         body: PersistentTabView(
           context,
           controller: controller,
@@ -98,6 +64,8 @@ class MainScreen extends StatelessWidget {
           ),
           navBarStyle: NavBarStyle.style15,
           navBarHeight: 60,
+          hideNavigationBarWhenKeyboardShows: true,
+
         ),
       ),
     );

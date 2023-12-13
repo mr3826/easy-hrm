@@ -38,13 +38,12 @@ class IndividualEventView extends StatelessWidget {
 
   _dateCalendarLayout() {
     var controller = Get.find<DateController>();
-
     return GestureDetector(
       onTap: () {
         showDialog(
           context: Get.context!,
           builder: (context) {
-            return const Dialog(
+            return   const Dialog(
                 backgroundColor: Colors.transparent,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16))),

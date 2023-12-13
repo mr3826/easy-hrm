@@ -48,10 +48,16 @@ dependencies:
   file_picker: ^6.1.1
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
-  device_info_plus: ^9.1.0
+  device_info_plus: any
   intl: ^0.18.1
   graphql_flutter:
-  syncfusion_flutter_calendar: 
+  r_dotted_line_border: ^0.1.1
+  lottie: ^2.6.0
+  stop_watch_timer: ^3.0.2
+  circular_countdown_timer: ^0.2.3
+  syncfusion_flutter_calendar: ^23.2.7
+  syncfusion_flutter_gauges: ^23.2.7
+
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +84,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/images/
+      - assets/json/timer.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'common/controller/date_time_helper_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/auth/presentation/controller/signin_controller.dart';
@@ -35,6 +36,7 @@ Future<void> initApp() async {
   Get.put(DateController());
   Get.put(PikedProfileImgController());
   Get.put(PasswordController());
+  Get.put(SelectedTaskController());
   Get.lazyPut(() => LeaveScreenController(), fenix: true);
   Get.lazyPut(() => LeaveRecordsController(), fenix: true);
   Get.lazyPut(() => UserProfileController(), fenix: true);

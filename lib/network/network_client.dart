@@ -10,8 +10,13 @@ class NetworkClient extends GetConnect {
   Future<Response> getRequest(String apiEndPoint) async {
     return await get(_getRequestUrl(apiEndPoint), headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) != null
+          ? "Bearer ${GetStorage().read(AppString.ACCESS_TOKEN)}"
+          : ""
     }).timeout(const Duration(seconds: 15));
   }
+
 
   Future<Response> postRequest(String apiEndPoint, dynamic body) async {
     Response response = await post(_getRequestUrl(apiEndPoint), body, headers: {
