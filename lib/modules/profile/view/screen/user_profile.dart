@@ -39,6 +39,9 @@ class ProfileScreen extends GetView<UserProfileController> {
               appBar: profileAppbar(onAction: () {}),
               endDrawer: Drawer(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0)
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

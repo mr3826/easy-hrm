@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -33,14 +34,14 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
+      backgroundColor:  AppColor.cardColor,
+      shape: roundedRectangleBorder,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Container(
             decoration: BoxDecoration(
-                color: AppColor.cardColor,
-                borderRadius: BorderRadius.circular(12)
+                borderRadius: BorderRadius.circular(Dimensions.radiusDefault)
             ),
             margin: const EdgeInsets.only(top: 30),
             child:  SizedBox(
@@ -49,7 +50,7 @@ class CustomDialog extends StatelessWidget {
                 padding: marginLayout.copyWith(bottom: 16),
                 child: Column(
                   children: [
-                    customSpacerHeight(height: 50),
+                    customSpacerHeight(height: 55),
                     Text(titleText,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontWeight: FontWeight.w600),),
                     customSpacerHeight(height: 12),
                     Center(child: Text(subtext,style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: drcFontSize?? Dimensions.fontSizeDefault-3
@@ -69,11 +70,11 @@ class CustomDialog extends StatelessWidget {
           ),
 
            Positioned(
-              top:0,
+              top:10,
               child: CircleAvatar(
-                backgroundColor: iconBgColor,
+                backgroundColor: iconBgColor.withOpacity(0.2),
                 radius: 32,
-                child:  Icon(icon,size: 40,color: AppColor.cardColor,),
+                child:  Icon(icon,size: 40,color: AppColor.errorColorLight,),
               ))
         ],
       )

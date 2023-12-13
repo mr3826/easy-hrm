@@ -104,6 +104,9 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
       child: DropdownButton<String>(
         style: const TextStyle(fontWeight: FontWeight.w500),
         isExpanded: true,
+        dropdownColor: AppColor.cardColor,
+
+
         underline: const SizedBox.shrink(),
         icon: const Icon(Icons.expand_more, color: Colors.grey),
         iconEnabledColor: AppColor.normalTextColor,
@@ -119,6 +122,7 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         items: leaveType.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
+
               value: value,
               child: Text(
                 value,
