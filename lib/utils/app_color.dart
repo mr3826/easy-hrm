@@ -11,7 +11,7 @@ class AppColor {
   static const Color pendingColor = Color(0xFFFFA500);
   static const Color hintColor = Color(0xFF8F99AD);
   static const Color cardColor = Color(0xFFFFFFFF);
-  static const Color errorColor = Color(0xFFFF0000);
+  static const Color errorColor = Color(0xFF000F00);
   static const Color errorColorLight = Color(0xFFFE475B);
   static const Color disableColor = Color(0xFFDFDFDF);
   static const Color normalTextColor = Color(0xFF24235F);
