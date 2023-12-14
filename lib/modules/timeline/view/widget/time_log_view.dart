@@ -11,7 +11,6 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../leave/controller/calendar_date_controller.dart';
 import '../../../leave/view/widget/single_date_picker_calendar.dart';
 
-
 class TimeLogView extends StatelessWidget {
   const TimeLogView({super.key});
 
@@ -20,16 +19,11 @@ class TimeLogView extends StatelessWidget {
     return Column(
       children: [
         customSpacerHeight(height: 5),
-        Obx(() =>   _dateCalendarLayout(),),
+        Obx(
+          () => _dateCalendarLayout(),
+        ),
         customSpacerHeight(height: 8),
         workingScheduleLayout(),
-
-
-
-
-
-
-
 
         // Container(
         //   height: MediaQuery.of(context).size.height,
