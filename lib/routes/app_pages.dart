@@ -4,7 +4,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/reset_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
-import 'package:payrun_mobile/modules/home/view/screen/home.dart';
+import 'package:payrun_mobile/modules/dashboard/view/screen/dashboard.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/view/screen/notification.dart';
@@ -22,7 +22,7 @@ part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
-  static const INITIAL = Routes.MAIN_SCREEN;
+  static const INITIAL = Routes.SPLASH_SCREEN;
 
   static final routes = [
     GetPage(
@@ -95,7 +95,7 @@ class AppPages {
     GetPage(
       name: _Paths.HOME_SCREEN,
       transition: Transition.size,
-      page: ()=>  HomeScreen(),
+      page: ()=>  Dashboard(),
     ),
 
     GetPage(

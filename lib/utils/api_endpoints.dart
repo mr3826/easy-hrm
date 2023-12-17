@@ -17,8 +17,6 @@ class Api {
   static const CHANGE_PASSWORD = "/auth/change-password";
 }
 
-
-
 //leave module
 const getLeaveSummaryForDashboardQuery = """
 query Query {
@@ -158,3 +156,48 @@ mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
   }
 }
 ''';
+
+
+//dashboard
+
+const profileInfoForDashboardQuery = '''
+query GetProfileSummaryForDashboard {
+  getProfileSummaryForDashboard {
+    org_user_id
+    profile {
+      first_name
+      image
+    }
+    total_schedule
+    total_logged
+    progress_percentage
+  }
+}
+''';
+
+const timelineSummaryInfoDashboardQuery = '''
+query GetMonthlyTimelog {
+  getMonthlyTimelog {
+    progress_percentage
+    total_schedule
+    total_logged
+  }
+}
+''';
+
+
+const upcommingLeaveForDashboardQuery='''
+query GetUpcomingLeavesForApp {
+  getUpcomingLeavesForApp {
+    end_date
+    start_date
+    status
+    createdAt
+    leaveType {
+      type
+    }
+  }
+}
+''';
+
+// number_of_days

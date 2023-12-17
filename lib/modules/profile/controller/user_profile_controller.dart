@@ -36,7 +36,9 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
         queryString: getUserProfileQuery,
-        variables: {"orgUserId": "4ce59a0e-4180-4a51-b654-8dd9e5b3d64c"});
+        variables: {
+          "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)??""
+        });
 
     if (response.hasException) {
       log(response.exception.toString());
@@ -50,7 +52,7 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
         queryString: getEmploymentInfoQuery,
-        variables: {"orgUserId": "4ce59a0e-4180-4a51-b654-8dd9e5b3d64c"});
+        variables: {"orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)??""});
 
     if (response.hasException) {
       log(response.exception.toString());
@@ -103,7 +105,7 @@ class UserProfileController extends GetxController with StateMixin {
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
-        "employeeId": "4ce59a0e-4180-4a51-b654-8dd9e5b3d64c"
+        "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID)??""
       });
 
       if (response.status.hasError) {
@@ -159,8 +161,7 @@ class UserProfileController extends GetxController with StateMixin {
             message: ErrorModel.fromJson(response.body).message ??
                 "Some Error occur!");
       } else {
-        logSuccessMessage(
-            logName: "resendOtp", response: response);
+        logSuccessMessage(logName: "resendOtp", response: response);
         showSuccessMessage(message: AppString.resend_otp_text.tr);
       }
     } catch (e) {
