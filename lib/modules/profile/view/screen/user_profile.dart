@@ -117,7 +117,6 @@ class ProfileScreen extends GetView<UserProfileController> {
             foregroundColor: Colors.green,
             radius: 37,
             backgroundImage: AssetImage(Images.user),
-            child: const CupertinoActivityIndicator(),
           ),
         ),
         customSpacerWidth(width: 18),
