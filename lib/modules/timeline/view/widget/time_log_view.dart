@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -11,68 +12,25 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../leave/controller/calendar_date_controller.dart';
 import '../../../leave/view/widget/single_date_picker_calendar.dart';
 
-
 class TimeLogView extends StatelessWidget {
   const TimeLogView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        customSpacerHeight(height: 5),
-        Obx(() =>   _dateCalendarLayout(),),
-        customSpacerHeight(height: 8),
-        workingScheduleLayout(),
-
-
-
-
-
-
-
-
-        // Container(
-        //   height: MediaQuery.of(context).size.height,
-        //
-        //   child: SfCalendar(
-        //     view: CalendarView.day,
-        //     // appointmentTimeTextFormat: 'H:mm',
-        //
-        //     onTap: (details) {
-        //
-        //       if (details.appointments == null) {
-        //         return;
-        //       }
-        //       final event = details.appointments!.first;
-        //       print("object");
-        //     },
-        //     //  headerHeight: 0,
-        //     dataSource: MeetingDataSource(getAppointment()),
-        //     allowDragAndDrop: true,
-        //     showCurrentTimeIndicator: false,
-        //     appointmentTextStyle: const TextStyle(color: Colors.black),
-        //     showNavigationArrow: true,
-        //     selectionDecoration: BoxDecoration(
-        //       color: Colors.transparent,
-        //       border:
-        //       Border.all(color: Colors.white60,
-        //         width: 1,),
-        //       borderRadius: const BorderRadius.all(Radius.circular(4)),
-        //       shape: BoxShape.rectangle,
-        //     ),
-        //     headerStyle: const CalendarHeaderStyle(
-        //       textAlign: TextAlign.center,
-        //     ),
-        //     cellEndPadding: 100,
-        //
-        //
-        //     viewHeaderStyle: const ViewHeaderStyle(dateTextStyle: TextStyle(color: Colors.blue)),
-        //
-        //
-        //     //cellEndPadding: 200,
-        //   ),
-        // ),
-      ],
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Stack(
+        children: [
+          const TimeLineCalendar(),
+          Positioned(
+              top: 76,
+              child: Container(
+                  color: AppColor.backgroundColor,
+                  width: MediaQuery.of(context).size.width,
+                  child: workingScheduleLayout())),
+        ],
+      ),
     );
   }
 
@@ -200,3 +158,4 @@ class MeetingDataSource extends CalendarDataSource {
     appointments = source;
   }
 }
+// workingScheduleLayout()

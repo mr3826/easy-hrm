@@ -49,7 +49,6 @@ Widget timelineLayout() {
                   _countLayout(
                       dynamicText: "30h",
                       staticText: AppString.text_balance.tr),
-
                 ],
               ),
               const Spacer(),
@@ -64,17 +63,25 @@ Widget timelineLayout() {
 
 _tabToViewTimeLogSummery() {
   return GestureDetector(
-    onTap: ()=>Get.toNamed(Routes.TIME_LOG_SUMMARY),
+    onTap: () => Get.toNamed(Routes.TIME_LOG_SUMMARY),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(AppString.text_tab_to_view_timelog_summary.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor, decoration: TextDecoration.underline,
-          decorationColor: AppColor.cardColor,
-
-          fontSize: Dimensions.fontSizeDefault,
-        ),),
+        Text(
+          AppString.text_tab_to_view_timelog_summary.tr,
+          style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.cardColor,
+            decoration: TextDecoration.underline,
+            decorationColor: AppColor.cardColor,
+            fontSize: Dimensions.fontSizeDefault,
+          ),
+        ),
         customSpacerWidth(width: 10),
-        const Icon(Icons.arrow_forward,color: AppColor.cardColor,size: 18,)
+        const Icon(
+          Icons.arrow_forward,
+          color: AppColor.cardColor,
+          size: 18,
+        )
       ],
     ),
   );
@@ -85,19 +92,20 @@ _countLayout({required dynamicText, required staticText}) {
     children: [
       Text(
         "$dynamicText",
-        style: AppStyle.normal_text_black
-            .copyWith(color: AppColor.cardColor, fontWeight: FontWeight.bold,fontSize: Dimensions.fontSizeMid-2),
+        style: AppStyle.normal_text_black.copyWith(
+            color: AppColor.cardColor,
+            fontWeight: FontWeight.bold,
+            fontSize: Dimensions.fontSizeMid - 2),
       ),
       Text(
         "$staticText",
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor.withOpacity(0.9),
-            fontSize: Dimensions.fontSizeDefault-1),
+            fontSize: Dimensions.fontSizeDefault - 1),
       ),
     ],
   );
 }
-
 
 _divider() {
   return Container(

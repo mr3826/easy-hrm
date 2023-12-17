@@ -4,7 +4,6 @@ import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/new_entry_text_field_widget.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 
-
 class NewEntryScreen extends StatelessWidget {
   const NewEntryScreen({super.key});
   @override
@@ -15,9 +14,7 @@ class NewEntryScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            NewEntryTextField()
-          ],
+          children: [NewEntryTextField()],
         ),
       ),
     );

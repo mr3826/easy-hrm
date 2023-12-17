@@ -1,0 +1,241 @@
+import 'package:calendar_view/calendar_view.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
+import 'package:payrun_mobile/utils/dimensions.dart';
+
+class TimeLineCalendar extends StatelessWidget {
+  const TimeLineCalendar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<CalendarEventData<String>> events = [
+      CalendarEventData(
+        date: DateTime(2023, 12, 17, 23),
+        startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
+        endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
+        event: "Event 1",
+        title: 'hi',
+      ),
+      CalendarEventData(
+        date: DateTime(2023, 12, 17, 23),
+        startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
+        endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
+        event: "Event 2",
+        title: 'Hello task',
+      ),
+      CalendarEventData(
+        date: DateTime(2023, 12, 17, 23),
+        startTime: DateTime.parse("2023-12-17 21:02:02.776131"),
+        endTime: DateTime.parse("2023-12-17 23:20:02.776131"),
+        event: "Event 1",
+        title: 'hi 3',
+      ),
+      // CalendarEventData(
+      //   date: DateTime(2023, 12, 14, 23),
+      //   startTime: DateTime.parse("2023-12-14 11:02:02.776131"),
+      //   endTime: DateTime.parse("2023-12-14 12:59:02.776131"),
+      //   event: "Event 1",
+      //   title: 'Title of the project,task or tag.',
+      // ),
+
+      // CalendarEventData(
+      //   date: DateTime(2023, 12, 14, 23),
+      //   startTime: DateTime.parse("2023-12-14 13:02:02.776131"),
+      //   endTime: DateTime.parse("2023-12-14 13:59:02.776131"),
+      //   event: "Event 1",
+      //   title: 'hi',
+      // ) , CalendarEventData(
+      //   date: DateTime(2023, 12, 14, 23),
+      //   startTime: DateTime.parse("2023-12-14 11:03:02.776131"),
+      //   endTime: DateTime.parse("2023-12-14 12:59:02.776131"),
+      //   event: "Event 1",
+      //   title: 'hi',
+      // ),
+      // CalendarEventData(
+      //   date: DateTime(2023, 12, 14, 23),
+      //   startTime: DateTime.parse("2023-12-14 12:04:02.776131"),
+      //   endTime: DateTime.parse("2023-12-14 13:59:02.776131"),
+      //   event: "Event 1",
+      //   title: 'hi',
+      // ), CalendarEventData(
+      //   date: DateTime(2023, 12, 14, 23),
+      //   startTime: DateTime.parse("2023-12-14 13:06:02.776131"),
+      //   endTime: DateTime.parse("2023-12-14 13:59:02.776131"),
+      //   event: "Event 1",
+      //   title: 'hi',
+      // )
+    ];
+
+    CalendarControllerProvider.of(context).controller.addAll(events);
+
+    return Padding(
+      padding: marginLayout,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 84.0),
+        child: DayView(
+          scrollPhysics: const AlwaysScrollableScrollPhysics(),
+          eventTileBuilder: (date, events, boundry, start, end) {
+            print("date ==> $date");
+            print("events ==> $events");
+            print("boundry ==> ${boundry.width}");
+            print("start ==> $start");
+            print("end ==> $end");
+
+            return _taskSlidLayout(
+                bgColor: AppColor.primaryColor,
+                title: events[0].title,
+                icon: Icons.done,
+                endTime: "12.30",
+                startTime: "17.00",
+                totalTime: "03h 30m");
+          },
+          showVerticalLine: false,
+          minDay: DateTime(1990),
+          maxDay: DateTime(2050),
+          initialDay: DateTime.now(),
+          timeLineOffset: 0,
+          showHalfHours: true,
+          showLiveTimeLineInAllDays: false,
+          heightPerMinute: 1.8,
+          onEventTap: (events, date) => print(events),
+          onDateLongPress: (date) => print(date),
+          headerStyle: _headerStyle(),
+          liveTimeIndicatorSettings: HourIndicatorSettings.none(),
+          pageViewPhysics: const NeverScrollableScrollPhysics(),
+          halfHourIndicatorSettings: const HourIndicatorSettings(
+            dashWidth: 1.4,
+            lineStyle: LineStyle.dashed,
+            offset: 35,
+          ),
+          eventArranger: const SideEventArranger(),
+          minuteSlotSize: MinuteSlotSize.minutes60,
+          hourIndicatorSettings: HourIndicatorSettings(
+              lineStyle: LineStyle.solid,
+              offset: 12,
+              height: .5,
+              color: AppColor.hintColor.withOpacity(0.6)),
+          timeStringBuilder: (date, {secondaryDate}) {
+            String formattedTime = DateFormat.Hm().format(date);
+            return formattedTime; // Adjust the pattern as needed
+          },
+          dateStringBuilder: (date, {secondaryDate}) {
+            var formatDate = DateFormat('dd MMM yyyy').format(date);
+            var now = DateFormat('dd MMM yyyy').format(DateTime.now());
+            if (formatDate == now) {
+              return "Today";
+            } else {
+              return formatDate;
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  _headerStyle() {
+    return HeaderStyle(
+        decoration: const BoxDecoration(color: Colors.white),
+        headerMargin: const EdgeInsets.only(bottom: 30),
+        headerTextStyle: AppStyle.normal_text_grey.copyWith(
+            color: AppColor.secondaryColor, fontSize: Dimensions.fontSizeMid),
+        leftIcon: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: 20,
+          color: AppColor.normalTextColor,
+        ),
+        rightIcon: const Icon(
+          Icons.arrow_forward_ios,
+          size: 20,
+          color: AppColor.normalTextColor,
+        ));
+  }
+}
+
+int calculateDifferenceInMinutes(DateTime startTime, DateTime endTime) {
+  // Calculate the difference between start and end times
+  Duration difference = endTime.difference(startTime);
+
+  // Calculate the total difference in minutes
+  int differenceInMinutes = difference.inMinutes;
+
+  return differenceInMinutes;
+}
+
+Widget _taskSlidLayout(
+    {required title,
+    required startTime,
+    required endTime,
+    required totalTime,
+    required IconData? icon,
+    required Color? bgColor}) {
+  // // Define start and end times
+  // DateTime startTime = DateTime.parse("2023-12-17 23:02:02.776131");
+  // DateTime endTime = DateTime.parse("2023-12-17 23:03:00.000");
+  //
+  // // Calculate the difference in minutes
+  // int differenceInMinutes = calculateDifferenceInMinutes(startTime, endTime);
+  //
+  // print("Difference in minutes: $differenceInMinutes");
+  // print("Difference in minutes: ${differenceInMinutes>2}");
+  return Card(
+    elevation: 0,
+    color: AppColor.primaryColor.withOpacity(0.09),
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        side: const BorderSide(width: .5, color: AppColor.primaryColor)),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$startTime",
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.normalTextColor,
+                fontSize: Dimensions.fontSizeDefault - 2,
+                overflow: TextOverflow.ellipsis),
+          ),
+          customSpacerHeight(height: 6),
+          Text(
+            title,
+            maxLines: 2,
+            style: AppStyle.mid_large_text.copyWith(
+                fontSize: Dimensions.fontSizeDefault,
+                color: bgColor,
+                overflow: TextOverflow.ellipsis),
+          ),
+          customSpacerHeight(height: 6),
+          Text(
+            totalTime,
+            style: AppStyle.mid_large_text.copyWith(
+                fontSize: Dimensions.fontSizeDefault - 2,
+                color: bgColor,
+                overflow: TextOverflow.ellipsis),
+          ),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "$endTime",
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeDefault - 2,
+                    overflow: TextOverflow.ellipsis),
+              ),
+              Icon(
+                icon,
+                color: bgColor,
+                size: 20,
+              )
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
