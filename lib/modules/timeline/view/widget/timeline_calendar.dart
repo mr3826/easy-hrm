@@ -1,11 +1,15 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../../controller/time_formate_controller.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
@@ -22,8 +26,8 @@ class TimeLineCalendar extends StatelessWidget {
       ),
       CalendarEventData(
         date: DateTime(2023, 12, 17, 23),
-        startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
-        endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
+        startTime: DateTime.parse("2023-12-17 01:01:02.776131"),
+        endTime: DateTime.parse("2023-12-17 02:10:02.776131"),
         event: "Event 2",
         title: 'Hello task',
       ),
@@ -79,11 +83,19 @@ class TimeLineCalendar extends StatelessWidget {
         child: DayView(
           scrollPhysics: const AlwaysScrollableScrollPhysics(),
           eventTileBuilder: (date, events, boundry, start, end) {
+            //format DateTime
+            DateTime startDateTime = DateTime.parse(start.toString());
+            DateTime endDateTime = DateTime.parse(start.toString());
+
+            // Format the DateTime in 24-hour format
+            String stateTime = formatTime(startDateTime);
+            String endTime = formatTime(endDateTime);
+
             print("date ==> $date");
             print("events ==> $events");
             print("boundry ==> ${boundry.width}");
-            print("start ==> $start");
-            print("end ==> $end");
+            print("start ==> $stateTime");
+            print("end ==> $endTime");
 
             return _taskSlidLayout(
                 bgColor: AppColor.primaryColor,
@@ -91,7 +103,8 @@ class TimeLineCalendar extends StatelessWidget {
                 icon: Icons.done,
                 endTime: "12.30",
                 startTime: "17.00",
-                totalTime: "03h 30m");
+                totalTime: "03h 30m",
+                context: context);
           },
           showVerticalLine: false,
           minDay: DateTime(1990),
@@ -100,8 +113,13 @@ class TimeLineCalendar extends StatelessWidget {
           timeLineOffset: 0,
           showHalfHours: true,
           showLiveTimeLineInAllDays: false,
-          heightPerMinute: 1.8,
-          onEventTap: (events, date) => print(events),
+          heightPerMinute: 1.9,
+          onEventTap: (events, date) {
+            print(events);
+
+            customButtonSheet(
+                height: .6, context: context, child: const TaskView());
+          },
           onDateLongPress: (date) => print(date),
           headerStyle: _headerStyle(),
           liveTimeIndicatorSettings: HourIndicatorSettings.none(),
@@ -171,8 +189,9 @@ Widget _taskSlidLayout(
     required endTime,
     required totalTime,
     required IconData? icon,
-    required Color? bgColor}) {
-  // // Define start and end times
+    required Color? bgColor,
+    required context}) {
+  // Define start and end times
   // DateTime startTime = DateTime.parse("2023-12-17 23:02:02.776131");
   // DateTime endTime = DateTime.parse("2023-12-17 23:03:00.000");
   //
@@ -181,6 +200,10 @@ Widget _taskSlidLayout(
   //
   // print("Difference in minutes: $differenceInMinutes");
   // print("Difference in minutes: ${differenceInMinutes>2}");
+
+  // When total time less than 60 min then using null container widget
+  // nullContainer() // required task name and bgColor
+
   return Card(
     elevation: 0,
     color: AppColor.primaryColor.withOpacity(0.09),
@@ -235,6 +258,27 @@ Widget _taskSlidLayout(
             ],
           ),
         ],
+      ),
+    ),
+  );
+}
+
+Widget nullContainer({required bgColor, required taskText}) {
+  return Card(
+    elevation: 0,
+    color: AppColor.primaryColor.withOpacity(0.09),
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        side: const BorderSide(width: .5, color: AppColor.primaryColor)),
+    child: Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Text(
+        "$taskText",
+        maxLines: 2,
+        style: AppStyle.mid_large_text.copyWith(
+            fontSize: Dimensions.fontSizeDefault,
+            color: bgColor,
+            overflow: TextOverflow.ellipsis),
       ),
     ),
   );

@@ -18,7 +18,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../utils/utils.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
-  dynamic  status;
+  dynamic status;
   final GetLeaveRecords? leaveRecords;
   dynamic leaveDate;
   dynamic leaveWeekday;

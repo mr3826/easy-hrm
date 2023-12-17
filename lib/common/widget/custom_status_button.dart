@@ -4,7 +4,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 
-
 class CustomStatusButton extends StatelessWidget {
   final Color bgColor;
   final String? text;
@@ -12,7 +11,11 @@ class CustomStatusButton extends StatelessWidget {
   final IconData? statusIcon;
 
   const CustomStatusButton(
-      {super.key, required this.bgColor, this.text,required this.textColor,this.statusIcon});
+      {super.key,
+      required this.bgColor,
+      this.text,
+      required this.textColor,
+      this.statusIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +25,24 @@ class CustomStatusButton extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(Dimensions.radiusMid),
           )),
-      padding: EdgeInsets.fromLTRB(AppLayout.getWidth(11), AppLayout.getHeight(3), AppLayout.getWidth(11), AppLayout.getHeight(4)),
-      child:
-
-      Row(
+      padding: EdgeInsets.fromLTRB(
+          AppLayout.getWidth(14),
+          AppLayout.getHeight(3),
+          AppLayout.getWidth(14),
+          AppLayout.getHeight(4)),
+      child: Row(
         children: [
-          statusIcon !=null? Icon(statusIcon,color: textColor,size: 16,):Container(),
+          statusIcon != null
+              ? Icon(
+                  statusIcon,
+                  color: textColor,
+                  size: 16,
+                )
+              : Container(),
           customSpacerWidth(width: 4),
-          Text(text??"", style: AppStyle.small_text.copyWith(color: textColor)),
+          Text(text ?? "",
+              style: AppStyle.normal_text_grey.copyWith(
+                  color: textColor, fontSize: Dimensions.fontSizeDefault)),
         ],
       ),
     );
