@@ -14,14 +14,15 @@ class TaskView extends StatelessWidget {
         projectViewBtnSheetAppbar(
             date: "Thu, 21 April - 2022",
             duration: "02h 30m",
-            bgColor: AppColor.primaryColor),
+            bgColor: bgColor),
         btnSheetViewLayout(
           context: context,
-          status: "taken",
+          status: "approved",
           startTime: "10.00",
           endTime: "20.00",
           dateApplication: "02 March 2022",
           projectName: "Project name one",
+          bgColor: bgColor
         )
       ],
     );

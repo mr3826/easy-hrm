@@ -13,6 +13,7 @@ Widget btnSheetViewLayout({
   required endTime,
   required status,
   required context,
+  required Color?bgColor,
   dateApplication,
   projectName,
 }) {
@@ -35,7 +36,7 @@ Widget btnSheetViewLayout({
             : _infoLayout(
                 text: AppString.text_project_task_or_tag,
                 widget: _projectNameLayout(
-                    color: AppColor.primaryColor, name: "$projectName")),
+                    color: bgColor, name: "$projectName")),
         customSpacerHeight(height: 50),
         buttonLayout(context: context, status: "$status")
       ],
@@ -71,10 +72,10 @@ Widget _projectNameLayout({required Color? color, required name}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      const Icon(
+       Icon(
         Icons.circle,
         size: 13,
-        color: AppColor.primaryColor,
+        color: color,
       ),
       customSpacerWidth(width: 4),
       Text(
