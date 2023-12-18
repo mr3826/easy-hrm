@@ -37,22 +37,7 @@ class ProfileScreen extends GetView<UserProfileController> {
     return controller.obx(
         (state) => Scaffold(
               appBar: profileAppbar(onAction: () {}),
-              endDrawer: Drawer(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customSpacerHeight(height: 70),
-                    _profileLayout(),
-                    customSpacerHeight(height: 40),
-                    _organisationLayout(context),
-                    const Spacer(),
-                    _languageLayout(context),
-                    customSpacerHeight(height: 30),
-                    _logoutLayout(context)
-                  ],
-                ),
-              ),
+              endDrawer: endDrawer(context),
               body: Padding(
                 padding: marginLayout,
                 child: SingleChildScrollView(
@@ -99,25 +84,25 @@ class ProfileScreen extends GetView<UserProfileController> {
           radius: 40,
           backgroundColor: AppColor.disableColor,
           child: Get.find<UserProfileController>()
-              .userDetails
-              ?.getOrganizationUserDetails
-              ?.profile
-              ?.image !=
-              null
+                      .userDetails
+                      ?.getOrganizationUserDetails
+                      ?.profile
+                      ?.image !=
+                  null
               ? CircleAvatar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.green,
-            radius: 37,
-            backgroundImage: NetworkImage(
-                "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}"),
-            child: const CupertinoActivityIndicator(),
-          )
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.green,
+                  radius: 37,
+                  backgroundImage: NetworkImage(
+                      "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}"),
+                  child: const CupertinoActivityIndicator(),
+                )
               : CircleAvatar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.green,
-            radius: 37,
-            backgroundImage: AssetImage(Images.user),
-          ),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.green,
+                  radius: 37,
+                  backgroundImage: AssetImage(Images.user),
+                ),
         ),
         customSpacerWidth(width: 18),
         Column(
@@ -158,41 +143,41 @@ class ProfileScreen extends GetView<UserProfileController> {
           child: CircleAvatar(
             radius: 44,
             backgroundColor: AppColor.backgroundColor,
-            child: CircleAvatar(
-              radius: 44,
-              backgroundColor: AppColor.primaryColor.withOpacity(0.08),
-              child: Get.find<PikedProfileImgController>()
-                      .storageForUpload
-                      .filePath
-                      .value
-                      .isNotEmpty
-                  ? CircleAvatar(
-                      radius: 41,
-                      backgroundImage: FileImage(File(
-                              Get.find<PikedProfileImgController>()
-                                  .storageForUpload
-                                  .filePath
-                                  .value)
-                          .absolute),
-                    )
-                  : CircleAvatar(
-                      radius: 41,
-                      backgroundImage: AssetImage(Images.user),
-                    ),
-            ),
+            child: Get.find<UserProfileController>()
+                        .userDetails
+                        ?.getOrganizationUserDetails
+                        ?.profile
+                        ?.image !=
+                    null
+                ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.green,
+                    radius: 42,
+                    backgroundImage: NetworkImage(
+                        "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}"),
+                    child: const CupertinoActivityIndicator(),
+                  )
+                : CircleAvatar(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.green,
+                    radius: 42,
+                    backgroundImage: AssetImage(Images.user),
+                  ),
           ),
         ),
         customSpacerWidth(width: 18),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Agens Neilson",
+              "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
               style: AppStyle.mid_large_text
                   .copyWith(color: AppColor.normalTextColor),
             ),
             Text(
-              "Laravel department",
+              controller.employeeWorkHistory?.getOrganizationUserHistory
+                      ?.designationHistories?[0].designation?.name ??
+                  "",
               style: AppStyle.normal_text_grey
                   .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
             ),
@@ -404,10 +389,21 @@ class ProfileScreen extends GetView<UserProfileController> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundImage: AssetImage(Images.ORG),
-              ),
+              controller.userDetails?.getOrganizationUserDetails?.organization
+                          ?.organizationSetting?.logoKey !=
+                      null
+                  ? CircleAvatar(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.green,
+                      radius: 37,
+                      backgroundImage: NetworkImage(
+                          "${Api.PUBLIC_IMAGE_URL_DOMAIN}/${controller.userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}"),
+                      child: const CupertinoActivityIndicator(),
+                    )
+                  : CircleAvatar(
+                      radius: 22,
+                      backgroundImage: AssetImage(Images.ORG),
+                    ),
               customSpacerWidth(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -529,5 +525,24 @@ class ProfileScreen extends GetView<UserProfileController> {
     } else {
       return Container();
     }
+  }
+
+  endDrawer(BuildContext context) {
+    return Drawer(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customSpacerHeight(height: 70),
+          _profileLayout(),
+          customSpacerHeight(height: 40),
+          _organisationLayout(context),
+          const Spacer(),
+          _languageLayout(context),
+          customSpacerHeight(height: 30),
+          _logoutLayout(context)
+        ],
+      ),
+    );
   }
 }

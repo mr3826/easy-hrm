@@ -71,10 +71,9 @@ query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
 
 // profile module
 
-const getUserProfileQuery = r'''
-
-query Profile($orgUserId: UUID!) {
-  getOrganizationUserDetails(org_user_id: $orgUserId) {
+const getUserProfileQuery = '''
+query GetOrganizationUserDetails {
+  getOrganizationUserDetails {
     profile {
       id
       about
@@ -108,10 +107,15 @@ query Profile($orgUserId: UUID!) {
       }
     }
     status
+    organization {
+      organization_setting {
+        language
+        logo_key
+      }
+      name
+    }
   }
- 
 }
-
 ''';
 
 const getEmploymentInfoQuery = r'''
@@ -201,4 +205,18 @@ query GetUpcomingLeavesForApp {
 }
 ''';
 
-// number_of_days
+const organizationInfoQuery='''
+query GetUserOrganizations {
+  getUserOrganizations {
+    data {
+      organization {
+        name
+        id
+        organization_setting {
+          logo_key
+        }
+      }
+    }
+  }
+}
+''';

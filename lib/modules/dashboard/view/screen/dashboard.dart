@@ -433,17 +433,6 @@ class Dashboard extends GetView<DashboardController> {
     );
   }
 
-  _divider() {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Container(
-        width: 1,
-        height: 8,
-        color: AppColor.hintColor,
-      ),
-    );
-  }
-
   _leaveInfoRow(int index) {
     String? leaveDate;
     String starDate = dateMonthFormatFromDatetime(controller
