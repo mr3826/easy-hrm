@@ -5,6 +5,7 @@ import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/view/screen/timelog_details.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -62,19 +63,19 @@ statusBtn({required status}) {
   }
 }
 
-buttonLayout({required context, required status}) {
+buttonLayout({required context, required status,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate}) {
   if (status == "rejected") {
-    return _rejectedBtn(context);
+    return _rejectedBtn(context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus);
   } else if (status == "pending") {
-    return _pendingLayout(context);
+    return _pendingLayout(context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
   } else if (status == "taken") {
     return Container();
   } else {
-    return _approvedLayout(context);
+    return _approvedLayout(context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
   }
 }
 
-_rejectedBtn(context) {
+_rejectedBtn({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
@@ -92,12 +93,32 @@ _rejectedBtn(context) {
         },
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
-        onAction: () {},
+        onAction: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>  TimeLogDetails(
+              dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
+            )),
+          );
+        },
+
         btnColor: AppColor.primaryColor),
+
+
   );
 }
 
-_pendingLayout(context) {
+_pendingLayout(
+    {context,
+    dtsStartTime,
+    dtsEndTime,
+    dtsDateStatus,
+    dtsProjectName,
+    Color? dtsBgColor,
+    dtsDrc,
+    dtsDuration,
+    dtsDate,
+    dtsStatus}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
@@ -115,12 +136,19 @@ _pendingLayout(context) {
         },
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
-        onAction: () {},
+        onAction: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>  TimeLogDetails(
+              dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
+            )),
+          );
+        },
         btnColor: AppColor.primaryColor),
   );
 }
 
-_approvedLayout(context) {
+_approvedLayout({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus}) {
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(
@@ -131,7 +159,12 @@ _approvedLayout(context) {
             fontSize: Dimensions.fontSizeDefault + 2),
       ),
       onPressed: () {
-        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  TimeLogDetails(
+            dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
+          )),
+        );
       },
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,

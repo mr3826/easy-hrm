@@ -268,9 +268,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
-                            height: AppLayout.getHeight(24),
-                            child: CustomStatusButton(bgColor: AppColor.primaryColor.withOpacity(0.1),text: "Taken",textColor: AppColor.primaryColor))
+                        CustomStatusButton(bgColor: AppColor.primaryColor.withOpacity(0.1),text: "Taken",textColor: AppColor.primaryColor.withOpacity(0.9)),
                       ],
                     ),
                   ),

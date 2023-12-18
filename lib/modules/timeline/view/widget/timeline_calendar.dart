@@ -173,16 +173,6 @@ class TimeLineCalendar extends StatelessWidget {
   }
 }
 
-int calculateDifferenceInMinutes(DateTime startTime, DateTime endTime) {
-  // Calculate the difference between start and end times
-  Duration difference = endTime.difference(startTime);
-
-  // Calculate the total difference in minutes
-  int differenceInMinutes = difference.inMinutes;
-
-  return differenceInMinutes;
-}
-
 Widget _taskSlidLayout(
     {required title,
     required startTime,
@@ -191,18 +181,6 @@ Widget _taskSlidLayout(
     required IconData? icon,
     required Color? bgColor,
     required context}) {
-  // Define start and end times
-  // DateTime startTime = DateTime.parse("2023-12-17 23:02:02.776131");
-  // DateTime endTime = DateTime.parse("2023-12-17 23:03:00.000");
-  //
-  // // Calculate the difference in minutes
-  // int differenceInMinutes = calculateDifferenceInMinutes(startTime, endTime);
-  //
-  // print("Difference in minutes: $differenceInMinutes");
-  // print("Difference in minutes: ${differenceInMinutes>2}");
-
-  // When total time less than 60 min then using null container widget
-  // nullContainer() // required task name and bgColor
 
   return Card(
     elevation: 0,

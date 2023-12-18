@@ -37,9 +37,7 @@ class NewEntryTextField extends StatelessWidget {
         children: [
           durationTimeLayout(bgColor: AppColor.primaryColor.withOpacity(0.04)),
           customSpacerHeight(height: 12),
-          Obx(
-            () => _timerLayout(context),
-          ),
+          Obx(() => _timerLayout(context)),
           customSpacerHeight(height: 20),
           customTitleText(text: "${AppString.text_date.tr} *"),
           customSpacerHeight(height: 8),
@@ -49,9 +47,7 @@ class NewEntryTextField extends StatelessWidget {
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_project_or_task.tr),
           customSpacerHeight(height: 8),
-          Obx(
-            () => _selectedTaskLayout(context),
-          ),
+          Obx(() => _selectedTaskLayout(context)),
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),

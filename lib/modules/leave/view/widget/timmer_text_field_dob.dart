@@ -5,7 +5,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 
 Widget timerTextField(
-    {required String hintText,  required IconData dobIcon ,dobIconAction}) {
+    {required String hintText,  required IconData dobIcon ,dobIconAction,Color?hintColor}) {
   return Container(
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
@@ -21,7 +21,7 @@ Widget timerTextField(
         focusColor: AppColor.primaryColor,
 
         hintStyle: AppStyle.mid_large_text.copyWith(
-            color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
+            color:hintColor?? AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         filled: false,
         fillColor: AppColor.backgroundColor,
         disabledBorder: OutlineInputBorder(

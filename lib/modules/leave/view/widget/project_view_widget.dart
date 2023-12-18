@@ -8,15 +8,20 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../auth/presentation/view/otp_screen.dart';
 
-Widget btnSheetViewLayout({
-  required startTime,
-  required endTime,
-  required status,
-  required context,
-  required Color?bgColor,
-  dateApplication,
-  projectName,
-}) {
+Widget btnSheetViewLayout(
+    {required startTime,
+    required endTime,
+    required status,
+    required context,
+    required Color? bgColor,
+    dateApplication,
+    projectName,
+    dtsDateStatus,
+    dtsProjectName,
+    Color? dtsBgColor,
+    dtsDrc,
+    dtsDuration,
+    dtsDate}) {
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
     child: Column(
@@ -35,10 +40,21 @@ Widget btnSheetViewLayout({
                 dynamicText: "$dateApplication")
             : _infoLayout(
                 text: AppString.text_project_task_or_tag,
-                widget: _projectNameLayout(
-                    color: bgColor, name: "$projectName")),
+                widget:
+                    _projectNameLayout(color: bgColor, name: "$projectName")),
         customSpacerHeight(height: 50),
-        buttonLayout(context: context, status: "$status")
+
+        buttonLayout(
+            context: context,
+            status: "$status",
+            dtsProjectName: "$dtsProjectName",
+            dtsStartTime: "$startTime",
+            dtsEndTime: "$endTime",
+            dtsDuration: "$dtsDuration",
+            dtsDrc: "$dtsDate",
+            dtsDateStatus: "$dtsDateStatus",
+            dtsDate: "$dtsDate",
+            dtsBgColor: dtsBgColor)
       ],
     ),
   );
@@ -72,7 +88,7 @@ Widget _projectNameLayout({required Color? color, required name}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-       Icon(
+      Icon(
         Icons.circle,
         size: 13,
         color: color,

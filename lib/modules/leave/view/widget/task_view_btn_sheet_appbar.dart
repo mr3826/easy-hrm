@@ -38,7 +38,7 @@ Widget projectViewBtnSheetAppbar(
           customSpacerHeight(height: 12),
           Center(
               child: Text(
-            AppString.text_duration.tr,
+           AppString.text_duration.tr,
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.cardColor.withOpacity(0.9),
                 fontSize: Dimensions.fontSizeDefault),

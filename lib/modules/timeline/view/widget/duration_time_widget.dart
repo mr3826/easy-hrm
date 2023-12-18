@@ -14,7 +14,7 @@ Widget durationTimeLayout({required Color?bgColor,}){
       elevation: 0,
       shape: roundedRectangleBorder,
       child: Padding(
-        padding: marginLayout.copyWith(top: 12,bottom: 12),
+        padding: marginLayout.copyWith(top: 14,bottom: 14),
         child: Column(
           children: [
             Text("Thu,21 April -2022",style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeDefault,color: AppColor.normalTextColor),),
@@ -25,24 +25,24 @@ Widget durationTimeLayout({required Color?bgColor,}){
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _verticalDivider(height: 15,bgColor: AppColor.hintColor.withOpacity(0.3)),
-                customSpacerWidth(width: 32),
-                _verticalDivider(height: 20,bgColor: AppColor.hintColor.withOpacity(0.5)),
-                customSpacerWidth(width: 32),
+                _verticalDivider(height: 13,bgColor: AppColor.hintColor.withOpacity(0.3)),
+                customSpacerWidth(width: 30),
+                _verticalDivider(height: 17,bgColor: AppColor.hintColor.withOpacity(0.5)),
+                customSpacerWidth(width: 30),
 
-                _verticalDivider(height: 24,bgColor: AppColor.hintColor.withOpacity(0.7)),
-                customSpacerWidth(width: 32),
+                _verticalDivider(height: 22,bgColor: AppColor.hintColor.withOpacity(0.7)),
+                customSpacerWidth(width: 30),
 
-                _verticalDivider(height: 28,bgColor: AppColor.hintColor.withOpacity(0.9)),
-                customSpacerWidth(width: 32),
+                _verticalDivider(height: 24,bgColor: AppColor.hintColor.withOpacity(0.9)),
+                customSpacerWidth(width: 30),
 
-                _verticalDivider(height: 24,bgColor: AppColor.hintColor.withOpacity(0.7)),
-                customSpacerWidth(width: 32),
+                _verticalDivider(height: 22,bgColor: AppColor.hintColor.withOpacity(0.7)),
+                customSpacerWidth(width: 30),
 
-                _verticalDivider(height: 20,bgColor: AppColor.hintColor.withOpacity(0.5)),
-                customSpacerWidth(width: 32),
+                _verticalDivider(height: 17,bgColor: AppColor.hintColor.withOpacity(0.5)),
+                customSpacerWidth(width: 30),
 
-                _verticalDivider(height: 15,bgColor: AppColor.hintColor.withOpacity(0.3)),
+                _verticalDivider(height: 13,bgColor: AppColor.hintColor.withOpacity(0.3)),
               ],
             )
 

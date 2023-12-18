@@ -29,7 +29,7 @@ class LeaveRecordDetails extends StatelessWidget {
           customSpacerHeight(height: 12),
           _infoLayout(text: AppString.text_type_dot.tr,dynamicText: "Sick leave"),
 
-          _infoLayout(text: AppString.text_duration.tr,dynamicText: "1 Day"),
+          _infoLayout(text:"${AppString.text_duration.tr}:",dynamicText: "1 Day"),
           _infoLayout(text: AppString.text_satus.tr,widget:   _statusBtn()),
           _infoLayout(text: AppString.text_date_of_application.tr,dynamicText: "02 March 2023"),
           customSpacerHeight(height: 50),

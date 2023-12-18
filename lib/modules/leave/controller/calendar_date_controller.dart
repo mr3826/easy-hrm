@@ -1,8 +1,15 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class DateController extends GetxController {
+
   Rx<DateTime> currentDate = DateTime.now().obs;
+
+
+
+
   Rx<DateTime> toDate = DateTime.now().obs;
   Rx<DateTime> fromDate = DateTime.now().obs;
   Rx<DateTime> getCurrentDate = DateTime.now().obs;
