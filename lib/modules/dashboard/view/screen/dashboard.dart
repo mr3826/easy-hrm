@@ -350,7 +350,8 @@ class Dashboard extends GetView<DashboardController> {
                 .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
             0,
         itemBuilder: (context, index) {
-          print(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].leaveType);
+          print(controller.upcommingLeaveDashboard
+              ?.getUpcomingLeavesForApp?[index].leaveType);
           return SizedBox(
             width: double.infinity,
             child: Padding(
@@ -363,21 +364,25 @@ class Dashboard extends GetView<DashboardController> {
                               ?.getUpcomingLeavesForApp?[index].status ??
                           "taken",
                       leaveRecords: GetLeaveRecords(
-                        status: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].status ??
-                            "",
-                        createdAt: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].createdAt ??
-                            "",
-                        startDate: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].startDate ??
-                            "",
-                        endDate: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].endDate ??
-                            "",
-                        leaveType: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].leaveType,
-
-                      ),
+                          status: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].status ??
+                              "",
+                          createdAt: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].createdAt ??
+                              "",
+                          startDate: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].startDate ??
+                              "",
+                          endDate: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].endDate ??
+                              "",
+                          leaveType: controller.upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index].leaveType,
+                          duration: controller
+                                  .upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index]
+                                  .numberOfDays ??
+                              0),
                     ),
                     height: 0.5),
                 child: Card(
@@ -466,12 +471,20 @@ class Dashboard extends GetView<DashboardController> {
               color: AppColor.secondaryColor,
               fontSize: Dimensions.fontSizeDefault),
         ),
-        _divider(),
+        customSpacerWidth(width: 8),
         Text(
-          "",
+          controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
+                      .numberOfDays ==
+                  null
+              ? ""
+              : controller.upcommingLeaveDashboard
+                          ?.getUpcomingLeavesForApp?[index].numberOfDays >
+                      1
+                  ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} days"
+                  : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} day",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault - 2),
+              fontSize: Dimensions.fontSizeDefault),
         )
       ],
     );
