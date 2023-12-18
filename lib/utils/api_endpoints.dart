@@ -193,6 +193,7 @@ query GetUpcomingLeavesForApp {
     start_date
     status
     createdAt
+    number_of_days
     leaveType {
       type
     }
