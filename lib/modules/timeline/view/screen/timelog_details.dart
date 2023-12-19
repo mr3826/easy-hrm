@@ -61,7 +61,7 @@ class TimeLogDetails extends StatelessWidget {
               child: TimeLogTextField(
                 endTime: dtsEndTime,
                 startTime: dtsStartTime,
-                date: dtsDateStatus,
+                date: dtsDate,
                 drc: dtsDrc,
                 projectName: dtsProjectName,
                 scheduleStatus: dtsDateStatus,
