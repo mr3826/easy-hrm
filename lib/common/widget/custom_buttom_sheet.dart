@@ -1,4 +1,3 @@
-import 'package:get/route_manager.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -17,11 +16,12 @@ Future customButtonSheet(
     reverseDuration: Duration(milliseconds: reverseDuration),
     vsync: Navigator.of(context),
   );
+
   return showModalBottomSheet(
     context: context,
     transitionAnimationController: controller,
     isScrollControlled: true,
-    backgroundColor: AppColor.backgroundColor,
+    backgroundColor: AppColor.cardColor,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(

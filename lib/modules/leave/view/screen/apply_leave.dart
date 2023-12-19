@@ -4,8 +4,6 @@ import 'package:payrun_mobile/modules/leave/view/widget/apply_leave_button_layou
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
 
-
-
 class ApplyLeaveScreen extends StatelessWidget {
   const ApplyLeaveScreen({super.key});
 
@@ -13,8 +11,9 @@ class ApplyLeaveScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        customButtonSheetAppbar(text: AppString.text_apply_leve.tr,subtext: "Thursday"),
-         const Expanded(child: ApplyLeaveButtonLayout())
+        customButtonSheetAppbar(
+            text: AppString.text_apply_leve.tr, subtext: "Thursday"),
+        const Expanded(child: ApplyLeaveButtonLayout())
       ],
     );
   }
