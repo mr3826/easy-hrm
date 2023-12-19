@@ -40,7 +40,8 @@ class ProfileScreen extends GetView<UserProfileController> {
               appBar: profileAppbar(onAction: () {}),
               endDrawer: Drawer(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -48,7 +49,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                     _profileInfoDrawerLayout(),
                     customSpacerHeight(height: 40),
                     _organisationLayout(context),
-                     const Spacer(),
+                    const Spacer(),
                     _languageLayout(context),
                     customSpacerHeight(height: 30),
                     _logoutLayout(context)
@@ -97,7 +98,7 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       _userImageLayout(),
+        _userImageLayout(),
         customSpacerWidth(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,23 +126,11 @@ class ProfileScreen extends GetView<UserProfileController> {
         ),
       ],
     );
-
   }
 
   _userProfileImgLayout() {
     return _userImageLayout(height: 41);
   }
-
-
-
-
-
-
-
-
-
-
-
 
   _monthlyStatusLayout() {
     return Row(
@@ -344,10 +333,7 @@ class ProfileScreen extends GetView<UserProfileController> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               _organisationLogoLayout(),
-
-
               customSpacerWidth(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -492,14 +478,19 @@ class ProfileScreen extends GetView<UserProfileController> {
     }
   }
 
-  _userImageLayout({double ?height}) {
-    return CustomNetworkImage(height: height??32,imgUrl:"${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+  _userImageLayout({double? height}) {
+    return CustomNetworkImage(
+        height: height ?? 32,
+        imgUrl:
+            "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
   }
 
   _organisationLogoLayout() {
-      return  CustomNetworkImage(height:22,imgUrl:"",
-        borderColor: Colors.transparent,
-        logoUrl: Images.ORG,
-      );
+    return CustomNetworkImage(
+      height: 22,
+      imgUrl: "",
+      borderColor: Colors.transparent,
+      logoUrl: Images.ORG,
+    );
   }
 }
