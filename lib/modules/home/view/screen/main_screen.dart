@@ -15,15 +15,18 @@ import '../../../../utils/dimensions.dart';
 import '../../../profile/controller/profile_image_selected_controller.dart';
 
 class MainScreen extends StatelessWidget {
-    MainScreen({Key? key}) : super(key: key);
+  MainScreen({Key? key}) : super(key: key);
 
   final controller = PersistentTabController(initialIndex: 2);
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
-
     return [
-      _navbarIcon(activeIcon: Images.clock_nav_svg,unActiveIcon: Images.clock_outline_nav),
-      _navbarIcon(activeIcon: Images.airplane_nav,unActiveIcon: Images.airplane_outline_nav),
+      _navbarIcon(
+          activeIcon: Images.clock_nav_svg,
+          unActiveIcon: Images.clock_outline_nav),
+      _navbarIcon(
+          activeIcon: Images.airplane_nav,
+          unActiveIcon: Images.airplane_outline_nav),
       PersistentBottomNavBarItem(
         icon: const Icon(
           Icons.home_filled,
@@ -37,14 +40,15 @@ class MainScreen extends StatelessWidget {
           color: AppColor.cardColor,
         ),
       ),
-
-      _navbarIcon(activeIcon: Images.notification_nav,unActiveIcon: Images.notification_out_nav),
-      _navbarIcon(activeIcon: Images.profile_nav,unActiveIcon: Images.profile_out_nav),
-
+      _navbarIcon(
+          activeIcon: Images.notification_nav,
+          unActiveIcon: Images.notification_out_nav),
+      _navbarIcon(
+          activeIcon: Images.profile_nav, unActiveIcon: Images.profile_out_nav),
     ];
   }
 
-  var currentIndex=0;
+  var currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,6 @@ class MainScreen extends StatelessWidget {
           navBarStyle: NavBarStyle.style15,
           navBarHeight: 60,
           hideNavigationBarWhenKeyboardShows: true,
-
         ),
       ),
     );
@@ -84,29 +87,28 @@ Future<bool> _onWillPop(BuildContext context) async {
       });
 }
 
-PersistentBottomNavBarItem _navbarIcon({required activeIcon,required unActiveIcon}){
-  return  PersistentBottomNavBarItem(
+PersistentBottomNavBarItem _navbarIcon(
+    {required activeIcon, required unActiveIcon}) {
+  return PersistentBottomNavBarItem(
     icon: SizedBox(
       height: AppLayout.getHeight(25),
       child: SvgPicture.asset(
-        activeIcon,fit: BoxFit.cover,
+        activeIcon,
+        fit: BoxFit.cover,
       ),
-
     ),
-
-
     inactiveIcon: SizedBox(
-    height: AppLayout.getHeight(25),
-    child: SvgPicture.asset(
-      unActiveIcon,fit: BoxFit.cover,
+      height: AppLayout.getHeight(25),
+      child: SvgPicture.asset(
+        unActiveIcon,
+        fit: BoxFit.cover,
+      ),
     ),
-
-  ),
   );
 }
 
 _userProfileImgLayout() {
-  return  Column(
+  return Column(
     children: [
       CircleAvatar(
         radius: 48,
@@ -117,28 +119,24 @@ _userProfileImgLayout() {
           child: CircleAvatar(
             radius: 47,
             backgroundColor: AppColor.primaryColor.withOpacity(0.08),
-            child:Get.find<PikedProfileImgController>()
-                .storageForUpload
-                .filePath
-                .value.isNotEmpty?
-
-            CircleAvatar(
-              radius: 45,
-              backgroundImage:
-              FileImage(
-                  File(Get.find<PikedProfileImgController>()
-                      .storageForUpload
-                      .filePath
-                      .value
-
+            child: Get.find<PikedProfileImgController>()
+                    .storageForUpload
+                    .filePath
+                    .value
+                    .isNotEmpty
+                ? CircleAvatar(
+                    radius: 45,
+                    backgroundImage: FileImage(File(
+                            Get.find<PikedProfileImgController>()
+                                .storageForUpload
+                                .filePath
+                                .value)
+                        .absolute),
                   )
-                      .absolute
-
-              ),
-            ): CircleAvatar(
-              radius: 45,
-              backgroundImage:AssetImage(Images.user),
-            ),
+                : CircleAvatar(
+                    radius: 45,
+                    backgroundImage: AssetImage(Images.user),
+                  ),
           ),
         ),
       ),
@@ -146,13 +144,18 @@ _userProfileImgLayout() {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Agens Neilson",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
-          Text("Laravel department",style: AppStyle.normal_text_grey,),
+          Text(
+            "Agens Neilson",
+            style: AppStyle.mid_large_text
+                .copyWith(color: AppColor.normalTextColor),
+          ),
+          Text(
+            "Laravel department",
+            style: AppStyle.normal_text_grey,
+          ),
           customSpacerHeight(height: 8),
         ],
       ),
-
-
     ],
   );
 }

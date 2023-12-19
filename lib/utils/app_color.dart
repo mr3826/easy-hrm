@@ -11,7 +11,7 @@ class AppColor {
   static const Color pendingColor = Color(0xFFFFA500);
   static const Color hintColor = Color(0xFF8F99AD);
   static const Color cardColor = Color(0xFFFFFFFF);
-  static const Color errorColor = Color(0xFF000F00);
+  static const Color errorColor = Color(0xFFFF0000);
   static const Color errorColorLight = Color(0xFFFE475B);
   static const Color disableColor = Color(0xFFDFDFDF);
   static const Color normalTextColor = Color(0xFF24235F);
@@ -28,5 +28,4 @@ class AppColor {
   static const Color primaryRed = Color(0xFFFF6347);
   static const Color lightGrey = Color(0xFFDFDFDF);
   static const Color greyDark = Color(0xFF9397A0);
-
 }

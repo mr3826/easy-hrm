@@ -4,6 +4,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/time_log_view.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -20,31 +21,68 @@ class TimelineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
+
       body: CustomScrollView(
         slivers: [sliverAppBar, sliverToBoxAdapter],
       ),
+      // body: SingleChildScrollView(
+      //   physics: const AlwaysScrollableScrollPhysics(),
+      //   child: Stack(
+      //     children: [
+      //       Column(
+      //         children: [
+      //           Container(
+      //             height: 200,
+      //             decoration: const BoxDecoration(
+      //                 color: Colors.transparent,
+      //                 borderRadius: BorderRadius.only(
+      //                     topRight: Radius.circular(40),
+      //                     topLeft: Radius.circular(40))),
+      //             width: double.infinity,
+      //           ),
+      //           Container(
+      //             height: MediaQuery.of(context).size.height,
+      //             decoration: const BoxDecoration(
+      //                 color: Colors.white,
+      //                 borderRadius: BorderRadius.only(
+      //                     topRight: Radius.circular(30),
+      //                     topLeft: Radius.circular(30))),
+      //             child: const TimeCalendar(),
+      //           ),
+      //         ],
+      //       ),
+      //
+      //
+      //       const Positioned(
+      //           top: 300,
+      //           child: Text("Time"))
+      //     ],
+      //   ),
+      // ),
+
       floatingActionButton: _applyLeaveBtn(context),
     );
-
   }
+
   //component
   _applyLeaveBtn(context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 35.0,bottom: 18),
+      padding: const EdgeInsets.only(left: 35.0, bottom: 18),
       child: Row(
         children: [
-          floatingButton(bgBtnColor: AppColor.secondaryColor,onAction: ()=>Get.toNamed(Routes.TIMER_SCREEN),btnText: AppString.text_stat_timer),
+          floatingButton(
+              bgBtnColor: AppColor.secondaryColor,
+              onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
+              btnText: AppString.text_stat_timer),
           customSpacerWidth(width: 18),
-
-          floatingButton(bgBtnColor: AppColor.primaryColor,onAction: ()=>Get.toNamed(Routes.NEW_ENTRY_SCREEN),btnText: AppString.text_add_time_entry),
-
+          floatingButton(
+              bgBtnColor: AppColor.primaryColor,
+              onAction: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
+              btnText: AppString.text_add_time_entry),
         ],
       ),
     );
   }
-
-
-
 }
 
 SliverAppBar get sliverAppBar {
@@ -74,28 +112,26 @@ SliverAppBar get sliverAppBar {
     ),
   );
 }
+
 _buttonRadiusLayout() {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(20),
+    preferredSize: const Size.fromHeight(6),
     child: Container(
         decoration: BoxDecoration(
-            color: AppColor.backgroundColor,
+            color: AppColor.cardColor,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid+10), topLeft: Radius.circular(Dimensions.radiusMid+10))),
+                topRight: Radius.circular(Dimensions.radiusMid + 80),
+                topLeft: Radius.circular(Dimensions.radiusMid + 80))),
         width: double.maxFinite,
-        padding: const EdgeInsets.only(top: 5, bottom: 5),
+        padding: const EdgeInsets.only(top: 0, bottom: 0),
         child: const Center(
             child: Text(
-              "",
-              style: TextStyle(fontSize: 23),
-            ))),
+          "",
+          style: TextStyle(fontSize: 12),
+        ))),
   );
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(
-      child: TimeLogView()
-  );
+  return const SliverToBoxAdapter(child: TimeLogView());
 }
-
-

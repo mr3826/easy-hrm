@@ -24,25 +24,20 @@ import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
 import 'duration_time_widget.dart';
 
-
-
 class NewEntryTextField extends StatelessWidget {
-   NewEntryTextField({super.key});
-     final currentIndex=0.obs;
+  NewEntryTextField({super.key});
+  final currentIndex = 0.obs;
 
-
-   @override
+  @override
   Widget build(BuildContext context) {
-
-     return Padding(
+    return Padding(
       padding: marginLayout,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           durationTimeLayout(bgColor: AppColor.primaryColor.withOpacity(0.04)),
           customSpacerHeight(height: 12),
-
-          Obx(() => _timerLayout(context),),
+          Obx(() => _timerLayout(context)),
           customSpacerHeight(height: 20),
           customTitleText(text: "${AppString.text_date.tr} *"),
           customSpacerHeight(height: 8),
@@ -51,27 +46,27 @@ class NewEntryTextField extends StatelessWidget {
           _dayScheduleLayout(),
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_project_or_task.tr),
-
           customSpacerHeight(height: 8),
-          Obx(() => _selectedTaskLayout(context),),
-
-
+          Obx(() => _selectedTaskLayout(context)),
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),
-          InputNote(controller: descriptionController,),
+          InputNote(
+            controller: descriptionController,
+          ),
           customSpacerHeight(height: 20),
-
-          CustomDoubleAppButton(buttonText: AppString.text_add.tr, onAction: (){}, cancelAction: (){
-            Navigator.pop(context);
-          }),
-          
+          CustomDoubleAppButton(
+              buttonText: AppString.text_add.tr,
+              onAction: () {},
+              cancelAction: () {
+                Navigator.pop(context);
+              }),
           customSpacerHeight(height: 40)
-
         ],
       ),
     );
   }
+
   _dateLayoutField() {
     return GestureDetector(
       onTap: () => showDialog(
@@ -87,31 +82,29 @@ class NewEntryTextField extends StatelessWidget {
       ),
       child: Column(
         children: [
-        Container(
-        width: double.infinity,
-        decoration: decorationStyle.copyWith(border: Border.all(width: .8,color: AppColor.hintColor),borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-        padding: marginLayout.copyWith(
-            top: 14, bottom: 14, left: 14, right: 14),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                Get.find<DateTimeController>().requestedDate.value,
-                style: AppStyle.normal_text_grey,
-              ),
-              const Icon(
-                Icons.calendar_today_outlined,
-                color: AppColor.hintColor,
-              )
-            ]),
-      )
-
+          Container(
+            width: double.infinity,
+            decoration: decorationStyle.copyWith(
+                border: Border.all(width: .8, color: AppColor.hintColor),
+                borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+            padding:
+                marginLayout.copyWith(top: 14, bottom: 14, left: 14, right: 14),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    Get.find<DateTimeController>().requestedDate.value,
+                    style: AppStyle.normal_text_grey,
+                  ),
+                  const Icon(
+                    Icons.calendar_today_outlined,
+                    color: AppColor.hintColor,
+                  )
+                ]),
+          )
         ],
       ),
     );
-
-
-
   }
 
   _timerLayout(context) {
@@ -139,42 +132,50 @@ class NewEntryTextField extends StatelessWidget {
         itemCount: 3,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: (){
-              currentIndex.value=index;
+            onTap: () {
+              currentIndex.value = index;
             },
-            child:Obx(() =>    SizedBox(
-              width: AppLayout.getWidth(127),
-
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Card(
-                  color: currentIndex.value==index?AppColor.primaryColor.withOpacity(0.05):Colors.transparent,
-                  shape: roundedRectangleBorder.copyWith(side:  BorderSide(width: 1,color: currentIndex.value==index?AppColor.primaryColor :AppColor.hintColor)),
-                  elevation: 0,
-                  child: Center(child: Text(selectedBeforeDayAndAfterDay[index],style: AppStyle.mid_large_text.copyWith(color:currentIndex.value==index?AppColor.primaryColor: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault),)),
-                ),
-              ),
-            )),
+            child: Obx(() => SizedBox(
+                  width: AppLayout.getWidth(127),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Card(
+                      color: currentIndex.value == index
+                          ? AppColor.primaryColor.withOpacity(0.05)
+                          : Colors.transparent,
+                      shape: roundedRectangleBorder.copyWith(
+                          side: BorderSide(
+                              width: 1,
+                              color: currentIndex.value == index
+                                  ? AppColor.primaryColor
+                                  : AppColor.hintColor)),
+                      elevation: 0,
+                      child: Center(
+                          child: Text(
+                        selectedBeforeDayAndAfterDay[index],
+                        style: AppStyle.mid_large_text.copyWith(
+                            color: currentIndex.value == index
+                                ? AppColor.primaryColor
+                                : AppColor.hintColor,
+                            fontSize: Dimensions.fontSizeDefault),
+                      )),
+                    ),
+                  ),
+                )),
           );
-        },),
+        },
+      ),
     );
   }
 
   _selectedTaskLayout(context) {
-    return  taskInputFieldLayout(
-
-    onAction: (){
-      customButtonSheet(context: context,
-      height: .7,
-
-      child: const TaskViewLayout()
-      );
-    }
-
-
-    );
+    return taskInputFieldLayout(onAction: () {
+      customButtonSheet(
+          context: context, height: .7, child: const TaskViewLayout());
+    });
   }
 }
+
 Widget _newEntryStartTime({required BuildContext context}) {
   return timerTextField(
     hintText: Get.find<DateTimeController>().pickedInTime.isEmpty
@@ -187,6 +188,7 @@ Widget _newEntryStartTime({required BuildContext context}) {
     },
   );
 }
+
 Widget _newEntryEndTime({required BuildContext context}) {
   return timerTextField(
     hintText: Get.find<DateTimeController>().pickedInTime.isEmpty

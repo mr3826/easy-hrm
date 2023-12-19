@@ -27,7 +27,6 @@ class ApplyLeaveButtonLayout extends StatefulWidget {
 }
 
 class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
-
   String? dropdownValue;
 
   @override
@@ -39,27 +38,25 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             customTitleText(text: AppString.text_leave_type.tr),
             customSpacerHeight(height: 8),
             _leaveTypeDropDown(),
-
             customSpacerHeight(height: 8),
-
             _leaveCountStyleLayout(),
-
             customSpacerHeight(height: 20),
             customTitleText(text: "${AppString.text_from.tr} *"),
             customSpacerHeight(height: 8),
-           Obx(() =>  _fromDateTimeLayout(),),
+            Obx(
+              () => _fromDateTimeLayout(),
+            ),
             customSpacerHeight(height: 20),
             customTitleText(text: "${AppString.text_to.tr} *"),
             customSpacerHeight(height: 8),
-            Obx(() => _toDateTimeLayout(),),
-
+            Obx(
+              () => _toDateTimeLayout(),
+            ),
             customSpacerHeight(height: 12),
             _errorAlertLayout(),
-
             customSpacerHeight(height: 18),
             customTitleText(text: AppString.text_note.tr),
             customSpacerHeight(height: 8),
@@ -67,7 +64,6 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
             customTitleText(text: AppString.text_document.tr),
             customSpacerHeight(height: 6),
             _pathFormatText(),
-
             customSpacerHeight(height: 8),
             const AddAttachmentFile(),
             customSpacerHeight(height: 20),
@@ -104,6 +100,7 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
       child: DropdownButton<String>(
         style: const TextStyle(fontWeight: FontWeight.w500),
         isExpanded: true,
+        dropdownColor: AppColor.cardColor,
         underline: const SizedBox.shrink(),
         icon: const Icon(Icons.expand_more, color: Colors.grey),
         iconEnabledColor: AppColor.normalTextColor,
@@ -122,7 +119,8 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
               value: value,
               child: Text(
                 value,
-                style: AppStyle.normal_text.copyWith(color: AppColor.normalTextColor),
+                style: AppStyle.normal_text
+                    .copyWith(color: AppColor.normalTextColor),
               ));
         }).toList(),
         onChanged: (String? newValue) {
@@ -135,75 +133,66 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
   }
 
   _noteTextField() {
-    return InputNote(controller: leaveNoteController,hintText: AppString.text_add_note.tr,);
+    return InputNote(
+      controller: leaveNoteController,
+      hintText: AppString.text_add_note.tr,
+    );
   }
-
-
-
-
 
   _fromDateTimeLayout() {
     return Row(
       children: [
-
-        Expanded(child:  dateLayoutField(
-            date: Get.find<DateController>().fromDate.toString(),
-            onAction: (){
-              showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return  const Dialog(
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16))),
-                  insetPadding: EdgeInsets.zero,
-                  child: FromDatePicker());
-            },
-          );
-        }
-
-        )),
+        Expanded(
+            child: dateLayoutField(
+                date: Get.find<DateController>().fromDate.toString(),
+                onAction: () {
+                  showDialog(
+                    context: Get.context!,
+                    builder: (context) {
+                      return const Dialog(
+                          backgroundColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          insetPadding: EdgeInsets.zero,
+                          child: FromDatePicker());
+                    },
+                  );
+                })),
         customSpacerWidth(width: 14),
-        Expanded(child:  startTimeFieldLayout(context: context)),
-
+        Expanded(child: startTimeFieldLayout(context: context)),
       ],
     );
-
   }
 
   _toDateTimeLayout() {
     return Row(
       children: [
-
-        Expanded(child:  dateLayoutField(
-
-            date: Get.find<DateController>().toDate.toString(),
-
-            onAction: (){
-          showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return  const Dialog(
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16))),
-                  insetPadding: EdgeInsets.zero,
-                  child: ToDatePiker());
-            },
-          );
-
-        })),
+        Expanded(
+            child: dateLayoutField(
+                date: Get.find<DateController>().toDate.toString(),
+                onAction: () {
+                  showDialog(
+                    context: Get.context!,
+                    builder: (context) {
+                      return const Dialog(
+                          backgroundColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          insetPadding: EdgeInsets.zero,
+                          child: ToDatePiker());
+                    },
+                  );
+                })),
         customSpacerWidth(width: 14),
-        Expanded(child:  startTimeFieldLayout(context: context)),
-
-
+        Expanded(child: startTimeFieldLayout(context: context)),
       ],
     );
-
   }
 
   _pathFormatText() {
-    return  Text(
+    return Text(
       AppString.text_jpeg_jpg_png_etc,
       style: AppStyle.normal_text_black
           .copyWith(color: AppColor.hintColor.withOpacity(0.7)),
@@ -218,12 +207,22 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
         shape: roundedRectangleBorder,
         color: AppColor.primaryColor.withOpacity(0.05),
         child: Padding(
-          padding: marginLayout.copyWith(top: 8,bottom: 8,left: 16,right: 16),
+          padding:
+              marginLayout.copyWith(top: 8, bottom: 8, left: 16, right: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("01",style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),),
-              Text("Balance (No.of days)",style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault),),
+              Text(
+                "01",
+                style: AppStyle.mid_large_text
+                    .copyWith(color: AppColor.normalTextColor),
+              ),
+              Text(
+                "Balance (No.of days)",
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault),
+              ),
             ],
           ),
         ),
@@ -242,16 +241,25 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
             Row(
               children: [
                 customSpacerWidth(width: 12),
-                const Icon(Icons.error_outline,color: AppColor.errorColorLight,size: 18,),
-                 Expanded(
+                const Icon(
+                  Icons.error_outline,
+                  color: AppColor.errorColorLight,
+                  size: 18,
+                ),
+                Expanded(
                   child: Padding(
-                    padding: marginLayout.copyWith(bottom: 12,top: 12,left: 12),
-                    child:  Text("Out of balance.The selected leave duration is out of the facility.Tou may have some Taken,approved or pending leave that affect your new request.",style: AppStyle.mid_large_text.copyWith(color: AppColor.errorColorLight,fontSize: Dimensions.fontSizeDefault-2),),
+                    padding:
+                        marginLayout.copyWith(bottom: 12, top: 12, left: 12),
+                    child: Text(
+                      "Out of balance.The selected leave duration is out of the facility.Tou may have some Taken,approved or pending leave that affect your new request.",
+                      style: AppStyle.mid_large_text.copyWith(
+                          color: AppColor.errorColorLight,
+                          fontSize: Dimensions.fontSizeDefault - 2),
+                    ),
                   ),
                 ),
               ],
             ),
-
 
             // Row(
             //   children: [
@@ -276,6 +284,3 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
     );
   }
 }
-
-
-

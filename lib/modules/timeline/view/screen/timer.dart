@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:circular_countdown_timer/countdown_text_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -19,7 +15,6 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../controller/timer_controller.dart';
 
-
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
 
@@ -28,10 +23,8 @@ class TimerScreen extends StatefulWidget {
 }
 
 class _TimerScreenState extends State<TimerScreen> {
-
-
   final TimeCounterController _timeCounterController =
-  Get.put(TimeCounterController());
+      Get.put(TimeCounterController());
 
   @override
   Widget build(BuildContext context) {
@@ -40,72 +33,79 @@ class _TimerScreenState extends State<TimerScreen> {
       backgroundColor: AppColor.secondaryColor,
       body: Column(
         children: [
-          _dateText(date:"Thu, 21 April - 2023"),
+          _dateText(date: "Thu, 21 April - 2023"),
           customSpacerHeight(height: 50),
           SizedBox(
             child: Stack(
               children: [
-
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     _timeCounterController.start();
                   },
                   child: SizedBox(
                       height: 400,
                       width: 400,
-
-                      child: Lottie.asset(Images.timer_animation,fit: BoxFit.cover)),
+                      child: Lottie.asset(Images.timer_animation,
+                          fit: BoxFit.cover)),
                 ),
-                Obx(() =>    Positioned(
-                  top: 180,
-                  left: 150,
-                  child: Text(_timeCounterController.elapsedTime.toString(),style: AppStyle.normal_text_grey.copyWith(color: AppColor.cardColor,fontSize: Dimensions.fontSizeExtraLarge),),
-                ),)
-
-             
+                Obx(
+                  () => Positioned(
+                    top: 180,
+                    left: 150,
+                    child: Text(
+                      _timeCounterController.elapsedTime.toString(),
+                      style: AppStyle.normal_text_grey.copyWith(
+                          color: AppColor.cardColor,
+                          fontSize: Dimensions.fontSizeExtraLarge),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
-
-
-
-
-        _saveBtn(onAction: (){
-          //_timeCounterController.stop();
-          customButtonSheet(height: .7,context: context,child: const AddToTaskScreen());
-        }),
-
-
-
-
-
-
+          _saveBtn(onAction: () {
+            //_timeCounterController.stop();
+            customButtonSheet(
+                height: .7, context: context, child: const AddToTaskScreen());
+          }),
         ],
       ),
     );
   }
 
   _dateText({required String date}) {
-    return     Center(child: Padding(
+    return Center(
+        child: Padding(
       padding: marginLayout.copyWith(top: 20),
-      child: Text(date,style: AppStyle.normal_text_grey.copyWith(fontSize: Dimensions.fontSizeDefault,color: AppColor.cardColor),),
+      child: Text(
+        date,
+        style: AppStyle.normal_text_grey.copyWith(
+            fontSize: Dimensions.fontSizeDefault, color: AppColor.cardColor),
+      ),
     ));
   }
 
   _saveBtn({required onAction}) {
-    return   GestureDetector(
-      onTap: (){
+    return GestureDetector(
+      onTap: () {
         onAction();
       },
       child: SizedBox(
-
         height: AppLayout.getHeight(50),
         width: AppLayout.getWidth(220),
         child: Card(
-            shape: roundedRectangleBorder.copyWith(borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
-            color:  AppColor.cardColor.withOpacity(0.3),
+            shape: roundedRectangleBorder.copyWith(
+                borderRadius:
+                    BorderRadius.circular(Dimensions.radiusExtraLarge)),
+            color: AppColor.cardColor.withOpacity(0.3),
             elevation: 0,
-            child: Center(child: Text(AppString.text_done_of_save.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor,fontSize: Dimensions.fontSizeMid-2),))),
+            child: Center(
+                child: Text(
+              AppString.text_done_of_save.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.cardColor,
+                  fontSize: Dimensions.fontSizeMid - 2),
+            ))),
       ),
     );
   }
