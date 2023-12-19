@@ -1,5 +1,3 @@
-
-
 import 'package:intl/intl.dart';
 
 String formatTime(DateTime dateTime) {
@@ -7,7 +5,7 @@ String formatTime(DateTime dateTime) {
   return DateFormat('hh.mm').format(dateTime);
 }
 
-formatTimeAccordingToSelectedTime(inputString){
+formatTimeAccordingToSelectedTime(inputString) {
   // Define the input format
   DateFormat inputFormat = DateFormat('y-MM-dd H:m:s.S');
 
