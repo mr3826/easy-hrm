@@ -12,6 +12,7 @@ import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/controller/log_out_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
@@ -220,20 +221,19 @@ class ProfileScreen extends GetView<UserProfileController> {
     return GestureDetector(
       onTap: () {
         customDialog(
-          context: context,
-          saveBtnAction: () {
-            //action code here
-
-          },
-          icon: Icons.logout,
-          titleText: AppString.text_are_you_sure.tr,
-          subText: AppString.text_if_you_do_this_etc.tr,
-          iconBgColor: AppColor.errorColorLight,
-          btnBgColor: AppColor.errorColorLight,
-          btnText: AppString.text_log_out.tr,
-          drcText: "",
-          drcFontSize: Dimensions.fontSizeDefault,
-        );
+            context: context,
+            saveBtnAction: () {
+              Get.find<LogoutController>().logout();
+            },
+            icon: Icons.logout,
+            titleText: AppString.text_are_you_sure.tr,
+            subText: AppString.text_if_you_do_this_etc.tr,
+            iconBgColor: AppColor.errorColorLight,
+            btnBgColor: AppColor.errorColorLight,
+            btnText: AppString.text_log_out.tr,
+            drcText: "",
+            drcFontSize: Dimensions.fontSizeDefault,
+            childForSaveBtn: Obx(() => _logoutTextLayout()));
       },
       child: Container(
         height: AppLayout.getHeight(90),
@@ -506,5 +506,18 @@ class ProfileScreen extends GetView<UserProfileController> {
         ],
       ),
     );
+  }
+
+  _logoutTextLayout() {
+    return Get.find<LogoutController>().isLogoutLoading.value
+        ? const CupertinoActivityIndicator(
+            color: AppColor.cardColor,
+          )
+        : Text(
+            AppString.text_log_out.tr,
+            style: AppStyle.normal_text_grey.copyWith(
+                fontSize: Dimensions.fontSizeDefault + 1,
+                color: AppColor.cardColor),
+          );
   }
 }
