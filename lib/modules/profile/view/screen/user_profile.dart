@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
+import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -39,14 +41,15 @@ class ProfileScreen extends GetView<UserProfileController> {
               appBar: profileAppbar(onAction: () {}),
               endDrawer: Drawer(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     customSpacerHeight(height: 70),
-                    _profileLayout(),
+                    _profileInfoDrawerLayout(),
                     customSpacerHeight(height: 40),
                     _organisationLayout(context),
-                    const Spacer(),
+                     const Spacer(),
                     _languageLayout(context),
                     customSpacerHeight(height: 30),
                     _logoutLayout(context)
@@ -95,31 +98,7 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundColor: AppColor.disableColor,
-          child: Get.find<UserProfileController>()
-              .userDetails
-              ?.getOrganizationUserDetails
-              ?.profile
-              ?.image !=
-              null
-              ? CircleAvatar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.green,
-            radius: 37,
-            backgroundImage: NetworkImage(
-                "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}"),
-            child: const CupertinoActivityIndicator(),
-          )
-              : CircleAvatar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.green,
-            radius: 37,
-            backgroundImage: AssetImage(Images.user),
-            child: const CupertinoActivityIndicator(),
-          ),
-        ),
+       _userImageLayout(),
         customSpacerWidth(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,62 +126,23 @@ class ProfileScreen extends GetView<UserProfileController> {
         ),
       ],
     );
+
   }
 
   _userProfileImgLayout() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 45,
-          backgroundColor: AppColor.disableColor,
-          child: CircleAvatar(
-            radius: 44,
-            backgroundColor: AppColor.backgroundColor,
-            child: CircleAvatar(
-              radius: 44,
-              backgroundColor: AppColor.primaryColor.withOpacity(0.08),
-              child: Get.find<PikedProfileImgController>()
-                      .storageForUpload
-                      .filePath
-                      .value
-                      .isNotEmpty
-                  ? CircleAvatar(
-                      radius: 41,
-                      backgroundImage: FileImage(File(
-                              Get.find<PikedProfileImgController>()
-                                  .storageForUpload
-                                  .filePath
-                                  .value)
-                          .absolute),
-                    )
-                  : CircleAvatar(
-                      radius: 41,
-                      backgroundImage: AssetImage(Images.user),
-                    ),
-            ),
-          ),
-        ),
-        customSpacerWidth(width: 18),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Agens Neilson",
-              style: AppStyle.mid_large_text
-                  .copyWith(color: AppColor.normalTextColor),
-            ),
-            Text(
-              "Laravel department",
-              style: AppStyle.normal_text_grey
-                  .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
-            ),
-            customSpacerHeight(height: 8),
-          ],
-        ),
-      ],
-    );
+    return _userImageLayout(height: 41);
   }
+
+
+
+
+
+
+
+
+
+
+
 
   _monthlyStatusLayout() {
     return Row(
@@ -405,10 +345,10 @@ class ProfileScreen extends GetView<UserProfileController> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundImage: AssetImage(Images.ORG),
-              ),
+
+              _organisationLogoLayout(),
+
+
               customSpacerWidth(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -447,9 +387,30 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-  _profileLayout() {
+  _profileInfoDrawerLayout() {
     return Center(
-      child: _userProfileImgLayout(),
+      child: Column(
+        children: [
+          _userProfileImgLayout(),
+          customSpacerHeight(height: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Agens Neilson",
+                style: AppStyle.mid_large_text
+                    .copyWith(color: AppColor.normalTextColor),
+              ),
+              Text(
+                "Laravel department",
+                style: AppStyle.normal_text_grey
+                    .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
+              ),
+              customSpacerHeight(height: 8),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -530,5 +491,16 @@ class ProfileScreen extends GetView<UserProfileController> {
     } else {
       return Container();
     }
+  }
+
+  _userImageLayout({double ?height}) {
+    return CustomNetworkImage(height: height??32,imgUrl:"${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+  }
+
+  _organisationLogoLayout() {
+      return  CustomNetworkImage(height:22,imgUrl:"",
+        borderColor: Colors.transparent,
+        logoUrl: Images.ORG,
+      );
   }
 }

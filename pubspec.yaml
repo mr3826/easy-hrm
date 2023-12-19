@@ -58,6 +58,7 @@ dependencies:
   syncfusion_flutter_calendar: ^23.2.7
   syncfusion_flutter_gauges: ^23.2.7
   calendar_view: ^1.0.4
+  cached_network_image: ^3.3.0
 
 
 dev_dependencies:
