@@ -1,5 +1,4 @@
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,13 +18,12 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-
 import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_status_button.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../leave/view/widget/leave_record_details_view.dart';
-import '../../../profile/controller/user_profile_controller.dart';
+
 
 class Dashboard extends GetView<DashboardController> {
   Dashboard({super.key});
