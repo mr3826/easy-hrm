@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
+import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -66,31 +67,7 @@ class EditProfileScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundColor: AppColor.disableColor,
-          child: Get.find<UserProfileController>()
-                      .userDetails
-                      ?.getOrganizationUserDetails
-                      ?.profile
-                      ?.image !=
-                  null
-              ? CircleAvatar(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.green,
-                  radius: 37,
-                  backgroundImage: NetworkImage(
-                      "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}"),
-                  child: const CupertinoActivityIndicator(),
-                )
-              : CircleAvatar(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.green,
-                  radius: 37,
-                  backgroundImage: AssetImage(Images.user),
-                  child: const CupertinoActivityIndicator(),
-                ),
-        ),
+        _profileImageLayout(),
         customSpacerWidth(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,5 +154,12 @@ class EditProfileScreen extends StatelessWidget {
               color: AppColor.pendingColor,
               fontSize: Dimensions.fontSizeDefault),
         ));
+  }
+
+  _profileImageLayout() {
+    return CustomNetworkImage(
+        height: 37,
+        imgUrl:"${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+
   }
 }
