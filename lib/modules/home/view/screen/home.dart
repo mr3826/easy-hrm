@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       customSpacerHeight(height: 46),
-                     _userInfoAppbarLayout(),
+                      _userInfoAppbarLayout(),
                       customSpacerHeight(height: 28),
                       Expanded(
                         child: PageView(
