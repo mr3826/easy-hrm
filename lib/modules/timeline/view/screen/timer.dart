@@ -42,7 +42,6 @@ class _TimerScreenState extends State<TimerScreen> {
           customSpacerHeight(height: 50),
           GestureDetector(
             onTap: () {
-              Get.find<TimeCounterController>().start();
               Get.find<TimelineController>()
                   .startOrEndTimer(timerType: StartOrEndTimer.start.name);
             },
@@ -69,7 +68,9 @@ class _TimerScreenState extends State<TimerScreen> {
           ),
           _saveBtn(
             onAction: () async {
-              Get.find<TimeCounterController>().stop();
+              if(Get.find<TimeCounterController>().timer.isActive){
+                Get.find<TimeCounterController>().stop();
+              }
               await Get.find<TimelineController>()
                   .startOrEndTimer(timerType: StartOrEndTimer.end.name);
               if (context.mounted) {

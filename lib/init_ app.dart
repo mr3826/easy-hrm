@@ -14,6 +14,7 @@ import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.da
 import 'common/controller/date_time_helper_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/auth/presentation/controller/signin_controller.dart';
+import 'modules/dashboard/controller/dashbpard_controller.dart';
 import 'modules/profile/controller/log_out_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
 import 'modules/leave/controller/calendar_date_controller.dart';

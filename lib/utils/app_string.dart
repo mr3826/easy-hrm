@@ -308,4 +308,6 @@ class AppString {
   static const String enterYourPassword = "Enter your password";
   static const String enterYourEmail = "Enter your email";
   static const String password = "Password";
+  static const String timerStartedSuccessfulMessage =
+      "Timer Started Successfully";
 }

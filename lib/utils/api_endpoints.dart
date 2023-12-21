@@ -8,6 +8,7 @@ class Api {
 
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
+  static const LOGOUT = "/auth/logout";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/resend-verification-code";
   static const RESET_PASSWORD = "/auth/verify-forgot-password-code";
@@ -233,6 +234,18 @@ mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
     end_date
     description
     start_date
+  }
+}
+''';
+
+const getProjectDropdownQuery=r'''
+query GetProjectsDropdown($queryData: ProjectQueryInputType, $optionData: OptionDataType) {
+  getProjectsDropdown(queryData: $queryData, optionData: $optionData) {
+    color
+    name
+    tasks {
+      name
+    }
   }
 }
 ''';

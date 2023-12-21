@@ -26,6 +26,7 @@ import 'duration_time_widget.dart';
 
 class NewEntryTextField extends StatelessWidget {
   NewEntryTextField({super.key});
+
   final currentIndex = 0.obs;
 
   @override
@@ -47,7 +48,7 @@ class NewEntryTextField extends StatelessWidget {
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_project_or_task.tr),
           customSpacerHeight(height: 8),
-          Obx(() => _selectedTaskLayout(context)),
+         _selectedTaskLayout(context),
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),
@@ -169,10 +170,12 @@ class NewEntryTextField extends StatelessWidget {
   }
 
   _selectedTaskLayout(context) {
-    return taskInputFieldLayout(onAction: () {
-      customButtonSheet(
-          context: context, height: .7, child: const TaskViewLayout());
-    });
+    return taskInputFieldLayout(
+      onAction: () {
+        customButtonSheet(
+            context: context, height: .7, child: const TaskViewLayout());
+      },
+    );
   }
 }
 

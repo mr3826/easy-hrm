@@ -5,6 +5,8 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -14,50 +16,15 @@ import 'package:payrun_mobile/utils/utils.dart';
 
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 
-class TaskViewLayout extends StatefulWidget {
+class TaskViewLayout extends StatelessWidget {
   const TaskViewLayout({super.key});
-
-  @override
-  State<TaskViewLayout> createState() => _TaskViewLayoutState();
-}
-
-class _TaskViewLayoutState extends State<TaskViewLayout> {
-
-  List<dynamic> dataList = [
-    'Project name one',
-    'Project name two',
-
-  ];
-List<dynamic> color=[
-    "#FF5733",
-    "#1B4242",
-
-  ];
-
-  List<dynamic> filteredList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    filteredList.addAll(dataList);
-    taskSearchController.addListener(_onSearchChanged);
-  }
-
-  void _onSearchChanged() {
-    String query = taskSearchController.text.toLowerCase();
-    setState(() {
-      filteredList = dataList
-          .where((item) => item.toLowerCase().contains(query))
-          .toList();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: marginLayout.copyWith(top: 20, bottom: 20),
       child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             SizedBox(
@@ -67,54 +34,25 @@ List<dynamic> color=[
                 children: [
                   customTitleText(text: AppString.text_project_or_task.tr),
                   customSpacerHeight(height: 8),
-
                   taskSearchInputField(),
                   customSpacerHeight(height: 12),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: filteredList.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        Color convertColor = HexColor(color[index]) ;
-                        return InkWell(
-                          onTap: ()async {
-                            if (filteredList[index] != null) {
-                              Get.find<SelectedTaskController>().addTaskText(filteredList[index]);
-                              Get.find<SelectedTaskController>().selectedTaskIndex.isNotEmpty?Get.back():Container();
-                            }
-
-                            if(color[index] !=null){
-                              Get.find<SelectedTaskController>().taskAccordingToColor(color[index]);
-                              print("color main index ==> ${color[index]}");
-                            }
-
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5.0),
-                                  child: Icon(Icons.circle,size: 13,color: convertColor,),
-                                ),
-                                customSpacerWidth(width: 6),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(filteredList[index].toString(),style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeMid-3,color: AppColor.normalTextColor),),
-                                    Text("Some random text as a description",style: AppStyle.mid_large_text.copyWith(fontSize: Dimensions.fontSizeMid-4,color: AppColor.hintColor),),
-
-                                  ],
-                                ),
-                              ],
-                            ),
+                  Obx(() => Get.find<TimelineController>().isLoading.isTrue
+                      ? const Center(
+                          child: CupertinoActivityIndicator(),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: Get.find<TimelineController>()
+                                    .projectDropDownResponse
+                                    ?.getProjectsDropdown
+                                    ?.length ??
+                                0,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return _projectListLayout(index);
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        )),
                 ],
               ),
             ),
@@ -123,8 +61,112 @@ List<dynamic> color=[
       ),
     );
   }
+
+  _projectListLayout(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Get.find<TimelineController>()
+                  .projectDropDownResponse
+                  ?.getProjectsDropdown?[index]
+                  .name !=
+              null
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Icon(
+                    Icons.circle,
+                    size: 13,
+                    color: Get.find<TimelineController>()
+                                .projectDropDownResponse
+                                ?.getProjectsDropdown?[index]
+                                .color !=
+                            null
+                        ? HexColor(Get.find<TimelineController>()
+                                .projectDropDownResponse
+                                ?.getProjectsDropdown?[index]
+                                .color ??
+                            "")
+                        : Colors.black87,
+                  ),
+                ),
+                customSpacerWidth(width: 6),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      Get.find<TimelineController>()
+                              .projectDropDownResponse
+                              ?.getProjectsDropdown?[index]
+                              .name ??
+                          "",
+                      style: AppStyle.mid_large_text.copyWith(
+                          fontSize: Dimensions.fontSizeMid - 3,
+                          color: AppColor.normalTextColor),
+                    ),
+                    customSpacerHeight(height: 8),
+                    Column(
+                      children: [
+                        ...?Get.find<TimelineController>()
+                            .projectDropDownResponse
+                            ?.getProjectsDropdown?[index]
+                            .tasks
+                            ?.map((Tasks task) => _taskLayout(task))
+                            .toList(growable: true),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...?Get.find<TimelineController>()
+                    .projectDropDownResponse
+                    ?.getProjectsDropdown?[index]
+                    .tasks
+                    ?.map((Tasks tasks) => _taskLayout(tasks))
+                    .toList(growable: true),
+              ],
+            ),
+    );
+  }
+
+  Widget _taskLayout(Tasks task) {
+    return InkWell(
+      onTap: () {
+        taskSearchController.text = task.name ?? "";
+        Get.find<TimelineController>().taskName.value = task.name ?? "";
+        // String? colorCode = getColorById(task.taskId ?? "");
+        // print(colorCode);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(task.name ?? "", overflow: TextOverflow.ellipsis),
+          customSpacerHeight(height: 8),
+        ],
+      ),
+    );
+  }
 }
 
+//to find color of the project
+
+// String getColorById(String taskId) {
+//   for (var project in Get.find<TimelineController>()
+//       .projectDropDownResponse!
+//       .getProjectsDropdown!) {
+//     for (var task in project.tasks!) {
+//       if (task.taskId == taskId) {
+//         return project.color ?? "No color available";
+//       }
+//     }
+//   }
+//   return "Task ID not found";
+// }
 
 Widget taskSearchInputField() {
   return SizedBox(
@@ -133,17 +175,22 @@ Widget taskSearchInputField() {
       controller: taskSearchController,
       style: subTextFieldTitleStyle,
       autofocus: false,
+      onChanged: (value) {
+        Get.find<TimelineController>().getProjectDropdown();
+      },
       decoration: InputDecoration(
         hintText: AppString.text_select_option.tr,
         suffixIcon: GestureDetector(
-          onTap: (){
+          onTap: () {
             taskSearchController.clear();
           },
-          child: taskSearchController.text.isNotEmpty? const Icon(
-            Icons.close,
-            size: 30,
-            color: AppColor.hintColor,
-          ):const Icon(CupertinoIcons.search),
+          child: taskSearchController.text.isNotEmpty
+              ? const Icon(
+                  Icons.close,
+                  size: 30,
+                  color: AppColor.hintColor,
+                )
+              : const Icon(CupertinoIcons.search),
         ),
         hintStyle: TextStyle(
             color: AppColor.hintColor,
@@ -168,9 +215,6 @@ Widget taskSearchInputField() {
   );
 }
 
-
-
-
 class HexColor extends Color {
   static int _getColor(String hex) {
     String formattedHex = "FF${hex.toUpperCase().replaceAll("#", "")}";
@@ -179,4 +223,3 @@ class HexColor extends Color {
 
   HexColor(final String hex) : super(_getColor(hex));
 }
-
