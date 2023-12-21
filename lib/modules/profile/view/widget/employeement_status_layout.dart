@@ -31,7 +31,7 @@ class EmploymentLayout extends StatelessWidget {
           itemCount: Get.find<UserProfileController>()
                   .employeeWorkHistory
                   ?.getOrganizationUserHistory
-                  ?.employmentHistories
+                  ?.designationHistories
                   ?.length ??
               0,
           itemBuilder: (context, index) {

@@ -1,5 +1,4 @@
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,11 +18,12 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_status_button.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../leave/view/widget/leave_record_details_view.dart';
+
 
 class Dashboard extends GetView<DashboardController> {
   Dashboard({super.key});
@@ -275,23 +275,7 @@ class Dashboard extends GetView<DashboardController> {
   _userInfoAppbarLayout() {
     return Row(
       children: [
-        controller.profileSummaryForDashboard?.getProfileSummaryForDashboard
-                    ?.profile?.image !=
-                null
-            ? CircleAvatar(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green,
-                radius: 37,
-                backgroundImage: NetworkImage(
-                    "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.image}"),
-                child: const CupertinoActivityIndicator(),
-              )
-            : CircleAvatar(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green,
-                radius: 37,
-                backgroundImage: AssetImage(Images.user),
-              ),
+        _userImageLayout(),
         customSpacerWidth(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,6 +297,15 @@ class Dashboard extends GetView<DashboardController> {
           ],
         )
       ],
+    );
+  }
+
+  _userImageLayout() {
+    return CustomNetworkImage(
+      height: 22,
+      imgUrl:
+          "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.image}",
+      borderColor: Colors.transparent,
     );
   }
 
@@ -472,8 +465,7 @@ class Dashboard extends GetView<DashboardController> {
                   ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} days"
                   : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} day",
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault),
+              color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         )
       ],
     );

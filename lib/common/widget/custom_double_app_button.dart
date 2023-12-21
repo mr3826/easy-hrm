@@ -14,8 +14,11 @@ class CustomDoubleAppButton extends StatelessWidget {
   final Color btnColor;
   final Function onAction;
   final Function  cancelAction;
+
+ final Widget ?saveBtn;
+
   const CustomDoubleAppButton(
-      {super.key, required this.buttonText,this.cancelText, required this.onAction,required this.cancelAction,this.btnColor=AppColor.primaryColor});
+      {super.key, required this.buttonText,this.cancelText, required this.onAction,required this.cancelAction,this.btnColor=AppColor.primaryColor,this.saveBtn});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class CustomDoubleAppButton extends StatelessWidget {
                     BorderRadius.circular(Dimensions.radiusExtraLarge),
               ),
               child: Center(
-                  child:  Text(
+                  child: saveBtn?? Text(
                     buttonText,
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.cardColor,

@@ -14,7 +14,7 @@ class CustomNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     var radius = height;
     return CircleAvatar(
-      radius: radius + 3,
+      radius: radius + 2.5,
       backgroundColor: borderColor??AppColor.hintColor,
       child: CircleAvatar(
         backgroundColor:borderColor?? AppColor.cardColor,
