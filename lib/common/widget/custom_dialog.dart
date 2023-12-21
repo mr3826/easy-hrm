@@ -17,6 +17,7 @@ customDialog(
     required subText,
     required saveBtnAction,
     required btnText,
+     Widget? childForSaveBtn,
     drcText,
     required iconBgColor,
     required btnBgColor}) {
@@ -30,6 +31,7 @@ customDialog(
         saveBtnAction: saveBtnAction,
         btnText: btnText,
         drcText: drcText,
+        childForSaveBtn: childForSaveBtn,
         iconBgColor: btnBgColor,
         btnBgColor: btnBgColor),
   );
@@ -44,6 +46,7 @@ class CustomDialog extends StatelessWidget {
   final Color iconBgColor;
   final Color btnBgColor;
   final double? drcFontSize;
+  final Widget ?childForSaveBtn;
   final Function saveBtnAction;
   final isOTPVisible = false;
 
@@ -55,6 +58,7 @@ class CustomDialog extends StatelessWidget {
       required this.iconBgColor,
       required this.btnBgColor,
       this.subtext = "",
+        this.childForSaveBtn,
       required this.saveBtnAction,
       required this.btnText,
       required this.drcText});
@@ -106,6 +110,7 @@ class CustomDialog extends StatelessWidget {
                         onAction: saveBtnAction,
                         cancelAction: () => Get.back(),
                         btnColor: btnBgColor,
+                        saveBtn:childForSaveBtn,
                       )
                     ],
                   ),

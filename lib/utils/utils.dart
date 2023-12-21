@@ -7,7 +7,7 @@ import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
-import '../modules/home/view/screen/home.dart';
+import '../modules/dashboard/view/screen/dashboard.dart';
 import '../modules/timeline/view/screen/timeline.dart';
 import 'package:intl/intl.dart';
 import '../modules/leave/view/screen/leave_screen.dart';
@@ -106,6 +106,7 @@ List get notificationTabBarIndex => _notificationTabBarIndex;
 List get selectedBeforeDayAndAfterDay => _selectedBeforeDayAndAfterDay;
 
 String dateMonthFormatFromDatetime(String dateString) {
+  if (dateString.isEmpty) return "";
   // Parse the string to DateTime
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
@@ -116,6 +117,7 @@ String dateMonthFormatFromDatetime(String dateString) {
 String dateMonthYearFormatFromDatetime(String dateString) {
   if (dateString.isEmpty) return "";
   // Parse the string to DateTime
+  print(dateString);
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
   String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
@@ -203,7 +205,7 @@ List<Widget> _buildScreens() {
   return [
     const TimelineScreen(),
     const LeaveScreen(),
-    HomeScreen(),
+       Dashboard(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];

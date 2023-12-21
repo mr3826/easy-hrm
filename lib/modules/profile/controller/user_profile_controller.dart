@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/success_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/auth/domain/organization_info.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/network/network_client.dart';
@@ -23,20 +24,21 @@ class UserProfileController extends GetxController with StateMixin {
     getUserProfile();
     getEmploymentInfo();
     getUserLogHistory();
+    getOrganizationInfo();
     super.onInit();
   }
 
   UserDetails? userDetails;
   EmployeeWorkHistory? employeeWorkHistory;
   UserLogHistory? userLogHistory;
+  OrganizationInfo? organizationInfo;
   final isLoading = false.obs;
   final isVerificationApiLoading = false.obs;
 
   void getUserProfile() async {
     change(null, status: RxStatus.loading());
-    final response = await NetworkClient().getGraphQuery(
-        queryString: getUserProfileQuery,
-        variables: {"orgUserId": "4ce59a0e-4180-4a51-b654-8dd9e5b3d64c"});
+    final response =
+        await NetworkClient().getGraphQuery(queryString: getUserProfileQuery);
 
     if (response.hasException) {
       log(response.exception.toString());
@@ -50,7 +52,9 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
         queryString: getEmploymentInfoQuery,
-        variables: {"orgUserId": "4ce59a0e-4180-4a51-b654-8dd9e5b3d64c"});
+        variables: {
+          "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
+        });
 
     if (response.hasException) {
       log(response.exception.toString());
@@ -103,7 +107,7 @@ class UserProfileController extends GetxController with StateMixin {
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
-        "employeeId": "4ce59a0e-4180-4a51-b654-8dd9e5b3d64c"
+        "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
 
       if (response.status.hasError) {
@@ -159,13 +163,25 @@ class UserProfileController extends GetxController with StateMixin {
             message: ErrorModel.fromJson(response.body).message ??
                 "Some Error occur!");
       } else {
-        logSuccessMessage(
-            logName: "resendOtp", response: response);
+        logSuccessMessage(logName: "resendOtp", response: response);
         showSuccessMessage(message: AppString.resend_otp_text.tr);
       }
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  getOrganizationInfo() async {
+    change(null, status: RxStatus.loading());
+    final response =
+        await NetworkClient().getGraphQuery(queryString: organizationInfoQuery);
+
+    if (response.hasException) {
+      log(response.exception.toString());
+    } else {
+      organizationInfo = OrganizationInfo.fromJson(response.data!);
+    }
+    change(null, status: RxStatus.success());
   }
 }
 

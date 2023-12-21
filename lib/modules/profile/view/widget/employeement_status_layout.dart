@@ -31,7 +31,7 @@ class EmploymentLayout extends StatelessWidget {
           itemCount: Get.find<UserProfileController>()
                   .employeeWorkHistory
                   ?.getOrganizationUserHistory
-                  ?.employmentHistories
+                  ?.designationHistories
                   ?.length ??
               0,
           itemBuilder: (context, index) {
@@ -39,7 +39,7 @@ class EmploymentLayout extends StatelessWidget {
                 developerStatus: Get.find<UserProfileController>()
                         .employeeWorkHistory
                         ?.getOrganizationUserHistory
-                        ?.employmentHistories?[0]
+                        ?.employmentHistories?[index]
                         .employmentStatus
                         ?.name ??
                     '',
@@ -47,15 +47,15 @@ class EmploymentLayout extends StatelessWidget {
                     Get.find<UserProfileController>()
                             .employeeWorkHistory
                             ?.getOrganizationUserHistory
-                            ?.designationHistories?[index]
+                            ?.employmentHistories?[index]
                             .startDate ??
                         ""),
                 durationText:
-                    "Form last ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index].startDate ?? "")}",
+                    "Form last ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index].startDate ?? "")}",
                 employeeCurrentStatus: Get.find<UserProfileController>()
                     .employeeWorkHistory
                     ?.getOrganizationUserHistory
-                    ?.designationHistories?[index]
+                    ?.employmentHistories?[index]
                     .endDate ==
                     null
                     ? "present"
@@ -63,7 +63,7 @@ class EmploymentLayout extends StatelessWidget {
                     Get.find<UserProfileController>()
                         .employeeWorkHistory
                         ?.getOrganizationUserHistory
-                        ?.designationHistories?[index]
+                        ?.employmentHistories?[index]
                         .endDate ??
                         ""),
                 statusColor: index==0?AppColor.successColor:AppColor.hintColor);

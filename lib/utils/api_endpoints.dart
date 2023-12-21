@@ -71,10 +71,9 @@ query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
 
 // profile module
 
-const getUserProfileQuery = r'''
-
-query Profile($orgUserId: UUID!) {
-  getOrganizationUserDetails(org_user_id: $orgUserId) {
+const getUserProfileQuery = '''
+query GetOrganizationUserDetails {
+  getOrganizationUserDetails {
     profile {
       id
       about
@@ -109,9 +108,7 @@ query Profile($orgUserId: UUID!) {
     }
     status
   }
- 
 }
-
 ''';
 
 const getEmploymentInfoQuery = r'''
@@ -153,6 +150,66 @@ const updateUserProfileMutation = r'''
 mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
   updateOrganizationUser(inputData: $inputData) {
     id
+  }
+}
+''';
+
+
+//dashboard
+
+const profileInfoForDashboardQuery = '''
+query GetProfileSummaryForDashboard {
+  getProfileSummaryForDashboard {
+    org_user_id
+    profile {
+      first_name
+      image
+    }
+    total_schedule
+    total_logged
+    progress_percentage
+  }
+}
+''';
+
+const timelineSummaryInfoDashboardQuery = '''
+query GetMonthlyTimelog {
+  getMonthlyTimelog {
+    progress_percentage
+    total_schedule
+    total_logged
+  }
+}
+''';
+
+
+const upcommingLeaveForDashboardQuery='''
+query GetUpcomingLeavesForApp {
+  getUpcomingLeavesForApp {
+    end_date
+    start_date
+    status
+    createdAt
+    number_of_days
+    leaveType {
+      type
+    }
+  }
+}
+''';
+
+const organizationInfoQuery='''
+query GetUserOrganizations {
+  getUserOrganizations {
+    data {
+      organization {
+        name
+        id
+        organization_setting {
+          logo_key
+        }
+      }
+    }
   }
 }
 ''';
