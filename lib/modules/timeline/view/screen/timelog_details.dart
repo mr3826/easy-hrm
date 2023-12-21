@@ -73,6 +73,7 @@ class TimeLogDetails extends StatelessWidget {
       ),
     );
   }
+
   _durationTimeLayout(context) {
     return SizedBox(
       width: double.infinity,
@@ -142,8 +143,6 @@ class TimeLogDetails extends StatelessWidget {
     );
   }
 }
-
-
 
 _verticalDivider({required double height, required Color bgColor}) {
   return Container(

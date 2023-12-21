@@ -39,30 +39,19 @@ class _TimerScreenState extends State<TimerScreen> {
           SizedBox(
             child: Stack(
               children: [
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     _timeCounterController.start();
                   },
                   child: const SizedBox(
                       height: 400, width: 400, child: TimerAnimation()),
                 ),
-                Obx(
-                  () => Positioned(
-                    top: 180,
-                    left: 166,
-                    child: Text(
-                      _timeCounterController.elapsedTime.toString(),
-                      style: AppStyle.normal_text_grey.copyWith(
-                          color: AppColor.cardColor,
-                          fontSize: Dimensions.fontSizeExtraLarge),
-                    ),
-                  ),
-                )
               ],
             ),
           ),
           _saveBtn(onAction: () {
-            //_timeCounterController.stop();
+            _timeCounterController.stop();
+            _timeCounterController.isRunning.value = false; //animation stop
             customButtonSheet(
                 height: .7, context: context, child: const AddToTaskScreen());
           }),
