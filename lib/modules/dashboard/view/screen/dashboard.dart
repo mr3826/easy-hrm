@@ -1,5 +1,4 @@
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,11 +18,12 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_status_button.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../leave/view/widget/leave_record_details_view.dart';
+
 
 class Dashboard extends GetView<DashboardController> {
   Dashboard({super.key});
@@ -275,23 +275,7 @@ class Dashboard extends GetView<DashboardController> {
   _userInfoAppbarLayout() {
     return Row(
       children: [
-        controller.profileSummaryForDashboard?.getProfileSummaryForDashboard
-                    ?.profile?.image !=
-                null
-            ? CircleAvatar(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green,
-                radius: 37,
-                backgroundImage: NetworkImage(
-                    "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.image}"),
-                child: const CupertinoActivityIndicator(),
-              )
-            : CircleAvatar(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green,
-                radius: 37,
-                backgroundImage: AssetImage(Images.user),
-              ),
+        _userImageLayout(),
         customSpacerWidth(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,6 +297,15 @@ class Dashboard extends GetView<DashboardController> {
           ],
         )
       ],
+    );
+  }
+
+  _userImageLayout() {
+    return CustomNetworkImage(
+      height: 22,
+      imgUrl:
+          "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.image}",
+      borderColor: Colors.transparent,
     );
   }
 
@@ -350,7 +343,8 @@ class Dashboard extends GetView<DashboardController> {
                 .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
             0,
         itemBuilder: (context, index) {
-          print(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].leaveType);
+          print(controller.upcommingLeaveDashboard
+              ?.getUpcomingLeavesForApp?[index].leaveType);
           return SizedBox(
             width: double.infinity,
             child: Padding(
@@ -363,21 +357,25 @@ class Dashboard extends GetView<DashboardController> {
                               ?.getUpcomingLeavesForApp?[index].status ??
                           "taken",
                       leaveRecords: GetLeaveRecords(
-                        status: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].status ??
-                            "",
-                        createdAt: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].createdAt ??
-                            "",
-                        startDate: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].startDate ??
-                            "",
-                        endDate: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].endDate ??
-                            "",
-                        leaveType: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].leaveType,
-
-                      ),
+                          status: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].status ??
+                              "",
+                          createdAt: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].createdAt ??
+                              "",
+                          startDate: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].startDate ??
+                              "",
+                          endDate: controller.upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index].endDate ??
+                              "",
+                          leaveType: controller.upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index].leaveType,
+                          duration: controller
+                                  .upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index]
+                                  .numberOfDays ??
+                              0),
                     ),
                     height: 0.5),
                 child: Card(
@@ -428,17 +426,6 @@ class Dashboard extends GetView<DashboardController> {
     );
   }
 
-  _divider() {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Container(
-        width: 1,
-        height: 8,
-        color: AppColor.hintColor,
-      ),
-    );
-  }
-
   _leaveInfoRow(int index) {
     String? leaveDate;
     String starDate = dateMonthFormatFromDatetime(controller
@@ -466,12 +453,19 @@ class Dashboard extends GetView<DashboardController> {
               color: AppColor.secondaryColor,
               fontSize: Dimensions.fontSizeDefault),
         ),
-        _divider(),
+        customSpacerWidth(width: 8),
         Text(
-          "",
+          controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
+                      .numberOfDays ==
+                  null
+              ? ""
+              : controller.upcommingLeaveDashboard
+                          ?.getUpcomingLeavesForApp?[index].numberOfDays >
+                      1
+                  ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} days"
+                  : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} day",
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault - 2),
+              color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         )
       ],
     );

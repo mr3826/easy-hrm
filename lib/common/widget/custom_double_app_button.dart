@@ -9,12 +9,16 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 class CustomDoubleAppButton extends StatelessWidget {
   final String buttonText;
+  final String ?cancelText;
 
   final Color btnColor;
   final Function onAction;
   final Function  cancelAction;
+
+ final Widget ?saveBtn;
+
   const CustomDoubleAppButton(
-      {super.key, required this.buttonText, required this.onAction,required this.cancelAction,this.btnColor=AppColor.primaryColor});
+      {super.key, required this.buttonText,this.cancelText, required this.onAction,required this.cancelAction,this.btnColor=AppColor.primaryColor,this.saveBtn});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class CustomDoubleAppButton extends StatelessWidget {
                     BorderRadius.circular(Dimensions.radiusExtraLarge),
               ),
               child: Center(
-                  child: Text(AppString.text_close.tr,
+                  child: Text(cancelText??AppString.text_close.tr,
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.hintColor.withOpacity(0.8),
                     fontSize: Dimensions.fontSizeMid - 3,
@@ -54,7 +58,7 @@ class CustomDoubleAppButton extends StatelessWidget {
                     BorderRadius.circular(Dimensions.radiusExtraLarge),
               ),
               child: Center(
-                  child:  Text(
+                  child: saveBtn?? Text(
                     buttonText,
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.cardColor,

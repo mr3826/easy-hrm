@@ -8,6 +8,7 @@ class Api {
 
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
+  static const LOGOUT = "/auth/logout";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/resend-verification-code";
   static const RESET_PASSWORD = "/auth/verify-forgot-password-code";
@@ -71,10 +72,9 @@ query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
 
 // profile module
 
-const getUserProfileQuery = r'''
-
-query Profile($orgUserId: UUID!) {
-  getOrganizationUserDetails(org_user_id: $orgUserId) {
+const getUserProfileQuery = '''
+query GetOrganizationUserDetails {
+  getOrganizationUserDetails {
     profile {
       id
       about
@@ -108,10 +108,15 @@ query Profile($orgUserId: UUID!) {
       }
     }
     status
+    organization {
+      organization_setting {
+        language
+        logo_key
+      }
+      name
+    }
   }
- 
 }
-
 ''';
 
 const getEmploymentInfoQuery = r'''
@@ -193,6 +198,7 @@ query GetUpcomingLeavesForApp {
     start_date
     status
     createdAt
+    number_of_days
     leaveType {
       type
     }
@@ -200,4 +206,18 @@ query GetUpcomingLeavesForApp {
 }
 ''';
 
-// number_of_days
+const organizationInfoQuery='''
+query GetUserOrganizations {
+  getUserOrganizations {
+    data {
+      organization {
+        name
+        id
+        organization_setting {
+          logo_key
+        }
+      }
+    }
+  }
+}
+''';

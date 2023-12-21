@@ -205,7 +205,7 @@ List<Widget> _buildScreens() {
   return [
     const TimelineScreen(),
     const LeaveScreen(),
-    Dashboard(),
+       Dashboard(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];

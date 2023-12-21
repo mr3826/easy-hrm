@@ -12,12 +12,15 @@ import 'package:get/get.dart';
 
 Future customAlertDialog({context, yesAction}) {
   return showDialog(
+
     context: context,
+
     builder: (context) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: AlertDialog(
           title: _titleText(titleText: AppString.text_are_you_sure),
+          backgroundColor: AppColor.cardColor,
           shape: roundedRectangleBorder.copyWith(borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
           icon: _iconBox(iconColor: AppColor.secondaryColor, icon: Icons.logout,iconBgColor: AppColor.secondaryColor.withOpacity(0.1)),
           content: _contentText(
