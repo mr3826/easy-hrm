@@ -15,7 +15,7 @@ class SplashController extends GetxController {
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
     } else {
-      Get.offAndToNamed(Routes.MAIN_SCREEN);
+      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
     }
   }
 }

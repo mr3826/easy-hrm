@@ -17,8 +17,6 @@ class Api {
   static const CHANGE_PASSWORD = "/auth/change-password";
 }
 
-
-
 //leave module
 const getLeaveSummaryForDashboardQuery = """
 query Query {
@@ -155,6 +153,29 @@ const updateUserProfileMutation = r'''
 mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
   updateOrganizationUser(inputData: $inputData) {
     id
+  }
+}
+''';
+
+// timeline
+
+const startOrEndTimerQueryData = r'''
+mutation StartOrStopTimer($inputData: StartOrStopTimerInputData) {
+  startOrStopTimer(inputData: $inputData) {
+    id
+    end_date
+    start_date
+  }
+}
+''';
+
+const saveTimerQueryData = r'''
+mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
+  updateTimelineEntry(inputData: $inputData) {
+    id
+    end_date
+    description
+    start_date
   }
 }
 ''';
