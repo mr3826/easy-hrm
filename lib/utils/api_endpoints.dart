@@ -155,7 +155,6 @@ mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
 }
 ''';
 
-
 //dashboard
 
 const profileInfoForDashboardQuery = '''
@@ -183,8 +182,7 @@ query GetMonthlyTimelog {
 }
 ''';
 
-
-const upcommingLeaveForDashboardQuery='''
+const upcommingLeaveForDashboardQuery = '''
 query GetUpcomingLeavesForApp {
   getUpcomingLeavesForApp {
     end_date
@@ -199,7 +197,7 @@ query GetUpcomingLeavesForApp {
 }
 ''';
 
-const organizationInfoQuery='''
+const organizationInfoQuery = '''
 query GetUserOrganizations {
   getUserOrganizations {
     data {
@@ -238,14 +236,27 @@ mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
 }
 ''';
 
-const getProjectDropdownQuery=r'''
+const getProjectDropdownQuery = r'''
 query GetProjectsDropdown($queryData: ProjectQueryInputType, $optionData: OptionDataType) {
   getProjectsDropdown(queryData: $queryData, optionData: $optionData) {
     color
     name
     tasks {
+      id
       name
     }
+  }
+}
+''';
+const createNewEntryQuery = r'''
+mutation CreateTimelineEntry($inputData: CreateTimelineEntryInputData) {
+  createTimelineEntry(inputData: $inputData) {
+    id
+    end_date
+    start_date
+    description
+    status
+    task_id
   }
 }
 ''';

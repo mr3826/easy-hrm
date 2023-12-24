@@ -8,7 +8,6 @@ class TimerEntryResponse {
         ? UpdateTimelineEntry.fromJson(json['updateTimelineEntry'])
         : null;
   }
-
 }
 
 class UpdateTimelineEntry {
@@ -17,6 +16,7 @@ class UpdateTimelineEntry {
   String? description;
   String? startDate;
   String? status;
+  String? taskId;
 
   UpdateTimelineEntry(
       {this.id, this.endDate, this.description, this.startDate, this.status});
@@ -27,6 +27,6 @@ class UpdateTimelineEntry {
     description = json['description'];
     startDate = json['start_date'];
     status = json['status'];
+    taskId = json['task_id'];
   }
-
 }

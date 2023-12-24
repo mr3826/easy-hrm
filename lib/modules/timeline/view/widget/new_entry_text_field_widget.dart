@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/controller/timer_picker.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
@@ -10,6 +11,7 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -27,7 +29,7 @@ import 'duration_time_widget.dart';
 class NewEntryTextField extends StatelessWidget {
   NewEntryTextField({super.key});
 
-  final currentIndex = 0.obs;
+  final currentIndex = 1.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +40,17 @@ class NewEntryTextField extends StatelessWidget {
         children: [
           durationTimeLayout(bgColor: AppColor.primaryColor.withOpacity(0.04)),
           customSpacerHeight(height: 12),
-          Obx(() => _timerLayout(context)),
-          customSpacerHeight(height: 20),
           customTitleText(text: "${AppString.text_date.tr} *"),
           customSpacerHeight(height: 8),
           Obx(() => _dateLayoutField()),
           customSpacerHeight(height: 8),
           _dayScheduleLayout(),
           customSpacerHeight(height: 20),
+          Obx(() => _timerLayout(context)),
+          customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_project_or_task.tr),
           customSpacerHeight(height: 8),
-         _selectedTaskLayout(context),
+          _selectedTaskLayout(context),
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),
@@ -56,12 +58,19 @@ class NewEntryTextField extends StatelessWidget {
             controller: descriptionController,
           ),
           customSpacerHeight(height: 20),
-          CustomDoubleAppButton(
-              buttonText: AppString.text_add.tr,
-              onAction: () {},
-              cancelAction: () {
-                Navigator.pop(context);
-              }),
+          Obx(() => Get.find<TimelineController>().isManualEntryLoading.isTrue
+              ? const Center(
+                  child: CupertinoActivityIndicator(),
+                )
+              : CustomDoubleAppButton(
+                  buttonText: AppString.text_add.tr,
+                  onAction: () {
+                    print("Clicked");
+                    Get.find<TimelineController>().createManualEntry();
+                  },
+                  cancelAction: () {
+                    Navigator.pop(context);
+                  })),
           customSpacerHeight(height: 40)
         ],
       ),
@@ -119,8 +128,20 @@ class NewEntryTextField extends StatelessWidget {
         customTitleText(text: AppString.text_set_end_time.tr),
         customSpacerHeight(height: 8),
         _newEntryEndTime(context: context),
+        customSpacerHeight(height: 8),
+        Obx(() => _timeInvalidMessage()),
       ],
     );
+  }
+
+  _timeInvalidMessage() {
+    return Get.find<TimelineController>().isTimeInvalid.isTrue
+        ? Text(
+            "**${AppString.inputTimeInvalidMessage}",
+            style:
+                AppStyle.small_text.copyWith(color: AppColor.errorColorLight),
+          )
+        : Container();
   }
 
   _dayScheduleLayout() {
@@ -135,6 +156,22 @@ class NewEntryTextField extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               currentIndex.value = index;
+              switch (index) {
+                case 0:
+                  Get.find<DateTimeController>().requestedDate.value =
+                      DateFormat('yyyy-MM-dd').format(
+                          DateTime.now().subtract(const Duration(days: 1)));
+                  break;
+                case 1:
+                  Get.find<DateTimeController>().requestedDate.value =
+                      DateFormat('yyyy-MM-dd').format(DateTime.now());
+                  break;
+                case 2:
+                  Get.find<DateTimeController>().requestedDate.value =
+                      DateFormat('yyyy-MM-dd')
+                          .format(DateTime.now().add(const Duration(days: 1)));
+                  break;
+              }
             },
             child: Obx(() => SizedBox(
                   width: AppLayout.getWidth(127),
@@ -194,12 +231,11 @@ Widget _newEntryStartTime({required BuildContext context}) {
 
 Widget _newEntryEndTime({required BuildContext context}) {
   return timerTextField(
-    hintText: Get.find<DateTimeController>().pickedInTime.isEmpty
+    hintText: Get.find<DateTimeController>().pickedOutTime.isEmpty
         ? AppString.text_select_time
-        : Get.find<DateTimeController>().pickedInTime.value,
+        : Get.find<DateTimeController>().pickedOutTime.value,
     dobIcon: Icons.access_time_outlined,
     dobIconAction: () {
-      Get.find<DateTimeController>().isInTimeClicked.value = true;
       timePicker(context);
     },
   );

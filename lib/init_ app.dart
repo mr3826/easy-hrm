@@ -32,7 +32,6 @@ Future<void> initApp() async {
   Get.put(SplashController());
   Get.put(SignInController());
   Get.put(ForgotPasswordController());
-  Get.put(DateTimeController());
   Get.put(FileUploadController());
   Get.put(PickedFileFormStorage());
   Get.put(DateController());

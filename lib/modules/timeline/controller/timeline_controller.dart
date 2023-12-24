@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
@@ -12,6 +13,8 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
+import '../model/create_time_entry.dart';
+
 class TimelineController extends GetxController {
   @override
   void onInit() {
@@ -20,7 +23,10 @@ class TimelineController extends GetxController {
   }
 
   final isLoading = false.obs;
+  final isManualEntryLoading = false.obs;
   final taskName = "".obs;
+  final isTimeInvalid = false.obs;
+  final taskId = "".obs;
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
@@ -81,5 +87,48 @@ class TimelineController extends GetxController {
           ProjectDropDownResponse.fromJson(response.data!);
     }
     isLoading(false);
+  }
+
+  createManualEntry() async {
+    isManualEntryLoading(true);
+    Duration timeDifference =
+        DateTime.parse(Get.find<DateTimeController>().requestedOutDate.value)
+            .difference(DateTime.parse(
+                Get.find<DateTimeController>().requestedInDate.value));
+    if (!timeDifference.isNegative) {
+      isTimeInvalid(false);
+      print(taskId.value);
+      if (taskId.isNotEmpty) {
+        final response =
+            await NetworkClient().mutationGraphData(createNewEntryQuery, {
+          "inputData": {
+            "end_date": Get.find<DateTimeController>()
+                .requestedOutDate
+                .value
+                .replaceAll(" ", "T"),
+            "description": descriptionController.text,
+            "start_date": Get.find<DateTimeController>()
+                .requestedInDate
+                .value
+                .replaceAll(" ", "T"),
+            "status": "pending",
+            "task_id": taskId.value
+          }
+        });
+        if (response.hasException) {
+          log(response.exception.toString());
+        } else {
+          print(CreateTimelineEntryResponse.fromJson(response.data!)
+              .createTimelineEntry
+              ?.id);
+          taskId.value = "";
+          descriptionController.clear();
+          Get.back(canPop: false);
+        }
+      }
+    } else {
+      isTimeInvalid(true);
+    }
+    isManualEntryLoading(false);
   }
 }

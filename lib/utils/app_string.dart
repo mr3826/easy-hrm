@@ -36,6 +36,7 @@ class AppString {
   static String text_enter_code = 'Enter your code';
   static String text_a_5_digit_has_been_etc =
       'An 5 digit code has been sent to demouser@gmail.com';
+  static String inputTimeInvalidMessage = "End time must be after start time";
   static String text_setup_your_code_etc =
       'Setup your new password now. Minimum 8 letter or digits';
   static String text_resend_code = 'Resend code';

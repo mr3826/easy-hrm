@@ -24,28 +24,28 @@ Widget taskInputFieldLayout({required onAction}) {
       child: Padding(
         padding: marginLayout.copyWith(left: 12, right: 8, top: 12, bottom: 12),
         child: Obx(() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Get.find<TimelineController>().taskName.value.isNotEmpty
-                ? Text(
-              Get.find<TimelineController>().taskName.value,
-              style: AppStyle.mid_large_text.copyWith(
-                  fontSize: Dimensions.fontSizeDefault + 1,
-                  color: AppColor.normalTextColor),
-            )
-                : Text(
-              AppString.text_select_option.tr,
-              style: AppStyle.mid_large_text.copyWith(
-                  fontSize: Dimensions.fontSizeDefault + 1,
-                  color: AppColor.hintColor),
-            ),
-            const Icon(
-              CupertinoIcons.search,
-              size: 30,
-              color: AppColor.hintColor,
-            )
-          ],
-        )),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Get.find<TimelineController>().taskName.value.isNotEmpty
+                    ? Text(
+                        Get.find<TimelineController>().taskName.value,
+                        style: AppStyle.mid_large_text.copyWith(
+                            fontSize: Dimensions.fontSizeDefault + 1,
+                            color: AppColor.normalTextColor),
+                      )
+                    : Text(
+                        AppString.text_select_option.tr,
+                        style: AppStyle.mid_large_text.copyWith(
+                            fontSize: Dimensions.fontSizeDefault + 1,
+                            color: AppColor.hintColor),
+                      ),
+                const Icon(
+                  CupertinoIcons.search,
+                  size: 30,
+                  color: AppColor.hintColor,
+                )
+              ],
+            )),
       ),
     ),
   );

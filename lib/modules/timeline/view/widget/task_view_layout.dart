@@ -139,8 +139,8 @@ class TaskViewLayout extends StatelessWidget {
       onTap: () {
         taskSearchController.text = task.name ?? "";
         Get.find<TimelineController>().taskName.value = task.name ?? "";
-        // String? colorCode = getColorById(task.taskId ?? "");
-        // print(colorCode);
+        Get.find<TimelineController>().taskId.value = task.taskId ?? "";
+        Get.back(canPop: false);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
