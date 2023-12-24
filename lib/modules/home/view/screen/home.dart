@@ -8,6 +8,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -111,7 +112,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              _entryAndStartTimeLayout(),
+              Obx(
+                () => _entryAndStartTimeLayout(),
+              ),
               Text(
                 AppString.text_upcoming_leave.tr,
                 style: AppStyle.mid_large_text
@@ -263,6 +266,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   _entryAndStartTimeLayout() {
+    final TimeCounterController controller = Get.put(TimeCounterController());
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,13 +279,9 @@ class HomeScreen extends StatelessWidget {
               child: customSvgImage(imageUrl: Images.add_time_entry)),
         ),
         customSpacerWidth(width: 22),
-        InkWell(
-          onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
-          child: SizedBox(
-              height: AppLayout.getHeight(170),
-              width: AppLayout.getWidth(170),
-              child: customSvgImage(imageUrl: Images.start_time)),
-        ),
+        controller.isRunning.value
+            ? _startingTimeOpen(time: "${controller.starTimeDashboard}")
+            : _startingTime()
       ],
     );
   }
@@ -370,6 +370,49 @@ class HomeScreen extends StatelessWidget {
         height: 8,
         color: AppColor.hintColor,
       ),
+    );
+  }
+
+  _startingTimeOpen({required time}) {
+    return Stack(
+      children: [
+        InkWell(
+          onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
+          child: SizedBox(
+              height: AppLayout.getHeight(170),
+              width: AppLayout.getWidth(170),
+              child: customSvgImage(imageUrl: Images.start_time_open)),
+        ),
+        Positioned(
+            bottom: 45,
+            left: 36,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.check_box_outline_blank,
+                  color: AppColor.cardColor.withOpacity(0.9),
+                  size: 21,
+                ),
+                customSpacerWidth(width: 4),
+                Text(
+                  "$time",
+                  style: AppStyle.normal_text_grey.copyWith(
+                      color: AppColor.cardColor,
+                      fontSize: Dimensions.fontSizeDefault + 1),
+                ),
+              ],
+            ))
+      ],
+    );
+  }
+
+  _startingTime() {
+    return InkWell(
+      onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
+      child: SizedBox(
+          height: AppLayout.getHeight(170),
+          width: AppLayout.getWidth(170),
+          child: customSvgImage(imageUrl: Images.start_time)),
     );
   }
 }
