@@ -11,7 +11,6 @@ import 'package:payrun_mobile/utils/utils.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
 import '../../../profile/controller/profile_image_selected_controller.dart';
 
 class MainScreen extends StatelessWidget {

@@ -391,7 +391,7 @@ class HomeScreen extends StatelessWidget {
                 Icon(
                   Icons.check_box_outline_blank,
                   color: AppColor.cardColor.withOpacity(0.9),
-                  size: 21,
+                  size: 20,
                 ),
                 customSpacerWidth(width: 4),
                 Text(
