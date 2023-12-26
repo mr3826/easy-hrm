@@ -13,8 +13,6 @@ class TimeCounterController extends GetxController {
   void start() {
     isRunning.value = true;
     _timer = Timer.periodic(const Duration(seconds: 1), _updateTimer);
-    _timer =
-        Timer.periodic(const Duration(seconds: 1), _updateStringTimeDashboard);
   }
 
   void stop() {
@@ -34,19 +32,11 @@ class TimeCounterController extends GetxController {
     _seconds++;
     final hours = _seconds ~/ 3600;
     final minutes = (_seconds % 3600) ~/ 60;
-    elapsedTime.value = '${_twoDigits(hours)}:${_twoDigits(minutes)}';
-    totalTime = elapsedTime;
-  }
-
-  //For dashboard
-  void _updateStringTimeDashboard(Timer timer) {
-    _seconds++;
-    final hours = _seconds ~/ 3600;
-    final minutes = (_seconds % 3600) ~/ 60;
     final seconds = _seconds % 60;
     starTimeDashboard.value =
-        '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(seconds)}';
-    totalTime = starTimeDashboard;
+    '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(seconds)}';
+    elapsedTime.value = '${_twoDigits(hours)}:${_twoDigits(minutes)}';
+    totalTime = elapsedTime;
   }
 
   String _twoDigits(int n) => n.toString().padLeft(2, '0');
