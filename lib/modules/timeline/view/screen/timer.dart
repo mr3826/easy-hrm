@@ -36,17 +36,22 @@ class _TimerScreenState extends State<TimerScreen> {
         children: [
           _dateText(date: "Thu, 21 April - 2023"),
           customSpacerHeight(height: 50),
-          SizedBox(
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    _timeCounterController.start();
-                  },
-                  child: const SizedBox(
-                      height: 400, width: 400, child: TimerAnimation()),
-                ),
-              ],
+          Obx(
+            () => SizedBox(
+              child: Stack(
+                children: [
+                  _timeCounterController.isClicked.value == true
+                      ? const SizedBox(
+                          height: 400, width: 400, child: TimerAnimation())
+                      : GestureDetector(
+                          onTap: () {
+                            _timeCounterController.start();
+                          },
+                          child: const SizedBox(
+                              height: 400, width: 400, child: TimerAnimation()),
+                        ),
+                ],
+              ),
             ),
           ),
           _saveBtn(onAction: () {

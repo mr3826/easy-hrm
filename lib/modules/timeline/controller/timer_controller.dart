@@ -7,17 +7,20 @@ class TimeCounterController extends GetxController {
   var totalTime = ''.obs;
   var isRunning = false.obs;
   var isTotalCount = true.obs;
+  var isClicked = false.obs;
   late Timer _timer;
   int _seconds = 0;
 
   void start() {
     isRunning.value = true;
+    isClicked(true);
     _timer = Timer.periodic(const Duration(seconds: 1), _updateTimer);
   }
 
   void stop() {
     isRunning.value = false;
     isTotalCount(false);
+    isClicked(false);
     print("total time => $totalTime");
     _timer.cancel();
   }
