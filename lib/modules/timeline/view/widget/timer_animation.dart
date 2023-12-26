@@ -55,6 +55,7 @@ class _TimerAnimationState extends State<TimerAnimation> {
       ],
     );
   }
+
   _animatedContainer() {
     return Center(
         child: AnimatedContainer(
