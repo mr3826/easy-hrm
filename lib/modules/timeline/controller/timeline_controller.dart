@@ -47,7 +47,9 @@ class TimelineController extends GetxController {
         showSuccessMessage(message: AppString.timerStartedSuccessfulMessage);
         Get.find<TimeCounterController>().start();
       } else {
-        Get.find<TimeCounterController>().stop();
+        if (Get.find<TimeCounterController>().timer.isActive) {
+          Get.find<TimeCounterController>().stop();
+        }
       }
     }
   }

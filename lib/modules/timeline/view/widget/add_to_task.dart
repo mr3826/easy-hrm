@@ -36,7 +36,7 @@ class AddToTaskScreen extends StatelessWidget {
               ),
               customSpacerHeight(height: 50),
               CustomDoubleAppButton(
-                  buttonText: AppString.text_remove.tr,
+                  buttonText: AppString.text_save.tr,
                   onAction: () {},
                   cancelAction: () {
                     Navigator.pop(context);
@@ -53,7 +53,7 @@ class AddToTaskScreen extends StatelessWidget {
       customButtonSheet(
           context: context,
           child: const TaskViewLayout(),
-          height: .7);
+          height: .6);
     });
   }
 

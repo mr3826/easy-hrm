@@ -317,7 +317,13 @@ class Dashboard extends GetView<DashboardController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
+          onTap: () {
+            if (Get.isRegistered<DateTimeController>()) {
+              Get.delete<DateTimeController>();
+            }
+            Get.put(DateTimeController());
+            Get.toNamed(Routes.NEW_ENTRY_SCREEN);
+          },
           child: SizedBox(
               height: AppLayout.getHeight(170),
               width: AppLayout.getWidth(170),
@@ -470,50 +476,53 @@ class Dashboard extends GetView<DashboardController> {
   }
 }
 
-
 _startingTimeOpen({required time}) {
-  return Stack(
-    children: [
-      InkWell(
-        onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
-        child: SizedBox(
+  return InkWell(
+    onTap: () async {
+      Get.toNamed(Routes.TIMER_SCREEN);
+    },
+    child: Stack(
+      children: [
+        SizedBox(
             height: AppLayout.getHeight(170),
             width: AppLayout.getWidth(170),
             child: customSvgImage(imageUrl: Images.start_time_open)),
-      ),
-      Positioned(
-          bottom: 45,
-          left: 36,
-          child: Row(
-            children: [
-              Icon(
-                Icons.check_box_outline_blank,
-                color: AppColor.cardColor.withOpacity(0.9),
-                size: 20,
-              ),
-              customSpacerWidth(width: 4),
-              Text(
-                "$time",
-                style: AppStyle.normal_text_grey.copyWith(
-                    color: AppColor.cardColor,
-                    fontSize: Dimensions.fontSizeDefault + 1),
-              ),
-            ],
-          ))
-    ],
+        Positioned(
+            bottom: 45,
+            left: 36,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.check_box_outline_blank,
+                  color: AppColor.cardColor.withOpacity(0.9),
+                  size: 20,
+                ),
+                customSpacerWidth(width: 4),
+                Text(
+                  "$time",
+                  style: AppStyle.normal_text_grey.copyWith(
+                      color: AppColor.cardColor,
+                      fontSize: Dimensions.fontSizeDefault + 1),
+                ),
+              ],
+            ))
+      ],
+    ),
   );
 }
 
 _startingTime() {
   return InkWell(
-    onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
+    onTap: ()  {
+      Get.find<TimeCounterController>().timerStatus();
+      Get.toNamed(Routes.TIMER_SCREEN);
+    },
     child: SizedBox(
         height: AppLayout.getHeight(170),
         width: AppLayout.getWidth(170),
         child: customSvgImage(imageUrl: Images.start_time)),
   );
 }
-
 
 Widget _dotsDecorator({required currentIndex}) {
   return DotsIndicator(

@@ -39,33 +39,28 @@ class _TimerScreenState extends State<TimerScreen> {
         children: [
           _dateText(
               date: DateFormat('E, d MMMM - yyyy').format(DateTime.now())),
-          customSpacerHeight(height: 50),
           GestureDetector(
             onTap: () {
               Get.find<TimelineController>()
                   .startOrEndTimer(timerType: StartOrEndTimer.start.name);
-              _timeCounterController.start();
             },
             child: const SizedBox(
               child: Stack(
                 children: [
-                  SizedBox(
-                      height: 400, width: 400, child: TimerAnimation()),
+                  SizedBox(height: 400, width: 400, child: TimerAnimation()),
                 ],
               ),
             ),
           ),
           _saveBtn(
             onAction: () async {
-              if (Get.find<TimeCounterController>().timer.isActive) {
-                Get.find<TimeCounterController>().stop();
-                _timeCounterController.isRunning.value = false;
+              if (Get.find<TimeCounterController>().isRunning.isTrue) {
+                await Get.find<TimelineController>()
+                    .startOrEndTimer(timerType: StartOrEndTimer.end.name);
               }
-              await Get.find<TimelineController>()
-                  .startOrEndTimer(timerType: StartOrEndTimer.end.name);
               if (context.mounted) {
                 customButtonSheet(
-                    height: .7,
+                    height: .6,
                     context: context,
                     child: const AddToTaskScreen());
               }

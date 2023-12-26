@@ -260,3 +260,12 @@ mutation CreateTimelineEntry($inputData: CreateTimelineEntryInputData) {
   }
 }
 ''';
+
+
+const timerStatusQuery='''
+query CheckStartOrStopTimeline {
+  checkStartOrStopTimeline {
+    start_date
+  }
+}
+''';
