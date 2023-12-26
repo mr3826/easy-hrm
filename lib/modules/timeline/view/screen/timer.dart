@@ -44,32 +44,22 @@ class _TimerScreenState extends State<TimerScreen> {
             onTap: () {
               Get.find<TimelineController>()
                   .startOrEndTimer(timerType: StartOrEndTimer.start.name);
+              _timeCounterController.start();
             },
-            child: SizedBox(
+            child: const SizedBox(
               child: Stack(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                       height: 400, width: 400, child: TimerAnimation()),
-                  Obx(
-                    () => Positioned(
-                      top: 180,
-                      left: 166,
-                      child: Text(
-                        _timeCounterController.elapsedTime.toString(),
-                        style: AppStyle.normal_text_grey.copyWith(
-                            color: AppColor.cardColor,
-                            fontSize: Dimensions.fontSizeExtraLarge),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
           ),
           _saveBtn(
             onAction: () async {
-              if(Get.find<TimeCounterController>().timer.isActive){
+              if (Get.find<TimeCounterController>().timer.isActive) {
                 Get.find<TimeCounterController>().stop();
+                _timeCounterController.isRunning.value = false;
               }
               await Get.find<TimelineController>()
                   .startOrEndTimer(timerType: StartOrEndTimer.end.name);
