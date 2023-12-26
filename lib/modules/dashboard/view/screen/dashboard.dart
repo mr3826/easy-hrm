@@ -325,6 +325,7 @@ class Dashboard extends GetView<DashboardController> {
               child: customSvgImage(imageUrl: Images.add_time_entry)),
         ),
         customSpacerWidth(width: 22),
+
         controller.isRunning.value
             ? _startingTimeOpen(time: "${controller.starTimeDashboard}")
             : _startingTime()
