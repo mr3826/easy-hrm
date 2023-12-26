@@ -7,12 +7,15 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 class SummaryTimeLogCalendar extends StatelessWidget {
   SummaryTimeLogCalendar({super.key});
 
   final int startingYear = 2022;
   final int currentYear = DateTime.now().year;
+
+
+
+
 
 
   @override
@@ -27,8 +30,6 @@ class SummaryTimeLogCalendar extends StatelessWidget {
 
           itemBuilder: (context, index) {
             final year = startingYear + index;
-
-
             return SizedBox(
               width: AppLayout.getWidth(880),
               child: Row(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class TimeCounterController extends GetxController {
   var elapsedTime = 'Start'.obs;
+  var starTimeDashboard = '00:00:00'.obs;
   var totalTime = ''.obs;
   var isRunning = false.obs;
   var isTotalCount = true.obs;
@@ -31,9 +32,10 @@ class TimeCounterController extends GetxController {
     _seconds++;
     final hours = _seconds ~/ 3600;
     final minutes = (_seconds % 3600) ~/ 60;
-    // final seconds = _seconds % 60;
-    elapsedTime.value =
-        '${_twoDigits(hours)}:${_twoDigits(minutes)}'; // ${_twoDigits(seconds)}
+    final seconds = _seconds % 60;
+    starTimeDashboard.value =
+    '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(seconds)}';
+    elapsedTime.value = '${_twoDigits(hours)}:${_twoDigits(minutes)}';
     totalTime = elapsedTime;
   }
 
