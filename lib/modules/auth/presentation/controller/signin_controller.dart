@@ -83,6 +83,8 @@ class SignInController extends GetxController with StateMixin {
             SignInResponse.fromJson(response.body).data?.idToken ?? "");
         GetStorage().write(AppString.ACCESS_TOKEN,
             SignInResponse.fromJson(response.body).data?.accessToken ?? "");
+        GetStorage().write(AppString.REFRESH_TOKEN,
+            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
         _saveData();
       }
     } catch (e) {

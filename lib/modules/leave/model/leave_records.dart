@@ -54,5 +54,4 @@ class LeaveType {
   LeaveType.fromJson(Map<String, dynamic> json) {
     type = json['type'];
   }
-
 }

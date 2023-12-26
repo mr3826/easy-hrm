@@ -8,6 +8,7 @@ class Api {
 
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
+  static const LOGOUT = "/auth/logout";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/resend-verification-code";
   static const RESET_PASSWORD = "/auth/verify-forgot-password-code";
@@ -16,8 +17,6 @@ class Api {
   static const VERIFY_CHANGE_MAIL_OTP = "/auth/confirm-change-email";
   static const CHANGE_PASSWORD = "/auth/change-password";
 }
-
-
 
 //leave module
 const getLeaveSummaryForDashboardQuery = """
@@ -73,10 +72,9 @@ query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
 
 // profile module
 
-const getUserProfileQuery = r'''
-
-query Profile($orgUserId: UUID!) {
-  getOrganizationUserDetails(org_user_id: $orgUserId) {
+const getUserProfileQuery = '''
+query GetOrganizationUserDetails {
+  getOrganizationUserDetails {
     profile {
       id
       about
@@ -110,10 +108,15 @@ query Profile($orgUserId: UUID!) {
       }
     }
     status
+    organization {
+      organization_setting {
+        language
+        logo_key
+      }
+      name
+    }
   }
- 
 }
-
 ''';
 
 const getEmploymentInfoQuery = r'''
@@ -155,6 +158,66 @@ const updateUserProfileMutation = r'''
 mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
   updateOrganizationUser(inputData: $inputData) {
     id
+  }
+}
+''';
+
+
+//dashboard
+
+const profileInfoForDashboardQuery = '''
+query GetProfileSummaryForDashboard {
+  getProfileSummaryForDashboard {
+    org_user_id
+    profile {
+      first_name
+      image
+    }
+    total_schedule
+    total_logged
+    progress_percentage
+  }
+}
+''';
+
+const timelineSummaryInfoDashboardQuery = '''
+query GetMonthlyTimelog {
+  getMonthlyTimelog {
+    progress_percentage
+    total_schedule
+    total_logged
+  }
+}
+''';
+
+
+const upcommingLeaveForDashboardQuery='''
+query GetUpcomingLeavesForApp {
+  getUpcomingLeavesForApp {
+    end_date
+    start_date
+    status
+    createdAt
+    number_of_days
+    leaveType {
+      type
+    }
+  }
+}
+''';
+
+const organizationInfoQuery='''
+query GetUserOrganizations {
+  getUserOrganizations {
+    data {
+      organization {
+        name
+        id
+        organization_setting {
+          logo_key
+        }
+      }
+    }
   }
 }
 ''';
