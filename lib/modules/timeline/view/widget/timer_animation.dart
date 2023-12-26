@@ -31,6 +31,8 @@ class _TimerAnimationState extends State<TimerAnimation> {
     super.dispose();
   }
 
+
+
   void startAnimation() {
     Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {

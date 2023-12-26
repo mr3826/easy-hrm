@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:get/get.dart';
 
 class TimeCounterController extends GetxController {
-
   var elapsedTime = 'Start'.obs;
   var starTimeDashboard = '00:00:00'.obs;
   var totalTime = ''.obs;
