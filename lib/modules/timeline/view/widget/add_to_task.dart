@@ -10,12 +10,15 @@ import '../../../../common/widget/custom_spacer.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/utils.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../controller/timer_controller.dart';
 
 class AddToTaskScreen extends StatelessWidget {
   const AddToTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TimeCounterController _timeCounterController =
+    Get.put(TimeCounterController());
     return Padding(
       padding: marginLayout.copyWith(top: 30),
       child: SingleChildScrollView(
@@ -37,7 +40,10 @@ class AddToTaskScreen extends StatelessWidget {
               customSpacerHeight(height: 50),
               CustomDoubleAppButton(
                   buttonText: AppString.text_remove.tr,
-                  onAction: () {},
+                  onAction: () {
+                    _timeCounterController.isTotalCount.value=true;
+                    _timeCounterController.reset();
+                  },
                   cancelAction: () {
                     Navigator.pop(context);
                   })

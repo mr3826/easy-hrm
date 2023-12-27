@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:get/get.dart';
 
 class TimeCounterController extends GetxController {
+
   var elapsedTime = 'Start'.obs;
   var starTimeDashboard = '00:00:00'.obs;
+
   var totalTime = ''.obs;
   var isRunning = false.obs;
   var isTotalCount = true.obs;
@@ -27,8 +29,14 @@ class TimeCounterController extends GetxController {
 
   void reset() {
     isRunning.value = false;
+    print(" reset value ==> $elapsedTime");
+    elapsedTime.value="Start";
     _seconds = 0;
-    _updateTimer(Timer(Duration.zero, () {}));
+
+    _updateTimer(Timer(Duration.zero, () {
+      elapsedTime.value="Start";
+
+    }));
   }
 
   void _updateTimer(Timer timer) {
@@ -40,6 +48,7 @@ class TimeCounterController extends GetxController {
     '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(seconds)}';
     elapsedTime.value = '${_twoDigits(hours)}:${_twoDigits(minutes)}';
     totalTime = elapsedTime;
+
   }
 
   String _twoDigits(int n) => n.toString().padLeft(2, '0');

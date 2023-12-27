@@ -114,7 +114,7 @@ class _TimerAnimationState extends State<TimerAnimation> {
                         color: AppColor.cardColor,
                         fontSize: Dimensions.fontSizeMid - 2),
                   ),
-                  Text(_timeCounterController.totalTime.toString(),
+                  Text(_timeCounterController.elapsedTime.toString(),
                       style: AppStyle.normal_text_grey.copyWith(
                           color: AppColor.cardColor,
                           fontSize: Dimensions.fontSizeExtraLarge))
