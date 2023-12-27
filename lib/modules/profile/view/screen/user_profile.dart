@@ -12,6 +12,7 @@ import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/controller/log_out_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
@@ -38,24 +39,7 @@ class ProfileScreen extends GetView<UserProfileController> {
     return controller.obx(
         (state) => Scaffold(
               appBar: profileAppbar(onAction: () {}),
-              endDrawer: Drawer(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customSpacerHeight(height: 70),
-                    _profileInfoDrawerLayout(),
-                    customSpacerHeight(height: 40),
-                    _organisationLayout(context),
-                    const Spacer(),
-                    _languageLayout(context),
-                    customSpacerHeight(height: 30),
-                    _logoutLayout(context)
-                  ],
-                ),
-              ),
+              endDrawer: endDrawer(context),
               body: Padding(
                 padding: marginLayout,
                 child: SingleChildScrollView(
@@ -237,19 +221,19 @@ class ProfileScreen extends GetView<UserProfileController> {
     return GestureDetector(
       onTap: () {
         customDialog(
-          context: context,
-          saveBtnAction: () {
-            Get.back();
-          },
-          icon: Icons.logout,
-          titleText: AppString.text_are_you_sure.tr,
-          subText: AppString.text_if_you_do_this_etc.tr,
-          iconBgColor: AppColor.errorColorLight,
-          btnBgColor: AppColor.errorColorLight,
-          btnText: AppString.text_log_out.tr,
-          drcText: "",
-          drcFontSize: Dimensions.fontSizeDefault,
-        );
+            context: context,
+            saveBtnAction: () {
+              Get.find<LogoutController>().logout();
+            },
+            icon: Icons.logout,
+            titleText: AppString.text_are_you_sure.tr,
+            subText: AppString.text_if_you_do_this_etc.tr,
+            iconBgColor: AppColor.errorColorLight,
+            btnBgColor: AppColor.errorColorLight,
+            btnText: AppString.text_log_out.tr,
+            drcText: "",
+            drcFontSize: Dimensions.fontSizeDefault,
+            childForSaveBtn: Obx(() => _logoutTextLayout()));
       },
       child: Container(
         height: AppLayout.getHeight(90),
@@ -297,7 +281,9 @@ class ProfileScreen extends GetView<UserProfileController> {
                       color: AppColor.hintColor),
                 ),
                 Text(
-                  "English",
+                  controller.userDetails?.getOrganizationUserDetails
+                          ?.organization?.organizationSetting?.language ??
+                      "",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
                       fontSize: Dimensions.fontSizeDefault + 1),
@@ -339,17 +325,22 @@ class ProfileScreen extends GetView<UserProfileController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "TrueCoders",
+                    controller.userDetails?.getOrganizationUserDetails
+                            ?.organization?.orgName ??
+                        "",
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.normalTextColor,
                         fontWeight: FontWeight.w900,
                         fontSize: Dimensions.fontSizeDefault + 1),
                   ),
                   Text(
-                    "Senior Developer",
+                    controller.employeeWorkHistory?.getOrganizationUserHistory
+                            ?.designationHistories?[0].designation?.name ??
+                        "",
                     style: AppStyle.normal_text_grey.copyWith(
                         color: AppColor.hintColor,
                         fontSize: Dimensions.fontSizeDefault - 1),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   customSpacerHeight(height: 6),
                   GestureDetector(
@@ -379,15 +370,17 @@ class ProfileScreen extends GetView<UserProfileController> {
           _userProfileImgLayout(),
           customSpacerHeight(height: 12),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Agens Neilson",
+                "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
                 style: AppStyle.mid_large_text
                     .copyWith(color: AppColor.normalTextColor),
               ),
               Text(
-                "Laravel department",
+                controller.employeeWorkHistory?.getOrganizationUserHistory
+                        ?.designationHistories?[0].designation?.name ??
+                    "",
                 style: AppStyle.normal_text_grey
                     .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
               ),
@@ -487,10 +480,44 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _organisationLogoLayout() {
     return CustomNetworkImage(
-      height: 22,
-      imgUrl: "",
+      height: 32,
+      imgUrl:
+          "${Api.PUBLIC_IMAGE_URL_DOMAIN}/${controller.userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}",
       borderColor: Colors.transparent,
       logoUrl: Images.ORG,
     );
+  }
+
+  endDrawer(BuildContext context) {
+    return Drawer(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customSpacerHeight(height: 70),
+          _profileInfoDrawerLayout(),
+          customSpacerHeight(height: 40),
+          _organisationLayout(context),
+          const Spacer(),
+          _languageLayout(context),
+          customSpacerHeight(height: 30),
+          _logoutLayout(context)
+        ],
+      ),
+    );
+  }
+
+  _logoutTextLayout() {
+    return Get.find<LogoutController>().isLogoutLoading.value
+        ? const CupertinoActivityIndicator(
+            color: AppColor.cardColor,
+          )
+        : Text(
+            AppString.text_log_out.tr,
+            style: AppStyle.normal_text_grey.copyWith(
+                fontSize: Dimensions.fontSizeDefault + 1,
+                color: AppColor.cardColor),
+          );
   }
 }

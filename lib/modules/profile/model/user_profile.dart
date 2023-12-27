@@ -6,7 +6,7 @@ class UserDetails {
   UserDetails.fromJson(Map<String, dynamic> json) {
     getOrganizationUserDetails = json['getOrganizationUserDetails'] != null
         ? GetOrganizationUserDetails.fromJson(
-        json['getOrganizationUserDetails'])
+            json['getOrganizationUserDetails'])
         : null;
   }
 }
@@ -16,41 +16,48 @@ class GetOrganizationUserDetails {
   User? user;
   Department? department;
   String? status;
+  Organization? organization;
 
   GetOrganizationUserDetails(
-      {this.profile, this.user, this.department, this.status});
+      {this.profile,
+      this.user,
+      this.department,
+      this.status,
+      this.organization});
 
   GetOrganizationUserDetails.fromJson(Map<String, dynamic> json) {
     profile =
-    json['profile'] != null ?  Profile.fromJson(json['profile']) : null;
-    user = json['user'] != null ?  User.fromJson(json['user']) : null;
+        json['profile'] != null ? Profile.fromJson(json['profile']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     department = json['department'] != null
-        ?  Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
     status = json['status'];
+    organization = json['organization'] != null
+        ? Organization.fromJson(json['organization'])
+        : null;
   }
-
 }
 
 class Profile {
   String? id;
   String? about;
   String? address;
-  dynamic emergencyNumber;
+  String? emergencyNumber;
   String? firstName;
   String? image;
   String? lastName;
-  dynamic personalNumber;
+  String? personalNumber;
 
   Profile(
       {this.id,
-        this.about,
-        this.address,
-        this.emergencyNumber,
-        this.firstName,
-        this.image,
-        this.lastName,
-        this.personalNumber});
+      this.about,
+      this.address,
+      this.emergencyNumber,
+      this.firstName,
+      this.image,
+      this.lastName,
+      this.personalNumber});
 
   Profile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -62,7 +69,6 @@ class Profile {
     lastName = json['last_name'];
     personalNumber = json['personal_number'];
   }
-
 }
 
 class User {
@@ -75,7 +81,6 @@ class User {
     email = json['email'];
     id = json['id'];
   }
-
 }
 
 class Department {
@@ -89,13 +94,11 @@ class Department {
   Department.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
-    parent =
-    json['parent'] != null ? Parent.fromJson(json['parent']) : null;
+    parent = json['parent'] != null ? Parent.fromJson(json['parent']) : null;
     workShift = json['work_shift'] != null
         ? WorkShift.fromJson(json['work_shift'])
         : null;
   }
-
 }
 
 class Parent {
@@ -108,7 +111,6 @@ class Parent {
     id = json['id'];
     name = json['name'];
   }
-
 }
 
 class WorkShift {
@@ -126,7 +128,6 @@ class WorkShift {
       });
     }
   }
-
 }
 
 class WorkSchedules {
@@ -142,5 +143,31 @@ class WorkSchedules {
     endTime = json['end_time'];
     startTime = json['start_time'];
     isHoliday = json['is_holiday'];
+  }
+}
+
+class Organization {
+  OrganizationSetting? organizationSetting;
+  String? orgName;
+
+  Organization({this.organizationSetting, this.orgName});
+
+  Organization.fromJson(Map<String, dynamic> json) {
+    orgName = json['name'];
+    organizationSetting = json['organization_setting'] != null
+        ? OrganizationSetting.fromJson(json['organization_setting'])
+        : null;
+  }
+}
+
+class OrganizationSetting {
+  String? language;
+  String? logoKey;
+
+  OrganizationSetting({this.language, this.logoKey});
+
+  OrganizationSetting.fromJson(Map<String, dynamic> json) {
+    language = json['language'];
+    logoKey = json['logo_key'];
   }
 }
