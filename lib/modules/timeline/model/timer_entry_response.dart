@@ -11,7 +11,6 @@ class TimerEntryResponse {
 }
 
 class UpdateTimelineEntry {
-  String? id;
   String? endDate;
   String? description;
   String? startDate;
@@ -19,10 +18,9 @@ class UpdateTimelineEntry {
   String? taskId;
 
   UpdateTimelineEntry(
-      {this.id, this.endDate, this.description, this.startDate, this.status});
+      {this.endDate, this.description, this.startDate, this.status});
 
   UpdateTimelineEntry.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     endDate = json['end_date'];
     description = json['description'];
     startDate = json['start_date'];

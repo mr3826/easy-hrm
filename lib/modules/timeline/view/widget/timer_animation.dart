@@ -52,12 +52,12 @@ class _TimerAnimationState extends State<TimerAnimation> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Obx(() => _timeCounterController.isRunning.value
+        Obx(() => _timeCounterController.isRunning.isTrue
             ? _animatedContainer()
             : Container()),
-        _timeCounterController.isTotalCount.value == false
+        Obx(() => _timeCounterController.isTotalCount.value == false
             ? _totalCountContainer()
-            : _normalContainer()
+            : _normalContainer())
       ],
     );
   }

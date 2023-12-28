@@ -228,10 +228,11 @@ mutation StartOrStopTimer($inputData: StartOrStopTimerInputData) {
 const saveTimerQueryData = r'''
 mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
   updateTimelineEntry(inputData: $inputData) {
-    id
-    end_date
     description
+    end_date
     start_date
+    status
+    task_id
   }
 }
 ''';
@@ -261,11 +262,21 @@ mutation CreateTimelineEntry($inputData: CreateTimelineEntryInputData) {
 }
 ''';
 
-
-const timerStatusQuery='''
+const timerStatusQuery = '''
 query CheckStartOrStopTimeline {
   checkStartOrStopTimeline {
     start_date
+  }
+}
+''';
+
+const getTimelineSummaryByDate = r'''
+query GetTimelogSummaryForApp($queryData: TimelogQueryInputType!) {
+  getTimelogSummaryForApp(queryData: $queryData) {
+    total_schedule
+    total_logged
+    paid_leave
+    balanced
   }
 }
 ''';

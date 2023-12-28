@@ -38,7 +38,9 @@ class TimeCounterController extends GetxController {
   void reset() {
     isRunning.value = false;
     _seconds = 0;
-    _updateTimer(Timer(Duration.zero, () {}));
+    _updateTimer(Timer(Duration.zero, () {
+      elapsedTime.value = 'Start';
+    }));
   }
 
   void _updateTimer(Timer timer) {

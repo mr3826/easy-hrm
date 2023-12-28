@@ -10,13 +10,8 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 class SummaryTimeLogCalendar extends StatelessWidget {
   SummaryTimeLogCalendar({super.key});
 
-  final int startingYear = 2022;
-  final int currentYear = DateTime.now().year;
-
-
-
-
-
+  final int startingYear = DateTime.now().year-4;
+  final int currentYear = DateTime.now().year+4;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +51,6 @@ class SummaryTimeLogCalendar extends StatelessWidget {
 
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: 12,
-                        reverse: true,
                         itemBuilder: (context, index) {
 
 
@@ -71,7 +65,6 @@ class SummaryTimeLogCalendar extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.only(left: 8.0,right: 8),
                             child: InkWell(
-
                                 onTap: (){
                                   print(year);
                                   print(month);
