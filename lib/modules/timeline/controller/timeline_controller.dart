@@ -43,6 +43,14 @@ class TimelineController extends GetxController with StateMixin {
           DateTime.now().day, 23, 59, 59)
       .obs;
 
+  nextDate() {
+    startDate.value = startDate.value.add(const Duration(days: 1));
+  }
+
+  previousDate() {
+    endDate.value = endDate.value.subtract(const Duration(days: 1));
+  }
+
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
