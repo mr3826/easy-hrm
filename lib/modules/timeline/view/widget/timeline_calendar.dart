@@ -129,7 +129,7 @@ class TimeLineCalendar extends StatelessWidget {
 
   _headerStyle() {
     return HeaderStyle(
-        decoration: const BoxDecoration(color: Colors.red),
+        decoration: const BoxDecoration(color: Colors.transparent),
         headerMargin: const EdgeInsets.only(bottom: 30),
         headerTextStyle: AppStyle.normal_text_grey.copyWith(
             color: AppColor.secondaryColor, fontSize: Dimensions.fontSizeMid),
@@ -142,7 +142,8 @@ class TimeLineCalendar extends StatelessWidget {
           Icons.arrow_forward_ios,
           size: 20,
           color: AppColor.normalTextColor,
-        ));}
+        ));
+  }
 }
 
 Widget _taskSlidLayout(
