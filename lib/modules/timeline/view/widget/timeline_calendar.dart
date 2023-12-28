@@ -64,7 +64,6 @@ class TimeLineCalendar extends StatelessWidget {
             String stateTime = formatTime(startDateTime);
             String endTime = formatTime(endDateTime);
 
-
             print("date ==> $date");
             print("events ==> $events");
             print("boundry ==> ${boundry.width}");
@@ -130,7 +129,7 @@ class TimeLineCalendar extends StatelessWidget {
 
   _headerStyle() {
     return HeaderStyle(
-        decoration: const BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.red),
         headerMargin: const EdgeInsets.only(bottom: 30),
         headerTextStyle: AppStyle.normal_text_grey.copyWith(
             color: AppColor.secondaryColor, fontSize: Dimensions.fontSizeMid),
@@ -143,8 +142,7 @@ class TimeLineCalendar extends StatelessWidget {
           Icons.arrow_forward_ios,
           size: 20,
           color: AppColor.normalTextColor,
-        ));
-  }
+        ));}
 }
 
 Widget _taskSlidLayout(
@@ -155,7 +153,6 @@ Widget _taskSlidLayout(
     required IconData? icon,
     required Color? bgColor,
     required context}) {
-
   return Card(
     elevation: 0,
     color: AppColor.primaryColor.withOpacity(0.09),
