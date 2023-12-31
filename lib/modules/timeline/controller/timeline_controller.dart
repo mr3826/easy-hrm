@@ -24,9 +24,18 @@ class TimelineController extends GetxController with StateMixin {
     end:: ${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}
     """);
     getProjectDropdown();
+
+    //individual date summary
+    //by default its current date
     getTimelineByDate(
         startDate: "${startDate.value}", endDate: "${endDate.value}");
-    getTimelineByMonth();
+    //monthly summary
+    //by default its current month
+    getTimelineByMonth(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
     super.onInit();
   }
 
@@ -183,19 +192,21 @@ class TimelineController extends GetxController with StateMixin {
     } else {
       print("Called");
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
+      print(TimelineSummaryByDate.fromJson(response.data!)
+          .getTimelogSummaryForApp
+          ?.balanced);
     }
     change(null, status: RxStatus.success());
   }
 
-  getTimelineByMonth() async {
+  getTimelineByMonth(
+      {required String? startDate, required String? endDate}) async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDate, variables: {
       "queryData": {
-        "start_time":
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-        "end_time":
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}",
+        "start_time": startDate,
+        "end_time": endDate,
       }
     });
 
