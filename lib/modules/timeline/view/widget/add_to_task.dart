@@ -15,12 +15,15 @@ import '../../../../routes/app_pages.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/utils.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../controller/timer_controller.dart';
 
 class AddToTaskScreen extends StatelessWidget {
   const AddToTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TimeCounterController _timeCounterController =
+    Get.put(TimeCounterController());
     return Padding(
       padding: marginLayout.copyWith(top: 30),
       child: SingleChildScrollView(
