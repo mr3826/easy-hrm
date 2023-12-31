@@ -15,7 +15,6 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
-import 'department_history.dart';
 
 Widget departmentLayout(context) {
   return SizedBox(
