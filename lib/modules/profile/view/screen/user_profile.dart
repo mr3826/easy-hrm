@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
@@ -24,6 +25,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../common/widget/custom_drawer.dart';
 import '../widget/action_layout_widget.dart';
 import '../widget/chnage_email_notify_layout.dart';
 import '../widget/expanded_text_layout.dart';
@@ -38,8 +40,15 @@ class ProfileScreen extends GetView<UserProfileController> {
   Widget build(BuildContext context) {
     return controller.obx(
         (state) => Scaffold(
-              appBar: profileAppbar(onAction: () {}),
-              endDrawer: endDrawer(context),
+              appBar: profileAppbar(onAction: () {
+                showCustomDrawer(
+                    context: context,
+                    child: Container(
+                      color: Colors.white,
+                      child: endDrawer(context),
+                    ));
+              }),
+              // endDrawer: endDrawer(context),
               body: Padding(
                 padding: marginLayout,
                 child: SingleChildScrollView(
@@ -236,27 +245,32 @@ class ProfileScreen extends GetView<UserProfileController> {
             childForSaveBtn: Obx(() => _logoutTextLayout()));
       },
       child: Container(
-        height: AppLayout.getHeight(90),
+        height: AppLayout.getHeight(80),
         width: MediaQuery.of(context).size.width,
-        decoration:
-            BoxDecoration(color: AppColor.secondaryColor.withOpacity(0.4)),
-        child: Padding(
-          padding: marginLayout.copyWith(top: 16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(
-                Icons.logout_rounded,
-                color: AppColor.cardColor,
+        decoration: const BoxDecoration(color: AppColor.hintColor),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: marginLayout.copyWith(left: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.logout_rounded,
+                    color: AppColor.cardColor,
+                    size: 28,
+                  ),
+                  customSpacerWidth(width: 12),
+                  Text(
+                    AppString.text_log_out.tr,
+                    style: AppStyle.mid_large_text
+                        .copyWith(color: AppColor.cardColor),
+                  ),
+                ],
               ),
-              customSpacerWidth(width: 12),
-              Text(
-                AppString.text_log_out.tr,
-                style:
-                    AppStyle.mid_large_text.copyWith(color: AppColor.cardColor),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -264,8 +278,9 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _languageLayout(context) {
     return InkWell(
-      onTap: () => customButtonSheet(
-          child: LanguageLayout(), context: context, height: .5),
+      onTap: () {
+        _customButtonSheet(context: context, child: LanguageLayout());
+      },
       child: Container(
         padding: marginLayout.copyWith(left: 8, right: 8),
         child: Row(
@@ -327,7 +342,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                   Text(
                     controller.userDetails?.getOrganizationUserDetails
                             ?.organization?.orgName ??
-                        "",
+                        "No added yet",
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.normalTextColor,
                         fontWeight: FontWeight.w900,
@@ -336,7 +351,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                   Text(
                     controller.employeeWorkHistory?.getOrganizationUserHistory
                             ?.designationHistories?[0].designation?.name ??
-                        "",
+                        "No added yet",
                     style: AppStyle.normal_text_grey.copyWith(
                         color: AppColor.hintColor,
                         fontSize: Dimensions.fontSizeDefault - 1),
@@ -344,16 +359,17 @@ class ProfileScreen extends GetView<UserProfileController> {
                   ),
                   customSpacerHeight(height: 6),
                   GestureDetector(
-                      onTap: () => customButtonSheet(
-                          context: context,
-                          height: .7,
-                          child: OrganisationView()),
-                      child: Text(
-                        AppString.text_swich_organisation.tr,
-                        style: AppStyle.normal_text_grey.copyWith(
-                            color: AppColor.secondaryColor,
-                            fontSize: Dimensions.fontSizeDefault - 1),
-                      )),
+                    onTap: () {
+                      _customButtonSheet(
+                          context: context, child: OrganisationView());
+                    },
+                    child: Text(
+                      AppString.text_swich_organisation.tr,
+                      style: AppStyle.normal_text_grey.copyWith(
+                          color: AppColor.secondaryColor,
+                          fontSize: Dimensions.fontSizeDefault - 1),
+                    ),
+                  )
                 ],
               )
             ],
@@ -364,30 +380,40 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   _profileInfoDrawerLayout() {
-    return Center(
-      child: Column(
-        children: [
-          _userProfileImgLayout(),
-          customSpacerHeight(height: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-                style: AppStyle.mid_large_text
-                    .copyWith(color: AppColor.normalTextColor),
-              ),
-              Text(
-                controller.employeeWorkHistory?.getOrganizationUserHistory
-                        ?.designationHistories?[0].designation?.name ??
-                    "",
-                style: AppStyle.normal_text_grey
-                    .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
-              ),
-              customSpacerHeight(height: 8),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Container(
+        color: AppColor.secondaryColor.withOpacity(0.04),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 20.0, bottom: 20, left: 12, right: 12),
+          child: Center(
+            child: Column(
+              children: [
+                _userProfileImgLayout(),
+                customSpacerHeight(height: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? "No added yet"}",
+                      style: AppStyle.mid_large_text
+                          .copyWith(color: AppColor.normalTextColor),
+                    ),
+                    Text(
+                      controller.employeeWorkHistory?.getOrganizationUserHistory
+                              ?.designationHistories?[0].designation?.name ??
+                          "No added yet",
+                      style: AppStyle.normal_text_grey
+                          .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
+                    ),
+                    customSpacerHeight(height: 8),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -495,7 +521,7 @@ class ProfileScreen extends GetView<UserProfileController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          customSpacerHeight(height: 70),
+          customSpacerHeight(height: 40),
           _profileInfoDrawerLayout(),
           customSpacerHeight(height: 40),
           _organisationLayout(context),
@@ -519,5 +545,22 @@ class ProfileScreen extends GetView<UserProfileController> {
                 fontSize: Dimensions.fontSizeDefault + 1,
                 color: AppColor.cardColor),
           );
+  }
+
+  void _customButtonSheet({context, child}) {
+    return showCustomAtmBtnSheet(
+        context: context,
+        child: Material(
+          color: AppColor.noColor,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(Dimensions.radiusMid),
+                  topLeft: Radius.circular(Dimensions.radiusMid)),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        ));
   }
 }

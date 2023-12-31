@@ -9,8 +9,11 @@ import 'package:flutter/services.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import '../../../../common/widget/custom_dialog.dart';
 import '../../../../common/widget/custom_spacer.dart';
+import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
+import '../../../../utils/dimensions.dart';
 import '../../../profile/controller/profile_image_selected_controller.dart';
 
 class MainScreen extends StatelessWidget {
@@ -75,15 +78,31 @@ class MainScreen extends StatelessWidget {
 }
 
 Future<bool> _onWillPop(BuildContext context) async {
-  return await customAlertDialog(
+  // return await customAlertDialog(
+  //     context: context,
+  //     yesAction: () {
+  //
+  //     });
+  return   customDialog(
       context: context,
-      yesAction: () {
+      saveBtnAction: () {
         if (Platform.isAndroid) {
           SystemNavigator.pop();
         } else if (Platform.isIOS) {
           exit(0);
         }
-      });
+      },
+      icon: Icons.logout,
+      titleText: AppString.text_are_you_sure.tr,
+      subText: AppString.text_are_you_sure_want_to_exit_from_app.tr,
+      iconBgColor: AppColor.pureOrange,
+      btnBgColor: AppColor.errorColorLight,
+      btnText: AppString.text_yes.tr,
+      drcText: "",
+      drcFontSize: Dimensions.fontSizeDefault,
+
+
+  );
 }
 
 PersistentBottomNavBarItem _navbarIcon(
