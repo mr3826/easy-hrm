@@ -83,26 +83,28 @@ Future<bool> _onWillPop(BuildContext context) async {
   //     yesAction: () {
   //
   //     });
-  return   customDialog(
-      context: context,
-      saveBtnAction: () {
-        if (Platform.isAndroid) {
-          SystemNavigator.pop();
-        } else if (Platform.isIOS) {
-          exit(0);
-        }
-      },
-      icon: Icons.logout,
-      titleText: AppString.text_are_you_sure.tr,
-      subText: AppString.text_are_you_sure_want_to_exit_from_app.tr,
-      iconBgColor: AppColor.pureOrange,
-      btnBgColor: AppColor.errorColorLight,
-      btnText: AppString.text_yes.tr,
-      drcText: "",
-      drcFontSize: Dimensions.fontSizeDefault,
+ return customDialog(
+    context: context,
+    saveBtnAction: () {
+      if (Platform.isAndroid) {
+        SystemNavigator.pop();
+      } else if (Platform.isIOS) {
+        exit(0);
+      }
+    },
+    icon: Icons.logout,
+    titleText: AppString.text_are_you_sure.tr,
+    subText: AppString.text_are_you_sure_want_to_exit_from_app.tr,
+    iconBgColor: AppColor.pureOrange,
+    btnBgColor: AppColor.secondaryColor,
+    btnText: AppString.text_yes.tr,
+    drcText: "",
+    drcFontSize: Dimensions.fontSizeDefault,
 
 
   );
+
+
 }
 
 PersistentBottomNavBarItem _navbarIcon(

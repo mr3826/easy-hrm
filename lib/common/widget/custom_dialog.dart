@@ -87,7 +87,7 @@ class CustomDialog extends StatelessWidget {
                     child: Icon(
                       icon,
                       size: 40,
-                      color: AppColor.errorColorLight,
+                      color: btnBgColor,
                     ),
                   ),
                   customSpacerHeight(height: 12),
