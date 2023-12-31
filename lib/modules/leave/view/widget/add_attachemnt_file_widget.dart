@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
+import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/leave/controller/file_upload_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/dotted_circle_style.dart';
@@ -22,20 +22,18 @@ class AddAttachmentFile extends StatelessWidget {
         dottedCircleStyle(
             child: GestureDetector(
                 onTap: () {
-                  Get.find<FileUploadController>()
-                      .storageForUpload
-                      .pickFile();
+                  Get.find<FileUploadController>().storageForUpload.pickFile();
                 },
                 child: Obx(() => Get.find<FileUploadController>()
-                    .storageForUpload
-                    .filePath
-                    .isNotEmpty
+                        .storageForUpload
+                        .filePath
+                        .isNotEmpty
                     ? Get.find<FileUploadController>()
-                    .storageForUpload
-                    .filePath
-                    .endsWith(".pdf")
-                    ? _replaceFileLayout()
-                    : _selectedImageViewLayout()
+                            .storageForUpload
+                            .filePath
+                            .endsWith(".pdf")
+                        ? _replaceFileLayout()
+                        : _selectedImageViewLayout()
                     : _emptyBox()))),
         customSpacerHeight(height: 8),
         Obx(() => _pathNameText()),
@@ -124,7 +122,6 @@ _pathNameText() {
           fontSize: Dimensions.fontSizeDefault - 2));
 }
 
-
 _selectedImageViewLayout() {
   return Container(
     height: AppLayout.getHeight(100),
@@ -132,9 +129,9 @@ _selectedImageViewLayout() {
       color: AppColor.disableColor.withOpacity(0.4),
       image: DecorationImage(
         image: FileImage(File(Get.find<FileUploadController>()
-            .storageForUpload
-            .filePath
-            .value)
+                .storageForUpload
+                .filePath
+                .value)
             .absolute),
         fit: BoxFit.cover,
       ),
