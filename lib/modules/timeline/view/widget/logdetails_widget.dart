@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -11,6 +12,7 @@ import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calen
 import 'package:payrun_mobile/modules/leave/view/widget/timmer_text_field_dob.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -260,8 +262,15 @@ Widget taskInputFieldLayout({required onAction, Color? dotColor, projectName}) {
   );
 }
 
-_dateLayoutField({required date}) {
+_dateLayoutField({required String date}) {
   print("date ==> $date");
+
+  DateFormat inputFormat = DateFormat('E, d MMMM - y');
+  DateTime inputDate = inputFormat.parse(date);
+  String receiveDate = DateFormat('y-MM-dd').format(inputDate);
+
+  print("receiveDate ==> $receiveDate");
+
   return GestureDetector(
     onTap: () => showDialog(
       context: Get.context!,
@@ -286,9 +295,13 @@ _dateLayoutField({required date}) {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
-              Get.find<DateTimeController>().requestedDate.value.isNotEmpty
-                  ? Get.find<DateTimeController>().requestedDate.value
-                  : date,
+              Get.find<DateTimeController>().timeLogDate.value.isNotEmpty
+                  ? formatTimeAccordingToSelectedTime(
+                      Get.find<DateTimeController>()
+                          .timeLogDate
+                          .value
+                          .toString())
+                  : receiveDate.toString(),
               style: AppStyle.normal_text_black
                   .copyWith(color: AppColor.normalTextColor),
             ),

@@ -8,8 +8,8 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../widget/logdetails_widget.dart';
+
 
 class TimeLogDetails extends StatelessWidget {
   final String dtsStartTime;
@@ -61,7 +61,7 @@ class TimeLogDetails extends StatelessWidget {
               child: TimeLogTextField(
                 endTime: dtsEndTime,
                 startTime: dtsStartTime,
-                date: dtsDateStatus,
+                date: dtsDate,
                 drc: dtsDrc,
                 projectName: dtsProjectName,
                 scheduleStatus: dtsDateStatus,
@@ -73,6 +73,7 @@ class TimeLogDetails extends StatelessWidget {
       ),
     );
   }
+
   _durationTimeLayout(context) {
     return SizedBox(
       width: double.infinity,
@@ -142,8 +143,6 @@ class TimeLogDetails extends StatelessWidget {
     );
   }
 }
-
-
 
 _verticalDivider({required double height, required Color bgColor}) {
   return Container(

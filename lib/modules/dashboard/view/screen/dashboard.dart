@@ -23,7 +23,7 @@ import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_status_button.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../leave/view/widget/leave_record_details_view.dart';
-
+import '../../../timeline/controller/timer_controller.dart';
 
 class Dashboard extends GetView<DashboardController> {
   Dashboard({super.key});
@@ -155,7 +155,9 @@ class Dashboard extends GetView<DashboardController> {
                           ),
                         ),
                       ),
-                      _entryAndStartTimeLayout(),
+                      Obx(
+                        () => _entryAndStartTimeLayout(),
+                      ),
                       Text(
                         AppString.text_upcoming_leave.tr,
                         style: AppStyle.mid_large_text
@@ -310,6 +312,7 @@ class Dashboard extends GetView<DashboardController> {
   }
 
   _entryAndStartTimeLayout() {
+    final TimeCounterController controller = Get.put(TimeCounterController());
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,13 +325,9 @@ class Dashboard extends GetView<DashboardController> {
               child: customSvgImage(imageUrl: Images.add_time_entry)),
         ),
         customSpacerWidth(width: 22),
-        InkWell(
-          onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
-          child: SizedBox(
-              height: AppLayout.getHeight(170),
-              width: AppLayout.getWidth(170),
-              child: customSvgImage(imageUrl: Images.start_time)),
-        ),
+        controller.isRunning.value
+            ? _startingTimeOpen(time: "${controller.starTimeDashboard}")
+            : _startingTime()
       ],
     );
   }
@@ -468,6 +467,49 @@ class Dashboard extends GetView<DashboardController> {
               color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         )
       ],
+    );
+  }
+
+  _startingTimeOpen({required time}) {
+    return Stack(
+      children: [
+        InkWell(
+          onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
+          child: SizedBox(
+              height: AppLayout.getHeight(170),
+              width: AppLayout.getWidth(170),
+              child: customSvgImage(imageUrl: Images.start_time_open)),
+        ),
+        Positioned(
+            bottom: 45,
+            left: 36,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.check_box_outline_blank,
+                  color: AppColor.cardColor.withOpacity(0.9),
+                  size: 20,
+                ),
+                customSpacerWidth(width: 4),
+                Text(
+                  "$time",
+                  style: AppStyle.normal_text_grey.copyWith(
+                      color: AppColor.cardColor,
+                      fontSize: Dimensions.fontSizeDefault + 1),
+                ),
+              ],
+            ))
+      ],
+    );
+  }
+
+  _startingTime() {
+    return InkWell(
+      onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
+      child: SizedBox(
+          height: AppLayout.getHeight(170),
+          width: AppLayout.getWidth(170),
+          child: customSvgImage(imageUrl: Images.start_time)),
     );
   }
 }

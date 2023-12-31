@@ -30,7 +30,7 @@ class TaskView extends StatelessWidget {
           bgColor: bgColor,
           dtsDuration: "04 h 30m",
           dtsBgColor: AppColor.successColor,
-          dtsDate: "Thu, 21 April - 2022 x",
+          dtsDate: "Thu, 21 April - 2022",
           dtsDateStatus: "Tomorrow",
           dtsDrc: "My note x",
           dtsProjectName: "The one project x",

@@ -32,46 +32,19 @@ class TimeLineCalendar extends StatelessWidget {
         title: 'Hello task',
       ),
       CalendarEventData(
-        date: DateTime(2023, 12, 17, 23),
-        startTime: DateTime.parse("2023-12-17 21:02:02.776131"),
-        endTime: DateTime.parse("2023-12-17 23:20:02.776131"),
+        date: DateTime(2023, 12, 19, 23),
+        startTime: DateTime.parse("2023-12-19 01:01:02.776131"),
+        endTime: DateTime.parse("2023-12-17 03:00:02.776131"),
         event: "Event 1",
         title: 'hi 3',
       ),
-      // CalendarEventData(
-      //   date: DateTime(2023, 12, 14, 23),
-      //   startTime: DateTime.parse("2023-12-14 11:02:02.776131"),
-      //   endTime: DateTime.parse("2023-12-14 12:59:02.776131"),
-      //   event: "Event 1",
-      //   title: 'Title of the project,task or tag.',
-      // ),
-
-      // CalendarEventData(
-      //   date: DateTime(2023, 12, 14, 23),
-      //   startTime: DateTime.parse("2023-12-14 13:02:02.776131"),
-      //   endTime: DateTime.parse("2023-12-14 13:59:02.776131"),
-      //   event: "Event 1",
-      //   title: 'hi',
-      // ) , CalendarEventData(
-      //   date: DateTime(2023, 12, 14, 23),
-      //   startTime: DateTime.parse("2023-12-14 11:03:02.776131"),
-      //   endTime: DateTime.parse("2023-12-14 12:59:02.776131"),
-      //   event: "Event 1",
-      //   title: 'hi',
-      // ),
-      // CalendarEventData(
-      //   date: DateTime(2023, 12, 14, 23),
-      //   startTime: DateTime.parse("2023-12-14 12:04:02.776131"),
-      //   endTime: DateTime.parse("2023-12-14 13:59:02.776131"),
-      //   event: "Event 1",
-      //   title: 'hi',
-      // ), CalendarEventData(
-      //   date: DateTime(2023, 12, 14, 23),
-      //   startTime: DateTime.parse("2023-12-14 13:06:02.776131"),
-      //   endTime: DateTime.parse("2023-12-14 13:59:02.776131"),
-      //   event: "Event 1",
-      //   title: 'hi',
-      // )
+      CalendarEventData(
+        date: DateTime(2023, 12, 19, 23),
+        startTime: DateTime.parse("2023-12-19 01:01:02.776131"),
+        endTime: DateTime.parse("2023-12-17 02:10:02.776131"),
+        event: "Event 1",
+        title: 'Title',
+      ),
     ];
 
     CalendarControllerProvider.of(context).controller.addAll(events);
@@ -90,6 +63,7 @@ class TimeLineCalendar extends StatelessWidget {
             // Format the DateTime in 24-hour format
             String stateTime = formatTime(startDateTime);
             String endTime = formatTime(endDateTime);
+
 
             print("date ==> $date");
             print("events ==> $events");

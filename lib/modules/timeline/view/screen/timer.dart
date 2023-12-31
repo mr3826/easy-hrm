@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../controller/timer_controller.dart';
+import '../widget/timer_animation.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
@@ -38,33 +39,19 @@ class _TimerScreenState extends State<TimerScreen> {
           SizedBox(
             child: Stack(
               children: [
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     _timeCounterController.start();
                   },
-                  child: SizedBox(
-                      height: 400,
-                      width: 400,
-                      child: Lottie.asset(Images.timer_animation,
-                          fit: BoxFit.cover)),
+                  child: const SizedBox(
+                      height: 400, width: 400, child: TimerAnimation()),
                 ),
-                Obx(
-                  () => Positioned(
-                    top: 180,
-                    left: 150,
-                    child: Text(
-                      _timeCounterController.elapsedTime.toString(),
-                      style: AppStyle.normal_text_grey.copyWith(
-                          color: AppColor.cardColor,
-                          fontSize: Dimensions.fontSizeExtraLarge),
-                    ),
-                  ),
-                )
               ],
             ),
           ),
           _saveBtn(onAction: () {
-            //_timeCounterController.stop();
+            _timeCounterController.stop();
+            _timeCounterController.isRunning.value = false; //animation stop
             customButtonSheet(
                 height: .7, context: context, child: const AddToTaskScreen());
           }),

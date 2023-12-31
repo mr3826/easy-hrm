@@ -81,6 +81,7 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
 
             _buttonLayout(onAction: (){
               Get.find<DateController>().currentDate.value = today;
+              Get.find<DateTimeController>().timeLogDate.value = today.toString();
               Get.find<LeaveScreenController>().getLeaveDetailsByDate();
               Navigator.pop(context);
             }),

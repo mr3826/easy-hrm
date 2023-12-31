@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/time_log_view.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../../../leave/view/widget/widget.dart';
+
+
 
 class TimelineScreen extends StatelessWidget {
   const TimelineScreen({super.key});
@@ -21,67 +22,51 @@ class TimelineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
-
       body: CustomScrollView(
         slivers: [sliverAppBar, sliverToBoxAdapter],
       ),
-      // body: SingleChildScrollView(
-      //   physics: const AlwaysScrollableScrollPhysics(),
-      //   child: Stack(
-      //     children: [
-      //       Column(
-      //         children: [
-      //           Container(
-      //             height: 200,
-      //             decoration: const BoxDecoration(
-      //                 color: Colors.transparent,
-      //                 borderRadius: BorderRadius.only(
-      //                     topRight: Radius.circular(40),
-      //                     topLeft: Radius.circular(40))),
-      //             width: double.infinity,
-      //           ),
-      //           Container(
-      //             height: MediaQuery.of(context).size.height,
-      //             decoration: const BoxDecoration(
-      //                 color: Colors.white,
-      //                 borderRadius: BorderRadius.only(
-      //                     topRight: Radius.circular(30),
-      //                     topLeft: Radius.circular(30))),
-      //             child: const TimeCalendar(),
-      //           ),
-      //         ],
-      //       ),
-      //
-      //
-      //       const Positioned(
-      //           top: 300,
-      //           child: Text("Time"))
-      //     ],
-      //   ),
-      // ),
-
-      floatingActionButton: _applyLeaveBtn(context),
+      floatingActionButton: Obx(() => _timerBtnLayout(context)),
     );
   }
 
   //component
-  _applyLeaveBtn(context) {
+  _timerBtnLayout(context) {
+    final TimeCounterController controller = Get.put(TimeCounterController());
+
     return Padding(
       padding: const EdgeInsets.only(left: 35.0, bottom: 18),
       child: Row(
         children: [
-          floatingButton(
-              bgBtnColor: AppColor.secondaryColor,
-              onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
-              btnText: AppString.text_stat_timer),
+          controller.isRunning.value
+              ? _timerStringOpenBtn(
+                  time: controller.starTimeDashboard.toString())
+              : _timerStringBtn(),
           customSpacerWidth(width: 18),
-          floatingButton(
-              bgBtnColor: AppColor.primaryColor,
-              onAction: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
-              btnText: AppString.text_add_time_entry),
+          _addTimeEntryBtn(),
         ],
       ),
     );
+  }
+
+  _timerStringBtn() {
+    return floatingButton(
+        bgBtnColor: AppColor.secondaryColor,
+        onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
+        btnText: AppString.text_stat_timer.tr);
+  }
+
+  _addTimeEntryBtn() {
+    return floatingButton(
+        bgBtnColor: AppColor.primaryColor,
+        onAction: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
+        btnText: AppString.text_add_time_entry.tr);
+  }
+
+  _timerStringOpenBtn({required time}) {
+    return startTimerOpenBtn(
+        bgBtnColor: AppColor.secondaryColor,
+        onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
+        btnText: "$time");
   }
 }
 
