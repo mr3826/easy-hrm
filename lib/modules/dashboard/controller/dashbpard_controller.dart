@@ -11,7 +11,7 @@ import '../model/profile_summary_for_dashboard.dart';
 class DashboardController extends GetxController with StateMixin {
   @override
   void onInit() {
-    // getProfileInfoForDashboard();
+    getProfileInfoForDashboard();
     getMonthlyTimelineInfoForDashboard();
     getUpcommingInfoForDashboard();
     super.onInit();

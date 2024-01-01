@@ -280,3 +280,51 @@ query GetTimelogSummaryForApp($queryData: TimelogQueryInputType!) {
   }
 }
 ''';
+
+const getTimelogDetailsByMonthQuery = r'''
+query GetTimelogsForApp($queryData: TimelineEntriesQueryData) {
+  getTimelogsForApp(queryData: $queryData) {
+    balance
+    date
+    leave
+    logged
+    schedule
+    day
+  }
+}
+''';
+
+const getCalendarTimelineQuery = r'''
+query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
+  getCalenderTimelinesForApp(queryData: $queryData) {
+    leaves {
+      createdAt
+      description
+      end_date
+      leaveType {
+        name
+        type
+        id
+      }
+      start_date
+      status
+      totalLeaveMinutes
+    }
+    timelines {
+      description
+      end_date
+      start_date
+      status
+      task {
+        name
+        id
+        project {
+          id
+          name
+        }
+      }
+      total_minutes
+    }
+  }
+}
+''';

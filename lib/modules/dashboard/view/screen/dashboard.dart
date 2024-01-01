@@ -157,12 +157,18 @@ class Dashboard extends GetView<DashboardController> {
                         ),
                       ),
                       Obx(() => _entryAndStartTimeLayout()),
-                      Text(
-                        AppString.text_upcoming_leave.tr,
-                        style: AppStyle.mid_large_text
-                            .copyWith(color: AppColor.normalTextColor),
-                      ),
-                      _upcomingLeaveLayout(),
+                      controller.upcommingLeaveDashboard
+                                      ?.getUpcomingLeavesForApp !=
+                                  null &&
+                              controller.upcommingLeaveDashboard!
+                                  .getUpcomingLeavesForApp!.isNotEmpty
+                          ? Text(
+                              AppString.text_upcoming_leave.tr,
+                              style: AppStyle.mid_large_text
+                                  .copyWith(color: AppColor.normalTextColor),
+                            )
+                          : Container(),
+                      _upcomingLeaveLayout()
                     ],
                   ),
                 ),
@@ -513,7 +519,7 @@ _startingTimeOpen({required time}) {
 
 _startingTime() {
   return InkWell(
-    onTap: ()  {
+    onTap: () {
       Get.find<TimeCounterController>().timerStatus();
       Get.toNamed(Routes.TIMER_SCREEN);
     },

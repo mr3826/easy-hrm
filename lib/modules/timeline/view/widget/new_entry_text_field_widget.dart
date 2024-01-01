@@ -29,8 +29,6 @@ import 'duration_time_widget.dart';
 class NewEntryTextField extends StatelessWidget {
   NewEntryTextField({super.key});
 
-  final currentIndex = 1.obs;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -155,7 +153,7 @@ class NewEntryTextField extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              currentIndex.value = index;
+              Get.find<DateTimeController>().currentIndex.value = index;
               switch (index) {
                 case 0:
                   Get.find<DateTimeController>().requestedDate.value =
@@ -178,13 +176,18 @@ class NewEntryTextField extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Card(
-                      color: currentIndex.value == index
-                          ? AppColor.primaryColor.withOpacity(0.05)
-                          : Colors.transparent,
+                      color:
+                          Get.find<DateTimeController>().currentIndex.value ==
+                                  index
+                              ? AppColor.primaryColor.withOpacity(0.05)
+                              : Colors.transparent,
                       shape: roundedRectangleBorder.copyWith(
                           side: BorderSide(
                               width: 1,
-                              color: currentIndex.value == index
+                              color: Get.find<DateTimeController>()
+                                          .currentIndex
+                                          .value ==
+                                      index
                                   ? AppColor.primaryColor
                                   : AppColor.hintColor)),
                       elevation: 0,
@@ -192,7 +195,10 @@ class NewEntryTextField extends StatelessWidget {
                           child: Text(
                         selectedBeforeDayAndAfterDay[index],
                         style: AppStyle.mid_large_text.copyWith(
-                            color: currentIndex.value == index
+                            color: Get.find<DateTimeController>()
+                                        .currentIndex
+                                        .value ==
+                                    index
                                 ? AppColor.primaryColor
                                 : AppColor.hintColor,
                             fontSize: Dimensions.fontSizeDefault),

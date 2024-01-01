@@ -30,41 +30,41 @@ Widget timelineLayout() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
-                      dynamicText: Get
-                          .find<TimelineController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp
-                          ?.totalSchedule ??
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.totalSchedule ??
                           "",
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: Get
-                          .find<TimelineController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp
-                          ?.totalLogged ?? "",
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.totalLogged ??
+                          "",
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: Get
-                          .find<TimelineController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp
-                          ?.paidLeave ?? "",
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.paidLeave ??
+                          "",
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: Get
-                          .find<TimelineController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp?.balanced??"",
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.balanced ??
+                          "",
                       staticText: AppString.text_balance.tr),
                 ],
               ),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
-import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../../controller/timelog_summary_controller.dart';
 
 class SummaryTimeLogCalendar extends StatefulWidget {
   const SummaryTimeLogCalendar({super.key});
@@ -58,7 +60,8 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
     return SizedBox(
       height: AppLayout.getHeight(45),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
+        // padding: const EdgeInsets.only(left: 20, right: 20),
+        padding: EdgeInsets.zero,
         child: ListView.builder(
           itemCount: 3,
           scrollDirection: Axis.horizontal,
@@ -66,7 +69,7 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
           itemBuilder: (context, index) {
             final year = startingYear + index;
             return SizedBox(
-              width: AppLayout.getWidth(1000),
+              width: 1450,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -97,7 +100,6 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                     itemCount: itemCount,
                     itemBuilder: (context, index) {
                       final month = DateTime.utc(year, index + 1);
-
                       final monthName = DateFormat('MMMM').format(month);
                       DateTime now = DateTime.now();
 
@@ -108,33 +110,43 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                           : AppColor.hintColor;
                       return Padding(
                         padding: const EdgeInsets.only(left: 0.0, right: 25),
-                        child: InkWell(
+                        child: GestureDetector(
                             onTap: () {
-                              print(year);
-                              print(month);
+                              Get.find<TimelineSummaryController>().getTimelineByMonth(
+                                  startDate:
+                                      "${DateTime(year, month.month, 1, 0, 0, 0)}",
+                                  endDate:
+                                      "${DateTime(year, month.month + 1, 0, 23, 59, 59)}");
                             },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  monthName,
-                                  style: AppStyle.normal_text_grey.copyWith(
-                                      color: textColor,
-                                      fontSize: isCurrentMonth
-                                          ? Dimensions.fontSizeDefault + 2
-                                          : Dimensions.fontSizeDefault),
-                                ),
-                                isCurrentMonth
-                                    ? Text(
-                                        year.toString(),
-                                        style: AppStyle.mid_large_text.copyWith(
-                                            color: AppColor.hintColor,
-                                            fontSize: isCurrentMonth
-                                                ? Dimensions.fontSizeDefault - 2
-                                                : Dimensions.fontSizeDefault),
-                                      )
-                                    : Container(),
-                              ],
+                            child: SizedBox(
+                              width: 90,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    monthName,
+                                    style: AppStyle.normal_text_grey.copyWith(
+                                        color: textColor,
+                                        fontSize: isCurrentMonth
+                                            ? Dimensions.fontSizeDefault + 2
+                                            : Dimensions.fontSizeDefault),
+                                  ),
+                                  isCurrentMonth
+                                      ? Text(
+                                          year.toString(),
+                                          style: AppStyle.mid_large_text
+                                              .copyWith(
+                                                  color: AppColor.hintColor,
+                                                  fontSize: isCurrentMonth
+                                                      ? Dimensions
+                                                              .fontSizeDefault -
+                                                          2
+                                                      : Dimensions
+                                                          .fontSizeDefault),
+                                        )
+                                      : Container(),
+                                ],
+                              ),
                             )),
                       );
                     },
@@ -161,6 +173,6 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
   void _scrollToIndex(int index) {
     // Scroll to the specified index with center alignment
     _scrollController
-        .jumpTo(index * 76); // Set your item height or estimated height
+        .jumpTo(index * 114); // Set your item height or estimated height
   }
 }

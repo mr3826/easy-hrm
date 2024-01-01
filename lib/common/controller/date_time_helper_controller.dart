@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 class DateTimeController extends GetxController {
   RxBool isInTimeClicked = false.obs;
+  final RxInt currentIndex = 1.obs;
   String selectedInputHrs = '06';
   String selectedInputMins = '30';
   String clockHrsFormat = 'PM';

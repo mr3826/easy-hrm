@@ -11,7 +11,12 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget workingScheduleLayout() {
+Widget workingScheduleLayout({
+  required String schedule,
+  required String loggedTime,
+  required String paidLeave,
+  required String balanceTime,
+}) {
   return Card(
     elevation: 0,
     shape:
@@ -23,36 +28,16 @@ Widget workingScheduleLayout() {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _countLayout(
-              dynamicText: Get.find<TimelineController>()
-                      .timelineSummaryByDate
-                      ?.getTimelogSummaryForApp
-                      ?.totalSchedule ??
-                  "",
-              staticText: AppString.text_schedule.tr),
+              dynamicText: schedule, staticText: AppString.text_schedule.tr),
           _divider(),
           _countLayout(
-              dynamicText: Get.find<TimelineController>()
-                      .timelineSummaryByDate
-                      ?.getTimelogSummaryForApp
-                      ?.totalLogged ??
-                  "",
-              staticText: AppString.text_logged.tr),
+              dynamicText: loggedTime, staticText: AppString.text_logged.tr),
           _divider(),
           _countLayout(
-              dynamicText: Get.find<TimelineController>()
-                      .timelineSummaryByDate
-                      ?.getTimelogSummaryForApp
-                      ?.paidLeave ??
-                  "",
-              staticText: AppString.text_paid_leave.tr),
+              dynamicText: paidLeave, staticText: AppString.text_paid_leave.tr),
           _divider(),
           _countLayout(
-              dynamicText: Get.find<TimelineController>()
-                      .timelineSummaryByDate
-                      ?.getTimelogSummaryForApp
-                      ?.balanced ??
-                  "",
-              staticText: AppString.text_balance.tr),
+              dynamicText: balanceTime, staticText: AppString.text_balance.tr),
         ],
       ),
     ),

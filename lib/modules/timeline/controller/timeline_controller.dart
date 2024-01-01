@@ -199,6 +199,24 @@ class TimelineController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  getCalendarTimelineData() async {
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
+      "queryData": {
+        "start_time":
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        "end_time":
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}"
+      }
+    });
+
+    if (response.hasException) {
+      log("getCalendarTimelineData:: ${response.exception.toString()}");
+    }else{
+      
+    }
+  }
+
   getTimelineByMonth(
       {required String? startDate, required String? endDate}) async {
     change(null, status: RxStatus.loading());

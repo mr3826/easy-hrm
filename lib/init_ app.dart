@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'common/controller/date_time_helper_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/auth/presentation/controller/signin_controller.dart';
@@ -46,5 +47,5 @@ Future<void> initApp() async {
   Get.lazyPut(() => DashboardController(), fenix: true);
   Get.lazyPut(() => NotificationController(), fenix: true);
   Get.lazyPut(() => TimelineController(), fenix: true);
-
+  Get.lazyPut(() => TimelineSummaryController(), fenix: true);
 }
