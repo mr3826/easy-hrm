@@ -496,7 +496,7 @@ class ProfileScreen extends GetView<UserProfileController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customSpacerHeight(height: 70),
-          _profileInfoDrawerLayout(),
+          // _profileInfoDrawerLayout(),
           customSpacerHeight(height: 40),
           _organisationLayout(context),
           const Spacer(),
