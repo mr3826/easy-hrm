@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -112,15 +114,19 @@ class TimeLineCalendar extends StatelessWidget {
               height: .5,
               color: AppColor.hintColor.withOpacity(0.6)),
           timeStringBuilder: (date, {secondaryDate}) {
-            //
-            // Get.find<TimelineController>().getTimelineByDate(
-            //     startDate:
-            //         "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-            //     endDate: "");
             String formattedTime = DateFormat.Hm().format(date);
-            return formattedTime; // Adjust the pattern as needed
+            return formattedTime;
           },
           dateStringBuilder: (date, {secondaryDate}) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+
+              Get.find<TimelineController>().getTimelineByDate(
+                  startDate:
+                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                  endDate:
+                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+            });
+
             var formatDate = DateFormat('dd MMM yyyy').format(date);
             var now = DateFormat('dd MMM yyyy').format(DateTime.now());
             if (formatDate == now) {
@@ -152,6 +158,8 @@ class TimeLineCalendar extends StatelessWidget {
         ));
   }
 }
+
+_fun() {}
 
 Widget _taskSlidLayout(
     {required title,

@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -27,38 +25,29 @@ class TimelineController extends GetxController with StateMixin {
 
     //individual date summary
     //by default its current date
-    getTimelineByDate(
-        startDate: "${startDate.value}", endDate: "${endDate.value}");
+    getTimelineByDate(startDate: "${DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, 0, 0, 0)}", endDate: "${DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, 23, 59, 59)}");
+
     //monthly summary
     //by default its current month
+
     getTimelineByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+
     super.onInit();
   }
 
   final isLoading = false.obs;
   final isManualEntryLoading = false.obs;
+  final isDateTimeMovementLoading = false.obs;
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
 
-  Rx<DateTime> startDate = DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, 0, 0, 0)
-      .obs;
-  Rx<DateTime> endDate = DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, 23, 59, 59)
-      .obs;
-
-  nextDate() {
-    startDate.value = startDate.value.add(const Duration(days: 1));
-  }
-
-  previousDate() {
-    endDate.value = endDate.value.subtract(const Duration(days: 1));
-  }
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
@@ -177,7 +166,8 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   getTimelineByDate({required String? startDate, String? endDate}) async {
-    change(null, status: RxStatus.loading());
+    log("Next & previous date api ==>$startDate And $endDate");
+    isDateTimeMovementLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDate, variables: {
       "queryData": {
@@ -186,17 +176,15 @@ class TimelineController extends GetxController with StateMixin {
         "is_calender_summary": true
       }
     });
-
+    log("Api response ==> $response");
     if (response.hasException) {
       log("getTimelineByDate:: ${response.exception.toString()}");
     } else {
-      print("Called");
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
-      print(TimelineSummaryByDate.fromJson(response.data!)
-          .getTimelogSummaryForApp
-          ?.balanced);
+      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
-    change(null, status: RxStatus.success());
+
+    isDateTimeMovementLoading(false);
   }
 
   getCalendarTimelineData() async {
@@ -212,10 +200,9 @@ class TimelineController extends GetxController with StateMixin {
 
     if (response.hasException) {
       log("getCalendarTimelineData:: ${response.exception.toString()}");
-    }else{
-      
-    }
+    } else {}
   }
+
 
   getTimelineByMonth(
       {required String? startDate, required String? endDate}) async {
