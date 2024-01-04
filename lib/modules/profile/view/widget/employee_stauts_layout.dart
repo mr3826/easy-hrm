@@ -76,7 +76,7 @@ Widget employeeStatusLayout({BuildContext? context}) {
                   customSvgImage(imageUrl: Images.FLAG, height: 25, width: 25),
                   customSpacerHeight(height: 12),
                   Text(
-                    "${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0]?.employmentStatus?.name ?? ""} \nEmployee",
+                    Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0]?.employmentStatus?.name ?? "",
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.normalTextColor,
                         fontSize: Dimensions.fontSizeMid),

@@ -39,16 +39,20 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response =
         await NetworkClient().getGraphQuery(queryString: getUserProfileQuery);
-
     if (response.hasException) {
       log(response.exception.toString());
     } else {
       userDetails = UserDetails.fromJson(response.data!);
+
+      log("getUserProfile:::${UserDetails.fromJson(response.data!)}");
     }
     change(null, status: RxStatus.success());
   }
 
   void getEmploymentInfo() async {
+
+    print(GetStorage().read(AppString.ORGANIZATION_USER_ID));
+
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
         queryString: getEmploymentInfoQuery,
@@ -60,7 +64,10 @@ class UserProfileController extends GetxController with StateMixin {
       log(response.exception.toString());
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
+
+      log("getEmploymentInfo:::${EmployeeWorkHistory.fromJson(response.data!)}");
     }
+
     change(null, status: RxStatus.success());
   }
 
@@ -72,6 +79,7 @@ class UserProfileController extends GetxController with StateMixin {
       log(response.exception.toString());
     } else {
       userLogHistory = UserLogHistory.fromJson(response.data!);
+      log("getUserLogHistory:: ${UserLogHistory.fromJson(response.data!)}");
     }
     change(null, status: RxStatus.success());
   }
