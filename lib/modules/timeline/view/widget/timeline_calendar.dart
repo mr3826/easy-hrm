@@ -1,9 +1,11 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -110,6 +112,11 @@ class TimeLineCalendar extends StatelessWidget {
               height: .5,
               color: AppColor.hintColor.withOpacity(0.6)),
           timeStringBuilder: (date, {secondaryDate}) {
+            //
+            // Get.find<TimelineController>().getTimelineByDate(
+            //     startDate:
+            //         "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+            //     endDate: "");
             String formattedTime = DateFormat.Hm().format(date);
             return formattedTime; // Adjust the pattern as needed
           },
