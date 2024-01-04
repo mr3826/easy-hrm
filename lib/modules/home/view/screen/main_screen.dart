@@ -13,10 +13,16 @@ import '../../../../common/widget/custom_spacer.dart';
 import '../../../../utils/app_style.dart';
 import '../../../profile/controller/profile_image_selected_controller.dart';
 
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
+  final int? routeIndex;
 
-  final controller = PersistentTabController(initialIndex: 2);
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late PersistentTabController controller;
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
@@ -48,6 +54,12 @@ class MainScreen extends StatelessWidget {
   }
 
   var currentIndex = 0;
+
+  @override
+  void initState() {
+    controller = PersistentTabController(initialIndex: widget.routeIndex ?? 2);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

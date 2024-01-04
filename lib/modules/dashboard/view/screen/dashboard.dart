@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
@@ -155,15 +156,19 @@ class Dashboard extends GetView<DashboardController> {
                           ),
                         ),
                       ),
-                      Obx(
-                        () => _entryAndStartTimeLayout(),
-                      ),
-                      Text(
-                        AppString.text_upcoming_leave.tr,
-                        style: AppStyle.mid_large_text
-                            .copyWith(color: AppColor.normalTextColor),
-                      ),
-                      _upcomingLeaveLayout(),
+                      Obx(() => _entryAndStartTimeLayout()),
+                      controller.upcommingLeaveDashboard
+                                      ?.getUpcomingLeavesForApp !=
+                                  null &&
+                              controller.upcommingLeaveDashboard!
+                                  .getUpcomingLeavesForApp!.isNotEmpty
+                          ? Text(
+                              AppString.text_upcoming_leave.tr,
+                              style: AppStyle.mid_large_text
+                                  .copyWith(color: AppColor.normalTextColor),
+                            )
+                          : Container(),
+                      _upcomingLeaveLayout()
                     ],
                   ),
                 ),
@@ -318,7 +323,13 @@ class Dashboard extends GetView<DashboardController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
+          onTap: () {
+            if (Get.isRegistered<DateTimeController>()) {
+              Get.delete<DateTimeController>();
+            }
+            Get.put(DateTimeController());
+            Get.toNamed(Routes.NEW_ENTRY_SCREEN);
+          },
           child: SizedBox(
               height: AppLayout.getHeight(170),
               width: AppLayout.getWidth(170),
@@ -469,17 +480,19 @@ class Dashboard extends GetView<DashboardController> {
       ],
     );
   }
+}
 
-  _startingTimeOpen({required time}) {
-    return Stack(
+_startingTimeOpen({required time}) {
+  return InkWell(
+    onTap: () async {
+      Get.toNamed(Routes.TIMER_SCREEN);
+    },
+    child: Stack(
       children: [
-        InkWell(
-          onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
-          child: SizedBox(
-              height: AppLayout.getHeight(170),
-              width: AppLayout.getWidth(170),
-              child: customSvgImage(imageUrl: Images.start_time_open)),
-        ),
+        SizedBox(
+            height: AppLayout.getHeight(170),
+            width: AppLayout.getWidth(170),
+            child: customSvgImage(imageUrl: Images.start_time_open)),
         Positioned(
             bottom: 45,
             left: 36,
@@ -500,18 +513,21 @@ class Dashboard extends GetView<DashboardController> {
               ],
             ))
       ],
-    );
-  }
+    ),
+  );
+}
 
-  _startingTime() {
-    return InkWell(
-      onTap: () => Get.toNamed(Routes.TIMER_SCREEN),
-      child: SizedBox(
-          height: AppLayout.getHeight(170),
-          width: AppLayout.getWidth(170),
-          child: customSvgImage(imageUrl: Images.start_time)),
-    );
-  }
+_startingTime() {
+  return InkWell(
+    onTap: () {
+      Get.find<TimeCounterController>().timerStatus();
+      Get.toNamed(Routes.TIMER_SCREEN);
+    },
+    child: SizedBox(
+        height: AppLayout.getHeight(170),
+        width: AppLayout.getWidth(170),
+        child: customSvgImage(imageUrl: Images.start_time)),
+  );
 }
 
 Widget _dotsDecorator({required currentIndex}) {

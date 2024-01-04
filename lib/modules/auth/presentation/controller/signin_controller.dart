@@ -55,6 +55,7 @@ class SignInController extends GetxController with StateMixin {
         organizationAvailabilityMessage("");
         OrganizationInfo organizationInfo =
             OrganizationInfo.fromJson(response.body);
+        print(OrganizationInfo.fromJson(response.body).data?.id);
         GetStorage()
             .write(AppString.ORGANIZATION_ID, organizationInfo.data!.id);
       }

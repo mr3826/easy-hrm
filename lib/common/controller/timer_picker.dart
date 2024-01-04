@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
@@ -15,7 +16,6 @@ import '../../utils/app_string.dart';
 import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
 
-
 Future timePicker(BuildContext context) {
   return showDialog(
     barrierDismissible: true,
@@ -27,7 +27,8 @@ Future timePicker(BuildContext context) {
       insetPadding: EdgeInsets.zero,
       child: Container(
         decoration: BoxDecoration(
-            borderRadius:  BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
+            borderRadius:
+                BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
@@ -41,15 +42,18 @@ Future timePicker(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            customButtonSheetAppbar(text: AppString.text_select_starting_time.tr,subtext: "Thursday"),
-
+            customButtonSheetAppbar(
+                text: AppString.text_select_starting_time.tr,
+                subtext: DateFormat('EEEE, dd-MM-yyyy').format(DateTime.parse(
+                    Get.find<DateTimeController>().requestedDate.value))),
             _openClock(),
             const AmPmToggleButton(),
             customSpacerHeight(height: 28),
-            const Divider(thickness: 1,),
-            _buttonLayout(context:context ),
+            const Divider(
+              thickness: 1,
+            ),
+            _buttonLayout(context: context),
             customSpacerHeight(height: 20),
-
           ],
         ),
       ),
@@ -111,30 +115,34 @@ _mins() {
   // return Container();
 }
 
-
-
 _buttonLayout({context}) {
   return Row(
     children: [
       const Spacer(),
       InkWell(
-          onTap: ()=>Get.back(),
-          child: Text(AppString.text_cancel.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),)),
+          onTap: () => Get.back(),
+          child: Text(
+            AppString.text_cancel.tr,
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.normalTextColor,
+                fontSize: Dimensions.fontSizeDefault + 1),
+          )),
       customSpacerWidth(width: 40),
       InkWell(
-          onTap: (){
-            if (Get.find<DateTimeController>().clockHrsFormat.isNotEmpty) {
-              Get.find<DateTimeController>().getTime();
-              Navigator.of(context).pop();
-            } else {
-              showWarningMessage(
-                  message: "Select a valid time before ");
-            }
+          onTap: () {
+            Get.find<DateTimeController>().getTime();
+            Navigator.of(context).pop();
           },
-          child: Text(AppString.text_ok.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.primaryColor,fontSize: Dimensions.fontSizeDefault+1),)),
+          child: SizedBox(
+            width: 30,
+            child: Text(
+              AppString.text_ok.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.primaryColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            ),
+          )),
       customSpacerWidth(width: 40),
-
     ],
   );
 }
-

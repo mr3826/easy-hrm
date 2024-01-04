@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/time_log_view.dart';
@@ -11,22 +13,23 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/controller/date_time_helper_controller.dart';
 import '../../../leave/view/widget/widget.dart';
 
-
-
-class TimelineScreen extends StatelessWidget {
+class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      body: CustomScrollView(
-        slivers: [sliverAppBar, sliverToBoxAdapter],
-      ),
-      floatingActionButton: Obx(() => _timerBtnLayout(context)),
-    );
+    return controller.obx(
+        (state) => Scaffold(
+              backgroundColor: AppColor.backgroundColor,
+              body: CustomScrollView(
+                slivers: [sliverAppBar, sliverToBoxAdapter],
+              ),
+              floatingActionButton: Obx(() => _timerBtnLayout(context)),
+            ),
+        onLoading: const LoadingIndicator());
   }
 
   //component
@@ -58,7 +61,13 @@ class TimelineScreen extends StatelessWidget {
   _addTimeEntryBtn() {
     return floatingButton(
         bgBtnColor: AppColor.primaryColor,
-        onAction: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
+        onAction: () {
+          if (Get.isRegistered<DateTimeController>()) {
+            Get.delete<DateTimeController>();
+          }
+          Get.put(DateTimeController());
+          Get.toNamed(Routes.NEW_ENTRY_SCREEN);
+        },
         btnText: AppString.text_add_time_entry.tr);
   }
 

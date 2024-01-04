@@ -105,13 +105,6 @@ query GetOrganizationUserDetails {
       }
     }
     status
-    organization {
-      organization_setting {
-        language
-        logo_key
-      }
-      name
-    }
   }
 }
 ''';
@@ -159,7 +152,6 @@ mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
 }
 ''';
 
-
 //dashboard
 
 const profileInfoForDashboardQuery = '''
@@ -187,8 +179,7 @@ query GetMonthlyTimelog {
 }
 ''';
 
-
-const upcommingLeaveForDashboardQuery='''
+const upcommingLeaveForDashboardQuery = '''
 query GetUpcomingLeavesForApp {
   getUpcomingLeavesForApp {
     end_date
@@ -203,7 +194,7 @@ query GetUpcomingLeavesForApp {
 }
 ''';
 
-const organizationInfoQuery='''
+const organizationInfoQuery = '''
 query GetUserOrganizations {
   getUserOrganizations {
     data {
@@ -214,6 +205,122 @@ query GetUserOrganizations {
           logo_key
         }
       }
+    }
+  }
+}
+''';
+
+// timeline
+
+const startOrEndTimerQueryData = r'''
+mutation StartOrStopTimer($inputData: StartOrStopTimerInputData) {
+  startOrStopTimer(inputData: $inputData) {
+    id
+    end_date
+    start_date
+  }
+}
+''';
+
+const saveTimerQueryData = r'''
+mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
+  updateTimelineEntry(inputData: $inputData) {
+    description
+    end_date
+    start_date
+    status
+    task_id
+  }
+}
+''';
+
+const getProjectDropdownQuery = r'''
+query GetProjectsDropdown($queryData: ProjectQueryInputType, $optionData: OptionDataType) {
+  getProjectsDropdown(queryData: $queryData, optionData: $optionData) {
+    color
+    name
+    tasks {
+      id
+      name
+    }
+  }
+}
+''';
+const createNewEntryQuery = r'''
+mutation CreateTimelineEntry($inputData: CreateTimelineEntryInputData) {
+  createTimelineEntry(inputData: $inputData) {
+    id
+    end_date
+    start_date
+    description
+    status
+    task_id
+  }
+}
+''';
+
+const timerStatusQuery = '''
+query CheckStartOrStopTimeline {
+  checkStartOrStopTimeline {
+    start_date
+  }
+}
+''';
+
+const getTimelineSummaryByDate = r'''
+query GetTimelogSummaryForApp($queryData: TimelogQueryInputType!) {
+  getTimelogSummaryForApp(queryData: $queryData) {
+    total_schedule
+    total_logged
+    paid_leave
+    balanced
+  }
+}
+''';
+
+const getTimelogDetailsByMonthQuery = r'''
+query GetTimelogsForApp($queryData: TimelineEntriesQueryData) {
+  getTimelogsForApp(queryData: $queryData) {
+    balance
+    date
+    leave
+    logged
+    schedule
+    day
+  }
+}
+''';
+
+const getCalendarTimelineQuery = r'''
+query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
+  getCalenderTimelinesForApp(queryData: $queryData) {
+    leaves {
+      createdAt
+      description
+      end_date
+      leaveType {
+        name
+        type
+        id
+      }
+      start_date
+      status
+      totalLeaveMinutes
+    }
+    timelines {
+      description
+      end_date
+      start_date
+      status
+      task {
+        name
+        id
+        project {
+          id
+          name
+        }
+      }
+      total_minutes
     }
   }
 }
