@@ -21,14 +21,23 @@ class TimeLineCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     List<CalendarEventData> events = [
-      // CalendarEventData(
-      //   date: DateTime(2023, 12, 17, 23),
-      //   startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
-      //   endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
-      //   event: "Event 1",
-      //   title: 'hi',
-      // ),
+      CalendarEventData(
+        date: DateTime(2024, 01, 04, 23),
+        startTime: DateTime.parse("2024-01-04 01:01:02.776131"),
+        endTime: DateTime.parse("2024-01-04 02:10:02.776131"),
+        event: "Event 1",
+        title: 'Sick leave',
+      ), CalendarEventData(
+        date: DateTime(2024, 01, 04, 23),
+        startTime: DateTime.parse("2024-01-04 01:01:02.776131"),
+        endTime: DateTime.parse("2024-01-04 02:10:02.776131"),
+        event: "Leave status",
+        title: 'about',
+      ),
+
+
       // CalendarEventData(
       //   date: DateTime(2023, 12, 17, 23),
       //   startTime: DateTime.parse("2023-12-17 01:01:02.776131"),
@@ -50,9 +59,10 @@ class TimeLineCalendar extends StatelessWidget {
       //   event: "Event 1",
       //   title: 'Title',
       // ),
+
     ];
 
-    CalendarControllerProvider.of(context).controller.addAll(events.cast<CalendarEventData<Object?>>());
+    CalendarControllerProvider.of(context).controller.addAll(events);
 
 
 

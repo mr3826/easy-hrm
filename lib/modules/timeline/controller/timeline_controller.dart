@@ -26,12 +26,11 @@ class TimelineController extends GetxController with StateMixin {
 
     //individual date summary
     //by default its current date
-    getTimelineSummaryByDate(startDate: "${DateTime(DateTime.now().year, DateTime.now().month,
-        DateTime.now().day, 0, 0, 0)}", endDate: "${DateTime(DateTime.now().year, DateTime.now().month,
-        DateTime.now().day, 23, 59, 59)}");
-
-
-
+    getTimelineSummaryByDate(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
     //monthly summary
     //by default its current month
@@ -51,7 +50,6 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
-
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
@@ -170,7 +168,8 @@ class TimelineController extends GetxController with StateMixin {
     isManualEntryLoading(false);
   }
 
-  getTimelineSummaryByMonth({required String? startDate, required String? endDate}) async {
+  getTimelineSummaryByMonth(
+      {required String? startDate, required String? endDate}) async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
@@ -190,9 +189,8 @@ class TimelineController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-
-
-  getTimelineSummaryByDate({required String? startDate, String? endDate}) async {
+  getTimelineSummaryByDate(
+      {required String? startDate, String? endDate}) async {
     log("Next & previous date ==>$startDate And $endDate");
     isDateTimeMovementLoading(true);
     final response = await NetworkClient()
@@ -214,15 +212,11 @@ class TimelineController extends GetxController with StateMixin {
     isDateTimeMovementLoading(false);
   }
 
-  getCalendarTimelineDataByDate({required String? startDate, String? endDate}) async {
+  getCalendarTimelineDataByDate(
+      {required String? startDate, String? endDate}) async {
     final response = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
-      "queryData": {
-        "start_time":
-            "$startDate",
-        "end_time":
-            "$endDate"
-      }
+      "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
     });
     log("Calendar timeline response ==> $response");
 
@@ -233,11 +227,4 @@ class TimelineController extends GetxController with StateMixin {
       log("Calendar timeline response ==> $response");
     }
   }
-
-
-
-
-
-
-
 }
