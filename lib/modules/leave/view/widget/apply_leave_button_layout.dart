@@ -5,6 +5,7 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/add_attachemnt_file_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/custom_title_text_widget.dart';
@@ -86,12 +87,6 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
   }
 
   _leaveTypeDropDown() {
-    List<String> leaveType = [
-      "Casual leave",
-      "Paid leave",
-      "Unpaid leave",
-      "Normal leave",
-    ];
     return Container(
       padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
       decoration: BoxDecoration(
@@ -114,17 +109,20 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
         ),
         value: dropdownValue,
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        items: leaveType.map<DropdownMenuItem<String>>((String value) {
+        items: Get.find<ApplyLeaveController>()
+            .leaveType
+            ?.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
               value: value,
               child: Text(
-                value,
+                value ?? "",
                 style: AppStyle.normal_text
                     .copyWith(color: AppColor.normalTextColor),
               ));
         }).toList(),
         onChanged: (String? newValue) {
           setState(() {
+            print(newValue);
             dropdownValue = newValue;
           });
         },
@@ -260,24 +258,6 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
                 ),
               ],
             ),
-
-            // Row(
-            //   children: [
-            //     Container(
-            //         height: 180,
-            //         width: 70,
-            //         child: Icon(Icons.error_outline,color: AppColor.errorColorLight,)),
-            //     Container(
-            //       height: 180,
-            //       width: 500,
-            //       child: Column(
-            //         children: [
-            //           Text("Out of balance.The selected leave duration is out of the acaility.Tou may have some Taken,approved or pending leave that affect your new request."),
-            //         ],
-            //       ),
-            //     )
-            //   ],
-            // ),
           ],
         ),
       ),

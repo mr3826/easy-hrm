@@ -67,6 +67,26 @@ query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
 }
 ''';
 
+
+const assignLeaveQuery=r'''
+mutation AssignLeave($inputData: CreateLeaveInputData) {
+  assignLeave(inputData: $inputData) {
+    id
+  }
+}
+''';
+
+
+const leaveTypeDropdownQuery='''
+query GetLeaveTypesDropdown {
+  getLeaveTypesDropdown {
+    name
+    type
+    id
+  }
+}
+''';
+
 // profile module
 
 const getUserProfileQuery = '''

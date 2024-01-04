@@ -1,3 +1,4 @@
+import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
@@ -48,4 +49,5 @@ Future<void> initApp() async {
   Get.lazyPut(() => NotificationController(), fenix: true);
   Get.lazyPut(() => TimelineController(), fenix: true);
   Get.lazyPut(() => TimelineSummaryController(), fenix: true);
+  Get.lazyPut(() => ApplyLeaveController(), fenix: false);
 }
