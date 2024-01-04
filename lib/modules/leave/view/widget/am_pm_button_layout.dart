@@ -13,7 +13,7 @@ class AmPmToggleButton extends StatefulWidget {
 }
 
 class _AmPmToggleButtonState extends State<AmPmToggleButton> {
-  int value = 0;
+  int value = 2;
 
   @override
   Widget build(BuildContext context) {

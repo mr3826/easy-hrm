@@ -16,9 +16,7 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 
 class SingleDatePicker extends StatefulWidget {
-
-   const SingleDatePicker({Key? key}) : super(key: key);
-
+  const SingleDatePicker({Key? key}) : super(key: key);
 
   @override
   State<SingleDatePicker> createState() => _SingleDatePickerState();
@@ -26,12 +24,14 @@ class SingleDatePicker extends StatefulWidget {
 
 class _SingleDatePickerState extends State<SingleDatePicker> {
   DateTime today = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: AppLayout.getHeight(460),
       decoration: BoxDecoration(
-          borderRadius:  BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -45,7 +45,6 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-
             TableCalendar(
               calendarStyle: CalendarStyle(
                   selectedDecoration: const BoxDecoration(
@@ -53,40 +52,42 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                   todayDecoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.transparent),
                   todayTextStyle: AppStyle.extra_large_text_black.copyWith(
-                      color: AppColor.primaryColor, fontWeight: FontWeight.bold)),
-
-              calendarFormat:CalendarFormat.month ,
+                      color: AppColor.primaryColor,
+                      fontWeight: FontWeight.bold)),
+              calendarFormat: CalendarFormat.month,
               focusedDay: today,
-
               headerStyle: HeaderStyle(
-                 formatButtonShowsNext: false,
-               formatButtonVisible: false,
-                titleTextStyle: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),
+                formatButtonShowsNext: false,
+                formatButtonVisible: false,
+                titleTextStyle: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeDefault + 1),
               ),
-
               firstDay: DateTime.utc(2010, 01, 01),
               lastDay: DateTime.utc(2030, 12, 31),
               selectedDayPredicate: (day) => isSameDay(day, today),
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   today = selectedDay;
+                  Get.find<DateTimeController>().requestedDate.value =
+                      DateFormat('yyyy-MM-dd').format(selectedDay);
+                  //new entry button change
+                  Get.find<DateTimeController>().currentIndex.value=5;
                 });
               },
             ),
-
-
-
-             Divider(color: AppColor.hintColor.withOpacity(0.5),),
+            Divider(
+              color: AppColor.hintColor.withOpacity(0.5),
+            ),
             const Spacer(),
-
-            _buttonLayout(onAction: (){
+            _buttonLayout(onAction: () {
               Get.find<DateController>().currentDate.value = today;
-              Get.find<DateTimeController>().timeLogDate.value = today.toString();
+              Get.find<DateTimeController>().timeLogDate.value =
+                  today.toString();
               Get.find<LeaveScreenController>().getLeaveDetailsByDate();
               Navigator.pop(context);
             }),
             customSpacerHeight(height: 6),
-
           ],
         ),
       ),
@@ -97,15 +98,24 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
     return Row(
       children: [
         const Spacer(),
-       InkWell(
-           onTap: ()=>Get.back(),
-           child: Text(AppString.text_cancel.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),)),
-      customSpacerWidth(width: 40),
         InkWell(
-            onTap: ()=>onAction(),
-            child: Text(AppString.text_ok.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.primaryColor,fontSize: Dimensions.fontSizeDefault+1),)),
+            onTap: () => Get.back(),
+            child: Text(
+              AppString.text_cancel.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            )),
         customSpacerWidth(width: 40),
-
+        InkWell(
+            onTap: () => onAction(),
+            child: Text(
+              AppString.text_ok.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.primaryColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            )),
+        customSpacerWidth(width: 40),
       ],
     );
   }
@@ -120,12 +130,14 @@ class FromDatePicker extends StatefulWidget {
 
 class _FromDatePickerState extends State<FromDatePicker> {
   DateTime today = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: AppLayout.getHeight(460),
       decoration: BoxDecoration(
-          borderRadius:  BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -139,7 +151,6 @@ class _FromDatePickerState extends State<FromDatePicker> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-
             TableCalendar(
               calendarStyle: CalendarStyle(
                   selectedDecoration: const BoxDecoration(
@@ -147,17 +158,17 @@ class _FromDatePickerState extends State<FromDatePicker> {
                   todayDecoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.transparent),
                   todayTextStyle: AppStyle.extra_large_text_black.copyWith(
-                      color: AppColor.primaryColor, fontWeight: FontWeight.bold)),
-
-              calendarFormat:CalendarFormat.month ,
+                      color: AppColor.primaryColor,
+                      fontWeight: FontWeight.bold)),
+              calendarFormat: CalendarFormat.month,
               focusedDay: today,
-
               headerStyle: HeaderStyle(
                 formatButtonShowsNext: false,
                 formatButtonVisible: false,
-                titleTextStyle: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),
+                titleTextStyle: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeDefault + 1),
               ),
-
               firstDay: DateTime.utc(2010, 01, 01),
               lastDay: DateTime.utc(2030, 12, 31),
               selectedDayPredicate: (day) => isSameDay(day, today),
@@ -167,18 +178,15 @@ class _FromDatePickerState extends State<FromDatePicker> {
                 });
               },
             ),
-
-
             const Spacer(),
-            Divider(color: AppColor.hintColor.withOpacity(0.5),),
-
-
-            _buttonLayout(onAction: (){
+            Divider(
+              color: AppColor.hintColor.withOpacity(0.5),
+            ),
+            _buttonLayout(onAction: () {
               Get.find<DateController>().fromDate.value = today;
               Navigator.pop(context);
             }),
             customSpacerHeight(height: 6),
-
           ],
         ),
       ),
@@ -190,22 +198,27 @@ class _FromDatePickerState extends State<FromDatePicker> {
       children: [
         const Spacer(),
         InkWell(
-            onTap: ()=>Get.back(),
-            child: Text(AppString.text_cancel.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),)),
+            onTap: () => Get.back(),
+            child: Text(
+              AppString.text_cancel.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            )),
         customSpacerWidth(width: 40),
         InkWell(
-            onTap: ()=>onAction(),
-            child: Text(AppString.text_ok.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.primaryColor,fontSize: Dimensions.fontSizeDefault+1),)),
+            onTap: () => onAction(),
+            child: Text(
+              AppString.text_ok.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.primaryColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            )),
         customSpacerWidth(width: 40),
-
       ],
     );
   }
 }
-
-
-
-
 
 class ToDatePiker extends StatefulWidget {
   const ToDatePiker({super.key});
@@ -216,12 +229,14 @@ class ToDatePiker extends StatefulWidget {
 
 class _ToDatePikerState extends State<ToDatePiker> {
   DateTime today = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: AppLayout.getHeight(460),
       decoration: BoxDecoration(
-          borderRadius:  BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -235,7 +250,6 @@ class _ToDatePikerState extends State<ToDatePiker> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-
             TableCalendar(
               calendarStyle: CalendarStyle(
                   selectedDecoration: const BoxDecoration(
@@ -243,17 +257,17 @@ class _ToDatePikerState extends State<ToDatePiker> {
                   todayDecoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.transparent),
                   todayTextStyle: AppStyle.extra_large_text_black.copyWith(
-                      color: AppColor.primaryColor, fontWeight: FontWeight.bold)),
-
-              calendarFormat:CalendarFormat.month ,
+                      color: AppColor.primaryColor,
+                      fontWeight: FontWeight.bold)),
+              calendarFormat: CalendarFormat.month,
               focusedDay: today,
-
               headerStyle: HeaderStyle(
                 formatButtonShowsNext: false,
                 formatButtonVisible: false,
-                titleTextStyle: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),
+                titleTextStyle: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeDefault + 1),
               ),
-
               firstDay: DateTime.utc(2010, 01, 01),
               lastDay: DateTime.utc(2030, 12, 31),
               selectedDayPredicate: (day) => isSameDay(day, today),
@@ -263,18 +277,15 @@ class _ToDatePikerState extends State<ToDatePiker> {
                 });
               },
             ),
-
-
-
-            Divider(color: AppColor.hintColor.withOpacity(0.5),),
+            Divider(
+              color: AppColor.hintColor.withOpacity(0.5),
+            ),
             const Spacer(),
-
-            _buttonLayout(onAction: (){
+            _buttonLayout(onAction: () {
               Get.find<DateController>().toDate.value = today;
               Navigator.pop(context);
             }),
             customSpacerHeight(height: 6),
-
           ],
         ),
       ),
@@ -286,18 +297,24 @@ class _ToDatePikerState extends State<ToDatePiker> {
       children: [
         const Spacer(),
         InkWell(
-            onTap: ()=>Get.back(),
-            child: Text(AppString.text_cancel.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeDefault+1),)),
+            onTap: () => Get.back(),
+            child: Text(
+              AppString.text_cancel.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            )),
         customSpacerWidth(width: 40),
         InkWell(
-            onTap: ()=>onAction(),
-            child: Text(AppString.text_ok.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.primaryColor,fontSize: Dimensions.fontSizeDefault+1),)),
+            onTap: () => onAction(),
+            child: Text(
+              AppString.text_ok.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.primaryColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            )),
         customSpacerWidth(width: 40),
-
       ],
     );
   }
 }
-
-
-

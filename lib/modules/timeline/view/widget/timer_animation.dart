@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -26,7 +27,10 @@ class _TimerAnimationState extends State<TimerAnimation> {
     startAnimation();
   }
 
-
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void startAnimation() {
     Timer.periodic(const Duration(seconds: 1), (Timer timer) {
@@ -48,12 +52,12 @@ class _TimerAnimationState extends State<TimerAnimation> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Obx(() => _timeCounterController.isRunning.value
+        Obx(() => _timeCounterController.isRunning.isTrue
             ? _animatedContainer()
             : Container()),
-        _timeCounterController.isTotalCount.value == false
+        Obx(() => _timeCounterController.isTotalCount.value == false
             ? _totalCountContainer()
-            : _normalContainer()
+            : _normalContainer())
       ],
     );
   }
@@ -80,16 +84,18 @@ class _TimerAnimationState extends State<TimerAnimation> {
           child: CircleAvatar(
             radius: 95,
             backgroundColor: AppColor.primaryColor.withOpacity(0.2),
-            child: CircleAvatar(
+            child: Obx(() => CircleAvatar(
               radius: 80,
               backgroundColor: AppColor.primaryColor,
-              child: Text(
+              child: Get.find<TimeCounterController>().isLoading.isTrue
+                  ? const CupertinoActivityIndicator(radius: 20,color: Colors.white,)
+                  : Text(
                 _timeCounterController.elapsedTime.toString(),
                 style: AppStyle.normal_text_grey.copyWith(
                     color: AppColor.cardColor,
-                    fontSize: Dimensions.fontSizeExtraLarge),
+                    fontSize: Dimensions.fontSizeExtraLarge - 2),
               ),
-            ),
+            )),
           ),
         ));
   }
@@ -114,10 +120,10 @@ class _TimerAnimationState extends State<TimerAnimation> {
                         color: AppColor.cardColor,
                         fontSize: Dimensions.fontSizeMid - 2),
                   ),
-                  Text(_timeCounterController.totalTime.toString(),
+                  Text(_timeCounterController.elapsedTime.toString(),
                       style: AppStyle.normal_text_grey.copyWith(
                           color: AppColor.cardColor,
-                          fontSize: Dimensions.fontSizeExtraLarge))
+                          fontSize: Dimensions.fontSizeExtraLarge - 2))
                 ],
               ),
             ),

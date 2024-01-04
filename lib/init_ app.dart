@@ -1,4 +1,3 @@
-import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
@@ -11,9 +10,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'common/controller/date_time_helper_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/auth/presentation/controller/signin_controller.dart';
+import 'modules/dashboard/controller/dashbpard_controller.dart';
 import 'modules/profile/controller/log_out_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
 import 'modules/leave/controller/calendar_date_controller.dart';
@@ -31,7 +33,6 @@ Future<void> initApp() async {
   Get.put(SplashController());
   Get.put(SignInController());
   Get.put(ForgotPasswordController());
-  Get.put(DateTimeController());
   Get.put(FileUploadController());
   Get.put(PickedFileFormStorage());
   Get.put(DateController());
@@ -45,4 +46,6 @@ Future<void> initApp() async {
   Get.lazyPut(() => UpdateProfileController(), fenix: true);
   Get.lazyPut(() => DashboardController(), fenix: true);
   Get.lazyPut(() => NotificationController(), fenix: true);
+  Get.lazyPut(() => TimelineController(), fenix: true);
+  Get.lazyPut(() => TimelineSummaryController(), fenix: true);
 }

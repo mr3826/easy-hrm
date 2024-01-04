@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -29,25 +30,41 @@ Widget timelineLayout() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
-                      dynamicText: "120h",
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.totalSchedule ??
+                          "",
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: "122h+",
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.totalLogged ??
+                          "",
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: "0.8h+",
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.paidLeave ??
+                          "",
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: "30h",
+                      dynamicText: Get.find<TimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.balanced ??
+                          "",
                       staticText: AppString.text_balance.tr),
                 ],
               ),

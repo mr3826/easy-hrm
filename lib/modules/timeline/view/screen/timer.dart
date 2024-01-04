@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/add_to_task.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -13,6 +15,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../controller/timeline_controller.dart';
 import '../../controller/timer_controller.dart';
 import '../widget/timer_animation.dart';
 
@@ -34,27 +37,30 @@ class _TimerScreenState extends State<TimerScreen> {
       backgroundColor: AppColor.secondaryColor,
       body: Column(
         children: [
-          _dateText(date: "Thu, 21 April - 2023"),
-          customSpacerHeight(height: 50),
-          SizedBox(
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    _timeCounterController.start();
-                  },
-                  child: const SizedBox(
-                      height: 400, width: 400, child: TimerAnimation()),
-                ),
-              ],
+          _dateText(
+              date: DateFormat('E, d MMMM - yyyy').format(DateTime.now())),
+          GestureDetector(
+            onTap: () async {
+              if (Get.find<TimeCounterController>().isRunning.isFalse) {
+                await Get.find<TimelineController>()
+                    .startOrEndTimer(timerType: StartOrEndTimer.start.name);
+              }
+            },
+            child: const SizedBox(
+              child: Stack(
+                children: [
+                  SizedBox(height: 400, width: 400, child: TimerAnimation()),
+                ],
+              ),
             ),
           ),
-          _saveBtn(onAction: () {
-            _timeCounterController.stop();
-            _timeCounterController.isRunning.value = false; //animation stop
-            customButtonSheet(
-                height: .7, context: context, child: const AddToTaskScreen());
-          }),
+          _saveBtn(
+            onAction: () async {
+              customButtonSheet(
+                  height: .6, context: context, child: const AddToTaskScreen());
+
+            },
+          ),
         ],
       ),
     );
@@ -67,7 +73,8 @@ class _TimerScreenState extends State<TimerScreen> {
       child: Text(
         date,
         style: AppStyle.normal_text_grey.copyWith(
-            fontSize: Dimensions.fontSizeDefault, color: AppColor.cardColor),
+            fontSize: Dimensions.fontSizeDefault + 4,
+            color: AppColor.cardColor),
       ),
     ));
   }

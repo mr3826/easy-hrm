@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -10,7 +11,12 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget workingScheduleLayout() {
+Widget workingScheduleLayout({
+  required String schedule,
+  required String loggedTime,
+  required String paidLeave,
+  required String balanceTime,
+}) {
   return Card(
     elevation: 0,
     shape:
@@ -22,16 +28,16 @@ Widget workingScheduleLayout() {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _countLayout(
-              dynamicText: "120h", staticText: AppString.text_schedule.tr),
+              dynamicText: schedule, staticText: AppString.text_schedule.tr),
           _divider(),
           _countLayout(
-              dynamicText: "122h+", staticText: AppString.text_logged.tr),
+              dynamicText: loggedTime, staticText: AppString.text_logged.tr),
           _divider(),
           _countLayout(
-              dynamicText: "0.8h+", staticText: AppString.text_paid_leave.tr),
+              dynamicText: paidLeave, staticText: AppString.text_paid_leave.tr),
           _divider(),
           _countLayout(
-              dynamicText: "30h", staticText: AppString.text_balance.tr),
+              dynamicText: balanceTime, staticText: AppString.text_balance.tr),
         ],
       ),
     ),
