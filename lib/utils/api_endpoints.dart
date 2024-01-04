@@ -81,8 +81,12 @@ const leaveTypeDropdownQuery='''
 query GetLeaveTypesDropdown {
   getLeaveTypesDropdown {
     name
-    type
     id
+    attach_document_required
+    add_note_required
+    leave_statuses {
+      available_number_of_days
+    }
   }
 }
 ''';

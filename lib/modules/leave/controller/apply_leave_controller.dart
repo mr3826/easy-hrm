@@ -9,13 +9,17 @@ class ApplyLeaveController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    getLeaveType();
   }
 
   LeaveTypeDropdown? leaveTypeDropdown;
 
+  final isLoading = false.obs;
+
   List<String?>? leaveType;
 
   getLeaveType() async {
+    isLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: leaveTypeDropdownQuery);
 
@@ -23,9 +27,9 @@ class ApplyLeaveController extends GetxController {
       log("getLeaveType:: ${response.exception.toString()}");
     } else {
       leaveTypeDropdown = LeaveTypeDropdown.fromJson(response.data!);
-      leaveType =
-          leaveTypeDropdown?.getLeaveTypesDropdown?.map((e) => e.name).toList();
+      leaveType=leaveTypeDropdown?.getLeaveTypesDropdown?.map((e) => e.name).toList();
     }
+    isLoading(false);
   }
 
   applyLeave() async {

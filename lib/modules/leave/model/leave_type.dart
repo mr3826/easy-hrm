@@ -15,14 +15,38 @@ class LeaveTypeDropdown {
 
 class GetLeaveTypesDropdown {
   String? name;
-  String? type;
   String? id;
+  bool? attachDocumentRequired;
+  bool? addNoteRequired;
+  List<LeaveStatuses>? leaveStatuses;
 
-  GetLeaveTypesDropdown({this.name, this.type, this.id});
+  GetLeaveTypesDropdown(
+      {this.name,
+      this.id,
+      this.attachDocumentRequired,
+      this.addNoteRequired,
+      this.leaveStatuses});
 
   GetLeaveTypesDropdown.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    type = json['type'];
     id = json['id'];
+    attachDocumentRequired = json['attach_document_required'];
+    addNoteRequired = json['add_note_required'];
+    if (json['leave_statuses'] != null) {
+      leaveStatuses = <LeaveStatuses>[];
+      json['leave_statuses'].forEach((v) {
+        leaveStatuses!.add(new LeaveStatuses.fromJson(v));
+      });
+    }
+  }
+}
+
+class LeaveStatuses {
+  int? availableNumberOfDays;
+
+  LeaveStatuses({this.availableNumberOfDays});
+
+  LeaveStatuses.fromJson(Map<String, dynamic> json) {
+    availableNumberOfDays = json['available_number_of_days'];
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
@@ -18,116 +19,70 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/file_upload_controller.dart';
+import 'apply_leave_dropdown.dart';
 import 'date_pickar_field_widget.dart';
 
-class ApplyLeaveButtonLayout extends StatefulWidget {
-  const ApplyLeaveButtonLayout({Key? key}) : super(key: key);
-
-  @override
-  State<ApplyLeaveButtonLayout> createState() => _ApplyLeaveButtonLayoutState();
-}
-
-class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
-  String? dropdownValue;
-
+class ApplyLeaveButtonLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            customTitleText(text: AppString.text_leave_type.tr),
-            customSpacerHeight(height: 8),
-            _leaveTypeDropDown(),
-            customSpacerHeight(height: 8),
-            _leaveCountStyleLayout(),
-            customSpacerHeight(height: 20),
-            customTitleText(text: "${AppString.text_from.tr} *"),
-            customSpacerHeight(height: 8),
-            Obx(
-              () => _fromDateTimeLayout(),
+    print("Build called");
+    return Obx(() => Get.find<ApplyLeaveController>().isLoading.isFalse
+        ? Padding(
+            padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customTitleText(text: AppString.text_leave_type.tr),
+                  customSpacerHeight(height: 8),
+                  const ApplyLeaveDropDown(),
+                  customSpacerHeight(height: 8),
+                  _leaveCountStyleLayout(),
+                  customSpacerHeight(height: 20),
+                  customTitleText(text: "${AppString.text_from.tr} *"),
+                  customSpacerHeight(height: 8),
+                  Obx(
+                    () => _fromDateTimeLayout(),
+                  ),
+                  customSpacerHeight(height: 20),
+                  customTitleText(text: "${AppString.text_to.tr} *"),
+                  customSpacerHeight(height: 8),
+                  Obx(
+                    () => _toDateTimeLayout(),
+                  ),
+                  customSpacerHeight(height: 12),
+                  _errorAlertLayout(),
+                  customSpacerHeight(height: 18),
+                  customTitleText(text: AppString.text_note.tr),
+                  customSpacerHeight(height: 8),
+                  _noteTextField(),
+                  customTitleText(text: AppString.text_document.tr),
+                  customSpacerHeight(height: 6),
+                  _pathFormatText(),
+                  customSpacerHeight(height: 8),
+                  const AddAttachmentFile(),
+                  customSpacerHeight(height: 20),
+                  CustomDoubleAppButton(
+                    onAction: () {},
+                    buttonText: AppString.text_apply.tr,
+                    cancelAction: () {
+                      Navigator.pop(context);
+                      Get.find<FileUploadController>()
+                          .storageForUpload
+                          .filePath
+                          .value = "";
+                    },
+                  ),
+                  customSpacerHeight(height: 100),
+                ],
+              ),
             ),
-            customSpacerHeight(height: 20),
-            customTitleText(text: "${AppString.text_to.tr} *"),
-            customSpacerHeight(height: 8),
-            Obx(
-              () => _toDateTimeLayout(),
-            ),
-            customSpacerHeight(height: 12),
-            _errorAlertLayout(),
-            customSpacerHeight(height: 18),
-            customTitleText(text: AppString.text_note.tr),
-            customSpacerHeight(height: 8),
-            _noteTextField(),
-            customTitleText(text: AppString.text_document.tr),
-            customSpacerHeight(height: 6),
-            _pathFormatText(),
-            customSpacerHeight(height: 8),
-            const AddAttachmentFile(),
-            customSpacerHeight(height: 20),
-            CustomDoubleAppButton(
-              onAction: () {},
-              buttonText: AppString.text_apply.tr,
-              cancelAction: () {
-                Navigator.pop(context);
-                Get.find<FileUploadController>()
-                    .storageForUpload
-                    .filePath
-                    .value = "";
-              },
-            ),
-            customSpacerHeight(height: 100),
-          ],
-        ),
-      ),
-    );
-  }
-
-  _leaveTypeDropDown() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(8)),
-      child: DropdownButton<String>(
-        style: const TextStyle(fontWeight: FontWeight.w500),
-        isExpanded: true,
-        dropdownColor: AppColor.cardColor,
-        underline: const SizedBox.shrink(),
-        icon: const Icon(Icons.expand_more, color: Colors.grey),
-        iconEnabledColor: AppColor.normalTextColor,
-        hint: Row(
-          children: [
-            Text(
-              AppString.text_slected_an_option.tr,
-              style: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
-            )
-          ],
-        ),
-        value: dropdownValue,
-        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        items: Get.find<ApplyLeaveController>()
-            .leaveType
-            ?.map<DropdownMenuItem<String>>((String? value) {
-          return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value ?? "",
-                style: AppStyle.normal_text
-                    .copyWith(color: AppColor.normalTextColor),
-              ));
-        }).toList(),
-        onChanged: (String? newValue) {
-          setState(() {
-            print(newValue);
-            dropdownValue = newValue;
-          });
-        },
-      ),
-    );
+          )
+        : const Center(
+            child: CupertinoActivityIndicator(
+                color: Colors.blueAccent, radius: 18),
+          ));
   }
 
   _noteTextField() {
@@ -158,7 +113,7 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
                   );
                 })),
         customSpacerWidth(width: 14),
-        Expanded(child: startTimeFieldLayout(context: context)),
+        Expanded(child: startTimeFieldLayout(context: Get.context!)),
       ],
     );
   }
@@ -184,7 +139,7 @@ class _ApplyLeaveButtonLayoutState extends State<ApplyLeaveButtonLayout> {
                   );
                 })),
         customSpacerWidth(width: 14),
-        Expanded(child: startTimeFieldLayout(context: context)),
+        Expanded(child: startTimeFieldLayout(context: Get.context!)),
       ],
     );
   }

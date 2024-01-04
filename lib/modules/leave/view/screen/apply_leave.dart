@@ -18,7 +18,7 @@ class ApplyLeaveScreen extends StatelessWidget {
       children: [
         customButtonSheetAppbar(
             text: AppString.text_apply_leve.tr, subtext: "Thursday"),
-        const Expanded(child: ApplyLeaveButtonLayout())
+        Expanded(child: ApplyLeaveButtonLayout())
       ],
     );
   }
