@@ -24,8 +24,7 @@ query Query {
   getLeaveSummaryForDashboard {
     total_leave_day
     taken_leave
-    balance_leave
-    
+    balance_leave    
   }
 }
         """;
@@ -49,7 +48,6 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
         """;
 
 const getLeaveRecordsQuery = r'''
-
 query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
   getLeaveRecords(queryData: $queryData) {
     end_date
@@ -67,7 +65,6 @@ query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
     status
   }
 }
-
 ''';
 
 // profile module
