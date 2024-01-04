@@ -14,44 +14,55 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 import '../../controller/time_formate_controller.dart';
+import '../../model/calendar_timeline.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<CalendarEventData<String>> events = [
-      CalendarEventData(
-        date: DateTime(2023, 12, 17, 23),
-        startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
-        endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
-        event: "Event 1",
-        title: 'hi',
-      ),
-      CalendarEventData(
-        date: DateTime(2023, 12, 17, 23),
-        startTime: DateTime.parse("2023-12-17 01:01:02.776131"),
-        endTime: DateTime.parse("2023-12-17 02:10:02.776131"),
-        event: "Event 2",
-        title: 'Hello task',
-      ),
-      CalendarEventData(
-        date: DateTime(2023, 12, 19, 23),
-        startTime: DateTime.parse("2023-12-19 01:01:02.776131"),
-        endTime: DateTime.parse("2023-12-17 03:00:02.776131"),
-        event: "Event 1",
-        title: 'hi 3',
-      ),
-      CalendarEventData(
-        date: DateTime(2023, 12, 19, 23),
-        startTime: DateTime.parse("2023-12-19 01:01:02.776131"),
-        endTime: DateTime.parse("2023-12-17 02:10:02.776131"),
-        event: "Event 1",
-        title: 'Title',
-      ),
+    List<CalendarTimeline> events = [
+      // CalendarEventData(
+      //   date: DateTime(2023, 12, 17, 23),
+      //   startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
+      //   endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
+      //   event: "Event 1",
+      //   title: 'hi',
+      // ),
+      // CalendarEventData(
+      //   date: DateTime(2023, 12, 17, 23),
+      //   startTime: DateTime.parse("2023-12-17 01:01:02.776131"),
+      //   endTime: DateTime.parse("2023-12-17 02:10:02.776131"),
+      //   event: "Event 2",
+      //   title: 'Hello task',
+      // ),
+      // CalendarEventData(
+      //   date: DateTime(2023, 12, 19, 23),
+      //   startTime: DateTime.parse("2023-12-19 01:01:02.776131"),
+      //   endTime: DateTime.parse("2023-12-17 03:00:02.776131"),
+      //   event: "Event 1",
+      //   title: 'hi 3',
+      // ),
+      // CalendarEventData(
+      //   date: DateTime(2023, 12, 19, 23),
+      //   startTime: DateTime.parse("2023-12-19 01:01:02.776131"),
+      //   endTime: DateTime.parse("2023-12-17 02:10:02.776131"),
+      //   event: "Event 1",
+      //   title: 'Title',
+      // ),
+
+      // "date": date,
+      // "startTime": startTime,
+      // "endTime": endTime,
+      // "event": event,
+      // "title": title,
+      // "description": description,
+      // "endDate": endDate,
     ];
 
-    CalendarControllerProvider.of(context).controller.addAll(events);
+    CalendarControllerProvider.of(context).controller.addAll(events.cast<CalendarEventData<Object?>>());
+
+
 
     return Padding(
       padding: marginLayout,
@@ -120,11 +131,17 @@ class TimeLineCalendar extends StatelessWidget {
           dateStringBuilder: (date, {secondaryDate}) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
 
-              Get.find<TimelineController>().getTimelineByDate(
+              Get.find<TimelineController>().getTimelineSummaryByDate(
                   startDate:
                   "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
                   "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+
+              Get.find<TimelineController>().getCalendarTimelineDataByDate( startDate:
+              "2023-12-20 00:15:00.000",
+                  endDate:
+                  "2023-12-20 23:59:59.000");
+
             });
 
             var formatDate = DateFormat('dd MMM yyyy').format(date);

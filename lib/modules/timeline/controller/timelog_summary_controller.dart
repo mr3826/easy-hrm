@@ -32,7 +32,7 @@ class TimelineSummaryController extends GetxController {
       {required String? startDate, required String? endDate}) async {
     isMonthlySummaryDataLoading(true);
     final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelineSummaryByDate, variables: {
+        .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_time": startDate,
         "end_time": endDate,

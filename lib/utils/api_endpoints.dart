@@ -270,7 +270,7 @@ query CheckStartOrStopTimeline {
 }
 ''';
 
-const getTimelineSummaryByDate = r'''
+const getTimelineSummaryByDateQuery = r'''
 query GetTimelogSummaryForApp($queryData: TimelogQueryInputType!) {
   getTimelogSummaryForApp(queryData: $queryData) {
     total_schedule
