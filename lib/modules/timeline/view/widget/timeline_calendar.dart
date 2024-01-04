@@ -21,6 +21,21 @@ class TimeLineCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.find<TimelineController>()
+        .calendarTimeline
+        ?.getCalenderTimelinesForApp
+        ?.timelines
+        ?.map(
+          (e) => CalendarEventData(
+            date: DateTime.parse(e.startDate??""),
+            startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
+            endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
+            event: "Event 1",
+            title: 'hi',
+          ),
+        )
+        .toList();
+
     List<CalendarEventData> events = [
       // CalendarEventData(
       //   date: DateTime(2023, 12, 17, 23),
@@ -52,9 +67,9 @@ class TimeLineCalendar extends StatelessWidget {
       // ),
     ];
 
-    CalendarControllerProvider.of(context).controller.addAll(events.cast<CalendarEventData<Object?>>());
-
-
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(events.cast<CalendarEventData<Object?>>());
 
     return Padding(
       padding: marginLayout,
@@ -122,18 +137,15 @@ class TimeLineCalendar extends StatelessWidget {
           },
           dateStringBuilder: (date, {secondaryDate}) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-
               Get.find<TimelineController>().getTimelineSummaryByDate(
                   startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
 
-              Get.find<TimelineController>().getCalendarTimelineDataByDate( startDate:
-              "2023-12-20 00:00:00.000",
-                  endDate:
-                  "2023-12-20 23:59:59.000");
-
+              Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                  startDate: "2023-12-20 00:00:00.000",
+                  endDate: "2023-12-20 23:59:59.000");
             });
 
             var formatDate = DateFormat('dd MMM yyyy').format(date);

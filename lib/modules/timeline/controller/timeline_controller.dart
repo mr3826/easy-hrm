@@ -233,11 +233,4 @@ class TimelineController extends GetxController with StateMixin {
       log("Calendar timeline response ==> $response");
     }
   }
-
-
-
-
-
-
-
 }
