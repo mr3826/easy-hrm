@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
@@ -21,7 +18,7 @@ class TimeLogView extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [
-          const TimeLineCalendar(),
+        const TimeLineCalendar(),
           Positioned(
             top: 76,
             child: Obx(() =>

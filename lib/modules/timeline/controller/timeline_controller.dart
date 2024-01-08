@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:calendar_view/calendar_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -9,6 +11,7 @@ import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.da
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
@@ -41,6 +44,12 @@ class TimelineController extends GetxController with StateMixin {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
+    getCalendarTimelineDataByDate(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+
     super.onInit();
   }
 
@@ -50,6 +59,8 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
+
+  List<CalendarEventData<String>>? eventsData;
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
@@ -191,8 +202,9 @@ class TimelineController extends GetxController with StateMixin {
 
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {
-    log("Next & previous date ==>$startDate And $endDate");
     isDateTimeMovementLoading(true);
+    log("Next & previous date ==>$startDate And $endDate");
+    print("Method called");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
@@ -208,23 +220,44 @@ class TimelineController extends GetxController with StateMixin {
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
       log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
-
     isDateTimeMovementLoading(false);
+
   }
 
   getCalendarTimelineDataByDate(
       {required String? startDate, String? endDate}) async {
+    isDateTimeMovementLoading(true);
+   // Get.dialog(const CupertinoActivityIndicator(color: AppColor.cardColor,));
     final response = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
       "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
     });
-    log("Calendar timeline response ==> $response");
 
     if (response.hasException) {
       log("getCalendarTimelineData:: ${response.exception.toString()}");
     } else {
       calendarTimeline = CalendarTimeline.fromJson(response.data!);
-      log("Calendar timeline response ==> $response");
+      eventsData = Get.find<TimelineController>()
+          .calendarTimeline
+          ?.getCalenderTimelinesForApp
+          ?.timelines
+          ?.map(
+        (e) {
+          DateTime dateTimeValue =
+              DateTime.parse(e.startDate ?? DateTime.now().toString());
+          return CalendarEventData(
+            date: DateTime(
+                dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
+            startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
+            endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
+            event: e.task?.project?.name ?? "",
+            title: e.task?.project?.name ?? "",
+          );
+        },
+      ).toList();
+
     }
+    isDateTimeMovementLoading(false);
+ //  Get.back();
   }
 }
