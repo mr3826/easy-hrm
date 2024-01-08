@@ -22,6 +22,22 @@ class TimeLineCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // Get.find<TimelineController>()
+    //     .calendarTimeline
+    //     ?.getCalenderTimelinesForApp
+    //     ?.timelines
+    //     ?.map(
+    //       (e) => CalendarEventData(
+    //         date: DateTime.parse(e.startDate??""),
+    //         startTime: DateTime.parse("2023-12-17 01:02:02.776131"),
+    //         endTime: DateTime.parse("2023-12-17 03:59:02.776131"),
+    //         event: "Event 1",
+    //         title: 'hi',
+    //       ),
+    //     )
+    //     .toList();
+
+
     List<CalendarEventData> events = [
       CalendarEventData(
         date: DateTime(2024, 01, 04, 23),
@@ -62,9 +78,15 @@ class TimeLineCalendar extends StatelessWidget {
 
     ];
 
+
     CalendarControllerProvider.of(context).controller.addAll(events);
 
 
+// =======
+//     CalendarControllerProvider.of(context)
+//         .controller
+//         .addAll(events.cast<CalendarEventData<Object?>>());
+// >>>>>>> 9bd5a93c7669b55ec43e4478e5010fc1f7d24180
 
     return Padding(
       padding: marginLayout,
@@ -132,18 +154,15 @@ class TimeLineCalendar extends StatelessWidget {
           },
           dateStringBuilder: (date, {secondaryDate}) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-
               Get.find<TimelineController>().getTimelineSummaryByDate(
                   startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
 
-              Get.find<TimelineController>().getCalendarTimelineDataByDate( startDate:
-              "2023-12-20 00:00:00.000",
-                  endDate:
-                  "2023-12-20 23:59:59.000");
-
+              Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                  startDate: "2023-12-20 00:00:00.000",
+                  endDate: "2023-12-20 23:59:59.000");
             });
 
             var formatDate = DateFormat('dd MMM yyyy').format(date);
