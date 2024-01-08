@@ -72,7 +72,7 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                   Get.find<DateTimeController>().requestedDate.value =
                       DateFormat('yyyy-MM-dd').format(selectedDay);
                   //new entry button change
-                  Get.find<DateTimeController>().currentIndex.value=5;
+                  Get.find<DateTimeController>().currentIndex.value = 5;
                 });
               },
             ),
@@ -175,6 +175,9 @@ class _FromDatePickerState extends State<FromDatePicker> {
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   today = selectedDay;
+                  //apply leave requested date
+                  Get.find<DateTimeController>().requestedInDate.value =
+                      DateFormat('yyyy-MM-dd').format(selectedDay);
                 });
               },
             ),
@@ -274,6 +277,9 @@ class _ToDatePikerState extends State<ToDatePiker> {
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   today = selectedDay;
+                  //apply leave requested date
+                  Get.find<DateTimeController>().requestedOutDate.value =
+                      DateFormat('yyyy-MM-dd').format(selectedDay);
                 });
               },
             ),

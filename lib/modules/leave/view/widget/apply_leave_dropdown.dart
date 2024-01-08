@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
 
+import '../../../../common/controller/date_time_helper_controller.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
@@ -56,6 +58,23 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
         onChanged: (String? newValue) {
           setState(() {
             dropDownValue = newValue;
+            GetLeaveTypesDropdown? getLeaveTypesDropdown =
+                Get.find<ApplyLeaveController>()
+                    .leaveTypeDropdown
+                    ?.getLeaveTypesDropdown
+                    ?.firstWhere((element) => element.name == newValue);
+
+            //set data according to leave type
+            Get.find<DateTimeController>().numberOfLeaves.value =
+                getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
+                        .toString() ??
+                    "";
+            Get.find<DateTimeController>().leaveId?.value =
+                getLeaveTypesDropdown?.id ?? "";
+            Get.find<DateTimeController>().isDocumentRequired.value =
+                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
+            Get.find<DateTimeController>().isNoteRequired.value =
+                getLeaveTypesDropdown?.addNoteRequired ?? false;
           });
         },
       ),

@@ -18,6 +18,12 @@ class DateTimeController extends GetxController {
   RxString pickedOutTime = ''.obs;
   TextEditingController editController = TextEditingController();
 
+  RxString numberOfLeaves = ''.obs;
+  RxString? leaveId = ''.obs;
+  RxBool isNoteRequired = false.obs;
+  RxBool isDocumentRequired = false.obs;
+  RxBool isErrorOccurred = false.obs;
+
   void getTime() {
     if (isInTimeClicked.isTrue) {
       //only time
@@ -29,6 +35,7 @@ class DateTimeController extends GetxController {
           .parse(
               "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
+      print(requestedInDate.value);
     } else {
       //only time
       pickedOutTime.value =
@@ -38,6 +45,37 @@ class DateTimeController extends GetxController {
           .parse(
               "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
+      print(requestedOutDate.value);
+    }
+
+    isInTimeClicked.value = !isInTimeClicked.value;
+    selectedInputHrs = '06';
+    selectedInputMins = '30';
+    clockHrsFormat = 'PM';
+  }
+
+  void getApplyLeaveTime() {
+    if (isInTimeClicked.isTrue) {
+      //only time
+      pickedInTime.value =
+          "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
+
+      //total datetime
+      requestedInDate.value = DateFormat("yyyy-MM-dd hh:mma")
+          .parse(
+              "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
+          .toString();
+      print(requestedInDate.value);
+    } else {
+      //only time
+      pickedOutTime.value =
+          "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
+      //total datetime
+      requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
+          .parse(
+              "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
+          .toString();
+      print(requestedOutDate.value);
     }
 
     isInTimeClicked.value = !isInTimeClicked.value;

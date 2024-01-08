@@ -230,7 +230,7 @@ Widget _newEntryStartTime({required BuildContext context}) {
     dobIcon: Icons.access_time_outlined,
     dobIconAction: () {
       Get.find<DateTimeController>().isInTimeClicked.value = true;
-      timePicker(context);
+      timePicker(context, false);
     },
   );
 }
@@ -242,7 +242,7 @@ Widget _newEntryEndTime({required BuildContext context}) {
         : Get.find<DateTimeController>().pickedOutTime.value,
     dobIcon: Icons.access_time_outlined,
     dobIconAction: () {
-      timePicker(context);
+      timePicker(context, false);
     },
   );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -23,6 +24,10 @@ import 'apply_leave_dropdown.dart';
 import 'date_pickar_field_widget.dart';
 
 class ApplyLeaveButtonLayout extends StatelessWidget {
+  ApplyLeaveButtonLayout({super.key});
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     print("Build called");
@@ -31,51 +36,126 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
             padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customTitleText(text: AppString.text_leave_type.tr),
-                  customSpacerHeight(height: 8),
-                  const ApplyLeaveDropDown(),
-                  customSpacerHeight(height: 8),
-                  _leaveCountStyleLayout(),
-                  customSpacerHeight(height: 20),
-                  customTitleText(text: "${AppString.text_from.tr} *"),
-                  customSpacerHeight(height: 8),
-                  Obx(
-                    () => _fromDateTimeLayout(),
-                  ),
-                  customSpacerHeight(height: 20),
-                  customTitleText(text: "${AppString.text_to.tr} *"),
-                  customSpacerHeight(height: 8),
-                  Obx(
-                    () => _toDateTimeLayout(),
-                  ),
-                  customSpacerHeight(height: 12),
-                  _errorAlertLayout(),
-                  customSpacerHeight(height: 18),
-                  customTitleText(text: AppString.text_note.tr),
-                  customSpacerHeight(height: 8),
-                  _noteTextField(),
-                  customTitleText(text: AppString.text_document.tr),
-                  customSpacerHeight(height: 6),
-                  _pathFormatText(),
-                  customSpacerHeight(height: 8),
-                  const AddAttachmentFile(),
-                  customSpacerHeight(height: 20),
-                  CustomDoubleAppButton(
-                    onAction: () {},
-                    buttonText: AppString.text_apply.tr,
-                    cancelAction: () {
-                      Navigator.pop(context);
-                      Get.find<FileUploadController>()
-                          .storageForUpload
-                          .filePath
-                          .value = "";
-                    },
-                  ),
-                  customSpacerHeight(height: 100),
-                ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    customTitleText(text: AppString.text_leave_type.tr),
+                    customSpacerHeight(height: 8),
+                    const ApplyLeaveDropDown(),
+                    customSpacerHeight(height: 8),
+                    _leaveCountStyleLayout(),
+                    customSpacerHeight(height: 20),
+                    customTitleText(text: "${AppString.text_from.tr} *"),
+                    customSpacerHeight(height: 8),
+                    Obx(
+                      () => _fromDateTimeLayout(),
+                    ),
+                    customSpacerHeight(height: 20),
+                    customTitleText(text: "${AppString.text_to.tr} *"),
+                    customSpacerHeight(height: 8),
+                    Obx(
+                      () => _toDateTimeLayout(),
+                    ),
+                    customSpacerHeight(height: 12),
+                    // _errorAlertLayout(),
+                    customSpacerHeight(height: 18),
+                    Obx(() => Row(
+                          children: [
+                            customTitleText(text: AppString.text_note.tr),
+                            customSpacerWidth(width: 6),
+                            Get.find<DateTimeController>().isNoteRequired.isTrue
+                                ? customTitleTextRedText(text: "*")
+                                : Container(),
+                          ],
+                        )),
+                    customSpacerHeight(height: 8),
+                    _noteTextField(),
+                    Obx(() => Row(
+                          children: [
+                            customTitleText(text: AppString.text_document.tr),
+                            customSpacerWidth(width: 6),
+                            Get.find<DateTimeController>()
+                                    .isDocumentRequired
+                                    .isTrue
+                                ? customTitleTextRedText(text: "*")
+                                : Container(),
+                          ],
+                        )),
+                    customSpacerHeight(height: 6),
+                    _pathFormatText(),
+                    customSpacerHeight(height: 8),
+                    const AddAttachmentFile(),
+                    customSpacerHeight(height: 20),
+                    Obx(() => Get.find<ApplyLeaveController>()
+                            .isAssignLeaveLoaderLoading
+                            .isTrue
+                        ? const Center(
+                            child: CupertinoActivityIndicator(
+                              color: Colors.blueAccent,
+                              radius: 18,
+                            ),
+                          )
+                        : CustomDoubleAppButton(
+                            onAction: () {
+                              if (_formKey.currentState!.validate()) {
+                                if (Get.find<DateTimeController>()
+                                    .isDocumentRequired
+                                    .isTrue) {
+                                  if (Get.find<FileUploadController>()
+                                      .storageForUpload
+                                      .filePath
+                                      .value
+                                      .isNotEmpty) {
+                                    Get.find<ApplyLeaveController>()
+                                        .applyLeave();
+                                  } else {
+                                    Get.find<DateTimeController>()
+                                        .isErrorOccurred(true);
+                                  }
+                                } else {
+                                  Get.find<ApplyLeaveController>().applyLeave();
+                                }
+                              } else {
+                                print("Method should not called");
+                              }
+                              //apply leave
+                              //check data input
+
+                              // if (Get.find<DateTimeController>()
+                              //             .isNoteRequired
+                              //             .isTrue &&
+                              //         leaveNoteController.text.isNotEmpty
+                              //     //&&
+                              //     // Get.find<DateTimeController>()
+                              //     //     .isDocumentRequired
+                              //     //     .isTrue &&
+                              //     // Get.find<FileUploadController>()
+                              //     //     .storageForUpload
+                              //     //     .filePath
+                              //     //     .value
+                              //     //     .isNotEmpty
+                              //     ) {
+                              //   print("method called");
+                              //   print(Get.find<DateTimeController>().requestedInDate.value.length);
+                              //   print(Get.find<DateTimeController>().requestedOutDate);
+                              // } else {
+                              //   print("method should nt be caslled");
+                              // }
+                            },
+                            buttonText: AppString.text_apply.tr,
+                            cancelAction: () {
+                              Navigator.pop(context);
+                              Get.find<FileUploadController>()
+                                  .storageForUpload
+                                  .filePath
+                                  .value = "";
+                            },
+                          )),
+                    customSpacerHeight(height: 100),
+                  ],
+                ),
               ),
             ),
           )
@@ -87,6 +167,15 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
 
   _noteTextField() {
     return InputNote(
+      validator: (value) {
+        if (Get.find<DateTimeController>().isNoteRequired.isTrue) {
+          if (value!.isEmpty) {
+            return "";
+          } else {
+            return null;
+          }
+        }
+      },
       controller: leaveNoteController,
       hintText: AppString.text_add_note.tr,
     );
@@ -97,7 +186,7 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
       children: [
         Expanded(
             child: dateLayoutField(
-                date: Get.find<DateController>().fromDate.toString(),
+                date: Get.find<DateTimeController>().requestedInDate.toString(),
                 onAction: () {
                   showDialog(
                     context: Get.context!,
@@ -123,7 +212,8 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
       children: [
         Expanded(
             child: dateLayoutField(
-                date: Get.find<DateController>().toDate.toString(),
+                date:
+                    Get.find<DateTimeController>().requestedOutDate.toString(),
                 onAction: () {
                   showDialog(
                     context: Get.context!,
@@ -139,7 +229,7 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
                   );
                 })),
         customSpacerWidth(width: 14),
-        Expanded(child: startTimeFieldLayout(context: Get.context!)),
+        Expanded(child: outTimeFieldLayout(context: Get.context!)),
       ],
     );
   }
@@ -153,34 +243,37 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
   }
 
   _leaveCountStyleLayout() {
-    return SizedBox(
-      width: double.infinity,
-      child: Card(
-        elevation: 0,
-        shape: roundedRectangleBorder,
-        color: AppColor.primaryColor.withOpacity(0.05),
-        child: Padding(
-          padding:
-              marginLayout.copyWith(top: 8, bottom: 8, left: 16, right: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "01",
-                style: AppStyle.mid_large_text
-                    .copyWith(color: AppColor.normalTextColor),
-              ),
-              Text(
-                "Balance (No.of days)",
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.hintColor,
-                    fontSize: Dimensions.fontSizeDefault),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return Obx(
+        () => Get.find<DateTimeController>().numberOfLeaves.value.isNotEmpty
+            ? SizedBox(
+                width: double.infinity,
+                child: Card(
+                  elevation: 0,
+                  shape: roundedRectangleBorder,
+                  color: AppColor.primaryColor.withOpacity(0.05),
+                  child: Padding(
+                    padding: marginLayout.copyWith(
+                        top: 8, bottom: 8, left: 16, right: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          Get.find<DateTimeController>().numberOfLeaves.value,
+                          style: AppStyle.mid_large_text
+                              .copyWith(color: AppColor.normalTextColor),
+                        ),
+                        Text(
+                          "Balance (No.of days)",
+                          style: AppStyle.mid_large_text.copyWith(
+                              color: AppColor.hintColor,
+                              fontSize: Dimensions.fontSizeDefault),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : Container());
   }
 
   _errorAlertLayout() {
