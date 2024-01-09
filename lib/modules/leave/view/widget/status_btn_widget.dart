@@ -123,19 +123,10 @@ _pendingLayout(
     padding: marginLayout,
     child: CustomDoubleAppButton(
         cancelAction: () {
-          customDialog(
-              context: context,
-              saveBtnAction: () => Get.back(),
-              icon: Icons.delete_outline_outlined,
-              titleText: AppString.text_remove_time_log.tr,
-              subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
-              drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
-              iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr);
+         Navigator.pop(context);
         },
         buttonText: AppString.text_details.tr,
-        cancelText: AppString.text_remove.tr,
+        cancelText: AppString.text_cancel.tr,
         onAction: () {
           Navigator.push(
             context,
@@ -149,6 +140,7 @@ _pendingLayout(
 }
 
 _approvedLayout({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus}) {
+
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(

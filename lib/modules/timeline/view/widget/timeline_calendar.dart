@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +15,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/time_formate_controller.dart';
-import '../../model/calendar_timeline.dart';
 
 class TimeLineCalendar extends GetView<TimelineController> {
   const TimeLineCalendar({super.key});
@@ -45,29 +46,43 @@ class TimeLineCalendar extends GetView<TimelineController> {
   _calendarLayout(context) {
     CalendarControllerProvider.of(context)
         .controller
-        .addAll(Get.find<TimelineController>().eventsData??[]);
+        .addAll(Get.find<TimelineController>().eventsOfTask??[]);
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(Get.find<TimelineController>().eventOfLeave??[]);
+
+
+
     return Padding(
       padding: marginLayout,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 84.0),
         child: DayView(
           scrollPhysics: const AlwaysScrollableScrollPhysics(),
-          eventTileBuilder: (date, events, boundry, start, end,) {
+          eventTileBuilder: (date, events, status1, start, end,) {
             //format DateTime
             DateTime startDateTime = DateTime.parse(start.toString());
             DateTime endDateTime = DateTime.parse(end.toString());
+           var status= events.map((e) => e.description);
+           var eventsName= events.map((e) => e.event);
 
             // Format the DateTime in 24-hour format
             String stateTime = formatTime(startDateTime);
             String endTime = formatTime(endDateTime);
+            log("status==> $status");
+            log("events==> $events");
+
+
 
             return _taskSlidLayout(
-                bgColor: AppColor.primaryColor,
-                title: events.first.event,
-                icon: Icons.done,
+                title: eventsName.toString(),
                 startTime: stateTime,
                 endTime:endTime,
-                context: context);
+                context: context,
+              status: status.toString()
+
+
+            );
           },
           showVerticalLine: false,
           minDay: DateTime(1990),
@@ -78,8 +93,24 @@ class TimeLineCalendar extends GetView<TimelineController> {
           showLiveTimeLineInAllDays: false,
           heightPerMinute: 1.9,
           onEventTap: (events, date) {
-            customButtonSheet(
-                height: .6, context: context, child: const TaskView());
+            Iterable<Object?> eventsName= events.map((e) => e.event);
+            Iterable<DateTime?> startTime= events.map((e) => e.startTime);
+            Iterable<DateTime?> endTime= events.map((e) => e.endTime);
+            Iterable<DateTime> createAtDate= events.map((e) => e.endDate); //Date of application
+            Iterable<String> status= events.map((e) => e.description);//status added here
+
+            log("btn sheets events ==> $events");
+            log("btn sheets events date ==> $date");
+            log("btn sheets events date create ==> $createAtDate");
+
+            customButtonSheet(height: .6, context: context, child: TaskView(
+              projectName: eventsName.toString(),
+              date: createAtDate.toString(),
+              startTime: startTime.toString(),
+              endTime: endTime.toString(),
+              status: status.toString(),
+
+            ));
           },
           onDateLongPress: (date) => print(date),
           headerStyle: _headerStyle(),
@@ -115,9 +146,9 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
               Get.find<TimelineController>().getCalendarTimelineDataByDate(
                   startDate:
-                  "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
-                  "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+                  "${DateTime(date.year,date.month, date.day, 23, 59, 59)}");
 
             });
 
@@ -138,17 +169,46 @@ class TimeLineCalendar extends GetView<TimelineController> {
   }
 }
 
-Widget _taskSlidLayout({required title, required startTime, required endTime, required IconData? icon, required Color? bgColor, required context}) {
+Widget _taskSlidLayout({required title, required startTime, required endTime, required context,String ?status}) {
 
  String totalTime= totalTimeByTimeline(startTime,endTime);
- print(totalTime);
+ Color color=AppColor.primaryColor;
+ IconData iconData=Icons.done;
+ String projectName = title.substring(1, title.length - 1);
+
+ statusColor(){
+   switch(status){
+     case "(approved)":
+       return color=AppColor.primaryColor;
+       case "(pending)":
+       return color=AppColor.primaryOrange;
+       case "(rejected)":
+       return color=AppColor.errorColorLight;
+     default:
+       return color=AppColor.primaryColor;
+   }
+ }
+
+ statusIcon(){
+   switch(status){
+     case "(approved)":
+       return iconData=Icons.done;
+       case "(pending)":
+         return iconData=Icons.timeline_outlined;
+       case "(rejected)":
+         return iconData=Icons.block_flipped;
+     default:
+       return iconData=Icons.done;
+   }
+ }
 
   return Card(
     elevation: 0,
-    color: AppColor.primaryColor.withOpacity(0.09),
+    color: statusColor().withOpacity(0.09),
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        side: const BorderSide(width: .5, color: AppColor.primaryColor)),
+        side:  BorderSide(width: .6, color:statusColor())),
+
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -157,17 +217,17 @@ Widget _taskSlidLayout({required title, required startTime, required endTime, re
           Text(
             "$startTime",
             style: AppStyle.mid_large_text.copyWith(
-                color: AppColor.normalTextColor,
+                color: statusColor(),
                 fontSize: Dimensions.fontSizeDefault - 2,
                 overflow: TextOverflow.ellipsis),
           ),
           customSpacerHeight(height: 6),
           Text(
-            title,
+            projectName,
             maxLines: 2,
             style: AppStyle.mid_large_text.copyWith(
                 fontSize: Dimensions.fontSizeDefault,
-                color: bgColor,
+                color: statusColor(),
                 overflow: TextOverflow.ellipsis),
           ),
           customSpacerHeight(height: 6),
@@ -175,7 +235,7 @@ Widget _taskSlidLayout({required title, required startTime, required endTime, re
             totalTime,
             style: AppStyle.mid_large_text.copyWith(
                 fontSize: Dimensions.fontSizeDefault - 2,
-                color: bgColor,
+                color: statusColor(),
                 overflow: TextOverflow.ellipsis),
           ),
           const Spacer(),
@@ -185,13 +245,13 @@ Widget _taskSlidLayout({required title, required startTime, required endTime, re
               Text(
                 "$endTime",
                 style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
+                    color: statusColor(),
                     fontSize: Dimensions.fontSizeDefault - 2,
                     overflow: TextOverflow.ellipsis),
               ),
               Icon(
-                icon,
-                color: bgColor,
+                statusIcon(),
+                color: statusColor(),
                 size: 20,
               )
             ],
@@ -224,22 +284,3 @@ Widget nullContainer({required bgColor, required taskText}) {
 }
 
 
-String totalTimeByTimeline(String startTimeString, String endTimeString) {
-  // Parse the input strings into hours and minutes
-  double startTime = double.parse(startTimeString);
-  double endTime = double.parse(endTimeString);
-
-  // Calculate the time difference
-  double timeDifference = endTime - startTime;
-
-  // Extract hours and minutes
-  int hours = timeDifference.floor();
-  int minutes = ((timeDifference - hours) * 60).round();
-
-  // Format the hours and minutes
-  String formattedHours = hours.toString().padLeft(2, '0');
-  String formattedMinutes = minutes.toString().padLeft(2, '0');
-
-  // Return the formatted string
-  return '$formattedHours h $formattedMinutes m';
-}
