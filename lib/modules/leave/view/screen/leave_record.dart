@@ -21,15 +21,16 @@ import '../widget/status_btn_widget.dart';
 
 class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   const LeaveRecordScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return controller.obx(
         (state) => Scaffold(
             appBar: customAppbar(title: AppString.text_leave_records),
             body: ListView.builder(
-              itemCount: controller.monthsList?.length ?? 0,
+              itemCount: controller.leaveRecordList?.length ?? 0,
               itemBuilder: (context, index) => Column(children: [
-                _dateTextLayout(date: controller.monthsList?[index].monthName),
+                _dateTextLayout(date: controller.leaveRecordList?[index].date),
                 _leaveRecordViewLayout(index)
               ]),
             )),
@@ -40,14 +41,27 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     return ListView.builder(
       shrinkWrap: true,
       padding: marginLayout,
-      itemCount: controller.monthsList?[monthIndex].leaveRecords.length ?? 0,
+      itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return _infoLayoutView(
-            context: context,
-            leaveRecord:
-                controller.monthsList?[monthIndex].leaveRecords[index] ??
-                    GetLeaveRecords());
+          context: context,
+          leaveRecord: GetLeaveRecords(
+              startDate: controller
+                  .leaveRecordList?[monthIndex].data?[index].startDate,
+              endDate:
+                  controller.leaveRecordList?[monthIndex].data?[index].endDate,
+              status:
+                  controller.leaveRecordList?[monthIndex].data?[index].status,
+              duration: controller
+                  .leaveRecordList?[monthIndex].data?[index].numberOfDays,
+              createdAt: controller
+                  .leaveRecordList?[monthIndex].data?[index].createdAt,
+              leaveType: LeaveType(
+                  type: controller.leaveRecordList?[monthIndex].data![index]
+                      .leaveType?.type),
+              id: controller.leaveRecordList?[monthIndex].data![index].id),
+        );
       },
     );
   }
@@ -135,7 +149,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       ),
     );
   }
-
 
   //todo
   _showDateDurationText(GetLeaveRecords leaveRecord) {

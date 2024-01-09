@@ -14,7 +14,7 @@ class DateTimeController extends GetxController {
       DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   RxString requestedOutDate =
       DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
-  RxString pickedInTime = ''.obs;
+  RxString  pickedInTime = ''.obs;
   RxString pickedOutTime = ''.obs;
   TextEditingController editController = TextEditingController();
 
@@ -82,6 +82,17 @@ class DateTimeController extends GetxController {
     selectedInputHrs = '06';
     selectedInputMins = '30';
     clockHrsFormat = 'PM';
+  }
+
+  getUpdateLeaveTime(){
+    requestedInDate.value = DateFormat("yyyy-MM-dd hh:mma")
+        .parse(
+        "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+        .toString();
+    requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
+        .parse(
+        "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+        .toString();
   }
 
   @override

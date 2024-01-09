@@ -24,7 +24,9 @@ import 'apply_leave_dropdown.dart';
 import 'date_pickar_field_widget.dart';
 
 class ApplyLeaveButtonLayout extends StatelessWidget {
-  ApplyLeaveButtonLayout({super.key});
+  bool? isForUpdateLeave;
+
+  ApplyLeaveButtonLayout({this.isForUpdateLeave, super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -108,14 +110,23 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
                                       .filePath
                                       .value
                                       .isNotEmpty) {
-                                    Get.find<ApplyLeaveController>()
-                                        .applyLeave();
+                                    if (isForUpdateLeave == true) {
+                                      print("Update method Called");
+                                    } else {
+                                      Get.find<ApplyLeaveController>()
+                                          .applyLeave();
+                                    }
                                   } else {
                                     Get.find<DateTimeController>()
                                         .isErrorOccurred(true);
                                   }
                                 } else {
-                                  Get.find<ApplyLeaveController>().applyLeave();
+                                  if (isForUpdateLeave == true) {
+                                    print("Update method Called");
+                                  } else {
+                                    Get.find<ApplyLeaveController>()
+                                        .applyLeave();
+                                  }
                                 }
                               } else {
                                 print("Method should not called");

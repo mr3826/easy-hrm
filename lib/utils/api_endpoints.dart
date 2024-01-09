@@ -34,41 +34,49 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
   getLeaveDetailsByDate(queryData: $queryData) {
     leave_requests {
       createdAt
-      status
-      duration
+      description
+      end_date
+      files {
+        name
+      }
+      leave_status
       leaveType {
         type
       }
-      leave_status
-      end_date
+      status
+      number_of_days
       start_date
+      id
     }
   }
 }
         """;
 
-const getLeaveRecordsQuery = r'''
-query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
-  getLeaveRecords(queryData: $queryData) {
-    end_date
-    start_date
-    id
-    createdAt
-    leaveType {
-      type
-    }
-    duration
-    files {
-      name
+const getLeaveRecordsDataQuery = r'''
+query GetLeaveRecordsForApp($optionData: OptionDataType) {
+  getLeaveRecordsForApp(optionData: $optionData) {
+    date
+    data {
+      createdAt
+      description
+      end_date
+      files {
+        name
+      }
+      leave_status
+      leaveType {
+        type
+      }
+      status
+      number_of_days
+      start_date
       id
     }
-    status
   }
 }
 ''';
 
-
-const assignLeaveQuery=r'''
+const assignLeaveQuery = r'''
 mutation AssignLeave($inputData: CreateLeaveInputData) {
   assignLeave(inputData: $inputData) {
     id
@@ -76,8 +84,15 @@ mutation AssignLeave($inputData: CreateLeaveInputData) {
 }
 ''';
 
+const cancelLeaveQuery = r'''
+mutation UpdateLeave($inputData: UpdateLeaveInputData) {
+  updateLeave(inputData: $inputData) {
+    id
+  }
+}
+''';
 
-const leaveTypeDropdownQuery='''
+const leaveTypeDropdownQuery = '''
 query GetLeaveTypesDropdown {
   getLeaveTypesDropdown {
     name

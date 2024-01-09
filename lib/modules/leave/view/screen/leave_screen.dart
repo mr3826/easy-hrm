@@ -33,7 +33,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   _applyLeaveBtn(context) {
     return GestureDetector(
       onTap: () =>
-          customButtonSheet(context: context, child: const ApplyLeaveScreen()),
+          customButtonSheet(context: context, child: ApplyLeaveScreen()),
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
         child: Container(

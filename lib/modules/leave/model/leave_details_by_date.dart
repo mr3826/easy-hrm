@@ -1,4 +1,4 @@
-import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
+import 'leave_record_response.dart';
 
 class LeaveDetailsByDate {
   List<GetLeaveDetailsByDate>? getLeaveDetailsByDate;
@@ -13,19 +13,21 @@ class LeaveDetailsByDate {
       });
     }
   }
+
 }
 
 class GetLeaveDetailsByDate {
-  List<GetLeaveRecords>? leaveRequests;
+  List<Data>? leaveRequests;
 
   GetLeaveDetailsByDate({this.leaveRequests});
 
   GetLeaveDetailsByDate.fromJson(Map<String, dynamic> json) {
     if (json['leave_requests'] != null) {
-      leaveRequests = <GetLeaveRecords>[];
+      leaveRequests = <Data>[];
       json['leave_requests'].forEach((v) {
-        leaveRequests!.add(GetLeaveRecords.fromJson(v));
+        leaveRequests!.add(Data.fromJson(v));
       });
     }
   }
+
 }
