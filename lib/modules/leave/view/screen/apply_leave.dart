@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/apply_leave_button_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
@@ -21,6 +22,9 @@ class ApplyLeaveScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!Get.isRegistered<ApplyLeaveController>()) {
+      Get.lazyPut(() => ApplyLeaveController(), fenix: true);
+    }
     if (Get.isRegistered<DateTimeController>()) {
       Get.delete<DateTimeController>();
     }

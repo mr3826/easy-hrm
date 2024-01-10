@@ -130,7 +130,11 @@ _buttonLayout({context, bool? isCalledFromApplyLeave}) {
       customSpacerWidth(width: 40),
       InkWell(
           onTap: () {
-            Get.find<DateTimeController>().getTime();
+           if(isCalledFromApplyLeave==true){
+             Get.find<DateTimeController>().getApplyLeaveTime();
+           }else{
+             Get.find<DateTimeController>().getTime();
+           }
             Navigator.of(context).pop();
           },
           child: SizedBox(

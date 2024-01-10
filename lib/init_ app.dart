@@ -1,5 +1,4 @@
 import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
-import 'package:payrun_mobile/modules/leave/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
@@ -14,7 +13,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
-import 'common/controller/date_time_helper_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/auth/presentation/controller/signin_controller.dart';
 import 'modules/dashboard/controller/dashbpard_controller.dart';
@@ -51,5 +49,4 @@ Future<void> initApp() async {
   Get.lazyPut(() => TimelineController(), fenix: true);
   Get.lazyPut(() => TimelineSummaryController(), fenix: true);
   Get.lazyPut(() => ApplyLeaveController(), fenix: false);
-  Get.lazyPut(() => UpdateLeaveController(), fenix: false);
 }

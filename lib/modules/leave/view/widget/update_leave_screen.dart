@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 
 import '../../../../common/controller/date_time_helper_controller.dart';
@@ -75,9 +76,9 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
         DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString());
 
     Get.find<DateTimeController>().pickedInTime.value =
-        "${startTime.hour}:${startTime.minute} ${startTime.hour > 11 ? "PM" : "AM"}";
+        "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
     Get.find<DateTimeController>().pickedOutTime.value =
-        "${endTime.hour}:${endTime.minute} ${startTime.hour > 11 ? "PM" : "AM"}";
+        "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
 
     return Obx(() => Get.find<ApplyLeaveController>().isLoading.isFalse
         ? Padding(
@@ -137,8 +138,8 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
                     customSpacerHeight(height: 8),
                     const AddAttachmentFile(),
                     customSpacerHeight(height: 20),
-                    Obx(() => Get.find<ApplyLeaveController>()
-                            .isAssignLeaveLoaderLoading
+                    Obx(() => Get.find<LeaveScreenController>()
+                            .cancelLeaveLoader
                             .isTrue
                         ? const Center(
                             child: CupertinoActivityIndicator(
@@ -157,14 +158,13 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
                                       .filePath
                                       .value
                                       .isNotEmpty) {
-                                    Get.find<ApplyLeaveController>()
-                                        .applyLeave();
+                                    _updateLeaveMethod();
                                   } else {
                                     Get.find<DateTimeController>()
                                         .isErrorOccurred(true);
                                   }
                                 } else {
-                                  Get.find<ApplyLeaveController>().applyLeave();
+                                  _updateLeaveMethod();
                                 }
                               } else {
                                 print("Method should not called");
@@ -228,8 +228,7 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
                   );
                 })),
         customSpacerWidth(width: 14),
-        Expanded(
-            child: startTimeFieldLayout(context: Get.context!)),
+        Expanded(child: startTimeFieldLayout(context: Get.context!)),
       ],
     );
   }
@@ -256,8 +255,7 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
                   );
                 })),
         customSpacerWidth(width: 14),
-        Expanded(
-            child: outTimeFieldLayout(context: Get.context!)),
+        Expanded(child: outTimeFieldLayout(context: Get.context!)),
       ],
     );
   }
@@ -338,6 +336,26 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _updateLeaveMethod() {
+    Get.find<LeaveScreenController>().updateLeave(
+        leaveId: leaveRecords?.id ?? "",
+        leaveTypeId: leaveRecords?.leaveType?.leaveId ?? "",
+        startDate: Get.find<DateTimeController>().requestedInDate.value.length >
+                10
+            ? Get.find<DateTimeController>().requestedInDate.value
+            : DateFormat("yyyy-MM-dd hh:mma")
+                .parse(
+                    "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+                .toString(),
+        endDate: Get.find<DateTimeController>().requestedOutDate.value.length >
+                10
+            ? Get.find<DateTimeController>().requestedOutDate.value
+            : DateFormat("yyyy-MM-dd hh:mma")
+                .parse(
+                    "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+                .toString());
   }
 }
 

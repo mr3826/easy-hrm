@@ -40,7 +40,7 @@ class ApplyLeaveController extends GetxController {
     isLoading(false);
   }
 
- applyLeave() async {
+  applyLeave() async {
     isAssignLeaveLoaderLoading(true);
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
       "inputData": {
