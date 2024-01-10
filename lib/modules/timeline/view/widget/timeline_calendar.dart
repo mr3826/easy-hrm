@@ -49,6 +49,15 @@ class TimeLineCalendar extends GetView<TimelineController> {
             //total minute
             Iterable<String> totalMin = events.map((e) => e.title.toString());
 
+
+
+
+
+
+
+
+            print("events :::::::=> $events");
+
             // Format the DateTime in 24-hour format
             String stateTime = formatTime(startDateTime);
             String endTime = formatTime(endDateTime);
@@ -69,6 +78,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
           showLiveTimeLineInAllDays: false,
           heightPerMinute: 1.9,
           onEventTap: (events, date) {
+
             Iterable<Object?> eventsName = events.map((e) => e.event);
             Iterable<Object?> duration =
             events.map((e) => e.title); //total minute

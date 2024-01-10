@@ -22,3 +22,24 @@ class LastInput{
     return data;
   }
 }
+
+
+
+class ModelForDescription{
+
+  String? status;
+  String? description;
+  ModelForDescription({this.status, this.description});
+
+  ModelForDescription.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['description'] = description;
+    return data;
+  }
+}

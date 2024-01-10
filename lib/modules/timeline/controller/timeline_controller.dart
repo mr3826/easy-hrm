@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
+import '../../../common/domain/last_input_model.dart';
 import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
 
@@ -254,14 +256,16 @@ class TimelineController extends GetxController with StateMixin {
         (e) {
           DateTime dateTimeValue =
               DateTime.parse(e.startDate ?? DateTime.now().toString());
+
           return CalendarEventData(
             date: DateTime(
                 dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
             startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
             endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
             event: e.task?.project?.name ?? "",
-            title: e.totalMinutes??"", //total minute added here
+            title: e.totalMinutes??"0", //total minute added here
             description: e.status??"", //status added here
+
 
           );
         },
@@ -278,6 +282,13 @@ class TimelineController extends GetxController with StateMixin {
           DateTime dateCreateAtValue =
               DateTime.parse(e.createdAt ?? DateTime.now().toString());
 
+          ModelForDescription modelForDescription = ModelForDescription(
+              status: e.status ??"",
+              description: e.description??""
+          );
+          Map<String, dynamic> jsonModel = modelForDescription.toJson();
+          String jsonObject = jsonEncode(jsonModel);
+
           return CalendarEventData(
             date: DateTime(
                 dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
@@ -290,8 +301,12 @@ class TimelineController extends GetxController with StateMixin {
 
 
           );
+
+
+
         },
       ).toList();
+
 
     }
 

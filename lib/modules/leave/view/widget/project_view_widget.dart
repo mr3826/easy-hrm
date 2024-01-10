@@ -63,7 +63,7 @@ Widget btnSheetViewLayout(
             dtsEndTime: "$endTime",
             dtsDuration: "$dtsDuration",
             dtsDrc: "$dtsDate",
-            dtsDateStatus: "$dtsDateStatus",
+            dtsDateStatus: "$status",
             dtsDate: "$dtsDate",
             dtsBgColor: dtsBgColor)
       ],

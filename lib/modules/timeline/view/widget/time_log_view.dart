@@ -19,7 +19,7 @@ class TimeLogView extends StatelessWidget {
       child: Stack(
         children: [
 
-          const TimeLineCalendar(),
+         const TimeLineCalendar(),
 
           Positioned(
             top: 76,

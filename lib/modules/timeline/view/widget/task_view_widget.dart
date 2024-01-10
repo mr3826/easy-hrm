@@ -100,9 +100,14 @@ class TaskView extends StatelessWidget {
           dtsDuration: durationTime,
           dtsBgColor: statusColor(),
           dtsDate: createDate,
+
+
           dtsDateStatus: "Tomorrow",
+
           dtsDrc: "My note x",
+
           dtsProjectName: "The one project x",
+
 
 
         ),

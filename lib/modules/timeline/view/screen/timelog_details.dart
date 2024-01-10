@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
@@ -85,12 +87,25 @@ class TimeLogDetails extends StatelessWidget {
           shape: roundedRectangleBorder,
           child: Column(
             children: [
-              Text(
-                dtsDate,
+              // Text(
+              //   dtsDate,
+              //   style: AppStyle.mid_large_text.copyWith(
+              //       fontSize: Dimensions.fontSizeDefault,
+              //       color: AppColor.cardColor.withOpacity(0.9)),
+              // ),
+
+
+
+              Obx(() => Text(
+                DateFormat('EEEE, dd-MM-yyyy').format(DateTime.parse(
+                    Get.find<DateTimeController>().requestedDate.value)
+
+                ),
+
                 style: AppStyle.mid_large_text.copyWith(
                     fontSize: Dimensions.fontSizeDefault,
-                    color: AppColor.cardColor.withOpacity(0.9)),
-              ),
+                    color: AppColor.cardColor),
+              )),
               customSpacerHeight(height: 12),
               Text(
                 AppString.text_duration.tr,

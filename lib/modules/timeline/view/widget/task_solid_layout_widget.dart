@@ -17,7 +17,7 @@ class TaskSolidLayout extends StatelessWidget {
       required this.startTime,
       required this.endTime,
       required this.status,
-      required this.totalMin,
+        required this.totalMin,
       super.key});
 
   @override
@@ -26,6 +26,7 @@ class TaskSolidLayout extends StatelessWidget {
     IconData iconData = Icons.done;
 
     String formatDuration = totalMin.substring(1, totalMin.length - 1);
+
     // Using int.parse() to convert the string to an integer
     int intValue = int.parse(formatDuration);
     // Create a Duration object from the total minutes
@@ -60,7 +61,7 @@ class TaskSolidLayout extends StatelessWidget {
       }
     }
 
-    return Card(
+    return intValue>46?   Card(
       elevation: 0,
       color: statusColor().withOpacity(0.09),
       shape: _style(statusColor()),
@@ -92,7 +93,7 @@ class TaskSolidLayout extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ):nullContainer(bgColor: statusColor(), taskText: projectName);
   }
 
   _endTimeLayout(statusColor, statusIcon) {
@@ -135,15 +136,15 @@ class TaskSolidLayout extends StatelessWidget {
 Widget nullContainer({required bgColor, required taskText}) {
   return Card(
     elevation: 0,
-    color: AppColor.primaryColor.withOpacity(0.09),
+    color: bgColor.withOpacity(0.09),
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        side: const BorderSide(width: .5, color: AppColor.primaryColor)),
+        side:  BorderSide(width: .5, color: bgColor)),
     child: Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.only(left: 6.0,top: 2,right: 2,bottom: 2),
       child: Text(
-        "$taskText",
-        maxLines: 2,
+        taskText="Not Added Yet",
+        maxLines: 1,
         style: AppStyle.mid_large_text.copyWith(
             fontSize: Dimensions.fontSizeDefault,
             color: bgColor,

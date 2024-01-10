@@ -27,7 +27,7 @@ import '../../../starting/view/splash_screen.dart';
 import 'duration_time_widget.dart';
 
 class NewEntryTextField extends StatelessWidget {
-  NewEntryTextField({super.key});
+  const NewEntryTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +151,7 @@ class NewEntryTextField extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 3,
         itemBuilder: (context, index) {
+
           return GestureDetector(
             onTap: () {
               Get.find<DateTimeController>().currentIndex.value = index;

@@ -13,6 +13,8 @@ import 'package:payrun_mobile/modules/leave/view/widget/timmer_text_field_dob.da
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -33,7 +35,7 @@ class TimeLogTextField extends StatelessWidget {
   final String drc;
   final Color? dotColor;
 
-  TimeLogTextField(
+  const TimeLogTextField(
       {super.key,
       required this.startTime,
       required this.endTime,
@@ -43,29 +45,16 @@ class TimeLogTextField extends StatelessWidget {
       required this.drc,
       this.dotColor});
 
-  final currentIndex = 0.obs;
-
-  _statusAccordingToIndex() {
-    switch (scheduleStatus) {
-      case "Yesterday":
-        return currentIndex.value = 0;
-      case "Today":
-        return currentIndex.value = 1;
-      case "Tomorrow":
-        return currentIndex.value = 2;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    print("receive value => ${_statusAccordingToIndex()}");
+
     return Padding(
       padding: marginLayout.copyWith(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(() => _timerLayout(
-              context: context, endTime: endTime, startTime: startTime)),
+          Obx(() => _timerLayout(context: context, endTime: endTime, startTime: startTime)),
           customSpacerHeight(height: 20),
           customTitleText(text: "${AppString.text_date.tr} *"),
           customSpacerHeight(height: 8),
@@ -75,15 +64,18 @@ class TimeLogTextField extends StatelessWidget {
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_project_or_task.tr),
           customSpacerHeight(height: 8),
-          Obx(() => _selectedTaskLayout(
-              context: context, projectName: projectName, dotColor: dotColor)),
+
+          taskInputField(onAction: (){
+            customButtonSheet(
+                context: context, height: .7, child: const TaskViewLayout());
+          }),
+
+
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),
           InputNote(
             controller: descriptionController,
-            hintText: drc,
-            hintColor: AppColor.normalTextColor,
           ),
           customSpacerHeight(height: 20),
           CustomDoubleAppButton(
@@ -107,37 +99,64 @@ class TimeLogTextField extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 3,
         itemBuilder: (context, index) {
+
           return GestureDetector(
             onTap: () {
-              currentIndex.value = index;
+              Get.find<DateTimeController>().currentIndex.value = index;
+              switch (index) {
+                case 0:
+                  Get.find<DateTimeController>().requestedDate.value =
+                      DateFormat('yyyy-MM-dd').format(
+                          DateTime.now().subtract(const Duration(days: 1)));
+                  break;
+                case 1:
+                  Get.find<DateTimeController>().requestedDate.value =
+                      DateFormat('yyyy-MM-dd').format(DateTime.now());
+                  break;
+                case 2:
+                  Get.find<DateTimeController>().requestedDate.value =
+                      DateFormat('yyyy-MM-dd')
+                          .format(DateTime.now().add(const Duration(days: 1)));
+                  break;
+              }
+              print( Get.find<DateTimeController>().currentIndex.value);
+
             },
             child: Obx(() => SizedBox(
-                  width: AppLayout.getWidth(127),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Card(
-                      color: currentIndex.value == index
-                          ? AppColor.primaryColor.withOpacity(0.05)
-                          : Colors.transparent,
-                      shape: roundedRectangleBorder.copyWith(
-                          side: BorderSide(
-                              width: 1,
-                              color: currentIndex.value == index
-                                  ? AppColor.primaryColor
-                                  : AppColor.hintColor)),
-                      elevation: 0,
-                      child: Center(
-                          child: Text(
+              width: AppLayout.getWidth(127),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Card(
+                  color:
+                  Get.find<DateTimeController>().currentIndex.value ==
+                      index
+                      ? AppColor.primaryColor.withOpacity(0.05)
+                      : Colors.transparent,
+                  shape: roundedRectangleBorder.copyWith(
+                      side: BorderSide(
+                          width: 1,
+                          color: Get.find<DateTimeController>()
+                              .currentIndex
+                              .value ==
+                              index
+                              ? AppColor.primaryColor
+                              : AppColor.hintColor)),
+                  elevation: 0,
+                  child: Center(
+                      child: Text(
                         selectedBeforeDayAndAfterDay[index],
                         style: AppStyle.mid_large_text.copyWith(
-                            color: currentIndex.value == index
+                            color: Get.find<DateTimeController>()
+                                .currentIndex
+                                .value ==
+                                index
                                 ? AppColor.primaryColor
                                 : AppColor.hintColor,
                             fontSize: Dimensions.fontSizeDefault),
                       )),
-                    ),
-                  ),
-                )),
+                ),
+              ),
+            )),
           );
         },
       ),
@@ -186,13 +205,12 @@ Widget _newEntryStartTime({required BuildContext context, required startTime}) {
 
 Widget _newEntryEndTime({required BuildContext context, required endTime}) {
   return timerTextField(
-    hintText: Get.find<DateTimeController>().pickedInTime.isEmpty
+    hintText: Get.find<DateTimeController>().pickedOutTime.isEmpty
         ? endTime
-        : Get.find<DateTimeController>().pickedInTime.value,
+        : Get.find<DateTimeController>().pickedOutTime.value,
     dobIcon: Icons.access_time_outlined,
     hintColor: AppColor.normalTextColor,
     dobIconAction: () {
-      Get.find<DateTimeController>().isInTimeClicked.value = true;
       timePicker(context);
     },
   );
@@ -335,6 +353,45 @@ AppBar timeLogAppbar(context) {
       AppString.text_time_log_details.tr,
       style:
           AppStyle.normal_text_black.copyWith(fontSize: Dimensions.fontSizeMid),
+    ),
+  );
+}
+
+
+Widget taskInputField({required onAction}) {
+  return InkWell(
+    onTap: () => onAction(),
+    child: Card(
+      elevation: 0,
+      color: Colors.transparent,
+      shape: roundedRectangleBorder.copyWith(
+          side: const BorderSide(width: .8, color: AppColor.hintColor)),
+      child: Padding(
+        padding: marginLayout.copyWith(left: 12, right: 8, top: 12, bottom: 12),
+        child: Obx(() => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Get.find<TimelineController>().taskName.value.isNotEmpty
+                ? Text(
+              Get.find<TimelineController>().taskName.value,
+              style: AppStyle.mid_large_text.copyWith(
+                  fontSize: Dimensions.fontSizeDefault + 1,
+                  color: AppColor.normalTextColor),
+            )
+                : Text(
+              AppString.text_select_option.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  fontSize: Dimensions.fontSizeDefault + 1,
+                  color: AppColor.hintColor),
+            ),
+            const Icon(
+              CupertinoIcons.search,
+              size: 30,
+              color: AppColor.hintColor,
+            )
+          ],
+        )),
+      ),
     ),
   );
 }
