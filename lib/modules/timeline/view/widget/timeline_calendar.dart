@@ -1,10 +1,9 @@
+import 'dart:convert';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
-import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
@@ -12,7 +11,7 @@ import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../common/domain/last_input_model.dart';
 import '../../controller/time_formate_controller.dart';
 
 class TimeLineCalendar extends GetView<TimelineController> {
@@ -20,10 +19,8 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
-    return _calendarLayout(context)
-  ;
+    return _calendarLayout(context);
   }
-
 
   _calendarLayout(context) {
     CalendarControllerProvider.of(context)
@@ -32,6 +29,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
     CalendarControllerProvider.of(context)
         .controller
         .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
+
 
     return Padding(
       padding: marginLayout,
@@ -43,20 +41,10 @@ class TimeLineCalendar extends GetView<TimelineController> {
             //format DateTime
             DateTime startDateTime = DateTime.parse(start.toString());
             DateTime endDateTime = DateTime.parse(end.toString());
-
-            Iterable<String> status = events.map((e) => e.description);
             Iterable<Object?> eventsName = events.map((e) => e.event);
             //total minute
             Iterable<String> totalMin = events.map((e) => e.title.toString());
-
-
-
-
-
-
-
-
-            print("events :::::::=> $events");
+            Iterable<String> status = events.map((e) => e.description);
 
             // Format the DateTime in 24-hour format
             String stateTime = formatTime(startDateTime);
@@ -66,7 +54,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
                 title: eventsName.toString(),
                 startTime: stateTime,
                 endTime: endTime,
-                status: status.toString(),
+                status: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",
                 totalMin: totalMin.toString());
           },
           showVerticalLine: false,
@@ -78,16 +66,15 @@ class TimeLineCalendar extends GetView<TimelineController> {
           showLiveTimeLineInAllDays: false,
           heightPerMinute: 1.9,
           onEventTap: (events, date) {
-
             Iterable<Object?> eventsName = events.map((e) => e.event);
             Iterable<Object?> duration =
-            events.map((e) => e.title); //total minute
+                events.map((e) => e.title); //total minute
             Iterable<DateTime?> startTime = events.map((e) => e.startTime);
             Iterable<DateTime?> endTime = events.map((e) => e.endTime);
             Iterable<DateTime> createAtDate =
-            events.map((e) => e.endDate); //Date of application
+                events.map((e) => e.endDate); //Date of application
             Iterable<String> status =
-            events.map((e) => e.description); //status added here
+                events.map((e) => e.description); //status added here
 
             customButtonSheet(
                 height: .6,
@@ -97,8 +84,9 @@ class TimeLineCalendar extends GetView<TimelineController> {
                   date: createAtDate.toString(),
                   startTime: startTime.toString(),
                   endTime: endTime.toString(),
-                  status: status.toString(),
+                  status: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",
                   totalDur: duration.toString(),
+                  description: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).description)}",
                 ));
           },
           onDateLongPress: (date) => print(date),
@@ -127,15 +115,15 @@ class TimeLineCalendar extends GetView<TimelineController> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Get.find<TimelineController>().getTimelineSummaryByDate(
                   startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
 
               Get.find<TimelineController>().getCalendarTimelineDataByDate(
                   startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
-                  "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                      "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
             });
 
             var formatDate = DateFormat('dd MMM yyyy').format(date);
@@ -149,12 +137,8 @@ class TimeLineCalendar extends GetView<TimelineController> {
         ),
       ),
     );
-
-
   }
 }
-
-
 
 _headerStyle() {
   return HeaderStyle(

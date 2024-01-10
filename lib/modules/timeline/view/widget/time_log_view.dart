@@ -13,47 +13,46 @@ class TimeLogView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Stack(
-        children: [
+    return  SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child:  Stack(
+          children: [
 
-         const TimeLineCalendar(),
-
-          Positioned(
-            top: 76,
-            child: Obx(() =>
+            const TimeLineCalendar(),
+            Positioned(
+                top: 76,
+                child:
                 Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
                     ? Container(
-                        color: AppColor.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
-                        child: workingScheduleLayout(
-                            schedule: Get.find<TimelineController>()
-                                    .timelineSummaryByDate
-                                    ?.getTimelogSummaryForApp
-                                    ?.totalSchedule ??
-                                "",
-                            balanceTime: Get.find<TimelineController>()
-                                    .timelineSummaryByDate
-                                    ?.getTimelogSummaryForApp
-                                    ?.balanced ??
-                                "",
-                            loggedTime: Get.find<TimelineController>()
-                                    .timelineSummaryByDate
-                                    ?.getTimelogSummaryForApp
-                                    ?.totalLogged ??
-                                "",
-                            paidLeave: Get.find<TimelineController>()
-                                    .timelineSummaryByDate
-                                    ?.getTimelogSummaryForApp
-                                    ?.paidLeave ??
-                                ""),
-                      )
+                  color: AppColor.backgroundColor,
+                  width: MediaQuery.of(context).size.width,
+                  child: workingScheduleLayout(
+                      schedule: Get.find<TimelineController>()
+                          .timelineSummaryByDate
+                          ?.getTimelogSummaryForApp
+                          ?.totalSchedule ??
+                          "",
+                      balanceTime: Get.find<TimelineController>()
+                          .timelineSummaryByDate
+                          ?.getTimelogSummaryForApp
+                          ?.balanced ??
+                          "",
+                      loggedTime: Get.find<TimelineController>()
+                          .timelineSummaryByDate
+                          ?.getTimelogSummaryForApp
+                          ?.totalLogged ??
+                          "",
+                      paidLeave: Get.find<TimelineController>()
+                          .timelineSummaryByDate
+                          ?.getTimelogSummaryForApp
+                          ?.paidLeave ??
+                          ""),
+                )
                     : _onLoading(context)),
-          ),
-        ],
-      ),
+
+          ],
+        )
     );
   }
 

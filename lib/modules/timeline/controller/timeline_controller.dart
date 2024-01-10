@@ -30,8 +30,8 @@ class TimelineController extends GetxController with StateMixin {
     """);
     getProjectDropdown();
 
-   // individual date summary
-   // by default its current date
+    // individual date summary
+    // by default its current date
     getTimelineSummaryByDate(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
@@ -46,7 +46,6 @@ class TimelineController extends GetxController with StateMixin {
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
-
 
     getCalendarTimelineDataByDate(
         startDate:
@@ -76,7 +75,6 @@ class TimelineController extends GetxController with StateMixin {
   TimelineSummaryByMonth? timelineSummaryByMonth;
 
   startOrEndTimer({required String timerType}) async {
-    print("Method Called");
     final response =
         await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
       "inputData": {"timer_type": timerType}
@@ -198,19 +196,14 @@ class TimelineController extends GetxController with StateMixin {
     if (response.hasException) {
       log("getTimelineByMonth:: ${response.exception.toString()}");
     } else {
-      print(response.data);
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
-      print(timelineSummaryByMonth?.getTimelogSummaryForApp?.totalSchedule);
     }
-
     change(null, status: RxStatus.success());
   }
 
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
-    log("Method called ?? by summary");
-    isTimelineSummaryByDateLoading(true);
 
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
@@ -222,20 +215,18 @@ class TimelineController extends GetxController with StateMixin {
     });
     log("getTimelineSummaryByDate ==> $response");
     if (response.hasException) {
-      isTimelineSummaryByDateLoading(false);
 
       log("getTimelineByDate:: ${response.exception.toString()}");
     } else {
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
       log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
-    isTimelineSummaryByDateLoading(false);
-
   }
 
-  getCalendarTimelineDataByDate({required String? startDate, String? endDate}) async {
+  getCalendarTimelineDataByDate(
+      {required String? startDate, String? endDate}) async {
     log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
-    log("Method called ?? by calendar");
+    isTimelineSummaryByDateLoading(true);
 
     final response = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
@@ -256,6 +247,14 @@ class TimelineController extends GetxController with StateMixin {
         (e) {
           DateTime dateTimeValue =
               DateTime.parse(e.startDate ?? DateTime.now().toString());
+          ModelForDescription modelForDescription = ModelForDescription(
+              status: e.status ?? "", description: e.description ?? "");
+
+          Map<String, dynamic> jsonModel = modelForDescription.toJson();
+          log(jsonModel.toString(), error: 2);
+          String jsonObject = jsonEncode(jsonModel);
+
+          log(jsonObject.toString(), error: 3);
 
           return CalendarEventData(
             date: DateTime(
@@ -263,10 +262,8 @@ class TimelineController extends GetxController with StateMixin {
             startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
             endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
             event: e.task?.project?.name ?? "",
-            title: e.totalMinutes??"0", //total minute added here
-            description: e.status??"", //status added here
-
-
+            title: e.totalMinutes ?? "0", //total minute added here
+            description: jsonObject, //status added here
           );
         },
       ).toList();
@@ -283,9 +280,7 @@ class TimelineController extends GetxController with StateMixin {
               DateTime.parse(e.createdAt ?? DateTime.now().toString());
 
           ModelForDescription modelForDescription = ModelForDescription(
-              status: e.status ??"",
-              description: e.description??""
-          );
+              status: e.status ?? "", description: e.description ?? "");
           Map<String, dynamic> jsonModel = modelForDescription.toJson();
           String jsonObject = jsonEncode(jsonModel);
 
@@ -295,20 +290,14 @@ class TimelineController extends GetxController with StateMixin {
             startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
             endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
             event: e.leaveType?.name ?? "",
-            title: e.totalLeaveMinutes??"", //total minute added here
-            description: e.status??"", //status added here
+            title: e.totalLeaveMinutes ?? "", //total minute added here
+            description: jsonObject, //status added here
             endDate: dateCreateAtValue, //Date of application
-
-
           );
-
-
-
         },
       ).toList();
-
-
     }
+    isTimelineSummaryByDateLoading(false);
 
   }
 }

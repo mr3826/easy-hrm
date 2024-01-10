@@ -48,6 +48,7 @@ class TimeLogTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String description = drc.substring(1, drc.length - 1);
 
     return Padding(
       padding: marginLayout.copyWith(top: 20),
@@ -76,6 +77,8 @@ class TimeLogTextField extends StatelessWidget {
           customSpacerHeight(height: 8),
           InputNote(
             controller: descriptionController,
+            hintText: description.isNotEmpty?description:AppString.text_add_description.tr,
+            hintColor:description.isNotEmpty?AppColor.normalTextColor:AppColor.hintColor,
           ),
           customSpacerHeight(height: 20),
           CustomDoubleAppButton(
