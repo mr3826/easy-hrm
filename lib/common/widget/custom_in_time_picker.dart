@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
-import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
-import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_wheel_picker_hrs.dart';
-import 'package:payrun_mobile/common/widget/custom_wheel_picker_mins.dart';
-import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+
 import '../../modules/leave/view/widget/am_pm_button_layout.dart';
-import '../../utils/app_layout.dart';
 import '../../utils/app_color.dart';
+import '../../utils/app_layout.dart';
 import '../../utils/app_string.dart';
 import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
+import '../controller/date_time_helper_controller.dart';
+import 'custom_buttom_sheet.dart';
+import 'custom_spacer.dart';
+import 'custom_wheel_picker_hrs.dart';
+import 'custom_wheel_picker_mins.dart';
 
-Future timePicker(BuildContext context, bool? isCalledFromApplyLeave) {
+Future CustomInTimePicker(BuildContext context, bool? isCalledFromApplyLeave) {
   return showDialog(
     barrierDismissible: true,
     context: context,
@@ -28,7 +26,7 @@ Future timePicker(BuildContext context, bool? isCalledFromApplyLeave) {
       child: Container(
         decoration: BoxDecoration(
             borderRadius:
-                BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
+            BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
@@ -90,7 +88,7 @@ _openClock() {
 
 _hrs() {
   List<String> hrsList =
-      List.generate(13, (element) => element < 10 ? "0$element" : "$element");
+  List.generate(13, (element) => element < 10 ? "0$element" : "$element");
   return SizedBox(
     height: AppLayout.getHeight(200),
     width: AppLayout.getWidth(40),
@@ -103,7 +101,7 @@ _hrs() {
 
 _mins() {
   List<String> minList =
-      List.generate(60, (element) => element < 10 ? "0$element" : "$element");
+  List.generate(60, (element) => element < 10 ? "0$element" : "$element");
   return SizedBox(
     height: AppLayout.getHeight(200),
     width: AppLayout.getWidth(40),

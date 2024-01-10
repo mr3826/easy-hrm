@@ -11,13 +11,13 @@ class LeaveRecords {
       });
     }
   }
-
 }
 
 class GetLeaveRecords {
   String? endDate;
   String? startDate;
   String? id;
+  String? description;
   String? createdAt;
   LeaveType? leaveType;
   dynamic duration;
@@ -25,12 +25,12 @@ class GetLeaveRecords {
 
   GetLeaveRecords(
       {this.endDate,
-        this.startDate,
-        this.id,
-        this.createdAt,
-        this.leaveType,
-        this.duration,
-        this.status});
+      this.startDate,
+      this.id,
+      this.createdAt,
+      this.leaveType,
+      this.duration,
+      this.status, this.description});
 
   GetLeaveRecords.fromJson(Map<String, dynamic> json) {
     endDate = json['end_date'];
@@ -42,16 +42,20 @@ class GetLeaveRecords {
         : null;
     duration = json['duration'];
     status = json['status'];
+    description = json['description'];
   }
-
 }
 
 class LeaveType {
   String? type;
+  String? leaveId;
+  String? leaveName;
 
-  LeaveType({this.type});
+  LeaveType({this.type, this.leaveId, this.leaveName});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     type = json['type'];
+    leaveId = json['id'];
+    leaveName = json['name'];
   }
 }

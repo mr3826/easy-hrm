@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:graphql/src/core/query_result.dart';
 import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/cancel_leave_res.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_summary_dashboard.dart';

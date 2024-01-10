@@ -85,10 +85,14 @@ class Files {
 
 class LeaveType {
   String? type;
+  String? leaveId;
+  String? leaveName;
 
-  LeaveType({this.type});
+  LeaveType({this.type, this.leaveId, this.leaveName});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     type = json['type'];
+    leaveId = json['id'];
+    leaveName = json['name'];
   }
 }

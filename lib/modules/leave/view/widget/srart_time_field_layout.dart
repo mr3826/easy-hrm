@@ -18,6 +18,7 @@ Widget startTimeFieldLayout({required BuildContext context}) {
   );
 }
 
+
 Widget outTimeFieldLayout({required BuildContext context}) {
   return timerTextField(
     hintText: Get.find<DateTimeController>().pickedOutTime.isEmpty
@@ -29,3 +30,4 @@ Widget outTimeFieldLayout({required BuildContext context}) {
     },
   );
 }
+

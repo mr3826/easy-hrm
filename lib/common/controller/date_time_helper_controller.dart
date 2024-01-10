@@ -24,7 +24,11 @@ class DateTimeController extends GetxController {
   RxBool isDocumentRequired = false.obs;
   RxBool isErrorOccurred = false.obs;
 
+
+
   void getTime() {
+    print("gettime called");
+
     if (isInTimeClicked.isTrue) {
       //only time
       pickedInTime.value =
@@ -55,6 +59,7 @@ class DateTimeController extends GetxController {
   }
 
   void getApplyLeaveTime() {
+    print("getApplyLeaveTime called");
     if (isInTimeClicked.isTrue) {
       //only time
       pickedInTime.value =
@@ -63,7 +68,7 @@ class DateTimeController extends GetxController {
       //total datetime
       requestedInDate.value = DateFormat("yyyy-MM-dd hh:mma")
           .parse(
-              "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
+              "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
       print(requestedInDate.value);
     } else {
@@ -73,7 +78,7 @@ class DateTimeController extends GetxController {
       //total datetime
       requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
           .parse(
-              "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
+              "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
       print(requestedOutDate.value);
     }
@@ -85,14 +90,34 @@ class DateTimeController extends GetxController {
   }
 
   getUpdateLeaveTime(){
-    requestedInDate.value = DateFormat("yyyy-MM-dd hh:mma")
-        .parse(
-        "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
-        .toString();
-    requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
-        .parse(
-        "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
-        .toString();
+    if (isInTimeClicked.isTrue) {
+      //only time
+      pickedInTime.value =
+      "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
+
+      //total datetime
+      requestedInDate.value = DateFormat("yyyy-MM-dd hh:mma")
+          .parse(
+          "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
+          .toString();
+      print(requestedInDate.value);
+    } else {
+      //only time
+      pickedOutTime.value =
+      "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
+      //total datetime
+      requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
+          .parse(
+          "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
+          .toString();
+      print(requestedOutDate.value);
+    }
+
+    isInTimeClicked.value = !isInTimeClicked.value;
+    selectedInputHrs = '06';
+    selectedInputMins = '30';
+    clockHrsFormat = 'PM';
+
   }
 
   @override

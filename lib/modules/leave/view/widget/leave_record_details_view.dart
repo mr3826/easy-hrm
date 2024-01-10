@@ -12,6 +12,7 @@ import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.d
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/modules/leave/view/widget/update_leave_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -35,7 +36,7 @@ class LeaveRecordDetails extends StatelessWidget {
         customSpacerHeight(height: 12),
         _infoLayout(
             text: AppString.text_type_dot.tr,
-            dynamicText: leaveRecords?.leaveType?.type ?? ""),
+            dynamicText: leaveRecords?.leaveType?.leaveName ?? ""),
         _infoLayout(
             text: AppString.text_duration.tr,
             dynamicText: leaveRecords?.duration != null
@@ -169,13 +170,11 @@ class LeaveRecordDetails extends StatelessWidget {
                 btnBgColor: AppColor.hintColor,
                 btnText: AppString.confirmText.tr);
           },
+          //todo
           buttonText: AppString.text_edit.tr,
           onAction: () => customButtonSheet(
               context: context,
-              child: ApplyLeaveScreen(
-                leaveRecords: leaveRecords,
-                isForUpdateLeave: true,
-              )),
+              child: UpdateLeave(leaveRecords:leaveRecords)),
           btnColor: AppColor.primaryColor),
     );
   }

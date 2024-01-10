@@ -42,6 +42,8 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
       leave_status
       leaveType {
         type
+        id
+        name
       }
       status
       number_of_days
@@ -66,6 +68,8 @@ query GetLeaveRecordsForApp($optionData: OptionDataType) {
       leave_status
       leaveType {
         type
+        id
+        name
       }
       status
       number_of_days
@@ -223,11 +227,14 @@ query GetUpcomingLeavesForApp {
   getUpcomingLeavesForApp {
     end_date
     start_date
+    description
     status
     createdAt
     number_of_days
     leaveType {
       type
+      id
+      name
     }
   }
 }

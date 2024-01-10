@@ -367,8 +367,7 @@ class Dashboard extends GetView<DashboardController> {
                               ?.getUpcomingLeavesForApp?[index].status ??
                           "taken",
                       leaveRecords: GetLeaveRecords(
-                          status: controller.upcommingLeaveDashboard
-                                  ?.getUpcomingLeavesForApp?[index].status ??
+                          status: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].status ??
                               "",
                           createdAt: controller.upcommingLeaveDashboard
                                   ?.getUpcomingLeavesForApp?[index].createdAt ??
@@ -385,7 +384,8 @@ class Dashboard extends GetView<DashboardController> {
                                   .upcommingLeaveDashboard
                                   ?.getUpcomingLeavesForApp?[index]
                                   .numberOfDays ??
-                              0),
+                              0,
+                          description: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].description),
                     ),
                     height: 0.5),
                 child: Card(

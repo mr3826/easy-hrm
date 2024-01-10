@@ -58,9 +58,16 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               createdAt: controller
                   .leaveRecordList?[monthIndex].data?[index].createdAt,
               leaveType: LeaveType(
-                  type: controller.leaveRecordList?[monthIndex].data![index]
-                      .leaveType?.type),
-              id: controller.leaveRecordList?[monthIndex].data![index].id),
+                leaveName: controller.leaveRecordList?[monthIndex].data![index]
+                    .leaveType?.leaveName,
+                leaveId: controller.leaveRecordList?[monthIndex].data![index]
+                    .leaveType?.leaveId,
+                type: controller
+                    .leaveRecordList?[monthIndex].data![index].leaveType?.type,
+              ),
+              id: controller.leaveRecordList?[monthIndex].data![index].id,
+              description: controller
+                  .leaveRecordList?[monthIndex].data![index].description),
         );
       },
     );
