@@ -28,8 +28,8 @@ class TimelineController extends GetxController with StateMixin {
     """);
     getProjectDropdown();
 
-    //individual date summary
-    //by default its current date
+   // individual date summary
+   // by default its current date
     getTimelineSummaryByDate(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
@@ -45,6 +45,7 @@ class TimelineController extends GetxController with StateMixin {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
+
     getCalendarTimelineDataByDate(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
@@ -56,7 +57,8 @@ class TimelineController extends GetxController with StateMixin {
 
   final isLoading = false.obs;
   final isManualEntryLoading = false.obs;
-  final isDateTimeMovementLoading = false.obs;
+  final isTimelineCalendarByDateLoading = false.obs;
+  final isTimelineSummaryByDateLoading = false.obs;
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
@@ -204,9 +206,10 @@ class TimelineController extends GetxController with StateMixin {
 
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {
-    isDateTimeMovementLoading(true);
-    log("Next & previous date ==>$startDate And $endDate");
-    print("Method called");
+    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
+    log("Method called ?? by summary");
+    isTimelineSummaryByDateLoading(true);
+
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
@@ -217,26 +220,26 @@ class TimelineController extends GetxController with StateMixin {
     });
     log("getTimelineSummaryByDate ==> $response");
     if (response.hasException) {
+      isTimelineSummaryByDateLoading(false);
+
       log("getTimelineByDate:: ${response.exception.toString()}");
     } else {
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
       log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
-   isDateTimeMovementLoading(false);
+    isTimelineSummaryByDateLoading(false);
 
   }
 
-  getCalendarTimelineDataByDate(
-      {required String? startDate, String? endDate}) async {
-    isDateTimeMovementLoading(true);
-    //Get.dialog(const CupertinoActivityIndicator(color: AppColor.cardColor,));
+  getCalendarTimelineDataByDate({required String? startDate, String? endDate}) async {
+    log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
+    log("Method called ?? by calendar");
+
     final response = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
       "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
     });
-
-    print("start date ==> $startDate or end date ==> $endDate");
-    print("timeline calendar response ==> ${response.data}");
+    log("getCalendarTimelineDataByDate ==> $response");
 
     if (response.hasException) {
       log("getCalendarTimelineData:: ${response.exception.toString()}");
@@ -257,7 +260,7 @@ class TimelineController extends GetxController with StateMixin {
             startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
             endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
             event: e.task?.project?.name ?? "",
-            title: e.task?.project?.name ?? "",
+            title: e.totalMinutes??"", //total minute added here
             description: e.status??"", //status added here
 
           );
@@ -274,22 +277,23 @@ class TimelineController extends GetxController with StateMixin {
               DateTime.parse(e.startDate ?? DateTime.now().toString());
           DateTime dateCreateAtValue =
               DateTime.parse(e.createdAt ?? DateTime.now().toString());
+
           return CalendarEventData(
             date: DateTime(
                 dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
             startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
             endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
             event: e.leaveType?.name ?? "",
-            title: e.leaveType?.type ?? "",
+            title: e.totalLeaveMinutes??"", //total minute added here
             description: e.status??"", //status added here
             endDate: dateCreateAtValue, //Date of application
+
 
           );
         },
       ).toList();
 
     }
-    isDateTimeMovementLoading(false);
-   //Get.back();
+
   }
 }

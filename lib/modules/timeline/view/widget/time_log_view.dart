@@ -18,11 +18,13 @@ class TimeLogView extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [
-         Obx(() =>  Get.find<TimelineController>().isDateTimeMovementLoading.isFalse?  const TimeLineCalendar():const TimeLineCalendar(),),
+
+          const TimeLineCalendar(),
+
           Positioned(
             top: 76,
             child: Obx(() =>
-                Get.find<TimelineController>().isDateTimeMovementLoading.isFalse
+                Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
                     ? Container(
                         color: AppColor.backgroundColor,
                         width: MediaQuery.of(context).size.width,

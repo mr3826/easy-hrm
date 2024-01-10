@@ -154,25 +154,7 @@ String getTimeDifference(String startTimeString, String endTimeString) {
   Duration duration = endTime.difference(startTime);
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
-String totalTimeByTimeline(String startTimeString, String endTimeString) {
-  // Parse the input strings into hours and minutes
-  double startTime = double.parse(startTimeString);
-  double endTime = double.parse(endTimeString);
 
-  // Calculate the time difference
-  double timeDifference = endTime - startTime;
-
-  // Extract hours and minutes
-  int hours = timeDifference.floor();
-  int minutes = ((timeDifference - hours) * 60).round();
-
-  // Format the hours and minutes
-  String formattedHours = hours.toString().padLeft(2, '0');
-  String formattedMinutes = minutes.toString().padLeft(2, '0');
-
-  // Return the formatted string
-  return '$formattedHours h $formattedMinutes m';
-}
 String workingTimeSinceFormString(String dateString) {
   if (dateString.isEmpty) return "";
   // Parse the input date string into a DateTime object

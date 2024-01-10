@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
@@ -39,7 +38,7 @@ class LeaveRecordsController extends GetxController with StateMixin {
 
   groupLeaveRecordByMonth(LeaveRecords leaveRecords) {
     final Map<int, List<GetLeaveRecords>> recordsByMonth = {};
-    final Map<String,Map<int, List<GetLeaveRecords>>> value = {};
+    final Map<String, Map<int, List<GetLeaveRecords>>> value = {};
 
     for (GetLeaveRecords record in leaveRecords.getLeaveRecords!) {
       final int monthKey = DateTime.parse(record.startDate!).month;

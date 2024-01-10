@@ -13,8 +13,8 @@ class TaskView extends StatelessWidget {
   final String endTime;
   final String status;
   final String projectName;
-  final dynamic duration;
-   const TaskView( {required this.date, required this.startTime, required this.endTime, required this.status, required this.projectName, super.key, this.duration});
+  final String totalDur;
+   const TaskView( {required this.date, required this.startTime, required this.endTime, required this.status, required this.projectName, super.key, required this.totalDur});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +30,7 @@ class TaskView extends StatelessWidget {
     String startT = startTime.substring(1, startTime.length - 1);
     String endT = endTime.substring(1, endTime.length - 1);
     String createAtDate = date.substring(1, date.length - 1);
+    String formatDuration = totalDur.substring(1, totalDur.length - 1);
 
 // Parse the original date and time string
     DateTime originalDateTime = DateTime.parse(startT.toString());
@@ -54,29 +55,12 @@ class TaskView extends StatelessWidget {
 
 
 
-
-
-
-
-
-
-  //  int intValue = int.parse();
-
+    // Using int.parse() to convert the string to an integer
+    int intValue = int.parse(formatDuration);
     // Create a Duration object from the total minutes
     Duration duration =  Duration(minutes: intValue);
     // Format the Duration to the desired format
     String durationTime = convertMiniToHour(duration);
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -100,7 +84,7 @@ class TaskView extends StatelessWidget {
         //button sheet appbar here
         projectViewBtnSheetAppbar(
             date: createDate,
-            duration: "0h 23m",
+            duration: durationTime,
             bgColor: statusColor()),
 
 

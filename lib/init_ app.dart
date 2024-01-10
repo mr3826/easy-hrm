@@ -48,4 +48,5 @@ Future<void> initApp() async {
   Get.lazyPut(() => NotificationController(), fenix: true);
   Get.lazyPut(() => TimelineController(), fenix: true);
   Get.lazyPut(() => TimelineSummaryController(), fenix: true);
+  Get.lazyPut(() => DateTimeController(), fenix: true);
 }
