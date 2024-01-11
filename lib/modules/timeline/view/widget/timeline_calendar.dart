@@ -87,6 +87,8 @@ class TimeLineCalendar extends GetView<TimelineController> {
                   status: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",
                   totalDur: duration.toString(),
                   description: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).description)}",
+                  timeLineId: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).timeLId)}",
+
                 ));
           },
           onDateLongPress: (date) => print(date),

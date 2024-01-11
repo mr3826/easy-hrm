@@ -18,7 +18,9 @@ class TimeLogDetails extends StatelessWidget {
   final String dtsEndTime;
   final String dtsDateStatus;
   final String dtsProjectName;
-  final Color? dtsBgColor;
+  final String startDateTime;
+  final String endDateTime;
+  final Color? dtsBgColor; final String timeLineId;
   final String dtsDrc, dtsDuration;
   final String dtsDate, dtsStatus;
 
@@ -29,7 +31,12 @@ class TimeLogDetails extends StatelessWidget {
       required this.dtsDateStatus,
       required this.dtsProjectName,
       required this.dtsBgColor,
+
+        required this.startDateTime,
+        required this.endDateTime,
+
       required this.dtsDrc,
+      required this.timeLineId,
       required this.dtsDuration,
       required this.dtsDate,
       required this.dtsStatus});
@@ -63,11 +70,15 @@ class TimeLogDetails extends StatelessWidget {
               child: TimeLogTextField(
                 endTime: dtsEndTime,
                 startTime: dtsStartTime,
+                timeLineId: timeLineId,
                 date: dtsDate,
                 drc: dtsDrc,
+                status: dtsStatus,
                 projectName: dtsProjectName,
                 scheduleStatus: dtsDateStatus,
                 dotColor: dtsBgColor,
+                endDateTime: endDateTime,
+                startDateTime: startDateTime,
               ),
             ),
           ],
@@ -77,6 +88,9 @@ class TimeLogDetails extends StatelessWidget {
   }
 
   _durationTimeLayout(context) {
+    DateTime parsedDate = DateFormat('EEE, dd MMMM - yyyy').parse(dtsDate);
+    Get.find<DateTimeController>().requestedDate.value= DateFormat('yyyy-MM-dd').format(parsedDate);
+
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -87,25 +101,18 @@ class TimeLogDetails extends StatelessWidget {
           shape: roundedRectangleBorder,
           child: Column(
             children: [
-              // Text(
-              //   dtsDate,
-              //   style: AppStyle.mid_large_text.copyWith(
-              //       fontSize: Dimensions.fontSizeDefault,
-              //       color: AppColor.cardColor.withOpacity(0.9)),
-              // ),
-
-
 
               Obx(() => Text(
                 DateFormat('EEEE, dd-MM-yyyy').format(DateTime.parse(
                     Get.find<DateTimeController>().requestedDate.value)
-
                 ),
 
                 style: AppStyle.mid_large_text.copyWith(
                     fontSize: Dimensions.fontSizeDefault,
                     color: AppColor.cardColor),
               )),
+
+
               customSpacerHeight(height: 12),
               Text(
                 AppString.text_duration.tr,

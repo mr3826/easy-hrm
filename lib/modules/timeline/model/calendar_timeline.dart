@@ -85,13 +85,15 @@ class Timelines {
   String? status;
   Task? task;
   String? totalMinutes;
+  String? timelineId;
+
 
   Timelines(
       {this.description,
       this.endDate,
       this.startDate,
       this.status,
-      this.task,
+      this.task,     this.timelineId,
       this.totalMinutes});
 
   Timelines.fromJson(Map<String, dynamic> json) {
@@ -101,6 +103,7 @@ class Timelines {
     status = json['status'];
     task = json['task'] != null ? Task.fromJson(json['task']) : null;
     totalMinutes = json['total_minutes'];
+    timelineId = json['id'];
   }
 }
 

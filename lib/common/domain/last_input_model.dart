@@ -29,17 +29,20 @@ class ModelForDescription{
 
   String? status;
   String? description;
-  ModelForDescription({this.status, this.description});
+  String? timeLId;
+  ModelForDescription({this.status, this.description,this.timeLId});
 
   ModelForDescription.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     description = json['description'];
+    timeLId = json['timeLId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['description'] = description;
+    data['timeLId'] = timeLId;
     return data;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/project_view_widget.dart';
@@ -13,12 +15,14 @@ class TaskView extends StatelessWidget {
   final String projectName;
   final String totalDur;
   final String description;
+  final String timeLineId;
 
   const TaskView(
       {required this.date,
       required this.description,
       required this.startTime,
       required this.endTime,
+      required this.timeLineId,
       required this.status,
       required this.projectName,
       super.key,
@@ -52,7 +56,9 @@ class TaskView extends StatelessWidget {
     // Format the DateTime to the desired format
     String createDate = DateFormat('E, dd MMMM - yyyy').format(createAtDateD);
 
-    print("start date ==> $startTime");
+    log("start date ==> $startTime",error: 011);
+    log("end date ==> $endTime",error: 022);
+
     print("end time ==> $endFormatTime");
 
     // Using int.parse() to convert the string to an integer
@@ -93,10 +99,14 @@ class TaskView extends StatelessWidget {
           bgColor: statusColor(),
           dtsDuration: durationTime,
           dtsBgColor: statusColor(),
+          timeLineId: timeLineId,
           dtsDate: createDate,
           dtsDateStatus: "Tomorrow",
           dtsDrc: description,
           dtsProjectName: "The one project x",
+          startDateTime: startTime,
+          endDateTime: endTime
+
         ),
       ],
     );

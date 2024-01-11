@@ -12,8 +12,10 @@ import '../../../auth/presentation/view/otp_screen.dart';
 Widget btnSheetViewLayout(
     {required startTime,
     required endTime,
-    required status,
+    required status,required timeLineId,
     required context,
+      required startDateTime,
+      required endDateTime,
     required Color? bgColor,
     dateApplication,
     projectName,
@@ -65,6 +67,9 @@ Widget btnSheetViewLayout(
             dtsDrc: "$dtsDrc",
             dtsDateStatus: "$status",
             dtsDate: "$dtsDate",
+            timeLineId: timeLineId,
+            endDateTime: endDateTime,
+            startDateTime: startDateTime,
             dtsBgColor: dtsBgColor)
       ],
     ),

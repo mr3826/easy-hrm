@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,9 +30,13 @@ import '../../../leave/view/widget/custom_title_text_widget.dart';
 
 class TimeLogTextField extends StatelessWidget {
   final String startTime;
+  final String startDateTime;
+  final String endDateTime;
   final String endTime;
   final String date;
   final String scheduleStatus;
+  final String timeLineId;
+  final String status;
   final String projectName;
   final String drc;
   final Color? dotColor;
@@ -39,16 +45,33 @@ class TimeLogTextField extends StatelessWidget {
       {super.key,
       required this.startTime,
       required this.endTime,
+        required this.startDateTime,
+        required this.endDateTime,
       required this.date,
+      required this.timeLineId,
+      required this.status,
       required this.scheduleStatus,
       required this.projectName,
       required this.drc,
       this.dotColor});
 
 
+
+
   @override
   Widget build(BuildContext context) {
+
     String description = drc.substring(1, drc.length - 1);
+    String startTimeD = startDateTime.substring(1, startDateTime.length - 1);
+    String endTimeD = endDateTime.substring(1, endDateTime.length - 1);
+    String timeLineID = timeLineId.substring(1, timeLineId.length - 1);
+    String statusFormat = status.substring(1, status.length - 1);
+
+
+
+
+
+
 
     return Padding(
       padding: marginLayout.copyWith(top: 20),
@@ -76,14 +99,37 @@ class TimeLogTextField extends StatelessWidget {
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),
           InputNote(
-            controller: descriptionController,
+            controller: timelineLogDetailsDrcController,
             hintText: description.isNotEmpty?description:AppString.text_add_description.tr,
             hintColor:description.isNotEmpty?AppColor.normalTextColor:AppColor.hintColor,
           ),
           customSpacerHeight(height: 20),
           CustomDoubleAppButton(
               buttonText: AppString.text_add.tr,
-              onAction: () {},
+              onAction: () {
+
+                Get.find<TimelineController>().updateTimelineLogDetails(
+
+                 description: timelineLogDetailsDrcController.text,
+                 status: statusFormat,// problem for status
+                 endDate: endTimeD,
+                 projectId: "",
+                 startDate: startTimeD,
+                 taskId: "",
+                 timeLineId: timeLineID,
+
+                );
+
+
+
+              },
+
+
+
+
+
+
+
               cancelAction: () {
                 Navigator.pop(context);
               }),

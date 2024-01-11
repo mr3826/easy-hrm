@@ -38,6 +38,7 @@ TextEditingController _editBioController = TextEditingController();
 TextEditingController _currentPassController = TextEditingController();
 TextEditingController _taskController = TextEditingController();
 TextEditingController _descriptionController = TextEditingController();
+TextEditingController _timelineLogDetailsDrcController = TextEditingController();
 
 TextEditingController _changeEmailController = TextEditingController();
 
@@ -60,6 +61,8 @@ TextEditingController get userNameController => _userNameController;
 TextEditingController get restPasswordController => _restPasswordController;
 
 TextEditingController get descriptionController => _descriptionController;
+
+TextEditingController get timelineLogDetailsDrcController => _timelineLogDetailsDrcController;
 
 TextEditingController get addCountyController => _addCountyController;
 
