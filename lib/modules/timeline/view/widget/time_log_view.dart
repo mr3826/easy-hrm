@@ -16,14 +16,15 @@ class TimeLogView extends StatelessWidget {
     return  SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child:  Stack(
+        child:  Obx(() => Stack(
           children: [
 
-            const TimeLineCalendar(),
+            Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse && Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
+                ?   const TimeLineCalendar():const TimeLineCalendar(),
             Positioned(
                 top: 76,
                 child:
-                Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
+                Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse && Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
                     ? Container(
                   color: AppColor.backgroundColor,
                   width: MediaQuery.of(context).size.width,
@@ -52,7 +53,7 @@ class TimeLogView extends StatelessWidget {
                     : _onLoading(context)),
 
           ],
-        )
+        ))
     );
   }
 
