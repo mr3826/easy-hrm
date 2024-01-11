@@ -209,7 +209,6 @@ class SignInScreen extends GetView<SignInController> {
         if (_formKey.currentState!.validate()) {
           await controller.login(
               email: emailController.text, password: passwordController.text);
-          Get.toNamed(Routes.MAIN_SCREEN);
         }
       },
       buttonColor: AppColor.primaryColor,

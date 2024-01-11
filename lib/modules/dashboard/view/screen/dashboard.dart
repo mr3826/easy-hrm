@@ -323,12 +323,14 @@ class Dashboard extends GetView<DashboardController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
+          //todo
           onTap: () {
-            if (Get.isRegistered<DateTimeController>()) {
-              Get.delete<DateTimeController>();
-            }
-            Get.put(DateTimeController());
-            Get.toNamed(Routes.NEW_ENTRY_SCREEN);
+            // if (Get.isRegistered<DateTimeController>()) {
+            //   Get.delete<DateTimeController>();
+            // }
+            // Get.put(DateTimeController());
+            // Get.toNamed(Routes.NEW_ENTRY_SCREEN);
+            Get.find<DashboardController>().getProfileInfoForDashboard();
           },
           child: SizedBox(
               height: AppLayout.getHeight(170),

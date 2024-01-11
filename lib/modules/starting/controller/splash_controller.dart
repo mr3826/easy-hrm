@@ -6,7 +6,7 @@ import 'package:get_storage/get_storage.dart';
 class SplashController extends GetxController {
   @override
   void onReady() {
-   Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
+    Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
     super.onReady();
   }
 
@@ -16,8 +16,12 @@ class SplashController extends GetxController {
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
     } else {
-      Get.offAndToNamed(Routes.MAIN_SCREEN);
+      if (GetStorage().read(AppString.LOGGED_IN) == true ||
+          GetStorage().read(AppString.LOGGED_IN) != null) {
+        Get.offAndToNamed(Routes.MAIN_SCREEN);
+      } else {
+        Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
+      }
     }
   }
 }
-

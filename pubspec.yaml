@@ -57,6 +57,7 @@ dependencies:
   syncfusion_flutter_gauges: ^23.2.7
   calendar_view: ^1.0.4
   cached_network_image: ^3.3.0
+  jwt_decoder: ^2.0.1
 
 
 dev_dependencies:

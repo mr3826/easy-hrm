@@ -64,8 +64,4 @@ class ApplyLeaveController extends GetxController {
     isAssignLeaveLoaderLoading(false);
   }
 
-// getUploadPolicy() async {
-//   final response = await NetworkClient().getGraphQuery(
-//       queryString: queryString);
-// }
 }

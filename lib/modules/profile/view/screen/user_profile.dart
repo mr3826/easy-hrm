@@ -174,8 +174,20 @@ class ProfileScreen extends GetView<UserProfileController> {
           height: .5,
           child: actionLayout(
               context: context,
-              userName: "Agens Neilson",
-              departmentText: "Laravel department",
+              userName: Get.find<UserProfileController>()
+                      .userDetails
+                      ?.getOrganizationUserDetails
+                      ?.profile
+                      ?.firstName ??
+                  ""
+                      "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+              departmentText: Get.find<UserProfileController>()
+                      .employeeWorkHistory
+                      ?.getOrganizationUserHistory
+                      ?.designationHistories?[0]
+                      .designation
+                      ?.name ??
+                  "",
               editAction: () {},
               changePassAction: () {})),
       child: Container(
