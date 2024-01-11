@@ -24,8 +24,7 @@ query Query {
   getLeaveSummaryForDashboard {
     total_leave_day
     taken_leave
-    balance_leave
-    
+    balance_leave    
   }
 }
         """;
@@ -35,39 +34,80 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
   getLeaveDetailsByDate(queryData: $queryData) {
     leave_requests {
       createdAt
-      status
-      duration
-      leaveType {
-        type
+      description
+      end_date
+      files {
+        name
       }
       leave_status
-      end_date
+      leaveType {
+        type
+        id
+        name
+      }
+      status
+      number_of_days
       start_date
+      id
     }
   }
 }
         """;
 
-const getLeaveRecordsQuery = r'''
-
-query GetLeaveRecords($queryData: LeaveRecordsQueryInput) {
-  getLeaveRecords(queryData: $queryData) {
-    end_date
-    start_date
-    id
-    createdAt
-    leaveType {
-      type
-    }
-    duration
-    files {
-      name
+const getLeaveRecordsDataQuery = r'''
+query GetLeaveRecordsForApp($optionData: OptionDataType) {
+  getLeaveRecordsForApp(optionData: $optionData) {
+    date
+    data {
+      createdAt
+      description
+      end_date
+      files {
+        name
+      }
+      leave_status
+      leaveType {
+        type
+        id
+        name
+      }
+      status
+      number_of_days
+      start_date
       id
     }
-    status
   }
 }
+''';
 
+const assignLeaveQuery = r'''
+mutation AssignLeave($inputData: CreateLeaveInputData) {
+  assignLeave(inputData: $inputData) {
+    id
+  }
+}
+''';
+
+const cancelLeaveQuery = r'''
+mutation UpdateLeave($inputData: UpdateLeaveInputData) {
+  updateLeave(inputData: $inputData) {
+    id
+  }
+}
+''';
+
+const leaveTypeDropdownQuery = '''
+query GetLeaveTypesDropdown {
+  getLeaveTypesDropdown {
+    name
+    id
+    attach_document_required
+    add_note_required
+    leave_statuses {
+      available_number_of_days
+    }
+  }
+}
 ''';
 
 // profile module
@@ -187,11 +227,14 @@ query GetUpcomingLeavesForApp {
   getUpcomingLeavesForApp {
     end_date
     start_date
+    description
     status
     createdAt
     number_of_days
     leaveType {
       type
+      id
+      name
     }
   }
 }

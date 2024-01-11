@@ -13,7 +13,21 @@ Widget startTimeFieldLayout({required BuildContext context}) {
     dobIcon: Icons.access_time_outlined,
     dobIconAction: () {
       Get.find<DateTimeController>().isInTimeClicked.value = true;
-      timePicker(context);
+      timePicker(context, true);
     },
   );
 }
+
+
+Widget outTimeFieldLayout({required BuildContext context}) {
+  return timerTextField(
+    hintText: Get.find<DateTimeController>().pickedOutTime.isEmpty
+        ? AppString.text_select_time
+        : Get.find<DateTimeController>().pickedOutTime.value,
+    dobIcon: Icons.access_time_outlined,
+    dobIconAction: () {
+      timePicker(context, true);
+    },
+  );
+}
+

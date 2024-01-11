@@ -10,6 +10,7 @@ import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -43,7 +44,7 @@ class IndividualEventView extends StatelessWidget {
         showDialog(
           context: Get.context!,
           builder: (context) {
-            return   const Dialog(
+            return const Dialog(
                 backgroundColor: Colors.transparent,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -158,96 +159,164 @@ class IndividualEventView extends StatelessWidget {
     }
   }
 
-  _eventList() =>
-      Get.find<LeaveScreenController>().leaveDetailsByDate == null ||
-              Get.find<LeaveScreenController>()
-                  .leaveDetailsByDate!
-                  .getLeaveDetailsByDate!
-                  .isEmpty
-          ? Text(
-              AppString.no_event_found_text,
-              style: AppStyle.mid_large_text.copyWith(
-                  fontSize: Dimensions.fontSizeDefault,
-                  color: AppColor.hintColor),
-            )
-          : ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: marginLayout,
-              itemCount: Get.find<LeaveScreenController>()
-                  .leaveDetailsByDate
-                  ?.getLeaveDetailsByDate?[0]
-                  .leaveRequests
-                  ?.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    customButtonSheet(
-                      context: context,
-                      child: LeaveRecordDetails(
-                        status: Get.find<LeaveScreenController>()
-                                .leaveDetailsByDate
-                                ?.getLeaveDetailsByDate![0]
-                                .leaveRequests?[index]
-                                .status
-                                ?.toLowerCase() ??
-                            "",
-                        leaveRecords: Get.find<LeaveScreenController>()
+  _eventList() => Get.find<LeaveScreenController>().leaveDetailsByDate ==
+              null ||
+          Get.find<LeaveScreenController>()
+              .leaveDetailsByDate!
+              .getLeaveDetailsByDate!
+              .isEmpty
+      ? Text(
+          AppString.no_event_found_text,
+          style: AppStyle.mid_large_text.copyWith(
+              fontSize: Dimensions.fontSizeDefault, color: AppColor.hintColor),
+        )
+      : ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: marginLayout,
+          itemCount: Get.find<LeaveScreenController>()
+              .leaveDetailsByDate
+              ?.getLeaveDetailsByDate?[0]
+              .leaveRequests
+              ?.length,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                customButtonSheet(
+                  context: context,
+                  child: LeaveRecordDetails(
+                    status: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate?[0]
-                            .leaveRequests?[index],
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests?[index]
+                            .status
+                            ?.toLowerCase() ??
+                        "",
+                    leaveRecords: GetLeaveRecords(
+                      leaveType: LeaveType(
+                        type: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests?[index]
+                            .leaveType
+                            ?.type,
+                        leaveName: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests?[index]
+                            .leaveType
+                            ?.leaveName,
+                        leaveId: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests?[index]
+                            .leaveType
+                            ?.leaveId,
                       ),
-                      height: 0.6,
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Card(
-                      elevation: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                Get.find<LeaveScreenController>()
-                                        .leaveDetailsByDate
-                                        ?.getLeaveDetailsByDate![0]
-                                        .leaveRequests?[index]
-                                        .leaveType
-                                        ?.type ??
-                                    "",
-                                style: AppStyle.mid_large_text.copyWith(
-                                    color: AppColor.normalTextColor,
-                                    fontSize: Dimensions.fontSizeDefault + 1,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                Get.find<LeaveScreenController>()
-                                        .leaveDetailsByDate
-                                        ?.getLeaveDetailsByDate![0]
-                                        .leaveRequests?[index]
-                                        .duration
-                                        .toString() ??
-                                    "",
-                                style: AppStyle.normal_text_black.copyWith(
-                                    color: AppColor.hintColor,
-                                    fontSize: Dimensions.fontSizeDefault - 1),
-                              )
-                            ],
-                          ),
-                          _getStatusButton(Get.find<LeaveScreenController>()
-                                  .leaveDetailsByDate
-                                  ?.getLeaveDetailsByDate?[0]
-                                  .leaveRequests?[index]
-                                  .status ??
-                              ""),
-                        ],
-                      ),
+                      description: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveDetailsByDate![0]
+                          .leaveRequests?[index]
+                          .description,
+                      createdAt: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveDetailsByDate![0]
+                          .leaveRequests?[index]
+                          .createdAt,
+                      duration: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveDetailsByDate![0]
+                          .leaveRequests?[index]
+                          .numberOfDays,
+                      status: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveDetailsByDate![0]
+                          .leaveRequests?[index]
+                          .status,
+                      endDate: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveDetailsByDate![0]
+                          .leaveRequests?[index]
+                          .endDate,
+                      startDate: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveDetailsByDate![0]
+                          .leaveRequests?[index]
+                          .startDate,
+                      id: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveDetailsByDate![0]
+                          .leaveRequests?[index]
+                          .id,
                     ),
                   ),
+                  height: 0.6,
                 );
               },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  height: AppLayout.getHeight(70),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  decoration: BoxDecoration(
+                      color: AppColor.primaryColor.withOpacity(.05),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            Get.find<LeaveScreenController>()
+                                    .leaveDetailsByDate
+                                    ?.getLeaveDetailsByDate![0]
+                                    .leaveRequests?[index]
+                                    .leaveType
+                                    ?.type ??
+                                "",
+                            overflow: TextOverflow.ellipsis,
+                            style: AppStyle.mid_large_text.copyWith(
+                                color: AppColor.normalTextColor,
+                                fontSize: Dimensions.fontSizeDefault + 1,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          Get.find<LeaveScreenController>()
+                                      .leaveDetailsByDate
+                                      ?.getLeaveDetailsByDate![0]
+                                      .leaveRequests?[index]
+                                      .numberOfDays !=
+                                  null
+                              ? Text(
+                                  Get.find<LeaveScreenController>()
+                                              .leaveDetailsByDate
+                                              ?.getLeaveDetailsByDate![0]
+                                              .leaveRequests?[index]
+                                              .numberOfDays >
+                                          1
+                                      ? "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate![0].leaveRequests?[index].numberOfDays} days"
+                                      : "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate![0].leaveRequests?[index].numberOfDays} day",
+                                  style: AppStyle.normal_text_black.copyWith(
+                                      color: AppColor.hintColor,
+                                      fontSize: Dimensions.fontSizeDefault - 1),
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              : Container(),
+                        ],
+                      ),
+                      _getStatusButton(Get.find<LeaveScreenController>()
+                              .leaveDetailsByDate
+                              ?.getLeaveDetailsByDate?[0]
+                              .leaveRequests?[index]
+                              .status ??
+                          ""),
+                    ],
+                  ),
+                ),
+              ),
             );
+          },
+        );
 }

@@ -20,6 +20,7 @@ class GetUpcomingLeavesForApp {
   String? startDate;
   String? status;
   String? createdAt;
+  String? description;
   dynamic numberOfDays;
   LeaveType? leaveType;
 
@@ -28,12 +29,15 @@ class GetUpcomingLeavesForApp {
       this.startDate,
       this.status,
       this.createdAt,
-      this.numberOfDays});
+      this.numberOfDays,
+      this.description,
+      this.leaveType});
 
   GetUpcomingLeavesForApp.fromJson(Map<String, dynamic> json) {
     endDate = json['end_date'];
     startDate = json['start_date'];
     status = json['status'];
+    description = json['description'];
     createdAt = json['createdAt'];
     numberOfDays = json['number_of_days'];
     leaveType = json['leaveType'] != null

@@ -19,6 +19,7 @@ class CustomStatusButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: AppLayout.getHeight(32),
       decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.all(

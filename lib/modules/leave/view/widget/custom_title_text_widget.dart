@@ -12,3 +12,13 @@ Widget customTitleText({required text}) {
         fontSize: Dimensions.fontSizeDefault + 1),
   );
 }
+
+Widget customTitleTextRedText({required text}) {
+  return Text(
+    text,
+    style: AppStyle.mid_large_text.copyWith(
+        color: AppColor.errorColor,
+        fontWeight: FontWeight.w600,
+        fontSize: Dimensions.fontSizeDefault + 1),
+  );
+}

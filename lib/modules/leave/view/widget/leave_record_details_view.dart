@@ -8,9 +8,11 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/modules/leave/view/widget/update_leave_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -34,7 +36,7 @@ class LeaveRecordDetails extends StatelessWidget {
         customSpacerHeight(height: 12),
         _infoLayout(
             text: AppString.text_type_dot.tr,
-            dynamicText: leaveRecords?.leaveType?.type ?? ""),
+            dynamicText: leaveRecords?.leaveType?.leaveName ?? ""),
         _infoLayout(
             text: AppString.text_duration.tr,
             dynamicText: leaveRecords?.duration != null
@@ -153,12 +155,26 @@ class LeaveRecordDetails extends StatelessWidget {
     return Padding(
       padding: marginLayout,
       child: CustomDoubleAppButton(
+          cancelText: AppString.text_cancel.tr,
           cancelAction: () {
-            Navigator.pop(context);
+            customDialog(
+                context: context,
+                saveBtnAction: () {
+                  Get.find<LeaveScreenController>()
+                      .cancelLeave(leaveId: leaveRecords?.id ?? "");
+                },
+                icon: Icons.document_scanner_rounded,
+                titleText: AppString.cancelLeaveText.tr,
+                subText: AppString.cancelLeaveNotificationText.tr,
+                iconBgColor: AppColor.cardColor,
+                btnBgColor: AppColor.hintColor,
+                btnText: AppString.confirmText.tr);
           },
+          //todo
           buttonText: AppString.text_edit.tr,
           onAction: () => customButtonSheet(
-              context: context, child: const ApplyLeaveScreen()),
+              context: context,
+              child: UpdateLeave(leaveRecords:leaveRecords)),
           btnColor: AppColor.primaryColor),
     );
   }

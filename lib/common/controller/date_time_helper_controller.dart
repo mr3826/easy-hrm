@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +19,15 @@ class DateTimeController extends GetxController {
   RxString pickedOutTime = ''.obs;
   TextEditingController editController = TextEditingController();
 
+  RxString numberOfLeaves = ''.obs;
+  RxString? leaveId = ''.obs;
+  RxBool isNoteRequired = false.obs;
+  RxBool isDocumentRequired = false.obs;
+  RxBool isErrorOccurred = false.obs;
+
   void getTime() {
+    print("gettime called");
+
     if (isInTimeClicked.isTrue) {
       //only time
       pickedInTime.value =
@@ -29,6 +38,7 @@ class DateTimeController extends GetxController {
           .parse(
               "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
+      print(requestedInDate.value);
     } else {
       //only time
       pickedOutTime.value =
@@ -38,6 +48,55 @@ class DateTimeController extends GetxController {
           .parse(
               "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
+      print(requestedOutDate.value);
+    }
+
+    isInTimeClicked.value = !isInTimeClicked.value;
+    selectedInputHrs = '06';
+    selectedInputMins = '30';
+    clockHrsFormat = 'PM';
+  }
+
+  void getApplyLeaveTime() {
+    print("getApplyLeaveTime called");
+    if (isInTimeClicked.isTrue) {
+      //only time
+      print("if called");
+      pickedInTime.value =
+          "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
+
+      //total datetime
+      if (requestedInDate.value.length > 10) {
+        requestedInDate.value = DateFormat("yyyy-MM-dd hh:mma")
+            .parse(
+                "${DateFormat("yyyy-MM-dd").format(DateTime.parse(Get.find<DateTimeController>().requestedInDate.value))} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
+            .toString();
+      } else {
+        requestedInDate.value = DateFormat("yyyy-MM-dd hh:mma")
+            .parse(
+                "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
+            .toString();
+      }
+      print(requestedInDate.value);
+    } else {
+      //only time
+
+      print("Else called");
+      pickedOutTime.value =
+          "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
+      //total datetime
+      if (requestedOutDate.value.length > 10) {
+        requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
+            .parse(
+                "${DateFormat("yyyy-MM-dd").format(DateTime.parse(Get.find<DateTimeController>().requestedOutDate.value))} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
+            .toString();
+      } else {
+        requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
+            .parse(
+                "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
+            .toString();
+      }
+      print(requestedOutDate.value);
     }
 
     isInTimeClicked.value = !isInTimeClicked.value;

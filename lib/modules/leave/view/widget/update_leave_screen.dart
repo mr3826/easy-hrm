@@ -1,38 +1,85 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
+
+import '../../../../common/controller/date_time_helper_controller.dart';
+import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../utils/app_layout.dart';
+import '../../../../utils/app_string.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
-import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/add_attachemnt_file_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/srart_time_field_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/file_upload_controller.dart';
-import 'apply_leave_dropdown.dart';
+import '../../model/leave_type.dart';
 import 'date_pickar_field_widget.dart';
 
-class ApplyLeaveButtonLayout extends StatelessWidget {
-  bool? isForUpdateLeave;
+class UpdateLeave extends StatelessWidget {
+  GetLeaveRecords? leaveRecords;
 
-  ApplyLeaveButtonLayout({this.isForUpdateLeave, super.key});
+  UpdateLeave({super.key, this.leaveRecords});
+
+  @override
+  Widget build(BuildContext context) {
+    if (Get.isRegistered<DateTimeController>()) {
+      Get.delete<DateTimeController>();
+    }
+    Get.put(DateTimeController());
+    return Column(
+      children: [
+        customButtonSheetAppbar(
+            text: AppString.updateLeaveTest.tr,
+            subtext: DateTime.parse(leaveRecords!.startDate!).day ==
+                    DateTime.parse(leaveRecords!.endDate!).day
+                ? dateMonthYearFormatFromDatetime(leaveRecords!.startDate!)
+                : "${dateMonthYearFormatFromDatetime(leaveRecords!.startDate!)} - ${dateMonthYearFormatFromDatetime(leaveRecords!.endDate!)}"),
+        Expanded(child: UpdateLeaveButtonLayout(leaveRecords: leaveRecords))
+      ],
+    );
+  }
+}
+
+class UpdateLeaveButtonLayout extends StatelessWidget {
+  final GetLeaveRecords? leaveRecords;
+
+  UpdateLeaveButtonLayout({super.key, this.leaveRecords});
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    print("Build called");
+    Get.find<DateTimeController>().leaveId?.value == leaveRecords?.id;
+    Get.find<DateTimeController>().requestedInDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(
+            leaveRecords?.startDate ?? DateTime.now().toString()));
+    Get.find<DateTimeController>().requestedOutDate.value =
+        DateFormat('yyyy-MM-dd').format(
+            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
+    leaveNoteController.text = leaveRecords?.description ?? "";
+
+    DateTime startTime =
+        DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString());
+    DateTime endTime =
+        DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString());
+
+    Get.find<DateTimeController>().pickedInTime.value =
+        "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+    Get.find<DateTimeController>().pickedOutTime.value =
+        "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+
     return Obx(() => Get.find<ApplyLeaveController>().isLoading.isFalse
         ? Padding(
             padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
@@ -45,7 +92,8 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
                   children: [
                     customTitleText(text: AppString.text_leave_type.tr),
                     customSpacerHeight(height: 8),
-                    const ApplyLeaveDropDown(),
+                    UpdateLeaveDropdown(
+                        dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
                     customSpacerHeight(height: 8),
                     _leaveCountStyleLayout(),
                     customSpacerHeight(height: 20),
@@ -90,8 +138,8 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
                     customSpacerHeight(height: 8),
                     const AddAttachmentFile(),
                     customSpacerHeight(height: 20),
-                    Obx(() => Get.find<ApplyLeaveController>()
-                            .isAssignLeaveLoaderLoading
+                    Obx(() => Get.find<LeaveScreenController>()
+                            .cancelLeaveLoader
                             .isTrue
                         ? const Center(
                             child: CupertinoActivityIndicator(
@@ -110,50 +158,17 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
                                       .filePath
                                       .value
                                       .isNotEmpty) {
-                                    if (isForUpdateLeave == true) {
-                                      print("Update method Called");
-                                    } else {
-                                      Get.find<ApplyLeaveController>()
-                                          .applyLeave();
-                                    }
+                                    _updateLeaveMethod();
                                   } else {
                                     Get.find<DateTimeController>()
                                         .isErrorOccurred(true);
                                   }
                                 } else {
-                                  if (isForUpdateLeave == true) {
-                                    print("Update method Called");
-                                  } else {
-                                    Get.find<ApplyLeaveController>()
-                                        .applyLeave();
-                                  }
+                                  _updateLeaveMethod();
                                 }
                               } else {
                                 print("Method should not called");
                               }
-                              //apply leave
-                              //check data input
-
-                              // if (Get.find<DateTimeController>()
-                              //             .isNoteRequired
-                              //             .isTrue &&
-                              //         leaveNoteController.text.isNotEmpty
-                              //     //&&
-                              //     // Get.find<DateTimeController>()
-                              //     //     .isDocumentRequired
-                              //     //     .isTrue &&
-                              //     // Get.find<FileUploadController>()
-                              //     //     .storageForUpload
-                              //     //     .filePath
-                              //     //     .value
-                              //     //     .isNotEmpty
-                              //     ) {
-                              //   print("method called");
-                              //   print(Get.find<DateTimeController>().requestedInDate.value.length);
-                              //   print(Get.find<DateTimeController>().requestedOutDate);
-                              // } else {
-                              //   print("method should nt be caslled");
-                              // }
                             },
                             buttonText: AppString.text_apply.tr,
                             cancelAction: () {
@@ -320,6 +335,91 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _updateLeaveMethod() {
+    Get.find<LeaveScreenController>().updateLeave(
+        leaveId: leaveRecords?.id ?? "",
+        leaveTypeId: leaveRecords?.leaveType?.leaveId ?? "",
+        startDate: Get.find<DateTimeController>().requestedInDate.value.length >
+                10
+            ? Get.find<DateTimeController>().requestedInDate.value
+            : DateFormat("yyyy-MM-dd hh:mma")
+                .parse(
+                    "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+                .toString(),
+        endDate: Get.find<DateTimeController>().requestedOutDate.value.length >
+                10
+            ? Get.find<DateTimeController>().requestedOutDate.value
+            : DateFormat("yyyy-MM-dd hh:mma")
+                .parse(
+                    "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+                .toString());
+  }
+}
+
+class UpdateLeaveDropdown extends StatefulWidget {
+  final String dropdownValue;
+
+  const UpdateLeaveDropdown({required this.dropdownValue, super.key});
+
+  @override
+  State<UpdateLeaveDropdown> createState() => _UpdateLeaveDropdownState();
+}
+
+class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
+  String? dropDownValue;
+
+  @override
+  void initState() {
+    dropDownValue = widget.dropdownValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(8)),
+      child: DropdownButton(
+          value: dropDownValue,
+          dropdownColor: AppColor.cardColor,
+          underline: const SizedBox.shrink(),
+          isExpanded: true,
+          items: Get.find<ApplyLeaveController>()
+              .leaveTypeDropdown!
+              .getLeaveTypesDropdown!
+              .map((e) {
+            return DropdownMenuItem(
+              value: e.id,
+              child: Text(e.name.toString().toUpperCase()),
+            );
+          }).toList(),
+          onChanged: (value) {
+            print("value::: $value");
+            setState(() {
+              dropDownValue = value as String;
+            });
+            GetLeaveTypesDropdown? getLeaveTypesDropdown =
+                Get.find<ApplyLeaveController>()
+                    .leaveTypeDropdown
+                    ?.getLeaveTypesDropdown
+                    ?.firstWhere((element) => element.id == value);
+
+            //set data according to leave type
+            Get.find<DateTimeController>().numberOfLeaves.value =
+                getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
+                        .toString() ??
+                    "";
+            Get.find<DateTimeController>().leaveId?.value == value;
+            Get.find<DateTimeController>().isDocumentRequired.value =
+                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
+            Get.find<DateTimeController>().isNoteRequired.value =
+                getLeaveTypesDropdown?.addNoteRequired ?? false;
+          }),
     );
   }
 }

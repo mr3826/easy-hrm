@@ -179,7 +179,7 @@ Widget _newEntryStartTime({required BuildContext context, required startTime}) {
     hintColor: AppColor.normalTextColor,
     dobIconAction: () {
       Get.find<DateTimeController>().isInTimeClicked.value = true;
-      timePicker(context);
+      timePicker(context,false);
     },
   );
 }
@@ -193,7 +193,7 @@ Widget _newEntryEndTime({required BuildContext context, required endTime}) {
     hintColor: AppColor.normalTextColor,
     dobIconAction: () {
       Get.find<DateTimeController>().isInTimeClicked.value = true;
-      timePicker(context);
+      timePicker(context,false);
     },
   );
 }

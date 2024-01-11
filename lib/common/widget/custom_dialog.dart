@@ -1,26 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../utils/app_color.dart';
 
-customDialog(
-    {required context,
-    required icon,
-    drcFontSize,
-    required titleText,
-    required subText,
-    required saveBtnAction,
-    required btnText,
-     Widget? childForSaveBtn,
-    drcText,
-    required iconBgColor,
-    required btnBgColor}) {
+customDialog({
+  required context,
+  required icon,
+  drcFontSize,
+  required titleText,
+  required subText,
+  required saveBtnAction,
+  required btnText,
+  Widget? childForSaveBtn,
+  String? drcText,
+  required iconBgColor,
+  required btnBgColor,
+}) {
   showDialog(
     context: context,
     builder: (context) => CustomDialog(
@@ -30,7 +33,7 @@ customDialog(
         icon: icon,
         saveBtnAction: saveBtnAction,
         btnText: btnText,
-        drcText: drcText,
+        drcText: drcText ?? "",
         childForSaveBtn: childForSaveBtn,
         iconBgColor: btnBgColor,
         btnBgColor: btnBgColor),
@@ -46,7 +49,7 @@ class CustomDialog extends StatelessWidget {
   final Color iconBgColor;
   final Color btnBgColor;
   final double? drcFontSize;
-  final Widget ?childForSaveBtn;
+  final Widget? childForSaveBtn;
   final Function saveBtnAction;
   final isOTPVisible = false;
 
@@ -58,10 +61,11 @@ class CustomDialog extends StatelessWidget {
       required this.iconBgColor,
       required this.btnBgColor,
       this.subtext = "",
-        this.childForSaveBtn,
+      this.childForSaveBtn,
       required this.saveBtnAction,
       required this.btnText,
       required this.drcText});
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -76,7 +80,6 @@ class CustomDialog extends StatelessWidget {
                       BorderRadius.circular(Dimensions.radiusDefault)),
               margin: const EdgeInsets.only(top: 30),
               child: SizedBox(
-                height: AppLayout.getHeight(220),
                 child: Padding(
                   padding: marginLayout.copyWith(bottom: 16),
                   child: Column(
@@ -105,12 +108,23 @@ class CustomDialog extends StatelessWidget {
                             fontSize: Dimensions.fontSizeDefault - 3),
                       )),
                       const Spacer(),
-                      CustomDoubleAppButton(
-                        buttonText: btnText,
-                        onAction: saveBtnAction,
-                        cancelAction: () => Get.back(),
-                        btnColor: btnBgColor,
-                        saveBtn:childForSaveBtn,
+                      Obx(
+                        () => Get.find<LeaveScreenController>()
+                                .cancelLeaveLoader
+                                .isTrue
+                            ? const Center(
+                                child: CupertinoActivityIndicator(
+                                  color: Colors.blueAccent,
+                                  radius: 16,
+                                ),
+                              )
+                            : CustomDoubleAppButton(
+                                buttonText: btnText,
+                                onAction: saveBtnAction,
+                                cancelAction: () => Get.back(),
+                                btnColor: btnBgColor,
+                                saveBtn: childForSaveBtn,
+                              ),
                       )
                     ],
                   ),
@@ -125,7 +139,7 @@ class CustomDialog extends StatelessWidget {
                   child: Icon(
                     icon,
                     size: 40,
-                    color: AppColor.errorColorLight,
+                    color: iconBgColor,
                   ),
                 ))
           ],
