@@ -172,16 +172,7 @@ class TimelineController extends GetxController with StateMixin {
     if (response.hasException) {
       print(response.exception.toString());
     } else {
-      // timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
-      // print(timerEntryResponse?.updateTimelineEntry?.startDate);
-      // taskId.value = "";
-      // Get.find<TimeCounterController>().isTotalCount(true);
-      // descriptionController.clear();
-      // Get.find<TimeCounterController>().reset();
-      // Get.back(canPop: false);
       log(response.toString(),error: 1);
-
-
     }
       isUpdateTimeLogLoading(false);
 
@@ -287,6 +278,7 @@ class TimelineController extends GetxController with StateMixin {
     }
     change(null, status: RxStatus.success());
   }
+
 
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {

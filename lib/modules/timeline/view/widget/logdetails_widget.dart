@@ -96,7 +96,7 @@ class TimeLogTextField extends StatelessWidget {
                 : AppColor.hintColor,
           ),
           customSpacerHeight(height: 20),
-          Obx(() => _updateBtnLayout(context: context, timeLineID: timeLineID)),
+         Obx(() => _updateBtnLayout(context: context, timeLineID: timeLineID)),
           customSpacerHeight(height: 40)
         ],
       ),
@@ -107,6 +107,21 @@ class TimeLogTextField extends StatelessWidget {
 
 
   _updateBtnLayout({timeLineID, context}) {
+   // dateTimeAddedFormat()
+
+//     DateTime date1 = DateTime.parse(Get.find<DateTimeController>().timeLogDate.value.toString());
+//     String receiveDate1 = DateFormat('y-MM-dd').format(date1);
+//     log("Time-log 1 ==> $date1", error: 21);
+
+// log
+
+    // if(Get.find<DateTimeController>().timeLogDate.value.isEmpty){
+    //   dateTimeAddedFormat(time: "",date: "");
+    //
+    // }
+
+
+
     return CustomDoubleAppButton(
         saveBtn: Get.find<TimelineController>().isUpdateTimeLogLoading.isFalse
             ? Text(
@@ -119,15 +134,16 @@ class TimeLogTextField extends StatelessWidget {
           color: AppColor.cardColor,
         ),
         onAction: () {
-          Get.find<TimelineController>().updateTimelineLogDetails(
-            description: timelineLogDetailsDrcController.text,
-            status: status,
-            endDate: Get.find<DateTimeController>().requestedOutDate.value,
-            projectId: "",
-            startDate: Get.find<DateTimeController>().requestedInDate.value,
-            taskId: "",
-            timeLineId: timeLineID,
-          );
+          // Get.find<TimelineController>().updateTimelineLogDetails(
+          //   description: timelineLogDetailsDrcController.text,
+          //   status: status,
+          //   endDate: Get.find<DateTimeController>().requestedOutDate.value,
+          //   projectId: "",
+          //   startDate:Get.find<DateTimeController>().timeLogDate.value.isNotEmpty? Get.find<DateTimeController>().requestedInDate.value:Container(),
+          //   taskId: "",
+          //   timeLineId: timeLineID,
+          // );
+
         },
         cancelAction: () {
           Navigator.pop(context);
@@ -266,9 +282,10 @@ _dateLayoutField({required String date}) {
   String receiveDate = DateFormat('y-MM-dd').format(inputDate);
 
   print("receiveDate ==> $receiveDate");
+  log("Time-log ==> ${Get.find<DateTimeController>().timeLogDate.value}", error: 21);
 
-  log("Time-log ==> ${Get.find<DateTimeController>().timeLogDate.value}",
-      error: 21);
+
+
 
   return GestureDetector(
     onTap: () => showDialog(

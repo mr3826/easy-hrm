@@ -44,29 +44,6 @@ class DateTimeController extends GetxController {
           .parse(
               "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
-
-
-
-      //log("Time-log ==> ${ Get.find<DateTimeController>().timeLogDate.value}",error: 21);
-
-
-
-
-
-
-      //
-      // requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma") //
-      //     .parse(
-      //         "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}")
-      //
-      //     .toString(); requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma") //
-      //
-      //     .parse(
-      //         "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}")
-      //     .toString();
-
-
-
     }
 
 

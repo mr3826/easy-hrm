@@ -22,6 +22,8 @@ class TimeLogView extends StatelessWidget {
             Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse && Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
                 ?   const TimeLineCalendar():const TimeLineCalendar(),
             Positioned(
+
+
                 top: 76,
                 child:
                 Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse && Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
