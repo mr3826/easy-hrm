@@ -16,7 +16,7 @@ import '../../utils/app_string.dart';
 import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
 
-Future timePicker(BuildContext context) {
+Future timePicker(BuildContext context, bool? isCalledFromApplyLeave) {
   return showDialog(
     barrierDismissible: true,
     context: context,
@@ -52,7 +52,7 @@ Future timePicker(BuildContext context) {
             const Divider(
               thickness: 1,
             ),
-            _buttonLayout(context: context),
+            _buttonLayout(context: context, isCalledFromApplyLeave: isCalledFromApplyLeave),
             customSpacerHeight(height: 20),
           ],
         ),
@@ -115,7 +115,7 @@ _mins() {
   // return Container();
 }
 
-_buttonLayout({context}) {
+_buttonLayout({context, bool? isCalledFromApplyLeave}) {
   return Row(
     children: [
       const Spacer(),
@@ -130,7 +130,11 @@ _buttonLayout({context}) {
       customSpacerWidth(width: 40),
       InkWell(
           onTap: () {
-            Get.find<DateTimeController>().getTime();
+           if(isCalledFromApplyLeave==true){
+             Get.find<DateTimeController>().getApplyLeaveTime();
+           }else{
+             Get.find<DateTimeController>().getTime();
+           }
             Navigator.of(context).pop();
           },
           child: SizedBox(

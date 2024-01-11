@@ -11,6 +11,7 @@ import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 
+import '../../../../routes/app_pages.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../../utils/utils.dart';
 
@@ -86,7 +87,9 @@ class SignInController extends GetxController with StateMixin {
             SignInResponse.fromJson(response.body).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN,
             SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
+        GetStorage().write(AppString.LOGGED_IN, true);
         _saveData();
+        Get.toNamed(Routes.MAIN_SCREEN);
       }
     } catch (e) {
       log(e.toString());

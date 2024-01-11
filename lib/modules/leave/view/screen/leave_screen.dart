@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -34,7 +33,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   _applyLeaveBtn(context) {
     return GestureDetector(
       onTap: () =>
-          customButtonSheet(context: context, child: const ApplyLeaveScreen()),
+          customButtonSheet(context: context, child: ApplyLeaveScreen()),
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
         child: Container(

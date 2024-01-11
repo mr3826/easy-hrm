@@ -51,7 +51,7 @@ jobs:
        echo $s3_url
        aws ses send-email \
             --from "no-reply@local.payrun.app" \
-            --destination "ToAddresses=emon@gain.media" \
+            --destination "ToAddresses=emon@gain.media,kibria@gain.media,sohel@gain.media" \
             --message "Subject={Data=Local Payrun Apk Url,Charset=utf-8},Body={Text={Data=Download your file here: $s3_url,Charset=utf-8}}" \
             --region ${{ secrets.LOCAL_PAYRUN_AWS_REGION }}
 

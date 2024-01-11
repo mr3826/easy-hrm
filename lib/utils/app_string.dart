@@ -10,6 +10,7 @@ class AppString {
   static const String ACCESS_TOKEN = "access_token";
   static const String REFRESH_TOKEN = "refresh_token";
   static const String ORGANIZATION_USER_ID = "org_user_id";
+  static const String LOGGED_IN = "loggedIn";
 
   // Apps string here
 
@@ -59,6 +60,7 @@ class AppString {
   static String text_total_leave = 'Total leave';
   static String text_paid_leave = 'Paid leave';
   static String text_unpaid_leave = 'Unpaid leave';
+  static String confirmText = 'Confirm';
   static String text_token = 'Taken';
   static String text_balance = 'Balance';
   static String text_tomorrow = 'Tomorrow';
@@ -80,6 +82,7 @@ class AppString {
   static String text_upcoming_leave = 'Upcoming leave';
   static String text_add = 'Add';
   static String text_update_your_profile = 'Update your profile photo';
+  static String updateLeaveTest = 'Update Leave';
   static String text_upload_a_photo_undar_2mb = 'Upload a photo under 2 MB';
   static String text_today = 'Today';
   static String text_today_goal = "Today's goal";
@@ -241,6 +244,11 @@ class AppString {
   static const String text_apply_leve = "Apply leave";
   static const String text_apply = "Apply";
   static const String text_remove_time_log = "Remove timelog";
+
+  static const String cancelLeaveText = "Cancel Leave";
+
+  static const String cancelLeaveNotificationText =
+      "Sure you want to cancel this leave request? If you cancel this leave request,you can apply a new request again.";
 
   static const String text_sure_you_want_to_deleted_this_log =
       "Sure you want to deleted this log?";
