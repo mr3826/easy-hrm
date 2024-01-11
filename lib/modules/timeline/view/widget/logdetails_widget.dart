@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,10 +12,8 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/timmer_text_field_dob.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
-import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
-import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -45,8 +42,8 @@ class TimeLogTextField extends StatelessWidget {
       {super.key,
       required this.startTime,
       required this.endTime,
-        required this.startDateTime,
-        required this.endDateTime,
+      required this.startDateTime,
+      required this.endDateTime,
       required this.date,
       required this.timeLineId,
       required this.status,
@@ -55,30 +52,24 @@ class TimeLogTextField extends StatelessWidget {
       required this.drc,
       this.dotColor});
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     String description = drc.substring(1, drc.length - 1);
     String startTimeD = startDateTime.substring(1, startDateTime.length - 1);
     String endTimeD = endDateTime.substring(1, endDateTime.length - 1);
     String timeLineID = timeLineId.substring(1, timeLineId.length - 1);
-    String statusFormat = status.substring(1, status.length - 1);
+    Get.find<DateTimeController>().requestedInDate.value = startTimeD;
+    Get.find<DateTimeController>().requestedOutDate.value = endTimeD;
 
-
-
-
-
-
+    log("time --> ${Get.find<DateTimeController>().requestedInDate.value}", error: 10);
 
     return Padding(
       padding: marginLayout.copyWith(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(() => _timerLayout(context: context, endTime: endTime, startTime: startTime)),
+          Obx(() => _timerLayout(
+              context: context, endTime: endTime, startTime: startTime)),
           customSpacerHeight(height: 20),
           customTitleText(text: "${AppString.text_date.tr} *"),
           customSpacerHeight(height: 8),
@@ -88,56 +79,65 @@ class TimeLogTextField extends StatelessWidget {
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_project_or_task.tr),
           customSpacerHeight(height: 8),
-
-          taskInputField(onAction: (){
+          taskInputField(onAction: () {
             customButtonSheet(
                 context: context, height: .7, child: const TaskViewLayout());
           }),
-
-
           customSpacerHeight(height: 20),
           customTitleText(text: AppString.text_description.tr),
           customSpacerHeight(height: 8),
           InputNote(
             controller: timelineLogDetailsDrcController,
-            hintText: description.isNotEmpty?description:AppString.text_add_description.tr,
-            hintColor:description.isNotEmpty?AppColor.normalTextColor:AppColor.hintColor,
+            hintText: description.isNotEmpty
+                ? description
+                : AppString.text_add_description.tr,
+            hintColor: description.isNotEmpty
+                ? AppColor.normalTextColor
+                : AppColor.hintColor,
           ),
           customSpacerHeight(height: 20),
-          CustomDoubleAppButton(
-              buttonText: AppString.text_add.tr,
-              onAction: () {
-
-                Get.find<TimelineController>().updateTimelineLogDetails(
-
-                 description: timelineLogDetailsDrcController.text,
-                 status: statusFormat,// problem for status
-                 endDate: endTimeD,
-                 projectId: "",
-                 startDate: startTimeD,
-                 taskId: "",
-                 timeLineId: timeLineID,
-
-                );
-
-
-
-              },
-
-
-
-
-
-
-
-              cancelAction: () {
-                Navigator.pop(context);
-              }),
+          Obx(() => _updateBtnLayout(context: context, timeLineID: timeLineID)),
           customSpacerHeight(height: 40)
         ],
       ),
     );
   }
+
+
+
+
+  _updateBtnLayout({timeLineID, context}) {
+    return CustomDoubleAppButton(
+        saveBtn: Get.find<TimelineController>().isUpdateTimeLogLoading.isFalse
+            ? Text(
+          AppString.text_save.tr,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.cardColor,
+              fontSize: Dimensions.fontSizeDefault + 1),
+        )
+            : const CupertinoActivityIndicator(
+          color: AppColor.cardColor,
+        ),
+        onAction: () {
+          Get.find<TimelineController>().updateTimelineLogDetails(
+            description: timelineLogDetailsDrcController.text,
+            status: status,
+            endDate: Get.find<DateTimeController>().requestedOutDate.value,
+            projectId: "",
+            startDate: Get.find<DateTimeController>().requestedInDate.value,
+            taskId: "",
+            timeLineId: timeLineID,
+          );
+        },
+        cancelAction: () {
+          Navigator.pop(context);
+        });
+  }
+
+
+
+
+
 
   _dayScheduleLayout() {
     return SizedBox(
@@ -148,7 +148,6 @@ class TimeLogTextField extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 3,
         itemBuilder: (context, index) {
-
           return GestureDetector(
             onTap: () {
               Get.find<DateTimeController>().currentIndex.value = index;
@@ -168,72 +167,67 @@ class TimeLogTextField extends StatelessWidget {
                           .format(DateTime.now().add(const Duration(days: 1)));
                   break;
               }
-              print( Get.find<DateTimeController>().currentIndex.value);
-
+              print(Get.find<DateTimeController>().currentIndex.value);
             },
             child: Obx(() => SizedBox(
-              width: AppLayout.getWidth(127),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Card(
-                  color:
-                  Get.find<DateTimeController>().currentIndex.value ==
-                      index
-                      ? AppColor.primaryColor.withOpacity(0.05)
-                      : Colors.transparent,
-                  shape: roundedRectangleBorder.copyWith(
-                      side: BorderSide(
-                          width: 1,
-                          color: Get.find<DateTimeController>()
-                              .currentIndex
-                              .value ==
-                              index
-                              ? AppColor.primaryColor
-                              : AppColor.hintColor)),
-                  elevation: 0,
-                  child: Center(
-                      child: Text(
+                  width: AppLayout.getWidth(127),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Card(
+                      color:
+                          Get.find<DateTimeController>().currentIndex.value ==
+                                  index
+                              ? AppColor.primaryColor.withOpacity(0.05)
+                              : Colors.transparent,
+                      shape: roundedRectangleBorder.copyWith(
+                          side: BorderSide(
+                              width: 1,
+                              color: Get.find<DateTimeController>()
+                                          .currentIndex
+                                          .value ==
+                                      index
+                                  ? AppColor.primaryColor
+                                  : AppColor.hintColor)),
+                      elevation: 0,
+                      child: Center(
+                          child: Text(
                         selectedBeforeDayAndAfterDay[index],
                         style: AppStyle.mid_large_text.copyWith(
                             color: Get.find<DateTimeController>()
-                                .currentIndex
-                                .value ==
-                                index
+                                        .currentIndex
+                                        .value ==
+                                    index
                                 ? AppColor.primaryColor
                                 : AppColor.hintColor,
                             fontSize: Dimensions.fontSizeDefault),
                       )),
-                ),
-              ),
-            )),
+                    ),
+                  ),
+                )),
           );
         },
       ),
     );
   }
+
+
 }
 
-_selectedTaskLayout({context, projectName, dotColor}) {
-  return taskInputFieldLayout(
-      projectName: projectName,
-      dotColor: dotColor,
-      onAction: () {
-        customButtonSheet(
-            context: context, height: .7, child: const TaskViewLayout());
-      });
-}
+
 
 _timerLayout({required context, required endTime, required startTime}) {
+
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       customTitleText(text: AppString.text_set_start_time.tr),
       customSpacerHeight(height: 8),
-      _newEntryStartTime(context: context, startTime: startTime),
+      _newEntryStartTime(context: context, startTime: timeFormatTo12h(time: startTime)),
       customSpacerHeight(height: 20),
       customTitleText(text: AppString.text_set_end_time.tr),
       customSpacerHeight(height: 8),
-      _newEntryEndTime(context: context, endTime: endTime),
+      _newEntryEndTime(context: context, endTime: timeFormatTo12h(time: endTime)),
     ],
   );
 }
@@ -265,78 +259,16 @@ Widget _newEntryEndTime({required BuildContext context, required endTime}) {
   );
 }
 
-Widget taskInputFieldLayout({required onAction, Color? dotColor, projectName}) {
-  return InkWell(
-    onTap: () => onAction(),
-    child: Card(
-      elevation: 0,
-      color: Colors.transparent,
-      shape: roundedRectangleBorder.copyWith(
-          side: const BorderSide(width: .8, color: AppColor.hintColor)),
-      child: Padding(
-        padding: marginLayout.copyWith(left: 12, right: 8, top: 12, bottom: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Get.find<SelectedTaskController>()
-                    .selectedTaskIndex
-                    .value
-                    .isNotEmpty
-                ? Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        size: 14,
-                        color:
-                            Get.find<SelectedTaskController>().hexColor.value,
-                      ),
-                      customSpacerWidth(width: 12),
-                      Text(
-                        Get.find<SelectedTaskController>()
-                            .selectedTaskIndex
-                            .value,
-                        style: AppStyle.mid_large_text.copyWith(
-                            fontSize: Dimensions.fontSizeDefault + 1,
-                            color: AppColor.normalTextColor),
-                      ),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        size: 14,
-                        color: dotColor,
-                      ),
-                      customSpacerWidth(width: 12),
-                      Text(
-                        projectName ?? AppString.text_select_option.tr,
-                        style: AppStyle.mid_large_text.copyWith(
-                            fontSize: Dimensions.fontSizeDefault + 1,
-                            color: AppColor.normalTextColor),
-                      ),
-                    ],
-                  ),
-            const Icon(
-              CupertinoIcons.search,
-              size: 30,
-              color: AppColor.hintColor,
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
 
 _dateLayoutField({required String date}) {
-  print("date ==> $date");
-
   DateFormat inputFormat = DateFormat('E, d MMMM - y');
   DateTime inputDate = inputFormat.parse(date);
   String receiveDate = DateFormat('y-MM-dd').format(inputDate);
 
   print("receiveDate ==> $receiveDate");
+
+  log("Time-log ==> ${Get.find<DateTimeController>().timeLogDate.value}",
+      error: 21);
 
   return GestureDetector(
     onTap: () => showDialog(
@@ -406,7 +338,6 @@ AppBar timeLogAppbar(context) {
   );
 }
 
-
 Widget taskInputField({required onAction}) {
   return InkWell(
     onTap: () => onAction(),
@@ -418,28 +349,28 @@ Widget taskInputField({required onAction}) {
       child: Padding(
         padding: marginLayout.copyWith(left: 12, right: 8, top: 12, bottom: 12),
         child: Obx(() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Get.find<TimelineController>().taskName.value.isNotEmpty
-                ? Text(
-              Get.find<TimelineController>().taskName.value,
-              style: AppStyle.mid_large_text.copyWith(
-                  fontSize: Dimensions.fontSizeDefault + 1,
-                  color: AppColor.normalTextColor),
-            )
-                : Text(
-              AppString.text_select_option.tr,
-              style: AppStyle.mid_large_text.copyWith(
-                  fontSize: Dimensions.fontSizeDefault + 1,
-                  color: AppColor.hintColor),
-            ),
-            const Icon(
-              CupertinoIcons.search,
-              size: 30,
-              color: AppColor.hintColor,
-            )
-          ],
-        )),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Get.find<TimelineController>().taskName.value.isNotEmpty
+                    ? Text(
+                        Get.find<TimelineController>().taskName.value,
+                        style: AppStyle.mid_large_text.copyWith(
+                            fontSize: Dimensions.fontSizeDefault + 1,
+                            color: AppColor.normalTextColor),
+                      )
+                    : Text(
+                        AppString.text_select_option.tr,
+                        style: AppStyle.mid_large_text.copyWith(
+                            fontSize: Dimensions.fontSizeDefault + 1,
+                            color: AppColor.hintColor),
+                      ),
+                const Icon(
+                  CupertinoIcons.search,
+                  size: 30,
+                  color: AppColor.hintColor,
+                )
+              ],
+            )),
       ),
     ),
   );

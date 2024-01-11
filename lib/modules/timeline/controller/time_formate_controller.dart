@@ -1,9 +1,17 @@
 import 'package:intl/intl.dart';
 
-String formatTime(DateTime dateTime) {
+String timeFormatTo24h(DateTime dateTime) {
   // Format the DateTime in 24-hour format with AM/PM
   return DateFormat('hh.mm').format(dateTime);
 }
+
+String timeFormatTo12h({required String time}) {
+  // Format the DateTime in 24-hour format with AM/PM
+  DateTime dateTime = DateFormat.Hm().parse(time);
+  return  DateFormat.jm().format(dateTime);
+}
+
+
 
 formatTimeAccordingToSelectedTime(inputString) {
   // Define the input format

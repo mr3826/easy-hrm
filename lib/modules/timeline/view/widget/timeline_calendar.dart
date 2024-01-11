@@ -47,8 +47,8 @@ class TimeLineCalendar extends GetView<TimelineController> {
             Iterable<String> status = events.map((e) => e.description);
 
             // Format the DateTime in 24-hour format
-            String stateTime = formatTime(startDateTime);
-            String endTime = formatTime(endDateTime);
+            String stateTime = timeFormatTo24h(startDateTime);
+            String endTime = timeFormatTo24h(endDateTime);
 
             return TaskSolidLayout(
                 title: eventsName.toString(),

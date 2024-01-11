@@ -88,6 +88,7 @@ class TimelineController extends GetxController with StateMixin {
   final isManualEntryLoading = false.obs;
   final isTimelineCalendarByDateLoading = false.obs;
   final isTimelineSummaryByDateLoading = false.obs;
+  final isUpdateTimeLogLoading = false.obs;
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
@@ -153,6 +154,7 @@ class TimelineController extends GetxController with StateMixin {
 
 
     updateTimelineLogDetails({timeLineId,description,endDate,startDate,status,taskId,projectId}) async {
+      isUpdateTimeLogLoading(true);
     final response = await NetworkClient().mutationGraphData(updateTimelineLogDetailsQueryData, {
 
       "inputData": {
@@ -162,14 +164,6 @@ class TimelineController extends GetxController with StateMixin {
         "start_date": "$startDate",
         "status": "$status",
       }
-
-      // "inputData": {
-      //   "timeline_id": "f7017c93-5e22-4892-a1b9-063e17ae9c24",
-      //   "description": "test 30",
-      //   "end_date": "2024-01-09T18:20:00.000Z",
-      //   "start_date": "2024-01-09T16:35:00.000Z",
-      //   "status": "pending",
-      // }
 
     });
 
@@ -189,7 +183,9 @@ class TimelineController extends GetxController with StateMixin {
 
 
     }
-  }
+      isUpdateTimeLogLoading(false);
+
+    }
 
 
 
