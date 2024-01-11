@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,6 +38,7 @@ class TaskViewLayout extends StatelessWidget {
                   customSpacerHeight(height: 8),
                   taskSearchInputField(),
                   customSpacerHeight(height: 12),
+
                   Obx(() => Get.find<TimelineController>().isLoading.isTrue
                       ? const Center(
                           child: CupertinoActivityIndicator(),
@@ -49,7 +52,7 @@ class TaskViewLayout extends StatelessWidget {
                                 0,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return _projectListLayout(index);
+                              return _projectListLayout(index,context);
                             },
                           ),
                         )),
@@ -62,7 +65,7 @@ class TaskViewLayout extends StatelessWidget {
     );
   }
 
-  _projectListLayout(int index) {
+  _projectListLayout(int index,context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Get.find<TimelineController>()
@@ -112,7 +115,7 @@ class TaskViewLayout extends StatelessWidget {
                             .projectDropDownResponse
                             ?.getProjectsDropdown?[index]
                             .tasks
-                            ?.map((Tasks task) => _taskLayout(task))
+                            ?.map((Tasks task) => _taskLayout(task,context))
                             .toList(growable: true),
                       ],
                     ),
@@ -127,20 +130,20 @@ class TaskViewLayout extends StatelessWidget {
                     .projectDropDownResponse
                     ?.getProjectsDropdown?[index]
                     .tasks
-                    ?.map((Tasks tasks) => _taskLayout(tasks))
+                    ?.map((Tasks tasks) => _taskLayout(tasks,context))
                     .toList(growable: true),
               ],
             ),
     );
   }
 
-  Widget _taskLayout(Tasks task) {
+  Widget _taskLayout(Tasks task,context) {
     return InkWell(
       onTap: () {
         taskSearchController.text = task.name ?? "";
         Get.find<TimelineController>().taskName.value = task.name ?? "";
         Get.find<TimelineController>().taskId.value = task.taskId ?? "";
-        Get.back(canPop: false);
+        Navigator.pop(context);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,21 +155,6 @@ class TaskViewLayout extends StatelessWidget {
     );
   }
 }
-
-//to find color of the project
-
-// String getColorById(String taskId) {
-//   for (var project in Get.find<TimelineController>()
-//       .projectDropDownResponse!
-//       .getProjectsDropdown!) {
-//     for (var task in project.tasks!) {
-//       if (task.taskId == taskId) {
-//         return project.color ?? "No color available";
-//       }
-//     }
-//   }
-//   return "Task ID not found";
-// }
 
 Widget taskSearchInputField() {
   return SizedBox(

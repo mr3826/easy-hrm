@@ -46,6 +46,7 @@ class AppString {
   static String text_continue = 'Continue';
   static String text_close = 'Close';
   static String text_bio = 'Bio';
+  static String text_type = 'Type';
   static String text_welcome = 'Welcome';
   static String text_progress = 'Progress';
   static String text_set_new_password = 'Set new password';

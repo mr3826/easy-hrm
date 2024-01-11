@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
-
+import 'package:calendar_view/calendar_view.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -13,10 +14,13 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
+import '../../../common/domain/last_input_model.dart';
+import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
 
 class TimelineController extends GetxController with StateMixin {
+
+  Timer? _timer;
   @override
   void onInit() {
     log("""
@@ -25,49 +29,81 @@ class TimelineController extends GetxController with StateMixin {
     """);
     getProjectDropdown();
 
-    //individual date summary
-    //by default its current date
-    getTimelineByDate(
-        startDate: "${startDate.value}", endDate: "${endDate.value}");
+    // individual date summary
+    // by default its current date
+    getTimelineSummaryByDate(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+
     //monthly summary
     //by default its current month
-    getTimelineByMonth(
+
+    getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+
+    getCalendarTimelineDataByDate(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+
+
+
+
+
+    _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
+      getCalendarTimelineDataByDate(
+          startDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+      log("Call after 2 mini",error: 00);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     super.onInit();
   }
 
   final isLoading = false.obs;
   final isManualEntryLoading = false.obs;
+  final isTimelineCalendarByDateLoading = false.obs;
+  final isTimelineSummaryByDateLoading = false.obs;
+  final isUpdateTimeLogLoading = false.obs;
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
 
-  Rx<DateTime> startDate = DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, 0, 0, 0)
-      .obs;
-  Rx<DateTime> endDate = DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, 23, 59, 59)
-      .obs;
-
-  nextDate() {
-    startDate.value = startDate.value.add(const Duration(days: 1));
-  }
-
-  previousDate() {
-    endDate.value = endDate.value.subtract(const Duration(days: 1));
-  }
+  List<CalendarEventData<String>>? eventsOfTask;
+  List<CalendarEventData<String>>? eventOfLeave;
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
   TimelineSummaryByDate? timelineSummaryByDate;
+  CalendarTimeline? calendarTimeline;
   TimelineSummaryByMonth? timelineSummaryByMonth;
 
   startOrEndTimer({required String timerType}) async {
-    print("Method Called");
     final response =
         await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
       "inputData": {"timer_type": timerType}
@@ -115,6 +151,55 @@ class TimelineController extends GetxController with StateMixin {
       Get.back(canPop: false);
     }
   }
+
+
+    updateTimelineLogDetails({timeLineId,description,endDate,startDate,status,taskId,projectId}) async {
+      isUpdateTimeLogLoading(true);
+    final response = await NetworkClient().mutationGraphData(updateTimelineLogDetailsQueryData, {
+
+      "inputData": {
+        "timeline_id": "$timeLineId",
+        "description": "$description",
+        "end_date": "$endDate",
+        "start_date": "$startDate",
+        "status": "$status",
+      }
+
+    });
+
+    log(response.toString(),error: 0);
+
+    if (response.hasException) {
+      print(response.exception.toString());
+    } else {
+      log(response.toString(),error: 1);
+    }
+      isUpdateTimeLogLoading(false);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   getProjectDropdown() async {
     isLoading(true);
@@ -176,66 +261,141 @@ class TimelineController extends GetxController with StateMixin {
     isManualEntryLoading(false);
   }
 
-  getTimelineByDate({required String? startDate, String? endDate}) async {
+  getTimelineSummaryByMonth(
+      {required String? startDate, required String? endDate}) async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelineSummaryByDate, variables: {
+        .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+      "queryData": {
+        "start_time": startDate,
+        "end_time": endDate,
+      }
+    });
+    if (response.hasException) {
+      log("getTimelineByMonth:: ${response.exception.toString()}");
+    } else {
+      timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
+    }
+    change(null, status: RxStatus.success());
+  }
+
+
+  getTimelineSummaryByDate(
+      {required String? startDate, String? endDate}) async {
+    isTimelineSummaryByDateLoading(true);
+
+    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
+
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_time": "$startDate",
         "end_time": "$endDate",
         "is_calender_summary": true
       }
     });
-
+    log("getTimelineSummaryByDate ==> $response");
     if (response.hasException) {
+
       log("getTimelineByDate:: ${response.exception.toString()}");
     } else {
-      print("Called");
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
-      print(TimelineSummaryByDate.fromJson(response.data!)
-          .getTimelogSummaryForApp
-          ?.balanced);
+      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
-    change(null, status: RxStatus.success());
+    isTimelineSummaryByDateLoading(false);
+
   }
 
-  getCalendarTimelineData() async {
+  getCalendarTimelineDataByDate(
+      {required String? startDate, String? endDate}) async {
+    log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
+    isTimelineCalendarByDateLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
-      "queryData": {
-        "start_time":
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-        "end_time":
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}"
-      }
+      "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
     });
+    log("getCalendarTimelineDataByDate ==> $response");
 
     if (response.hasException) {
       log("getCalendarTimelineData:: ${response.exception.toString()}");
-    }else{
-      
-    }
-  }
+      isTimelineCalendarByDateLoading(false);
 
-  getTimelineByMonth(
-      {required String? startDate, required String? endDate}) async {
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelineSummaryByDate, variables: {
-      "queryData": {
-        "start_time": startDate,
-        "end_time": endDate,
-      }
-    });
-
-    if (response.hasException) {
-      log("getTimelineByMonth:: ${response.exception.toString()}");
     } else {
-      print(response.data);
-      timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
-      print(timelineSummaryByMonth?.getTimelogSummaryForApp?.totalSchedule);
-    }
+      calendarTimeline = CalendarTimeline.fromJson(response.data!);
 
-    change(null, status: RxStatus.success());
+      eventsOfTask = Get.find<TimelineController>()
+          .calendarTimeline
+          ?.getCalenderTimelinesForApp
+          ?.timelines
+          ?.map(
+        (e) {
+          DateTime dateTimeValue =
+              DateTime.parse(e.startDate ?? DateTime.now().toString());
+          ModelForDescription modelForDescription = ModelForDescription(
+              status: e.status ?? "", description: e.description ?? "",timeLId: e.timelineId??"");
+
+          Map<String, dynamic> jsonModel = modelForDescription.toJson();
+          String jsonObject = jsonEncode(jsonModel);
+          log(jsonModel.toString(),error: 1);
+
+
+          return CalendarEventData(
+            date: DateTime(
+                dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
+            startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
+            endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
+            event: e.task?.project?.name ?? "",
+
+            //total minute added here
+            title: e.totalMinutes ?? "0",
+
+            //status and description added here
+            description: jsonObject,
+          );
+
+
+
+        },
+      ).toList();
+
+      eventOfLeave = Get.find<TimelineController>()
+          .calendarTimeline
+          ?.getCalenderTimelinesForApp
+          ?.leaves
+          ?.map(
+        (e) {
+          DateTime dateTimeValue =
+              DateTime.parse(e.startDate ?? DateTime.now().toString());
+          DateTime dateCreateAtValue =
+              DateTime.parse(e.createdAt ?? DateTime.now().toString());
+
+          ModelForDescription modelForDescription = ModelForDescription(
+              status: e.status ?? "", description: e.description ?? "");
+          Map<String, dynamic> jsonModel = modelForDescription.toJson();
+          String jsonObject = jsonEncode(jsonModel);
+
+
+          return CalendarEventData(
+            date: DateTime(
+                dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
+            startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
+            endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
+            event: e.leaveType?.name ?? "",
+
+            //total minute added here
+            title: e.totalLeaveMinutes ?? "0",
+
+            //status and description added here
+            description: jsonObject,
+
+            //Date of application or create at date
+            endDate: dateCreateAtValue,
+          );
+        },
+      ).toList();
+    }
+    isTimelineCalendarByDateLoading(false);
+
+
   }
 }

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:payrun_mobile/modules/dashboard/model/timeline_summary_dashboard.dart';
 import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
 

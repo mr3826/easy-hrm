@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -11,8 +12,10 @@ import '../../../auth/presentation/view/otp_screen.dart';
 Widget btnSheetViewLayout(
     {required startTime,
     required endTime,
-    required status,
+    required status,required timeLineId,
     required context,
+      required startDateTime,
+      required endDateTime,
     required Color? bgColor,
     dateApplication,
     projectName,
@@ -22,14 +25,25 @@ Widget btnSheetViewLayout(
     dtsDrc,
     dtsDuration,
     dtsDate}) {
+  String createAtD = dateApplication.substring(1, dateApplication.length - 1);
+  DateTime originalDateTime = DateTime.parse(createAtD);
+  // Format the DateTime to the desired format
+  String createAtDate = DateFormat('dd MMMM yyyy').format(originalDateTime);
+
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
     child: Column(
       children: [
-        _infoLayout(text: AppString.text_start.tr, dynamicText: "$startTime"),
-        customSpacerHeight(height: 6),
-        _infoLayout(text: "${AppString.text_end.tr}:", dynamicText: "$endTime"),
-        customSpacerHeight(height: 6),
+        Column(
+          children: [
+            _infoLayout(
+                text: AppString.text_start.tr, dynamicText: "$startTime"),
+            customSpacerHeight(height: 6),
+            _infoLayout(
+                text: "${AppString.text_end.tr}:", dynamicText: "$endTime"),
+            customSpacerHeight(height: 6),
+          ],
+        ),
         _infoLayout(
             text: "${AppString.text_status.tr}:",
             widget: statusBtn(status: "$status")),
@@ -37,13 +51,12 @@ Widget btnSheetViewLayout(
         status == "taken"
             ? _infoLayout(
                 text: AppString.text_dete_of_application.tr,
-                dynamicText: "$dateApplication")
+                dynamicText: createAtDate)
             : _infoLayout(
                 text: AppString.text_project_task_or_tag,
-                widget:
-                    _projectNameLayout(color: bgColor, name: "$projectName")),
+                widget: _projectNameLayout(
+                    color: dtsBgColor, name: "$projectName")),
         customSpacerHeight(height: 50),
-
         buttonLayout(
             context: context,
             status: "$status",
@@ -51,12 +64,37 @@ Widget btnSheetViewLayout(
             dtsStartTime: "$startTime",
             dtsEndTime: "$endTime",
             dtsDuration: "$dtsDuration",
-            dtsDrc: "$dtsDate",
-            dtsDateStatus: "$dtsDateStatus",
+            dtsDrc: "$dtsDrc",
+            dtsDateStatus: "$status",
             dtsDate: "$dtsDate",
+            timeLineId: timeLineId,
+            endDateTime: endDateTime,
+            startDateTime: startDateTime,
             dtsBgColor: dtsBgColor)
       ],
     ),
+  );
+}
+
+_approvedLayout(projectName, dtsDuration) {
+  return Column(
+    children: [
+      _infoLayout(
+          text: "${AppString.text_type.tr}:", dynamicText: "$projectName"),
+      _infoLayout(
+          text: "${AppString.text_duration.tr}:", dynamicText: "$dtsDuration"),
+    ],
+  );
+}
+
+_takenLayout(projectName, dtsDuration) {
+  return Column(
+    children: [
+      _infoLayout(
+          text: "${AppString.text_type.tr}:", dynamicText: "$projectName"),
+      _infoLayout(
+          text: "${AppString.text_duration.tr}:", dynamicText: "$dtsDuration"),
+    ],
   );
 }
 
@@ -95,7 +133,7 @@ Widget _projectNameLayout({required Color? color, required name}) {
       ),
       customSpacerWidth(width: 4),
       Text(
-        "$name",
+        "${name == "" ? "Not Added yet" : name}",
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.normalTextColor,
             fontSize: Dimensions.fontSizeDefault + 1),

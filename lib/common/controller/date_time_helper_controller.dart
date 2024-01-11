@@ -1,7 +1,11 @@
+
+import 'dart:math';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../modules/timeline/controller/time_formate_controller.dart';
 
 class DateTimeController extends GetxController {
   RxBool isInTimeClicked = false.obs;
@@ -10,6 +14,8 @@ class DateTimeController extends GetxController {
   String selectedInputMins = '30';
   String clockHrsFormat = 'PM';
   RxString requestedDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+
+
   RxString timeLogDate = "".obs;
   RxString requestedInDate =
       DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
@@ -44,7 +50,7 @@ class DateTimeController extends GetxController {
       pickedOutTime.value =
           "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
       //total datetime
-      requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
+      requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma") //
           .parse(
               "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();
@@ -98,6 +104,11 @@ class DateTimeController extends GetxController {
       }
       print(requestedOutDate.value);
     }
+
+
+
+    print(requestedOutDate.toString());
+    print(requestedInDate.toString());
 
     isInTimeClicked.value = !isInTimeClicked.value;
     selectedInputHrs = '06';

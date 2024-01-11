@@ -63,19 +63,30 @@ statusBtn({required status}) {
   }
 }
 
-buttonLayout({required context, required status,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate}) {
+buttonLayout({required context,required timeLineId,   required startDateTime,
+  required endDateTime, required status,dtsStartTime,dtsEndTime,required dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,}) {
   if (status == "rejected") {
-    return _rejectedBtn(context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus);
+    return _rejectedBtn(
+        startDateTime: startDateTime,
+        endDateTime: endDateTime,
+        timeLineId:timeLineId,context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus);
   } else if (status == "pending") {
-    return _pendingLayout(context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
+    return _pendingLayout(
+
+        endDateTime: endDateTime,startDateTime: startDateTime,
+        timeLineId: timeLineId,context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
   } else if (status == "taken") {
     return Container();
   } else {
-    return _approvedLayout(context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
+    return _approvedLayout(
+
+        endDateTime: endDateTime,startDateTime: startDateTime,
+        timeLineId: timeLineId,context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
   }
 }
 
-_rejectedBtn({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus}) {
+_rejectedBtn({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus,required timeLineId,   required startDateTime,
+  required endDateTime,}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
@@ -97,6 +108,9 @@ _rejectedBtn({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) =>  TimeLogDetails(
+              timeLineId: timeLineId,
+              startDateTime: startDateTime,
+              endDateTime: endDateTime,
               dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
             )),
           );
@@ -115,31 +129,29 @@ _pendingLayout(
     dtsDateStatus,
     dtsProjectName,
     Color? dtsBgColor,
-    dtsDrc,
+      required startDateTime,
+      required endDateTime,
+      dtsDrc,
     dtsDuration,
+    required  timeLineId,
     dtsDate,
     dtsStatus}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
         cancelAction: () {
-          customDialog(
-              context: context,
-              saveBtnAction: () => Get.back(),
-              icon: Icons.delete_outline_outlined,
-              titleText: AppString.text_remove_time_log.tr,
-              subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
-              drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
-              iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr);
+         Navigator.pop(context);
         },
         buttonText: AppString.text_details.tr,
-        cancelText: AppString.text_remove.tr,
+        cancelText: AppString.text_cancel.tr,
         onAction: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) =>  TimeLogDetails(
+              startDateTime: startDateTime,
+              endDateTime: endDateTime,
+
+              timeLineId: timeLineId,
               dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
             )),
           );
@@ -148,7 +160,9 @@ _pendingLayout(
   );
 }
 
-_approvedLayout({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus}) {
+_approvedLayout({context,   required startDateTime,
+  required endDateTime,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus,required timeLineId}) {
+
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(
@@ -162,6 +176,9 @@ _approvedLayout({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Co
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>  TimeLogDetails(
+            endDateTime:endDateTime,
+            startDateTime: startDateTime,
+            timeLineId: timeLineId,
             dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
           )),
         );

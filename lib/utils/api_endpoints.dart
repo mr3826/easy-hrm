@@ -281,6 +281,14 @@ mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
 }
 ''';
 
+const updateTimelineLogDetailsQueryData = r'''
+mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
+  updateTimelineEntry(inputData: $inputData) {
+    id
+  }
+}
+''';
+
 const getProjectDropdownQuery = r'''
 query GetProjectsDropdown($queryData: ProjectQueryInputType, $optionData: OptionDataType) {
   getProjectsDropdown(queryData: $queryData, optionData: $optionData) {
@@ -314,7 +322,7 @@ query CheckStartOrStopTimeline {
 }
 ''';
 
-const getTimelineSummaryByDate = r'''
+const getTimelineSummaryByDateQuery = r'''
 query GetTimelogSummaryForApp($queryData: TimelogQueryInputType!) {
   getTimelogSummaryForApp(queryData: $queryData) {
     total_schedule
@@ -368,6 +376,9 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
         }
       }
       total_minutes
+      task_id
+      id
+      project_id
     }
   }
 }
