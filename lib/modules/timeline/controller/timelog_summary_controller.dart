@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timelog_details_by_month.dart';
 
+import '../../../network/exception_helper.dart';
 import '../../../network/network_client.dart';
 import '../../../utils/api_endpoints.dart';
 
@@ -40,7 +41,7 @@ class TimelineSummaryController extends GetxController {
     });
 
     if (response.hasException) {
-      log("getTimelineByMonth:: ${response.exception.toString()}");
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       print(response.data);
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
@@ -61,7 +62,7 @@ class TimelineSummaryController extends GetxController {
     });
 
     if (response.hasException) {
-      log("getTimelogDetailsByMonth:: ${response.exception.toString()}");
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       timelogDetailsByMonth = TimelogDetailsByMonth.fromJson(response.data!);
     }

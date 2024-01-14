@@ -15,6 +15,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../common/domain/last_input_model.dart';
+import '../../../network/exception_helper.dart';
 import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
 
@@ -110,7 +111,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      print(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       startOrEndTimerResponse =
           StartOrEndTimerResponse.fromJson(response.data!);
@@ -140,7 +141,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      print(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
       print(timerEntryResponse?.updateTimelineEntry?.startDate);
@@ -170,7 +171,7 @@ class TimelineController extends GetxController with StateMixin {
     log(response.toString(),error: 0);
 
     if (response.hasException) {
-      print(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       log(response.toString(),error: 1);
     }

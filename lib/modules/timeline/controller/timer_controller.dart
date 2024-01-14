@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 
+import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
 import '../model/timer_status_response.dart';
 
@@ -63,7 +64,7 @@ class TimeCounterController extends GetxController {
         await NetworkClient().getGraphQuery(queryString: timerStatusQuery);
 
     if (response.hasException) {
-      print(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       TimerResponse timerResponse = TimerResponse.fromJson(response.data!);
       if (timerResponse.checkStartOrStopTimeline?.startDate != null) {
