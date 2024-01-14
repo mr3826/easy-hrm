@@ -50,7 +50,7 @@ class DateTimeController extends GetxController {
       pickedOutTime.value =
           "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
       //total datetime
-      requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma") //
+      requestedOutDate.value = DateFormat("yyyy-MM-dd hh:mma")
           .parse(
               "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
           .toString();

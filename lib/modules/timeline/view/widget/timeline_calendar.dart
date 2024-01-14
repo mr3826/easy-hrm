@@ -31,7 +31,8 @@ class TimeLineCalendar extends GetView<TimelineController> {
         .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
 
 
-    return Padding(
+    return
+      Padding(
       padding: marginLayout,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 84.0),
@@ -115,11 +116,11 @@ class TimeLineCalendar extends GetView<TimelineController> {
             print(date.toString());
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Get.find<TimelineController>().getTimelineSummaryByDate(
-                  startDate:
-                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                  endDate:
-                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+              // Get.find<TimelineController>().getTimelineSummaryByDate(
+              //     startDate:
+              //         "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+              //     endDate:
+              //         "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
 
               Get.find<TimelineController>().getCalendarTimelineDataByDate(
                   startDate:

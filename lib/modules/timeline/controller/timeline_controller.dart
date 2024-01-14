@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -31,11 +32,11 @@ class TimelineController extends GetxController with StateMixin {
 
     // individual date summary
     // by default its current date
-    getTimelineSummaryByDate(
-        startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
-        endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+    // getTimelineSummaryByDate(
+    //     startDate:
+    //         "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+    //     endDate:
+    //         "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
     //monthly summary
     //by default its current month
@@ -155,6 +156,9 @@ class TimelineController extends GetxController with StateMixin {
 
     updateTimelineLogDetails({timeLineId,description,endDate,startDate,status,taskId,projectId}) async {
       isUpdateTimeLogLoading(true);
+      log("start post data in server ::: $startDate ",error: 1);
+      log("end post data in server ::: $endDate ",error: 2);
+
     final response = await NetworkClient().mutationGraphData(updateTimelineLogDetailsQueryData, {
 
       "inputData": {
@@ -177,9 +181,6 @@ class TimelineController extends GetxController with StateMixin {
       isUpdateTimeLogLoading(false);
 
     }
-
-
-
 
 
 
@@ -261,8 +262,7 @@ class TimelineController extends GetxController with StateMixin {
     isManualEntryLoading(false);
   }
 
-  getTimelineSummaryByMonth(
-      {required String? startDate, required String? endDate}) async {
+  getTimelineSummaryByMonth({required String? startDate, required String? endDate}) async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
@@ -280,13 +280,80 @@ class TimelineController extends GetxController with StateMixin {
   }
 
 
-  getTimelineSummaryByDate(
+  // getTimelineSummaryByDate(
+  //     {required String? startDate, String? endDate}) async {
+  //   isTimelineSummaryByDateLoading(true);
+  //
+  //   log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
+  //
+  //   final response = await NetworkClient()
+  //       .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+  //     "queryData": {
+  //       "start_time": "$startDate",
+  //       "end_time": "$endDate",
+  //       "is_calender_summary": true
+  //     }
+  //   });
+  //   log("getTimelineSummaryByDate ==> $response");
+  //   if (response.hasException) {
+  //
+  //     log("getTimelineByDate:: ${response.exception.toString()}");
+  //   } else {
+  //     timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
+  //     log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
+  //   }
+  //   isTimelineSummaryByDateLoading(false);
+  //
+  // }
+
+
+
+
+
+
+
+
+  //
+  // getTimelineSummaryByDate(
+  //     {required String? startDate, String? endDate}) async {
+  //   isTimelineSummaryByDateLoading(true);
+  //
+  //   log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
+  //
+  //   final response = await NetworkClient()
+  //       .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+  //     "queryData": {
+  //       "start_time": "$startDate",
+  //       "end_time": "$endDate",
+  //       "is_calender_summary": true
+  //     }
+  //   });
+  //   log("getTimelineSummaryByDate ==> $response");
+  //   if (response.hasException) {
+  //
+  //     log("getTimelineByDate:: ${response.exception.toString()}");
+  //   } else {
+  //     timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
+  //     log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
+  //   }
+  //   isTimelineSummaryByDateLoading(false);
+  //
+  // }
+  //
+
+
+  getCalendarTimelineDataByDate(
       {required String? startDate, String? endDate}) async {
+    log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
     isTimelineSummaryByDateLoading(true);
 
-    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
+    final responseForCalendar = await NetworkClient()
+        .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
+      "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
+    });
+    log("getCalendarTimelineDataByDate ==> $responseForCalendar");
 
-    final response = await NetworkClient()
+    final responseForSummary = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_time": "$startDate",
@@ -294,34 +361,18 @@ class TimelineController extends GetxController with StateMixin {
         "is_calender_summary": true
       }
     });
-    log("getTimelineSummaryByDate ==> $response");
-    if (response.hasException) {
 
-      log("getTimelineByDate:: ${response.exception.toString()}");
-    } else {
-      timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
-      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
-    }
-    isTimelineSummaryByDateLoading(false);
 
-  }
 
-  getCalendarTimelineDataByDate(
-      {required String? startDate, String? endDate}) async {
-    log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
-    isTimelineCalendarByDateLoading(true);
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
-      "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
-    });
-    log("getCalendarTimelineDataByDate ==> $response");
-
-    if (response.hasException) {
-      log("getCalendarTimelineData:: ${response.exception.toString()}");
-      isTimelineCalendarByDateLoading(false);
+    if (responseForCalendar.hasException && responseForSummary.hasException) {
+      log("getCalendarTimelineData:: ${responseForCalendar.exception.toString()}");
+      isTimelineSummaryByDateLoading(false);
 
     } else {
-      calendarTimeline = CalendarTimeline.fromJson(response.data!);
+
+      timelineSummaryByDate = TimelineSummaryByDate.fromJson(responseForSummary.data!);
+
+      calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
       eventsOfTask = Get.find<TimelineController>()
           .calendarTimeline
@@ -394,8 +445,8 @@ class TimelineController extends GetxController with StateMixin {
         },
       ).toList();
     }
-    isTimelineCalendarByDateLoading(false);
 
+    isTimelineSummaryByDateLoading(false);
 
   }
 }

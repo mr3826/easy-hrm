@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
@@ -23,6 +24,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/controller/timer_picker.dart';
 import '../../../../common/widget/custom_spacer.dart';
+import '../../../../common/widget/warning_message.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 
 class TimeLogTextField extends StatelessWidget {
@@ -62,6 +64,7 @@ class TimeLogTextField extends StatelessWidget {
     Get.find<DateTimeController>().requestedOutDate.value = endTimeD;
 
     log("time --> ${Get.find<DateTimeController>().requestedInDate.value}", error: 10);
+    log("time 21 --> $startDateTime", error: 101);
 
     return Padding(
       padding: marginLayout.copyWith(top: 20),
@@ -96,7 +99,7 @@ class TimeLogTextField extends StatelessWidget {
                 : AppColor.hintColor,
           ),
           customSpacerHeight(height: 20),
-         Obx(() => _updateBtnLayout(context: context, timeLineID: timeLineID)),
+         Obx(() => _updateBtnLayout(context: context, timeLineID: timeLineID,startDateTime: startTimeD,endDateTime: endTimeD,)),
           customSpacerHeight(height: 40)
         ],
       ),
@@ -106,19 +109,42 @@ class TimeLogTextField extends StatelessWidget {
 
 
 
-  _updateBtnLayout({timeLineID, context}) {
-   // dateTimeAddedFormat()
+  _updateBtnLayout({timeLineID, context,startDateTime,endDateTime}) {
 
+//    dateTimeAddedFormat()
+//
 //     DateTime date1 = DateTime.parse(Get.find<DateTimeController>().timeLogDate.value.toString());
 //     String receiveDate1 = DateFormat('y-MM-dd').format(date1);
 //     log("Time-log 1 ==> $date1", error: 21);
-
+//
 // log
+//
+//     if(Get.find<DateTimeController>().timeLogDate.value.isEmpty){
+//       dateTimeAddedFormat(time: "",date: "");
+//
+//     }
 
-    // if(Get.find<DateTimeController>().timeLogDate.value.isEmpty){
-    //   dateTimeAddedFormat(time: "",date: "");
-    //
-    // }
+
+    // log(Get.find<DateTimeController>().timeLogDate.value.length >
+    //     10
+    //     ? Get.find<DateTimeController>().timeLogDate.value
+    //     : DateFormat("yyyy-MM-dd hh:mma")
+    //     .parse(
+    //     "${Get.find<DateTimeController>().timeLogDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+    //     .toString(),error: 100);
+
+    // log(Get.find<DateTimeController>().timeLogDate.value.length >
+    //     10
+    //     ? Get.find<DateTimeController>().timeLogDate.value
+    //     : DateFormat("yyyy-MM-dd hh:mma")
+    //     .parse(
+    //     "${Get.find<DateTimeController>().timeLogDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+    //     .toString(),error: 100);
+    print("update ::: ${Get.find<DateTimeController>().timeLogDate.value} ${Get.find<DateTimeController>().pickedInTime.value}");
+    print("update ::: ${Get.find<DateTimeController>().timeLogDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}");
+    print("update s ::: $startDateTime");
+    print("update e ::: $endDateTime");
+
 
 
 
@@ -134,15 +160,87 @@ class TimeLogTextField extends StatelessWidget {
           color: AppColor.cardColor,
         ),
         onAction: () {
-          // Get.find<TimelineController>().updateTimelineLogDetails(
-          //   description: timelineLogDetailsDrcController.text,
-          //   status: status,
-          //   endDate: Get.find<DateTimeController>().requestedOutDate.value,
-          //   projectId: "",
-          //   startDate:Get.find<DateTimeController>().timeLogDate.value.isNotEmpty? Get.find<DateTimeController>().requestedInDate.value:Container(),
-          //   taskId: "",
-          //   timeLineId: timeLineID,
-          // );
+          // print( " date s ::: $startDateTime");
+          // print( " date e ::: $endDateTime");
+          // print( " date ::: ${Get.find<DateTimeController>().timeLogDate.value}");
+          // print( " time ::: ${Get.find<DateTimeController>().pickedInTime.value }");
+         //  print( " test ::: ${formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value,time: Get.find<DateTimeController>().pickedInTime.value )}");
+
+
+        //   print("end time formatting with method ${formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value.toString(),time: Get.find<DateTimeController>().pickedOutTime.value.toString())}");
+           print("start time formatting with method ${formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value,time: Get.find<DateTimeController>().pickedInTime.value)}");
+           print("enf time formatting with method ${formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value,time: Get.find<DateTimeController>().pickedOutTime.value)}");
+
+          print(Get.find<DateTimeController>().pickedInTime.value);
+          print(Get.find<DateTimeController>().pickedOutTime.value);
+          print(Get.find<DateTimeController>().timeLogDate.value);
+
+
+
+          Get.find<TimelineController>().updateTimelineLogDetails(
+            description: timelineLogDetailsDrcController.text,
+            status: status,
+
+
+            projectId: "",
+          //  startDate:Get.find<DateTimeController>().timeLogDate.value.isNotEmpty? Get.find<DateTimeController>().requestedInDate.value:DateFormat.d(),
+
+              // startDate:
+              // Get.find<DateTimeController>().timeLogDate.value.isNotEmpty?
+              // Get.find<DateTimeController>().timeLogDate.value.length >
+              //   10
+              //   ? Get.find<DateTimeController>().timeLogDate.value
+              //   : formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value,time: "08:20 PM" ):startDateTime,
+
+
+            // endDate:  Get.find<DateTimeController>().timeLogDate.value.isNotEmpty? Get.find<DateTimeController>().timeLogDate.value.length >
+            //     10
+            //     ? Get.find<DateTimeController>().timeLogDate.value
+            //     : formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value,time: "12:20 PM" ):endDateTime,
+
+
+
+
+
+
+
+            startDate: Get.find<DateTimeController>().timeLogDate.value.isNotEmpty?
+           Get.find<DateTimeController>().timeLogDate.value.length >10?
+           formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value,time: Get.find<DateTimeController>().pickedInTime.value):startDateTime:startDateTime,
+
+
+            endDate: Get.find<DateTimeController>().timeLogDate.value.isNotEmpty?  Get.find<DateTimeController>().timeLogDate.value.length >10?
+            formattingDateTimeAdded(date:Get.find<DateTimeController>().timeLogDate.value,time: Get.find<DateTimeController>().pickedOutTime.value):endDateTime:endDateTime,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // endDate: Get.find<DateTimeController>().timeLogDate.value.length >
+            //     10
+            //     ? Get.find<DateTimeController>().timeLogDate.value
+            //     : DateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
+            //     .parse(
+            //     "${Get.find<DateTimeController>().timeLogDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+            //     .toString(),
+
+
+
+
+            taskId: "",
+            timeLineId: timeLineID,
+          );
+           Get.find<DateTimeController>().timeLogDate.value.isEmpty?  showWarningMessage(message: "Please selected date"):Container();
 
         },
         cancelAction: () {
@@ -152,7 +250,20 @@ class TimeLogTextField extends StatelessWidget {
 
 
 
-
+  // startDate: Get.find<DateTimeController>().requestedInDate.value.length >
+  // 10
+  // ? Get.find<DateTimeController>().requestedInDate.value
+  //     : DateFormat("yyyy-MM-dd hh:mma")
+  //     .parse(
+  // "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+  //     .toString(),
+  // endDate: Get.find<DateTimeController>().requestedOutDate.value.length >
+  // 10
+  // ? Get.find<DateTimeController>().requestedOutDate.value
+  //     : DateFormat("yyyy-MM-dd hh:mma")
+  //     .parse(
+  // "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+  //     .toString());
 
 
   _dayScheduleLayout() {
@@ -270,8 +381,8 @@ Widget _newEntryEndTime({required BuildContext context, required endTime}) {
     dobIcon: Icons.access_time_outlined,
     hintColor: AppColor.normalTextColor,
     dobIconAction: () {
-      Get.find<DateTimeController>().isInTimeClicked.value = true;
-      timePicker(context,false);
+      Get.find<DateTimeController>().isInTimeClicked.value = false;
+      timePicker(context,true);
 
     },
   );
@@ -393,4 +504,11 @@ Widget taskInputField({required onAction}) {
       ),
     ),
   );
+}
+
+formatDateTime(){
+  DateFormat inputFormat = DateFormat('E, d MMMM - y');
+  DateTime inputDate = inputFormat.parse(Get.find<DateTimeController>().timeLogDate.value);
+
+  return DateFormat('y-MM-dd').format(inputDate);
 }
