@@ -32,10 +32,12 @@ class LogoutController extends GetxController {
           GetStorage().remove(AppString.IS_LOGGED_IN_FIRST_TIME);
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LAST_INPUT);
+          GetStorage().remove(AppString.LOGGED_IN);
         } else if (Platform.isIOS) {
           GetStorage().remove(AppString.IS_LOGGED_IN_FIRST_TIME);
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LAST_INPUT);
+          GetStorage().remove(AppString.LOGGED_IN);
           exit(0);
         }
       }
