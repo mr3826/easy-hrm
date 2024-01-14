@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_details.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../../../../common/controller/date_time_controller.dart';
+import '../../../../utils/utils.dart';
+import '../../../timeline/view/screen/update_timeline.dart';
 
 Widget approvedStatusBtn() {
   return CustomStatusButton(
@@ -63,30 +69,86 @@ statusBtn({required status}) {
   }
 }
 
-buttonLayout({required context,required timeLineId,   required startDateTime,
-  required endDateTime, required status,dtsStartTime,dtsEndTime,required dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,}) {
+buttonLayout({
+  required context,
+  required timeLineId,
+  required startDateTime,
+  required endDateTime,
+  required status,
+  dtsStartTime,
+  dtsEndTime,
+  required dtsDateStatus,
+  dtsProjectName,
+  Color? dtsBgColor,
+  dtsDrc,
+  dtsDuration,
+  dtsDate,
+}) {
   if (status == "rejected") {
     return _rejectedBtn(
         startDateTime: startDateTime,
         endDateTime: endDateTime,
-        timeLineId:timeLineId,context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus);
+        timeLineId: timeLineId,
+        context: context,
+        dtsBgColor: dtsBgColor,
+        dtsDate: dtsDate,
+        dtsDateStatus: dtsDateStatus,
+        dtsDrc: dtsDrc,
+        dtsDuration: dtsDuration,
+        dtsEndTime: dtsEndTime,
+        dtsStartTime: dtsStartTime,
+        dtsProjectName: dtsProjectName,
+        dtsStatus: dtsDateStatus);
   } else if (status == "pending") {
     return _pendingLayout(
-
-        endDateTime: endDateTime,startDateTime: startDateTime,
-        timeLineId: timeLineId,context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
+        endDateTime: endDateTime,
+        startDateTime: startDateTime,
+        timeLineId: timeLineId,
+        context: context,
+        dtsBgColor: dtsBgColor,
+        dtsDate: dtsDate,
+        dtsDateStatus: dtsDateStatus,
+        dtsDrc: dtsDrc,
+        dtsDuration: dtsDuration,
+        dtsEndTime: dtsEndTime,
+        dtsStartTime: dtsStartTime,
+        dtsProjectName: dtsProjectName,
+        dtsStatus: dtsDateStatus);
   } else if (status == "taken") {
     return Container();
   } else {
     return _approvedLayout(
-
-        endDateTime: endDateTime,startDateTime: startDateTime,
-        timeLineId: timeLineId,context:context,dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,dtsProjectName: dtsProjectName,dtsStatus: dtsDateStatus );
+        endDateTime: endDateTime,
+        startDateTime: startDateTime,
+        timeLineId: timeLineId,
+        context: context,
+        dtsBgColor: dtsBgColor,
+        dtsDate: dtsDate,
+        dtsDateStatus: dtsDateStatus,
+        dtsDrc: dtsDrc,
+        dtsDuration: dtsDuration,
+        dtsEndTime: dtsEndTime,
+        dtsStartTime: dtsStartTime,
+        dtsProjectName: dtsProjectName,
+        dtsStatus: dtsDateStatus);
   }
 }
 
-_rejectedBtn({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus,required timeLineId,   required startDateTime,
-  required endDateTime,}) {
+_rejectedBtn({
+  context,
+  dtsStartTime,
+  dtsEndTime,
+  dtsDateStatus,
+  dtsProjectName,
+  Color? dtsBgColor,
+  dtsDrc,
+  dtsDuration,
+  dtsDate,
+  dtsStatus,
+  required timeLineId,
+  required startDateTime,
+  required endDateTime,
+}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
@@ -105,20 +167,22 @@ _rejectedBtn({context,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
         onAction: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>  TimeLogDetails(
-              timeLineId: timeLineId,
-              startDateTime: startDateTime,
-              endDateTime: endDateTime,
-              dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
-            )),
-          );
+          Get.to(()=>TimeLogDetails(
+            timeLineId: timeLineId,
+            startDateTime: startDateTime,
+            endDateTime: endDateTime,
+            dtsBgColor: dtsBgColor,
+            dtsDate: dtsDate,
+            dtsDateStatus: dtsDateStatus,
+            dtsDrc: dtsDrc,
+            dtsStatus: dtsStatus,
+            dtsProjectName: dtsProjectName,
+            dtsDuration: dtsDuration,
+            dtsEndTime: dtsEndTime,
+            dtsStartTime: dtsStartTime,
+          ));
         },
-
         btnColor: AppColor.primaryColor),
-
-
   );
 }
 
@@ -129,40 +193,49 @@ _pendingLayout(
     dtsDateStatus,
     dtsProjectName,
     Color? dtsBgColor,
-      required startDateTime,
-      required endDateTime,
-      dtsDrc,
+    required startDateTime,
+    required endDateTime,
+    dtsDrc,
     dtsDuration,
-    required  timeLineId,
+    required timeLineId,
     dtsDate,
     dtsStatus}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
         cancelAction: () {
-         Navigator.pop(context);
+          Navigator.pop(context);
         },
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_cancel.tr,
         onAction: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>  TimeLogDetails(
-              startDateTime: startDateTime,
-              endDateTime: endDateTime,
-
-              timeLineId: timeLineId,
-              dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
-            )),
-          );
+          Get.to((){
+            _updateDataFromApiResponse(startDate: startDateTime,
+                endDate: endDateTime,
+                description: dtsDrc,
+                taskId: '',
+                timelineId: '');
+            return const UpdateTimeLineLog();
+          });
         },
         btnColor: AppColor.primaryColor),
   );
 }
 
-_approvedLayout({context,   required startDateTime,
-  required endDateTime,dtsStartTime,dtsEndTime,dtsDateStatus,dtsProjectName,Color?dtsBgColor,dtsDrc,dtsDuration,dtsDate,dtsStatus,required timeLineId}) {
-
+_approvedLayout(
+    {context,
+    required startDateTime,
+    required endDateTime,
+    dtsStartTime,
+    dtsEndTime,
+    dtsDateStatus,
+    dtsProjectName,
+    Color? dtsBgColor,
+    dtsDrc,
+    dtsDuration,
+    dtsDate,
+    dtsStatus,
+    required timeLineId}) {
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(
@@ -173,18 +246,40 @@ _approvedLayout({context,   required startDateTime,
             fontSize: Dimensions.fontSizeDefault + 2),
       ),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  TimeLogDetails(
-            endDateTime:endDateTime,
-            startDateTime: startDateTime,
-            timeLineId: timeLineId,
-            dtsBgColor: dtsBgColor,dtsDate: dtsDate,dtsDateStatus: dtsDateStatus,dtsDrc: dtsDrc,dtsStatus: dtsStatus,dtsProjectName: dtsProjectName,dtsDuration: dtsDuration,dtsEndTime: dtsEndTime,dtsStartTime: dtsStartTime,
-          )),
-        );
+        Get.find<TimelineController>().timeLogStatus==dtsStatus;
+        Get.find<TimelineController>().timeLineID==timeLineId;
+      Get.to((){
+        _updateDataFromApiResponse(startDate: startDateTime,
+            endDate: endDateTime,
+            description: dtsDrc,
+            taskId: '',
+            timelineId: '');
+        return const UpdateTimeLineLog();
+      });
       },
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,
     ),
   );
+}
+
+void _updateDataFromApiResponse(
+    {required startDate,
+    required endDate,
+    required taskId,
+    required timelineId,
+    required description}) {
+  //sub string because of data format
+  //date format "(data)"
+  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd')
+      .format(DateTime.parse(startDate.substring(1, startDate.length - 1)));
+  timelineLogDetailsDrcController.text =
+      description.substring(1, description.length - 1);
+  DateTime startTime =
+      DateTime.parse(startDate.substring(1, startDate.length - 1));
+  DateTime endTime = DateTime.parse(endDate.substring(1, endDate.length - 1));
+  Get.find<DateTimeController>().pickedInTime.value =
+      "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+  Get.find<DateTimeController>().pickedOutTime.value =
+      "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
 }

@@ -9,7 +9,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-import '../../../../common/controller/date_time_helper_controller.dart';
+import '../../../../common/controller/date_time_controller.dart';
 
 Widget durationTimeLayout({
   required Color? bgColor,

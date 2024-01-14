@@ -17,6 +17,7 @@ class DateTimeController extends GetxController {
 
 
   RxString timeLogDate = "".obs;
+
   RxString requestedInDate =
       DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   RxString requestedOutDate =

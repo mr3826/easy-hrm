@@ -20,58 +20,97 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../common/widget/warning_message.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../../leave/view/widget/single_date_picker_calendar.dart';
 import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
-import 'duration_time_widget.dart';
+import '../widget/duration_time_widget.dart';
+import '../widget/logdetails_widget.dart';
 
-class NewEntryTextField extends StatelessWidget {
-  const NewEntryTextField({super.key});
+class UpdateTimeLineLog extends StatelessWidget {
+
+  const UpdateTimeLineLog({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
-    print("New entry Buyild called");
-    return Padding(
-      padding: marginLayout,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          durationTimeLayout(bgColor: AppColor.primaryColor.withOpacity(0.04)),
-          customSpacerHeight(height: 12),
-          customTitleText(text: "${AppString.text_date.tr} *"),
-          customSpacerHeight(height: 8),
-          Obx(() => _dateLayoutField()),
-          customSpacerHeight(height: 8),
-          _dayScheduleLayout(),
-          customSpacerHeight(height: 20),
-          Obx(() => _timerLayout(context)),
-          customSpacerHeight(height: 20),
-          customTitleText(text: AppString.text_project_or_task.tr),
-          customSpacerHeight(height: 8),
-          _selectedTaskLayout(context),
-          customSpacerHeight(height: 20),
-          customTitleText(text: AppString.text_description.tr),
-          customSpacerHeight(height: 8),
-          InputNote(
-            controller: descriptionController,
+    print("Build Called");
+    return Scaffold(
+      appBar: timeLogAppbar(context),
+      body: Padding(
+        padding: marginLayout,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              durationTimeLayout(
+                  bgColor: AppColor.primaryColor.withOpacity(0.04)),
+              customSpacerHeight(height: 12),
+              customTitleText(text: "${AppString.text_date.tr} *"),
+              customSpacerHeight(height: 8),
+              _dateLayoutField(),
+              customSpacerHeight(height: 8),
+              _dayScheduleLayout(),
+              customSpacerHeight(height: 20),
+              Obx(() => _timerLayout(context)),
+              customSpacerHeight(height: 20),
+              customTitleText(text: AppString.text_project_or_task.tr),
+              customSpacerHeight(height: 8),
+              _selectedTaskLayout(context),
+              customSpacerHeight(height: 20),
+              customTitleText(text: AppString.text_description.tr),
+              customSpacerHeight(height: 8),
+              InputNote(
+                controller: descriptionController,
+              ),
+              customSpacerHeight(height: 20),
+              Obx(() =>
+                  Get.find<TimelineController>().isManualEntryLoading.isTrue
+                      ? const Center(
+                          child: CupertinoActivityIndicator(),
+                        )
+                      : CustomDoubleAppButton(
+                          buttonText: AppString.text_add.tr,
+                      onAction: () {
+                        Get.find<TimelineController>().updateTimelineLogDetails(
+                          description: timelineLogDetailsDrcController.text,
+                          status: Get.find<TimelineController>().timeLogStatus,
+                          projectId: "",
+                          startDate: Get.find<DateTimeController>()
+                              .requestedInDate
+                              .value
+                              .length >
+                              10
+                              ? Get.find<DateTimeController>().requestedInDate.value
+                              : DateFormat("yyyy-MM-dd hh:mma")
+                              .parse(
+                              "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+                              .toString(),
+                          endDate: Get.find<DateTimeController>()
+                              .requestedOutDate
+                              .value
+                              .length >
+                              10
+                              ? Get.find<DateTimeController>().requestedOutDate.value
+                              : DateFormat("yyyy-MM-dd hh:mma")
+                              .parse(
+                              "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+                              .toString(),
+                          taskId: "",
+                          timeLineId: Get.find<TimelineController>().timeLineID,
+
+                        );
+
+                      },
+                          cancelAction: () {
+                            Navigator.pop(context);
+                          })),
+              customSpacerHeight(height: 40)
+            ],
           ),
-          customSpacerHeight(height: 20),
-          Obx(() => Get.find<TimelineController>().isManualEntryLoading.isTrue
-              ? const Center(
-                  child: CupertinoActivityIndicator(),
-                )
-              : CustomDoubleAppButton(
-                  buttonText: AppString.text_add.tr,
-                  onAction: () {
-                    print("Clicked");
-                    Get.find<TimelineController>().createManualEntry();
-                  },
-                  cancelAction: () {
-                    Navigator.pop(context);
-                  })),
-          customSpacerHeight(height: 40)
-        ],
+        ),
       ),
     );
   }
@@ -86,7 +125,9 @@ class NewEntryTextField extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16))),
               insetPadding: EdgeInsets.zero,
-              child: SingleDatePicker());
+              child: SingleDatePicker(
+                isCalledFormTimeLog: true,
+              ));
         },
       ),
       child: Column(
@@ -101,9 +142,11 @@ class NewEntryTextField extends StatelessWidget {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    Get.find<DateTimeController>().requestedDate.value,
-                    style: AppStyle.normal_text_grey,
+                  Obx(
+                    () => Text(
+                      Get.find<DateTimeController>().requestedDate.value,
+                      style: AppStyle.normal_text_grey,
+                    ),
                   ),
                   const Icon(
                     Icons.calendar_today_outlined,
@@ -152,7 +195,6 @@ class NewEntryTextField extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 3,
         itemBuilder: (context, index) {
-
           return GestureDetector(
             onTap: () {
               Get.find<DateTimeController>().currentIndex.value = index;
@@ -222,6 +264,7 @@ class NewEntryTextField extends StatelessWidget {
       },
     );
   }
+
 }
 
 Widget _newEntryStartTime({required BuildContext context}) {

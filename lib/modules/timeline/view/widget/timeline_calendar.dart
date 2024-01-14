@@ -116,11 +116,11 @@ class TimeLineCalendar extends GetView<TimelineController> {
             print(date.toString());
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              // Get.find<TimelineController>().getTimelineSummaryByDate(
-              //     startDate:
-              //         "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-              //     endDate:
-              //         "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+              Get.find<TimelineController>().getTimelineSummaryByDate(
+                  startDate:
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                  endDate:
+                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
 
               Get.find<TimelineController>().getCalendarTimelineDataByDate(
                   startDate:

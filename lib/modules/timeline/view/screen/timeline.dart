@@ -13,7 +13,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/controller/date_time_helper_controller.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../leave/view/widget/widget.dart';
 
 class TimelineScreen extends GetView<TimelineController> {

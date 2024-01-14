@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
+import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
@@ -10,8 +10,8 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/utils.dart';
 import '../widget/logdetails_widget.dart';
-
 
 class TimeLogDetails extends StatelessWidget {
   final String dtsStartTime;
@@ -20,7 +20,8 @@ class TimeLogDetails extends StatelessWidget {
   final String dtsProjectName;
   final String startDateTime;
   final String endDateTime;
-  final Color? dtsBgColor; final String timeLineId;
+  final Color? dtsBgColor;
+  final String timeLineId;
   final String dtsDrc, dtsDuration;
   final String dtsDate, dtsStatus;
 
@@ -31,10 +32,8 @@ class TimeLogDetails extends StatelessWidget {
       required this.dtsDateStatus,
       required this.dtsProjectName,
       required this.dtsBgColor,
-
-        required this.startDateTime,
-        required this.endDateTime,
-
+      required this.startDateTime,
+      required this.endDateTime,
       required this.dtsDrc,
       required this.timeLineId,
       required this.dtsDuration,
@@ -43,7 +42,9 @@ class TimeLogDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    print("dtsDate;; $startDateTime");
+    _updateDataFromApiResponse();
+      return Scaffold(
       backgroundColor: dtsBgColor,
       appBar: timeLogAppbar(context),
       body: SingleChildScrollView(
@@ -88,9 +89,6 @@ class TimeLogDetails extends StatelessWidget {
   }
 
   _durationTimeLayout(context) {
-    DateTime parsedDate = DateFormat('EEE, dd MMMM - yyyy').parse(dtsDate);
-    Get.find<DateTimeController>().requestedDate.value= DateFormat('yyyy-MM-dd').format(parsedDate);
-
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -101,18 +99,13 @@ class TimeLogDetails extends StatelessWidget {
           shape: roundedRectangleBorder,
           child: Column(
             children: [
-
               Obx(() => Text(
-                DateFormat('EEEE, dd-MM-yyyy').format(DateTime.parse(
-                    Get.find<DateTimeController>().requestedDate.value)
-                ),
-
-                style: AppStyle.mid_large_text.copyWith(
-                    fontSize: Dimensions.fontSizeDefault,
-                    color: AppColor.cardColor),
-              )),
-
-
+                    DateFormat('EEEE, dd-MM-yyyy').format(DateTime.parse(
+                        Get.find<DateTimeController>().requestedDate.value)),
+                    style: AppStyle.mid_large_text.copyWith(
+                        fontSize: Dimensions.fontSizeDefault,
+                        color: AppColor.cardColor),
+                  )),
               customSpacerHeight(height: 12),
               Text(
                 AppString.text_duration.tr,
@@ -163,6 +156,25 @@ class TimeLogDetails extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _updateDataFromApiResponse() {
+    //sub string because of data format
+    //date format "(data)"
+    Get.find<DateTimeController>().requestedDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(
+            startDateTime.substring(1, startDateTime.length - 1)));
+    timelineLogDetailsDrcController.text =
+        dtsDrc.substring(1, dtsDrc.length - 1);
+    DateTime startTime =
+    DateTime.parse(startDateTime.substring(1, startDateTime.length - 1));
+    DateTime endTime =
+    DateTime.parse(endDateTime.substring(1, endDateTime.length - 1));
+    Get.find<DateTimeController>().pickedInTime.value =
+    "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+    Get.find<DateTimeController>().pickedOutTime.value =
+    "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+
   }
 }
 
