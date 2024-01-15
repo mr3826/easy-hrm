@@ -20,8 +20,8 @@ import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
 
 class TimelineController extends GetxController with StateMixin {
-
   Timer? _timer;
+
   @override
   void onInit() {
     log("""
@@ -53,34 +53,14 @@ class TimelineController extends GetxController with StateMixin {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
-
-
-
-
     _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
       getCalendarTimelineDataByDate(
           startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
           endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-      log("Call after 2 mini",error: 00);
+              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+      log("Call after 2 mini", error: 00);
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     super.onInit();
   }
@@ -153,11 +133,17 @@ class TimelineController extends GetxController with StateMixin {
     }
   }
 
-
-    updateTimelineLogDetails({timeLineId,description,endDate,startDate,status,taskId,projectId}) async {
-      isUpdateTimeLogLoading(true);
-    final response = await NetworkClient().mutationGraphData(updateTimelineLogDetailsQueryData, {
-
+  updateTimelineLogDetails(
+      {timeLineId,
+      description,
+      endDate,
+      startDate,
+      status,
+      taskId,
+      projectId}) async {
+    isUpdateTimeLogLoading(true);
+    final response = await NetworkClient()
+        .mutationGraphData(updateTimelineLogDetailsQueryData, {
       "inputData": {
         "timeline_id": "$timeLineId",
         "description": "$description",
@@ -165,42 +151,17 @@ class TimelineController extends GetxController with StateMixin {
         "start_date": "$startDate",
         "status": "$status",
       }
-
     });
 
-    log(response.toString(),error: 0);
+    log(response.toString(), error: 0);
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      log(response.toString(),error: 1);
+      log(response.toString(), error: 1);
     }
-      isUpdateTimeLogLoading(false);
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    isUpdateTimeLogLoading(false);
+  }
 
   getProjectDropdown() async {
     isLoading(true);
@@ -280,7 +241,6 @@ class TimelineController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {
     isTimelineSummaryByDateLoading(true);
@@ -297,14 +257,12 @@ class TimelineController extends GetxController with StateMixin {
     });
     log("getTimelineSummaryByDate ==> $response");
     if (response.hasException) {
-
       log("getTimelineByDate:: ${response.exception.toString()}");
     } else {
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
       log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
     isTimelineSummaryByDateLoading(false);
-
   }
 
   getCalendarTimelineDataByDate(
@@ -320,7 +278,6 @@ class TimelineController extends GetxController with StateMixin {
     if (response.hasException) {
       log("getCalendarTimelineData:: ${response.exception.toString()}");
       isTimelineCalendarByDateLoading(false);
-
     } else {
       calendarTimeline = CalendarTimeline.fromJson(response.data!);
 
@@ -333,12 +290,12 @@ class TimelineController extends GetxController with StateMixin {
           DateTime dateTimeValue =
               DateTime.parse(e.startDate ?? DateTime.now().toString());
           ModelForDescription modelForDescription = ModelForDescription(
-              status: e.status ?? "", description: e.description ?? "",timeLId: e.timelineId??"");
+              status: e.status ?? "",
+              description: e.description ?? "",
+              timeLId: e.timelineId ?? "");
 
           Map<String, dynamic> jsonModel = modelForDescription.toJson();
           String jsonObject = jsonEncode(jsonModel);
-          log(jsonModel.toString(),error: 1);
-
 
           return CalendarEventData(
             date: DateTime(
@@ -353,9 +310,6 @@ class TimelineController extends GetxController with StateMixin {
             //status and description added here
             description: jsonObject,
           );
-
-
-
         },
       ).toList();
 
@@ -374,7 +328,6 @@ class TimelineController extends GetxController with StateMixin {
               status: e.status ?? "", description: e.description ?? "");
           Map<String, dynamic> jsonModel = modelForDescription.toJson();
           String jsonObject = jsonEncode(jsonModel);
-
 
           return CalendarEventData(
             date: DateTime(
@@ -396,7 +349,5 @@ class TimelineController extends GetxController with StateMixin {
       ).toList();
     }
     isTimelineCalendarByDateLoading(false);
-
-
   }
 }

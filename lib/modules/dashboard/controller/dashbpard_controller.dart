@@ -15,7 +15,7 @@ class DashboardController extends GetxController with StateMixin {
   void onInit() {
     getProfileInfoForDashboard();
     getMonthlyTimelineInfoForDashboard();
-    getUpcommingInfoForDashboard();
+    getUpComingInfoForDashboard();
     super.onInit();
   }
 
@@ -59,7 +59,7 @@ class DashboardController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  getUpcommingInfoForDashboard() async {
+  getUpComingInfoForDashboard() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: upcommingLeaveForDashboardQuery);
