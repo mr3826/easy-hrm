@@ -6,10 +6,10 @@ import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
