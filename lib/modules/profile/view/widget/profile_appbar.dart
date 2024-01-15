@@ -11,6 +11,9 @@ AppBar profileAppbar({onAction}) {
     leadingWidth: AppLayout.getWidth(200),
     backgroundColor: AppColor.backgroundColor,
     elevation: 0,
+    actions: [
+      IconButton(onPressed: onAction, icon: const Icon(Icons.menu)),
+    ],
     leading: Padding(
       padding: const EdgeInsets.only(top: 16.0, left: 18),
       child: Text(

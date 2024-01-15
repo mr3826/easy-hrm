@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -64,6 +65,24 @@ class LeaveScreen extends GetView<LeaveScreenController> {
         ),
       ),
     );
+  }
+
+  void _customButtonSheet({context, child}) {
+    return showCustomAtmBtnSheet(
+      height: 780,
+        context: context,
+        child: Material(
+          color: AppColor.noColor,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(Dimensions.radiusMid),
+                  topLeft: Radius.circular(Dimensions.radiusMid)),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        ));
   }
 }
 
