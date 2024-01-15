@@ -23,13 +23,13 @@ class TimeLineCalendar extends GetView<TimelineController> {
   }
 
   _calendarLayout(context) {
+
     CalendarControllerProvider.of(context)
         .controller
         .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
     CalendarControllerProvider.of(context)
         .controller
         .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
-
 
     return
       Padding(

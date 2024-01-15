@@ -42,6 +42,7 @@ class TimelineController extends GetxController with StateMixin {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
+
     _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
       getCalendarTimelineDataByDate(
           startDate:
@@ -49,11 +50,7 @@ class TimelineController extends GetxController with StateMixin {
           endDate:
               "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
-      getTimelineSummaryByMonth(
-          startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+
 
       log("GetCalendarTimelineDataByDate Call after 2 minute", error: 0);
     });
@@ -74,8 +71,12 @@ class TimelineController extends GetxController with StateMixin {
   String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
 
-  List<CalendarEventData<String>>? eventsOfTask;
-  List<CalendarEventData<String>>? eventOfLeave;
+  RxList<CalendarEventData<String>> eventsOfTask =
+      <CalendarEventData<String>>[].obs;
+  RxList<CalendarEventData<String>> eventOfLeave =
+      <CalendarEventData<String>>[].obs;
+
+
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
@@ -168,9 +169,9 @@ class TimelineController extends GetxController with StateMixin {
 
       getTimelineSummaryByMonth(
           startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+              "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
           endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+              "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
       Get.back();
     }
     isUpdateTimeLogLoading(false);
@@ -275,13 +276,14 @@ class TimelineController extends GetxController with StateMixin {
       log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
     isTimelineSummaryByDateLoading(false);
-
   }
 
   getCalendarTimelineDataByDate(
       {required String? startDate, String? endDate}) async {
     log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
+
     isTimelineCalendarByDateLoading(true);
+
     final responseForCalendar = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
       "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
@@ -293,73 +295,79 @@ class TimelineController extends GetxController with StateMixin {
     } else {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
-      eventsOfTask = Get.find<TimelineController>()
-          .calendarTimeline
-          ?.getCalenderTimelinesForApp
-          ?.timelines
-          ?.map(
-        (e) {
-          DateTime dateTimeValue =
-              DateTime.parse(e.startDate ?? DateTime.now().toString());
-          ModelForDescription modelForDescription = ModelForDescription(
-              status: e.status ?? "",
-              description: e.description ?? "",
-              timeLId: e.timelineId ?? "");
+      eventsOfTask?.value = Get.find<TimelineController>()
+              .calendarTimeline
+              ?.getCalenderTimelinesForApp
+              ?.timelines!
+              .map(
+            (e) {
+              DateTime dateTimeValue =
+                  DateTime.parse(e.startDate ?? DateTime.now().toString());
+              ModelForDescription modelForDescription = ModelForDescription(
+                  status: e.status ?? "",
+                  description: e.description ?? "",
+                  timeLId: e.timelineId ?? "");
 
-          Map<String, dynamic> jsonModel = modelForDescription.toJson();
-          String jsonObject = jsonEncode(jsonModel);
-          log(jsonModel.toString(), error: 1);
+              Map<String, dynamic> jsonModel = modelForDescription.toJson();
+              String jsonObject = jsonEncode(jsonModel);
+              log(jsonModel.toString(), error: 1);
 
-          return CalendarEventData(
-            date: DateTime(
-                dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
-            startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
-            endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
-            event: e.task?.project?.name ?? "",
+              return CalendarEventData(
+                date: DateTime(
+                    dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
+                startTime:
+                    DateTime.parse(e.startDate ?? DateTime.now().toString()),
+                endTime:
+                    DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
+                event: e.task?.project?.name ?? "",
 
-            //total minute added here
-            title: e.totalMinutes ?? "0",
+                //total minute added here
+                title: e.totalMinutes ?? "0",
 
-            //status and description added here
-            description: jsonObject,
-          );
-        },
-      ).toList();
+                //status and description added here
+                description: jsonObject,
+              );
+            },
+          ).toList() ??
+          [];
 
-      eventOfLeave = Get.find<TimelineController>()
-          .calendarTimeline
-          ?.getCalenderTimelinesForApp
-          ?.leaves
-          ?.map(
-        (e) {
-          DateTime dateTimeValue =
-              DateTime.parse(e.startDate ?? DateTime.now().toString());
-          DateTime dateCreateAtValue =
-              DateTime.parse(e.createdAt ?? DateTime.now().toString());
+      eventOfLeave?.value = Get.find<TimelineController>()
+              .calendarTimeline
+              ?.getCalenderTimelinesForApp
+              ?.leaves
+              ?.map(
+            (e) {
+              DateTime dateTimeValue =
+                  DateTime.parse(e.startDate ?? DateTime.now().toString());
+              DateTime dateCreateAtValue =
+                  DateTime.parse(e.createdAt ?? DateTime.now().toString());
 
-          ModelForDescription modelForDescription = ModelForDescription(
-              status: e.status ?? "", description: e.description ?? "");
-          Map<String, dynamic> jsonModel = modelForDescription.toJson();
-          String jsonObject = jsonEncode(jsonModel);
+              ModelForDescription modelForDescription = ModelForDescription(
+                  status: e.status ?? "", description: e.description ?? "");
+              Map<String, dynamic> jsonModel = modelForDescription.toJson();
+              String jsonObject = jsonEncode(jsonModel);
 
-          return CalendarEventData(
-            date: DateTime(
-                dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
-            startTime: DateTime.parse(e.startDate ?? DateTime.now().toString()),
-            endTime: DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
-            event: e.leaveType?.name ?? "",
+              return CalendarEventData(
+                date: DateTime(
+                    dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
+                startTime:
+                    DateTime.parse(e.startDate ?? DateTime.now().toString()),
+                endTime:
+                    DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
+                event: e.leaveType?.name ?? "",
 
-            //total minute added here
-            title: e.totalLeaveMinutes ?? "0",
+                //total minute added here
+                title: e.totalLeaveMinutes ?? "0",
 
-            //status and description added here
-            description: jsonObject,
+                //status and description added here
+                description: jsonObject,
 
-            //Date of application or create at date
-            endDate: dateCreateAtValue,
-          );
-        },
-      ).toList();
+                //Date of application or create at date
+                endDate: dateCreateAtValue,
+              );
+            },
+          ).toList() ??
+          [];
     }
 
     isTimelineCalendarByDateLoading(false);
