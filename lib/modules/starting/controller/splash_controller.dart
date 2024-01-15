@@ -14,8 +14,10 @@ import '../../auth/domain/signin_res.dart';
 class SplashController extends GetxController {
   @override
   void onReady() {
-    if (checkTokenExpiration() < 1) {
-      _getNewToken();
+    if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
+      if (checkTokenExpiration() < 1) {
+        _getNewToken();
+      }
     }
     Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
     super.onReady();
@@ -40,15 +42,15 @@ class SplashController extends GetxController {
     DateTime now = DateTime.now();
 
     // Specify the target date and time
+
     DateTime targetDate =
-    JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
+        JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
 
     // Calculate the difference
     Duration difference = targetDate.difference(now);
 
     return difference.inHours;
   }
-
 
   void _getNewToken() async {
     try {
@@ -73,6 +75,3 @@ class SplashController extends GetxController {
     }
   }
 }
-
-
-
