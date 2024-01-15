@@ -12,10 +12,11 @@ import '../../../auth/presentation/view/otp_screen.dart';
 Widget btnSheetViewLayout(
     {required startTime,
     required endTime,
-    required status,required timeLineId,
+    required status,
+    required timeLineId,
     required context,
-      required startDateTime,
-      required endDateTime,
+    required startDateTime,
+    required endDateTime,
     required Color? bgColor,
     dateApplication,
     projectName,
@@ -75,6 +76,9 @@ Widget btnSheetViewLayout(
     ),
   );
 }
+
+//For status taken
+// approved button
 
 _approvedLayout(projectName, dtsDuration) {
   return Column(

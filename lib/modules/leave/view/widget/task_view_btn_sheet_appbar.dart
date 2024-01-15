@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -9,6 +10,8 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget projectViewBtnSheetAppbar(
     {required date, required duration, required bgColor}) {
+
+
   return Padding(
     padding: const EdgeInsets.all(2.0),
     child: Container(
@@ -30,7 +33,7 @@ Widget projectViewBtnSheetAppbar(
           customSpacerHeight(height: 15),
           Center(
               child: Text(
-            "$date",
+                DateFormat('EEEE, dd-MM-yyyy').format(date),
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.cardColor.withOpacity(0.9),
                 fontSize: Dimensions.fontSizeDefault),

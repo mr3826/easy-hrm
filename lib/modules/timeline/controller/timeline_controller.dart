@@ -13,6 +13,7 @@ import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.da
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../common/domain/last_input_model.dart';
@@ -22,21 +23,9 @@ import '../model/create_time_entry.dart';
 class TimelineController extends GetxController with StateMixin {
   Timer? _timer;
 
-  String timeLogStatus="";
-  String timeLineID="";
-
-
   @override
   void onInit() {
     getProjectDropdown();
-
-    // individual date summary
-    // by default its current date
-    // getTimelineSummaryByDate(
-    //     startDate:
-    //         "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
-    //     endDate:
-    //         "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
     //monthly summary
     //by default its current month
@@ -73,6 +62,12 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
+  String timeLogStatus="";
+  String timeLogDuration="";
+  String timeLineID="";
+  Color timeLogColor=AppColor.primaryColor;
+
+
 
   List<CalendarEventData<String>>? eventsOfTask;
   List<CalendarEventData<String>>? eventOfLeave;
@@ -142,8 +137,6 @@ class TimelineController extends GetxController with StateMixin {
       taskId,
       projectId}) async {
     isUpdateTimeLogLoading(true);
-    log("start post data in server ::: $startDate ", error: 1);
-    log("end post data in server ::: $endDate ", error: 2);
 
     final response = await NetworkClient()
         .mutationGraphData(updateTimelineLogDetailsQueryData, {
@@ -159,9 +152,16 @@ class TimelineController extends GetxController with StateMixin {
     log(response.toString(), error: 0);
 
     if (response.hasException) {
-      print(response.exception.toString());
+      isUpdateTimeLogLoading(false);
     } else {
-      log(response.toString(), error: 1);
+      getCalendarTimelineDataByDate(
+          startDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+      Get.back();
+
+
     }
     isUpdateTimeLogLoading(false);
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/controller/timer_picker.dart';
@@ -20,94 +19,129 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../common/widget/warning_message.dart';
+import '../../../../common/widget/custom_status_button.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../../leave/view/widget/single_date_picker_calendar.dart';
 import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
-import '../widget/duration_time_widget.dart';
 import '../widget/logdetails_widget.dart';
 
 class UpdateTimeLineLog extends StatelessWidget {
-
   const UpdateTimeLineLog({super.key});
-
-
 
   @override
   Widget build(BuildContext context) {
-    print("Build Called");
     return Scaffold(
       appBar: timeLogAppbar(context),
+      backgroundColor: Get.find<TimelineController>().timeLogColor,
       body: Padding(
-        padding: marginLayout,
+        padding: marginLayout.copyWith(left: 0, right: 0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              durationTimeLayout(
-                  bgColor: AppColor.primaryColor.withOpacity(0.04)),
-              customSpacerHeight(height: 12),
-              customTitleText(text: "${AppString.text_date.tr} *"),
-              customSpacerHeight(height: 8),
-              _dateLayoutField(),
-              customSpacerHeight(height: 8),
-              _dayScheduleLayout(),
-              customSpacerHeight(height: 20),
-              Obx(() => _timerLayout(context)),
-              customSpacerHeight(height: 20),
-              customTitleText(text: AppString.text_project_or_task.tr),
-              customSpacerHeight(height: 8),
-              _selectedTaskLayout(context),
-              customSpacerHeight(height: 20),
-              customTitleText(text: AppString.text_description.tr),
-              customSpacerHeight(height: 8),
-              InputNote(
-                controller: descriptionController,
+              Container(
+                height: AppLayout.getHeight(195),
+                decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(40),
+                        topLeft: Radius.circular(40))),
+                width: double.infinity,
+                child: _durationTimeLayout(context),
               ),
-              customSpacerHeight(height: 20),
-              Obx(() =>
-                  Get.find<TimelineController>().isManualEntryLoading.isTrue
-                      ? const Center(
-                          child: CupertinoActivityIndicator(),
-                        )
-                      : CustomDoubleAppButton(
-                          buttonText: AppString.text_add.tr,
-                      onAction: () {
-                        Get.find<TimelineController>().updateTimelineLogDetails(
-                          description: timelineLogDetailsDrcController.text,
-                          status: Get.find<TimelineController>().timeLogStatus,
-                          projectId: "",
-                          startDate: Get.find<DateTimeController>()
-                              .requestedInDate
-                              .value
-                              .length >
-                              10
-                              ? Get.find<DateTimeController>().requestedInDate.value
-                              : DateFormat("yyyy-MM-dd hh:mma")
-                              .parse(
-                              "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
-                              .toString(),
-                          endDate: Get.find<DateTimeController>()
-                              .requestedOutDate
-                              .value
-                              .length >
-                              10
-                              ? Get.find<DateTimeController>().requestedOutDate.value
-                              : DateFormat("yyyy-MM-dd hh:mma")
-                              .parse(
-                              "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
-                              .toString(),
-                          taskId: "",
-                          timeLineId: Get.find<TimelineController>().timeLineID,
-
-                        );
-
-                      },
-                          cancelAction: () {
-                            Navigator.pop(context);
-                          })),
-              customSpacerHeight(height: 40)
+              Container(
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(Dimensions.radiusMid + 8),
+                        topLeft: Radius.circular(Dimensions.radiusMid + 8))),
+                child: Padding(
+                  padding: marginLayout,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      customSpacerHeight(height: 24),
+                      customTitleText(text: "${AppString.text_date.tr} *"),
+                      customSpacerHeight(height: 8),
+                      _dateLayoutField(),
+                      customSpacerHeight(height: 8),
+                      _dayScheduleLayout(),
+                      customSpacerHeight(height: 20),
+                      Obx(() => _timerLayout(context)),
+                      customSpacerHeight(height: 20),
+                      customTitleText(text: AppString.text_project_or_task.tr),
+                      customSpacerHeight(height: 8),
+                      _selectedTaskLayout(context),
+                      customSpacerHeight(height: 20),
+                      customTitleText(text: AppString.text_description.tr),
+                      customSpacerHeight(height: 8),
+                      InputNote(
+                        controller: timelineLogDetailsDrcController,
+                      ),
+                      customSpacerHeight(height: 20),
+                      Obx(() => Get.find<TimelineController>()
+                              .isUpdateTimeLogLoading
+                              .isTrue
+                          ? const Center(
+                              child: CupertinoActivityIndicator(),
+                            )
+                          : CustomDoubleAppButton(
+                              buttonText: AppString.text_save.tr,
+                              onAction: () {
+                                Get.find<TimelineController>().timeLogStatus !=
+                                        "approved"
+                                    ? Get.find<TimelineController>()
+                                        .updateTimelineLogDetails(
+                                        description:
+                                            timelineLogDetailsDrcController
+                                                .text,
+                                        status: Get.find<TimelineController>()
+                                            .timeLogStatus
+                                            .toString(),
+                                        projectId: "",
+                                        startDate: Get.find<
+                                                        DateTimeController>()
+                                                    .requestedInDate
+                                                    .value
+                                                    .length >
+                                                10
+                                            ? Get.find<DateTimeController>()
+                                                .requestedInDate
+                                                .value
+                                            : DateFormat("yyyy-MM-dd hh:mma")
+                                                .parse(
+                                                    "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+                                                .toString(),
+                                        endDate: Get.find<DateTimeController>()
+                                                    .requestedOutDate
+                                                    .value
+                                                    .length >
+                                                10
+                                            ? Get.find<DateTimeController>()
+                                                .requestedOutDate
+                                                .value
+                                            : DateFormat("yyyy-MM-dd hh:mma")
+                                                .parse(
+                                                    "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+                                                .toString(),
+                                        taskId: "",
+                                        timeLineId:
+                                            Get.find<TimelineController>()
+                                                .timeLineID
+                                                .toString(),
+                                      )
+                                    : Container();
+                              },
+                              cancelAction: () {
+                                Navigator.pop(context);
+                              })),
+                      customSpacerHeight(height: 40)
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -265,6 +299,75 @@ class UpdateTimeLineLog extends StatelessWidget {
     );
   }
 
+  _durationTimeLayout(context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          color: Colors.transparent,
+          elevation: 0,
+          shape: roundedRectangleBorder,
+          child: Column(
+            children: [
+              Obx(() => Text(
+                    DateFormat('EEEE, dd-MM-yyyy').format(DateTime.parse(
+                        Get.find<DateTimeController>().requestedDate.value)),
+                    style: AppStyle.mid_large_text.copyWith(
+                        fontSize: Dimensions.fontSizeDefault,
+                        color: AppColor.cardColor),
+                  )),
+              customSpacerHeight(height: 12),
+              Text(
+                AppString.text_duration.tr,
+                style: AppStyle.mid_large_text.copyWith(
+                    fontSize: Dimensions.fontSizeDefault,
+                    color: AppColor.cardColor.withOpacity(0.9)),
+              ),
+              Text(
+                Get.find<TimelineController>().timeLogDuration.toString(),
+                style: AppStyle.normal_text_grey.copyWith(
+                    fontSize: Dimensions.fontSizeMid + 5,
+                    fontWeight: FontWeight.w900,
+                    color: AppColor.cardColor.withOpacity(0.9)),
+              ),
+              customSpacerHeight(height: 6),
+              _statusBtn(
+                status: Get.find<TimelineController>().timeLogStatus,
+                textColor: Get.find<TimelineController>().timeLogColor,
+              ),
+              customSpacerHeight(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _verticalDivider(
+                      height: 13, bgColor: AppColor.cardColor.withOpacity(0.3)),
+                  customSpacerWidth(width: 30),
+                  _verticalDivider(
+                      height: 17, bgColor: AppColor.cardColor.withOpacity(0.5)),
+                  customSpacerWidth(width: 30),
+                  _verticalDivider(
+                      height: 22, bgColor: AppColor.cardColor.withOpacity(0.7)),
+                  customSpacerWidth(width: 30),
+                  _verticalDivider(
+                      height: 24, bgColor: AppColor.cardColor.withOpacity(0.9)),
+                  customSpacerWidth(width: 30),
+                  _verticalDivider(
+                      height: 22, bgColor: AppColor.cardColor.withOpacity(0.7)),
+                  customSpacerWidth(width: 30),
+                  _verticalDivider(
+                      height: 17, bgColor: AppColor.cardColor.withOpacity(0.5)),
+                  customSpacerWidth(width: 30),
+                  _verticalDivider(
+                      height: 13, bgColor: AppColor.cardColor.withOpacity(0.3)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 Widget _newEntryStartTime({required BuildContext context}) {
@@ -289,5 +392,37 @@ Widget _newEntryEndTime({required BuildContext context}) {
     dobIconAction: () {
       timePicker(context, false);
     },
+  );
+}
+
+_verticalDivider({required double height, required Color bgColor}) {
+  return Container(
+    height: height,
+    width: 1,
+    color: bgColor,
+  );
+}
+
+_statusBtn({required status, required textColor}) {
+  if (status == "rejected") {
+    return statusBtn(text: AppString.text_rejected.tr, textColor: textColor);
+  } else if (status == "pending") {
+    return statusBtn(text: AppString.text_pendding.tr, textColor: textColor);
+  } else if (status == "taken") {
+    return Container();
+  } else {
+    return statusBtn(text: AppString.text_approved.tr, textColor: textColor);
+  }
+}
+
+Widget statusBtn({required text, required textColor}) {
+  return SizedBox(
+    width: AppLayout.getWidth(106),
+    height: AppLayout.getHeight(32),
+    child: CustomStatusButton(
+      textColor: textColor,
+      bgColor: AppColor.cardColor.withOpacity(0.9),
+      text: text,
+    ),
   );
 }

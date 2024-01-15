@@ -1,11 +1,8 @@
 
-import 'dart:math';
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../modules/timeline/controller/time_formate_controller.dart';
 
 class DateTimeController extends GetxController {
   RxBool isInTimeClicked = false.obs;

@@ -7,15 +7,14 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
-import 'package:payrun_mobile/modules/timeline/view/screen/timelog_details.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/utils.dart';
 import '../../../timeline/view/screen/update_timeline.dart';
+
 
 Widget approvedStatusBtn() {
   return CustomStatusButton(
@@ -69,7 +68,7 @@ statusBtn({required status}) {
   }
 }
 
-buttonLayout({
+Widget buttonLayout({
   required context,
   required timeLineId,
   required startDateTime,
@@ -167,20 +166,17 @@ _rejectedBtn({
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
         onAction: () {
-          Get.to(()=>TimeLogDetails(
-            timeLineId: timeLineId,
-            startDateTime: startDateTime,
-            endDateTime: endDateTime,
-            dtsBgColor: dtsBgColor,
-            dtsDate: dtsDate,
-            dtsDateStatus: dtsDateStatus,
-            dtsDrc: dtsDrc,
-            dtsStatus: dtsStatus,
-            dtsProjectName: dtsProjectName,
-            dtsDuration: dtsDuration,
-            dtsEndTime: dtsEndTime,
-            dtsStartTime: dtsStartTime,
-          ));
+          Get.to((){
+            _updateDataFromApiResponse(startDate: startDateTime,
+                endDate: endDateTime,
+                color: dtsBgColor,
+                status: dtsStatus,
+                duration: dtsDuration,
+                description: dtsDrc,
+                taskId: "",
+                timelineId: timeLineId);
+            return  const UpdateTimeLineLog();
+          });
         },
         btnColor: AppColor.primaryColor),
   );
@@ -212,10 +208,13 @@ _pendingLayout(
           Get.to((){
             _updateDataFromApiResponse(startDate: startDateTime,
                 endDate: endDateTime,
+                color: dtsBgColor,
+                status: dtsStatus,
+                duration: dtsDuration,
                 description: dtsDrc,
-                taskId: '',
-                timelineId: '');
-            return const UpdateTimeLineLog();
+                taskId: "",
+                timelineId: timeLineId);
+            return  const UpdateTimeLineLog();
           });
         },
         btnColor: AppColor.primaryColor),
@@ -252,9 +251,13 @@ _approvedLayout(
         _updateDataFromApiResponse(startDate: startDateTime,
             endDate: endDateTime,
             description: dtsDrc,
+            duration: dtsDuration,
+            color: dtsBgColor,
+
             taskId: '',
-            timelineId: '');
-        return const UpdateTimeLineLog();
+
+            timelineId: '', status:dtsStatus);
+        return  const UpdateTimeLineLog();
       });
       },
       buttonColor: AppColor.primaryColor,
@@ -267,14 +270,24 @@ void _updateDataFromApiResponse(
     {required startDate,
     required endDate,
     required taskId,
+      required status,
+      required color,
+
+      required duration,
+
     required timelineId,
     required description}) {
   //sub string because of data format
-  //date format "(data)"
-  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd')
-      .format(DateTime.parse(startDate.substring(1, startDate.length - 1)));
-  timelineLogDetailsDrcController.text =
-      description.substring(1, description.length - 1);
+  //date format "(data)";
+
+  Get.find<TimelineController>().timeLogDuration=duration;
+  Get.find<TimelineController>().timeLogColor=color;
+
+  Get.find<TimelineController>().timeLogStatus=status;
+  status!="approved"?
+  Get.find<TimelineController>().timeLineID=timelineId.substring(1, timelineId.length - 1):Container();
+  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate.substring(1, startDate.length - 1)));
+  timelineLogDetailsDrcController.text = description.substring(1, description.length - 1);
   DateTime startTime =
       DateTime.parse(startDate.substring(1, startDate.length - 1));
   DateTime endTime = DateTime.parse(endDate.substring(1, endDate.length - 1));

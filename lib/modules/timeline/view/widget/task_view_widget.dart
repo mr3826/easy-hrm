@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/project_view_widget.dart';
@@ -52,14 +50,8 @@ class TaskView extends StatelessWidget {
 
     // Parse the original date and time string
     DateTime createAtDateD = DateTime.parse(createAtDate);
-
-    // Format the DateTime to the desired format
-
-    log("start date ==> $startTime",error: 011);
-    log("end date ==> $endTime",error: 022);
-
-    print("end time ==> $endFormatTime");
-
+    
+    
     // Using int.parse() to convert the string to an integer
     int intValue = int.parse(formatDuration);
     // Create a Duration object from the total minutes
