@@ -31,6 +31,7 @@ class TimelineController extends GetxController with StateMixin {
     //monthly summary
     //by default its current month
 
+
     getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
