@@ -48,7 +48,14 @@ class TimelineController extends GetxController with StateMixin {
               "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
           endDate:
               "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-      log("Call after 2 mini", error: 00);
+
+      getTimelineSummaryByMonth(
+          startDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+
+      log("GetCalendarTimelineDataByDate Call after 2 minute", error: 0);
     });
 
     super.onInit();
@@ -62,12 +69,10 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
-  String timeLogStatus="";
-  String timeLogDuration="";
-  String timeLineID="";
-  Color timeLogColor=AppColor.primaryColor;
-
-
+  String timeLogStatus = "";
+  String timeLogDuration = "";
+  String timeLineID = "";
+  Color timeLogColor = AppColor.primaryColor;
 
   List<CalendarEventData<String>>? eventsOfTask;
   List<CalendarEventData<String>>? eventOfLeave;
@@ -137,6 +142,7 @@ class TimelineController extends GetxController with StateMixin {
       taskId,
       projectId}) async {
     isUpdateTimeLogLoading(true);
+    log("updateTimelineLogDetails start & end ==>$startDate And $endDate");
 
     final response = await NetworkClient()
         .mutationGraphData(updateTimelineLogDetailsQueryData, {
@@ -156,12 +162,16 @@ class TimelineController extends GetxController with StateMixin {
     } else {
       getCalendarTimelineDataByDate(
           startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
           endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+
+      getTimelineSummaryByMonth(
+          startDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
       Get.back();
-
-
     }
     isUpdateTimeLogLoading(false);
   }
@@ -247,7 +257,6 @@ class TimelineController extends GetxController with StateMixin {
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {
     isTimelineSummaryByDateLoading(true);
-
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
 
     final response = await NetworkClient()
@@ -266,13 +275,13 @@ class TimelineController extends GetxController with StateMixin {
       log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
     }
     isTimelineSummaryByDateLoading(false);
+
   }
 
   getCalendarTimelineDataByDate(
       {required String? startDate, String? endDate}) async {
     log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
-    isTimelineSummaryByDateLoading(true);
-
+    isTimelineCalendarByDateLoading(true);
     final responseForCalendar = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
       "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
@@ -280,7 +289,7 @@ class TimelineController extends GetxController with StateMixin {
 
     if (responseForCalendar.hasException) {
       log("getCalendarTimelineData:: ${responseForCalendar.exception.toString()}");
-      isTimelineSummaryByDateLoading(false);
+      isTimelineCalendarByDateLoading(false);
     } else {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
@@ -353,6 +362,6 @@ class TimelineController extends GetxController with StateMixin {
       ).toList();
     }
 
-    isTimelineSummaryByDateLoading(false);
+    isTimelineCalendarByDateLoading(false);
   }
 }
