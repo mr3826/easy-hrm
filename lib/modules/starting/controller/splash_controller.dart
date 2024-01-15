@@ -14,25 +14,25 @@ import '../../auth/domain/signin_res.dart';
 class SplashController extends GetxController {
   @override
   void onReady() {
-    if (checkTokenExpiration() < 1) {
-      _getNewToken();
-    }
+    // if (checkTokenExpiration() < 1) {
+    //   _getNewToken();
+    // }
     Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
     super.onReady();
   }
 
   Future chooseScreen() async {
     final box = GetStorage();
-    if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
-        box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
-      Get.offNamed(Routes.ONBOARD_SCRREN);
-    } else {
-      if (GetStorage().read(AppString.LOGGED_IN) == true &&
-          GetStorage().read(AppString.LOGGED_IN) != null) {
-        Get.offAndToNamed(Routes.MAIN_SCREEN);
-      } else {
+    // if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
+    //     box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
+    //   Get.offNamed(Routes.ONBOARD_SCRREN);
+    // } else {
+    //   if (GetStorage().read(AppString.LOGGED_IN) == true &&
+    //       GetStorage().read(AppString.LOGGED_IN) != null) {
+    //     Get.offAndToNamed(Routes.MAIN_SCREEN);
+    //   } else {
         Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
-      }
+     // }
     }
   }
 
@@ -72,7 +72,7 @@ class SplashController extends GetxController {
       log(e.toString());
     }
   }
-}
+//}
 
 
 

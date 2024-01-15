@@ -296,8 +296,9 @@ class TimelineController extends GetxController with StateMixin {
       isTimelineCalendarByDateLoading(false);
     } else {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
+      log("getCalendarTimelineData:: ${responseForCalendar.data}");
 
-      eventsOfTask?.value = Get.find<TimelineController>()
+      eventsOfTask.value = Get.find<TimelineController>()
               .calendarTimeline
               ?.getCalenderTimelinesForApp
               ?.timelines!
@@ -333,7 +334,7 @@ class TimelineController extends GetxController with StateMixin {
           ).toList() ??
           [];
 
-      eventOfLeave?.value = Get.find<TimelineController>()
+      eventOfLeave.value = Get.find<TimelineController>()
               .calendarTimeline
               ?.getCalenderTimelinesForApp
               ?.leaves
