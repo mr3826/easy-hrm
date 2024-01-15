@@ -10,7 +10,8 @@ class ExceptionHelper {
 
   static errorHandler({required OperationException exception}) async {
     if (exception.graphqlErrors.isNotEmpty) {
-      log("Method: ${exception.graphqlErrors[0].path} Code:${exception.graphqlErrors[0].extensions?['code']}",error: exception.graphqlErrors[0].message);
+      log("Method: ${exception.graphqlErrors[0].path} Code:${exception.graphqlErrors[0].extensions?['code']}",
+          error: exception.graphqlErrors[0].message);
       showErrorMessage(message: exception.graphqlErrors[0].message);
     } else {
       showErrorMessage(message: AppString.error_text);

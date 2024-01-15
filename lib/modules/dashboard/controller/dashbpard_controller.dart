@@ -66,6 +66,7 @@ class DashboardController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
+
     } else {
       upcommingLeaveDashboard =
           UpcommingLeaveDashboard.fromJson(response.data!);
