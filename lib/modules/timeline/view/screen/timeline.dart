@@ -61,7 +61,6 @@ class TimelineScreen extends GetView<TimelineController> {
           )
         : const CircularProgressIndicator();
   }
-
   _timerStringBtn() {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
