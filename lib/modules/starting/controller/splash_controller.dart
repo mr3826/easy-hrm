@@ -14,25 +14,27 @@ import '../../auth/domain/signin_res.dart';
 class SplashController extends GetxController {
   @override
   void onReady() {
-    // if (checkTokenExpiration() < 1) {
-    //   _getNewToken();
-    // }
+    if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
+      if (checkTokenExpiration() < 1) {
+        _getNewToken();
+      }
+    }
     Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
     super.onReady();
   }
 
   Future chooseScreen() async {
     final box = GetStorage();
-    // if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
-    //     box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
-    //   Get.offNamed(Routes.ONBOARD_SCRREN);
-    // } else {
-    //   if (GetStorage().read(AppString.LOGGED_IN) == true &&
-    //       GetStorage().read(AppString.LOGGED_IN) != null) {
-    //     Get.offAndToNamed(Routes.MAIN_SCREEN);
-    //   } else {
+    if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
+        box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
+      Get.offNamed(Routes.ONBOARD_SCRREN);
+    } else {
+      if (GetStorage().read(AppString.LOGGED_IN) == true &&
+          GetStorage().read(AppString.LOGGED_IN) != null) {
+        Get.offAndToNamed(Routes.MAIN_SCREEN);
+      } else {
         Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
-     // }
+      }
     }
   }
 
@@ -40,6 +42,7 @@ class SplashController extends GetxController {
     DateTime now = DateTime.now();
 
     // Specify the target date and time
+
     DateTime targetDate =
     JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
 
@@ -48,7 +51,6 @@ class SplashController extends GetxController {
 
     return difference.inHours;
   }
-
 
   void _getNewToken() async {
     try {
@@ -72,7 +74,4 @@ class SplashController extends GetxController {
       log(e.toString());
     }
   }
-//}
-
-
-
+}
