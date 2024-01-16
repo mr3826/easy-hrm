@@ -11,6 +11,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 
 import '../../../common/domain/error_model.dart';
 import '../../../common/widget/error_message.dart';
+import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
 
@@ -23,7 +24,7 @@ class UpdateProfileController extends GetxController {
         .mutationGraphData(updateUserProfileMutation, {"inputData": variables});
 
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       Get.find<UserProfileController>().getUserProfile();
       showSuccessMessage(

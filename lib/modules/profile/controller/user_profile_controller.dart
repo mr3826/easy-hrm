@@ -16,6 +16,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 
 import '../../../common/domain/error_model.dart';
 import '../../../common/domain/last_input_model.dart';
+import '../../../network/exception_helper.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
@@ -45,7 +46,7 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().getGraphQuery(queryString: getUserProfileQuery);
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       userDetails = UserDetails.fromJson(response.data!);
 
@@ -63,7 +64,7 @@ class UserProfileController extends GetxController with StateMixin {
         });
 
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
 
@@ -78,7 +79,7 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().getGraphQuery(queryString: userLogHistoryQuery);
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       userLogHistory = UserLogHistory.fromJson(response.data!);
       log("getUserLogHistory:: ${UserLogHistory.fromJson(response.data!)}");
@@ -187,7 +188,7 @@ class UserProfileController extends GetxController with StateMixin {
         await NetworkClient().getGraphQuery(queryString: organizationInfoQuery);
 
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       organizationInfo = OrganizationInfoDetails.fromJson(response.data!);
     }

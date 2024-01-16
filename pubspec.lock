@@ -324,18 +324,18 @@ packages:
     dependency: transitive
     description:
       name: gql
-      sha256: af87d4a25d8e5d91ade5c2620b30c962d4c342fab38dbe506ddc67e5ef43125e
+      sha256: "0bdd22c3a9464970ae590559e4f0568769b219dda9e94cb10c4cf999a3e263f7"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1-alpha+1704976947827"
+    version: "1.0.1-alpha+1705114622973"
   gql_dedupe_link:
     dependency: transitive
     description:
       name: gql_dedupe_link
-      sha256: ab65209efad037c1ab7f02358a17b4f207cbdb0fe83924a20f37cdcaac0a32d7
+      sha256: e5359dd0c7a38f95e2b12f6ab305989a4e30028e4032825c8e9f610150999c69
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4-alpha+1704976947915"
+    version: "2.0.4-alpha+1705114623057"
   gql_error_link:
     dependency: transitive
     description:
@@ -364,10 +364,10 @@ packages:
     dependency: transitive
     description:
       name: gql_link
-      sha256: d81c1032d5e81739b479684c3c04dbd89c1e35fd54e566deef19bb2186422e8e
+      sha256: "63941513a688d856546f0c3218e7ad94d47fc6e04662dcdb06de92a4cde2d7db"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1-alpha+1704976947842"
+    version: "1.0.1-alpha+1705114622987"
   gql_transform_link:
     dependency: transitive
     description:
@@ -420,10 +420,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "028f61960d56f26414eb616b48b04eb37d700cbe477b7fb09bf1d7ce57fd9271"
+      sha256: "004a2e90ce080f8627b5a04aecb4cdfac87d2c3f3b520aa291260be5a32c033d"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.3"
+    version: "4.1.4"
   intl:
     dependency: "direct main"
     description:
@@ -588,10 +588,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: "19314d595120f82aca0ba62787d58dde2cc6b5df7d2f0daf72489e38d1b57f2d"
+      sha256: "5a7999be66e000916500be4f15a3633ebceb8302719b47b9cc49ce924125350f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.2"
   path_provider_linux:
     dependency: transitive
     description:
@@ -700,10 +700,10 @@ packages:
     dependency: transitive
     description:
       name: pointycastle
-      sha256: "7c1e5f0d23c9016c5bbd8b1473d0d3fb3fc851b876046039509e18e0c7485f2c"
+      sha256: "43ac87de6e10afabc85c445745a7b799e04de84cebaa4fd7bf55a5e1e9604d29"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.3"
+    version: "3.7.4"
   r_dotted_line_border:
     dependency: "direct main"
     description:

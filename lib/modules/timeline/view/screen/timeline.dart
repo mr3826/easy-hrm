@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -21,6 +22,12 @@ class TimelineScreen extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
@@ -36,24 +43,24 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
-    return Get.find<TimelineController>().isTimelineCalendarByDateLoading.isFalse?
-
-
-      Padding(
-      padding: const EdgeInsets.only(left: 35.0, bottom: 18),
-      child: Row(
-        children: [
-          controller.isRunning.value
-              ? _timerStringOpenBtn(
-                  time: controller.starTimeDashboard.toString())
-              : _timerStringBtn(),
-          customSpacerWidth(width: 18),
-          _addTimeEntryBtn(),
-        ],
-      ),
-    ):const CircularProgressIndicator();
+    return Get.find<TimelineController>()
+            .isTimelineCalendarByDateLoading
+            .isFalse
+        ? Padding(
+            padding: const EdgeInsets.only(left: 35.0, bottom: 18),
+            child: Row(
+              children: [
+                controller.isRunning.value
+                    ? _timerStringOpenBtn(
+                        time: controller.starTimeDashboard.toString())
+                    : _timerStringBtn(),
+                customSpacerWidth(width: 18),
+                _addTimeEntryBtn(),
+              ],
+            ),
+          )
+        : const CircularProgressIndicator();
   }
-
   _timerStringBtn() {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
@@ -130,5 +137,8 @@ _buttonRadiusLayout() {
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(child: TimeLogView());
+
+  return const SliverToBoxAdapter(
+    child: TimeLogView(),
+  );
 }
