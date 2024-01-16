@@ -32,7 +32,6 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Build called");
     return Obx(() => Get.find<ApplyLeaveController>().isLoading.isFalse
         ? Padding(
             padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),

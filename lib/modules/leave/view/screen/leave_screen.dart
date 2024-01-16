@@ -117,3 +117,22 @@ _buttonRadiusLayout() {
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(child: IndividualEventView());
 }
+
+// void _customButtonSheet({context, child}) {
+//   return showCustomAtmBtnSheet(
+//       height: 780,
+//       context: context,
+//       child: Material(
+//         color: AppColor.noColor,
+//         child: Container(
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.only(
+//                 topRight: Radius.circular(Dimensions.radiusMid),
+//                 topLeft: Radius.circular(Dimensions.radiusMid)),
+//             color: AppColor.cardColor,
+//           ),
+//           child: child,
+//         ),
+//       ));
+// }
+// }
