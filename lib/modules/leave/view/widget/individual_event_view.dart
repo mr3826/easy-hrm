@@ -27,9 +27,7 @@ class IndividualEventView extends StatelessWidget {
     return Column(
       children: [
         customSpacerHeight(height: 5),
-        Obx(
-          () => _dateCalendarLayout(),
-        ),
+        Obx(() => _dateCalendarLayout()),
         customSpacerHeight(height: 8),
         _eventText(),
         Obx(() => _eventViewLayout()),

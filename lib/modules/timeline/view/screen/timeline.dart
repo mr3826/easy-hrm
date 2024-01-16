@@ -16,6 +16,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../leave/view/widget/widget.dart';
+import 'custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
@@ -28,6 +29,11 @@ class TimelineScreen extends GetView<TimelineController> {
     CalendarControllerProvider.of(context)
         .controller
         .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
+
+
+    print("length ::: ${Get.find<TimelineController>().eventsOfTask}");
+
+
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
@@ -44,7 +50,7 @@ class TimelineScreen extends GetView<TimelineController> {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
     return Get.find<TimelineController>()
-            .isTimelineCalendarByDateLoading
+            .isTimelineSummaryByDateLoading
             .isFalse
         ? Padding(
             padding: const EdgeInsets.only(left: 35.0, bottom: 18),
@@ -120,13 +126,13 @@ SliverAppBar get sliverAppBar {
 
 _buttonRadiusLayout() {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(6),
+    preferredSize: const Size.fromHeight(12),
     child: Container(
         decoration: BoxDecoration(
             color: AppColor.cardColor,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid + 80),
-                topLeft: Radius.circular(Dimensions.radiusMid + 80))),
+                topRight: Radius.circular(Dimensions.radiusMid + 100),
+                topLeft: Radius.circular(Dimensions.radiusMid + 100))),
         width: double.maxFinite,
         padding: const EdgeInsets.only(top: 0, bottom: 0),
         child: const Center(
@@ -140,6 +146,6 @@ _buttonRadiusLayout() {
 SliverToBoxAdapter get sliverToBoxAdapter {
 
   return const SliverToBoxAdapter(
-    child: TimeLogView(),
+    child: CustomTimelineCalendar(),
   );
 }
