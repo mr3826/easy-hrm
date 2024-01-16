@@ -290,6 +290,7 @@ class TimelineController extends GetxController with StateMixin {
       isTimelineCalendarByDateLoading(false);
     } else {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
+      log("getCalendarTimelineData:: $responseForCalendar");
 
       eventsOfTask.value = Get.find<TimelineController>()
               .calendarTimeline
@@ -297,8 +298,7 @@ class TimelineController extends GetxController with StateMixin {
               ?.timelines!
               .map(
             (e) {
-
-              DateTime dateTimeNow=DateTime.now();
+              DateTime dateTimeNow = DateTime.now();
               DateTime dateStartTimeValue =
                   DateTime.parse(e.startDate ?? DateTime.now().toString());
               DateTime dateEndTimeValue =
@@ -317,7 +317,6 @@ class TimelineController extends GetxController with StateMixin {
                 date: DateTime(DateTime.now().year, DateTime.now().month,
                     DateTime.now().day),
 
-
                 startTime: DateTime(
                   dateTimeNow.year,
                   dateTimeNow.month,
@@ -327,8 +326,7 @@ class TimelineController extends GetxController with StateMixin {
                   dateStartTimeValue.second,
                 ),
 
-
-                endTime:DateTime(
+                endTime: DateTime(
                   dateTimeNow.year,
                   dateTimeNow.month,
                   dateTimeNow.day,
@@ -387,6 +385,21 @@ class TimelineController extends GetxController with StateMixin {
           ).toList() ??
           [];
     }
+
+    // CalendarControllerProvider.of(Get.context!)
+    //     .controller.events.clear();
+
+    print(CalendarControllerProvider.of(Get.context!).controller.events.length);
+
+
+    CalendarControllerProvider.of(Get.context!)
+        .controller
+        .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
+    CalendarControllerProvider.of(Get.context!)
+        .controller
+        .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
+
+    CalendarControllerProvider.of(Get.context!).controller.events.clear();
 
     isTimelineCalendarByDateLoading(false);
   }

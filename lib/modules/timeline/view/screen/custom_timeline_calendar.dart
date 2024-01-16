@@ -19,17 +19,19 @@ class CustomTimelineCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller =Get.find<TimelineController>();
+
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: Stack(
+      child: Obx(() => Stack(
         children: [
-          Obx(() => controller.isTimelineSummaryByDateLoading.isTrue?const Center(child: CupertinoActivityIndicator()): const TimeLineCalendar(),),
+          controller.isTimelineSummaryByDateLoading.isTrue?const Center(child: CupertinoActivityIndicator()): const TimeLineCalendar(),
           _summaryLayout(),
+
           _dateCalendarLayout(),
         ],
 
-      ),
+      )),
     );
   }
 }

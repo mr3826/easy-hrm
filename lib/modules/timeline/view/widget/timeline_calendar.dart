@@ -20,7 +20,19 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+
     log("TimeLineCalendar build calendar",error: 100);
+    //Get.find<TimelineController>().eventOfLeave.remove(element);
+    // CalendarControllerProvider.of(context)
+    //     .controller.remove(event);
+    //
+    // CalendarControllerProvider.of(context)
+    //     .controller
+    //     .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
+    // CalendarControllerProvider.of(context)
+    //     .controller
+    //     .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
+
     return _calendarLayout(context);
   }
 

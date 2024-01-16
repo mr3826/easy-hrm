@@ -284,8 +284,10 @@ void _updateDataFromApiResponse(
   Get.find<TimelineController>().timeLogColor=color;
 
   Get.find<TimelineController>().timeLogStatus=status;
-  status!="approved"?
-  Get.find<TimelineController>().timeLineID=timelineId.substring(1, timelineId.length - 1):Container();
+  // status!="approved"?
+  // timelineId !=null?
+  // Get.find<TimelineController>().timeLineID=timelineId.substring(1, timelineId.length - 1):Container():Container();
+
   Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate.substring(1, startDate.length - 1)));
   timelineLogDetailsDrcController.text = description.substring(1, description.length - 1);
   DateTime startTime =

@@ -140,13 +140,6 @@ class TaskSolidLayout extends StatelessWidget {
 
 Widget nullContainer({required bgColor, required taskText, required int totalTime,required startTime,endTime}) {
 
-  var vlue;
-  switch(totalTime){
-    case >1:
-      return Text("a");
-  }
-
-
 
   return Card(
     elevation: 0,
@@ -154,20 +147,20 @@ Widget nullContainer({required bgColor, required taskText, required int totalTim
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         side: BorderSide(width: .5, color: bgColor)),
-    // child: 1 > totalTime
-    //     ? Padding(
-    //   padding:
-    //   const EdgeInsets.only(left: 6.0, top: 2, right: 2, bottom: 2),
-    //   child: Text(
-    //     taskText = "$startTime",
-    //     maxLines: 1,
-    //     style: AppStyle.mid_large_text.copyWith(
-    //         fontSize: Dimensions.fontSizeDefault,
-    //         color: bgColor,
-    //         overflow: TextOverflow.ellipsis),
-    //   ),
-    // )
-    //     : Container(),
+    child: 1 > totalTime
+        ? Padding(
+      padding:
+      const EdgeInsets.only(left: 6.0, top: 2, right: 2, bottom: 2),
+      child: Text(
+        taskText = "$startTime",
+        maxLines: 1,
+        style: AppStyle.mid_large_text.copyWith(
+            fontSize: Dimensions.fontSizeDefault,
+            color: bgColor,
+            overflow: TextOverflow.ellipsis),
+      ),
+    )
+        : Container(),
 
   );
 }
