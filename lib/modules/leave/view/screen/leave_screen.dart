@@ -10,7 +10,6 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_drawer.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
@@ -71,7 +70,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   void _customButtonSheet({context, child}) {
     return showCustomAtmBtnSheet(
-      height: 780,
+      height: 700,
         context: context,
         child: Material(
           color: AppColor.noColor,

@@ -30,7 +30,7 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
 
       child: DropdownButton(
           value: dropDownValue,
-          hint: Text(AppString.text_select_option.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault+1),),
+          hint: Text(AppString.text_select_on_option.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault+1),),
           dropdownColor: AppColor.cardColor,
           underline: const SizedBox.shrink(),
           isExpanded: true,

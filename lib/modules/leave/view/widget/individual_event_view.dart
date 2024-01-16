@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 
 import '../../controller/calendar_date_controller.dart';
 import 'leave_record_details_view.dart';
@@ -23,7 +24,6 @@ class IndividualEventView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("IndividualEventView build called");
     return Column(
       children: [
         customSpacerHeight(height: 5),
