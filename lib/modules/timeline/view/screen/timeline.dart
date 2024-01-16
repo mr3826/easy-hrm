@@ -50,7 +50,6 @@ class TimelineScreen extends GetView<TimelineController> {
       ),
     );
   }
-
   _timerStringBtn() {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
