@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 
+import '../../../../common/widget/custom_dotted_border.dart';
 import '../../controller/calendar_date_controller.dart';
 import 'leave_record_details_view.dart';
 
@@ -107,29 +109,24 @@ class IndividualEventView extends StatelessWidget {
   }
 
   _eventText() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        customSpacerHeight(height: 50),
-        Container(
-          height: 1,
-          width: 140,
-          color: AppColor.disableColor,
-        ),
-        Padding(
-          padding: marginLayout,
-          child: Text(
-            AppString.text_event.tr,
-            style:
-                AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+    return Padding(
+      padding:marginLayout,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          customSpacerHeight(height: 50),
+          horizontalDashLayout(),
+          Padding(
+            padding: marginLayout.copyWith(left: 30,right: 30),
+            child: Text(
+              AppString.text_event.tr,
+              style:
+                  AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+            ),
           ),
-        ),
-        Container(
-          height: 1,
-          width: 140,
-          color: AppColor.disableColor,
-        ),
-      ],
+          horizontalDashLayout()
+        ],
+      ),
     );
   }
 
@@ -318,4 +315,6 @@ class IndividualEventView extends StatelessWidget {
             );
           },
         );
+
 }
+

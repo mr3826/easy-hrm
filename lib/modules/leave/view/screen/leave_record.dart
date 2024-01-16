@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../enum.dart';
 import '../../../../utils/utils.dart';
 import '../widget/leave_record_details_view.dart';
@@ -80,12 +81,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           customSpacerHeight(height: 50),
-          Expanded(
-            child: Container(
-              height: 1,
-              color: AppColor.disableColor,
-            ),
-          ),
+          horizontalDashLayout(),
           Padding(
             padding: marginLayout,
             child: Text(
@@ -95,12 +91,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                   fontSize: Dimensions.fontSizeDefault),
             ),
           ),
-          Expanded(
-            child: Container(
-              height: 1,
-              color: AppColor.disableColor,
-            ),
-          ),
+          horizontalDashLayout(),
         ],
       ),
     );

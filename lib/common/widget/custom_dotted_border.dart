@@ -17,3 +17,37 @@ Widget dottedBorderLayoutView({required double height}){
     ),
   );
 }
+
+
+Widget horizontalDashLayout(){
+  return Expanded(
+    // Adjust the height of the dashed line
+    child: CustomPaint(
+      painter: DashedLinePainter(),
+    ),
+  );
+}
+
+class DashedLinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = AppColor.hintColor.withOpacity(0.8)
+      ..strokeWidth = .5;
+
+    double dashWidth = 4;
+    double dashSpace = 4;
+
+    double startX = 0;
+
+    while (startX < size.width) {
+      canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
