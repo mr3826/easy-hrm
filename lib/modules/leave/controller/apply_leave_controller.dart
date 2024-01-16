@@ -61,6 +61,7 @@ class ApplyLeaveController extends GetxController {
             routeIndex: 1,
           ));
     }
+
     isAssignLeaveLoaderLoading(false);
   }
 
