@@ -16,6 +16,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../leave/view/widget/widget.dart';
+import '../../controller/timeline_controller.dart';
 import 'custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {

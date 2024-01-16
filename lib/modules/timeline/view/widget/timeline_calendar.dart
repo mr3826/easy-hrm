@@ -25,6 +25,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
   }
 
   _calendarLayout(context) {
+
     return
       Padding(
       padding: marginLayout,
@@ -110,6 +111,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
             return formattedTime;
           },
           dateStringBuilder: (date, {secondaryDate}) {
+
             var formatDate = DateFormat('dd MMM yyyy').format(date);
             var now = DateFormat('dd MMM yyyy').format(DateTime.now());
             if (formatDate == now) {

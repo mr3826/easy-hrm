@@ -11,6 +11,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_drawer.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
 
@@ -32,8 +33,10 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   //component
   _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: () =>
-          customButtonSheet(context: context, child: ApplyLeaveScreen()),
+      onTap: (){
+        _customButtonSheet(context: context,child:  ApplyLeaveScreen());
+
+      },
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
         child: Container(
@@ -64,6 +67,24 @@ class LeaveScreen extends GetView<LeaveScreenController> {
         ),
       ),
     );
+  }
+
+  void _customButtonSheet({context, child}) {
+    return showCustomAtmBtnSheet(
+      height: 780,
+        context: context,
+        child: Material(
+          color: AppColor.noColor,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(Dimensions.radiusMid),
+                  topLeft: Radius.circular(Dimensions.radiusMid)),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        ));
   }
 }
 
@@ -118,21 +139,3 @@ SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(child: IndividualEventView());
 }
 
-// void _customButtonSheet({context, child}) {
-//   return showCustomAtmBtnSheet(
-//       height: 780,
-//       context: context,
-//       child: Material(
-//         color: AppColor.noColor,
-//         child: Container(
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.only(
-//                 topRight: Radius.circular(Dimensions.radiusMid),
-//                 topLeft: Radius.circular(Dimensions.radiusMid)),
-//             color: AppColor.cardColor,
-//           ),
-//           child: child,
-//         ),
-//       ));
-// }
-// }

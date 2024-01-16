@@ -24,7 +24,7 @@ class LanguageLayout extends StatelessWidget {
           itemBuilder: (context, index) {
             List languageIndex = ["English", "Norwegian"];
             return Obx(() => Padding(
-                  padding: marginLayout.copyWith(top: 12),
+                  padding: marginLayout.copyWith(top: 0),
                   child: Column(
                     children: [
                       InkWell(
@@ -55,8 +55,10 @@ class LanguageLayout extends StatelessWidget {
                           ],
                         ),
                       ),
-                      customSpacerHeight(height: 12),
-                      const Divider()
+                       Padding(
+                         padding: const EdgeInsets.only(top: 14.0,bottom: 14),
+                         child: Divider(color: AppColor.disableColor.withOpacity(0.9),thickness: 1,),
+                       )
                     ],
                   ),
                 ));

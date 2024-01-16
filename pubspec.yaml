@@ -18,7 +18,6 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
-
 environment:
   sdk: '>=3.0.6 <4.0.0'
 
@@ -53,7 +52,6 @@ dependencies:
   graphql_flutter:
   r_dotted_line_border: ^0.1.1
   lottie: ^2.6.0
-  syncfusion_flutter_calendar: ^23.2.7
   syncfusion_flutter_gauges: ^23.2.7
   calendar_view: ^1.0.4
   cached_network_image: ^3.3.0

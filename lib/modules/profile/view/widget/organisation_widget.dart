@@ -68,8 +68,9 @@ class OrganisationView extends StatelessWidget {
                             ],
                           ),
                           customSpacerHeight(height: 8),
-                          const Divider(
+                           Divider(
                             thickness: 1,
+                            color: AppColor.disableColor.withOpacity(0.9),
                           )
                         ],
                       ),
