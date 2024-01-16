@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
+import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
@@ -12,7 +11,6 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/timmer_text_field_dob.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
-import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -22,7 +20,9 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/controller/timer_picker.dart';
+import '../../../../common/widget/custom_card_style.dart';
 import '../../../../common/widget/custom_spacer.dart';
+import '../../../../common/widget/warning_message.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 
 class TimeLogTextField extends StatelessWidget {
@@ -54,22 +54,13 @@ class TimeLogTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String description = drc.substring(1, drc.length - 1);
-    String startTimeD = startDateTime.substring(1, startDateTime.length - 1);
-    String endTimeD = endDateTime.substring(1, endDateTime.length - 1);
     String timeLineID = timeLineId.substring(1, timeLineId.length - 1);
-    Get.find<DateTimeController>().requestedInDate.value = startTimeD;
-    Get.find<DateTimeController>().requestedOutDate.value = endTimeD;
-
-    log("time --> ${Get.find<DateTimeController>().requestedInDate.value}", error: 10);
-
     return Padding(
       padding: marginLayout.copyWith(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(() => _timerLayout(
-              context: context, endTime: endTime, startTime: startTime)),
+          Obx(() => _timerLayout(context: context)),
           customSpacerHeight(height: 20),
           customTitleText(text: "${AppString.text_date.tr} *"),
           customSpacerHeight(height: 8),
@@ -88,72 +79,70 @@ class TimeLogTextField extends StatelessWidget {
           customSpacerHeight(height: 8),
           InputNote(
             controller: timelineLogDetailsDrcController,
-            hintText: description.isNotEmpty
-                ? description
-                : AppString.text_add_description.tr,
-            hintColor: description.isNotEmpty
-                ? AppColor.normalTextColor
-                : AppColor.hintColor,
+            hintText: AppString.text_add_description.tr,
+            hintColor: AppColor.hintColor,
           ),
           customSpacerHeight(height: 20),
-         Obx(() => _updateBtnLayout(context: context, timeLineID: timeLineID)),
+          Obx(() => _updateBtnLayout(
+                context: context,
+                timeLineID: timeLineID,
+                // startDateTime: startTimeD,
+                // endDateTime: endTimeD,
+              )),
           customSpacerHeight(height: 40)
         ],
       ),
     );
   }
 
-
-
-
-  _updateBtnLayout({timeLineID, context}) {
-   // dateTimeAddedFormat()
-
-//     DateTime date1 = DateTime.parse(Get.find<DateTimeController>().timeLogDate.value.toString());
-//     String receiveDate1 = DateFormat('y-MM-dd').format(date1);
-//     log("Time-log 1 ==> $date1", error: 21);
-
-// log
-
-    // if(Get.find<DateTimeController>().timeLogDate.value.isEmpty){
-    //   dateTimeAddedFormat(time: "",date: "");
-    //
-    // }
-
-
-
+  _updateBtnLayout({timeLineID, context, startDateTime, endDateTime}) {
     return CustomDoubleAppButton(
         saveBtn: Get.find<TimelineController>().isUpdateTimeLogLoading.isFalse
             ? Text(
-          AppString.text_save.tr,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.cardColor,
-              fontSize: Dimensions.fontSizeDefault + 1),
-        )
+                AppString.text_save.tr,
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.cardColor,
+                    fontSize: Dimensions.fontSizeDefault + 1),
+              )
             : const CupertinoActivityIndicator(
-          color: AppColor.cardColor,
-        ),
+                color: AppColor.cardColor,
+              ),
         onAction: () {
-          // Get.find<TimelineController>().updateTimelineLogDetails(
-          //   description: timelineLogDetailsDrcController.text,
-          //   status: status,
-          //   endDate: Get.find<DateTimeController>().requestedOutDate.value,
-          //   projectId: "",
-          //   startDate:Get.find<DateTimeController>().timeLogDate.value.isNotEmpty? Get.find<DateTimeController>().requestedInDate.value:Container(),
-          //   taskId: "",
-          //   timeLineId: timeLineID,
-          // );
-
+          Get.find<TimelineController>().updateTimelineLogDetails(
+            description: timelineLogDetailsDrcController.text,
+            status: status,
+            projectId: "",
+            startDate: Get.find<DateTimeController>()
+                        .requestedInDate
+                        .value
+                        .length >
+                    10
+                ? Get.find<DateTimeController>().requestedInDate.value
+                : DateFormat("yyyy-MM-dd hh:mma")
+                    .parse(
+                        "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+                    .toString(),
+            endDate: Get.find<DateTimeController>()
+                        .requestedOutDate
+                        .value
+                        .length >
+                    10
+                ? Get.find<DateTimeController>().requestedOutDate.value
+                : DateFormat("yyyy-MM-dd hh:mma")
+                    .parse(
+                        "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+                    .toString(),
+            taskId: "",
+            timeLineId: timeLineID,
+          );
+          Get.find<DateTimeController>().timeLogDate.value.isEmpty
+              ? showWarningMessage(message: "Please selected date")
+              : Container();
         },
         cancelAction: () {
           Navigator.pop(context);
         });
   }
-
-
-
-
-
 
   _dayScheduleLayout() {
     return SizedBox(
@@ -225,70 +214,59 @@ class TimeLogTextField extends StatelessWidget {
       ),
     );
   }
-
-
 }
 
-
-
-_timerLayout({required context, required endTime, required startTime}) {
-
-
+_timerLayout({required context}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       customTitleText(text: AppString.text_set_start_time.tr),
       customSpacerHeight(height: 8),
-      _newEntryStartTime(context: context, startTime: timeFormatTo12h(time: startTime)),
+      _newEntryStartTime(
+        context: context,
+      ),
       customSpacerHeight(height: 20),
       customTitleText(text: AppString.text_set_end_time.tr),
       customSpacerHeight(height: 8),
-      _newEntryEndTime(context: context, endTime: timeFormatTo12h(time: endTime)),
+      _newEntryEndTime(
+        context: context,
+      ),
     ],
   );
 }
 
-Widget _newEntryStartTime({required BuildContext context, required startTime}) {
+Widget _newEntryStartTime({
+  required BuildContext context,
+}) {
   return timerTextField(
-    hintText: Get.find<DateTimeController>().pickedInTime.isEmpty
-        ? startTime
+    hintText: Get.find<DateTimeController>().pickedInTime.value.isEmpty
+        ? "select time"
         : Get.find<DateTimeController>().pickedInTime.value,
     dobIcon: Icons.access_time_outlined,
     hintColor: AppColor.normalTextColor,
     dobIconAction: () {
       Get.find<DateTimeController>().isInTimeClicked.value = true;
-      timePicker(context,false);
+      timePicker(context, false);
     },
   );
 }
 
-Widget _newEntryEndTime({required BuildContext context, required endTime}) {
+Widget _newEntryEndTime({
+  required BuildContext context,
+}) {
   return timerTextField(
-    hintText: Get.find<DateTimeController>().pickedOutTime.isEmpty
-        ? endTime
+    hintText: Get.find<DateTimeController>().pickedOutTime.value.isEmpty
+        ? "select time"
         : Get.find<DateTimeController>().pickedOutTime.value,
     dobIcon: Icons.access_time_outlined,
     hintColor: AppColor.normalTextColor,
     dobIconAction: () {
-      Get.find<DateTimeController>().isInTimeClicked.value = true;
-      timePicker(context,false);
-
+      timePicker(context, false);
     },
   );
 }
 
-
 _dateLayoutField({required String date}) {
-  DateFormat inputFormat = DateFormat('E, d MMMM - y');
-  DateTime inputDate = inputFormat.parse(date);
-  String receiveDate = DateFormat('y-MM-dd').format(inputDate);
-
-  print("receiveDate ==> $receiveDate");
-  log("Time-log ==> ${Get.find<DateTimeController>().timeLogDate.value}", error: 21);
-
-
-
-
   return GestureDetector(
     onTap: () => showDialog(
       context: Get.context!,
@@ -298,9 +276,13 @@ _dateLayoutField({required String date}) {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16))),
             insetPadding: EdgeInsets.zero,
-            child: SingleDatePicker());
+            child: SingleDatePicker(
+              isCalledFormTimeLog: true,
+            ));
       },
     ),
+    //     DateTime parsedDate = DateFormat('EEE, dd MMMM - yyyy').parse(dtsDate);
+    // Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(parsedDate);
     child: Column(
       children: [
         Container(
@@ -313,13 +295,7 @@ _dateLayoutField({required String date}) {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
-              Get.find<DateTimeController>().timeLogDate.value.isNotEmpty
-                  ? formatTimeAccordingToSelectedTime(
-                      Get.find<DateTimeController>()
-                          .timeLogDate
-                          .value
-                          .toString())
-                  : receiveDate.toString(),
+              Get.find<DateTimeController>().requestedDate.value,
               style: AppStyle.normal_text_black
                   .copyWith(color: AppColor.normalTextColor),
             ),
@@ -393,4 +369,12 @@ Widget taskInputField({required onAction}) {
       ),
     ),
   );
+}
+
+formatDateTime() {
+  DateFormat inputFormat = DateFormat('E, d MMMM - y');
+  DateTime inputDate =
+      inputFormat.parse(Get.find<DateTimeController>().timeLogDate.value);
+
+  return DateFormat('y-MM-dd').format(inputDate);
 }

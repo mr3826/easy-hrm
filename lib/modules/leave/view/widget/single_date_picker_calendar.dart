@@ -1,7 +1,9 @@
+import 'dart:ffi';
+
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/controller/date_time_helper_controller.dart';
+import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -16,7 +18,10 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 
 class SingleDatePicker extends StatefulWidget {
-  const SingleDatePicker({Key? key}) : super(key: key);
+  final bool isCalledFormTimeLog;
+
+  const SingleDatePicker({this.isCalledFormTimeLog = false, Key? key})
+      : super(key: key);
 
   @override
   State<SingleDatePicker> createState() => _SingleDatePickerState();
@@ -67,13 +72,16 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
               lastDay: DateTime.utc(2030, 12, 31),
               selectedDayPredicate: (day) => isSameDay(day, today),
               onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  today = selectedDay;
-                  Get.find<DateTimeController>().requestedDate.value =
-                      DateFormat('yyyy-MM-dd').format(selectedDay);
-                  //new entry button change
-                  Get.find<DateTimeController>().currentIndex.value = 5;
-                });
+                setState(
+                  () {
+                    today = selectedDay;
+                  },
+                );
+                //was before timeline update
+                // Get.find<DateTimeController>().requestedDate.value =
+                //     DateFormat('yyyy-MM-dd').format(selectedDay);
+                //new entry button change
+                Get.find<DateTimeController>().currentIndex.value = 5;
               },
             ),
             Divider(
@@ -81,10 +89,20 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
             ),
             const Spacer(),
             _buttonLayout(onAction: () {
-              Get.find<DateController>().currentDate.value = today;
-              Get.find<DateTimeController>().timeLogDate.value =
-                  today.toString();
-              Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+              if (widget.isCalledFormTimeLog == false) {
+                print("isCalledFormTimeLog::False");
+                Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                Get.find<DateController>().currentDate.value = today;
+
+                // Get.find<DateTimeController>().timeLogDate.value =
+                //     today.toString();
+              } else {
+                print("isCalledFormTimeLog::True");
+                Get.find<DateTimeController>().requestedDate.value =
+                    DateFormat('yyyy-MM-dd').format(today);
+
+              }
+
               Navigator.pop(context);
             }),
             customSpacerHeight(height: 6),

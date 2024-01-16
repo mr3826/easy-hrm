@@ -11,6 +11,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_drawer.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
 
@@ -64,6 +65,24 @@ class LeaveScreen extends GetView<LeaveScreenController> {
         ),
       ),
     );
+  }
+
+  void _customButtonSheet({context, child}) {
+    return showCustomAtmBtnSheet(
+      height: 780,
+        context: context,
+        child: Material(
+          color: AppColor.noColor,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(Dimensions.radiusMid),
+                  topLeft: Radius.circular(Dimensions.radiusMid)),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        ));
   }
 }
 

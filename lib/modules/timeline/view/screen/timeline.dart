@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -13,7 +14,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/controller/date_time_helper_controller.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../leave/view/widget/widget.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
@@ -21,6 +22,12 @@ class TimelineScreen extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
@@ -36,19 +43,23 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 35.0, bottom: 18),
-      child: Row(
-        children: [
-          controller.isRunning.value
-              ? _timerStringOpenBtn(
-                  time: controller.starTimeDashboard.toString())
-              : _timerStringBtn(),
-          customSpacerWidth(width: 18),
-          _addTimeEntryBtn(),
-        ],
-      ),
-    );
+    return Get.find<TimelineController>()
+            .isTimelineCalendarByDateLoading
+            .isFalse
+        ? Padding(
+            padding: const EdgeInsets.only(left: 35.0, bottom: 18),
+            child: Row(
+              children: [
+                controller.isRunning.value
+                    ? _timerStringOpenBtn(
+                        time: controller.starTimeDashboard.toString())
+                    : _timerStringBtn(),
+                customSpacerWidth(width: 18),
+                _addTimeEntryBtn(),
+              ],
+            ),
+          )
+        : const CircularProgressIndicator();
   }
   _timerStringBtn() {
     return floatingButton(
@@ -126,5 +137,8 @@ _buttonRadiusLayout() {
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(child: TimeLogView());
+
+  return const SliverToBoxAdapter(
+    child: TimeLogView(),
+  );
 }

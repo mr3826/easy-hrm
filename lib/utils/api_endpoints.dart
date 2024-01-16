@@ -149,6 +149,14 @@ query GetOrganizationUserDetails {
       }
     }
     status
+    organization {
+      organization_setting {
+        logo_key
+        language
+      }
+      name
+      id
+    }
   }
 }
 ''';
@@ -248,9 +256,14 @@ query GetUserOrganizations {
       organization {
         name
         id
+        sub_domain
         organization_setting {
           logo_key
         }
+      }
+      designation {
+        description
+        name
       }
     }
   }

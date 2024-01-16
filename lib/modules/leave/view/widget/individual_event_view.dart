@@ -23,6 +23,7 @@ class IndividualEventView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("IndividualEventView build called");
     return Column(
       children: [
         customSpacerHeight(height: 5),

@@ -23,15 +23,15 @@ class TimeLineCalendar extends GetView<TimelineController> {
   }
 
   _calendarLayout(context) {
-    CalendarControllerProvider.of(context)
-        .controller
-        .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
-    CalendarControllerProvider.of(context)
-        .controller
-        .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
 
 
-    return Padding(
+    print("Build called");
+    print("task of length ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
+
+
+
+    return
+      Padding(
       padding: marginLayout,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 84.0),
@@ -91,7 +91,12 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
                 ));
           },
-          onDateLongPress: (date) => print(date),
+          onDateLongPress: (date){
+
+            print("date time 012 == > ${date}");
+
+
+          },
           headerStyle: _headerStyle(),
           liveTimeIndicatorSettings: HourIndicatorSettings.none(),
           pageViewPhysics: const NeverScrollableScrollPhysics(),
@@ -113,20 +118,36 @@ class TimeLineCalendar extends GetView<TimelineController> {
           },
           dateStringBuilder: (date, {secondaryDate}) {
             print(date.toString());
+            print("dateStringBuilder");
+            print("task of length 1 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
+
+
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
+
+              print("dateStringBuilder");
+              print("task of length 2 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
+
+
+
+
+            Future.delayed(const Duration(seconds: 1),(){
               Get.find<TimelineController>().getTimelineSummaryByDate(
                   startDate:
-                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
-                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
 
               Get.find<TimelineController>().getCalendarTimelineDataByDate(
                   startDate:
-                      "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                   endDate:
-                      "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                  "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
             });
+            }
+            );
+
+
 
             var formatDate = DateFormat('dd MMM yyyy').format(date);
             var now = DateFormat('dd MMM yyyy').format(DateTime.now());

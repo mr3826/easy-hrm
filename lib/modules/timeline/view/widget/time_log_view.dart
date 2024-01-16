@@ -1,8 +1,11 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 
 import '../../../auth/presentation/view/otp_screen.dart';
 import '../../controller/timeline_controller.dart';
@@ -12,51 +15,48 @@ class TimeLogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
+    CalendarControllerProvider.of(context)
+        .controller
+        .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
 
-    return  SizedBox(
+    return SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child:  Obx(() => Stack(
+        child: Stack(
           children: [
-
-            Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse && Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
-                ?   const TimeLineCalendar():const TimeLineCalendar(),
+            const TimeLineCalendar(),
             Positioned(
-
-
-                top: 76,
-                child:
-                Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse && Get.find<TimelineController>().isTimelineSummaryByDateLoading.isFalse
-                    ? Container(
+                top: AppLayout.getHeight(76),
+                child: Container(
                   color: AppColor.backgroundColor,
                   width: MediaQuery.of(context).size.width,
                   child: workingScheduleLayout(
                       schedule: Get.find<TimelineController>()
-                          .timelineSummaryByDate
-                          ?.getTimelogSummaryForApp
-                          ?.totalSchedule ??
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.totalSchedule ??
                           "",
                       balanceTime: Get.find<TimelineController>()
-                          .timelineSummaryByDate
-                          ?.getTimelogSummaryForApp
-                          ?.balanced ??
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.balanced ??
                           "",
                       loggedTime: Get.find<TimelineController>()
-                          .timelineSummaryByDate
-                          ?.getTimelogSummaryForApp
-                          ?.totalLogged ??
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.totalLogged ??
                           "",
                       paidLeave: Get.find<TimelineController>()
-                          .timelineSummaryByDate
-                          ?.getTimelogSummaryForApp
-                          ?.paidLeave ??
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.paidLeave ??
                           ""),
-                )
-                    : _onLoading(context)),
-
+                )),
           ],
-        ))
-    );
+        ));
   }
 
   _onLoading(context) {

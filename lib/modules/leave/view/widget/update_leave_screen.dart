@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 
-import '../../../../common/controller/date_time_helper_controller.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
@@ -75,10 +75,15 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
     DateTime endTime =
         DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString());
 
+
     Get.find<DateTimeController>().pickedInTime.value =
         "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
     Get.find<DateTimeController>().pickedOutTime.value =
         "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+
+
+
+
 
     return Obx(() => Get.find<ApplyLeaveController>().isLoading.isFalse
         ? Padding(
@@ -342,6 +347,7 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
     Get.find<LeaveScreenController>().updateLeave(
         leaveId: leaveRecords?.id ?? "",
         leaveTypeId: leaveRecords?.leaveType?.leaveId ?? "",
+
         startDate: Get.find<DateTimeController>().requestedInDate.value.length >
                 10
             ? Get.find<DateTimeController>().requestedInDate.value

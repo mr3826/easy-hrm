@@ -15,6 +15,7 @@ class AppString {
   // Apps string here
 
   static String text_mange_your_employee = 'Manage your employee';
+  static String organizationNotFoundMessage="Organization not found. Try Another organization";
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
   static String text_leave_management_etc =
@@ -77,6 +78,8 @@ class AppString {
   static String text_file_upload_file = 'File upload file';
   static String text_file_upload_update_successfully =
       'File upload update successfully';
+  static String yourOrganizationText='Your Organization';
+
 
   static String text_event = 'Events';
   static String text_upcoming_leave = 'Upcoming leave';
@@ -204,6 +207,7 @@ class AppString {
   static String text_view_less = "View less";
 
   static const String text_are_you_sure = "Are you sure?";
+  static const String changeOrganizationWarningMessage = "Are you sure want change your organization";
   static const String text_are_you_sure_want_to_exit_from_app =
       "Are you sure you want to exit from App";
   static String error_text = "Something went wrong! Please try again";
