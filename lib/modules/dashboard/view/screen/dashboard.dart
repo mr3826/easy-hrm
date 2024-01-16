@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -20,6 +19,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_card_style.dart';
 import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_status_button.dart';
 import '../../../../utils/api_endpoints.dart';
@@ -325,12 +325,11 @@ class Dashboard extends GetView<DashboardController> {
         InkWell(
           //todo
           onTap: () {
-            // if (Get.isRegistered<DateTimeController>()) {
-            //   Get.delete<DateTimeController>();
-            // }
-            // Get.put(DateTimeController());
-            // Get.toNamed(Routes.NEW_ENTRY_SCREEN);
-            Get.find<DashboardController>().getProfileInfoForDashboard();
+            if (Get.isRegistered<DateTimeController>()) {
+              Get.delete<DateTimeController>();
+            }
+            Get.put(DateTimeController());
+            Get.toNamed(Routes.NEW_ENTRY_SCREEN);
           },
           child: SizedBox(
               height: AppLayout.getHeight(170),
