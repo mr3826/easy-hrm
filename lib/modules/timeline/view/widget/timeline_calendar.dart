@@ -26,7 +26,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
 
     print("Build called");
-    print("task of length ::: ${Get.find<TimelineController>().eventsOfTask.length}");
+    print("task of length ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
 
 
 
@@ -119,14 +119,14 @@ class TimeLineCalendar extends GetView<TimelineController> {
           dateStringBuilder: (date, {secondaryDate}) {
             print(date.toString());
             print("dateStringBuilder");
-            print("task of length 1 ::: ${Get.find<TimelineController>().eventsOfTask.length}");
+            print("task of length 1 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
 
 
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
 
               print("dateStringBuilder");
-              print("task of length 2 ::: ${Get.find<TimelineController>().eventsOfTask.length}");
+              print("task of length 2 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
 
 
 
