@@ -17,7 +17,7 @@ class SplashController extends GetxController {
     if (checkTokenExpiration() < 1) {
       _getNewToken();
     }
-    Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
+    Future.delayed(const Duration(milliseconds: 2500), () =>Get.offAndToNamed(Routes.SIGN_IN_SCREEN) );
     super.onReady();
   }
 

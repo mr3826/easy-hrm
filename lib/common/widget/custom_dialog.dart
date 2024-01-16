@@ -76,7 +76,7 @@ class CustomDialog extends StatelessWidget {
                   BorderRadius.circular(Dimensions.radiusDefault)),
           margin: const EdgeInsets.only(top: 16),
           child: SizedBox(
-            height: AppLayout.getHeight(230),
+            height: Get.height*.3,
             child: Padding(
               padding: marginLayout.copyWith(bottom: 16),
               child: Column(

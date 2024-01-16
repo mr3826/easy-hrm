@@ -5,10 +5,9 @@ class OrganizationInfoDetails {
 
   OrganizationInfoDetails.fromJson(Map<String, dynamic> json) {
     getUserOrganizations = json['getUserOrganizations'] != null
-        ?  GetUserOrganizations.fromJson(json['getUserOrganizations'])
+        ? GetUserOrganizations.fromJson(json['getUserOrganizations'])
         : null;
   }
-
 }
 
 class GetUserOrganizations {
@@ -20,7 +19,7 @@ class GetUserOrganizations {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add( Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
@@ -28,20 +27,24 @@ class GetUserOrganizations {
 
 class Data {
   Organization? organization;
+  Designation? designation;
 
-  Data({this.organization});
+  Data({this.organization, this.designation});
 
   Data.fromJson(Map<String, dynamic> json) {
     organization = json['organization'] != null
-        ?  Organization.fromJson(json['organization'])
+        ? Organization.fromJson(json['organization'])
+        : null;
+    designation = json['designation'] != null
+        ? Designation.fromJson(json['designation'])
         : null;
   }
-
 }
 
 class Organization {
   String? name;
   String? id;
+  String? subDomain;
   OrganizationSetting? organizationSetting;
 
   Organization({this.name, this.id, this.organizationSetting});
@@ -49,11 +52,11 @@ class Organization {
   Organization.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
+    subDomain = json['sub_domain'];
     organizationSetting = json['organization_setting'] != null
         ? OrganizationSetting.fromJson(json['organization_setting'])
         : null;
   }
-
 }
 
 class OrganizationSetting {
@@ -64,5 +67,16 @@ class OrganizationSetting {
   OrganizationSetting.fromJson(Map<String, dynamic> json) {
     logoKey = json['logo_key'];
   }
+}
 
+class Designation {
+  String? name;
+  String? id;
+
+  Designation({this.name, this.id});
+
+  Designation.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    id = json['id'];
+  }
 }

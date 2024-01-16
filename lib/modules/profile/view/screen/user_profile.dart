@@ -333,13 +333,12 @@ class ProfileScreen extends GetView<UserProfileController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Your organisation",
-            style: AppStyle.mid_large_text.copyWith(
-                color: AppColor.normalTextColor,
-                fontSize: Dimensions.fontSizeDefault,
-                letterSpacing: 3.5),
-          ),
+            Text(AppString.yourOrganizationText.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault,
+                  letterSpacing: 3.5),
+            ),
           customSpacerHeight(height: 12),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,15 +357,20 @@ class ProfileScreen extends GetView<UserProfileController> {
                         fontWeight: FontWeight.w900,
                         fontSize: Dimensions.fontSizeDefault + 1),
                   ),
-                  Text(
-                    controller.employeeWorkHistory?.getOrganizationUserHistory
-                            ?.designationHistories?[0].designation?.name ??
-                        "No added yet",
-                    style: AppStyle.normal_text_grey.copyWith(
-                        color: AppColor.hintColor,
-                        fontSize: Dimensions.fontSizeDefault - 1),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  customSpacerHeight(height: 6),
+                  if (controller.employeeWorkHistory?.getOrganizationUserHistory
+                      ?.designationHistories !=
+                      null &&
+                      controller.employeeWorkHistory!.getOrganizationUserHistory!
+                          .designationHistories!.isNotEmpty)
+                    Text(
+                      controller.employeeWorkHistory?.getOrganizationUserHistory
+                          ?.designationHistories?[0].designation?.name ??
+                          "",
+                      style: AppStyle.mid_large_text.copyWith(
+                          color: AppColor.normalTextColor,
+                          fontSize: Dimensions.fontSizeDefault,),
+                    ),
                   customSpacerHeight(height: 6),
                   GestureDetector(
                     onTap: () {
@@ -410,13 +414,27 @@ class ProfileScreen extends GetView<UserProfileController> {
                       style: AppStyle.mid_large_text
                           .copyWith(color: AppColor.normalTextColor),
                     ),
-                    Text(
-                      controller.employeeWorkHistory?.getOrganizationUserHistory
-                              ?.designationHistories?[0].designation?.name ??
-                          "No added yet",
-                      style: AppStyle.normal_text_grey
-                          .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
-                    ),
+                    if (controller
+                                .employeeWorkHistory
+                                ?.getOrganizationUserHistory
+                                ?.designationHistories !=
+                            null &&
+                        controller
+                            .employeeWorkHistory!
+                            .getOrganizationUserHistory!
+                            .designationHistories!
+                            .isNotEmpty)
+                      Text(
+                        controller
+                                .employeeWorkHistory
+                                ?.getOrganizationUserHistory
+                                ?.designationHistories?[0]
+                                .designation
+                                ?.name ??
+                            "No added yet",
+                        style: AppStyle.normal_text_grey
+                            .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
+                      ),
                     customSpacerHeight(height: 8),
                   ],
                 ),

@@ -31,7 +31,6 @@ class TimelineController extends GetxController with StateMixin {
     //monthly summary
     //by default its current month
 
-
     getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
@@ -44,15 +43,12 @@ class TimelineController extends GetxController with StateMixin {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
-
     _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
       getCalendarTimelineDataByDate(
           startDate:
               "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
           endDate:
               "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-
-
 
       log("GetCalendarTimelineDataByDate Call after 2 minute", error: 0);
     });
@@ -77,8 +73,6 @@ class TimelineController extends GetxController with StateMixin {
       <CalendarEventData<String>>[].obs;
   RxList<CalendarEventData<String>> eventOfLeave =
       <CalendarEventData<String>>[].obs;
-
-
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
