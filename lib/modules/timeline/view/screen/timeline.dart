@@ -49,10 +49,7 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
-    return Get.find<TimelineController>()
-            .isTimelineSummaryByDateLoading
-            .isFalse
-        ? Padding(
+    return  Padding(
             padding: const EdgeInsets.only(left: 35.0, bottom: 18),
             child: Row(
               children: [
@@ -64,8 +61,7 @@ class TimelineScreen extends GetView<TimelineController> {
                 _addTimeEntryBtn(),
               ],
             ),
-          )
-        : const CircularProgressIndicator();
+          );
   }
 
   _timerStringBtn() {

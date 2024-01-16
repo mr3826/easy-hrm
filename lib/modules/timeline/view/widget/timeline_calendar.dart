@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+    log("TimeLineCalendar build calendar",error: 100);
     return _calendarLayout(context);
   }
 
@@ -87,10 +89,6 @@ class TimeLineCalendar extends GetView<TimelineController> {
                 ));
           },
           onDateLongPress: (date){
-
-            print("date time 012 == > ${date}");
-
-
           },
           headerStyle: _headerStyle(),
           liveTimeIndicatorSettings: HourIndicatorSettings.none(),
@@ -112,39 +110,6 @@ class TimeLineCalendar extends GetView<TimelineController> {
             return formattedTime;
           },
           dateStringBuilder: (date, {secondaryDate}) {
-            print(date.toString());
-            print("dateStringBuilder");
-            print("task of length 1 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
-
-
-
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-
-              print("dateStringBuilder");
-              print("task of length 2 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
-
-
-
-
-
-              Get.find<TimelineController>().getTimelineSummaryByDate(
-                  startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                  endDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
-
-
-
-              Get.find<TimelineController>().getCalendarTimelineDataByDate(
-                  startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                  endDate:
-                  "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
-            });
-
-
-
-
             var formatDate = DateFormat('dd MMM yyyy').format(date);
             var now = DateFormat('dd MMM yyyy').format(DateTime.now());
             if (formatDate == now) {
