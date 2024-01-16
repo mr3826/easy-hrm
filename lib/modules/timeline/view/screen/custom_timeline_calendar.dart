@@ -82,7 +82,7 @@ Widget _dateCalendarLayout() {
                               startDate:
                                   "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                               endDate:
-                                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+                                  "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
                           Get.find<TimelineController>().getCalendarTimelineDataByDate(
                               startDate:
@@ -110,17 +110,27 @@ Widget _dateCalendarLayout() {
 
                           DateTime date =
                               DateTime.parse(controller.formattedDateTime);
+
+
                           Get.find<TimelineController>().getTimelineSummaryByDate(
                               startDate:
                                   "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                               endDate:
-                                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
+                                  "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+
+
 
                           Get.find<TimelineController>().getCalendarTimelineDataByDate(
                               startDate:
                                   "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                               endDate:
                                   "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+
+
+
+
                         },
                         child: const Icon(
                           Icons.arrow_forward_ios_sharp,

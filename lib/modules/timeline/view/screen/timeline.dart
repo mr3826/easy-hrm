@@ -23,6 +23,7 @@ class TimelineScreen extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+
     CalendarControllerProvider.of(context)
         .controller
         .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
@@ -32,6 +33,7 @@ class TimelineScreen extends GetView<TimelineController> {
 
 
     print("length ::: ${Get.find<TimelineController>().eventsOfTask}");
+
 
 
     return controller.obx(
