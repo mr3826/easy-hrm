@@ -4,12 +4,17 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget customTitleText({required text}) {
-  return Text(
-    text,
-    style: AppStyle.mid_large_text.copyWith(
-        color: AppColor.normalTextColor,
-        fontWeight: FontWeight.w600,
-        fontSize: Dimensions.fontSizeDefault + 1),
+  return Row(
+    children: [
+      Text(
+        text,
+        style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.normalTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: Dimensions.fontSizeDefault + 1),
+      ),
+    
+    ],
   );
 }
 

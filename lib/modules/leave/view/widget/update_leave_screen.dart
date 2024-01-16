@@ -97,8 +97,9 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
                   children: [
                     customTitleText(text: AppString.text_leave_type.tr),
                     customSpacerHeight(height: 8),
-                    UpdateLeaveDropdown(
-                        dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
+
+                    UpdateLeaveDropdown(dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
+
                     customSpacerHeight(height: 8),
                     _leaveCountStyleLayout(),
                     customSpacerHeight(height: 20),
