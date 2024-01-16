@@ -95,20 +95,21 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    customTitleText(text: AppString.text_leave_type.tr),
+                    customTitleText(text: AppString.text_leave_type.tr,isRequired: true),
                     customSpacerHeight(height: 8),
-                    UpdateLeaveDropdown(
-                        dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
+
+                    UpdateLeaveDropdown(dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
+
                     customSpacerHeight(height: 8),
                     _leaveCountStyleLayout(),
                     customSpacerHeight(height: 20),
-                    customTitleText(text: "${AppString.text_from.tr} *"),
+                    customTitleText(text: AppString.text_from.tr,isRequired: true),
                     customSpacerHeight(height: 8),
                     Obx(
                       () => _fromDateTimeLayout(),
                     ),
                     customSpacerHeight(height: 20),
-                    customTitleText(text: "${AppString.text_to.tr} *"),
+                    customTitleText(text: AppString.text_to.tr,isRequired: true),
                     customSpacerHeight(height: 8),
                     Obx(
                       () => _toDateTimeLayout(),

@@ -44,7 +44,7 @@ class SplashController extends GetxController {
     // Specify the target date and time
 
     DateTime targetDate =
-        JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
+    JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
 
     // Calculate the difference
     Duration difference = targetDate.difference(now);
@@ -74,4 +74,6 @@ class SplashController extends GetxController {
       log(e.toString());
     }
   }
+
 }
+

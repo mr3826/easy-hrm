@@ -7,13 +7,11 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
-import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/add_attachemnt_file_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/srart_time_field_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -32,7 +30,6 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Build called");
     return Obx(() => Get.find<ApplyLeaveController>().isLoading.isFalse
         ? Padding(
             padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
@@ -43,19 +40,19 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    customTitleText(text: AppString.text_leave_type.tr),
+                    customTitleText(text: AppString.text_leave_type.tr,isRequired: true),
                     customSpacerHeight(height: 8),
                     const ApplyLeaveDropDown(),
                     customSpacerHeight(height: 8),
                     _leaveCountStyleLayout(),
                     customSpacerHeight(height: 20),
-                    customTitleText(text: "${AppString.text_from.tr} *"),
+                    customTitleText(text: AppString.text_from.tr,isRequired: true),
                     customSpacerHeight(height: 8),
                     Obx(
                       () => _fromDateTimeLayout(),
                     ),
                     customSpacerHeight(height: 20),
-                    customTitleText(text: "${AppString.text_to.tr} *"),
+                    customTitleText(text: AppString.text_to.tr,isRequired: true),
                     customSpacerHeight(height: 8),
                     Obx(
                       () => _toDateTimeLayout(),
@@ -170,10 +167,9 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
               ),
             ),
           )
-        : const Center(
-            child: CupertinoActivityIndicator(
-                color: Colors.blueAccent, radius: 18),
-          ));
+
+        : const CupertinoActivityIndicator(
+            color: Colors.blueAccent, radius: 18));
   }
 
   _noteTextField() {

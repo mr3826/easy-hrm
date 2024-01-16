@@ -157,6 +157,7 @@ class AppString {
   static String text_ok = "Ok";
   static String text_select_date = "Selected date";
   static String text_select_option = "Selected option";
+  static String text_select_on_option = "Select on option";
   static String text_select_language = "Selected language";
   static String text_type_dot = "Type:";
   static String text_duration = "Duration";
@@ -244,7 +245,7 @@ class AppString {
   static const String text_time_log_details = "Timelog details";
   static const String text_new_entry = "New entry";
   static const String text_leave = "Leave";
-  static const String text_leave_type = "Leave type *";
+  static const String text_leave_type = "Leave type";
   static const String text_apply_leve = "Apply leave";
   static const String text_apply = "Apply";
   static const String text_remove_time_log = "Remove timelog";

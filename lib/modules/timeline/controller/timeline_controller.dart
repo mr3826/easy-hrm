@@ -297,8 +297,13 @@ class TimelineController extends GetxController with StateMixin {
           ?.timelines!
           .map(
             (e) {
-          DateTime dateTimeValue =
+
+          DateTime dateTimeNow=DateTime.now();
+          DateTime dateStartTimeValue =
           DateTime.parse(e.startDate ?? DateTime.now().toString());
+          DateTime dateEndTimeValue =
+          DateTime.parse(e.endDate ?? DateTime.now().toString());
+
           ModelForDescription modelForDescription = ModelForDescription(
               status: e.status ?? "",
               description: e.description ?? "",
@@ -309,12 +314,29 @@ class TimelineController extends GetxController with StateMixin {
           log(jsonModel.toString(), error: 1);
 
           return CalendarEventData(
-            date: DateTime(
-                dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
-            startTime:
-            DateTime.parse(e.startDate ?? DateTime.now().toString()),
-            endTime:
-            DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
+            date: DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day),
+
+
+            startTime: DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateStartTimeValue.hour,
+              dateStartTimeValue.minute,
+              dateStartTimeValue.second,
+            ),
+
+
+            endTime:DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateEndTimeValue.hour,
+              dateEndTimeValue.minute,
+              dateEndTimeValue.second,
+            ),
+
             event: e.task?.project?.name ?? "",
 
             //total minute added here
@@ -327,7 +349,7 @@ class TimelineController extends GetxController with StateMixin {
       ).toList() ??
           [];
 
-      eventOfLeave?.value = Get.find<TimelineController>()
+      eventOfLeave.value = Get.find<TimelineController>()
           .calendarTimeline
           ?.getCalenderTimelinesForApp
           ?.leaves
