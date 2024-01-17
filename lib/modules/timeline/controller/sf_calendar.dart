@@ -1,59 +1,95 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 class SFCalendarScreen extends StatelessWidget {
   const SFCalendarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
+    print( "evens :: ${Get.find<TimelineController>().meetings.length}");
 
     return Scaffold(
-      body: SfCalendar(
-        view: CalendarView.day,
+      appBar: AppBar(),
+      body: Obx(() =>
+      Get
+          .find<TimelineController>()
+          .isTimelineCalendarByDateLoading
+          .isTrue ? const CupertinoActivityIndicator() : Scaffold(
+        body: SfCalendar(
+          view: CalendarView.day,
+          dataSource: MeetingDataSource(Get
+              .find<TimelineController>()
+              .meetings),
+          selectionDecoration:
+          BoxDecoration(borderRadius: BorderRadius.circular(23)),
 
-        dataSource: MeetingDataSource(_getDataSource()),
+          // onTap: (value){
+          //   print("onTap  ${value.date}");
+          //
+          // },
+          // onAppointmentResizeUpdate: (appointmentResizeUpdateDetails) {
+          //   print("appointmentResizeUpdateDetails :: ${appointmentResizeUpdateDetails.resource?.displayName}");
+          // },
+          // onAppointmentResizeEnd: (appointmentResizeEndDetails) {
+          //   print("onAppointmentResizeEnd :: $appointmentResizeEndDetails");
+          // },
+          //
+          // onAppointmentResizeStart: (appointmentResizeStartDetails) {
+          //   print("onAppointmentResizeStart :: $appointmentResizeStartDetails");
+          //
+          // },
+          // appointmentBuilder: (context, calendarAppointmentDetails) {
+          //   print("appointmentBuilder :: ${calendarAppointmentDetails.appointments.length}");
+          //   print("appointmentBuilder :: ${calendarAppointmentDetails.date}");
+          //   print("appointmentBuilder :: ${calendarAppointmentDetails}");
+          //   return Container(
+          //     color: Colors.yellow.shade400,
+          //
+          //
+          //   );
+          //
+          // },
 
 
-        selectionDecoration:
-        BoxDecoration(borderRadius: BorderRadius.circular(23)),
 
-        showNavigationArrow: true,
-        appointmentTimeTextFormat: "HH:mm",
-        timeSlotViewSettings: const TimeSlotViewSettings(
-          timeFormat: "HH:mm",
+
+
+
+
+
+
+
+          scheduleViewSettings: const ScheduleViewSettings(
+            appointmentItemHeight: 12,
+              weekHeaderSettings: WeekHeaderSettings(
+                backgroundColor: Colors.yellow
+              ),
+              dayHeaderSettings: DayHeaderSettings(
+            width: 18
+          )),
+
+          showDatePickerButton: true,
+          showNavigationArrow: true,
+          appointmentTimeTextFormat: "HH:mm",
+          timeSlotViewSettings: const TimeSlotViewSettings(
+            timeFormat: "HH:mm",
+          ),
+          showCurrentTimeIndicator: false,
+          initialDisplayDate: DateTime.now(),
+          headerStyle: const CalendarHeaderStyle(textAlign: TextAlign.center),
+          monthViewSettings: const MonthViewSettings(
+              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
         ),
+      )),
+    );
+    }
 
-        showCurrentTimeIndicator: false,
-        initialDisplayDate: DateTime.now(),
-        headerStyle: const CalendarHeaderStyle(textAlign: TextAlign.center),
-
-        monthViewSettings: const MonthViewSettings(
-            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
-      ),
-    );
-  }
-  List<Meeting> _getDataSource() {
-    final List<Meeting> meetings = <Meeting>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-
-    meetings.add(
-      Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
-    );
-    meetings.add(
-      Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
-    );
-    meetings.add(
-      Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
-    );
-    meetings.add(
-      Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
-    );
-    return meetings;
-  }
 }
-
 
 class MeetingDataSource extends CalendarDataSource {
   /// Creates a meeting data source, which used to set the appointment
