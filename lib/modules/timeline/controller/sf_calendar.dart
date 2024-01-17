@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class SFCalendarScreen extends StatelessWidget {
@@ -11,84 +10,42 @@ class SFCalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print( "evens :: ${Get.find<TimelineController>().meetings.length}");
+    return Obx(() => Get.find<TimelineController>()
+            .isTimelineCalendarByDateLoading
+            .isTrue
+        ? const CupertinoActivityIndicator()
+        : Scaffold(
+            body: SfCalendar(
+              view: CalendarView.day,
+              dataSource:
+                  MeetingDataSource(Get.find<TimelineController>().meetings),
+              appointmentTextStyle:
+                  const TextStyle(color: AppColor.normalTextColor),
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: Obx(() =>
-      Get
-          .find<TimelineController>()
-          .isTimelineCalendarByDateLoading
-          .isTrue ? const CupertinoActivityIndicator() : Scaffold(
-        body: SfCalendar(
-          view: CalendarView.day,
-          dataSource: MeetingDataSource(Get
-              .find<TimelineController>()
-              .meetings),
-          selectionDecoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(23)),
+              viewHeaderStyle: const ViewHeaderStyle(backgroundColor: Colors.transparent,dateTextStyle: TextStyle(color: Colors.transparent),dayTextStyle: TextStyle(color: Colors.transparent)),
+              headerHeight: 0,
 
-          // onTap: (value){
-          //   print("onTap  ${value.date}");
-          //
-          // },
-          // onAppointmentResizeUpdate: (appointmentResizeUpdateDetails) {
-          //   print("appointmentResizeUpdateDetails :: ${appointmentResizeUpdateDetails.resource?.displayName}");
-          // },
-          // onAppointmentResizeEnd: (appointmentResizeEndDetails) {
-          //   print("onAppointmentResizeEnd :: $appointmentResizeEndDetails");
-          // },
-          //
-          // onAppointmentResizeStart: (appointmentResizeStartDetails) {
-          //   print("onAppointmentResizeStart :: $appointmentResizeStartDetails");
-          //
-          // },
-          // appointmentBuilder: (context, calendarAppointmentDetails) {
-          //   print("appointmentBuilder :: ${calendarAppointmentDetails.appointments.length}");
-          //   print("appointmentBuilder :: ${calendarAppointmentDetails.date}");
-          //   print("appointmentBuilder :: ${calendarAppointmentDetails}");
-          //   return Container(
-          //     color: Colors.yellow.shade400,
-          //
-          //
-          //   );
-          //
-          // },
-
-
-
-
-
-
-
-
-
-
-          scheduleViewSettings: const ScheduleViewSettings(
-            appointmentItemHeight: 12,
-              weekHeaderSettings: WeekHeaderSettings(
-                backgroundColor: Colors.yellow
+              scheduleViewSettings: const ScheduleViewSettings(
+                  appointmentItemHeight: 12,
+                  weekHeaderSettings:
+                      WeekHeaderSettings(backgroundColor: Colors.yellow),
+                  dayHeaderSettings: DayHeaderSettings(width: 18)),
+              showDatePickerButton: true,
+              showNavigationArrow: true,
+              appointmentTimeTextFormat: "HH:mm",
+              timeSlotViewSettings: const TimeSlotViewSettings(
+                timeFormat: "HH:mm",
               ),
-              dayHeaderSettings: DayHeaderSettings(
-            width: 18
-          )),
-
-          showDatePickerButton: true,
-          showNavigationArrow: true,
-          appointmentTimeTextFormat: "HH:mm",
-          timeSlotViewSettings: const TimeSlotViewSettings(
-            timeFormat: "HH:mm",
-          ),
-          showCurrentTimeIndicator: false,
-          initialDisplayDate: DateTime.now(),
-          headerStyle: const CalendarHeaderStyle(textAlign: TextAlign.center),
-          monthViewSettings: const MonthViewSettings(
-              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
-        ),
-      )),
-    );
-    }
-
+              showCurrentTimeIndicator: false,
+              initialDisplayDate: DateTime.now(),
+              headerStyle:
+                  const CalendarHeaderStyle(textAlign: TextAlign.center),
+              monthViewSettings: const MonthViewSettings(
+                  appointmentDisplayMode:
+                      MonthAppointmentDisplayMode.appointment),
+            ),
+          ));
+  }
 }
 
 class MeetingDataSource extends CalendarDataSource {

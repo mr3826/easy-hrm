@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/timeline/controller/sf_calendar.dart';
+import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
@@ -40,9 +41,9 @@ class TimelineController extends GetxController with StateMixin {
 
     getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 2, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 2, 23, 59, 59)}");
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 1, 23, 59, 59)}");
 
     // _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
     //   getCalendarTimelineDataByDate(
@@ -255,7 +256,6 @@ class TimelineController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {
     isTimelineSummaryByDateLoading(true);
@@ -279,7 +279,6 @@ class TimelineController extends GetxController with StateMixin {
     isTimelineSummaryByDateLoading(false);
   }
 
-
   getCalendarTimelineDataByDate(
       {required String? startDate, String? endDate}) async {
     log("getCalendarTimelineDataByDate start & end ==>$startDate And $endDate");
@@ -296,15 +295,21 @@ class TimelineController extends GetxController with StateMixin {
       isTimelineCalendarByDateLoading(false);
     } else {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
-      print(  calendarTimeline?.getCalenderTimelinesForApp?.timelines?.length);
+      print(calendarTimeline?.getCalenderTimelinesForApp?.timelines?.length);
 
       calendarTimeline?.getCalenderTimelinesForApp?.timelines?.map((e) {
         return meetings.add(
           Meeting(
-            e.startDate.toString(),
+            '''
+           ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+           
+           ${e.description ?? "No added yet"}
+           
+           ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
+            ''',
             DateTime.parse(e.startDate ?? DateTime.now().toString()),
             DateTime.parse(e.endDate ?? DateTime.now().toString()),
-            const Color(0xFF0F8644),
+            _statusAccordingToColor(e.status),
             false,
           ),
         );
@@ -312,5 +317,16 @@ class TimelineController extends GetxController with StateMixin {
     }
 
     isTimelineCalendarByDateLoading(false);
+  }
+}
+
+_statusAccordingToColor(status) {
+  switch (status) {
+    case "pending":
+      return AppColor.pendingColor.withOpacity(0.4);
+    case "approved":
+      return AppColor.primaryColor.withOpacity(0.4);
+    case "reject":
+      return AppColor.errorColorLight.withOpacity(0.4);
   }
 }
