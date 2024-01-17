@@ -4,9 +4,13 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_in_time.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
+import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_time.dart';
+import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/add_attachemnt_file_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
@@ -21,7 +25,7 @@ import '../../controller/file_upload_controller.dart';
 import 'apply_leave_dropdown.dart';
 import 'date_pickar_field_widget.dart';
 
-class ApplyLeaveButtonLayout extends StatelessWidget {
+class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
   bool? isForUpdateLeave;
 
   ApplyLeaveButtonLayout({this.isForUpdateLeave, super.key});
@@ -30,146 +34,116 @@ class ApplyLeaveButtonLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Get.find<ApplyLeaveController>().isLoading.isFalse
-        ? Padding(
-            padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customTitleText(text: AppString.text_leave_type.tr,isRequired: true),
-                    customSpacerHeight(height: 8),
-                    const ApplyLeaveDropDown(),
-                    customSpacerHeight(height: 8),
-                    _leaveCountStyleLayout(),
-                    customSpacerHeight(height: 20),
-                    customTitleText(text: AppString.text_from.tr,isRequired: true),
-                    customSpacerHeight(height: 8),
-                    Obx(
-                      () => _fromDateTimeLayout(),
-                    ),
-                    customSpacerHeight(height: 20),
-                    customTitleText(text: AppString.text_to.tr,isRequired: true),
-                    customSpacerHeight(height: 8),
-                    Obx(
-                      () => _toDateTimeLayout(),
-                    ),
-                    customSpacerHeight(height: 12),
-                    // _errorAlertLayout(),
-                    customSpacerHeight(height: 18),
-                    Obx(() => Row(
-                          children: [
-                            customTitleText(text: AppString.text_note.tr),
-                            customSpacerWidth(width: 6),
-                            Get.find<DateTimeController>().isNoteRequired.isTrue
-                                ? customTitleTextRedText(text: "*")
-                                : Container(),
-                          ],
-                        )),
-                    customSpacerHeight(height: 8),
-                    _noteTextField(),
-                    Obx(() => Row(
-                          children: [
-                            customTitleText(text: AppString.text_document.tr),
-                            customSpacerWidth(width: 6),
-                            Get.find<DateTimeController>()
-                                    .isDocumentRequired
-                                    .isTrue
-                                ? customTitleTextRedText(text: "*")
-                                : Container(),
-                          ],
-                        )),
-                    customSpacerHeight(height: 6),
-                    _pathFormatText(),
-                    customSpacerHeight(height: 8),
-                    const AddAttachmentFile(),
-                    customSpacerHeight(height: 20),
-                    Obx(() => Get.find<ApplyLeaveController>()
-                            .isAssignLeaveLoaderLoading
-                            .isTrue
-                        ? const Center(
-                            child: CupertinoActivityIndicator(
-                              color: Colors.blueAccent,
-                              radius: 18,
-                            ),
-                          )
-                        : CustomDoubleAppButton(
-                            onAction: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (Get.find<DateTimeController>()
-                                    .isDocumentRequired
-                                    .isTrue) {
-                                  if (Get.find<FileUploadController>()
-                                      .storageForUpload
-                                      .filePath
-                                      .value
-                                      .isNotEmpty) {
-                                    if (isForUpdateLeave == true) {
-                                      print("Update method Called");
-                                    } else {
-                                      Get.find<ApplyLeaveController>()
-                                          .applyLeave();
-                                    }
-                                  } else {
-                                    Get.find<DateTimeController>()
-                                        .isErrorOccurred(true);
-                                  }
-                                } else {
-                                  if (isForUpdateLeave == true) {
-                                    print("Update method Called");
-                                  } else {
-                                    Get.find<ApplyLeaveController>()
-                                        .applyLeave();
-                                  }
-                                }
-                              } else {
-                                print("Method should not called");
-                              }
-                              //apply leave
-                              //check data input
-
-                              // if (Get.find<DateTimeController>()
-                              //             .isNoteRequired
-                              //             .isTrue &&
-                              //         leaveNoteController.text.isNotEmpty
-                              //     //&&
-                              //     // Get.find<DateTimeController>()
-                              //     //     .isDocumentRequired
-                              //     //     .isTrue &&
-                              //     // Get.find<FileUploadController>()
-                              //     //     .storageForUpload
-                              //     //     .filePath
-                              //     //     .value
-                              //     //     .isNotEmpty
-                              //     ) {
-                              //   print("method called");
-                              //   print(Get.find<DateTimeController>().requestedInDate.value.length);
-                              //   print(Get.find<DateTimeController>().requestedOutDate);
-                              // } else {
-                              //   print("method should nt be caslled");
-                              // }
-                            },
-                            buttonText: AppString.text_apply.tr,
-                            cancelAction: () {
-                              Navigator.pop(context);
-                              Get.find<FileUploadController>()
-                                  .storageForUpload
-                                  .filePath
-                                  .value = "";
-                            },
+    return controller.obx(
+        (state) => Padding(
+              padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      customTitleText(
+                          text: AppString.text_leave_type.tr, isRequired: true),
+                      customSpacerHeight(height: 8),
+                      const ApplyLeaveDropDown(),
+                      customSpacerHeight(height: 8),
+                      _leaveCountStyleLayout(),
+                      customSpacerHeight(height: 20),
+                      customTitleText(
+                          text: AppString.text_from.tr, isRequired: true),
+                      customSpacerHeight(height: 8),
+                      Get.find<ApplyLeaveController>().startTime != null
+                          ? CustomTimePickerInTime(
+                              inTime:
+                                  "2024-01-01 ${Get.find<ApplyLeaveController>().startTime}",
+                            )
+                          : const CustomTimePickerInTime(),
+                      customSpacerHeight(height: 20),
+                      customTitleText(
+                          text: AppString.text_to.tr, isRequired: true),
+                      customSpacerHeight(height: 8),
+                      Get.find<ApplyLeaveController>().endTime != null
+                          ? CustomTimePickerOutTime(
+                              outTime:
+                                  "2024-01-01 ${Get.find<ApplyLeaveController>().endTime}",
+                            )
+                          : const CustomTimePickerOutTime(),
+                      customSpacerHeight(height: 12),
+                      // _errorAlertLayout(),
+                      customSpacerHeight(height: 18),
+                      Obx(() => Row(
+                            children: [
+                              customTitleText(text: AppString.text_note.tr),
+                              customSpacerWidth(width: 6),
+                              Get.find<DateTimeController>()
+                                      .isNoteRequired
+                                      .isTrue
+                                  ? customTitleTextRedText(text: "*")
+                                  : Container(),
+                            ],
                           )),
-                    customSpacerHeight(height: 100),
-                  ],
+                      customSpacerHeight(height: 8),
+                      _noteTextField(),
+                      Obx(() => Row(
+                            children: [
+                              customTitleText(text: AppString.text_document.tr),
+                              customSpacerWidth(width: 6),
+                              Get.find<DateTimeController>()
+                                      .isDocumentRequired
+                                      .isTrue
+                                  ? customTitleTextRedText(text: "*")
+                                  : Container(),
+                            ],
+                          )),
+                      customSpacerHeight(height: 6),
+                      _pathFormatText(),
+                      customSpacerHeight(height: 8),
+                      const AddAttachmentFile(),
+                      customSpacerHeight(height: 20),
+                      Obx(() => Get.find<ApplyLeaveController>()
+                              .isAssignLeaveLoaderLoading
+                              .isTrue
+                          ? const Center(
+                              child: CupertinoActivityIndicator(
+                                color: Colors.blueAccent,
+                                radius: 18,
+                              ),
+                            )
+                          : CustomDoubleAppButton(
+                              onAction: () {
+                                if (_formKey.currentState!.validate() &&
+                                    Get.find<ApplyLeaveController>()
+                                        .leaveId
+                                        .isNotEmpty) {
+                                  Get.find<ApplyLeaveController>().applyLeave();
+                                } else {
+                                  showWarningMessage(
+                                      message: "Provide a Valid Input");
+                                }
+                              },
+                              buttonText: AppString.text_apply.tr,
+                              cancelAction: () {
+                                Navigator.pop(context);
+                                Get.find<FileUploadController>()
+                                    .storageForUpload
+                                    .filePath
+                                    .value = "";
+                              },
+                            )),
+                      customSpacerHeight(height: 100),
+                    ],
+                  ),
                 ),
               ),
             ),
-          )
-
-        : const CupertinoActivityIndicator(
-            color: Colors.blueAccent, radius: 18));
+        onLoading: const Center(
+          child: CupertinoActivityIndicator(
+            color: Colors.blueAccent,
+            radius: 18,
+          ),
+        ));
   }
 
   _noteTextField() {

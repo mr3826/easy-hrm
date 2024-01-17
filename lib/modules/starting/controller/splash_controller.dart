@@ -19,7 +19,7 @@ class SplashController extends GetxController {
         _getNewToken();
       }
     }
-    Future.delayed(const Duration(milliseconds: 2500), () =>Get.offAndToNamed(Routes.SIGN_IN_SCREEN) );
+    Future.delayed(const Duration(milliseconds: 2500), () =>chooseScreen() );
     super.onReady();
   }
 

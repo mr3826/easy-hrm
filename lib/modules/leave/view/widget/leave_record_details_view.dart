@@ -163,6 +163,7 @@ class LeaveRecordDetails extends StatelessWidget {
                   Get.find<LeaveScreenController>()
                       .cancelLeave(leaveId: leaveRecords?.id ?? "");
                 },
+                drcText: "",
                 icon: Icons.document_scanner_rounded,
                 titleText: AppString.cancelLeaveText.tr,
                 subText: AppString.cancelLeaveNotificationText.tr,

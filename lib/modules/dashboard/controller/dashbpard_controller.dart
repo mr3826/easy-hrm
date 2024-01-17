@@ -32,6 +32,9 @@ class DashboardController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      print(ProfileSummaryForDashboard.fromJson(response.data!)
+          .getProfileSummaryForDashboard
+          ?.orgUserId);
       profileSummaryForDashboard =
           ProfileSummaryForDashboard.fromJson(response.data!);
       GetStorage().write(
@@ -66,7 +69,6 @@ class DashboardController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
-
     } else {
       upcommingLeaveDashboard =
           UpcommingLeaveDashboard.fromJson(response.data!);

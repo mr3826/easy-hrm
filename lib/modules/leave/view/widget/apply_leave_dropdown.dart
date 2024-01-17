@@ -27,10 +27,14 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8)),
-
       child: DropdownButton(
           value: dropDownValue,
-          hint: Text(AppString.text_select_on_option.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault+1),),
+          hint: Text(
+            AppString.text_select_on_option.tr,
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.hintColor,
+                fontSize: Dimensions.fontSizeDefault + 1),
+          ),
           dropdownColor: AppColor.cardColor,
           underline: const SizedBox.shrink(),
           isExpanded: true,
@@ -40,26 +44,28 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
               .map((e) {
             return DropdownMenuItem(
               value: e.id,
-              child: Text(e.name.toString().toUpperCase()),
+              child: Text(e.name.toString()),
             );
           }).toList(),
-          onChanged: (value) {
-            print("value::: $value");
+          onChanged: (valueType) {
+            print("value::: $valueType");
             setState(() {
-              dropDownValue = value as String;
+              dropDownValue = valueType as String;
             });
             GetLeaveTypesDropdown? getLeaveTypesDropdown =
-            Get.find<ApplyLeaveController>()
-                .leaveTypeDropdown
-                ?.getLeaveTypesDropdown
-                ?.firstWhere((element) => element.id == value);
+                Get.find<ApplyLeaveController>()
+                    .leaveTypeDropdown
+                    ?.getLeaveTypesDropdown
+                    ?.firstWhere((element) => element.id == valueType);
 
             //set data according to leave type
             Get.find<DateTimeController>().numberOfLeaves.value =
                 getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
-                    .toString() ??
+                        .toString() ??
                     "";
-            Get.find<DateTimeController>().leaveId?.value == value;
+            Get.find<ApplyLeaveController>().leaveId = valueType!;
+            print(
+                "Leave type id:: ${Get.find<ApplyLeaveController>().leaveId}");
             Get.find<DateTimeController>().isDocumentRequired.value =
                 getLeaveTypesDropdown?.attachDocumentRequired ?? false;
             Get.find<DateTimeController>().isNoteRequired.value =

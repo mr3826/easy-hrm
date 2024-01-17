@@ -402,7 +402,7 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
               .map((e) {
             return DropdownMenuItem(
               value: e.id,
-              child: Text(e.name.toString().toUpperCase()),
+              child: Text(e.name.toString()),
             );
           }).toList(),
           onChanged: (value) {
