@@ -66,7 +66,7 @@ class TaskView extends StatelessWidget {
           return color = AppColor.primaryColor;
         case "(pending)":
           return color = AppColor.primaryOrange;
-        case "(rejected)":
+        case "(reject)":
           return color = AppColor.errorColorLight;
         default:
           return color = AppColor.primaryColor;

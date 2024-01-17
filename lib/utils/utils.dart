@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import '../modules/dashboard/view/screen/dashboard.dart';
+import '../modules/timeline/controller/sf_calendar.dart';
 import '../modules/timeline/view/screen/timeline.dart';
 import 'package:intl/intl.dart';
 import '../modules/leave/view/screen/leave_screen.dart';
@@ -226,7 +227,7 @@ List<Widget> _buildScreens() {
   return [
     const TimelineScreen(),
     const LeaveScreen(),
-    Dashboard(),
+    SFCalendarScreen(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];

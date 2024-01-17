@@ -11,40 +11,36 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../controller/timeline_controller.dart';
+import '../../model/calendar_timeline.dart';
 import '../widget/timeline_calendar.dart';
 import '../widget/timelog_summary_working_gol_layout.dart';
 
 class CustomTimelineCalendar extends StatelessWidget {
   const CustomTimelineCalendar({super.key});
+
   @override
   Widget build(BuildContext context) {
-    var controller =Get.find<TimelineController>();
+    var controller = Get.find<TimelineController>();
 
+
+    // CalendarControllerProvider.of(Get.context!)
+    //     .controller
+    //     .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Obx(() => Stack(
-        children: [
-          controller.isTimelineSummaryByDateLoading.isTrue?const Center(child: CupertinoActivityIndicator()): const TimeLineCalendar(),
-          _summaryLayout(),
-
-          _dateCalendarLayout(),
-        ],
-
-      )),
+            children: [
+              controller.isTimelineSummaryByDateLoading.isTrue
+                  ? const Center(child: CupertinoActivityIndicator())
+                  : const TimeLineCalendar(),
+              _summaryLayout(),
+              _dateCalendarLayout(),
+            ],
+          )),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 Widget _dateCalendarLayout() {
   var controller = Get.find<DateController>();
@@ -76,7 +72,17 @@ Widget _dateCalendarLayout() {
                   children: [
                     GestureDetector(
                         onTap: () async {
+
                           controller.decrementDate();
+
+
+
+
+
+
+
+
+
 
                           DateTime date =
                               DateTime.parse(controller.formattedDateTime);
@@ -113,26 +119,17 @@ Widget _dateCalendarLayout() {
                           DateTime date =
                               DateTime.parse(controller.formattedDateTime);
 
-
                           Get.find<TimelineController>().getTimelineSummaryByDate(
                               startDate:
                                   "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                               endDate:
                                   "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
-
-
-
                           Get.find<TimelineController>().getCalendarTimelineDataByDate(
                               startDate:
                                   "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                               endDate:
                                   "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
-
-
-
-
-
                         },
                         child: const Icon(
                           Icons.arrow_forward_ios_sharp,

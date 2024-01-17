@@ -57,7 +57,7 @@ Widget canceledStatusBtn() {
 }
 
 statusBtn({required status}) {
-  if (status == "rejected") {
+  if (status == "reject") {
     return rejectedStatusBtn();
   } else if (status == "pending") {
     return pendingStatusBtn();
@@ -83,7 +83,7 @@ Widget buttonLayout({
   dtsDuration,
   dtsDate,
 }) {
-  if (status == "rejected") {
+  if (status == "reject") {
     return _rejectedBtn(
         startDateTime: startDateTime,
         endDateTime: endDateTime,
