@@ -30,6 +30,20 @@ query Query {
 }
         """;
 
+
+const workShiftQuery=r'''
+query GetWorkScheduleForAssignLeave($queryData: WorkSchedulesQueryData!) {
+  getWorkScheduleForAssignLeave(queryData: $queryData) {
+    id
+    day
+    day_of_week
+    end_time
+    is_holiday
+    start_time
+  }
+}
+''';
+
 const getLeaveDetailsByDateQuery = r"""
 query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
   getLeaveDetailsByDate(queryData: $queryData) {

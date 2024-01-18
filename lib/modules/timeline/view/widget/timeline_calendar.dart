@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,22 +20,17 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+    log("TimeLineCalendar build calendar",error: 100);
     return _calendarLayout(context);
   }
 
   _calendarLayout(context) {
 
-
-    print("Build called");
-    print("task of length ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
-
-
-
     return
       Padding(
       padding: marginLayout,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 84.0),
+        padding: const EdgeInsets.only(bottom: 120),
         child: DayView(
           scrollPhysics: const AlwaysScrollableScrollPhysics(),
           eventTileBuilder: (date, events, status1, start, end) {
@@ -66,6 +62,8 @@ class TimeLineCalendar extends GetView<TimelineController> {
           showLiveTimeLineInAllDays: false,
           heightPerMinute: 1.9,
           onEventTap: (events, date) {
+
+
             Iterable<Object?> eventsName = events.map((e) => e.event);
             Iterable<Object?> duration =
                 events.map((e) => e.title); //total minute
@@ -92,10 +90,6 @@ class TimeLineCalendar extends GetView<TimelineController> {
                 ));
           },
           onDateLongPress: (date){
-
-            print("date time 012 == > ${date}");
-
-
           },
           headerStyle: _headerStyle(),
           liveTimeIndicatorSettings: HourIndicatorSettings.none(),
@@ -106,7 +100,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
             offset: 35,
           ),
           eventArranger: const SideEventArranger(),
-          minuteSlotSize: MinuteSlotSize.minutes60,
+          minuteSlotSize: MinuteSlotSize.minutes30,
           hourIndicatorSettings: HourIndicatorSettings(
               lineStyle: LineStyle.solid,
               offset: 12,
@@ -117,37 +111,6 @@ class TimeLineCalendar extends GetView<TimelineController> {
             return formattedTime;
           },
           dateStringBuilder: (date, {secondaryDate}) {
-            print(date.toString());
-            print("dateStringBuilder");
-            print("task of length 1 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
-
-
-
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-
-              print("dateStringBuilder");
-              print("task of length 2 ::: ${Get.find<TimelineController>().eventsOfTask?.length}");
-
-
-
-
-            Future.delayed(const Duration(seconds: 1),(){
-              Get.find<TimelineController>().getTimelineSummaryByDate(
-                  startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                  endDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}");
-
-              Get.find<TimelineController>().getCalendarTimelineDataByDate(
-                  startDate:
-                  "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                  endDate:
-                  "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
-            });
-            }
-            );
-
-
 
             var formatDate = DateFormat('dd MMM yyyy').format(date);
             var now = DateFormat('dd MMM yyyy').format(DateTime.now());
@@ -157,6 +120,7 @@ class TimeLineCalendar extends GetView<TimelineController> {
               return formatDate;
             }
           },
+
         ),
       ),
     );
@@ -166,17 +130,17 @@ class TimeLineCalendar extends GetView<TimelineController> {
 _headerStyle() {
   return HeaderStyle(
       decoration: const BoxDecoration(color: Colors.transparent),
-      headerMargin: const EdgeInsets.only(bottom: 30),
+      headerMargin: const EdgeInsets.only(bottom: 0),
       headerTextStyle: AppStyle.normal_text_grey.copyWith(
-          color: AppColor.secondaryColor, fontSize: Dimensions.fontSizeMid),
+          color: AppColor.noColor, fontSize: Dimensions.fontSizeMid),
       leftIcon: const Icon(
         Icons.arrow_back_ios_new_rounded,
-        size: 20,
-        color: AppColor.normalTextColor,
+        size: 0,
+        color: AppColor.noColor,
       ),
       rightIcon: const Icon(
         Icons.arrow_forward_ios,
-        size: 20,
+        size: 0,
         color: AppColor.normalTextColor,
       ));
 }

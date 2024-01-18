@@ -131,7 +131,6 @@ Widget _buttonLayout({context, currentIndex, titleText}) {
           ),
         ),
       ),
-      customSpacerHeight(height: 8),
       _skipButton(context: context),
     ],
   );

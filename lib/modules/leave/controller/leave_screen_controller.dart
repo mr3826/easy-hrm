@@ -6,8 +6,6 @@ import 'package:payrun_mobile/modules/leave/model/cancel_leave_res.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_summary_dashboard.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
-import 'package:payrun_mobile/utils/utils.dart';
-
 import '../../home/view/screen/main_screen.dart';
 import '../model/leave_details_by_date.dart';
 
@@ -57,41 +55,6 @@ class LeaveScreenController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .getGraphQuery(queryString: cancelLeaveQuery, variables: {
       "inputData": {"leave_id": leaveId, "status": "cancelled"}
-    });
-
-    if (response.hasException) {
-      log(response.exception.toString());
-    } else {
-      print(CancelLeaveResponse.fromJson(response.data!).updateLeave?.id);
-      Get.off(() => MainScreen(
-            routeIndex: 1,
-          ));
-    }
-
-    cancelLeaveLoader(false);
-  }
-
-  void updateLeave(
-      {required String leaveId,
-      required String startDate,
-      required String? endDate,
-      required String? leaveTypeId}) async {
-    print("""
-    required String leaveId::$leaveId,
-      required String startDate::$startDate,
-      required String? endDate::$endDate
-    """);
-    cancelLeaveLoader(true);
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: cancelLeaveQuery, variables: {
-      "inputData": {
-        "leave_id": leaveId,
-        "status": "pending",
-        "description": leaveNoteController.text,
-        "end_date": endDate,
-        "start_date": startDate,
-        "leave_type_id": leaveTypeId
-      }
     });
 
     if (response.hasException) {
