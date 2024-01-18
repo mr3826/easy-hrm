@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_in_time.dart';
 import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_time.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
@@ -62,6 +61,13 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
 
   @override
   Widget build(BuildContext context) {
+
+    print('''
+    leave id: ${leaveRecords?.id}
+    isNoteRequired: ${leaveRecords?.leaveType?.isAddNoteRequired}
+    isDocRequired: ${leaveRecords?.leaveType?.isAttachDocumentRequired}
+    ''');
+
     _updateDateFromResponse();
     return controller.obx(
         (state) => Padding(
@@ -272,6 +278,10 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
     Get.find<DateTimePickerController>().getOutDateTime();
 
     leaveNoteController.text = leaveRecords?.description ?? "";
+    Get.find<UpDateLeaveController>().isNoteRequired.value =
+        leaveRecords?.leaveType?.isAddNoteRequired ?? false;
+    Get.find<UpDateLeaveController>().isDocumentRequired.value =
+        leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
   }
 }
 

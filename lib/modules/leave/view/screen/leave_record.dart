@@ -16,6 +16,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 import '../../../../enum.dart';
 import '../../../../utils/utils.dart';
+import '../../model/leave_record_response.dart';
 import '../widget/leave_record_details_view.dart';
 import '../widget/status_btn_widget.dart';
 
@@ -58,6 +59,13 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               createdAt: controller
                   .leaveRecordList?[monthIndex].data?[index].createdAt,
               leaveType: LeaveType(
+                isAttachDocumentRequired: controller
+                    .leaveRecordList?[monthIndex]
+                    .data![index]
+                    .leaveType
+                    ?.isAttachDocumentRequired,
+                isAddNoteRequired: controller.leaveRecordList?[monthIndex]
+                    .data![index].leaveType?.isAddNoteRequired,
                 leaveName: controller.leaveRecordList?[monthIndex].data![index]
                     .leaveType?.leaveName,
                 leaveId: controller.leaveRecordList?[monthIndex].data![index]

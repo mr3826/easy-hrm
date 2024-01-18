@@ -17,6 +17,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 
 import '../../controller/calendar_date_controller.dart';
+import '../../model/leave_record_response.dart';
 import 'leave_record_details_view.dart';
 
 class IndividualEventView extends StatelessWidget {
@@ -211,6 +212,19 @@ class IndividualEventView extends StatelessWidget {
                             .leaveRequests?[index]
                             .leaveType
                             ?.leaveId,
+                        isAddNoteRequired: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests?[index]
+                            .leaveType
+                            ?.isAddNoteRequired,
+                        isAttachDocumentRequired:
+                            Get.find<LeaveScreenController>()
+                                .leaveDetailsByDate
+                                ?.getLeaveDetailsByDate![0]
+                                .leaveRequests?[index]
+                                .leaveType
+                                ?.isAttachDocumentRequired,
                       ),
                       description: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
