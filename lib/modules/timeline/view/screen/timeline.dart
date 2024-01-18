@@ -38,7 +38,9 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
-    return  Padding(
+    return   Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue &&  Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue?
+  const CircularProgressIndicator():
+      Padding(
             padding: const EdgeInsets.only(left: 35.0, bottom: 18),
             child: Row(
               children: [

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,10 +12,11 @@ class SFCalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("SFCalendarScreen build called",error: 100);
     return Obx(() => Get.find<TimelineController>()
             .isTimelineCalendarByDateLoading
             .isTrue
-        ? const CupertinoActivityIndicator()
+        ?  Container()
         : Scaffold(
             body: SfCalendar(
               view: CalendarView.day,
@@ -24,12 +27,6 @@ class SFCalendarScreen extends StatelessWidget {
 
               viewHeaderStyle: const ViewHeaderStyle(backgroundColor: Colors.transparent,dateTextStyle: TextStyle(color: Colors.transparent),dayTextStyle: TextStyle(color: Colors.transparent)),
               headerHeight: 0,
-
-              scheduleViewSettings: const ScheduleViewSettings(
-                  appointmentItemHeight: 12,
-                  weekHeaderSettings:
-                      WeekHeaderSettings(backgroundColor: Colors.yellow),
-                  dayHeaderSettings: DayHeaderSettings(width: 18)),
               showDatePickerButton: true,
               showNavigationArrow: true,
               appointmentTimeTextFormat: "HH:mm",

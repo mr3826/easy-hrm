@@ -41,9 +41,14 @@ class TimelineController extends GetxController with StateMixin {
 
     getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 1, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 1, 23, 59, 59)}");
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+    getTimelineSummaryByDate(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
     // _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
     //   getCalendarTimelineDataByDate(
@@ -295,21 +300,88 @@ class TimelineController extends GetxController with StateMixin {
       isTimelineCalendarByDateLoading(false);
     } else {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
-      print(calendarTimeline?.getCalenderTimelinesForApp?.timelines?.length);
+      print("time line calendar ::: $responseForCalendar");
+      meetings.clear();
 
       calendarTimeline?.getCalenderTimelinesForApp?.timelines?.map((e) {
+
+        DateTime dateTimeNow = DateTime.now();
+        DateTime dateStartTimeValue =
+        DateTime.parse(e.startDate ?? DateTime.now().toString());
+        DateTime dateEndTimeValue =
+        DateTime.parse(e.endDate ?? DateTime.now().toString());
+
+       // ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+        //   ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
+
         return meetings.add(
           Meeting(
             '''
-           ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
            
-           ${e.description ?? "No added yet"}
+           ${e.task?.name ?? "No added yet"}
            
-           ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
             ''',
-            DateTime.parse(e.startDate ?? DateTime.now().toString()),
-            DateTime.parse(e.endDate ?? DateTime.now().toString()),
-            _statusAccordingToColor(e.status),
+            DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateStartTimeValue.hour,
+              dateStartTimeValue.minute,
+              dateStartTimeValue.second,
+
+            ),
+            DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateEndTimeValue.hour,
+              dateEndTimeValue.minute,
+              dateEndTimeValue.second,
+            ),
+
+            statusAccordingToColor(e.status),
+            false,
+          ),
+        );
+      }).toList();
+
+      calendarTimeline?.getCalenderTimelinesForApp?.leaves?.map((e) {
+
+        DateTime dateTimeNow = DateTime.now();
+        DateTime dateStartTimeValue =
+        DateTime.parse(e.startDate ?? DateTime.now().toString());
+        DateTime dateEndTimeValue =
+        DateTime.parse(e.endDate ?? DateTime.now().toString());
+
+       // ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+        //   ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
+
+        return meetings.add(
+          Meeting(
+            '''
+           
+           ${e.leaveType?.name ?? "No added yet"}
+           
+            ''',
+            DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateStartTimeValue.hour,
+              dateStartTimeValue.minute,
+              dateStartTimeValue.second,
+
+            ),
+            DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateEndTimeValue.hour,
+              dateEndTimeValue.minute,
+              dateEndTimeValue.second,
+            ),
+
+            statusAccordingToColor(e.status),
             false,
           ),
         );
@@ -320,13 +392,16 @@ class TimelineController extends GetxController with StateMixin {
   }
 }
 
-_statusAccordingToColor(status) {
+statusAccordingToColor(status) {
   switch (status) {
     case "pending":
       return AppColor.pendingColor.withOpacity(0.4);
     case "approved":
       return AppColor.primaryColor.withOpacity(0.4);
-    case "reject":
+    case "taken":
+      return AppColor.takenColor.withOpacity(0.4);
+      case "reject":
       return AppColor.errorColorLight.withOpacity(0.4);
+
   }
 }

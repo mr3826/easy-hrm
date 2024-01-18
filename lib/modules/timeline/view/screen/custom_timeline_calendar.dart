@@ -11,9 +11,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../controller/sf_calendar.dart';
+import '../../controller/time_formate_controller.dart';
 import '../../controller/timeline_controller.dart';
-import '../../model/calendar_timeline.dart';
-import '../widget/timeline_calendar.dart';
 import '../widget/timelog_summary_working_gol_layout.dart';
 
 class CustomTimelineCalendar extends StatelessWidget {
@@ -22,23 +21,37 @@ class CustomTimelineCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<TimelineController>();
-
-
-    // CalendarControllerProvider.of(Get.context!)
-    //     .controller
-    //     .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
+    controller.calendarTimeline?.getCalenderTimelinesForApp?.timelines
+        ?.map((e) {
+      return controller.meetings.add(
+        Meeting(
+          '''
+           ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+           
+           ${e.description ?? "No added yet"}
+           
+           ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
+            ''',
+          DateTime.parse(e.startDate ?? DateTime.now().toString()),
+          DateTime.parse(e.endDate ?? DateTime.now().toString()),
+          statusAccordingToColor(e.status),
+          false,
+        ),
+      );
+    }).toList();
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: Obx(() => Stack(
-            children: [
-              controller.isTimelineSummaryByDateLoading.isTrue
-                  ? const Center(child: CupertinoActivityIndicator())
-                  : const SFCalendarScreen(),
-              _summaryLayout(),
-              _dateCalendarLayout(),
-            ],
-          )),
+      child: Stack(
+        children: [
+          controller.isTimelineSummaryByDateLoading.isTrue &&
+                  controller.isTimelineSummaryByDateLoading.isTrue
+              ? Center(child: Container())
+              : const SFCalendarScreen(),
+          _summaryLayout(),
+          _dateCalendarLayout(),
+        ],
+      ),
     );
   }
 }
@@ -50,8 +63,8 @@ Widget _dateCalendarLayout() {
     left: 0,
     right: 0,
     child: Obx(() => Card(
-      elevation: 0,
-      child: GestureDetector(
+          elevation: 0,
+          child: GestureDetector(
             onTap: () {
               showDialog(
                 context: Get.context!,
@@ -75,17 +88,7 @@ Widget _dateCalendarLayout() {
                     children: [
                       GestureDetector(
                           onTap: () async {
-
                             controller.decrementDate();
-
-
-
-
-
-
-
-
-
 
                             DateTime date =
                                 DateTime.parse(controller.formattedDateTime);
@@ -95,11 +98,12 @@ Widget _dateCalendarLayout() {
                                 endDate:
                                     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
-                            Get.find<TimelineController>().getCalendarTimelineDataByDate(
-                                startDate:
-                                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                                endDate:
-                                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                            Get.find<TimelineController>()
+                                .getCalendarTimelineDataByDate(
+                                    startDate:
+                                        "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                                    endDate:
+                                        "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
                           },
                           child: const Icon(
                             Icons.arrow_back_ios,
@@ -128,11 +132,12 @@ Widget _dateCalendarLayout() {
                                 endDate:
                                     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
-                            Get.find<TimelineController>().getCalendarTimelineDataByDate(
-                                startDate:
-                                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                                endDate:
-                                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                            Get.find<TimelineController>()
+                                .getCalendarTimelineDataByDate(
+                                    startDate:
+                                        "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                                    endDate:
+                                        "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
                           },
                           child: const Icon(
                             Icons.arrow_forward_ios_sharp,
@@ -152,7 +157,7 @@ Widget _dateCalendarLayout() {
               ),
             ),
           ),
-    )),
+        )),
   );
 }
 

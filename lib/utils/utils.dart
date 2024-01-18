@@ -227,7 +227,7 @@ List<Widget> _buildScreens() {
   return [
     const TimelineScreen(),
     const LeaveScreen(),
-    SFCalendarScreen(),
+    Dashboard(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];
