@@ -27,38 +27,33 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/file_upload_controller.dart';
 import '../../model/leave_type.dart';
 
-class UpdateLeave extends GetView<UpDateLeaveController> {
+class UpdateLeave extends StatelessWidget {
   GetLeaveRecords? leaveRecords;
 
   UpdateLeave({super.key, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-        (state) => Column(
-              children: [
-                customButtonSheetAppbar(
-                    text: DateTime.parse(leaveRecords!.startDate!).day ==
-                            DateTime.parse(leaveRecords!.endDate!).day
-                        ? DateFormat('d MMMM').format(DateTime.parse(
-                            leaveRecords?.startDate ??
-                                DateTime.now().toString()))
-                        : "${DateFormat('d MMMM').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))}- ${DateFormat('d MMMM').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}",
-                    subtext: DateTime.parse(leaveRecords!.startDate!).day ==
-                            DateTime.parse(leaveRecords!.endDate!).day
-                        ? DateFormat('EEEE').format(DateTime.parse(
-                            leaveRecords?.startDate ??
-                                DateTime.now().toString()))
-                        : "${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))} - ${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}"),
-                Expanded(
-                    child: UpdateLeaveButtonLayout(leaveRecords: leaveRecords))
-              ],
-            ),
-        onLoading: const LoadingIndicator());
+    return Column(
+      children: [
+        customButtonSheetAppbar(
+            text: DateTime.parse(leaveRecords!.startDate!).day ==
+                    DateTime.parse(leaveRecords!.endDate!).day
+                ? DateFormat('d MMMM').format(DateTime.parse(
+                    leaveRecords?.startDate ?? DateTime.now().toString()))
+                : "${DateFormat('d MMMM').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))}- ${DateFormat('d MMMM').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}",
+            subtext: DateTime.parse(leaveRecords!.startDate!).day ==
+                    DateTime.parse(leaveRecords!.endDate!).day
+                ? DateFormat('EEEE').format(DateTime.parse(
+                    leaveRecords?.startDate ?? DateTime.now().toString()))
+                : "${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))} - ${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}"),
+        Expanded(child: UpdateLeaveButtonLayout(leaveRecords: leaveRecords))
+      ],
+    );
   }
 }
 
-class UpdateLeaveButtonLayout extends StatelessWidget {
+class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
   final GetLeaveRecords? leaveRecords;
 
   UpdateLeaveButtonLayout({super.key, this.leaveRecords});
@@ -68,111 +63,124 @@ class UpdateLeaveButtonLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _updateDateFromResponse();
-    return Padding(
-      padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              customTitleText(
-                  text: AppString.text_leave_type.tr, isRequired: true),
-              customSpacerHeight(height: 8),
-
-              UpdateLeaveDropdown(
-                  dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
-
-              customSpacerHeight(height: 8),
-              _leaveCountStyleLayout(),
-              customSpacerHeight(height: 20),
-              customTitleText(text: AppString.text_from.tr, isRequired: true),
-              customSpacerHeight(height: 8),
-              const CustomTimePickerInTime(),
-              customSpacerHeight(height: 20),
-              customTitleText(text: AppString.text_to.tr, isRequired: true),
-              customSpacerHeight(height: 8),
-              const CustomTimePickerOutTime(),
-              customSpacerHeight(height: 12),
-              // _errorAlertLayout(),
-              customSpacerHeight(height: 18),
-              Obx(() => Row(
+    return controller.obx(
+        (state) => Padding(
+              padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      customTitleText(text: AppString.text_note.tr),
-                      customSpacerWidth(width: 6),
-                      Get.find<UpDateLeaveController>().isNoteRequired.isTrue
-                          ? customTitleTextRedText(text: "*")
-                          : Container(),
-                    ],
-                  )),
-              customSpacerHeight(height: 8),
-              _noteTextField(),
-              Obx(() => Row(
-                    children: [
-                      customTitleText(text: AppString.text_document.tr),
-                      customSpacerWidth(width: 6),
-                      Get.find<UpDateLeaveController>()
-                              .isDocumentRequired
+                      customTitleText(
+                          text: AppString.text_leave_type.tr, isRequired: true),
+                      customSpacerHeight(height: 8),
+
+                      UpdateLeaveDropdown(
+                          dropdownValue:
+                              leaveRecords?.leaveType?.leaveId ?? ""),
+
+                      customSpacerHeight(height: 8),
+                      _leaveCountStyleLayout(),
+                      customSpacerHeight(height: 20),
+                      customTitleText(
+                          text: AppString.text_from.tr, isRequired: true),
+                      customSpacerHeight(height: 8),
+                      const CustomTimePickerInTime(),
+                      customSpacerHeight(height: 20),
+                      customTitleText(
+                          text: AppString.text_to.tr, isRequired: true),
+                      customSpacerHeight(height: 8),
+                      const CustomTimePickerOutTime(),
+                      customSpacerHeight(height: 12),
+                      // _errorAlertLayout(),
+                      customSpacerHeight(height: 18),
+                      Obx(() => Row(
+                            children: [
+                              customTitleText(text: AppString.text_note.tr),
+                              customSpacerWidth(width: 6),
+                              Get.find<UpDateLeaveController>()
+                                      .isNoteRequired
+                                      .isTrue
+                                  ? customTitleTextRedText(text: "*")
+                                  : Container(),
+                            ],
+                          )),
+                      customSpacerHeight(height: 8),
+                      _noteTextField(),
+                      Obx(() => Row(
+                            children: [
+                              customTitleText(text: AppString.text_document.tr),
+                              customSpacerWidth(width: 6),
+                              Get.find<UpDateLeaveController>()
+                                      .isDocumentRequired
+                                      .isTrue
+                                  ? customTitleTextRedText(text: "*")
+                                  : Container(),
+                            ],
+                          )),
+                      customSpacerHeight(height: 6),
+                      _pathFormatText(),
+                      customSpacerHeight(height: 8),
+                      AddAttachmentFile(),
+                      customSpacerHeight(height: 20),
+                      Obx(() => Get.find<UpDateLeaveController>()
+                              .isUpdateLeaveLoading
                               .isTrue
-                          ? customTitleTextRedText(text: "*")
-                          : Container(),
-                    ],
-                  )),
-              customSpacerHeight(height: 6),
-              _pathFormatText(),
-              customSpacerHeight(height: 8),
-               AddAttachmentFile(),
-              customSpacerHeight(height: 20),
-              Obx(() =>
-                  Get.find<UpDateLeaveController>().isUpdateLeaveLoading.isTrue
-                      ? const Center(
-                          child: CupertinoActivityIndicator(
-                            color: Colors.blueAccent,
-                            radius: 18,
-                          ),
-                        )
-                      : CustomDoubleAppButton(
-                          onAction: () {
-                            if (_formKey.currentState!.validate() &&
-                                Get.find<UpDateLeaveController>()
-                                    .leaveId
-                                    .isNotEmpty) {
-                              if (Get.find<UpDateLeaveController>()
-                                  .isDocumentRequired
-                                  .isTrue) {
-                                if (Get.find<FileUploadController>()
+                          ? const Center(
+                              child: CupertinoActivityIndicator(
+                                color: Colors.blueAccent,
+                                radius: 18,
+                              ),
+                            )
+                          : CustomDoubleAppButton(
+                              onAction: () {
+                                if (_formKey.currentState!.validate() &&
+                                    Get.find<UpDateLeaveController>()
+                                        .leaveId
+                                        .isNotEmpty) {
+                                  if (Get.find<UpDateLeaveController>()
+                                      .isDocumentRequired
+                                      .isTrue) {
+                                    if (Get.find<FileUploadController>()
+                                        .storageForUpload
+                                        .filePath
+                                        .value
+                                        .isNotEmpty) {
+                                      _updateLeaveMethod();
+                                    } else {
+                                      Get.find<DateTimeController>()
+                                          .isErrorOccurred(true);
+                                    }
+                                  } else {
+                                    _updateLeaveMethod();
+                                  }
+                                } else {
+                                  print("Method should not called");
+                                }
+                              },
+                              buttonText: AppString.text_apply.tr,
+                              cancelAction: () {
+                                Navigator.pop(context);
+                                Get.find<FileUploadController>()
                                     .storageForUpload
                                     .filePath
-                                    .value
-                                    .isNotEmpty) {
-                                  _updateLeaveMethod();
-                                } else {
-                                  Get.find<DateTimeController>()
-                                      .isErrorOccurred(true);
-                                }
-                              } else {
-                                _updateLeaveMethod();
-                              }
-                            } else {
-                              print("Method should not called");
-                            }
-                          },
-                          buttonText: AppString.text_apply.tr,
-                          cancelAction: () {
-                            Navigator.pop(context);
-                            Get.find<FileUploadController>()
-                                .storageForUpload
-                                .filePath
-                                .value = "";
-                          },
-                        )),
-              customSpacerHeight(height: 100),
-            ],
+                                    .value = "";
+                              },
+                            )),
+                      customSpacerHeight(height: 100),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        onLoading: const Center(
+          child: CupertinoActivityIndicator(
+            radius: 18,
+            color: Colors.blueAccent,
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   _noteTextField() {

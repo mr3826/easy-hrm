@@ -15,7 +15,6 @@ import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/utils.dart';
 import '../../../timeline/view/screen/update_timeline.dart';
 
-
 Widget approvedStatusBtn() {
   return CustomStatusButton(
     textColor: AppColor.successColor,
@@ -45,6 +44,14 @@ Widget tokenStatusBtn() {
     textColor: AppColor.primaryColor,
     bgColor: AppColor.primaryColor.withOpacity(0.1),
     text: AppString.text_token.tr,
+  );
+}
+
+Widget cancelStatusBtn() {
+  return CustomStatusButton(
+    textColor: AppColor.bgColor,
+    bgColor: AppColor.errorColorLight.withOpacity(.9),
+    text: AppString.text_cancel.tr,
   );
 }
 
@@ -166,8 +173,9 @@ _rejectedBtn({
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
         onAction: () {
-          Get.to((){
-            _updateDataFromApiResponse(startDate: startDateTime,
+          Get.to(() {
+            _updateDataFromApiResponse(
+                startDate: startDateTime,
                 endDate: endDateTime,
                 color: dtsBgColor,
                 status: dtsStatus,
@@ -175,7 +183,7 @@ _rejectedBtn({
                 description: dtsDrc,
                 taskId: "",
                 timelineId: timeLineId);
-            return  const UpdateTimeLineLog();
+            return const UpdateTimeLineLog();
           });
         },
         btnColor: AppColor.primaryColor),
@@ -184,18 +192,18 @@ _rejectedBtn({
 
 _pendingLayout(
     {context,
-      dtsStartTime,
-      dtsEndTime,
-      dtsDateStatus,
-      dtsProjectName,
-      Color? dtsBgColor,
-      required startDateTime,
-      required endDateTime,
-      dtsDrc,
-      dtsDuration,
-      required timeLineId,
-      dtsDate,
-      dtsStatus}) {
+    dtsStartTime,
+    dtsEndTime,
+    dtsDateStatus,
+    dtsProjectName,
+    Color? dtsBgColor,
+    required startDateTime,
+    required endDateTime,
+    dtsDrc,
+    dtsDuration,
+    required timeLineId,
+    dtsDate,
+    dtsStatus}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
@@ -205,8 +213,9 @@ _pendingLayout(
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_cancel.tr,
         onAction: () {
-          Get.to((){
-            _updateDataFromApiResponse(startDate: startDateTime,
+          Get.to(() {
+            _updateDataFromApiResponse(
+                startDate: startDateTime,
                 endDate: endDateTime,
                 color: dtsBgColor,
                 status: dtsStatus,
@@ -214,7 +223,7 @@ _pendingLayout(
                 description: dtsDrc,
                 taskId: "",
                 timelineId: timeLineId);
-            return  const UpdateTimeLineLog();
+            return const UpdateTimeLineLog();
           });
         },
         btnColor: AppColor.primaryColor),
@@ -223,18 +232,18 @@ _pendingLayout(
 
 _approvedLayout(
     {context,
-      required startDateTime,
-      required endDateTime,
-      dtsStartTime,
-      dtsEndTime,
-      dtsDateStatus,
-      dtsProjectName,
-      Color? dtsBgColor,
-      dtsDrc,
-      dtsDuration,
-      dtsDate,
-      dtsStatus,
-      required timeLineId}) {
+    required startDateTime,
+    required endDateTime,
+    dtsStartTime,
+    dtsEndTime,
+    dtsDateStatus,
+    dtsProjectName,
+    Color? dtsBgColor,
+    dtsDrc,
+    dtsDuration,
+    dtsDate,
+    dtsStatus,
+    required timeLineId}) {
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(
@@ -245,19 +254,19 @@ _approvedLayout(
             fontSize: Dimensions.fontSizeDefault + 2),
       ),
       onPressed: () {
-        Get.find<TimelineController>().timeLogStatus==dtsStatus;
-        Get.find<TimelineController>().timeLineID==timeLineId;
-        Get.to((){
-          _updateDataFromApiResponse(startDate: startDateTime,
+        Get.find<TimelineController>().timeLogStatus == dtsStatus;
+        Get.find<TimelineController>().timeLineID == timeLineId;
+        Get.to(() {
+          _updateDataFromApiResponse(
+              startDate: startDateTime,
               endDate: endDateTime,
               description: dtsDrc,
               duration: dtsDuration,
               color: dtsBgColor,
-
               taskId: '',
-
-              timelineId: '', status:dtsStatus);
-          return  const UpdateTimeLineLog();
+              timelineId: '',
+              status: dtsStatus);
+          return const UpdateTimeLineLog();
         });
       },
       buttonColor: AppColor.primaryColor,
@@ -268,31 +277,33 @@ _approvedLayout(
 
 void _updateDataFromApiResponse(
     {required startDate,
-      required endDate,
-      required taskId,
-      required status,
-      required color,
-
-      required duration,
-
-      required timelineId,
-      required description}) {
+    required endDate,
+    required taskId,
+    required status,
+    required color,
+    required duration,
+    required timelineId,
+    required description}) {
   //sub string because of data format
   //date format "(data)";
 
-  Get.find<TimelineController>().timeLogDuration=duration;
-  Get.find<TimelineController>().timeLogColor=color;
+  Get.find<TimelineController>().timeLogDuration = duration;
+  Get.find<TimelineController>().timeLogColor = color;
 
-  Get.find<TimelineController>().timeLogStatus=status;
-  status!="approved"?
-  Get.find<TimelineController>().timeLineID=timelineId.substring(1, timelineId.length - 1):Container();
-  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate.substring(1, startDate.length - 1)));
-  timelineLogDetailsDrcController.text = description.substring(1, description.length - 1);
+  Get.find<TimelineController>().timeLogStatus = status;
+  status != "approved"
+      ? Get.find<TimelineController>().timeLineID =
+          timelineId.substring(1, timelineId.length - 1)
+      : Container();
+  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd')
+      .format(DateTime.parse(startDate.substring(1, startDate.length - 1)));
+  timelineLogDetailsDrcController.text =
+      description.substring(1, description.length - 1);
   DateTime startTime =
-  DateTime.parse(startDate.substring(1, startDate.length - 1));
+      DateTime.parse(startDate.substring(1, startDate.length - 1));
   DateTime endTime = DateTime.parse(endDate.substring(1, endDate.length - 1));
   Get.find<DateTimeController>().pickedInTime.value =
-  "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+      "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
   Get.find<DateTimeController>().pickedOutTime.value =
-  "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+      "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
 }

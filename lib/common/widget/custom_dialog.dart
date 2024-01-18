@@ -104,7 +104,7 @@ class CustomDialog extends StatelessWidget {
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.hintColor,
                         fontSize:
-                            drcFontSize ?? Dimensions.fontSizeDefault - 3),
+                            drcFontSize ?? Dimensions.fontSizeDefault),
                   )),
                   Center(
                       child: Text(

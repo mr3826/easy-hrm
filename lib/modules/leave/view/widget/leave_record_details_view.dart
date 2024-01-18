@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
@@ -32,6 +33,7 @@ class LeaveRecordDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _checkLeaveDateDuration(leaveRecords ?? GetLeaveRecords());
+
     return Column(
       children: [
         customButtonSheetAppbar(text: leaveDate, subtext: leaveWeekday),
@@ -83,7 +85,7 @@ class LeaveRecordDetails extends StatelessWidget {
     } else if (status == LeaveStatus.approved.name) {
       return _approvedLayout(context);
     } else if (status == LeaveStatus.cancelled.name) {
-      return _rejectedBtn(context);
+      return Container();
     } else {
       return Container();
     }
@@ -96,8 +98,12 @@ class LeaveRecordDetails extends StatelessWidget {
       return pendingStatusBtn();
     } else if (status == "token") {
       return tokenStatusBtn();
-    } else {
+    } else if (status == LeaveStatus.approved.name) {
       return approvedStatusBtn();
+    } else if (status == LeaveStatus.cancelled.name) {
+      return cancelStatusBtn();
+    } else {
+      return Container();
     }
   }
 
@@ -138,13 +144,30 @@ class LeaveRecordDetails extends StatelessWidget {
         onPressed: () {
           customDialog(
               context: context,
-              saveBtnAction: () => Get.back(),
+              saveBtnAction: () {
+                if (leaveRecords?.id != null) {
+                  Get.find<LeaveScreenController>()
+                      .removeLeave(leaveId: leaveRecords!.id!);
+                }
+              },
+              childForSaveBtn: Obx(() => Get.find<LeaveScreenController>()
+                      .cancelLeaveLoader
+                      .isTrue
+                  ? const Center(
+                      child: CupertinoActivityIndicator(
+                      radius: 16,
+                      color: Colors.blueAccent,
+                    ))
+                  : Text(
+                      AppString.text_remove.tr,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    )),
               icon: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_time_log.tr,
               subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
-              drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
+              drcText: "",
               iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColorLight,
+              btnBgColor: AppColor.errorColor.withOpacity(.6),
               btnText: AppString.text_remove.tr);
         },
         buttonColor: AppColor.errorColor.withOpacity(0.6),
@@ -157,7 +180,7 @@ class LeaveRecordDetails extends StatelessWidget {
     return Padding(
       padding: marginLayout,
       child: CustomDoubleAppButton(
-          cancelText: AppString.text_cancel.tr,
+          cancelText: AppString.cancelLeaveText.tr,
           cancelAction: () {
             customDialog(
                 context: context,
@@ -175,7 +198,6 @@ class LeaveRecordDetails extends StatelessWidget {
           },
           buttonText: AppString.text_edit.tr,
           onAction: () {
-            print("Called");
             if (Get.isRegistered<DateTimePickerController>()) {
               Get.delete<DateTimePickerController>();
             }

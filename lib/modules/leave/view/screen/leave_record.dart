@@ -108,6 +108,10 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   _infoLayoutView(
       {required BuildContext context, required GetLeaveRecords leaveRecord}) {
+    print('''
+    leaveRecord id ${leaveRecord.id}
+    leaveRecord.status:: ${leaveRecord.status}
+    ''');
     return GestureDetector(
       onTap: () => customButtonSheet(
           context: context,

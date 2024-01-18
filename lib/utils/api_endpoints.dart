@@ -110,6 +110,13 @@ mutation UpdateLeave($inputData: UpdateLeaveInputData) {
   }
 }
 ''';
+const removeLeaveQuery = r'''
+mutation RemoveRejectedLeaves($inputData: DeleteLeaveInputData) {
+  removeRejectedLeaves(inputData: $inputData) {
+    result
+  }
+}
+''';
 
 const leaveTypeDropdownQuery = '''
 query GetLeaveTypesDropdown {
