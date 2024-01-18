@@ -102,6 +102,8 @@ class AppString {
       'Profile updated successfully';
   static String leaveUpdatedSuccessMessage =
       'Leave updated successfully';
+  static String leaveCanceledSuccessMessage = 'Leave canceled successfully';
+  static String leaveRemovedSuccessMessage = 'Leave removed successfully';
 
   static String text_approved = 'Approved';
   static String text_profile = 'Profile';

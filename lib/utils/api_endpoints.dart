@@ -30,8 +30,7 @@ query Query {
 }
         """;
 
-
-const workShiftQuery=r'''
+const workShiftQuery = r'''
 query GetWorkScheduleForAssignLeave($queryData: WorkSchedulesQueryData!) {
   getWorkScheduleForAssignLeave(queryData: $queryData) {
     id
@@ -55,10 +54,12 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
         name
       }
       leave_status
-      leaveType {
+       leaveType {
         type
         id
         name
+        add_note_required
+        attach_document_required
       }
       status
       number_of_days
@@ -85,6 +86,8 @@ query GetLeaveRecordsForApp($optionData: OptionDataType) {
         type
         id
         name
+        add_note_required
+        attach_document_required
       }
       status
       number_of_days
@@ -107,6 +110,13 @@ const cancelLeaveQuery = r'''
 mutation UpdateLeave($inputData: UpdateLeaveInputData) {
   updateLeave(inputData: $inputData) {
     id
+  }
+}
+''';
+const removeLeaveQuery = r'''
+mutation RemoveRejectedLeaves($inputData: DeleteLeaveInputData) {
+  removeRejectedLeaves(inputData: $inputData) {
+    result
   }
 }
 ''';
@@ -248,6 +258,7 @@ query GetMonthlyTimelog {
 const upcommingLeaveForDashboardQuery = '''
 query GetUpcomingLeavesForApp {
   getUpcomingLeavesForApp {
+    id
     end_date
     start_date
     description
@@ -255,10 +266,12 @@ query GetUpcomingLeavesForApp {
     createdAt
     number_of_days
     leaveType {
-      type
-      id
-      name
-    }
+        type
+        id
+        name
+        add_note_required
+        attach_document_required
+      }
   }
 }
 ''';

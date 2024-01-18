@@ -17,114 +17,65 @@ customDialog(
     required subText,
     required saveBtnAction,
     required btnText,
-     Widget? childForSaveBtn,
+    Widget? childForSaveBtn,
     drcText,
     required iconBgColor,
     required btnBgColor}) {
-  showDialog(
+  showDialog<String>(
     context: context,
-    builder: (context) => CustomDialog(
-        subtext: subText,
-        drcFontSize: drcFontSize,
-        titleText: titleText,
-        icon: icon,
-        saveBtnAction: saveBtnAction,
-        btnText: btnText,
-        drcText: drcText,
-        childForSaveBtn: childForSaveBtn,
-        iconBgColor: btnBgColor,
-        btnBgColor: btnBgColor),
+    builder: (BuildContext context) => Dialog(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              backgroundColor: iconBgColor.withOpacity(0.2),
+              radius: 32,
+              child: Icon(
+                icon,
+                size: 40,
+                color: btnBgColor,
+              ),
+            ),
+            customSpacerHeight(height: 12),
+            Text(
+              titleText,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor, fontWeight: FontWeight.w600),
+            ),
+            customSpacerHeight(height: 12),
+            Center(
+                child: Text(
+              subText,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: drcFontSize ?? Dimensions.fontSizeDefault),
+            )),
+            Center(
+                child: Text(
+              drcText,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault - 3),
+            )),
+            customSpacerHeight(height: 20),
+            CustomDoubleAppButton(
+              buttonText: btnText,
+              onAction: saveBtnAction,
+              cancelAction: () => Get.back(),
+              btnColor: btnBgColor,
+              saveBtn: childForSaveBtn,
+            )
+          ],
+        ),
+      ),
+    ),
   );
 }
 
-class CustomDialog extends StatelessWidget {
-  final IconData icon;
-  final String titleText;
-  final String subtext;
-  final String drcText;
-  final String btnText;
-  final Color iconBgColor;
-  final Color btnBgColor;
-  final double? drcFontSize;
-  final Widget ?childForSaveBtn;
-  final Function saveBtnAction;
-  final isOTPVisible = false;
-
-  const CustomDialog(
-      {super.key,
-      required this.icon,
-      required this.titleText,
-      this.drcFontSize,
-      required this.iconBgColor,
-      required this.btnBgColor,
-      this.subtext = "",
-        this.childForSaveBtn,
-      required this.saveBtnAction,
-      required this.btnText,
-      required this.drcText});
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-        shape: roundedRectangleBorder,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-
-              borderRadius:
-                  BorderRadius.circular(Dimensions.radiusDefault)),
-          margin: const EdgeInsets.only(top: 16),
-          child: SizedBox(
-            height: Get.height*.3,
-            child: Padding(
-              padding: marginLayout.copyWith(bottom: 16),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: iconBgColor.withOpacity(0.2),
-                    radius: 32,
-                    child: Icon(
-                      icon,
-                      size: 40,
-                      color: btnBgColor,
-                    ),
-                  ),
-                  customSpacerHeight(height: 12),
-                  Text(
-                    titleText,
-                    style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.normalTextColor,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  customSpacerHeight(height: 12),
-                  Center(
-                      child: Text(
-                    subtext,
-                    style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.hintColor,
-                        fontSize:
-                            drcFontSize ?? Dimensions.fontSizeDefault - 3),
-                  )),
-                  Center(
-                      child: Text(
-                    drcText,
-                    style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.hintColor,
-                        fontSize: Dimensions.fontSizeDefault - 3),
-                  )),
-                  const Spacer(),
-                  CustomDoubleAppButton(
-                    buttonText: btnText,
-                    onAction: saveBtnAction,
-                    cancelAction: () => Get.back(),
-                    btnColor: btnBgColor,
-                    saveBtn:childForSaveBtn,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ));
-  }
-}
