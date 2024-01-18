@@ -25,10 +25,7 @@ Widget btnSheetViewLayout(
     dtsDrc,
     dtsDuration,
     dtsDate
-
     }) {
-
-
 
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
@@ -47,6 +44,8 @@ Widget btnSheetViewLayout(
         _infoLayout(
             text: "${AppString.text_status.tr}:",
             widget: statusBtn(status: "$status")),
+
+
         customSpacerHeight(height: 6),
         status == "taken"
             ? _infoLayout(

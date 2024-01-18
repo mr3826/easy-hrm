@@ -28,28 +28,44 @@ class TaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("receive status :::: $status");
 
     return Column(
       children: [
         //button sheet appbar here
-        projectViewBtnSheetAppbar(date: DateTime.parse(startTime), duration: convertMiniToHour(Duration(minutes: int.parse(totalDur))).toString(),bgColor: statusColor(status)),
+        projectViewBtnSheetAppbar(
+            date: DateTime.parse(startTime),
+            duration: convertMiniToHour(Duration(minutes: int.parse(totalDur)))
+                .toString(),
+            bgColor: statusColor(status)),
 
         //button sheet body here
         btnSheetViewLayout(
           context: context,
           status: status,
-          startTime: DateFormat('HH:mm').format(DateTime.parse(startTime.toString())).toString(),
-          endTime: DateFormat('HH:mm').format(DateTime.parse(endTime.toString())).toString(),
+          startTime: DateFormat('HH:mm')
+              .format(DateTime.parse(startTime.toString()))
+              .toString(),
+          endTime: DateFormat('HH:mm')
+              .format(DateTime.parse(endTime.toString()))
+              .toString(),
           dateApplication: date.toString(),
           projectName: projectName,
           bgColor: statusColor(status),
-          dtsDuration: convertMiniToHour(Duration(minutes: int.parse(totalDur))),
+          dtsDuration:
+              convertMiniToHour(Duration(minutes: int.parse(totalDur))),
           dtsBgColor: statusColor(status),
           timeLineId: timeLineId,
-          dtsDate: DateFormat('HH:mm').format(DateTime.parse(startTime.toString())).toString(),
+          dtsDate: DateFormat('HH:mm')
+              .format(DateTime.parse(startTime.toString()))
+              .toString(),
           dtsDrc: description,
-          startDateTime: DateFormat('HH:mm').format(DateTime.parse(startTime.toString())).toString(),
-          endDateTime: DateFormat('HH:mm').format(DateTime.parse(endTime.toString())).toString(),
+          startDateTime: DateFormat('HH:mm')
+              .format(DateTime.parse(startTime.toString()))
+              .toString(),
+          endDateTime: DateFormat('HH:mm')
+              .format(DateTime.parse(endTime.toString()))
+              .toString(),
         ),
       ],
     );
@@ -63,6 +79,12 @@ statusColor(status) {
     case "pending":
       return AppColor.primaryOrange;
     case "reject":
+      return AppColor.errorColorLight;
+    case "taken":
+      return AppColor.takenColor;
+    case "rejected":
+      return AppColor.errorColorLight;
+    case "cancelled":
       return AppColor.errorColorLight;
     default:
       return AppColor.primaryColor;

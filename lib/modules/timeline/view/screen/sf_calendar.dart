@@ -26,6 +26,7 @@ class SFCalendarScreen extends StatelessWidget {
                 child: SfCalendar(
                   view: CalendarView.day,
                   dataSource: _getCalendarDataSource(),
+                  backgroundColor: AppColor.cardColor,
                   appointmentTextStyle:
                       const TextStyle(color: AppColor.normalTextColor),
                   selectionDecoration:
@@ -36,31 +37,14 @@ class SFCalendarScreen extends StatelessWidget {
                       dayTextStyle: TextStyle(color: Colors.transparent)),
                   viewHeaderHeight: 0,
                   onTap: (CalendarTapDetails details) {
-                    //  print("resource ::: ${  details.resource?.displayName.toString()}");
 
                     Appointment tappedAppointment = details.appointments![0];
-
                     if (details.targetElement != CalendarElement.calendarCell) {
-
-                      print(
-                          "events s ::::: ${Get.find<TimelineController>().meetings.map((e) => e.location.toString())}");
-
-                      print(
-                          "events e ::::: ${Get.find<TimelineController>().meetings.map((e) => e.endTime.toString())}");
-                      print(
-                          "others location ::::: ${Get.find<TimelineController>().meetings.map((e) => e.location)}");
-
-                      print(
-                          "others location ::::: ${  tappedAppointment.location ?? ''}");
-                   //   print("${ tappedAppointment.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",);
 
                       Map<String, dynamic> jsonMap = json.decode(tappedAppointment.location.toString());
                       ModelForDescription eventVal = ModelForDescription.fromJson(jsonMap);
-                      print(eventVal.duration.toString());
-                      print(eventVal.startDate.toString());
 
-
-
+                      print(jsonMap);
 
 
                       customButtonSheet(

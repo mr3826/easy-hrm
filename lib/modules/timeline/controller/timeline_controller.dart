@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/sf_calendar.dart';
@@ -330,6 +331,8 @@ class TimelineController extends GetxController with StateMixin {
 
         log(jsonModel.toString(), error: 1);
 
+        print(e.endDate);
+print(e.startDate);
         return meetings.add(
 
           Appointment(
@@ -360,8 +363,10 @@ class TimelineController extends GetxController with StateMixin {
             ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
             
             ${e.task?.project?.name??"No added yet"} 
+            
              
             ${timeFormatTo24h(DateTime.parse(e.endDate??"00:00"))}
+
             
             """,
             color: statusAccordingToColor(e.status),
@@ -451,6 +456,8 @@ statusAccordingToColor(status) {
       case "reject":
       return AppColor.errorColorLight.withOpacity(0.1);
       case "cancelled":
+      return AppColor.errorColor.withOpacity(0.1);
+      case "rejected":
       return AppColor.errorColor.withOpacity(0.1);
     default:
       return AppColor.hintColor.withOpacity(0.1);
