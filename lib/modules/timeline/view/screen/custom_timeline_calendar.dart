@@ -1,5 +1,3 @@
-import 'package:calendar_view/calendar_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -11,7 +9,6 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../controller/sf_calendar.dart';
-import '../../controller/time_formate_controller.dart';
 import '../../controller/timeline_controller.dart';
 import '../widget/timelog_summary_working_gol_layout.dart';
 
@@ -20,38 +17,19 @@ class CustomTimelineCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<TimelineController>();
-    controller.calendarTimeline?.getCalenderTimelinesForApp?.timelines
-        ?.map((e) {
-      return controller.meetings.add(
-        Meeting(
-          '''
-           ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
-           
-           ${e.description ?? "No added yet"}
-           
-           ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
-            ''',
-          DateTime.parse(e.startDate ?? DateTime.now().toString()),
-          DateTime.parse(e.endDate ?? DateTime.now().toString()),
-          statusAccordingToColor(e.status),
-          false,
-        ),
-      );
-    }).toList();
+
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: Stack(
+      child: Obx(() => Stack(
         children: [
-          controller.isTimelineSummaryByDateLoading.isTrue &&
-                  controller.isTimelineSummaryByDateLoading.isTrue
-              ? Center(child: Container())
+          Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue && Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
+              ? Center(child: Container(color: Colors.transparent))
               : const SFCalendarScreen(),
           _summaryLayout(),
           _dateCalendarLayout(),
         ],
-      ),
+      )),
     );
   }
 }

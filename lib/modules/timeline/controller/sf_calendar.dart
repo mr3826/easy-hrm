@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
@@ -16,19 +14,52 @@ class SFCalendarScreen extends StatelessWidget {
     return Obx(() => Get.find<TimelineController>()
             .isTimelineCalendarByDateLoading
             .isTrue
-        ?  Container()
+        ?  Container(color: Colors.transparent,)
         : Scaffold(
             body: SfCalendar(
               view: CalendarView.day,
-              dataSource:
-                  MeetingDataSource(Get.find<TimelineController>().meetings),
+              dataSource:_getCalendarDataSource(),
               appointmentTextStyle:
                   const TextStyle(color: AppColor.normalTextColor),
+              selectionDecoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
 
               viewHeaderStyle: const ViewHeaderStyle(backgroundColor: Colors.transparent,dateTextStyle: TextStyle(color: Colors.transparent),dayTextStyle: TextStyle(color: Colors.transparent)),
+              onTap: (CalendarTapDetails details) {
+              //  print("resource ::: ${  details.resource?.displayName.toString()}");
+
+                if (details.targetElement != CalendarElement.calendarCell) {
+                  // // Day view cell is tapped
+                  // DateTime selectedDate = details.date!;
+                  //
+                  // print("Day View Cell Tapped: $selectedDate");
+                  // print("events  ::::: ${
+                  //     Get.find<TimelineController>().meetings
+                  // }");
+                  // print("events s ::::: ${
+                  //     Get.find<TimelineController>().meetings.map((e) => e.startTime.toString())
+                  // }");
+                  //
+                  // print("events e ::::: ${
+                  //     Get.find<TimelineController>().meetings.map((e) => e.endTime.toString())
+                  // }");
+                  // print("others e ::::: ${
+                  //     Get.find<TimelineController>().meetings.map((e) => e.appointmentType.name.toString())
+                  // }");
+
+                }
+
+              },
+
+
+
               headerHeight: 0,
-              showDatePickerButton: true,
-              showNavigationArrow: true,
+              showDatePickerButton: false,
+              showNavigationArrow: false,
+              cellEndPadding: 4,
+              allowViewNavigation: false,
+
+
+
               appointmentTimeTextFormat: "HH:mm",
               timeSlotViewSettings: const TimeSlotViewSettings(
                 timeFormat: "HH:mm",
@@ -43,11 +74,28 @@ class SFCalendarScreen extends StatelessWidget {
             ),
           ));
   }
+
+  // Create a calendar data source using the appointments list
+  _DataSource _getCalendarDataSource() {
+    return _DataSource(Get.find<TimelineController>().meetings);
+  }
 }
 
+// Data source class for the calendar
+class _DataSource extends CalendarDataSource {
+  _DataSource(List<Appointment> appointments) {
+    this.appointments = appointments;
+  }
+}
+
+
+
+
+
+
+
 class MeetingDataSource extends CalendarDataSource {
-  /// Creates a meeting data source, which used to set the appointment
-  /// collection to the calendar
+
   MeetingDataSource(List<Meeting> source) {
     appointments = source;
   }

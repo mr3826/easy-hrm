@@ -18,6 +18,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../common/domain/last_input_model.dart';
 import '../../../network/exception_helper.dart';
 import '../model/calendar_timeline.dart';
@@ -82,7 +83,7 @@ class TimelineController extends GetxController with StateMixin {
   RxList<CalendarEventData<String>> eventOfLeave =
       <CalendarEventData<String>>[].obs;
 
-  List<Meeting> meetings = <Meeting>[];
+  List<Appointment> meetings = <Appointment>[];
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
@@ -299,10 +300,12 @@ class TimelineController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
       isTimelineCalendarByDateLoading(false);
     } else {
-      calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
-      print("time line calendar ::: $responseForCalendar");
-      meetings.clear();
 
+      calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
+
+      print("time line calendar ::: $responseForCalendar");
+
+      meetings.clear();
       calendarTimeline?.getCalenderTimelinesForApp?.timelines?.map((e) {
 
         DateTime dateTimeNow = DateTime.now();
@@ -311,16 +314,29 @@ class TimelineController extends GetxController with StateMixin {
         DateTime dateEndTimeValue =
         DateTime.parse(e.endDate ?? DateTime.now().toString());
 
-       // ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+        ModelForDescription modelForDescription = ModelForDescription(
+            status: e.status ?? "",
+            description: e.description ?? "No data",
+            timeLId: e.timelineId ?? "");
+
+        Map<String, dynamic> jsonModel = modelForDescription.toJson();
+        String jsonObject = jsonEncode(jsonModel);
+        log(jsonModel.toString(), error: 1);
+
+        log(jsonModel.toString(), error: 1);
+
+
+
         //   ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
 
         return meetings.add(
-          Meeting(
-            '''
-           
-           ${e.task?.name ?? "No added yet"}
-           
-            ''',
+
+          Appointment(
+
+            notes: "Note",
+            location: "No data location",
+            resourceIds: meetings,
+            startTime:
             DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
@@ -330,7 +346,7 @@ class TimelineController extends GetxController with StateMixin {
               dateStartTimeValue.second,
 
             ),
-            DateTime(
+            endTime:    DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
               dateTimeNow.day,
@@ -338,9 +354,17 @@ class TimelineController extends GetxController with StateMixin {
               dateEndTimeValue.minute,
               dateEndTimeValue.second,
             ),
+            subject: """
+            ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+            
+             ${e.task?.project?.name??"No added yet"} 
+             
+            ${timeFormatTo24h(DateTime.parse(e.startDate??"No added yet"))}
+            
+            """,
+            color: statusAccordingToColor(e.status),
+            isAllDay: false,
 
-            statusAccordingToColor(e.status),
-            false,
           ),
         );
       }).toList();
@@ -357,13 +381,9 @@ class TimelineController extends GetxController with StateMixin {
         //   ${timeFormatTo24h(DateTime.parse(e.endDate.toString()))}
 
         return meetings.add(
-          Meeting(
-            '''
-           
-           ${e.leaveType?.name ?? "No added yet"}
-           
-            ''',
-            DateTime(
+          Appointment(
+
+            startTime: DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
               dateTimeNow.day,
@@ -372,7 +392,7 @@ class TimelineController extends GetxController with StateMixin {
               dateStartTimeValue.second,
 
             ),
-            DateTime(
+            endTime:    DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
               dateTimeNow.day,
@@ -380,9 +400,10 @@ class TimelineController extends GetxController with StateMixin {
               dateEndTimeValue.minute,
               dateEndTimeValue.second,
             ),
+            subject: e.leaveType?.name??"No added yet",
+            color: statusAccordingToColor(e.status),
+            isAllDay: false,
 
-            statusAccordingToColor(e.status),
-            false,
           ),
         );
       }).toList();
@@ -402,6 +423,9 @@ statusAccordingToColor(status) {
       return AppColor.takenColor.withOpacity(0.4);
       case "reject":
       return AppColor.errorColorLight.withOpacity(0.4);
-
+      case "cancelled":
+      return AppColor.errorColor.withOpacity(0.4);
+    default:
+      return AppColor.hintColor.withOpacity(0.4);
   }
 }
