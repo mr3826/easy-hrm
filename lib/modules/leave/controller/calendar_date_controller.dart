@@ -2,6 +2,8 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../common/controller/date_time_controller.dart';
+
 class DateController extends GetxController {
   Rx<DateTime> currentDate = DateTime.now().obs;
 
@@ -26,7 +28,7 @@ class DateController extends GetxController {
   }
 
   getFormattedDate() {
-    return formatter.format(currentDate.value);
+    return formatter.format(DateTime.parse(Get.find<DateTimeController>().requestedDate.value));
   }
 
   String getFormattedCurrentData() {

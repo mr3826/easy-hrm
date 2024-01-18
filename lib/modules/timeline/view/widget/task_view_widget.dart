@@ -29,6 +29,8 @@ class TaskView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("receive status :::: $status");
+    print("start date time ---> ::: $startTime");
+    print("end date time ---> ::: $endTime");
 
     return Column(
       children: [
@@ -43,12 +45,8 @@ class TaskView extends StatelessWidget {
         btnSheetViewLayout(
           context: context,
           status: status,
-          startTime: DateFormat('HH:mm')
-              .format(DateTime.parse(startTime.toString()))
-              .toString(),
-          endTime: DateFormat('HH:mm')
-              .format(DateTime.parse(endTime.toString()))
-              .toString(),
+          startTime: startTime,
+          endTime: endTime,
           dateApplication: date.toString(),
           projectName: projectName,
           bgColor: statusColor(status),

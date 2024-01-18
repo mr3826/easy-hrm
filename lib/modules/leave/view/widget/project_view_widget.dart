@@ -27,6 +27,9 @@ Widget btnSheetViewLayout(
     dtsDate
     }) {
 
+  print("start date time ::: $startDateTime");
+  print("end date time ::: $endDateTime");
+
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
     child: Column(
@@ -34,10 +37,14 @@ Widget btnSheetViewLayout(
         Column(
           children: [
             _infoLayout(
-                text: AppString.text_start.tr, dynamicText: "$startTime"),
+                text: AppString.text_start.tr, dynamicText: DateFormat('HH:mm')
+                .format(DateTime.parse(startTime.toString()))
+                .toString()),
             customSpacerHeight(height: 6),
             _infoLayout(
-                text: "${AppString.text_end.tr}:", dynamicText: "$endTime"),
+                text: "${AppString.text_end.tr}:", dynamicText: DateFormat('HH:mm')
+                .format(DateTime.parse(endTime.toString()))
+                .toString()),
             customSpacerHeight(height: 6),
           ],
         ),

@@ -44,9 +44,6 @@ class SFCalendarScreen extends StatelessWidget {
                       Map<String, dynamic> jsonMap = json.decode(tappedAppointment.location.toString());
                       ModelForDescription eventVal = ModelForDescription.fromJson(jsonMap);
 
-                      print(jsonMap);
-
-
                       customButtonSheet(
                           height: .6,
                           context: context,

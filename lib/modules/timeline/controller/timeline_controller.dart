@@ -330,9 +330,6 @@ class TimelineController extends GetxController with StateMixin {
         log(jsonModel.toString(), error: 1);
 
         log(jsonModel.toString(), error: 1);
-
-        print(e.endDate);
-print(e.startDate);
         return meetings.add(
 
           Appointment(
@@ -362,10 +359,13 @@ print(e.startDate);
             subject: """
             ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
             
-            ${e.task?.project?.name??"No added yet"} 
             
-             
+            ${e.task?.project?.name??"No added yet"} 
+            ${convertMiniToHour(Duration(minutes: int.parse(e.totalMinutes.toString())))
+                .toString()} 
+            
             ${timeFormatTo24h(DateTime.parse(e.endDate??"00:00"))}
+            
 
             
             """,
@@ -426,7 +426,10 @@ print(e.startDate);
             subject: """
             ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
             
-            ${e.leaveType?.name??"No added yet"} 
+            
+            ${e.leaveType?.name??"No added yet"}
+            ${ convertMiniToHour(Duration(minutes: int.parse(e.totalLeaveMinutes.toString()))).toString()}  
+            
              
             ${timeFormatTo24h(DateTime.parse(e.endDate??"00:00"))}
             

@@ -52,7 +52,7 @@ Widget _dateCalendarLayout() {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                       insetPadding: EdgeInsets.zero,
-                      child: SingleDatePicker());
+                      child: SingleDatePicker(isCalledFormTimeLog: true,));
                 },
               );
             },
