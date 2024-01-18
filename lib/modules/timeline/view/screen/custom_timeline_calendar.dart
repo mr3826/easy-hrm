@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
@@ -17,19 +19,23 @@ class CustomTimelineCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Obx(() => Stack(
-        children: [
-          Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue && Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
-              ? Center(child: Container(color: Colors.transparent))
-              : const SFCalendarScreen(),
-          _summaryLayout(),
-          _dateCalendarLayout(),
-        ],
-      )),
+            children: [
+              Get.find<TimelineController>()
+                          .isTimelineSummaryByDateLoading
+                          .isTrue &&
+                      Get.find<TimelineController>()
+                          .isTimelineCalendarByDateLoading
+                          .isTrue
+                  ? Center(child: Container(color: Colors.transparent))
+                  : const SFCalendarScreen(),
+              _summaryLayout(),
+              _dateCalendarLayout(),
+            ],
+          )),
     );
   }
 }
@@ -40,102 +46,102 @@ Widget _dateCalendarLayout() {
     top: 0,
     left: 0,
     right: 0,
-    child: Obx(() => Card(
-          elevation: 0,
-          child: GestureDetector(
-            onTap: () {
-              showDialog(
-                context: Get.context!,
-                builder: (context) {
-                  return const Dialog(
-                      backgroundColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16))),
-                      insetPadding: EdgeInsets.zero,
-                      child: SingleDatePicker(isCalledFormTimeLog: true,));
-                },
-              );
+    child: Card(
+      elevation: 0,
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return const Dialog(
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16))),
+                  insetPadding: EdgeInsets.zero,
+                  child: SingleDatePicker(
+                    isCalledFormTimeLog: true,
+                  ));
             },
-            child: Padding(
-              padding: marginLayout,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          );
+        },
+        child: Padding(
+          padding: marginLayout,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                          onTap: () async {
-                            controller.decrementDate();
+                  GestureDetector(
+                      onTap: () async {
+                        controller.decrementDate();
 
-                            DateTime date =
-                                DateTime.parse(controller.formattedDateTime);
-                            Get.find<TimelineController>().getTimelineSummaryByDate(
-                                startDate:
-                                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                                endDate:
-                                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                        DateTime date =
+                            DateTime.parse(controller.formattedDateTime);
+                        Get.find<TimelineController>().getTimelineSummaryByDate(
+                            startDate:
+                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            endDate:
+                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
-                            Get.find<TimelineController>()
-                                .getCalendarTimelineDataByDate(
-                                    startDate:
-                                        "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                                    endDate:
-                                        "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            color: AppColor.normalTextColor,
-                            size: 20,
-                          )),
-                      Text(
-                        controller.getFormattedDate() ==
-                                controller.getFormattedCurrentData()
-                            ? AppString.text_today
-                            : controller.getFormattedDate(),
-                        style: AppStyle.mid_large_text.copyWith(
-                            color: AppColor.normalTextColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                          onTap: () async {
-                            controller.incrementMonth();
-
-                            DateTime date =
-                                DateTime.parse(controller.formattedDateTime);
-
-                            Get.find<TimelineController>().getTimelineSummaryByDate(
-                                startDate:
-                                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                                endDate:
-                                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
-
-                            Get.find<TimelineController>()
-                                .getCalendarTimelineDataByDate(
-                                    startDate:
-                                        "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                                    endDate:
-                                        "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
-                          },
-                          child: const Icon(
-                            Icons.arrow_forward_ios_sharp,
-                            color: AppColor.normalTextColor,
-                            size: 20,
-                          )),
-                    ],
-                  ),
-                  Center(
-                      child: Text(
-                    controller.getOnlyDay().toString(),
+                        Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                            startDate:
+                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            endDate:
+                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: AppColor.normalTextColor,
+                        size: 20,
+                      )),
+                  Text(
+                    Get.find<DateTimeController>().requestedDate.value ==
+                            DateFormat('yyyy-MM-dd').format(DateTime.now())
+                        ? "Today"
+                        : Get.find<DateTimeController>().requestedDate.value,
                     style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.hintColor,
-                        fontSize: Dimensions.fontSizeDefault - 1),
-                  ))
+                        color: AppColor.normalTextColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  GestureDetector(
+                      onTap: () async {
+                        controller.incrementMonth();
+
+                        DateTime date =
+                            DateTime.parse(controller.formattedDateTime);
+
+                        Get.find<TimelineController>().getTimelineSummaryByDate(
+                            startDate:
+                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            endDate:
+                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+                        Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                            startDate:
+                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            endDate:
+                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                      },
+                      child: const Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        color: AppColor.normalTextColor,
+                        size: 20,
+                      )),
                 ],
               ),
-            ),
+              Center(
+                  child: Text(
+                controller.getOnlyDay().toString(),
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault - 1),
+              ))
+            ],
           ),
-        )),
+        ),
+      ),
+    ),
   );
 }
 

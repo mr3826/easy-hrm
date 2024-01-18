@@ -10,7 +10,6 @@ class DateController extends GetxController {
   Rx<DateTime> toDate = DateTime.now().obs;
   Rx<DateTime> fromDate = DateTime.now().obs;
   Rx<DateTime> getCurrentDate = DateTime.now().obs;
-  String formattedDateTime = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
   final DateFormat formatter = DateFormat('dd MMM yyyy');
   final DateFormat onlyDay = DateFormat('EEEE');
@@ -18,17 +17,21 @@ class DateController extends GetxController {
   void incrementMonth() {
     currentDate.value = currentDate.value.add(const Duration(days: 1));
     formattedDateTime = DateFormat("yyyy-MM-dd").format(currentDate.value);
+    Get.find<DateTimeController>().requestedDate.value=formattedDateTime;
     print(formattedDateTime);
   }
 
   void decrementDate() {
     currentDate.value = currentDate.value.subtract(const Duration(days: 1));
     formattedDateTime = DateFormat("yyyy-MM-dd").format(currentDate.value);
+    Get.find<DateTimeController>().requestedDate.value=formattedDateTime;
     print(currentDate.value);
   }
 
+  String formattedDateTime = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
   getFormattedDate() {
-    return formatter.format(DateTime.parse(Get.find<DateTimeController>().requestedDate.value));
+    return formatter.format(DateTime.parse(formattedDateTime));
   }
 
   String getFormattedCurrentData() {
