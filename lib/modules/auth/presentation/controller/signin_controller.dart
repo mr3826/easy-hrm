@@ -33,8 +33,7 @@ class SignInController extends GetxController with StateMixin {
 
   void setLastInputData() {
     if (GetStorage().read(AppString.LAST_INPUT) != null) {
-      Map<String, dynamic> jsonMap =
-          json.decode(GetStorage().read(AppString.LAST_INPUT));
+      Map<String, dynamic> jsonMap = json.decode(GetStorage().read(AppString.LAST_INPUT));
       LastInput lastInput = LastInput.fromJson(jsonMap);
       emailController.text = lastInput.email ?? "";
       passwordController.text = lastInput.password ?? "";

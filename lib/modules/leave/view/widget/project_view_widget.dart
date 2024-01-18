@@ -20,16 +20,15 @@ Widget btnSheetViewLayout(
     required Color? bgColor,
     dateApplication,
     projectName,
-    dtsDateStatus,
     dtsProjectName,
     Color? dtsBgColor,
     dtsDrc,
     dtsDuration,
-    dtsDate}) {
-  String createAtD = dateApplication.substring(1, dateApplication.length - 1);
-  DateTime originalDateTime = DateTime.parse(createAtD);
-  // Format the DateTime to the desired format
-  String createAtDate = DateFormat('dd MMMM yyyy').format(originalDateTime);
+    dtsDate
+
+    }) {
+
+
 
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
@@ -52,7 +51,7 @@ Widget btnSheetViewLayout(
         status == "taken"
             ? _infoLayout(
                 text: AppString.text_dete_of_application.tr,
-                dynamicText: createAtDate)
+                dynamicText: DateFormat('dd MMMM yyyy').format(DateTime.parse(dateApplication)))
             : _infoLayout(
                 text: AppString.text_project_task_or_tag,
                 widget: _projectNameLayout(
