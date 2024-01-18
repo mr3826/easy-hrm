@@ -12,26 +12,16 @@ import '../../model/leave_records.dart';
 class ApplyLeaveScreen extends StatelessWidget {
   String? startDate;
   String? endDate;
-  bool? isForUpdateLeave;
   GetLeaveRecords? leaveRecords;
 
   ApplyLeaveScreen(
-      {this.startDate,
-      this.endDate,
-      this.isForUpdateLeave,
-      this.leaveRecords,
-      super.key});
+      {this.startDate, this.endDate, this.leaveRecords, super.key});
 
   @override
   Widget build(BuildContext context) {
     if (!Get.isRegistered<ApplyLeaveController>()) {
       Get.lazyPut(() => ApplyLeaveController(), fenix: true);
     }
-    if (Get.isRegistered<DateTimeController>()) {
-      Get.delete<DateTimeController>();
-    }
-    Get.put(DateTimeController());
-
     if (Get.isRegistered<DateTimePickerController>()) {
       Get.delete<DateTimePickerController>();
     }
@@ -40,14 +30,11 @@ class ApplyLeaveScreen extends StatelessWidget {
     return Column(
       children: [
         customButtonSheetAppbar(
-            text: isForUpdateLeave == true
-                ? AppString.updateLeaveTest.tr
-                : DateFormat('d MMMM').format(DateTime.parse(
-                    Get.find<DateTimeController>().requestedDate.toString())),
+            text: DateFormat('d MMMM').format(DateTime.parse(
+                Get.find<DateTimePickerController>().inDateTime.value)),
             subtext: DateFormat('EEEE').format(DateTime.parse(
-                Get.find<DateTimeController>().requestedDate.toString()))),
-        Expanded(
-            child: ApplyLeaveButtonLayout(isForUpdateLeave: isForUpdateLeave))
+                Get.find<DateTimePickerController>().inDateTime.value))),
+        Expanded(child: ApplyLeaveButtonLayout())
       ],
     );
   }

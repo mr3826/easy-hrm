@@ -59,16 +59,16 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
                     ?.firstWhere((element) => element.id == valueType);
 
             //set data according to leave type
-            Get.find<DateTimeController>().numberOfLeaves.value =
+            Get.find<ApplyLeaveController>().numberOfLeaves.value =
                 getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
                         .toString() ??
                     "";
             Get.find<ApplyLeaveController>().leaveId = valueType!;
             print(
                 "Leave type id:: ${Get.find<ApplyLeaveController>().leaveId}");
-            Get.find<DateTimeController>().isDocumentRequired.value =
+            Get.find<ApplyLeaveController>().isDocumentRequired.value =
                 getLeaveTypesDropdown?.attachDocumentRequired ?? false;
-            Get.find<DateTimeController>().isNoteRequired.value =
+            Get.find<ApplyLeaveController>().isNoteRequired.value =
                 getLeaveTypesDropdown?.addNoteRequired ?? false;
           }),
     );

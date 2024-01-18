@@ -9,14 +9,16 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
-import 'package:payrun_mobile/modules/leave/view/widget/update_leave_screen.dart';
+import 'package:payrun_mobile/modules/leave/view/screen/update_leave_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../utils/utils.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
@@ -171,11 +173,20 @@ class LeaveRecordDetails extends StatelessWidget {
                 btnBgColor: AppColor.hintColor,
                 btnText: AppString.confirmText.tr);
           },
-          //todo
           buttonText: AppString.text_edit.tr,
-          onAction: () => customButtonSheet(
-              context: context,
-              child: UpdateLeave(leaveRecords:leaveRecords)),
+          onAction: () {
+            print("Called");
+            if (Get.isRegistered<DateTimePickerController>()) {
+              Get.delete<DateTimePickerController>();
+            }
+            Get.put(DateTimePickerController());
+            if (!Get.isRegistered<UpDateLeaveController>()) {
+              Get.put(UpDateLeaveController());
+            }
+            customButtonSheet(
+                context: context,
+                child: UpdateLeave(leaveRecords: leaveRecords));
+          },
           btnColor: AppColor.primaryColor),
     );
   }

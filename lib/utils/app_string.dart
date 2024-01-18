@@ -100,6 +100,8 @@ class AppString {
   static String password_not_matched = 'Password not matched';
   static String profile_update_successfully_text =
       'Profile updated successfully';
+  static String leaveUpdatedSuccessMessage =
+      'Leave updated successfully';
 
   static String text_approved = 'Approved';
   static String text_profile = 'Profile';

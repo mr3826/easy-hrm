@@ -354,8 +354,6 @@ class Dashboard extends GetView<DashboardController> {
                 .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
             0,
         itemBuilder: (context, index) {
-          print(controller.upcommingLeaveDashboard
-              ?.getUpcomingLeavesForApp?[index].leaveType);
           return SizedBox(
             width: double.infinity,
             child: Padding(

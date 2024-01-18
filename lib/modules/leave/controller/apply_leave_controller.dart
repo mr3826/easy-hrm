@@ -32,6 +32,10 @@ class ApplyLeaveController extends GetxController with StateMixin {
   String? startTime;
   String? endTime;
   String leaveId = '';
+  RxBool isNoteRequired = false.obs;
+  RxBool isDocumentRequired = false.obs;
+  RxString numberOfLeaves = ''.obs;
+  RxBool isErrorOccurred = false.obs;
 
   getLeaveType() async {
     change(null, status: RxStatus.loading());
@@ -94,6 +98,10 @@ class ApplyLeaveController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       leaveId = '';
+      isNoteRequired.value = false;
+      isDocumentRequired.value = false;
+      numberOfLeaves.value = '';
+      isErrorOccurred.value = false;
       showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
       leaveNoteController.clear();
       Get.off(() => MainScreen(

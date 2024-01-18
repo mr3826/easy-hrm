@@ -26,9 +26,7 @@ import 'apply_leave_dropdown.dart';
 import 'date_pickar_field_widget.dart';
 
 class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
-  bool? isForUpdateLeave;
-
-  ApplyLeaveButtonLayout({this.isForUpdateLeave, super.key});
+  ApplyLeaveButtonLayout({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -71,13 +69,12 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                             )
                           : const CustomTimePickerOutTime(),
                       customSpacerHeight(height: 12),
-                      // _errorAlertLayout(),
                       customSpacerHeight(height: 18),
                       Obx(() => Row(
                             children: [
                               customTitleText(text: AppString.text_note.tr),
                               customSpacerWidth(width: 6),
-                              Get.find<DateTimeController>()
+                              Get.find<ApplyLeaveController>()
                                       .isNoteRequired
                                       .isTrue
                                   ? customTitleTextRedText(text: "*")
@@ -90,7 +87,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                             children: [
                               customTitleText(text: AppString.text_document.tr),
                               customSpacerWidth(width: 6),
-                              Get.find<DateTimeController>()
+                              Get.find<ApplyLeaveController>()
                                       .isDocumentRequired
                                       .isTrue
                                   ? customTitleTextRedText(text: "*")
@@ -100,7 +97,9 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customSpacerHeight(height: 6),
                       _pathFormatText(),
                       customSpacerHeight(height: 8),
-                      const AddAttachmentFile(),
+                      AddAttachmentFile(
+                        isFromApplyLeave: true,
+                      ),
                       customSpacerHeight(height: 20),
                       Obx(() => Get.find<ApplyLeaveController>()
                               .isAssignLeaveLoaderLoading
@@ -149,7 +148,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
   _noteTextField() {
     return InputNote(
       validator: (value) {
-        if (Get.find<DateTimeController>().isNoteRequired.isTrue) {
+        if (Get.find<ApplyLeaveController>().isNoteRequired.isTrue) {
           if (value!.isEmpty) {
             return "";
           } else {
@@ -159,59 +158,6 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
       },
       controller: leaveNoteController,
       hintText: AppString.text_add_note.tr,
-    );
-  }
-
-  _fromDateTimeLayout() {
-    return Row(
-      children: [
-        Expanded(
-            child: dateLayoutField(
-                date: Get.find<DateTimeController>().requestedInDate.toString(),
-                onAction: () {
-                  showDialog(
-                    context: Get.context!,
-                    builder: (context) {
-                      return const Dialog(
-                          backgroundColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16))),
-                          insetPadding: EdgeInsets.zero,
-                          child: FromDatePicker());
-                    },
-                  );
-                })),
-        customSpacerWidth(width: 14),
-        Expanded(child: startTimeFieldLayout(context: Get.context!)),
-      ],
-    );
-  }
-
-  _toDateTimeLayout() {
-    return Row(
-      children: [
-        Expanded(
-            child: dateLayoutField(
-                date:
-                    Get.find<DateTimeController>().requestedOutDate.toString(),
-                onAction: () {
-                  showDialog(
-                    context: Get.context!,
-                    builder: (context) {
-                      return const Dialog(
-                          backgroundColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16))),
-                          insetPadding: EdgeInsets.zero,
-                          child: ToDatePiker());
-                    },
-                  );
-                })),
-        customSpacerWidth(width: 14),
-        Expanded(child: outTimeFieldLayout(context: Get.context!)),
-      ],
     );
   }
 
@@ -225,7 +171,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
 
   _leaveCountStyleLayout() {
     return Obx(
-        () => Get.find<DateTimeController>().numberOfLeaves.value.isNotEmpty
+        () => Get.find<ApplyLeaveController>().numberOfLeaves.value.isNotEmpty
             ? SizedBox(
                 width: double.infinity,
                 child: Card(
@@ -239,7 +185,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          Get.find<DateTimeController>().numberOfLeaves.value,
+                          Get.find<ApplyLeaveController>().numberOfLeaves.value,
                           style: AppStyle.mid_large_text
                               .copyWith(color: AppColor.normalTextColor),
                         ),
@@ -255,41 +201,5 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                 ),
               )
             : Container());
-  }
-
-  _errorAlertLayout() {
-    return SizedBox(
-      child: Card(
-        elevation: 0,
-        shape: roundedRectangleBorder,
-        color: AppColor.errorColorLight.withOpacity(0.08),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                customSpacerWidth(width: 12),
-                const Icon(
-                  Icons.error_outline,
-                  color: AppColor.errorColorLight,
-                  size: 18,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding:
-                        marginLayout.copyWith(bottom: 12, top: 12, left: 12),
-                    child: Text(
-                      "Out of balance.The selected leave duration is out of the facility.Tou may have some Taken,approved or pending leave that affect your new request.",
-                      style: AppStyle.mid_large_text.copyWith(
-                          color: AppColor.errorColorLight,
-                          fontSize: Dimensions.fontSizeDefault - 2),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

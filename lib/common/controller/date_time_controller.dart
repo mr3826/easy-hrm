@@ -23,10 +23,7 @@ class DateTimeController extends GetxController {
   RxString pickedOutTime = ''.obs;
   TextEditingController editController = TextEditingController();
 
-  RxString numberOfLeaves = ''.obs;
   RxString? leaveId = ''.obs;
-  RxBool isNoteRequired = false.obs;
-  RxBool isDocumentRequired = false.obs;
   RxBool isErrorOccurred = false.obs;
 
   void getTime() {
