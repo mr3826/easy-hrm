@@ -94,6 +94,8 @@ class UserProfileController extends GetxController with StateMixin {
       final response = await NetworkClient()
           .postRequest(Api.VERIFY_PASSWORD, {"password": password});
 
+      print(response.body);
+
       if (response.status.hasError) {
         logErrorMessage(logName: "getPasswordVerification", response: response);
         showErrorMessage(
@@ -120,6 +122,8 @@ class UserProfileController extends GetxController with StateMixin {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
+      print("Change email ::: ${response.body}");
+
 
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);

@@ -68,36 +68,24 @@ class EditProfileScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text(
-            //   AppString.text_update_your_profile.tr,
-            //   style: AppStyle.mid_large_text
-            //       .copyWith(color: AppColor.normalTextColor,overflow: TextOverflow.ellipsis),
-            // ),
-            // Text(
-            //   AppString.text_upload_a_photo_undar_2mb.tr,
-            //   style: AppStyle.mid_large_text.copyWith(
-            //       color: AppColor.hintColor,
-            //       fontSize: Dimensions.fontSizeDefault - 1),
-            // ),
-            // customSpacerHeight(height: 8),
-
-
             SizedBox(
-              width: MediaQuery.of(context).size.width/2,
+              width: MediaQuery.of(context).size.width / 2,
               child: Text.rich(
                 TextSpan(
                   children: [
-                    TextSpan(text:"${AppString.text_update_your_profile.tr} ",
-                      style: AppStyle.mid_large_text
-                          .copyWith(color: AppColor.normalTextColor,overflow: TextOverflow.ellipsis),),
                     TextSpan(
-                      text:AppString.text_upload_a_photo_undar_2mb.tr,
+                      text: "${AppString.text_update_your_profile.tr} ",
+                      style: AppStyle.mid_large_text.copyWith(
+                          color: AppColor.normalTextColor,
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                    TextSpan(
+                      text: AppString.text_upload_a_photo_undar_2mb.tr,
                       style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.hintColor,
                         fontSize: Dimensions.fontSizeDefault - 1,
+                      ),
                     ),
-                    ),
-
                   ],
                 ),
               ),
