@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
@@ -27,6 +28,7 @@ class EmploymentLayout extends StatelessWidget {
             subtext: AppString.text_history.tr),
         Expanded(
             child: ListView.builder(
+          shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           itemCount: Get.find<UserProfileController>()
                   .employeeWorkHistory
@@ -53,20 +55,23 @@ class EmploymentLayout extends StatelessWidget {
                 durationText:
                     "Form last ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index].startDate ?? "")}",
                 employeeCurrentStatus: Get.find<UserProfileController>()
-                    .employeeWorkHistory
-                    ?.getOrganizationUserHistory
-                    ?.employmentHistories?[index]
-                    .endDate ==
-                    null
+                            .employeeWorkHistory
+                            ?.getOrganizationUserHistory
+                            ?.employmentHistories?[index]
+                            .endDate ==
+                        null
                     ? "present"
                     : dateMonthYearFormatFromDatetime(
-                    Get.find<UserProfileController>()
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.employmentHistories?[index]
-                        .endDate ??
-                        ""),
-                statusColor: index==0?AppColor.successColor:AppColor.hintColor);
+                        Get.find<UserProfileController>()
+                                .employeeWorkHistory
+                                ?.getOrganizationUserHistory
+                                ?.employmentHistories?[index]
+                                .endDate ??
+                            ""),
+                statusColor: HexColor(Get.find<UserProfileController>()
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.employmentHistories?[index].employmentStatus?.color??"#8F99AD"));
           },
         ))
       ],

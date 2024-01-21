@@ -18,6 +18,7 @@ class AppString {
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
+  static String workShiftText="Work Shift";
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
   static String text_leave_management_etc =
@@ -28,6 +29,8 @@ class AppString {
       'Manage your employee with so many advanced features.Like, Leave management, Time log, Employee hiring, and much more.';
   static String text_password = 'Password';
   static String text_timer = 'Timer';
+  static String textPresent = 'Present';
+  static String textManager = 'Manager';
   static String text_reset_password = ' Rest password';
   static String text_dete_of_application = 'Date of application:';
   static String text_remove = 'Remove';

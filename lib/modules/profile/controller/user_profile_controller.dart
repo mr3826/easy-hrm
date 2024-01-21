@@ -68,7 +68,7 @@ class UserProfileController extends GetxController with StateMixin {
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
 
-      log("getEmploymentInfo:::${EmployeeWorkHistory.fromJson(response.data!)}");
+      log("getEmploymentInfo:::${EmployeeWorkHistory.fromJson(response.data!).getOrganizationUserHistory?.deptHistories?.length}");
     }
 
     change(null, status: RxStatus.success());
@@ -218,11 +218,7 @@ class UserProfileController extends GetxController with StateMixin {
         GetStorage().write(AppString.REFRESH_TOKEN,
             SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
         GetStorage().write(AppString.LOGGED_IN, true);
-        _saveData(
-          email,
-          password,
-          organizationName
-        );
+        _saveData(email, password, organizationName);
         Get.offAll(() => MainScreen(
               routeIndex: 2,
             ));
