@@ -170,7 +170,7 @@ class DepartmentHistory extends StatelessWidget {
               text: parentDepartment,
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.secondaryColor,
-                  fontSize: Dimensions.fontSizeDefault - 4,
+                  fontSize: Dimensions.fontSizeDefault - 3,
                   fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis),
             ),
@@ -194,10 +194,10 @@ class DepartmentHistory extends StatelessWidget {
                 style: endDate == null
                     ? AppStyle.mid_large_text.copyWith(
                         color: AppColor.primaryColor,
-                        fontSize: Dimensions.fontSizeDefault - 4)
+                        fontSize: Dimensions.fontSizeDefault - 3)
                     : AppStyle.mid_large_text.copyWith(
                         color: AppColor.hintColor,
-                        fontSize: Dimensions.fontSizeDefault - 4,
+                        fontSize: Dimensions.fontSizeDefault - 3,
                         overflow: TextOverflow.ellipsis,
                       )),
           ],
