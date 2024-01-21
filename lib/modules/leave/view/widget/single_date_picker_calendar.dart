@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -96,6 +97,7 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
               if (widget.isCalledFormTimeLog == false) {
                 Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Get.find<DateController>().currentDate.value = today;
+
 
 
               } else if(widget.isCalledFormTimeLog == true) {
@@ -277,7 +279,7 @@ class _ToDatePikerState extends State<ToDatePiker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppLayout.getHeight(460),
+      // height: AppLayout.getHeight(460),
       decoration: BoxDecoration(
           borderRadius:
               BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),

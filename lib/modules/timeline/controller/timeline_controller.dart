@@ -37,20 +37,20 @@ class TimelineController extends GetxController with StateMixin {
 
     getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
     getTimelineSummaryByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
     // _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
     //   getCalendarTimelineDataByDate(
@@ -95,7 +95,7 @@ class TimelineController extends GetxController with StateMixin {
 
   startOrEndTimer({required String timerType}) async {
     final response =
-        await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
+    await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
       "inputData": {"timer_type": timerType}
     });
 
@@ -117,12 +117,12 @@ class TimelineController extends GetxController with StateMixin {
 
   saveTimeEntry() async {
     final response =
-        await NetworkClient().mutationGraphData(saveTimerQueryData, {
+    await NetworkClient().mutationGraphData(saveTimerQueryData, {
       "inputData": {
         "description": descriptionController.text,
         "end_date": startOrEndTimerResponse?.startOrStopTimer?.endDate ?? "",
         "start_date":
-            startOrEndTimerResponse?.startOrStopTimer?.startDate ?? "",
+        startOrEndTimerResponse?.startOrStopTimer?.startDate ?? "",
         "status": "pending",
         "task_id": taskId.value,
         "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
@@ -144,12 +144,12 @@ class TimelineController extends GetxController with StateMixin {
 
   updateTimelineLogDetails(
       {timeLineId,
-      description,
-      endDate,
-      startDate,
-      status,
-      taskId,
-      projectId}) async {
+        description,
+        endDate,
+        startDate,
+        status,
+        taskId,
+        projectId}) async {
     isUpdateTimeLogLoading(true);
     log("updateTimelineLogDetails start & end ==>$startDate And $endDate");
 
@@ -171,15 +171,15 @@ class TimelineController extends GetxController with StateMixin {
     } else {
       getCalendarTimelineDataByDate(
           startDate:
-              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
           endDate:
-              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
       getTimelineSummaryByMonth(
           startDate:
-              "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
           endDate:
-              "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
       Get.back();
     }
     isUpdateTimeLogLoading(false);
@@ -205,15 +205,15 @@ class TimelineController extends GetxController with StateMixin {
   createManualEntry() async {
     isManualEntryLoading(true);
     Duration timeDifference =
-        DateTime.parse(Get.find<DateTimeController>().requestedOutDate.value)
-            .difference(DateTime.parse(
-                Get.find<DateTimeController>().requestedInDate.value));
+    DateTime.parse(Get.find<DateTimeController>().requestedOutDate.value)
+        .difference(DateTime.parse(
+        Get.find<DateTimeController>().requestedInDate.value));
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
       print(taskId.value);
       if (taskId.isNotEmpty) {
         final response =
-            await NetworkClient().mutationGraphData(createNewEntryQuery, {
+        await NetworkClient().mutationGraphData(createNewEntryQuery, {
           "inputData": {
             "end_date": Get.find<DateTimeController>()
                 .requestedOutDate
@@ -384,9 +384,9 @@ class TimelineController extends GetxController with StateMixin {
         DateTime.parse(e.endDate ?? DateTime.now().toString());
 
         ModelForDescription modelForDescription = ModelForDescription(
-            status: e.status ?? "",
-            description: e.description ?? "No added yet",
-            timeLId: e.leaveType?.id ?? "",
+          status: e.status ?? "",
+          description: e.description ?? "No added yet",
+          timeLId: e.leaveType?.id ?? "",
           endDate: e.endDate??"",
           startDate: e.startDate??"",
           duration: e.totalLeaveMinutes??"",
@@ -456,11 +456,11 @@ statusAccordingToColor(status) {
       return AppColor.primaryColor.withOpacity(0.1);
     case "taken":
       return AppColor.takenColor.withOpacity(0.1);
-      case "reject":
+    case "reject":
       return AppColor.errorColorLight.withOpacity(0.1);
-      case "cancelled":
+    case "cancelled":
       return AppColor.errorColor.withOpacity(0.1);
-      case "rejected":
+    case "rejected":
       return AppColor.errorColor.withOpacity(0.1);
     default:
       return AppColor.hintColor.withOpacity(0.1);

@@ -10,6 +10,8 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
+import '../../../routes/app_pages.dart';
+
 class LogoutController extends GetxController {
   RxBool isLogoutLoading = false.obs;
 
@@ -28,17 +30,13 @@ class LogoutController extends GetxController {
       } else {
         logSuccessMessage(logName: "logout", response: response);
         if (Platform.isAndroid) {
-          SystemNavigator.pop();
-          GetStorage().remove(AppString.IS_LOGGED_IN_FIRST_TIME);
           GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LAST_INPUT);
           GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         } else if (Platform.isIOS) {
-          GetStorage().remove(AppString.IS_LOGGED_IN_FIRST_TIME);
           GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LAST_INPUT);
           GetStorage().remove(AppString.LOGGED_IN);
-          exit(0);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
       }
     } catch (e) {

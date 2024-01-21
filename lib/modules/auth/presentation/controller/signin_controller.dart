@@ -65,14 +65,14 @@ class SignInController extends GetxController with StateMixin {
     isLoading(false);
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login(
+      {required String email,
+      required String password,
+      required String orgId}) async {
     isSignInLoading(true);
     try {
-      Response response = await NetworkClient().postRequest(Api.LOGIN, {
-        "email": email,
-        "password": password,
-        "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
-      });
+      Response response = await NetworkClient().postRequest(
+          Api.LOGIN, {"email": email, "password": password, "orgId": orgId});
       if (response.hasError) {
         logErrorMessage(logName: "login", response: response);
 

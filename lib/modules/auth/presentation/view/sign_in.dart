@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
+import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -207,8 +209,14 @@ class SignInScreen extends GetView<SignInController> {
       onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-          await controller.login(
-              email: emailController.text, password: passwordController.text);
+          if (GetStorage().read(AppString.ORGANIZATION_ID) != null) {
+            await controller.login(
+                email: emailController.text,
+                password: passwordController.text,
+                orgId: GetStorage().read(AppString.ORGANIZATION_ID));
+          } else {
+            showErrorMessage(message: AppString.organizationNotFoundMessage.tr);
+          }
         }
       },
       buttonColor: AppColor.primaryColor,

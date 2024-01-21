@@ -1,4 +1,4 @@
-import '../../leave/model/leave_records.dart';
+import '../../leave/model/leave_record_response.dart';
 
 class UpcommingLeaveDashboard {
   List<GetUpcomingLeavesForApp>? getUpcomingLeavesForApp;
@@ -16,6 +16,7 @@ class UpcommingLeaveDashboard {
 }
 
 class GetUpcomingLeavesForApp {
+  String? id;
   String? endDate;
   String? startDate;
   String? status;
@@ -31,9 +32,11 @@ class GetUpcomingLeavesForApp {
       this.createdAt,
       this.numberOfDays,
       this.description,
-      this.leaveType});
+      this.leaveType,
+      this.id});
 
   GetUpcomingLeavesForApp.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     endDate = json['end_date'];
     startDate = json['start_date'];
     status = json['status'];

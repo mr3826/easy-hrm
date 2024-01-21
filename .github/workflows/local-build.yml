@@ -16,7 +16,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        channel: 'stable'
+        flutter-version: '3.17.0-18.0.pre.2'
 
     - name: Install Dependencies
       run: flutter pub get
@@ -26,7 +26,7 @@ jobs:
 
     - name: Set Date and Time
       id: datetime
-      run: echo "::set-output name=datetime::$(date +'%d%m%Y-%H%M')"
+      run: echo "::set-output name=datetime::$(date +'%d%m%Y-%H:%M')"
 
     - name: Upload to S3
       uses: actions/upload-artifact@v2
@@ -39,21 +39,8 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.LOCAL_PAYRUN_AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.LOCAL_PAYRUN_AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.LOCAL_PAYRUN_AWS_REGION }} 
+        aws-region: LOCAL_PAYRUN_AWS_REGION  # Change this to your S3 bucket region
 
     - name: Upload to S3 Bucket
       run: |
-        aws s3 cp build/app/outputs/flutter-apk/app-release.apk s3://payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk
-        
-    - name: Send email
-      run: |
-       s3_url="https://payrun-local-app-build.s3.eu-west-1.amazonaws.com/${{ steps.datetime.outputs.datetime }}/app-release.apk"
-       echo $s3_url
-       aws ses send-email \
-            --from "no-reply@local.payrun.app" \
-            --destination "ToAddresses=emon@gain.media,kibria@gain.media,sohel@gain.media" \
-            --message "Subject={Data=Local Payrun Apk Url,Charset=utf-8},Body={Text={Data=Download your file here: $s3_url,Charset=utf-8}}" \
-            --region ${{ secrets.LOCAL_PAYRUN_AWS_REGION }}
-
-
-         
+        aws s3 cp build/app/outputs/flutter-apk/app-release.apk s3://your-s3-bucket-name/payrun-local-app-build/${{ steps.datetime.outputs.datetime }}/app-release.apk

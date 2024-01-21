@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -20,10 +19,13 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../common/widget/custom_card_style.dart';
 import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_status_button.dart';
+import '../../../../enum.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../leave/view/widget/leave_record_details_view.dart';
+import '../../../leave/view/widget/status_btn_widget.dart';
 import '../../../timeline/controller/timer_controller.dart';
 
 class Dashboard extends GetView<DashboardController> {
@@ -325,12 +327,11 @@ class Dashboard extends GetView<DashboardController> {
         InkWell(
           //todo
           onTap: () {
-            // if (Get.isRegistered<DateTimeController>()) {
-            //   Get.delete<DateTimeController>();
-            // }
-            // Get.put(DateTimeController());
-            // Get.toNamed(Routes.NEW_ENTRY_SCREEN);
-            Get.find<DashboardController>().getProfileInfoForDashboard();
+            if (Get.isRegistered<DateTimeController>()) {
+              Get.delete<DateTimeController>();
+            }
+            Get.put(DateTimeController());
+            Get.toNamed(Routes.NEW_ENTRY_SCREEN);
           },
           child: SizedBox(
               height: AppLayout.getHeight(170),
@@ -355,8 +356,6 @@ class Dashboard extends GetView<DashboardController> {
                 .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
             0,
         itemBuilder: (context, index) {
-          print(controller.upcommingLeaveDashboard
-              ?.getUpcomingLeavesForApp?[index].leaveType);
           return SizedBox(
             width: double.infinity,
             child: Padding(
@@ -369,6 +368,7 @@ class Dashboard extends GetView<DashboardController> {
                               ?.getUpcomingLeavesForApp?[index].status ??
                           "taken",
                       leaveRecords: GetLeaveRecords(
+                        id: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].id,
                           status: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].status ??
                               "",
                           createdAt: controller.upcommingLeaveDashboard
@@ -396,7 +396,7 @@ class Dashboard extends GetView<DashboardController> {
                   shape: roundedRectangleBorder,
                   child: Padding(
                     padding: marginLayout.copyWith(
-                        left: 12, right: 12, top: 12, bottom: 12),
+                        left: 12, right: 12, top: 16, bottom: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -420,12 +420,9 @@ class Dashboard extends GetView<DashboardController> {
                             _leaveInfoRow(index),
                           ],
                         ),
-                        SizedBox(
-                            height: AppLayout.getHeight(24),
-                            child: CustomStatusButton(
-                                bgColor: AppColor.primaryColor.withOpacity(0.1),
-                                text: "Taken",
-                                textColor: AppColor.primaryColor))
+                        _getStatusButton(controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].status ??
+                            "taken"),
                       ],
                     ),
                   ),
@@ -436,6 +433,22 @@ class Dashboard extends GetView<DashboardController> {
         },
       ),
     );
+  }
+
+  Widget _getStatusButton(String leaveStatus) {
+    if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
+      return approvedStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
+      return rejectedStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
+      return pendingStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
+      return tokenStatusBtn();
+    } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
+      return canceledStatusBtn();
+    } else {
+      return Container();
+    }
   }
 
   _leaveInfoRow(int index) {

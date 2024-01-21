@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/widget/custom_alert_dialog.dart';
+import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/horizontal_dotted_style.dart';

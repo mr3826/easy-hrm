@@ -30,6 +30,19 @@ query Query {
 }
         """;
 
+const workShiftQuery = r'''
+query GetWorkScheduleForAssignLeave($queryData: WorkSchedulesQueryData!) {
+  getWorkScheduleForAssignLeave(queryData: $queryData) {
+    id
+    day
+    day_of_week
+    end_time
+    is_holiday
+    start_time
+  }
+}
+''';
+
 const getLeaveDetailsByDateQuery = r"""
 query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
   getLeaveDetailsByDate(queryData: $queryData) {
@@ -41,10 +54,12 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
         name
       }
       leave_status
-      leaveType {
+       leaveType {
         type
         id
         name
+        add_note_required
+        attach_document_required
       }
       status
       number_of_days
@@ -71,6 +86,8 @@ query GetLeaveRecordsForApp($optionData: OptionDataType) {
         type
         id
         name
+        add_note_required
+        attach_document_required
       }
       status
       number_of_days
@@ -93,6 +110,13 @@ const cancelLeaveQuery = r'''
 mutation UpdateLeave($inputData: UpdateLeaveInputData) {
   updateLeave(inputData: $inputData) {
     id
+  }
+}
+''';
+const removeLeaveQuery = r'''
+mutation RemoveRejectedLeaves($inputData: DeleteLeaveInputData) {
+  removeRejectedLeaves(inputData: $inputData) {
+    result
   }
 }
 ''';
@@ -149,6 +173,14 @@ query GetOrganizationUserDetails {
       }
     }
     status
+    organization {
+      organization_setting {
+        logo_key
+        language
+      }
+      name
+      id
+    }
   }
 }
 ''';
@@ -173,8 +205,24 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
         id
       }
     }
+    dept_histories {
+      department {
+        name
+        manager {
+          profile {
+            image
+            first_name
+            last_name
+          }
+        }
+        parent {
+          name
+        }
+      }
+      start_date
+      end_date
+    }
   }
- 
 }
 ''';
 
@@ -226,6 +274,7 @@ query GetMonthlyTimelog {
 const upcommingLeaveForDashboardQuery = '''
 query GetUpcomingLeavesForApp {
   getUpcomingLeavesForApp {
+    id
     end_date
     start_date
     description
@@ -233,10 +282,12 @@ query GetUpcomingLeavesForApp {
     createdAt
     number_of_days
     leaveType {
-      type
-      id
-      name
-    }
+        type
+        id
+        name
+        add_note_required
+        attach_document_required
+      }
   }
 }
 ''';
@@ -248,9 +299,14 @@ query GetUserOrganizations {
       organization {
         name
         id
+        sub_domain
         organization_setting {
           logo_key
         }
+      }
+      designation {
+        description
+        name
       }
     }
   }

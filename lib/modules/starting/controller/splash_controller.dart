@@ -19,7 +19,7 @@ class SplashController extends GetxController {
         _getNewToken();
       }
     }
-    Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
+    Future.delayed(const Duration(milliseconds: 2500), () =>chooseScreen() );
     super.onReady();
   }
 
@@ -74,4 +74,6 @@ class SplashController extends GetxController {
       log(e.toString());
     }
   }
+
 }
+

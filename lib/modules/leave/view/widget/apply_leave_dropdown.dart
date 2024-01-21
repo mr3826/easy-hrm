@@ -27,57 +27,50 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8)),
-      child: DropdownButton<String>(
-        style: const TextStyle(fontWeight: FontWeight.w500),
-        isExpanded: true,
-        dropdownColor: AppColor.cardColor,
-        underline: const SizedBox.shrink(),
-        icon: const Icon(Icons.expand_more, color: Colors.grey),
-        iconEnabledColor: AppColor.normalTextColor,
-        hint: Row(
-          children: [
-            Text(
-              AppString.text_slected_an_option.tr,
-              style: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
-            )
-          ],
-        ),
-        value: dropDownValue,
-        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        items: Get.find<ApplyLeaveController>()
-            .leaveType
-            ?.map<DropdownMenuItem<String>>((String? value) {
-          return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value ?? "",
-                style: AppStyle.normal_text
-                    .copyWith(color: AppColor.normalTextColor),
-              ));
-        }).toList(),
-        onChanged: (String? newValue) {
-          setState(() {
-            dropDownValue = newValue;
+      child: DropdownButton(
+          value: dropDownValue,
+          hint: Text(
+            AppString.text_select_on_option.tr,
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.hintColor,
+                fontSize: Dimensions.fontSizeDefault + 1),
+          ),
+          dropdownColor: AppColor.cardColor,
+          underline: const SizedBox.shrink(),
+          isExpanded: true,
+          items: Get.find<ApplyLeaveController>()
+              .leaveTypeDropdown!
+              .getLeaveTypesDropdown!
+              .map((e) {
+            return DropdownMenuItem(
+              value: e.id,
+              child: Text(e.name.toString()),
+            );
+          }).toList(),
+          onChanged: (valueType) {
+            print("value::: $valueType");
+            setState(() {
+              dropDownValue = valueType as String;
+            });
             GetLeaveTypesDropdown? getLeaveTypesDropdown =
                 Get.find<ApplyLeaveController>()
                     .leaveTypeDropdown
                     ?.getLeaveTypesDropdown
-                    ?.firstWhere((element) => element.name == newValue);
+                    ?.firstWhere((element) => element.id == valueType);
 
             //set data according to leave type
-            Get.find<DateTimeController>().numberOfLeaves.value =
+            Get.find<ApplyLeaveController>().numberOfLeaves.value =
                 getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
                         .toString() ??
                     "";
-            Get.find<DateTimeController>().leaveId?.value =
-                getLeaveTypesDropdown?.id ?? "";
-            Get.find<DateTimeController>().isDocumentRequired.value =
+            Get.find<ApplyLeaveController>().leaveId = valueType!;
+            print(
+                "Leave type id:: ${Get.find<ApplyLeaveController>().leaveId}");
+            Get.find<ApplyLeaveController>().isDocumentRequired.value =
                 getLeaveTypesDropdown?.attachDocumentRequired ?? false;
-            Get.find<DateTimeController>().isNoteRequired.value =
+            Get.find<ApplyLeaveController>().isNoteRequired.value =
                 getLeaveTypesDropdown?.addNoteRequired ?? false;
-          });
-        },
-      ),
+          }),
     );
   }
 }

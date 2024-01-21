@@ -237,8 +237,7 @@ void logErrorMessage({required String logName, Response? response}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: ErrorModel.fromJson(response?.body).message);
 
-void logSuccessMessage(
-        {required String logName, Response? response, String? message}) =>
+void logSuccessMessage({required String logName, Response? response, String? message}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
 
