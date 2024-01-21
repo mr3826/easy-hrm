@@ -106,18 +106,18 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
 
                 DateTime date = DateTime.parse(DateFormat('yyyy-MM-dd').format(today));
 
-                // Get.find<TimelineController>().getCalendarTimelineDataByDate(
-                //     startDate:
-                //     "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                //     endDate:
-                //     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
-                //
-                //
-                // Get.find<TimelineController>().getTimelineSummaryByDate(
-                //     startDate:
-                //     "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
-                //     endDate:
-                //     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                    startDate:
+                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                    endDate:
+                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+
+                Get.find<TimelineController>().getTimelineSummaryByDate(
+                    startDate:
+                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                    endDate:
+                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
 
               }else{
