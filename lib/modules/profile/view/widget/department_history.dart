@@ -72,17 +72,6 @@ class DepartmentHistory extends StatelessWidget {
     );
   }
 
-  _divider() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6.0, right: 6),
-      child: Container(
-        width: 1,
-        color: AppColor.hintColor,
-        height: 12,
-      ),
-    );
-  }
-
   _departmentSectionInfoLayout({
     required String departmentName,
     required String parentDepartment,
@@ -115,119 +104,19 @@ class DepartmentHistory extends StatelessWidget {
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeMid - 3),
                     ),
-
-                    _employmentDate(startDate: startDate, endDate: endDate),
-                    SizedBox(
-                      width: MediaQuery.of(Get.context!).size.width / 1.5,
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: parentDepartment,
-                              style: AppStyle.mid_large_text.copyWith(
-                                  color: AppColor.secondaryColor,
-                                  fontSize: Dimensions.fontSizeDefault - 4,
-                                  overflow: TextOverflow.ellipsis),
-                            ),
-                            if(parentDepartment.isNotEmpty) const TextSpan(
-                              text: '  | ',
-                              style: TextStyle(
-                                  color: AppColor.hintColor, fontSize: 10),
-                            ),
-                            TextSpan(
-                                text: "${AppString.text_from.tr} $startDate",
-                                style: AppStyle.mid_large_text.copyWith(
-                                    color: AppColor.hintColor,
-                                    fontSize: Dimensions.fontSizeDefault - 4,
-                                    overflow: TextOverflow.ellipsis)),
-                            const TextSpan(
-                              text: ' - ',
-                              style: TextStyle(
-                                  color: AppColor.hintColor, fontSize: 10),
-                            ),
-                             TextSpan(
-                              text: endDate ?? AppString.textPresent.tr,
-
-                                 style: endDate == null
-                                     ? AppStyle.mid_large_text.copyWith(
-                                     color: AppColor.primaryColor,
-                                     fontSize: Dimensions.fontSizeDefault - 4)
-                                     : AppStyle.mid_large_text.copyWith(
-                                   color: AppColor.hintColor,
-                                   fontSize: Dimensions.fontSizeDefault - 4,
-                                   overflow: TextOverflow.ellipsis,
-                                 )
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-
-
+                    _employmentDate(
+                        startDate: startDate,
+                        endDate: endDate,
+                        parentDepartment: parentDepartment),
                     customSpacerHeight(height: 14),
                     SizedBox(
                       child: Stack(
                         children: [
-                          Positioned(
-                            child: Container(
-                              height: AppLayout.getHeight(20),
-                              width: AppLayout.getWidth(18),
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                      width: .9,
-                                      color:
-                                          AppColor.hintColor.withOpacity(0.6)),
-                                  bottom: BorderSide(
-                                      width: .9,
-                                      color:
-                                          AppColor.hintColor.withOpacity(0.6)),
-                                ),
-                              ),
-                            ),
-                          ),
+                          _verticalAndHorizontalDivider(),
                           Stack(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Row(
-                                  children: [
-                                    CustomNetworkImage(
-                                      height: 18,
-                                      imgUrl: imageUrl,
-                                      borderColor: Colors.transparent,
-                                    ),
-                                    customSpacerWidth(width: 20),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          managerName,
-                                          style: AppStyle.normal_text_grey
-                                              .copyWith(
-                                            color: AppColor.secondaryColor,
-                                            fontSize:
-                                                Dimensions.fontSizeDefault - 1,
-                                          ),
-                                        ),
-                                        Text(
-                                          AppString.textManager.tr,
-                                          style: AppStyle.mid_large_text
-                                              .copyWith(
-                                                  color:
-                                                      AppColor.normalTextColor,
-                                                  fontSize: Dimensions
-                                                          .fontSizeDefault -
-                                                      3),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              _managerInfoLayout(
+                                  imageUrl: imageUrl, managerName: managerName),
                               _departmentCircleLayout()
                             ],
                           ),
@@ -271,30 +160,49 @@ class DepartmentHistory extends StatelessWidget {
     }
   }
 
-  _employmentDate({String? startDate, String? endDate}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          "${AppString.text_from.tr} $startDate - ",
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault - 4,
-              overflow: TextOverflow.ellipsis),
-        ),
-        Text(
-          endDate ?? AppString.textPresent.tr,
-          style: endDate == null
-              ? AppStyle.mid_large_text.copyWith(
-                  color: AppColor.primaryColor,
-                  fontSize: Dimensions.fontSizeDefault - 4)
-              : AppStyle.mid_large_text.copyWith(
-                  color: AppColor.hintColor,
+  _employmentDate({String? startDate, String? endDate, parentDepartment}) {
+    return SizedBox(
+      width: MediaQuery.of(Get.context!).size.width / 1.5,
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: parentDepartment,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.secondaryColor,
                   fontSize: Dimensions.fontSizeDefault - 4,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                  fontWeight: FontWeight.w600,
+                  overflow: TextOverflow.ellipsis),
+            ),
+            if (parentDepartment.isNotEmpty)
+              const TextSpan(
+                text: '  | ',
+                style: TextStyle(color: AppColor.hintColor, fontSize: 10),
+              ),
+            TextSpan(
+                text: "${AppString.text_from.tr} $startDate",
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault - 4,
+                    overflow: TextOverflow.ellipsis)),
+            const TextSpan(
+              text: ' - ',
+              style: TextStyle(color: AppColor.hintColor, fontSize: 10),
+            ),
+            TextSpan(
+                text: endDate ?? AppString.textPresent.tr,
+                style: endDate == null
+                    ? AppStyle.mid_large_text.copyWith(
+                        color: AppColor.primaryColor,
+                        fontSize: Dimensions.fontSizeDefault - 4)
+                    : AppStyle.mid_large_text.copyWith(
+                        color: AppColor.hintColor,
+                        fontSize: Dimensions.fontSizeDefault - 4,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -314,5 +222,72 @@ class DepartmentHistory extends StatelessWidget {
 
   String _getManagerName(int index) {
     return "${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.manager?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.manager?.profile?.lastName ?? ""}";
+  }
+
+  _managerImageLayout(imageUrl) {
+    return CircleAvatar(
+      backgroundColor: AppColor.pendingColor,
+      radius: 20,
+      child: CircleAvatar(
+        backgroundColor: AppColor.cardColor,
+        radius: 19.4,
+        child: CustomNetworkImage(
+          height: 18,
+          imgUrl: imageUrl,
+          borderColor: Colors.transparent,
+        ),
+      ),
+    );
+  }
+
+  _managerInfoLayout({
+    imageUrl,
+    managerName,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12.0),
+      child: Row(
+        children: [
+          _managerImageLayout(imageUrl),
+          customSpacerWidth(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                managerName,
+                style: AppStyle.normal_text_grey.copyWith(
+                  color: AppColor.secondaryColor,
+                  fontSize: Dimensions.fontSizeDefault - 1,
+                ),
+              ),
+              Text(
+                AppString.textManager.tr,
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeDefault - 3),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  _verticalAndHorizontalDivider() {
+    return Positioned(
+      child: Container(
+        height: AppLayout.getHeight(20),
+        width: AppLayout.getWidth(18),
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+                width: .9, color: AppColor.hintColor.withOpacity(0.6)),
+            bottom: BorderSide(
+                width: .9, color: AppColor.hintColor.withOpacity(0.6)),
+          ),
+        ),
+      ),
+    );
   }
 }

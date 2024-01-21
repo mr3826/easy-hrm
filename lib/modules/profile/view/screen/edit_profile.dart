@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,8 +15,6 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:payrun_mobile/utils/images.dart';
-
 import '../../../../utils/api_endpoints.dart';
 import '../../../../utils/utils.dart';
 import '../../controller/profile_image_selected_controller.dart';
@@ -72,25 +68,48 @@ class EditProfileScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              AppString.text_update_your_profile.tr,
-              style: AppStyle.mid_large_text
-                  .copyWith(color: AppColor.normalTextColor),
+            // Text(
+            //   AppString.text_update_your_profile.tr,
+            //   style: AppStyle.mid_large_text
+            //       .copyWith(color: AppColor.normalTextColor,overflow: TextOverflow.ellipsis),
+            // ),
+            // Text(
+            //   AppString.text_upload_a_photo_undar_2mb.tr,
+            //   style: AppStyle.mid_large_text.copyWith(
+            //       color: AppColor.hintColor,
+            //       fontSize: Dimensions.fontSizeDefault - 1),
+            // ),
+            // customSpacerHeight(height: 8),
+
+
+            SizedBox(
+              width: MediaQuery.of(context).size.width/2,
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text:"${AppString.text_update_your_profile.tr} ",
+                      style: AppStyle.mid_large_text
+                          .copyWith(color: AppColor.normalTextColor,overflow: TextOverflow.ellipsis),),
+                    TextSpan(
+                      text:AppString.text_upload_a_photo_undar_2mb.tr,
+                      style: AppStyle.mid_large_text.copyWith(
+                        color: AppColor.hintColor,
+                        fontSize: Dimensions.fontSizeDefault - 1,
+                    ),
+                    ),
+
+                  ],
+                ),
+              ),
             ),
-            Text(
-              AppString.text_upload_a_photo_undar_2mb.tr,
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault - 1),
-            ),
-            customSpacerHeight(height: 8),
+            customSpacerHeight(height: 6),
             Row(
               children: [
                 _uploadBtnLayout(),
                 customSpacerWidth(width: 12),
                 _removeBtnLayout(context)
               ],
-            )
+            ),
           ],
         ),
       ],

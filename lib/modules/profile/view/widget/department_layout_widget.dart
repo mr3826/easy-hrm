@@ -168,8 +168,8 @@ _workShiftDetailsLayout() {
 
   bool? allTimesSame = workSchedules?.every((schedule) {
     // Check if start_time and end_time are the same for each item
-    return schedule.startTime == workSchedules?[0].startTime &&
-        schedule.endTime == workSchedules?[0].endTime;
+    return schedule.startTime == workSchedules[0].startTime &&
+        schedule.endTime == workSchedules[0].endTime;
   });
 
   return Row(
