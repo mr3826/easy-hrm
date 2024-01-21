@@ -117,6 +117,7 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                     startDate:
                     "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                     endDate:
+
                     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
 
