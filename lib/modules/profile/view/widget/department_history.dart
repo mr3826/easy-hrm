@@ -115,18 +115,56 @@ class DepartmentHistory extends StatelessWidget {
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeMid - 3),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          parentDepartment,
-                          style: AppStyle.mid_large_text.copyWith(
-                              color: AppColor.secondaryColor,
-                              fontSize: Dimensions.fontSizeDefault - 2),
+
+                    _employmentDate(startDate: startDate, endDate: endDate),
+                    SizedBox(
+                      width: MediaQuery.of(Get.context!).size.width / 1.5,
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: parentDepartment,
+                              style: AppStyle.mid_large_text.copyWith(
+                                  color: AppColor.secondaryColor,
+                                  fontSize: Dimensions.fontSizeDefault - 4,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                            if(parentDepartment.isNotEmpty) const TextSpan(
+                              text: '  | ',
+                              style: TextStyle(
+                                  color: AppColor.hintColor, fontSize: 10),
+                            ),
+                            TextSpan(
+                                text: "${AppString.text_from.tr} $startDate",
+                                style: AppStyle.mid_large_text.copyWith(
+                                    color: AppColor.hintColor,
+                                    fontSize: Dimensions.fontSizeDefault - 4,
+                                    overflow: TextOverflow.ellipsis)),
+                            const TextSpan(
+                              text: ' - ',
+                              style: TextStyle(
+                                  color: AppColor.hintColor, fontSize: 10),
+                            ),
+                             TextSpan(
+                              text: endDate ?? AppString.textPresent.tr,
+
+                                 style: endDate == null
+                                     ? AppStyle.mid_large_text.copyWith(
+                                     color: AppColor.primaryColor,
+                                     fontSize: Dimensions.fontSizeDefault - 4)
+                                     : AppStyle.mid_large_text.copyWith(
+                                   color: AppColor.hintColor,
+                                   fontSize: Dimensions.fontSizeDefault - 4,
+                                   overflow: TextOverflow.ellipsis,
+                                 )
+                            ),
+                          ],
                         ),
-                        if(parentDepartment.isNotEmpty) _divider(),
-                        _employmentDate(startDate: startDate, endDate: endDate),
-                      ],
+                      ),
                     ),
+
+
+
                     customSpacerHeight(height: 14),
                     SizedBox(
                       child: Stack(
@@ -235,22 +273,26 @@ class DepartmentHistory extends StatelessWidget {
 
   _employmentDate({String? startDate, String? endDate}) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
           "${AppString.text_from.tr} $startDate - ",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault - 2),
+              fontSize: Dimensions.fontSizeDefault - 4,
+              overflow: TextOverflow.ellipsis),
         ),
         Text(
           endDate ?? AppString.textPresent.tr,
           style: endDate == null
               ? AppStyle.mid_large_text.copyWith(
                   color: AppColor.primaryColor,
-                  fontSize: Dimensions.fontSizeDefault - 2)
+                  fontSize: Dimensions.fontSizeDefault - 4)
               : AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault - 2),
+                  fontSize: Dimensions.fontSizeDefault - 4,
+                  overflow: TextOverflow.ellipsis,
+                ),
         ),
       ],
     );

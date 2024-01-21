@@ -34,7 +34,7 @@ class ChangEmailFieldLayout extends StatelessWidget {
               child: Column(
                 children: [
                   userTextFieldLayout(
-                    titleText: AppString.text_email + "*".tr,
+                    titleText: AppString.text_email.tr,
                     controller: changeEmailController,
                     hintText: Get.find<UserProfileController>()
                             .userDetails
@@ -57,7 +57,7 @@ class ChangEmailFieldLayout extends StatelessWidget {
                               color: Colors.blueAccent, radius: 16),
                         )
                       : CustomDoubleAppButton(
-                          buttonText: AppString.text_continue.tr,
+                          buttonText: AppString.text_save.tr,
                           onAction: () async {
                             if (_formKey.currentState!.validate()) {
                               final response =

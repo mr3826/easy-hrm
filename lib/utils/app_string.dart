@@ -132,7 +132,7 @@ class AppString {
 
   static String text_take_break = 'Take Break';
   static String text_on_break = 'On Break';
-  static String text_swich_organisation = 'Switch organisation';
+  static String text_swich_organisation = 'Switch organization';
   static String text_in = "In";
   static String text_out = "Out";
   static String text_total = "Total";
