@@ -205,8 +205,24 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
         id
       }
     }
+    dept_histories {
+      department {
+        name
+        manager {
+          profile {
+            image
+            first_name
+            last_name
+          }
+        }
+        parent {
+          name
+        }
+      }
+      start_date
+      end_date
+    }
   }
- 
 }
 ''';
 

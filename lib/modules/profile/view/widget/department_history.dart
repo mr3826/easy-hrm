@@ -4,6 +4,7 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -12,24 +13,11 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
-class DepartmentHistory extends StatelessWidget {
-  final String departmentName;
-  final String date;
-  final String employeeStatus;
-  final String name;
-  final String employeeDptStatus;
-  final dynamic imageUrl;
-  final int itemCount;
+import '../../../../common/widget/custom_network_image.dart';
+import '../../../../utils/utils.dart';
 
-  const DepartmentHistory(
-      {super.key,
-      required this.departmentName,
-      required this.date,
-      required this.itemCount,
-      required this.employeeStatus,
-      required this.name,
-      required this.employeeDptStatus,
-      required this.imageUrl});
+class DepartmentHistory extends StatelessWidget {
+  const DepartmentHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +29,43 @@ class DepartmentHistory extends StatelessWidget {
             subtext: AppString.text_history.tr),
         Expanded(
             child: ListView.builder(
-          itemCount: itemCount,
+          itemCount: Get.find<UserProfileController>()
+              .employeeWorkHistory
+              ?.getOrganizationUserHistory
+              ?.deptHistories
+              ?.length,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             return _departmentSectionInfoLayout(
-                imageUrl: imageUrl,
-                date: date,
-                departmentName: departmentName,
-                employeeDptStatus: employeeDptStatus,
-                employeeStatus: employeeStatus,
-                name: name);
+              imageUrl: Get.find<UserProfileController>()
+                      .employeeWorkHistory
+                      ?.getOrganizationUserHistory
+                      ?.deptHistories?[index]
+                      .department
+                      ?.manager
+                      ?.profile
+                      ?.image ??
+                  "",
+              startDate: _getEmploymentDate(Get.find<UserProfileController>()
+                  .employeeWorkHistory
+                  ?.getOrganizationUserHistory
+                  ?.deptHistories?[index]
+                  .startDate),
+              endDate: _getEmploymentDate(Get.find<UserProfileController>()
+                  .employeeWorkHistory
+                  ?.getOrganizationUserHistory
+                  ?.deptHistories?[index]
+                  .endDate),
+              departmentName: Get.find<UserProfileController>()
+                      .employeeWorkHistory
+                      ?.getOrganizationUserHistory
+                      ?.deptHistories?[index]
+                      .department
+                      ?.name ??
+                  "",
+              parentDepartment: _getParentDepartmentName(index),
+              managerName: _getManagerName(index),
+            );
           },
         ))
       ],
@@ -68,13 +83,14 @@ class DepartmentHistory extends StatelessWidget {
     );
   }
 
-  _departmentSectionInfoLayout(
-      {required departmentName,
-      required date,
-      required employeeStatus,
-      required name,
-      required employeeDptStatus,
-      required imageUrl}) {
+  _departmentSectionInfoLayout({
+    required String departmentName,
+    required String parentDepartment,
+    String? startDate,
+    String? endDate,
+    required String managerName,
+    required String imageUrl,
+  }) {
     return Padding(
       padding: marginLayout.copyWith(bottom: 18, left: 0, right: 0, top: 16),
       child: Stack(
@@ -87,14 +103,14 @@ class DepartmentHistory extends StatelessWidget {
                 customSvgImage(
                     imageUrl: Images.department_notification,
                     color: AppColor.normalTextColor,
-                    height: 18,
-                    width: 18),
+                    height: 24,
+                    width: 24),
                 customSpacerWidth(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "$departmentName",
+                      departmentName,
                       style: AppStyle.normal_text_grey.copyWith(
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeMid - 3),
@@ -102,25 +118,13 @@ class DepartmentHistory extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "${AppString.text_child_of_deparmtnet.tr} ",
+                          parentDepartment,
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.secondaryColor,
                               fontSize: Dimensions.fontSizeDefault - 2),
                         ),
-                        _divider(),
-                        Text(
-                          "$date - ",
-                          style: AppStyle.mid_large_text.copyWith(
-                              color: AppColor.hintColor,
-                              fontSize: Dimensions.fontSizeDefault - 2),
-                        ),
-                        Text(
-                          "$employeeStatus",
-                          style: AppStyle.mid_large_text.copyWith(
-                              color: AppColor.primaryColor,
-                              fontSize: Dimensions.fontSizeDefault - 2,
-                              overflow: TextOverflow.ellipsis),
-                        ),
+                        if(parentDepartment.isNotEmpty) _divider(),
+                        _employmentDate(startDate: startDate, endDate: endDate),
                       ],
                     ),
                     customSpacerHeight(height: 14),
@@ -152,17 +156,10 @@ class DepartmentHistory extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 12.0),
                                 child: Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 18,
-                                      backgroundColor: AppColor.primaryOrange,
-                                      child: CircleAvatar(
-                                        radius: 17.2,
-                                        backgroundColor: AppColor.cardColor,
-                                        child: CircleAvatar(
-                                          radius: 16,
-                                          backgroundImage: AssetImage(imageUrl),
-                                        ),
-                                      ),
+                                    CustomNetworkImage(
+                                      height: 18,
+                                      imgUrl: imageUrl,
+                                      borderColor: Colors.transparent,
                                     ),
                                     customSpacerWidth(width: 20),
                                     Column(
@@ -170,7 +167,7 @@ class DepartmentHistory extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "$name",
+                                          managerName,
                                           style: AppStyle.normal_text_grey
                                               .copyWith(
                                             color: AppColor.secondaryColor,
@@ -179,7 +176,7 @@ class DepartmentHistory extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          "$employeeDptStatus",
+                                          AppString.textManager.tr,
                                           style: AppStyle.mid_large_text
                                               .copyWith(
                                                   color:
@@ -226,5 +223,54 @@ class DepartmentHistory extends StatelessWidget {
               color: AppColor.cardColor,
               height: 10),
         ));
+  }
+
+  String? _getEmploymentDate(String? date) {
+    if (date != null) {
+      return dateMonthYearFormatFromDatetime(date);
+    } else {
+      return null;
+    }
+  }
+
+  _employmentDate({String? startDate, String? endDate}) {
+    return Row(
+      children: [
+        Text(
+          "${AppString.text_from.tr} $startDate - ",
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.hintColor,
+              fontSize: Dimensions.fontSizeDefault - 2),
+        ),
+        Text(
+          endDate ?? AppString.textPresent.tr,
+          style: endDate == null
+              ? AppStyle.mid_large_text.copyWith(
+                  color: AppColor.primaryColor,
+                  fontSize: Dimensions.fontSizeDefault - 2)
+              : AppStyle.mid_large_text.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault - 2),
+        ),
+      ],
+    );
+  }
+
+  _getParentDepartmentName(int index) {
+    if (Get.find<UserProfileController>()
+            .employeeWorkHistory
+            ?.getOrganizationUserHistory
+            ?.deptHistories?[index]
+            .department
+            ?.parent !=
+        null) {
+      return "${AppString.text_child_of_deparmtnet.tr} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.parent?.name ?? ""}";
+    } else {
+      return "";
+    }
+  }
+
+  String _getManagerName(int index) {
+    return "${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.manager?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.manager?.profile?.lastName ?? ""}";
   }
 }

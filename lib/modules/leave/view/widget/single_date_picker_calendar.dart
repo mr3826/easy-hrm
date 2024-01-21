@@ -91,14 +91,12 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
             const Spacer(),
             _buttonLayout(onAction: () {
               if (widget.isCalledFormTimeLog == false) {
-                print("isCalledFormTimeLog::False");
                 Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Get.find<DateController>().currentDate.value = today;
 
                 // Get.find<DateTimeController>().timeLogDate.value =
                 //     today.toString();
               } else {
-                print("isCalledFormTimeLog::True");
                 Get.find<DateTimeController>().requestedDate.value =
                     DateFormat('yyyy-MM-dd').format(today);
 

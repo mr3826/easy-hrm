@@ -15,6 +15,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
+import 'department_history.dart';
 
 Widget departmentLayout(context) {
   return SizedBox(
@@ -34,40 +35,76 @@ Widget departmentLayout(context) {
                 height: 25,
                 width: 25),
             customSpacerHeight(height: 12),
-            Text(
-              Get.find<UserProfileController>()
-                      .userDetails
-                      ?.getOrganizationUserDetails
-                      ?.department
-                      ?.name ??
-                  "",
-              style: AppStyle.mid_large_text
-                  .copyWith(color: AppColor.normalTextColor),
-            ),
-            Row(
-              children: [
-                Text(
-                  "${AppString.text_child_of_deparmtnet.tr} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department?.parent?.name ?? ""}",
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeDefault - 1),
-                ),
-                _divider(),
-                Expanded(
-                    child: Text(
-                  "${AppString.text_from.tr} - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault - 1,
-                      overflow: TextOverflow.ellipsis),
-                ))
-              ],
-            ),
+            _departmentHistoryInfo(),
             _workingShiftLayout(context),
           ],
         ),
       ),
     ),
+  );
+}
+
+_departmentHistoryInfo() {
+  return InkWell(
+    onTap: () {
+      customButtonSheet(
+          height: .6, context: Get.context!, child: const DepartmentHistory());
+    },
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          Get.find<UserProfileController>()
+                  .userDetails
+                  ?.getOrganizationUserDetails
+                  ?.department
+                  ?.name ??
+              "",
+          style:
+              AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+        ),
+        Row(
+          children: [
+            _parentDepartmentInfo(
+                parentDepartmentName: _getParentDepartmentName()),
+            if (Get.find<UserProfileController>()
+                        .employeeWorkHistory
+                        ?.getOrganizationUserHistory
+                        ?.employmentHistories !=
+                    null &&
+                Get.find<UserProfileController>()
+                    .employeeWorkHistory!
+                    .getOrganizationUserHistory!
+                    .employmentHistories!
+                    .isNotEmpty)
+              Expanded(
+                child: Text(
+                  "${AppString.text_from.tr} - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+                  style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault - 1,
+                      overflow: TextOverflow.ellipsis),
+                ),
+              )
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+_parentDepartmentInfo({required String parentDepartmentName}) {
+  return Row(
+    children: [
+      Text(
+        parentDepartmentName,
+        style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.primaryColor,
+            fontSize: Dimensions.fontSizeDefault - 1),
+      ),
+      if (parentDepartmentName.isNotEmpty) _divider(),
+    ],
   );
 }
 
@@ -195,26 +232,34 @@ _workShiftDetailsLayout() {
 }
 
 _generateWorkShift(List<WorkSchedules> workSchedules) {
-  return ListView.separated(
-    separatorBuilder: (context, index) => customSpacerHeight(height: 10),
-    itemBuilder: (context, index) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-            color: index.isEven ? Colors.grey.shade200 : Colors.grey.shade300,
-            borderRadius: BorderRadius.circular(8)),
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-                "Start: ${amPmFormatTimeFromString(workSchedules?[index].startTime ?? "")}"),
-            Text(
-                "End: ${amPmFormatTimeFromString(workSchedules?[index].endTime ?? "")}"),
-            Text(
-                "Total: ${getTimeDifference(workSchedules?[index].startTime ?? "", workSchedules?[index].endTime ?? "")}"),
-          ],
-        )),
-    itemCount: workSchedules.length,
+  return Column(
+    children: [
+      customButtonSheetAppbar(text: AppString.workShiftText.tr),
+      Expanded(
+          child: ListView.separated(
+        shrinkWrap: true,
+        separatorBuilder: (context, index) => customSpacerHeight(height: 10),
+        itemBuilder: (context, index) => Container(
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+                color:
+                    index.isEven ? Colors.grey.shade200 : Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8)),
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                    "Start: ${amPmFormatTimeFromString(workSchedules?[index].startTime ?? "")}"),
+                Text(
+                    "End: ${amPmFormatTimeFromString(workSchedules?[index].endTime ?? "")}"),
+                Text(
+                    "Total: ${getTimeDifference(workSchedules?[index].startTime ?? "", workSchedules?[index].endTime ?? "")}"),
+              ],
+            )),
+        itemCount: workSchedules.length,
+      ))
+    ],
   );
 }
 
@@ -265,6 +310,31 @@ _workingDaySchedule(context) {
       },
     ),
   );
+}
+
+String _getParentDepartmentName() {
+  if (Get.find<UserProfileController>()
+              .employeeWorkHistory
+              ?.getOrganizationUserHistory
+              ?.deptHistories !=
+          null &&
+      Get.find<UserProfileController>()
+          .employeeWorkHistory!
+          .getOrganizationUserHistory!
+          .deptHistories!
+          .isNotEmpty) return "";
+
+  if (Get.find<UserProfileController>()
+          .employeeWorkHistory
+          ?.getOrganizationUserHistory
+          ?.deptHistories?[0]
+          .department
+          ?.parent !=
+      null) {
+    return "${AppString.text_child_of_deparmtnet.tr} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[0].department?.parent?.name ?? ""}";
+  } else {
+    return "";
+  }
 }
 
 _divider() {
