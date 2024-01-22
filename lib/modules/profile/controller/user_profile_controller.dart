@@ -141,8 +141,11 @@ class UserProfileController extends GetxController with StateMixin {
   submitVerificationCode({required String verificationCode}) async {
     isVerificationApiLoading(true);
     try {
-      final response = await NetworkClient().postRequest(
-          Api.VERIFY_CHANGE_MAIL_OTP, {"confirmationCode": verificationCode});
+      final response =
+          await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+        "confirmationCode": verificationCode,
+        "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
+      });
 
       if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);
