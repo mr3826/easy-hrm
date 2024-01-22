@@ -95,7 +95,7 @@ class UpdateTimeLineLog extends StatelessWidget {
                                     Get.find<TimelineController>()
                                         .updateTimelineLogDetails(
                                       description:
-                                          "hhh",
+                                      timelineLogDetailsDrcController.text,
                                       status: Get.find<TimelineController>()
                                           .timeLogStatus
                                           .toString(),

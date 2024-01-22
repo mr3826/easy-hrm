@@ -359,7 +359,7 @@ class TimelineController extends GetxController with StateMixin {
             ${e.task?.project?.name ?? "No added yet"} 
             ${convertMiniToHour(Duration(minutes: int.parse(e.totalMinutes ?? "00"))).toString()} 
             
-            ${timeFormatTo24h(DateTime.parse(e.endDate ?? "2024-01-15 23:59:59.000"))}
+            ${timeFormatTo24h(DateTime.parse(e.endDate ?? Get.find<DateTimeController>().requestedDate.value))}
             
 
             
