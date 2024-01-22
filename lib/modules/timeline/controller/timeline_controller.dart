@@ -4,10 +4,8 @@ import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
-import 'package:payrun_mobile/modules/timeline/view/screen/sf_calendar.dart';
 import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
@@ -26,7 +24,6 @@ import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
 
 class TimelineController extends GetxController with StateMixin {
-  Timer? _timer;
 
   @override
   void onInit() {
@@ -52,16 +49,6 @@ class TimelineController extends GetxController with StateMixin {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
-    // _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
-    //   getCalendarTimelineDataByDate(
-    //       startDate:
-    //           "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
-    //       endDate:
-    //           "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-
-    // log("GetCalendarTimelineDataByDate Call after 2 minute", error: 0);
-    // });
-
     super.onInit();
   }
 
@@ -73,6 +60,8 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
+  RxInt selectedSummaryDate=0.obs;
+  RxInt currentYear = DateTime.now().year.obs;
   String timeLogStatus = "";
   String timeLogDuration = "";
   String timeLineID = "";

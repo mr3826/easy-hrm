@@ -7,12 +7,11 @@ import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.
 import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'sf_calendar.dart';
+import 'timeline_calendar.dart';
 import '../../controller/timeline_controller.dart';
-import '../widget/timelog_summary_working_gol_layout.dart';
+import 'timelog_summary_working_gol_layout.dart';
 
 class CustomTimelineCalendar extends StatelessWidget {
   const CustomTimelineCalendar({super.key});
@@ -31,7 +30,7 @@ class CustomTimelineCalendar extends StatelessWidget {
                           .isTimelineCalendarByDateLoading
                           .isTrue
                   ? Center(child: Container(color: Colors.transparent))
-                  : const SFCalendarScreen(),
+                  : const TimeLineCalendar(),
               _summaryLayout(),
               _dateCalendarLayout(),
             ],
