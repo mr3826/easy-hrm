@@ -152,6 +152,11 @@ class TimelineController extends GetxController with StateMixin {
       projectId}) async {
     isUpdateTimeLogLoading(true);
     log("updateTimelineLogDetails start & end ==>$startDate And $endDate");
+    log("timeline_id ==>$timeLineId");
+    log("description ==>$description");
+    log("taskId ==>$taskId");
+    log("projectId ==>$projectId");
+    log("status ==>$status");
 
     final response = await NetworkClient()
         .mutationGraphData(updateTimelineLogDetailsQueryData, {
@@ -160,7 +165,6 @@ class TimelineController extends GetxController with StateMixin {
         "description": "$description",
         "end_date": "$endDate",
         "start_date": "$startDate",
-        "status": "$status",
       }
     });
 
@@ -301,28 +305,26 @@ class TimelineController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
       isTimelineCalendarByDateLoading(false);
     } else {
-
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
       print("time line calendar ::: $responseForCalendar");
 
       meetings.clear();
       calendarTimeline?.getCalenderTimelinesForApp?.timelines?.map((e) {
-
         DateTime dateTimeNow = DateTime.now();
         DateTime dateStartTimeValue =
-        DateTime.parse(e.startDate ?? DateTime.now().toString());
+            DateTime.parse(e.startDate ?? DateTime.now().toString());
         DateTime dateEndTimeValue =
-        DateTime.parse(e.endDate ?? DateTime.now().toString());
+            DateTime.parse(e.endDate ?? DateTime.now().toString());
 
         ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "No added yet",
-          timeLId: e.task?.id?? "",
-          endDate: e.endDate??"",
-          startDate: e.startDate??"",
-          duration: e.totalMinutes??"",
-          taskName: e.task?.name??"",
+          timeLId: e.task?.id ?? "",
+          endDate: e.endDate ?? "",
+          startDate: e.startDate ?? "",
+          duration: e.totalMinutes ?? "",
+          taskName: e.task?.name ?? "",
         );
 
         Map<String, dynamic> jsonModel = modelForDescription.toJson();
@@ -331,22 +333,16 @@ class TimelineController extends GetxController with StateMixin {
 
         log(jsonModel.toString(), error: 1);
         return meetings.add(
-
           Appointment(
-
             notes: "Note",
             location: jsonObject,
-
-
-            startTime:
-            DateTime(
+            startTime: DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
               dateTimeNow.day,
               dateStartTimeValue.hour,
               dateStartTimeValue.minute,
               dateStartTimeValue.second,
-
             ),
             endTime: DateTime(
               dateTimeNow.year,
@@ -360,18 +356,16 @@ class TimelineController extends GetxController with StateMixin {
             ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
             
             
-            ${e.task?.project?.name??"No added yet"} 
-            ${convertMiniToHour(Duration(minutes: int.parse(e.totalMinutes.toString())))
-                .toString()} 
+            ${e.task?.project?.name ?? "No added yet"} 
+            ${convertMiniToHour(Duration(minutes: int.parse(e.totalMinutes ?? "00"))).toString()} 
             
-            ${timeFormatTo24h(DateTime.parse(e.endDate??"00:00"))}
+            ${timeFormatTo24h(DateTime.parse(e.endDate ?? "2024-01-15 23:59:59.000"))}
             
 
             
             """,
             color: statusAccordingToColor(e.status),
             isAllDay: false,
-
           ),
         );
       }).toList();
@@ -379,33 +373,26 @@ class TimelineController extends GetxController with StateMixin {
       calendarTimeline?.getCalenderTimelinesForApp?.leaves?.map((e) {
         DateTime dateTimeNow = DateTime.now();
         DateTime dateStartTimeValue =
-        DateTime.parse(e.startDate ?? DateTime.now().toString());
+            DateTime.parse(e.startDate ?? DateTime.now().toString());
         DateTime dateEndTimeValue =
-        DateTime.parse(e.endDate ?? DateTime.now().toString());
+            DateTime.parse(e.endDate ?? DateTime.now().toString());
 
         ModelForDescription modelForDescription = ModelForDescription(
-            status: e.status ?? "",
-            description: e.description ?? "No added yet",
-            timeLId: e.leaveType?.id ?? "",
-          endDate: e.endDate??"",
-          startDate: e.startDate??"",
-          duration: e.totalLeaveMinutes??"",
-          taskName: e.leaveType?.name??"",
-
+          status: e.status ?? "",
+          description: e.description ?? "No added yet",
+          timeLId: e.leaveType?.id ?? "",
+          endDate: e.endDate ?? "",
+          startDate: e.startDate ?? "",
+          duration: e.totalLeaveMinutes ?? "",
+          taskName: e.leaveType?.name ?? "",
         );
 
         Map<String, dynamic> jsonModel = modelForDescription.toJson();
         String jsonObject = jsonEncode(jsonModel);
         log(jsonModel.toString(), error: 1);
 
-
-
-
-
-
         return meetings.add(
           Appointment(
-
             startTime: DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
@@ -413,9 +400,8 @@ class TimelineController extends GetxController with StateMixin {
               dateStartTimeValue.hour,
               dateStartTimeValue.minute,
               dateStartTimeValue.second,
-
             ),
-            endTime:    DateTime(
+            endTime: DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
               dateTimeNow.day,
@@ -427,18 +413,16 @@ class TimelineController extends GetxController with StateMixin {
             ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
             
             
-            ${e.leaveType?.name??"No added yet"}
-            ${ convertMiniToHour(Duration(minutes: int.parse(e.totalLeaveMinutes.toString()))).toString()}  
+            ${e.leaveType?.name ?? "No added yet"}
+            ${convertMiniToHour(Duration(minutes: int.parse(e.totalLeaveMinutes.toString()))).toString()}  
             
              
-            ${timeFormatTo24h(DateTime.parse(e.endDate??"00:00"))}
+            ${timeFormatTo24h(DateTime.parse(e.endDate ?? "00:00"))}
             
             """,
             color: statusAccordingToColor(e.status),
             isAllDay: false,
             location: jsonObject,
-
-
           ),
         );
       }).toList();
@@ -456,11 +440,11 @@ statusAccordingToColor(status) {
       return AppColor.primaryColor.withOpacity(0.1);
     case "taken":
       return AppColor.takenColor.withOpacity(0.1);
-      case "reject":
+    case "reject":
       return AppColor.errorColorLight.withOpacity(0.1);
-      case "cancelled":
+    case "cancelled":
       return AppColor.errorColor.withOpacity(0.1);
-      case "rejected":
+    case "rejected":
       return AppColor.errorColor.withOpacity(0.1);
     default:
       return AppColor.hintColor.withOpacity(0.1);

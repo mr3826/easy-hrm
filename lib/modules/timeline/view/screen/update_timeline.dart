@@ -81,62 +81,59 @@ class UpdateTimeLineLog extends StatelessWidget {
                         controller: timelineLogDetailsDrcController,
                       ),
                       customSpacerHeight(height: 20),
-                      Obx(() => Get.find<TimelineController>()
-                              .isUpdateTimeLogLoading
-                              .isTrue
-                          ? const Center(
-                              child: CupertinoActivityIndicator(),
-                            )
-                          : CustomDoubleAppButton(
-                              buttonText: AppString.text_save.tr,
-                              onAction: () {
-                                Get.find<TimelineController>().timeLogStatus !=
-                                        "approved"
-                                    ? Get.find<TimelineController>()
+                      _checkStatus()
+
+                          ? Obx(() => Get.find<TimelineController>()
+                                  .isUpdateTimeLogLoading
+                                  .isTrue
+                              ? const Center(
+                                  child: CupertinoActivityIndicator(),
+                                )
+                              : CustomDoubleAppButton(
+                                  buttonText: AppString.text_save.tr,
+                                  onAction: () {
+                                    Get.find<TimelineController>()
                                         .updateTimelineLogDetails(
-                                        description:
-                                            timelineLogDetailsDrcController
-                                                .text,
-                                        status: Get.find<TimelineController>()
-                                            .timeLogStatus
-                                            .toString(),
-                                        projectId: "",
-                                        startDate: Get.find<
-                                                        DateTimeController>()
-                                                    .requestedInDate
-                                                    .value
-                                                    .length >
-                                                10
-                                            ? Get.find<DateTimeController>()
-                                                .requestedInDate
-                                                .value
-                                            : DateFormat("yyyy-MM-dd hh:mma")
-                                                .parse(
-                                                    "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
-                                                .toString(),
-                                        endDate: Get.find<DateTimeController>()
-                                                    .requestedOutDate
-                                                    .value
-                                                    .length >
-                                                10
-                                            ? Get.find<DateTimeController>()
-                                                .requestedOutDate
-                                                .value
-                                            : DateFormat("yyyy-MM-dd hh:mma")
-                                                .parse(
-                                                    "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
-                                                .toString(),
-                                        taskId: "",
-                                        timeLineId:
-                                            Get.find<TimelineController>()
-                                                .timeLineID
-                                                .toString(),
-                                      )
-                                    : Container();
-                              },
-                              cancelAction: () {
-                                Navigator.pop(context);
-                              })),
+                                      description:
+                                          "hhh",
+                                      status: Get.find<TimelineController>()
+                                          .timeLogStatus
+                                          .toString(),
+                                      projectId: "",
+                                      startDate: Get.find<DateTimeController>()
+                                                  .requestedInDate
+                                                  .value
+                                                  .length >
+                                              10
+                                          ? Get.find<DateTimeController>()
+                                              .requestedInDate
+                                              .value
+                                          : DateFormat("yyyy-MM-dd hh:mma")
+                                              .parse(
+                                                  "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+                                              .toString(),
+                                      endDate: Get.find<DateTimeController>()
+                                                  .requestedOutDate
+                                                  .value
+                                                  .length >
+                                              10
+                                          ? Get.find<DateTimeController>()
+                                              .requestedOutDate
+                                              .value
+                                          : DateFormat("yyyy-MM-dd hh:mma")
+                                              .parse(
+                                                  "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+                                              .toString(),
+                                      taskId: "",
+                                      timeLineId: Get.find<TimelineController>()
+                                          .timeLineID
+                                          .toString(),
+                                    );
+                                  },
+                                  cancelAction: () {
+                                    Navigator.pop(context);
+                                  }))
+                          : Container(),
                       customSpacerHeight(height: 40)
                     ],
                   ),
@@ -367,6 +364,18 @@ class UpdateTimeLineLog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _checkStatus() {
+    return Get.find<TimelineController>().timeLogStatus != ("approved") &&
+        Get.find<TimelineController>().timeLogStatus !=
+            ("reject") &&
+        Get.find<TimelineController>().timeLogStatus !=
+            ("rejected") &&
+        Get.find<TimelineController>().timeLogStatus !=
+            ("cancelled") &&
+        Get.find<TimelineController>().timeLogStatus !=
+            ("taken");
   }
 }
 

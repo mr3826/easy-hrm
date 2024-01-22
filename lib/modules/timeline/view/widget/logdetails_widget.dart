@@ -56,6 +56,7 @@ class TimeLogTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String timeLineID = timeLineId.substring(1, timeLineId.length - 1);
+    print("Timeline id :::: ${timeLineId.toString()}");
     return Padding(
       padding: marginLayout.copyWith(top: 20),
       child: Column(
@@ -96,7 +97,7 @@ class TimeLogTextField extends StatelessWidget {
     );
   }
 
-  _updateBtnLayout({timeLineID, context, startDateTime, endDateTime}) {
+  _updateBtnLayout({timeLineID, context}) {
     return CustomDoubleAppButton(
         saveBtn: Get.find<TimelineController>().isUpdateTimeLogLoading.isFalse
             ? Text(

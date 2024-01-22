@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -55,10 +57,6 @@ Widget canceledStatusBtn() {
   );
 }
 
-
-
-
-
 statusBtn({required status}) {
   if (status == "reject") {
     return rejectedStatusBtn();
@@ -76,9 +74,6 @@ statusBtn({required status}) {
     return approvedStatusBtn();
   }
 }
-
-
-
 
 Widget buttonLayout({
   required context,
@@ -180,16 +175,16 @@ _rejectedBtn({
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
         onAction: () {
+          _updateDataFromApiResponse(
+              startDate: dtsStartTime,
+              endDate: dtsEndTime,
+              description: dtsDrc,
+              duration: dtsDuration,
+              color: dtsBgColor,
+              taskId: '',
+              timelineId: '',
+              status: dtsStatus);
           Get.to(() {
-            _updateDataFromApiResponse(
-                startDate: dtsStartTime,
-                endDate: dtsEndTime,
-                description: dtsDrc,
-                duration: dtsDuration,
-                color: dtsBgColor,
-                taskId: '',
-                timelineId: '',
-                status: dtsStatus);
             return const UpdateTimeLineLog();
           });
         },
@@ -220,16 +215,16 @@ _pendingLayout(
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_cancel.tr,
         onAction: () {
+          _updateDataFromApiResponse(
+              startDate: dtsStartTime,
+              endDate: dtsEndTime,
+              description: dtsDrc,
+              duration: dtsDuration,
+              color: dtsBgColor,
+              taskId: '',
+              timelineId: timeLineId,
+              status: dtsStatus);
           Get.to(() {
-            _updateDataFromApiResponse(
-                startDate: dtsStartTime,
-                endDate: dtsEndTime,
-                description: dtsDrc,
-                duration: dtsDuration,
-                color: dtsBgColor,
-                taskId: '',
-                timelineId: '',
-                status: dtsStatus);
             return const UpdateTimeLineLog();
           });
         },
@@ -251,20 +246,6 @@ _approvedLayout(
     dtsDate,
     dtsStatus,
     required timeLineId}) {
-
-  print('''
-  startDateTime ==> $startDateTime,
-  endDateTime ==> $endDateTime,
-  dtsStartTime==>  $dtsStartTime,
-  dtsEndTime  $dtsEndTime,
-  dtsDateStatus  $dtsDateStatus,
-  dtsProjectName  $dtsProjectName,
-   dtsDrc  $dtsDrc,
-  dtsDuration  $dtsDuration,
-  dtsDate  $dtsDate,
- dtsStatus   $dtsStatus
-  ''');
-
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(
@@ -277,16 +258,16 @@ _approvedLayout(
       onPressed: () {
         Get.find<TimelineController>().timeLogStatus == dtsStatus;
         Get.find<TimelineController>().timeLineID == timeLineId;
+        _updateDataFromApiResponse(
+            startDate: dtsStartTime,
+            endDate: dtsEndTime,
+            description: dtsDrc,
+            duration: dtsDuration,
+            color: dtsBgColor,
+            taskId: '',
+            timelineId: '',
+            status: dtsStatus);
         Get.to(() {
-          _updateDataFromApiResponse(
-              startDate: dtsStartTime,
-              endDate: dtsEndTime,
-              description: dtsDrc,
-              duration: dtsDuration,
-              color: dtsBgColor,
-              taskId: '',
-              timelineId: '',
-              status: dtsStatus);
           return const UpdateTimeLineLog();
         });
       },
@@ -305,21 +286,21 @@ void _updateDataFromApiResponse(
     required duration,
     required timelineId,
     required description}) {
+  Get.find<TimelineController>().timeLogDuration = duration;
+  Get.find<TimelineController>().timeLogColor = color;
+  Get.find<TimelineController>().timeLogStatus = status;
 
-   Get.find<TimelineController>().timeLogDuration = duration;
-   Get.find<TimelineController>().timeLogColor = color;
-   Get.find<TimelineController>().timeLogStatus = status;
 
-   // time is null check
-   status!="approved"?
-   timelineId !=null?
-   Get.find<TimelineController>().timeLineID=timelineId:Container():Container();
 
-  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
+          Get.find<TimelineController>().timeLineID = timelineId.toString();
+
+
+
+  Get.find<DateTimeController>().requestedDate.value =
+      DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
 
   timelineLogDetailsDrcController.text = description;
   DateTime startTime = DateTime.parse(startDate);
-
 
   DateTime endTime = DateTime.parse(endDate);
   Get.find<DateTimeController>().pickedInTime.value =
