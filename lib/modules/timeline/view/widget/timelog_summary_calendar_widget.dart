@@ -10,7 +10,6 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../../controller/timeline_controller.dart';
 import '../../controller/timelog_summary_controller.dart';
 
@@ -59,16 +58,21 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
     }
   }
 
+  RxInt yearIndex = 0.obs;
+
   @override
   Widget build(BuildContext context) {
+    print("year 1 index ::::: $yearIndex");
     return SizedBox(
       height: AppLayout.getHeight(45),
       child: ListView.builder(
         itemCount: 3,
         scrollDirection: Axis.horizontal,
         controller: _scrollController,
-        itemBuilder: (context, index) {
-          final year = startingYear + index;
+        itemBuilder: (context, yIndex) {
+          final year = startingYear + yIndex;
+          log("year index ::: $yIndex");
+          yearIndex.value = yIndex;
           return SizedBox(
             width: 1450,
             child: Row(
@@ -94,14 +98,13 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                 //  customSpacerWidth(width: 2),
 
                 Expanded(
-                    child: ListView.builder(
+                    child: yIndex==1?ListView.builder(
                   scrollDirection: Axis.horizontal,
                   controller: _scrollController,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: itemCount,
                   itemBuilder: (context, index) {
                     final month = DateTime.utc(year, index + 1);
-                    final monthName = DateFormat('MMMM').format(month);
                     DateTime now = DateTime.now();
 
                     bool isCurrentMonth =
@@ -119,6 +122,7 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                             Get.find<TimelineController>()
                                 .selectedSummaryDate
                                 .value = index;
+                            print( year);
                           },
                           child: SizedBox(
                             width: 90,
@@ -126,14 +130,14 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  monthName,
+                                  DateFormat('MMMM').format(month),
                                   style: AppStyle.normal_text_grey.copyWith(
-                                      color: index ==
-                                              Get.find<TimelineController>()
-                                                  .selectedSummaryDate
-                                                  .value
-                                          ? AppColor.primaryColor
-                                          : AppColor.hintColor,
+                                      color: yearIndex.value==1?index ==
+                                      Get.find<TimelineController>()
+                                          .selectedSummaryDate
+                                          .value
+                                      ? AppColor.primaryColor
+                                      : AppColor.hintColor:AppColor.pendingColor,
                                       fontSize: isCurrentMonth
                                           ? Dimensions.fontSizeDefault + 2
                                           : Dimensions.fontSizeDefault),
@@ -153,7 +157,68 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                           ))),
                     );
                   },
-                )),
+                ):ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      controller: _scrollController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: itemCount,
+                      itemBuilder: (context, index) {
+                        final month = DateTime.utc(year, index + 1);
+                        DateTime now = DateTime.now();
+
+                        bool isCurrentMonth =
+                            year == now.year && index + 1 == now.month;
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 0.0, right: 25),
+                          child: Obx(() => GestureDetector(
+                              onTap: () {
+                                Get.find<TimelineSummaryController>().getTimelineByMonth(
+                                    startDate:
+                                    "${DateTime(year, month.month, 1, 0, 0, 0)}",
+                                    endDate:
+                                    "${DateTime(year, month.month + 1, 0, 23, 59, 59)}");
+
+                                Get.find<TimelineController>()
+                                    .selectedSummaryDate
+                                    .value = index;
+                                print( year);
+                              },
+                              child: SizedBox(
+                                width: 90,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      DateFormat('MMMM').format(month),
+                                      style: AppStyle.normal_text_grey.copyWith(
+                                          color: yearIndex.value==1?index ==
+                                              Get.find<TimelineController>()
+                                                  .selectedSummaryDate
+                                                  .value
+                                              ? AppColor.primaryColor
+                                              : AppColor.hintColor:AppColor.pendingColor,
+                                          fontSize: isCurrentMonth
+                                              ? Dimensions.fontSizeDefault + 2
+                                              : Dimensions.fontSizeDefault),
+                                    ),
+                                    isCurrentMonth
+                                        ? Text(
+                                      year.toString(),
+                                      style: AppStyle.mid_large_text.copyWith(
+                                          color: AppColor.hintColor,
+                                          fontSize: isCurrentMonth
+                                              ? Dimensions.fontSizeDefault - 2
+                                              : Dimensions.fontSizeDefault),
+                                    )
+                                        : Container(),
+                                  ],
+                                ),
+                              ))),
+                        );
+                      },
+                    )
+
+                ),
               ],
             ),
           );
