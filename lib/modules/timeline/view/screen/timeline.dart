@@ -84,7 +84,7 @@ class TimelineScreen extends GetView<TimelineController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(250),
+    expandedHeight: AppLayout.getHeight(230),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,
@@ -99,7 +99,7 @@ SliverAppBar get sliverAppBar {
             children: [
               customSpacerHeight(height: 6),
               appBar(text: AppString.text_time_line.tr),
-              customSpacerHeight(height: 6),
+              customSpacerHeight(height: 4),
               timelineLayout(),
               customSpacerHeight(height: 14),
             ],

@@ -141,7 +141,7 @@ class TimelineController extends GetxController with StateMixin {
       projectId}) async {
     isUpdateTimeLogLoading(true);
     log("updateTimelineLogDetails start & end ==>$startDate And $endDate");
-    log("timeline_id ==>$timeLineId");
+    log("timeline_id ==>$timeLineId",error: 99);
     log("description ==>$description");
     log("taskId ==>$taskId");
     log("projectId ==>$projectId");
@@ -173,6 +173,8 @@ class TimelineController extends GetxController with StateMixin {
               "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
           endDate:
               "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+      Get.find<TimelineController>()
+          .timeLineID="";
       Get.back();
     }
     isUpdateTimeLogLoading(false);
@@ -309,7 +311,7 @@ class TimelineController extends GetxController with StateMixin {
         ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "No added yet",
-          timeLId: e.task?.id ?? "",
+          timeLId: e.timelineId ?? "",
           endDate: e.endDate ?? "",
           startDate: e.startDate ?? "",
           duration: e.totalMinutes ?? "",

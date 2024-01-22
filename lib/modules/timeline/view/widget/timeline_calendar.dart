@@ -17,68 +17,69 @@ class TimeLineCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     log("SFCalendarScreen build called", error: 100);
     return Obx(() =>
-    Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
-        ? Container(
-      color: Colors.transparent,
-    )
-        : Padding(
-      padding: const EdgeInsets.only(top: 110.0,bottom: 110),
-      child: SfCalendar(
-        view: CalendarView.day,
-        dataSource: _getCalendarDataSource(),
-        backgroundColor: AppColor.cardColor,
-        appointmentTextStyle:
-        const TextStyle(color: AppColor.normalTextColor),
-        selectionDecoration:
-        BoxDecoration(borderRadius: BorderRadius.circular(12)),
-        viewHeaderStyle: const ViewHeaderStyle(
-            backgroundColor: Colors.transparent,
-            dateTextStyle: TextStyle(color: Colors.transparent),
-            dayTextStyle: TextStyle(color: Colors.transparent)),
-        viewHeaderHeight: 0,
-        onTap: (CalendarTapDetails details) {
+        Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
+            ? Container(
+                color: Colors.transparent,
+              )
+            : Padding(
+                padding: const EdgeInsets.only(
+                    top: 90.0, bottom: 110, left: 14, right: 14),
+                child: SfCalendar(
+                  view: CalendarView.day,
+                  dataSource: _getCalendarDataSource(),
+                  backgroundColor: AppColor.cardColor,
+                  appointmentTextStyle:
+                      const TextStyle(color: AppColor.normalTextColor),
+                  selectionDecoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                  viewHeaderStyle: const ViewHeaderStyle(
+                      backgroundColor: Colors.transparent,
+                      dateTextStyle: TextStyle(color: Colors.transparent),
+                      dayTextStyle: TextStyle(color: Colors.transparent)),
+                  viewHeaderHeight: 0,
+                  onTap: (CalendarTapDetails details) {
+                    Appointment tappedAppointment = details.appointments![0];
+                    if (details.targetElement != CalendarElement.calendarCell) {
+                      Map<String, dynamic> jsonMap =
+                          json.decode(tappedAppointment.location.toString());
+                      ModelForDescription eventVal =
+                          ModelForDescription.fromJson(jsonMap);
 
-          Appointment tappedAppointment = details.appointments![0];
-          if (details.targetElement != CalendarElement.calendarCell) {
+                      customButtonSheet(
+                          height: .6,
+                          context: context,
+                          child: TaskView(
+                            projectName: eventVal.taskName.toString(),
+                            date: eventVal.startDate.toString(),
+                            startTime: eventVal.startDate.toString(),
+                            endTime: eventVal.endDate.toString(),
+                            status: eventVal.status.toString(),
+                            totalDur: eventVal.duration.toString(),
+                            description: eventVal.description.toString(),
+                            timeLineId: eventVal.timeLId.toString(),
+                          ));
+                    }
+                  },
+                  headerHeight: 0,
+                  showDatePickerButton: false,
+                  showNavigationArrow: false,
+                  cellEndPadding: 4,
+                  allowViewNavigation: false,
+                  appointmentTimeTextFormat: "HH:mm",
+                  timeSlotViewSettings: const TimeSlotViewSettings(
+                    timeFormat: "HH:mm",
+                  ),
+                  showCurrentTimeIndicator: false,
+                  initialDisplayDate: DateTime.now(),
+                  headerStyle:
+                      const CalendarHeaderStyle(textAlign: TextAlign.center),
+                  monthViewSettings: const MonthViewSettings(
+                      appointmentDisplayMode:
+                          MonthAppointmentDisplayMode.appointment),
+                ),
+              )
 
-            Map<String, dynamic> jsonMap = json.decode(tappedAppointment.location.toString());
-            ModelForDescription eventVal = ModelForDescription.fromJson(jsonMap);
-
-            customButtonSheet(
-                height: .6,
-                context: context,
-                child: TaskView(
-                  projectName: eventVal.taskName.toString(),
-                  date: eventVal.startDate.toString(),
-                  startTime: eventVal.startDate.toString(),
-                  endTime: eventVal.endDate.toString(),
-                  status: eventVal.status.toString(),
-                  totalDur: eventVal.duration.toString(),
-                  description: eventVal.description.toString(),
-                  timeLineId: eventVal.timeLId.toString(),
-
-                ));
-
-          }
-        },
-        headerHeight: 0,
-        showDatePickerButton: false,
-        showNavigationArrow: false,
-        cellEndPadding: 4,
-        allowViewNavigation: false,
-        appointmentTimeTextFormat: "HH:mm",
-        timeSlotViewSettings: const TimeSlotViewSettings(
-          timeFormat: "HH:mm",
-        ),
-        showCurrentTimeIndicator: false,
-        initialDisplayDate: DateTime.now(),
-        headerStyle:
-        const CalendarHeaderStyle(textAlign: TextAlign.center),
-        monthViewSettings: const MonthViewSettings(
-            appointmentDisplayMode:
-            MonthAppointmentDisplayMode.appointment),
-      ),
-    ));
+    );
   }
 
   // Create a calendar data source using the appointments list

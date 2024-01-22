@@ -31,6 +31,9 @@ class UpdateTimeLineLog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(Get.find<TimelineController>()
+        .timeLineID
+        .toString());
     return Scaffold(
       appBar: timeLogAppbar(context),
       backgroundColor: Get.find<TimelineController>().timeLogColor,

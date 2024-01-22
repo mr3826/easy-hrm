@@ -100,7 +100,7 @@ Widget _dateCalendarLayout() {
                         ? "Today"
                         : Get.find<DateTimeController>().requestedDate.value,
                     style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.normalTextColor,
+                        color: AppColor.secondaryColor,
                         fontWeight: FontWeight.bold),
                   ),
                   GestureDetector(
@@ -148,7 +148,7 @@ Widget _summaryLayout() {
   return Positioned(
       top: AppLayout.getHeight(40),
       child: Container(
-        color: AppColor.backgroundColor,
+        color: AppColor.cardColor,
         width: MediaQuery.of(Get.context!).size.width,
         child: workingScheduleLayout(
             schedule: Get.find<TimelineController>()
