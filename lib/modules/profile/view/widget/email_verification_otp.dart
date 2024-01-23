@@ -89,6 +89,9 @@ Future otpVerificationLayout(context) {
                   : _verifyBtnLayout(verifyAction: () {
                       selectedValue.isSelected(true);
                       Navigator.pop(context);
+                    }, closeAction: () {
+                      selectedValue.isSelected(true);
+                      Navigator.pop(context);
                     }),
             ),
             customSpacerHeight(height: 16)
@@ -99,14 +102,14 @@ Future otpVerificationLayout(context) {
   );
 }
 
-_verifyBtnLayout({verifyAction}) {
+_verifyBtnLayout({verifyAction, closeAction}) {
   return Padding(
     padding: const EdgeInsets.only(left: 8.0, right: 8),
     child: Row(
       children: [
         Expanded(
           child: InkWell(
-            onTap: () => Get.back(),
+            onTap: closeAction,
             child: SizedBox(
               height: AppLayout.getHeight(50),
               child: Card(

@@ -334,4 +334,6 @@ class AppString {
   static const String password = "Password";
   static const String timerStartedSuccessfulMessage =
       "Timer Started Successfully";
+  static const String passwordChangeSuccessfulMessage =
+      "Change password has been Successfully ";
 }

@@ -37,7 +37,6 @@ Widget departmentLayout(context) {
             customSpacerHeight(height: 12),
             _departmentHistoryInfo(),
             customSpacerHeight(height: 12),
-
             _workingShiftLayout(context),
           ],
         ),
@@ -146,8 +145,9 @@ _workingShiftLayout(context) {
     ),
   );
 }
+
 _verticalDivider() {
-  return  Container(
+  return Container(
     width: 1,
     height: double.infinity,
     color: AppColor.hintColor.withOpacity(0.4),
@@ -184,7 +184,8 @@ _workShiftDetailsLayout() {
                 fontSize: Dimensions.fontSizeDefault + 1)
             : AppStyle.mid_large_text.copyWith(
                 color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault + 1,overflow: TextOverflow.ellipsis),
+                fontSize: Dimensions.fontSizeDefault + 1,
+                overflow: TextOverflow.ellipsis),
       ),
       _divider(),
       GestureDetector(
@@ -226,7 +227,8 @@ _workShiftDetailsLayout() {
                   fontSize: Dimensions.fontSizeDefault - 1)
               : AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor.withOpacity(0.7),
-                  fontSize: Dimensions.fontSizeDefault - 1,overflow: TextOverflow.ellipsis),
+                  fontSize: Dimensions.fontSizeDefault - 1,
+                  overflow: TextOverflow.ellipsis),
         ),
       )
     ],
@@ -286,8 +288,8 @@ _workingDaySchedule(context) {
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.only(
-              left: 0.0, right: 30, top: 12, bottom: 12),
+          padding:
+              const EdgeInsets.only(left: 0.0, right: 30, top: 12, bottom: 12),
           child: Column(
             children: [
               customSpacerWidth(width: 8),
