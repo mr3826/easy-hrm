@@ -64,14 +64,14 @@ class IndividualEventView extends StatelessWidget {
                 GestureDetector(
                     onTap: () async {
                       controller.decrementDate();
-                      await Get.find<LeaveScreenController>()
-                          .getLeaveDetailsByDate();
+                      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                     },
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: AppColor.normalTextColor,
                       size: 20,
                     )),
+
                 Text(
                   controller.getFormattedDate() ==
                           controller.getFormattedCurrentData()
@@ -81,6 +81,7 @@ class IndividualEventView extends StatelessWidget {
                       color: AppColor.normalTextColor,
                       fontWeight: FontWeight.bold),
                 ),
+
                 GestureDetector(
                     onTap: () async {
                       controller.incrementMonth();

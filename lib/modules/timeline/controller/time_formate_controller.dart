@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 String timeFormatTo24h(DateTime dateTime) {
   // Format the DateTime in 24-hour format with AM/PM
-  return DateFormat('hh.mm').format(dateTime);
+  return DateFormat('HH:mm').format(dateTime);
 }
 
 String timeFormatTo12h({required String time}) {

@@ -20,16 +20,15 @@ Widget btnSheetViewLayout(
     required Color? bgColor,
     dateApplication,
     projectName,
-    dtsDateStatus,
     dtsProjectName,
     Color? dtsBgColor,
     dtsDrc,
     dtsDuration,
-    dtsDate}) {
-  String createAtD = dateApplication.substring(1, dateApplication.length - 1);
-  DateTime originalDateTime = DateTime.parse(createAtD);
-  // Format the DateTime to the desired format
-  String createAtDate = DateFormat('dd MMMM yyyy').format(originalDateTime);
+    dtsDate
+    }) {
+
+  print("start date time ::: $startDateTime");
+  print("end date time ::: $endDateTime");
 
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
@@ -38,21 +37,27 @@ Widget btnSheetViewLayout(
         Column(
           children: [
             _infoLayout(
-                text: AppString.text_start.tr, dynamicText: "$startTime"),
+                text: AppString.text_start.tr, dynamicText: DateFormat('HH:mm')
+                .format(DateTime.parse(startTime.toString()))
+                .toString()),
             customSpacerHeight(height: 6),
             _infoLayout(
-                text: "${AppString.text_end.tr}:", dynamicText: "$endTime"),
+                text: "${AppString.text_end.tr}:", dynamicText: DateFormat('HH:mm')
+                .format(DateTime.parse(endTime.toString()))
+                .toString()),
             customSpacerHeight(height: 6),
           ],
         ),
         _infoLayout(
             text: "${AppString.text_status.tr}:",
             widget: statusBtn(status: "$status")),
+
+
         customSpacerHeight(height: 6),
         status == "taken"
             ? _infoLayout(
                 text: AppString.text_dete_of_application.tr,
-                dynamicText: createAtDate)
+                dynamicText: DateFormat('dd MMMM yyyy').format(DateTime.parse(dateApplication)))
             : _infoLayout(
                 text: AppString.text_project_task_or_tag,
                 widget: _projectNameLayout(

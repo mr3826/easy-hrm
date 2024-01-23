@@ -52,6 +52,11 @@ class UpdateProfileController extends GetxController {
       } else {
         logSuccessMessage(
             logName: "submitVerificationCode", response: response);
+        showSuccessMessage(message: AppString.passwordChangeSuccessfulMessage);
+        currentPasswordController.clear();
+        newPasswordController.clear();
+        confirmPasswordController.clear();
+
         Get.offAllNamed(Routes.MAIN_SCREEN);
       }
     } catch (e) {

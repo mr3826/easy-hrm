@@ -9,6 +9,7 @@ class AppColor {
   static const Color successColor = Color(0xFF3EAC55);
   static const Color noColor = Color(0x0fffff00);
   static const Color pendingColor = Color(0xFFFFA500);
+  static const Color takenColor = Color(0xFF5A49B4);
   static const Color hintColor = Color(0xFF8F99AD);
   static const Color cardColor = Color(0xFFFFFFFF);
   static const Color errorColor = Color(0xFFFF0000);
