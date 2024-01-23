@@ -210,13 +210,11 @@ class SignInScreen extends GetView<SignInController> {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
           if (GetStorage().read(AppString.ORGANIZATION_ID) != null) {
-            // await controller.login(
-            //     email: emailController.text,
-            //     password: passwordController.text,
-            //     orgId: GetStorage().read(AppString.ORGANIZATION_ID));
-            print(GetStorage().read(AppString.ORGANIZATION_ID));
+            await controller.login(
+                email: emailController.text,
+                password: passwordController.text,
+                orgId: GetStorage().read(AppString.ORGANIZATION_ID));
           } else {
-            print(GetStorage().read(AppString.ORGANIZATION_ID));
             showErrorMessage(message: AppString.organizationNotFoundMessage.tr);
           }
         }
