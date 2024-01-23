@@ -23,10 +23,7 @@ class DateTimeController extends GetxController {
   RxString pickedOutTime = ''.obs;
   TextEditingController editController = TextEditingController();
 
-  RxString numberOfLeaves = ''.obs;
   RxString? leaveId = ''.obs;
-  RxBool isNoteRequired = false.obs;
-  RxBool isDocumentRequired = false.obs;
   RxBool isErrorOccurred = false.obs;
 
   void getTime() {
@@ -81,7 +78,7 @@ class DateTimeController extends GetxController {
                 "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
             .toString();
       }
-      print(requestedInDate.value);
+      print("request in date:::${requestedInDate.value}");
     } else {
       //only time
 
@@ -100,13 +97,8 @@ class DateTimeController extends GetxController {
                 "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
             .toString();
       }
-      print(requestedOutDate.value);
+      print("request out date:::${requestedOutDate.value}");
     }
-
-
-
-    print(requestedOutDate.toString());
-    print(requestedInDate.toString());
 
     isInTimeClicked.value = !isInTimeClicked.value;
     selectedInputHrs = '06';

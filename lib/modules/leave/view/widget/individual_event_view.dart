@@ -17,6 +17,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../controller/calendar_date_controller.dart';
+import '../../model/leave_record_response.dart';
 import 'leave_record_details_view.dart';
 
 class IndividualEventView extends StatelessWidget {
@@ -63,14 +64,14 @@ class IndividualEventView extends StatelessWidget {
                 GestureDetector(
                     onTap: () async {
                       controller.decrementDate();
-                      await Get.find<LeaveScreenController>()
-                          .getLeaveDetailsByDate();
+                      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                     },
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: AppColor.normalTextColor,
                       size: 20,
                     )),
+
                 Text(
                   controller.getFormattedDate() ==
                           controller.getFormattedCurrentData()
@@ -80,6 +81,7 @@ class IndividualEventView extends StatelessWidget {
                       color: AppColor.normalTextColor,
                       fontWeight: FontWeight.bold),
                 ),
+
                 GestureDetector(
                     onTap: () async {
                       controller.incrementMonth();
@@ -206,6 +208,19 @@ class IndividualEventView extends StatelessWidget {
                             .leaveRequests?[index]
                             .leaveType
                             ?.leaveId,
+                        isAddNoteRequired: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests?[index]
+                            .leaveType
+                            ?.isAddNoteRequired,
+                        isAttachDocumentRequired:
+                            Get.find<LeaveScreenController>()
+                                .leaveDetailsByDate
+                                ?.getLeaveDetailsByDate![0]
+                                .leaveRequests?[index]
+                                .leaveType
+                                ?.isAttachDocumentRequired,
                       ),
                       description: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate

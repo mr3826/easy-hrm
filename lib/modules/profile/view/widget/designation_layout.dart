@@ -25,6 +25,7 @@ class DesignationLayout extends StatelessWidget {
             text: AppString.text_designation.tr,
             subtext: AppString.text_history.tr),
         Expanded(
+
             child: ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: Get.find<UserProfileController>()

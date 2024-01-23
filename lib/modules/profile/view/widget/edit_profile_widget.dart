@@ -15,6 +15,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
+import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../controller/update_profile_controller.dart';
 
 Widget textFiledLayout() {
@@ -187,12 +188,9 @@ userTextFieldLayout(
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
-        "$titleText",
-        style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.normalTextColor,
-            fontSize: Dimensions.fontSizeDefault + 2),
-      ),
+
+      customTitleText(
+          text: titleText, isRequired: true),
       customSpacerHeight(height: 12),
       isNoteFieldVisible != false
           ? InputNote(

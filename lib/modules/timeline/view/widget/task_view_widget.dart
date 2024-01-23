@@ -28,78 +28,63 @@ class TaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    String projectNam = projectName.substring(1, projectName.length - 1);
-    String projectStatus = status.substring(1, status.length - 1);
-    String startT = startTime.substring(1, startTime.length - 1);
-    String endT = endTime.substring(1, endTime.length - 1);
-    String createAtDate = date.substring(1, date.length - 1);
-    String formatDuration = totalDur.substring(1, totalDur.length - 1);
-
-// Parse the original date and time string
-    DateTime originalDateTime = DateTime.parse(startT.toString());
-
-    // Format the DateTime to 24-hour format
-    String startFormatTime = DateFormat('HH:mm').format(originalDateTime);
-
-    // Parse the original date and time string
-    DateTime endTi = DateTime.parse(endT.toString());
-
-    // Format the DateTime to 24-hour format
-    String endFormatTime = DateFormat('HH:mm').format(endTi);
-
-    // Parse the original date and time string
-    DateTime createAtDateD = DateTime.parse(createAtDate);
-    
-    
-    // Using int.parse() to convert the string to an integer
-    int intValue = int.parse(formatDuration);
-    // Create a Duration object from the total minutes
-    Duration duration = Duration(minutes: intValue);
-    // Format the Duration to the desired format
-    String durationTime = convertMiniToHour(duration);
-
-    statusColor() {
-      Color color = AppColor.primaryColor;
-      switch (status) {
-        case "(approved)":
-          return color = AppColor.primaryColor;
-        case "(pending)":
-          return color = AppColor.primaryOrange;
-        case "(rejected)":
-          return color = AppColor.errorColorLight;
-        default:
-          return color = AppColor.primaryColor;
-      }
-    }
+    print("receive status :::: $status");
+    print("start date time ---> ::: $startTime");
+    print("end date time ---> ::: $endTime");
 
     return Column(
       children: [
         //button sheet appbar here
         projectViewBtnSheetAppbar(
-            date: createAtDateD, duration: durationTime, bgColor: statusColor()),
+            date: DateTime.parse(startTime),
+            duration: convertMiniToHour(Duration(minutes: int.parse(totalDur)))
+                .toString(),
+            bgColor: statusColor(status)),
 
         //button sheet body here
         btnSheetViewLayout(
           context: context,
-          status: projectStatus,
-          startTime: startFormatTime.toString(),
-          endTime: endFormatTime.toString(),
+          status: status,
+          startTime: startTime,
+          endTime: endTime,
           dateApplication: date.toString(),
-          projectName: projectNam.toString(),
-          bgColor: statusColor(),
-          dtsDuration: durationTime,
-          dtsBgColor: statusColor(),
+          projectName: projectName,
+          bgColor: statusColor(status),
+          dtsDuration:
+              convertMiniToHour(Duration(minutes: int.parse(totalDur))),
+          dtsBgColor: statusColor(status),
           timeLineId: timeLineId,
-          dtsDate: createAtDateD,
-          dtsDateStatus: "Tomorrow",
+          dtsDate: DateFormat('HH:mm')
+              .format(DateTime.parse(startTime.toString()))
+              .toString(),
           dtsDrc: description,
-          dtsProjectName: "The one project x",
-          startDateTime: startTime,
-          endDateTime: endTime
-
+          startDateTime: DateFormat('HH:mm')
+              .format(DateTime.parse(startTime.toString()))
+              .toString(),
+          endDateTime: DateFormat('HH:mm')
+              .format(DateTime.parse(endTime.toString()))
+              .toString(),
         ),
       ],
     );
+  }
+}
+
+statusColor(status) {
+  switch (status) {
+    case "approved":
+      return AppColor.primaryColor;
+    case "pending":
+      return AppColor.primaryOrange;
+    case "reject":
+      return AppColor.errorColorLight;
+    case "taken":
+      return AppColor.takenColor;
+    case "rejected":
+      return AppColor.errorColorLight;
+    case "cancelled":
+      return AppColor.errorColorLight;
+    default:
+      return AppColor.primaryColor;
   }
 }

@@ -1,4 +1,3 @@
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -7,7 +6,6 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/time_log_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -25,17 +23,6 @@ class TimelineScreen extends GetView<TimelineController> {
   @override
   Widget build(BuildContext context) {
 
-    CalendarControllerProvider.of(context)
-        .controller
-        .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
-    CalendarControllerProvider.of(context)
-        .controller
-        .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
-
-
-    print("length ::: ${Get.find<TimelineController>().eventsOfTask}");
-
-
 
     return controller.obx(
         (state) => Scaffold(
@@ -52,7 +39,9 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
-    return  Padding(
+    return   Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue &&  Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue?
+  const CircularProgressIndicator():
+      Padding(
             padding: const EdgeInsets.only(left: 35.0, bottom: 18),
             child: Row(
               children: [

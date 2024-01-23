@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ import '../../../../utils/app_color.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
+import '../../../timeline/controller/timeline_controller.dart';
 
 class SingleDatePicker extends StatefulWidget {
   final bool isCalledFormTimeLog;
@@ -89,18 +91,41 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
             ),
             const Spacer(),
             _buttonLayout(onAction: () {
+
+              print("isCalledFormTimeLog::${widget.isCalledFormTimeLog}");
+
               if (widget.isCalledFormTimeLog == false) {
-                print("isCalledFormTimeLog::False");
                 Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Get.find<DateController>().currentDate.value = today;
 
-                // Get.find<DateTimeController>().timeLogDate.value =
-                //     today.toString();
-              } else {
-                print("isCalledFormTimeLog::True");
+
+
+              } else if(widget.isCalledFormTimeLog == true) {
+
+                Get.find<DateController>().currentDate.value = today;
+
+                Get.find<DateTimeController>().requestedDate.value=DateFormat('yyyy-MM-dd').format(today);
+
+                DateTime date = DateTime.parse(DateFormat('yyyy-MM-dd').format(today));
+
+                Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                    startDate:
+                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                    endDate:
+                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+
+                Get.find<TimelineController>().getTimelineSummaryByDate(
+                    startDate:
+                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                    endDate:
+
+                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+
+              }else{
                 Get.find<DateTimeController>().requestedDate.value =
                     DateFormat('yyyy-MM-dd').format(today);
-
               }
 
               Navigator.pop(context);
@@ -254,7 +279,7 @@ class _ToDatePikerState extends State<ToDatePiker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppLayout.getHeight(460),
+      // height: AppLayout.getHeight(460),
       decoration: BoxDecoration(
           borderRadius:
               BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),

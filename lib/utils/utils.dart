@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import '../modules/dashboard/view/screen/dashboard.dart';
+import '../modules/timeline/view/screen/sf_calendar.dart';
 import '../modules/timeline/view/screen/timeline.dart';
 import 'package:intl/intl.dart';
 import '../modules/leave/view/screen/leave_screen.dart';
@@ -96,7 +97,7 @@ TextEditingController get editEmergencyPhoneController =>
 
 TextEditingController get editBioController => _editBioController;
 
-TextEditingController get currentPassword => _currentPassController;
+TextEditingController get currentPasswordController => _currentPassController;
 
 List<Widget> Function() get buildScreens => _buildScreens;
 

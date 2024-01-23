@@ -53,8 +53,8 @@ Widget customButtonSheetAppbar({required text, subtext}) {
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor, fontWeight: FontWeight.w700),
         )),
-        customSpacerHeight(height: 5),
-        Center(
+       if(subtext!=null)customSpacerHeight(height: 5),
+        if(subtext!=null) Center(
             child: Text(
           subtext ?? "",
           style: AppStyle.mid_large_text.copyWith(

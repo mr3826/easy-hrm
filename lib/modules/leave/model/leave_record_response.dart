@@ -87,12 +87,17 @@ class LeaveType {
   String? type;
   String? leaveId;
   String? leaveName;
+  bool? isAddNoteRequired;
+  bool? isAttachDocumentRequired;
 
-  LeaveType({this.type, this.leaveId, this.leaveName});
+
+  LeaveType({this.type, this.leaveId, this.leaveName,this.isAddNoteRequired,this.isAttachDocumentRequired});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     leaveId = json['id'];
     leaveName = json['name'];
+    isAddNoteRequired = json['add_note_required'];
+    isAttachDocumentRequired = json['attach_document_required'];
   }
 }

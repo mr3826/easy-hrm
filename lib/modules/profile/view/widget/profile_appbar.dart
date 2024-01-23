@@ -12,7 +12,7 @@ AppBar profileAppbar({onAction}) {
     backgroundColor: AppColor.backgroundColor,
     elevation: 0,
     actions: [
-      IconButton(onPressed: onAction, icon: const Icon(Icons.menu)),
+      IconButton(onPressed: onAction, icon:  const Icon(Icons.menu,color: AppColor.hintColor,)),
     ],
     leading: Padding(
       padding: const EdgeInsets.only(top: 16.0, left: 18),

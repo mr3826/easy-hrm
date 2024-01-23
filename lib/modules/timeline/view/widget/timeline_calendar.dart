@@ -20,7 +20,19 @@ class TimeLineCalendar extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+
     log("TimeLineCalendar build calendar",error: 100);
+    //Get.find<TimelineController>().eventOfLeave.remove(element);
+    // CalendarControllerProvider.of(context)
+    //     .controller.remove(event);
+    //
+    // CalendarControllerProvider.of(context)
+    //     .controller
+    //     .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
+    // CalendarControllerProvider.of(context)
+    //     .controller
+    //     .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
+
     return _calendarLayout(context);
   }
 
@@ -45,15 +57,21 @@ class TimeLineCalendar extends GetView<TimelineController> {
             // Format the DateTime in 24-hour format
             String stateTime = timeFormatTo24h(startDateTime);
             String endTime = timeFormatTo24h(endDateTime);
+            print("events ==> $events");
+            print("events ==> ${events.length}");
 
-            return TaskSolidLayout(
+            return
+
+              TaskSolidLayout(
                 title: eventsName.toString(),
                 startTime: stateTime,
+                length: events.length,
                 endTime: endTime,
                 status: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",
                 totalMin: totalMin.toString());
           },
           showVerticalLine: false,
+
           minDay: DateTime(1990),
           maxDay: DateTime(2050),
           initialDay: DateTime.now(),
@@ -61,18 +79,21 @@ class TimeLineCalendar extends GetView<TimelineController> {
           showHalfHours: true,
           showLiveTimeLineInAllDays: false,
           heightPerMinute: 1.9,
+
           onEventTap: (events, date) {
+
 
 
             Iterable<Object?> eventsName = events.map((e) => e.event);
             Iterable<Object?> duration =
                 events.map((e) => e.title); //total minute
-            Iterable<DateTime?> startTime = events.map((e) => e.startTime);
-            Iterable<DateTime?> endTime = events.map((e) => e.endTime);
+            Iterable<DateTime?> startTIME = events.map((e) => e.startTime);
+            Iterable<DateTime?> endTIME = events.map((e) => e.endTime);
             Iterable<DateTime> createAtDate =
                 events.map((e) => e.endDate); //Date of application
             Iterable<String> status =
                 events.map((e) => e.description); //status added here
+
 
             customButtonSheet(
                 height: .6,
@@ -80,8 +101,8 @@ class TimeLineCalendar extends GetView<TimelineController> {
                 child: TaskView(
                   projectName: eventsName.toString(),
                   date: createAtDate.toString(),
-                  startTime: startTime.toString(),
-                  endTime: endTime.toString(),
+                  startTime: startTIME.toString(),
+                  endTime: endTIME.toString(),
                   status: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",
                   totalDur: duration.toString(),
                   description: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).description)}",
