@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/domain/success_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/organization_info.dart';
+import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/network/network_client.dart';
@@ -14,9 +15,12 @@ import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 
 import '../../../common/domain/error_model.dart';
+import '../../../common/domain/last_input_model.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/utils.dart';
+import '../../auth/domain/signin_res.dart';
+import '../model/organization_info.dart';
 import '../model/user_profile.dart';
 
 class UserProfileController extends GetxController with StateMixin {
@@ -32,8 +36,9 @@ class UserProfileController extends GetxController with StateMixin {
   UserDetails? userDetails;
   EmployeeWorkHistory? employeeWorkHistory;
   UserLogHistory? userLogHistory;
-  OrganizationInfo? organizationInfo;
+  OrganizationInfoDetails? organizationInfo;
   final isLoading = false.obs;
+  final isOrganizationChangeLoading = false.obs;
   final isVerificationApiLoading = false.obs;
 
   void getUserProfile() async {
@@ -45,14 +50,12 @@ class UserProfileController extends GetxController with StateMixin {
     } else {
       userDetails = UserDetails.fromJson(response.data!);
 
-      log("getUserProfile:::${UserDetails.fromJson(response.data!)}");
+      log("getUserProfile:::${UserDetails.fromJson(response.data!).getOrganizationUserDetails?.organization?.orgName}");
     }
     change(null, status: RxStatus.success());
   }
 
   void getEmploymentInfo() async {
-    print(GetStorage().read(AppString.ORGANIZATION_USER_ID));
-
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
         queryString: getEmploymentInfoQuery,
@@ -65,7 +68,7 @@ class UserProfileController extends GetxController with StateMixin {
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
 
-      log("getEmploymentInfo:::${EmployeeWorkHistory.fromJson(response.data!)}");
+      log("getEmploymentInfo:::${EmployeeWorkHistory.fromJson(response.data!).getOrganizationUserHistory?.deptHistories?.length}");
     }
 
     change(null, status: RxStatus.success());
@@ -138,8 +141,11 @@ class UserProfileController extends GetxController with StateMixin {
   submitVerificationCode({required String verificationCode}) async {
     isVerificationApiLoading(true);
     try {
-      final response = await NetworkClient().postRequest(
-          Api.VERIFY_CHANGE_MAIL_OTP, {"confirmationCode": verificationCode});
+      final response =
+          await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+        "confirmationCode": verificationCode,
+        "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
+      });
 
       if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);
@@ -187,9 +193,51 @@ class UserProfileController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      organizationInfo = OrganizationInfo.fromJson(response.data!);
+      organizationInfo = OrganizationInfoDetails.fromJson(response.data!);
     }
     change(null, status: RxStatus.success());
+  }
+
+  Future<void> login(
+      {required String email,
+      required String password,
+      required String orgId,
+      required String organizationName}) async {
+    isOrganizationChangeLoading(true);
+    try {
+      Response response = await NetworkClient().postRequest(
+          Api.LOGIN, {"email": email, "password": password, "orgId": orgId});
+      if (response.hasError) {
+        logErrorMessage(logName: "login", response: response);
+
+        showErrorMessage(
+            message: ErrorModel.fromJson(response.body).message ?? "");
+      } else {
+        logSuccessMessage(logName: "login", response: response);
+        GetStorage().write(AppString.ID_TOKEN,
+            SignInResponse.fromJson(response.body).data?.idToken ?? "");
+        GetStorage().write(AppString.ACCESS_TOKEN,
+            SignInResponse.fromJson(response.body).data?.accessToken ?? "");
+        GetStorage().write(AppString.REFRESH_TOKEN,
+            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
+        GetStorage().write(AppString.LOGGED_IN, true);
+        _saveData(email, password, organizationName);
+        Get.offAll(() => MainScreen(
+              routeIndex: 2,
+            ));
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    isOrganizationChangeLoading(false);
+  }
+
+  void _saveData(String email, String pass, String organizationName) {
+    LastInput myInput =
+        LastInput(email: email, password: pass, orgName: organizationName);
+    Map<String, dynamic> jsonModel = myInput.toJson();
+    String jsonObject = jsonEncode(jsonModel);
+    GetStorage().write(AppString.LAST_INPUT, jsonObject);
   }
 }
 

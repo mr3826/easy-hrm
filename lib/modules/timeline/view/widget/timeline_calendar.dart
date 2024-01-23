@@ -28,9 +28,10 @@ class TimeLineCalendar extends StatelessWidget {
                   view: CalendarView.day,
                   dataSource: _getCalendarDataSource(),
                   backgroundColor: AppColor.cardColor,
-                  appointmentTextStyle: const TextStyle(color: AppColor.normalTextColor),
-                  selectionDecoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-
+                  appointmentTextStyle:
+                      const TextStyle(color: AppColor.normalTextColor),
+                  selectionDecoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(12)),
                   viewHeaderStyle: const ViewHeaderStyle(
                       backgroundColor: Colors.transparent,
                       dateTextStyle: TextStyle(color: Colors.transparent),
@@ -76,9 +77,7 @@ class TimeLineCalendar extends StatelessWidget {
                       appointmentDisplayMode:
                           MonthAppointmentDisplayMode.appointment),
                 ),
-              )
-
-    );
+              ));
   }
 
   // Create a calendar data source using the appointments list

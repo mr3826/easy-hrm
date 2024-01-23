@@ -15,6 +15,10 @@ class AppString {
   // Apps string here
 
   static String text_mange_your_employee = 'Manage your employee';
+  static String leaveAddedSuccessMessage = 'Leave Added Successfully';
+  static String organizationNotFoundMessage =
+      "Organization not found. Try Another organization";
+  static String workShiftText="Work Shift";
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
   static String text_leave_management_etc =
@@ -25,6 +29,8 @@ class AppString {
       'Manage your employee with so many advanced features.Like, Leave management, Time log, Employee hiring, and much more.';
   static String text_password = 'Password';
   static String text_timer = 'Timer';
+  static String textPresent = 'Present';
+  static String textManager = 'Manager';
   static String text_reset_password = ' Rest password';
   static String text_dete_of_application = 'Date of application:';
   static String text_remove = 'Remove';
@@ -77,6 +83,7 @@ class AppString {
   static String text_file_upload_file = 'File upload file';
   static String text_file_upload_update_successfully =
       'File upload update successfully';
+  static String yourOrganizationText = 'Your Organization';
 
   static String text_event = 'Events';
   static String text_upcoming_leave = 'Upcoming leave';
@@ -96,6 +103,10 @@ class AppString {
   static String password_not_matched = 'Password not matched';
   static String profile_update_successfully_text =
       'Profile updated successfully';
+  static String leaveUpdatedSuccessMessage =
+      'Leave updated successfully';
+  static String leaveCanceledSuccessMessage = 'Leave canceled successfully';
+  static String leaveRemovedSuccessMessage = 'Leave removed successfully';
 
   static String text_approved = 'Approved';
   static String text_profile = 'Profile';
@@ -154,6 +165,7 @@ class AppString {
   static String text_ok = "Ok";
   static String text_select_date = "Selected date";
   static String text_select_option = "Selected option";
+  static String text_select_on_option = "Select on option";
   static String text_select_language = "Selected language";
   static String text_type_dot = "Type:";
   static String text_duration = "Duration";
@@ -204,6 +216,8 @@ class AppString {
   static String text_view_less = "View less";
 
   static const String text_are_you_sure = "Are you sure?";
+  static const String changeOrganizationWarningMessage =
+      "Are you sure want change your organization";
   static const String text_are_you_sure_want_to_exit_from_app =
       "Are you sure you want to exit from App";
   static String error_text = "Something went wrong! Please try again";
@@ -240,7 +254,7 @@ class AppString {
   static const String text_time_log_details = "Timelog details";
   static const String text_new_entry = "New entry";
   static const String text_leave = "Leave";
-  static const String text_leave_type = "Leave type *";
+  static const String text_leave_type = "Leave type";
   static const String text_apply_leve = "Apply leave";
   static const String text_apply = "Apply";
   static const String text_remove_time_log = "Remove timelog";

@@ -49,6 +49,14 @@ Widget tokenStatusBtn() {
   );
 }
 
+Widget cancelStatusBtn() {
+  return CustomStatusButton(
+    textColor: AppColor.bgColor,
+    bgColor: AppColor.errorColorLight.withOpacity(.9),
+    text: AppString.text_cancel.tr,
+  );
+}
+
 Widget canceledStatusBtn() {
   return CustomStatusButton(
     textColor: AppColor.errorColorLight,
@@ -292,12 +300,14 @@ void _updateDataFromApiResponse(
 
   Get.find<TimelineController>().timeLineID = timelineId.toString();
 
-  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
+  Get.find<DateTimeController>().requestedDate.value =
+      DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
 
   timelineLogDetailsDrcController.text = description;
   DateTime startTime = DateTime.parse(startDate);
 
   DateTime endTime = DateTime.parse(endDate);
+
   Get.find<DateTimeController>().pickedInTime.value =
       "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
   Get.find<DateTimeController>().pickedOutTime.value =

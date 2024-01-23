@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
-import 'package:payrun_mobile/modules/leave/model/cancel_leave_res.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_summary_dashboard.dart';
+import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
-import 'package:payrun_mobile/utils/utils.dart';
-
+import 'package:payrun_mobile/utils/app_string.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/leave_details_by_date.dart';
 
@@ -23,7 +23,7 @@ class LeaveScreenController extends GetxController with StateMixin {
         .getGraphQuery(queryString: getLeaveSummaryForDashboardQuery);
 
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       leaveSummaryForDashboard =
           LeaveSummaryForDashboard.fromJson(response.data!);
@@ -41,10 +41,8 @@ class LeaveScreenController extends GetxController with StateMixin {
       }
     });
 
-    print("getLeaveDetailsByDate::: ${response.data}");
-
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       leaveDetailsByDate = LeaveDetailsByDate.fromJson(response.data!);
     }
@@ -60,9 +58,9 @@ class LeaveScreenController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      print(CancelLeaveResponse.fromJson(response.data!).updateLeave?.id);
+      showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
       Get.off(() => MainScreen(
             routeIndex: 1,
           ));
@@ -71,36 +69,22 @@ class LeaveScreenController extends GetxController with StateMixin {
     cancelLeaveLoader(false);
   }
 
-  void updateLeave(
-      {required String leaveId,
-      required String startDate,
-      required String? endDate,
-      required String? leaveTypeId}) async {
-    print("""
-    required String leaveId::$leaveId,
-      required String startDate::$startDate,
-      required String? endDate::$endDate
-    """);
+  removeLeave({required String leaveId}) async {
     cancelLeaveLoader(true);
     final response = await NetworkClient()
-        .getGraphQuery(queryString: cancelLeaveQuery, variables: {
-      "inputData": {
-        "leave_id": leaveId,
-        "status": "pending",
-        "description": leaveNoteController.text,
-        "end_date": endDate,
-        "start_date": startDate,
-        "leave_type_id": leaveTypeId
-      }
+        .getGraphQuery(queryString: removeLeaveQuery, variables: {
+      "inputData": {"leave_id": leaveId}
     });
 
     if (response.hasException) {
-      log(response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      print(CancelLeaveResponse.fromJson(response.data!).updateLeave?.id);
+      showSuccessMessage(message: AppString.leaveRemovedSuccessMessage.tr);
       Get.off(() => MainScreen(
-            routeIndex: 1,
-          ));
+        routeIndex: 1,
+      ));
+      await getLeaveSummaryForDashboard();
+      await getLeaveDetailsByDate();
     }
 
     cancelLeaveLoader(false);

@@ -170,6 +170,7 @@ class TimelineController extends GetxController with StateMixin {
           endDate:
               "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
       Get.find<TimelineController>().timeLineID = "";
+
       Get.back();
     }
     isUpdateTimeLogLoading(false);
@@ -347,6 +348,7 @@ class TimelineController extends GetxController with StateMixin {
             
             ${timeFormatTo24h(DateTime.parse(e.endDate ?? Get.find<DateTimeController>().requestedDate.value))}
             
+
 
             
             """,

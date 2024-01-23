@@ -21,8 +21,6 @@ class TimelineScreen extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
@@ -38,9 +36,12 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
-    return   Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue &&  Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue?
-  const CircularProgressIndicator():
-      Padding(
+    return Get.find<TimelineController>()
+                .isTimelineSummaryByDateLoading
+                .isTrue &&
+            Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue
+        ? const CircularProgressIndicator()
+        : Padding(
             padding: const EdgeInsets.only(left: 35.0, bottom: 18),
             child: Row(
               children: [
@@ -54,6 +55,7 @@ class TimelineScreen extends GetView<TimelineController> {
             ),
           );
   }
+
   _timerStringBtn() {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
@@ -130,7 +132,6 @@ _buttonRadiusLayout() {
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-
   return const SliverToBoxAdapter(
     child: CustomTimelineCalendar(),
   );

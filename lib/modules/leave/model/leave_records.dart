@@ -1,3 +1,5 @@
+import 'leave_record_response.dart';
+
 class LeaveRecords {
   List<GetLeaveRecords>? getLeaveRecords;
 
@@ -46,16 +48,4 @@ class GetLeaveRecords {
   }
 }
 
-class LeaveType {
-  String? type;
-  String? leaveId;
-  String? leaveName;
 
-  LeaveType({this.type, this.leaveId, this.leaveName});
-
-  LeaveType.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    leaveId = json['id'];
-    leaveName = json['name'];
-  }
-}
