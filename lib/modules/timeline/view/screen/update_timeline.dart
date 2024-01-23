@@ -31,6 +31,22 @@ class UpdateTimeLineLog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    print("afasdfsfds ::::::::: ${DateFormat("yyyy-MM-dd hh:mma")
+        .parse(
+        "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+        .toString()}");
+    print("afasdfsfds ::::::::: ${DateFormat("yyyy-MM-dd hh:mma")
+        .parse(
+        "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+        .toString()}");
+    print("afasdfsfds ::::::::: ${DateFormat("hh:mma")
+        .parse(
+        Get.find<DateTimeController>().pickedOutTime.value)
+        .toString()}");
+        print("${Get.find<DateTimeController>().pickedOutTime.value}");
+
+
     print(Get.find<TimelineController>()
         .timeLineID
         .toString());
@@ -435,6 +451,28 @@ Widget statusBtn({required text, required textColor}) {
       textColor: textColor,
       bgColor: AppColor.cardColor.withOpacity(0.9),
       text: text,
+    ),
+  );
+}
+AppBar timeLogAppbar(context) {
+  return AppBar(
+    elevation: 0,
+    backgroundColor: AppColor.backgroundColor,
+    leading: IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      icon: Icon(
+        Icons.arrow_back_ios,
+        color: AppColor.hintColor,
+        size: Dimensions.fontSizeMid + 4,
+      ),
+    ),
+    centerTitle: true,
+    title: Text(
+      AppString.text_time_log_details.tr,
+      style:
+          AppStyle.normal_text_black.copyWith(fontSize: Dimensions.fontSizeMid),
     ),
   );
 }

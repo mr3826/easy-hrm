@@ -24,7 +24,6 @@ import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
 
 class TimelineController extends GetxController with StateMixin {
-
   @override
   void onInit() {
     getProjectDropdown();
@@ -60,7 +59,7 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
-  RxInt selectedSummaryDate=0.obs;
+  RxInt selectedSummaryDate = 0.obs;
   RxInt currentYear = DateTime.now().year.obs;
   String timeLogStatus = "";
   String timeLogDuration = "";
@@ -141,7 +140,7 @@ class TimelineController extends GetxController with StateMixin {
       projectId}) async {
     isUpdateTimeLogLoading(true);
     log("updateTimelineLogDetails start & end ==>$startDate And :::  $endDate");
-    log("timeline_id ==>$timeLineId",error: 99);
+    log("timeline_id ==>$timeLineId", error: 99);
     log("description ==>$description");
     log("taskId ==>$taskId");
     log("projectId ==>$projectId");
@@ -150,11 +149,11 @@ class TimelineController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .mutationGraphData(updateTimelineLogDetailsQueryData, {
       "inputData": {
-        //"timeline_id": "$timeLineId",
+      //  "timeline_id": "$timeLineId",
         "description": "$description",
         "end_date": "$endDate",
         "start_date": "$startDate",
-        "status":"$status"
+        "status": "$status"
       }
     });
 
@@ -174,8 +173,7 @@ class TimelineController extends GetxController with StateMixin {
               "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
           endDate:
               "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
-      Get.find<TimelineController>()
-          .timeLineID="";
+      Get.find<TimelineController>().timeLineID = "";
       Get.back();
     }
     isUpdateTimeLogLoading(false);

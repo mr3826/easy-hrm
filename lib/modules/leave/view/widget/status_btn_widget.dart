@@ -290,14 +290,9 @@ void _updateDataFromApiResponse(
   Get.find<TimelineController>().timeLogColor = color;
   Get.find<TimelineController>().timeLogStatus = status;
 
+  Get.find<TimelineController>().timeLineID = timelineId.toString();
 
-
-          Get.find<TimelineController>().timeLineID = timelineId.toString();
-
-
-
-  Get.find<DateTimeController>().requestedDate.value =
-      DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
+  Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
 
   timelineLogDetailsDrcController.text = description;
   DateTime startTime = DateTime.parse(startDate);
