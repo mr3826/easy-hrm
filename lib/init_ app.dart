@@ -54,5 +54,4 @@ Future<void> initApp() async {
   Get.lazyPut(() => DateTimeController(), fenix: true);
   Get.lazyPut(() => ApplyLeaveController(), fenix: false);
   Get.lazyPut(() => UpDateLeaveController(), fenix: false);
-
 }

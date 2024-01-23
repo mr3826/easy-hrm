@@ -1,167 +1,157 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
-import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/domain/last_input_model.dart';
-import '../../controller/time_formate_controller.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class TimeLineCalendar extends GetView<TimelineController> {
+import '../../../../common/domain/last_input_model.dart';
+import '../widget/task_view_widget.dart';
+
+class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    log("SFCalendarScreen build called", error: 100);
+    return Obx(() =>
+        Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
+            ? Container(
+                color: Colors.transparent,
+              )
+            : Padding(
+                padding: const EdgeInsets.only(
+                    top: 90.0, bottom: 110, left: 14, right: 14),
+                child: SfCalendar(
+                  view: CalendarView.day,
+                  dataSource: _getCalendarDataSource(),
+                  backgroundColor: AppColor.cardColor,
+                  appointmentTextStyle:
+                      const TextStyle(color: AppColor.normalTextColor),
+                  selectionDecoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                  viewHeaderStyle: const ViewHeaderStyle(
+                      backgroundColor: Colors.transparent,
+                      dateTextStyle: TextStyle(color: Colors.transparent),
+                      dayTextStyle: TextStyle(color: Colors.transparent)),
+                  viewHeaderHeight: 0,
+                  onTap: (CalendarTapDetails details) {
+                    Appointment tappedAppointment = details.appointments![0];
+                    if (details.targetElement != CalendarElement.calendarCell) {
+                      Map<String, dynamic> jsonMap =
+                          json.decode(tappedAppointment.location.toString());
+                      ModelForDescription eventVal =
+                          ModelForDescription.fromJson(jsonMap);
 
-    log("TimeLineCalendar build calendar",error: 100);
-    //Get.find<TimelineController>().eventOfLeave.remove(element);
-    // CalendarControllerProvider.of(context)
-    //     .controller.remove(event);
-    //
-    // CalendarControllerProvider.of(context)
-    //     .controller
-    //     .addAll(Get.find<TimelineController>().eventsOfTask ?? []);
-    // CalendarControllerProvider.of(context)
-    //     .controller
-    //     .addAll(Get.find<TimelineController>().eventOfLeave ?? []);
-
-    return _calendarLayout(context);
+                      customButtonSheet(
+                          height: .6,
+                          context: context,
+                          child: TaskView(
+                            projectName: eventVal.taskName.toString(),
+                            date: eventVal.startDate.toString(),
+                            startTime: eventVal.startDate.toString(),
+                            endTime: eventVal.endDate.toString(),
+                            status: eventVal.status.toString(),
+                            totalDur: eventVal.duration.toString(),
+                            description: eventVal.description.toString(),
+                            timeLineId: eventVal.timeLId.toString(),
+                          ));
+                    }
+                  },
+                  headerHeight: 0,
+                  showDatePickerButton: false,
+                  showNavigationArrow: false,
+                  cellEndPadding: 4,
+                  allowViewNavigation: false,
+                  appointmentTimeTextFormat: "HH:mm",
+                  timeSlotViewSettings: const TimeSlotViewSettings(
+                    timeFormat: "HH:mm",
+                  ),
+                  showCurrentTimeIndicator: false,
+                  initialDisplayDate: DateTime.now(),
+                  headerStyle:
+                      const CalendarHeaderStyle(textAlign: TextAlign.center),
+                  monthViewSettings: const MonthViewSettings(
+                      appointmentDisplayMode:
+                          MonthAppointmentDisplayMode.appointment),
+                ),
+              ));
   }
 
-  _calendarLayout(context) {
-
-    return
-      Padding(
-      padding: marginLayout,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 120),
-        child: DayView(
-          scrollPhysics: const AlwaysScrollableScrollPhysics(),
-          eventTileBuilder: (date, events, status1, start, end) {
-            //format DateTime
-            DateTime startDateTime = DateTime.parse(start.toString());
-            DateTime endDateTime = DateTime.parse(end.toString());
-            Iterable<Object?> eventsName = events.map((e) => e.event);
-            //total minute
-            Iterable<String> totalMin = events.map((e) => e.title.toString());
-            Iterable<String> status = events.map((e) => e.description);
-
-            // Format the DateTime in 24-hour format
-            String stateTime = timeFormatTo24h(startDateTime);
-            String endTime = timeFormatTo24h(endDateTime);
-            print("events ==> $events");
-            print("events ==> ${events.length}");
-
-            return
-
-              TaskSolidLayout(
-                title: eventsName.toString(),
-                startTime: stateTime,
-                length: events.length,
-                endTime: endTime,
-                status: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",
-                totalMin: totalMin.toString());
-          },
-          showVerticalLine: false,
-
-          minDay: DateTime(1990),
-          maxDay: DateTime(2050),
-          initialDay: DateTime.now(),
-          timeLineOffset: 0,
-          showHalfHours: true,
-          showLiveTimeLineInAllDays: false,
-          heightPerMinute: 1.9,
-
-          onEventTap: (events, date) {
-
-
-
-            Iterable<Object?> eventsName = events.map((e) => e.event);
-            Iterable<Object?> duration =
-                events.map((e) => e.title); //total minute
-            Iterable<DateTime?> startTIME = events.map((e) => e.startTime);
-            Iterable<DateTime?> endTIME = events.map((e) => e.endTime);
-            Iterable<DateTime> createAtDate =
-                events.map((e) => e.endDate); //Date of application
-            Iterable<String> status =
-                events.map((e) => e.description); //status added here
-
-
-            customButtonSheet(
-                height: .6,
-                context: context,
-                child: TaskView(
-                  projectName: eventsName.toString(),
-                  date: createAtDate.toString(),
-                  startTime: startTIME.toString(),
-                  endTime: endTIME.toString(),
-                  status: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).status)}",
-                  totalDur: duration.toString(),
-                  description: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).description)}",
-                  timeLineId: "${status.map((String e) => ModelForDescription.fromJson(jsonDecode(e)).timeLId)}",
-
-                ));
-          },
-          onDateLongPress: (date){
-          },
-          headerStyle: _headerStyle(),
-          liveTimeIndicatorSettings: HourIndicatorSettings.none(),
-          pageViewPhysics: const NeverScrollableScrollPhysics(),
-          halfHourIndicatorSettings: const HourIndicatorSettings(
-            dashWidth: 1.4,
-            lineStyle: LineStyle.dashed,
-            offset: 35,
-          ),
-          eventArranger: const SideEventArranger(),
-          minuteSlotSize: MinuteSlotSize.minutes30,
-          hourIndicatorSettings: HourIndicatorSettings(
-              lineStyle: LineStyle.solid,
-              offset: 12,
-              height: .5,
-              color: AppColor.hintColor.withOpacity(0.6)),
-          timeStringBuilder: (date, {secondaryDate}) {
-            String formattedTime = DateFormat.Hm().format(date);
-            return formattedTime;
-          },
-          dateStringBuilder: (date, {secondaryDate}) {
-
-            var formatDate = DateFormat('dd MMM yyyy').format(date);
-            var now = DateFormat('dd MMM yyyy').format(DateTime.now());
-            if (formatDate == now) {
-              return "Today";
-            } else {
-              return formatDate;
-            }
-          },
-
-        ),
-      ),
-    );
+  // Create a calendar data source using the appointments list
+  _DataSource _getCalendarDataSource() {
+    return _DataSource(Get.find<TimelineController>().meetings);
   }
 }
 
-_headerStyle() {
-  return HeaderStyle(
-      decoration: const BoxDecoration(color: Colors.transparent),
-      headerMargin: const EdgeInsets.only(bottom: 0),
-      headerTextStyle: AppStyle.normal_text_grey.copyWith(
-          color: AppColor.noColor, fontSize: Dimensions.fontSizeMid),
-      leftIcon: const Icon(
-        Icons.arrow_back_ios_new_rounded,
-        size: 0,
-        color: AppColor.noColor,
-      ),
-      rightIcon: const Icon(
-        Icons.arrow_forward_ios,
-        size: 0,
-        color: AppColor.normalTextColor,
-      ));
+// Data source class for the calendar
+class _DataSource extends CalendarDataSource {
+  _DataSource(List<Appointment> appointments) {
+    this.appointments = appointments;
+  }
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return _getMeetingData(index).from;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return _getMeetingData(index).to;
+  }
+
+  @override
+  String getSubject(int index) {
+    return _getMeetingData(index).eventName;
+  }
+
+  @override
+  Color getColor(int index) {
+    return _getMeetingData(index).background;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return _getMeetingData(index).isAllDay;
+  }
+
+  Meeting _getMeetingData(int index) {
+    final dynamic meeting = appointments![index];
+    late final Meeting meetingData;
+    if (meeting is Meeting) {
+      meetingData = meeting;
+    }
+
+    return meetingData;
+  }
+}
+
+/// Custom business object class which contains properties to hold the detailed
+/// information about the event data which will be rendered in calendar.
+class Meeting {
+  /// Creates a meeting class with required details.
+  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+
+  /// Event name which is equivalent to subject property of [Appointment].
+  String eventName;
+
+  /// From which is equivalent to start time property of [Appointment].
+  DateTime from;
+
+  /// To which is equivalent to end time property of [Appointment].
+  DateTime to;
+
+  /// Background which is equivalent to color property of [Appointment].
+  Color background;
+
+  /// IsAllDay which is equivalent to isAllDay property of [Appointment].
+  bool isAllDay;
 }

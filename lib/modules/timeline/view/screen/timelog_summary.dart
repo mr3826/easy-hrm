@@ -8,7 +8,6 @@ import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_calen
 import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 
-import '../../controller/timeline_controller.dart';
 
 class TimeLogSummary extends StatelessWidget {
   const TimeLogSummary({super.key});

@@ -1,7 +1,6 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-
 class HexColor extends Color {
   static int _getColor(String hex) {
     String formattedHex = "FF${hex.toUpperCase().replaceAll("#", "")}";
