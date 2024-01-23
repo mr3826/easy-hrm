@@ -63,7 +63,7 @@ class NotificationController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: markAsSeenNotificationQuery, variables: {
-      "inputData": {"notificationIds": newNotificationIdList?[0]}
+      "inputData": {"notificationIds": newNotificationIdList}
     });
 
     if (response.hasException) {
