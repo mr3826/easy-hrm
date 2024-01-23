@@ -172,7 +172,7 @@ class NotificationViewLayout extends StatelessWidget {
             notificationDuration: _getNotificationDuration(
                 notificationCreatedDate: notificationCreatedDate),
             index: index);
-      case "added_a_leave":
+      case "added_leave":
         return _leaveNotification(
             changerName: changerName,
             iconColor: AppColor.successColor,
@@ -182,7 +182,7 @@ class NotificationViewLayout extends StatelessWidget {
             notificationDuration: _getNotificationDuration(
                 notificationCreatedDate: notificationCreatedDate),
             index: index);
-      case "updated_a_leave":
+      case "updated_leave":
         return _leaveNotification(
             changerName: changerName,
             iconColor: AppColor.successColor,
@@ -264,7 +264,7 @@ class NotificationViewLayout extends StatelessWidget {
       case "reject_a_timeline":
         return "has reject your time log on ";
       case "pending_a_timeline":
-        return "has marked your time log as pending on";
+        return "has marked your time log as pending on ";
       case "added_new_timeline":
         return "has added your time log on ";
       case "approved_a_timeline":
@@ -273,14 +273,14 @@ class NotificationViewLayout extends StatelessWidget {
       ///timeline
       ///leave
       case "pending_a_leave":
-        return "has marked your leave as pending on";
+        return "has marked your leave as pending on ";
       case "approved_a_leave":
         return "has approved a leave on ";
       case "rejected_a_leave":
         return "has rejected a leave on ";
       case "cancelled_a_leave":
         return "has cancelled a leave on ";
-      case "added_a_leave":
+      case "added_leave":
         return "has added a leave on ";
       case "updated_leave":
         return "has updated a leave on ";

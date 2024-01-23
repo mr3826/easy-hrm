@@ -55,7 +55,6 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   void getEmploymentInfo() async {
-    print(GetStorage().read(AppString.ORGANIZATION_USER_ID));
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
       queryString: getEmploymentInfoQuery,
