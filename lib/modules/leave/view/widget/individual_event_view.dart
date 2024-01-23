@@ -1,6 +1,8 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
@@ -14,8 +16,10 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:r_dotted_line_border/r_dotted_line_border.dart';
-
+import '../../../../common/controller/date_time_controller.dart';
+import '../../../../common/widget/custom_dotted_border.dart';
+import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
+import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../controller/calendar_date_controller.dart';
 import '../../model/leave_record_response.dart';
 import 'leave_record_details_view.dart';
@@ -28,7 +32,8 @@ class IndividualEventView extends StatelessWidget {
     return Column(
       children: [
         customSpacerHeight(height: 5),
-        Obx(() => _dateCalendarLayout()),
+        horizontalCalendarLayout(),
+        customSpacerHeight(height: 5),
         customSpacerHeight(height: 8),
         _eventText(),
         Obx(() => _eventViewLayout()),
@@ -64,24 +69,25 @@ class IndividualEventView extends StatelessWidget {
                 GestureDetector(
                     onTap: () async {
                       controller.decrementDate();
-                      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                      await Get.find<LeaveScreenController>()
+                          .getLeaveDetailsByDate();
                     },
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: AppColor.normalTextColor,
                       size: 20,
                     )),
-
                 Text(
-                  controller.getFormattedDate() ==
-                          controller.getFormattedCurrentData()
-                      ? AppString.text_today
-                      : controller.getFormattedDate(),
+                  Get.find<DateTimeController>().requestedDate.value ==
+                          DateFormat('yyyy-MM-dd').format(DateTime.now())
+                      ? "Today"
+                      : DateFormat("d MMM yyyy").format(DateTime.parse(
+                          Get.find<DateTimeController>().requestedDate.value,
+                        )),
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
                       fontWeight: FontWeight.bold),
                 ),
-
                 GestureDetector(
                     onTap: () async {
                       controller.incrementMonth();
@@ -109,29 +115,24 @@ class IndividualEventView extends StatelessWidget {
   }
 
   _eventText() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        customSpacerHeight(height: 50),
-        Container(
-          height: 1,
-          width: 140,
-          color: AppColor.disableColor,
-        ),
-        Padding(
-          padding: marginLayout,
-          child: Text(
-            AppString.text_event.tr,
-            style:
-                AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+    return Padding(
+      padding: marginLayout,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          customSpacerHeight(height: 50),
+          horizontalDashLayout(),
+          Padding(
+            padding: marginLayout.copyWith(left: 30, right: 30),
+            child: Text(
+              AppString.text_event.tr,
+              style: AppStyle.normal_text_black
+                  .copyWith(color: AppColor.hintColor),
+            ),
           ),
-        ),
-        Container(
-          height: 1,
-          width: 140,
-          color: AppColor.disableColor,
-        ),
-      ],
+          horizontalDashLayout()
+        ],
+      ),
     );
   }
 
@@ -333,4 +334,101 @@ class IndividualEventView extends StatelessWidget {
             );
           },
         );
+}
+
+Widget horizontalCalendarLayout() {
+  if (Get.isRegistered<DateTimePickerController>()) {
+    Get.delete<DateTimePickerController>();
+  }
+  Get.put(DateTimePickerController());
+
+  return GestureDetector(
+    onTap: () {
+      showDialog<String>(
+        context: Get.context!,
+        builder: (BuildContext context) => Dialog(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                InDatePicker(),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+    child: Obx(() => Padding(
+          padding: marginLayout,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      onTap: () async {
+                        Get.find<DateTimePickerController>().inDate.value =
+                            DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                    Get.find<DateTimePickerController>()
+                                        .inDate
+                                        .value)
+                                .subtract(const Duration(days: 1)));
+                        await Get.find<LeaveScreenController>()
+                            .getLeaveDetailsByDate();
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: AppColor.normalTextColor,
+                        size: 20,
+                      )),
+                  Text(
+                    DateFormat("dd MMM yyyy").format(DateTime.now()) ==
+                            DateFormat("dd MMM yyyy").format(DateTime.parse(
+                                Get.find<DateTimePickerController>()
+                                    .inDate
+                                    .value))
+                        ? "Today"
+                        : DateFormat("dd MMM yyyy").format(DateTime.parse(
+                            Get.find<DateTimePickerController>().inDate.value)),
+                    style: AppStyle.mid_large_text.copyWith(
+                        color: AppColor.normalTextColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  GestureDetector(
+                      onTap: () async {
+                        Get.find<DateTimePickerController>().inDate.value =
+                            DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                    Get.find<DateTimePickerController>()
+                                        .inDate
+                                        .value)
+                                .add(const Duration(days: 1)));
+                        await Get.find<LeaveScreenController>()
+                            .getLeaveDetailsByDate();
+                      },
+                      child: const Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        color: AppColor.normalTextColor,
+                        size: 20,
+                      )),
+                ],
+              ),
+              Center(
+                  child: Text(
+                DateFormat('EEEE').format(DateTime.parse(
+                    Get.find<DateTimePickerController>().inDate.value)),
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault - 1),
+              ))
+            ],
+          ),
+        )),
+  );
 }

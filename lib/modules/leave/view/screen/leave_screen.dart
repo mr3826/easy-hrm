@@ -19,6 +19,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.height);
     return controller.obx(
         (state) => Scaffold(
               body: CustomScrollView(
@@ -69,8 +70,11 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   }
 
   void _customButtonSheet({context, child}) {
+    //For screen size
+    double screenHeight=MediaQuery.of(context).size.height==616.0?550:700;
+
     return showCustomAtmBtnSheet(
-      height: 700,
+      height: screenHeight,
         context: context,
         child: Material(
           color: AppColor.noColor,
