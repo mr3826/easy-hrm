@@ -33,20 +33,23 @@ class NotificationViewLayout extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         itemBuilder: (context, index) {
           final notification = _controller.newNotification?[index].notification;
-          return _getNotificationByContext(
-              notificationCreatedDate: notification?.createdAt ?? "",
-              index: index,
-              timeLineTimeInfo: notification?.timeline?.startDate ?? "",
-              changerName:
-                  "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
-              notificationContext: notification?.context ?? "",
-              leaveTimeInfo: notification?.leave?.startDate ?? '',
-              departmentInfo: notification?.department?.name ?? "",
-              isDepartmentHead: (notification?.department?.managerId ==
-                  notification?.affectee?.id),
-              jobTitleInfo: notification?.job?.title ?? "");
+          return index == _controller.newNotificationIdList!.length - 1
+              ? customSpacerHeight(height: 100)
+              : _getNotificationByContext(
+                  notificationCreatedDate: notification?.createdAt ?? "",
+                  index: index,
+                  timeLineTimeInfo: notification?.timeline?.startDate ?? "",
+                  changerName:
+                      "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
+                  notificationContext: notification?.context ?? "",
+                  leaveTimeInfo: notification?.leave?.startDate ?? '',
+                  departmentInfo: notification?.department?.name ?? "",
+                  isDepartmentHead: (notification?.department?.managerId ==
+                      notification?.affectee?.id),
+                  jobTitleInfo: notification?.job?.title ?? "");
         });
   }
+
   _seenNotificationView() {
     return ListView.builder(
         itemCount: _controller.seenNotification?.length ?? 0,
@@ -55,18 +58,20 @@ class NotificationViewLayout extends StatelessWidget {
         itemBuilder: (context, index) {
           final notification =
               _controller.seenNotification?[index].notification;
-          return _getNotificationByContext(
-              notificationCreatedDate: notification?.createdAt ?? "",
-              index: index,
-              timeLineTimeInfo: notification?.timeline?.startDate ?? "",
-              changerName:
-              "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
-              notificationContext: notification?.context ?? "",
-              leaveTimeInfo: notification?.leave?.startDate ?? '',
-              departmentInfo: notification?.department?.name ?? "",
-              isDepartmentHead: (notification?.department?.managerId ==
-                  notification?.affectee?.id),
-              jobTitleInfo: notification?.job?.title ?? "");
+          return index == _controller.seenNotification!.length - 1
+              ? customSpacerHeight(height: 100)
+              : _getNotificationByContext(
+                  notificationCreatedDate: notification?.createdAt ?? "",
+                  index: index,
+                  timeLineTimeInfo: notification?.timeline?.startDate ?? "",
+                  changerName:
+                      "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
+                  notificationContext: notification?.context ?? "",
+                  leaveTimeInfo: notification?.leave?.startDate ?? '',
+                  departmentInfo: notification?.department?.name ?? "",
+                  isDepartmentHead: (notification?.department?.managerId ==
+                      notification?.affectee?.id),
+                  jobTitleInfo: notification?.job?.title ?? "");
         });
   }
 
@@ -124,7 +129,6 @@ class NotificationViewLayout extends StatelessWidget {
                 notificationCreatedDate: notificationCreatedDate),
             index: index);
 
-      /// timeline
       /// leave
       case "pending_a_leave":
         return _leaveNotification(
@@ -761,5 +765,4 @@ class NotificationViewLayout extends StatelessWidget {
     if (creationDate.isEmpty) return "";
     return DateFormat("d MMM y").format(DateTime.parse("2024-01-21T16:40:00"));
   }
-
 }

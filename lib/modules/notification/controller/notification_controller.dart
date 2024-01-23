@@ -8,24 +8,30 @@ import '../../../utils/api_endpoints.dart';
 class NotificationController extends GetxController with StateMixin {
   NotificationResponse? notificationResponse;
 
-  List<Data>? newNotification = <Data>[];
+  RxList<Data>? newNotification = <Data>[].obs;
   List<Data>? seenNotification = <Data>[];
 
   List<String?>? newNotificationIdList = [];
+
+  final isNewNotificationHasData = false.obs;
+  final isSeenNotificationHasData = false.obs;
+  final newNotificationLimit = 50.obs;
+  final newNotificationOffset = 0.obs;
 
   getNewNotification() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
       "queryData": {"is_seen": false},
-      "optionData": {"limit": 50, "offset": 0}
+      "optionData": {"limit": newNotificationLimit.value, "offset": newNotificationOffset.value}
     });
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       notificationResponse = NotificationResponse.fromJson(response.data!);
-      newNotification = notificationResponse?.getNotificationActivities?.data;
+      newNotification?.value =
+          notificationResponse?.getNotificationActivities?.data ?? [];
       newNotificationIdList =
           newNotification?.map((e) => e.notification?.id ?? "").toList();
       print("newNotificationIdList:: $newNotificationIdList");
@@ -47,6 +53,24 @@ class NotificationController extends GetxController with StateMixin {
     } else {
       notificationResponse = NotificationResponse.fromJson(response.data!);
       seenNotification = notificationResponse?.getNotificationActivities?.data;
+    }
+
+    change(null, status: RxStatus.success());
+  }
+
+  markNotificationAsSeen() async {
+    //todo
+    change(null, status: RxStatus.loading());
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: markAsSeenNotificationQuery, variables: {
+      "inputData": {"notificationIds": newNotificationIdList?[0]}
+    });
+
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(exception: response.exception!);
+    } else {
+      await getNewNotification();
+      await getSeenNotification();
     }
 
     change(null, status: RxStatus.success());

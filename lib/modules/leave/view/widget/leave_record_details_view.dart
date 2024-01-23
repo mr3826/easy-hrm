@@ -40,7 +40,7 @@ class LeaveRecordDetails extends StatelessWidget {
         customSpacerHeight(height: 12),
         _infoLayout(
             text: AppString.text_type_dot.tr,
-            dynamicText: leaveRecords?.leaveType?.leaveName ?? ""),
+            dynamicText: leaveRecords?.leaveType?.type ?? ""),
         _infoLayout(
             text: AppString.text_duration.tr,
             dynamicText: leaveRecords?.duration != null

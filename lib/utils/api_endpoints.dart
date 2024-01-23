@@ -483,3 +483,11 @@ query GetNotificationActivities($queryData: NotificationActivitiesQueryInputType
   }
 }
 ''';
+
+const markAsSeenNotificationQuery = r'''
+mutation MarkUnreadNotificationAsSeen($inputData: UnreadNotificationSeenInputType!) {
+  markUnreadNotificationAsSeen(inputData: $inputData) {
+    result
+  }
+}
+''';

@@ -18,34 +18,45 @@ class NotificationScreen extends GetView<NotificationController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: notificationAppbar(),
-      body: controller.obx((state) => NotificationTabBar(),
+      body: controller.obx(
+          (state) => RefreshIndicator(
+              onRefresh: _reloadPage, child: NotificationTabBar()),
           onLoading: const LoadingIndicator()),
       floatingActionButton:
           controller.obx((state) => markAllBtn, onLoading: Container()),
     );
   }
+
+  Future<void> _reloadPage() async {
+    await controller.getNewNotification();
+    await controller.getSeenNotification();
+  }
+
+  GestureDetector get markAllBtn {
+    return GestureDetector(
+      onTap: () {
+        controller.markNotificationAsSeen();
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 38.0, bottom: 22),
+        child: Container(
+          height: AppLayout.getHeight(46),
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
+              color: AppColor.cardColor,
+              border: Border.all(color: AppColor.disableColor)),
+          child: Center(
+              child: Text(
+                AppString.text_mark_all_as_seen.tr,
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault + 1),
+              )),
+        ),
+      ),
+    );
+  }
+
 }
 
-GestureDetector get markAllBtn {
-  return GestureDetector(
-    onTap: () {},
-    child: Padding(
-      padding: const EdgeInsets.only(left: 38.0, bottom: 22),
-      child: Container(
-        height: AppLayout.getHeight(46),
-        width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
-            color: AppColor.cardColor,
-            border: Border.all(color: AppColor.disableColor)),
-        child: Center(
-            child: Text(
-          AppString.text_mark_all_as_seen.tr,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault + 1),
-        )),
-      ),
-    ),
-  );
-}
