@@ -290,7 +290,7 @@ class IndividualEventView extends StatelessWidget {
                                     ?.getLeaveDetailsByDate![0]
                                     .leaveRequests?[index]
                                     .leaveType
-                                    ?.type ??
+                                    ?.leaveName ??
                                 "",
                             overflow: TextOverflow.ellipsis,
                             style: AppStyle.mid_large_text.copyWith(

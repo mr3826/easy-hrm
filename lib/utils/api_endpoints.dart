@@ -440,3 +440,54 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
   }
 }
 ''';
+
+/// notification apis
+///
+
+const getUnSeenNotificationQuery = r'''
+query GetNotificationActivities($queryData: NotificationActivitiesQueryInputType, $optionData: OptionDataType) {
+  getNotificationActivities(queryData: $queryData, optionData: $optionData) {
+    data {
+      notification {
+        id
+        createdAt
+        context
+        changer {
+          profile {
+            first_name
+            last_name
+          }
+        }
+        timeline {
+          start_date
+        }
+        leave {
+          start_date
+        }
+        affectee {
+          id
+        }
+        department {
+          name
+          manager_id
+        }
+        job {
+          title
+          id
+        }
+      }
+    }
+    metaData {
+      totalRows
+    }
+  }
+}
+''';
+
+const markAsSeenNotificationQuery = r'''
+mutation MarkUnreadNotificationAsSeen($inputData: UnreadNotificationSeenInputType!) {
+  markUnreadNotificationAsSeen(inputData: $inputData) {
+    result
+  }
+}
+''';
