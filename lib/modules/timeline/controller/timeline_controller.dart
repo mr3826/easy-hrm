@@ -140,7 +140,7 @@ class TimelineController extends GetxController with StateMixin {
       taskId,
       projectId}) async {
     isUpdateTimeLogLoading(true);
-    log("updateTimelineLogDetails start & end ==>$startDate And $endDate");
+    log("updateTimelineLogDetails start & end ==>$startDate And :::  $endDate");
     log("timeline_id ==>$timeLineId",error: 99);
     log("description ==>$description");
     log("taskId ==>$taskId");
@@ -150,10 +150,11 @@ class TimelineController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .mutationGraphData(updateTimelineLogDetailsQueryData, {
       "inputData": {
-        "timeline_id": "$timeLineId",
+        //"timeline_id": "$timeLineId",
         "description": "$description",
         "end_date": "$endDate",
         "start_date": "$startDate",
+        "status":"$status"
       }
     });
 
