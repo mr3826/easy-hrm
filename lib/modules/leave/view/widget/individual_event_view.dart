@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
@@ -15,6 +16,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../controller/calendar_date_controller.dart';
 import '../../model/leave_record_response.dart';
@@ -64,24 +66,25 @@ class IndividualEventView extends StatelessWidget {
                 GestureDetector(
                     onTap: () async {
                       controller.decrementDate();
-                      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                      await Get.find<LeaveScreenController>()
+                          .getLeaveDetailsByDate();
                     },
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: AppColor.normalTextColor,
                       size: 20,
                     )),
-
                 Text(
-                  controller.getFormattedDate() ==
-                          controller.getFormattedCurrentData()
-                      ? AppString.text_today
-                      : controller.getFormattedDate(),
+                  Get.find<DateTimeController>().requestedDate.value ==
+                          DateFormat('yyyy-MM-dd').format(DateTime.now())
+                      ? "Today"
+                      : DateFormat("d MMM yyyy").format(DateTime.parse(
+                          Get.find<DateTimeController>().requestedDate.value,
+                        )),
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
                       fontWeight: FontWeight.bold),
                 ),
-
                 GestureDetector(
                     onTap: () async {
                       controller.incrementMonth();
@@ -110,18 +113,18 @@ class IndividualEventView extends StatelessWidget {
 
   _eventText() {
     return Padding(
-      padding:marginLayout,
+      padding: marginLayout,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           customSpacerHeight(height: 50),
           horizontalDashLayout(),
           Padding(
-            padding: marginLayout.copyWith(left: 30,right: 30),
+            padding: marginLayout.copyWith(left: 30, right: 30),
             child: Text(
               AppString.text_event.tr,
-              style:
-                  AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+              style: AppStyle.normal_text_black
+                  .copyWith(color: AppColor.hintColor),
             ),
           ),
           horizontalDashLayout()
@@ -328,6 +331,4 @@ class IndividualEventView extends StatelessWidget {
             );
           },
         );
-
 }
-

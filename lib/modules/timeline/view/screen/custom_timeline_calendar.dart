@@ -97,13 +97,14 @@ Widget _dateCalendarLayout() {
                       )),
                   Text(
                     Get.find<DateTimeController>().requestedDate.value ==
-                            DateFormat('yyyy-MM-dd').format(DateTime.now())
+                        DateFormat('yyyy-MM-dd').format(DateTime.now())
                         ? "Today"
-                        : Get.find<DateTimeController>().requestedDate.value,
+                        : DateFormat("d MMM yyyy").format(DateTime.parse(Get.find<DateTimeController>().requestedDate.value,)),
+
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.normalTextColor,
-                        fontWeight: FontWeight.bold),
-                  ),
+                        fontWeight: FontWeight.bold),),
+
                   GestureDetector(
                       onTap: () async {
                         controller.incrementMonth();
