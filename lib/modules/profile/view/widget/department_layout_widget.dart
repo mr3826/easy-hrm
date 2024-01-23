@@ -36,6 +36,7 @@ Widget departmentLayout(context) {
                 width: 25),
             customSpacerHeight(height: 12),
             _departmentHistoryInfo(),
+            customSpacerHeight(height: 12),
             _workingShiftLayout(context),
           ],
         ),
@@ -110,45 +111,46 @@ _parentDepartmentInfo({required String parentDepartmentName}) {
 
 _workingShiftLayout(context) {
   return Expanded(
-    child: Padding(
-      padding: marginLayout.copyWith(left: 2, top: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 1,
-            height: double.infinity,
-            color: AppColor.hintColor.withOpacity(0.4),
-          ),
-          customSpacerWidth(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.department
-                        ?.workShift
-                        ?.name ??
-                    "",
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
-                    fontSize: Dimensions.fontSizeDefault + 1),
-              ),
-              _workShiftDetailsLayout(),
-              customSpacerHeight(height: 8),
-              Text(
-                "Working day",
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor.withOpacity(0.7),
-                    fontSize: Dimensions.fontSizeDefault + 1),
-              ),
-              _workingDaySchedule(context)
-            ],
-          ),
-        ],
-      ),
+    child: Row(
+      children: [
+        _verticalDivider(),
+        customSpacerWidth(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Get.find<UserProfileController>()
+                      .userDetails
+                      ?.getOrganizationUserDetails
+                      ?.department
+                      ?.workShift
+                      ?.name ??
+                  "",
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            ),
+            _workShiftDetailsLayout(),
+            customSpacerHeight(height: 8),
+            Text(
+              "Working day",
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor.withOpacity(0.7),
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            ),
+            _workingDaySchedule(context)
+          ],
+        ),
+      ],
     ),
+  );
+}
+
+_verticalDivider() {
+  return Container(
+    width: 1,
+    height: double.infinity,
+    color: AppColor.hintColor.withOpacity(0.4),
   );
 }
 
@@ -166,8 +168,8 @@ _workShiftDetailsLayout() {
 
   bool? allTimesSame = workSchedules?.every((schedule) {
     // Check if start_time and end_time are the same for each item
-    return schedule.startTime == workSchedules?[0].startTime &&
-        schedule.endTime == workSchedules?[0].endTime;
+    return schedule.startTime == workSchedules[0].startTime &&
+        schedule.endTime == workSchedules[0].endTime;
   });
 
   return Row(
@@ -182,7 +184,8 @@ _workShiftDetailsLayout() {
                 fontSize: Dimensions.fontSizeDefault + 1)
             : AppStyle.mid_large_text.copyWith(
                 color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault + 1),
+                fontSize: Dimensions.fontSizeDefault + 1,
+                overflow: TextOverflow.ellipsis),
       ),
       _divider(),
       GestureDetector(
@@ -224,7 +227,8 @@ _workShiftDetailsLayout() {
                   fontSize: Dimensions.fontSizeDefault - 1)
               : AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor.withOpacity(0.7),
-                  fontSize: Dimensions.fontSizeDefault - 1),
+                  fontSize: Dimensions.fontSizeDefault - 1,
+                  overflow: TextOverflow.ellipsis),
         ),
       )
     ],
@@ -283,29 +287,25 @@ _workingDaySchedule(context) {
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        return Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 0.0, right: 30, top: 12, bottom: 12),
-              child: Column(
-                children: [
-                  customSpacerWidth(width: 8),
-                  Text(
-                    day?[index] ?? "",
-                    style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.normalTextColor,
-                        fontSize: Dimensions.fontSizeDefault,
-                        overflow: TextOverflow.ellipsis),
-                  ),
-                  const Icon(
-                    Icons.done,
-                    color: AppColor.successColor,
-                  ),
-                ],
+        return Padding(
+          padding:
+              const EdgeInsets.only(left: 0.0, right: 30, top: 12, bottom: 12),
+          child: Column(
+            children: [
+              customSpacerWidth(width: 8),
+              Text(
+                day?[index] ?? "",
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeDefault,
+                    overflow: TextOverflow.ellipsis),
               ),
-            ),
-          ],
+              const Icon(
+                Icons.done,
+                color: AppColor.successColor,
+              ),
+            ],
+          ),
         );
       },
     ),

@@ -96,7 +96,7 @@ TextEditingController get editEmergencyPhoneController =>
 
 TextEditingController get editBioController => _editBioController;
 
-TextEditingController get currentPassword => _currentPassController;
+TextEditingController get currentPasswordController => _currentPassController;
 
 List<Widget> Function() get buildScreens => _buildScreens;
 

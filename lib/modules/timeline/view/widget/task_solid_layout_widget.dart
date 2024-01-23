@@ -11,12 +11,14 @@ class TaskSolidLayout extends StatelessWidget {
   final String endTime;
   final String status;
   final String totalMin;
+  final int ?length;
 
   const TaskSolidLayout(
       {required this.title,
         required this.startTime,
         required this.endTime,
         required this.status,
+        this.length,
         required this.totalMin,
         super.key});
 
@@ -41,7 +43,7 @@ class TaskSolidLayout extends StatelessWidget {
           return color = AppColor.primaryColor;
         case "(pending)":
           return color = AppColor.primaryOrange;
-        case "(rejected)":
+        case "(reject)":
           return color = AppColor.errorColorLight;
         default:
           return color = AppColor.primaryColor;
@@ -54,15 +56,20 @@ class TaskSolidLayout extends StatelessWidget {
           return iconData = Icons.done;
         case "(pending)":
           return iconData = Icons.timeline_outlined;
-        case "(rejected)":
+        case "(reject)":
           return iconData = Icons.block_flipped;
         default:
           return iconData = Icons.done;
       }
     }
 
-    return intValue > 46
-        ? Card(
+    return
+
+      intValue > 46
+
+        ?
+
+      Card(
       elevation: 0,
       color: statusColor().withOpacity(0.09),
       shape: _style(statusColor()),
@@ -95,6 +102,7 @@ class TaskSolidLayout extends StatelessWidget {
         ),
       ),
     )
+
         : nullContainer(
       startTime: startTime,
         endTime: endTime,
@@ -140,13 +148,6 @@ class TaskSolidLayout extends StatelessWidget {
 
 Widget nullContainer({required bgColor, required taskText, required int totalTime,required startTime,endTime}) {
 
-  var vlue;
-  switch(totalTime){
-    case >1:
-      return Text("a");
-  }
-
-
 
   return Card(
     elevation: 0,
@@ -154,20 +155,21 @@ Widget nullContainer({required bgColor, required taskText, required int totalTim
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         side: BorderSide(width: .5, color: bgColor)),
-    // child: 1 > totalTime
-    //     ? Padding(
-    //   padding:
-    //   const EdgeInsets.only(left: 6.0, top: 2, right: 2, bottom: 2),
-    //   child: Text(
-    //     taskText = "$startTime",
-    //     maxLines: 1,
-    //     style: AppStyle.mid_large_text.copyWith(
-    //         fontSize: Dimensions.fontSizeDefault,
-    //         color: bgColor,
-    //         overflow: TextOverflow.ellipsis),
-    //   ),
-    // )
-    //     : Container(),
+    child:
+    1 > totalTime
+        ? Padding(
+      padding:
+      const EdgeInsets.only(left: 6.0, top: 2, right: 2, bottom: 2),
+      child: Text(
+        taskText = "$startTime",
+        maxLines: 1,
+        style: AppStyle.mid_large_text.copyWith(
+            fontSize: Dimensions.fontSizeDefault,
+            color: bgColor,
+            overflow: TextOverflow.ellipsis),
+      ),
+    )
+        : Container(color:bgColor.withOpacity(0.09),),
 
   );
 }

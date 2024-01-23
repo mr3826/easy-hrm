@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
@@ -16,14 +17,14 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../common/domain/last_input_model.dart';
+import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
 
 class TimelineController extends GetxController with StateMixin {
-  Timer? _timer;
-
   @override
   void onInit() {
     getProjectDropdown();
@@ -33,25 +34,20 @@ class TimelineController extends GetxController with StateMixin {
 
     getTimelineSummaryByMonth(
         startDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     getCalendarTimelineDataByDate(
         startDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-
-    _timer = Timer.periodic(const Duration(minutes: 2), (timer) {
-      getCalendarTimelineDataByDate(
-          startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-
-      log("GetCalendarTimelineDataByDate Call after 2 minute", error: 0);
-    });
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+    getTimelineSummaryByDate(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
     super.onInit();
   }
@@ -64,6 +60,8 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
+  RxInt selectedSummaryDate = 0.obs;
+  RxInt currentYear = DateTime.now().year.obs;
   String timeLogStatus = "";
   String timeLogDuration = "";
   String timeLineID = "";
@@ -71,8 +69,11 @@ class TimelineController extends GetxController with StateMixin {
 
   RxList<CalendarEventData<String>> eventsOfTask =
       <CalendarEventData<String>>[].obs;
+
   RxList<CalendarEventData<String>> eventOfLeave =
       <CalendarEventData<String>>[].obs;
+
+  List<Appointment> meetings = <Appointment>[];
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
@@ -83,7 +84,7 @@ class TimelineController extends GetxController with StateMixin {
 
   startOrEndTimer({required String timerType}) async {
     final response =
-    await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
+        await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
       "inputData": {"timer_type": timerType}
     });
 
@@ -105,12 +106,12 @@ class TimelineController extends GetxController with StateMixin {
 
   saveTimeEntry() async {
     final response =
-    await NetworkClient().mutationGraphData(saveTimerQueryData, {
+        await NetworkClient().mutationGraphData(saveTimerQueryData, {
       "inputData": {
         "description": descriptionController.text,
         "end_date": startOrEndTimerResponse?.startOrStopTimer?.endDate ?? "",
         "start_date":
-        startOrEndTimerResponse?.startOrStopTimer?.startDate ?? "",
+            startOrEndTimerResponse?.startOrStopTimer?.startDate ?? "",
         "status": "pending",
         "task_id": taskId.value,
         "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
@@ -132,14 +133,13 @@ class TimelineController extends GetxController with StateMixin {
 
   updateTimelineLogDetails(
       {timeLineId,
-        description,
-        endDate,
-        startDate,
-        status,
-        taskId,
-        projectId}) async {
+      description,
+      endDate,
+      startDate,
+      status,
+      taskId,
+      projectId}) async {
     isUpdateTimeLogLoading(true);
-    log("updateTimelineLogDetails start & end ==>$startDate And $endDate");
 
     final response = await NetworkClient()
         .mutationGraphData(updateTimelineLogDetailsQueryData, {
@@ -148,26 +148,29 @@ class TimelineController extends GetxController with StateMixin {
         "description": "$description",
         "end_date": "$endDate",
         "start_date": "$startDate",
-        "status": "$status",
+        "status": "$status"
       }
     });
 
     log(response.toString(), error: 0);
 
     if (response.hasException) {
+      showErrorMessage(message: "Timeline entry not found");
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       getCalendarTimelineDataByDate(
           startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
           endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+              "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
 
       getTimelineSummaryByMonth(
           startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+              "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
           endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+              "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+      Get.find<TimelineController>().timeLineID = "";
+
       Get.back();
     }
     isUpdateTimeLogLoading(false);
@@ -193,15 +196,15 @@ class TimelineController extends GetxController with StateMixin {
   createManualEntry() async {
     isManualEntryLoading(true);
     Duration timeDifference =
-    DateTime.parse(Get.find<DateTimeController>().requestedOutDate.value)
-        .difference(DateTime.parse(
-        Get.find<DateTimeController>().requestedInDate.value));
+        DateTime.parse(Get.find<DateTimeController>().requestedOutDate.value)
+            .difference(DateTime.parse(
+                Get.find<DateTimeController>().requestedInDate.value));
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
       print(taskId.value);
       if (taskId.isNotEmpty) {
         final response =
-        await NetworkClient().mutationGraphData(createNewEntryQuery, {
+            await NetworkClient().mutationGraphData(createNewEntryQuery, {
           "inputData": {
             "end_date": Get.find<DateTimeController>()
                 .requestedOutDate
@@ -286,38 +289,40 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (responseForCalendar.hasException) {
-      log("getCalendarTimelineData:: ${responseForCalendar.exception.toString()}");
+      ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
       isTimelineCalendarByDateLoading(false);
     } else {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
-      eventsOfTask.value = Get.find<TimelineController>()
-          .calendarTimeline
-          ?.getCalenderTimelinesForApp
-          ?.timelines!
-          .map(
-            (e) {
+      print("time line calendar ::: $responseForCalendar");
 
-          DateTime dateTimeNow=DateTime.now();
-          DateTime dateStartTimeValue =
-          DateTime.parse(e.startDate ?? DateTime.now().toString());
-          DateTime dateEndTimeValue =
-          DateTime.parse(e.endDate ?? DateTime.now().toString());
+      meetings.clear();
+      calendarTimeline?.getCalenderTimelinesForApp?.timelines?.map((e) {
+        DateTime dateTimeNow = DateTime.now();
+        DateTime dateStartTimeValue =
+            DateTime.parse(e.startDate ?? DateTime.now().toString());
+        DateTime dateEndTimeValue =
+            DateTime.parse(e.endDate ?? DateTime.now().toString());
 
-          ModelForDescription modelForDescription = ModelForDescription(
-              status: e.status ?? "",
-              description: e.description ?? "",
-              timeLId: e.timelineId ?? "");
+        ModelForDescription modelForDescription = ModelForDescription(
+          status: e.status ?? "",
+          description: e.description ?? "No added yet",
+          timeLId: e.timelineId ?? "",
+          endDate: e.endDate ?? "",
+          startDate: e.startDate ?? "",
+          duration: e.totalMinutes ?? "",
+          taskName: e.task?.name ?? "",
+        );
 
-          Map<String, dynamic> jsonModel = modelForDescription.toJson();
-          String jsonObject = jsonEncode(jsonModel);
-          log(jsonModel.toString(), error: 1);
+        Map<String, dynamic> jsonModel = modelForDescription.toJson();
+        String jsonObject = jsonEncode(jsonModel);
+        log(jsonModel.toString(), error: 1);
 
-          return CalendarEventData(
-            date: DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day),
-
-
+        log(jsonModel.toString(), error: 1);
+        return meetings.add(
+          Appointment(
+            notes: "Note",
+            location: jsonObject,
             startTime: DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
@@ -326,9 +331,7 @@ class TimelineController extends GetxController with StateMixin {
               dateStartTimeValue.minute,
               dateStartTimeValue.second,
             ),
-
-
-            endTime:DateTime(
+            endTime: DateTime(
               dateTimeNow.year,
               dateTimeNow.month,
               dateTimeNow.day,
@@ -336,58 +339,102 @@ class TimelineController extends GetxController with StateMixin {
               dateEndTimeValue.minute,
               dateEndTimeValue.second,
             ),
+            subject: """
+            ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+            
+            
+            ${e.task?.project?.name ?? "No added yet"} 
+            ${convertMiniToHour(Duration(minutes: int.parse(e.totalMinutes ?? "00"))).toString()} 
+            
+            ${timeFormatTo24h(DateTime.parse(e.endDate ?? Get.find<DateTimeController>().requestedDate.value))}
+            
 
-            event: e.task?.project?.name ?? "",
 
-            //total minute added here
-            title: e.totalMinutes ?? "0",
+            
+            """,
+            color: statusAccordingToColor(e.status),
+            isAllDay: false,
+          ),
+        );
+      }).toList();
 
-            //status and description added here
-            description: jsonObject,
-          );
-        },
-      ).toList() ??
-          [];
+      calendarTimeline?.getCalenderTimelinesForApp?.leaves?.map((e) {
+        DateTime dateTimeNow = DateTime.now();
+        DateTime dateStartTimeValue =
+            DateTime.parse(e.startDate ?? DateTime.now().toString());
+        DateTime dateEndTimeValue =
+            DateTime.parse(e.endDate ?? DateTime.now().toString());
 
-      eventOfLeave.value = Get.find<TimelineController>()
-          .calendarTimeline
-          ?.getCalenderTimelinesForApp
-          ?.leaves
-          ?.map(
-            (e) {
-          DateTime dateTimeValue =
-          DateTime.parse(e.startDate ?? DateTime.now().toString());
-          DateTime dateCreateAtValue =
-          DateTime.parse(e.createdAt ?? DateTime.now().toString());
+        ModelForDescription modelForDescription = ModelForDescription(
+          status: e.status ?? "",
+          description: e.description ?? "No added yet",
+          timeLId: e.leaveType?.id ?? "",
+          endDate: e.endDate ?? "",
+          startDate: e.startDate ?? "",
+          duration: e.totalLeaveMinutes ?? "",
+          taskName: e.leaveType?.name ?? "",
+        );
 
-          ModelForDescription modelForDescription = ModelForDescription(
-              status: e.status ?? "", description: e.description ?? "");
-          Map<String, dynamic> jsonModel = modelForDescription.toJson();
-          String jsonObject = jsonEncode(jsonModel);
+        Map<String, dynamic> jsonModel = modelForDescription.toJson();
+        String jsonObject = jsonEncode(jsonModel);
+        log(jsonModel.toString(), error: 1);
 
-          return CalendarEventData(
-            date: DateTime(
-                dateTimeValue.year, dateTimeValue.month, dateTimeValue.day),
-            startTime:
-            DateTime.parse(e.startDate ?? DateTime.now().toString()),
-            endTime:
-            DateTime.tryParse(e.endDate ?? DateTime.now().toString()),
-            event: e.leaveType?.name ?? "",
+        return meetings.add(
+          Appointment(
+            startTime: DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateStartTimeValue.hour,
+              dateStartTimeValue.minute,
+              dateStartTimeValue.second,
+            ),
+            endTime: DateTime(
+              dateTimeNow.year,
+              dateTimeNow.month,
+              dateTimeNow.day,
+              dateEndTimeValue.hour,
+              dateEndTimeValue.minute,
+              dateEndTimeValue.second,
+            ),
+            subject: """
+            ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
+            
 
-            //total minute added here
-            title: e.totalLeaveMinutes ?? "0",
-
-            //status and description added here
-            description: jsonObject,
-
-            //Date of application or create at date
-            endDate: dateCreateAtValue,
-          );
-        },
-      ).toList() ??
-          [];
+            ${e.leaveType?.name ?? "No added yet"}
+            ${convertMiniToHour(Duration(minutes: int.parse(e.totalLeaveMinutes.toString()))).toString()}  
+            
+           
+            ${timeFormatTo24h(DateTime.parse(e.endDate ?? "00:00"))}
+            
+            """,
+            color: statusAccordingToColor(e.status),
+            isAllDay: false,
+            location: jsonObject,
+          ),
+        );
+      }).toList();
     }
 
     isTimelineCalendarByDateLoading(false);
+  }
+}
+
+statusAccordingToColor(status) {
+  switch (status) {
+    case "pending":
+      return AppColor.pendingColor.withOpacity(0.1);
+    case "approved":
+      return AppColor.primaryColor.withOpacity(0.1);
+    case "taken":
+      return AppColor.takenColor.withOpacity(0.1);
+    case "reject":
+      return AppColor.errorColorLight.withOpacity(0.1);
+    case "cancelled":
+      return AppColor.errorColor.withOpacity(0.1);
+    case "rejected":
+      return AppColor.errorColor.withOpacity(0.1);
+    default:
+      return AppColor.hintColor.withOpacity(0.1);
   }
 }
