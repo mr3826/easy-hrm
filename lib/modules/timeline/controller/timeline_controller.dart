@@ -19,6 +19,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../common/domain/last_input_model.dart';
+import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../model/calendar_timeline.dart';
 import '../model/create_time_entry.dart';
@@ -139,17 +140,11 @@ class TimelineController extends GetxController with StateMixin {
       taskId,
       projectId}) async {
     isUpdateTimeLogLoading(true);
-    log("updateTimelineLogDetails start & end ==>$startDate And :::  $endDate");
-    log("timeline_id ==>$timeLineId", error: 99);
-    log("description ==>$description");
-    log("taskId ==>$taskId");
-    log("projectId ==>$projectId");
-    log("status ==>$status");
 
     final response = await NetworkClient()
         .mutationGraphData(updateTimelineLogDetailsQueryData, {
       "inputData": {
-      //  "timeline_id": "$timeLineId",
+        "timeline_id": "$timeLineId",
         "description": "$description",
         "end_date": "$endDate",
         "start_date": "$startDate",
@@ -160,6 +155,7 @@ class TimelineController extends GetxController with StateMixin {
     log(response.toString(), error: 0);
 
     if (response.hasException) {
+      showErrorMessage(message: "Timeline entry not found");
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       getCalendarTimelineDataByDate(
@@ -402,11 +398,11 @@ class TimelineController extends GetxController with StateMixin {
             subject: """
             ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
             
-            
+
             ${e.leaveType?.name ?? "No added yet"}
             ${convertMiniToHour(Duration(minutes: int.parse(e.totalLeaveMinutes.toString()))).toString()}  
             
-             
+           
             ${timeFormatTo24h(DateTime.parse(e.endDate ?? "00:00"))}
             
             """,

@@ -24,32 +24,13 @@ import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../../leave/view/widget/single_date_picker_calendar.dart';
 import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
-import '../widget/logdetails_widget.dart';
+
 
 class UpdateTimeLineLog extends StatelessWidget {
   const UpdateTimeLineLog({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    print("afasdfsfds ::::::::: ${DateFormat("yyyy-MM-dd hh:mma")
-        .parse(
-        "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
-        .toString()}");
-    print("afasdfsfds ::::::::: ${DateFormat("yyyy-MM-dd hh:mma")
-        .parse(
-        "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
-        .toString()}");
-    print("afasdfsfds ::::::::: ${DateFormat("hh:mma")
-        .parse(
-        Get.find<DateTimeController>().pickedOutTime.value)
-        .toString()}");
-        print("${Get.find<DateTimeController>().pickedOutTime.value}");
-
-
-    print(Get.find<TimelineController>()
-        .timeLineID
-        .toString());
     return Scaffold(
       appBar: timeLogAppbar(context),
       backgroundColor: Get.find<TimelineController>().timeLogColor,
@@ -101,7 +82,6 @@ class UpdateTimeLineLog extends StatelessWidget {
                       ),
                       customSpacerHeight(height: 20),
                       _checkStatus()
-
                           ? Obx(() => Get.find<TimelineController>()
                                   .isUpdateTimeLogLoading
                                   .isTrue
@@ -114,7 +94,7 @@ class UpdateTimeLineLog extends StatelessWidget {
                                     Get.find<TimelineController>()
                                         .updateTimelineLogDetails(
                                       description:
-                                      timelineLogDetailsDrcController.text,
+                                          timelineLogDetailsDrcController.text,
                                       status: Get.find<TimelineController>()
                                           .timeLogStatus
                                           .toString(),
@@ -387,14 +367,10 @@ class UpdateTimeLineLog extends StatelessWidget {
 
   _checkStatus() {
     return Get.find<TimelineController>().timeLogStatus != ("approved") &&
-        Get.find<TimelineController>().timeLogStatus !=
-            ("reject") &&
-        Get.find<TimelineController>().timeLogStatus !=
-            ("rejected") &&
-        Get.find<TimelineController>().timeLogStatus !=
-            ("cancelled") &&
-        Get.find<TimelineController>().timeLogStatus !=
-            ("taken");
+        Get.find<TimelineController>().timeLogStatus != ("reject") &&
+        Get.find<TimelineController>().timeLogStatus != ("rejected") &&
+        Get.find<TimelineController>().timeLogStatus != ("cancelled") &&
+        Get.find<TimelineController>().timeLogStatus != ("taken");
   }
 }
 
@@ -454,6 +430,7 @@ Widget statusBtn({required text, required textColor}) {
     ),
   );
 }
+
 AppBar timeLogAppbar(context) {
   return AppBar(
     elevation: 0,
