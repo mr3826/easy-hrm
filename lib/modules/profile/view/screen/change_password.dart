@@ -34,7 +34,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   customSpacerHeight(height: 12),
                   userTextFieldLayout(
                     titleText: AppString.text_current_password.tr,
-                    controller: currentPassword,
+                    controller: currentPasswordController,
                     hintText: AppString.text_min_8_character.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -82,7 +82,8 @@ class ChangePasswordScreen extends StatelessWidget {
                                   confirmPasswordController.text) {
                                 Get.find<UpdateProfileController>()
                                     .changePassword(
-                                        currentPassword: currentPassword.text,
+                                        currentPassword:
+                                            currentPasswordController.text,
                                         newPassword:
                                             confirmPasswordController.text);
                               } else {

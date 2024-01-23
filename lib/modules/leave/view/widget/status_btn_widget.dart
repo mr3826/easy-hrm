@@ -297,7 +297,6 @@ void _updateDataFromApiResponse(
   Get.find<TimelineController>().timeLogDuration = duration;
   Get.find<TimelineController>().timeLogColor = color;
   Get.find<TimelineController>().timeLogStatus = status;
-
   Get.find<TimelineController>().timeLineID = timelineId.toString();
 
   Get.find<DateTimeController>().requestedDate.value =
