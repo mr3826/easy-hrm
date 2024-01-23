@@ -14,16 +14,13 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../leave/view/widget/widget.dart';
-import '../../controller/timeline_controller.dart';
-import 'custom_timeline_calendar.dart';
+import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
@@ -39,9 +36,12 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
-    return   Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue &&  Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue?
-  const CircularProgressIndicator():
-      Padding(
+    return Get.find<TimelineController>()
+                .isTimelineSummaryByDateLoading
+                .isTrue &&
+            Get.find<TimelineController>().isTimelineSummaryByDateLoading.isTrue
+        ? const CircularProgressIndicator()
+        : Padding(
             padding: const EdgeInsets.only(left: 35.0, bottom: 18),
             child: Row(
               children: [
@@ -55,6 +55,7 @@ class TimelineScreen extends GetView<TimelineController> {
             ),
           );
   }
+
   _timerStringBtn() {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
@@ -85,7 +86,7 @@ class TimelineScreen extends GetView<TimelineController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(250),
+    expandedHeight: AppLayout.getHeight(230),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,
@@ -100,7 +101,7 @@ SliverAppBar get sliverAppBar {
             children: [
               customSpacerHeight(height: 6),
               appBar(text: AppString.text_time_line.tr),
-              customSpacerHeight(height: 6),
+              customSpacerHeight(height: 4),
               timelineLayout(),
               customSpacerHeight(height: 14),
             ],
@@ -131,7 +132,6 @@ _buttonRadiusLayout() {
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-
   return const SliverToBoxAdapter(
     child: CustomTimelineCalendar(),
   );
