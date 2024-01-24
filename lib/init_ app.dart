@@ -34,7 +34,6 @@ Future<void> initApp() async {
       statusBarIconBrightness: Brightness.dark));
 
   Get.put(SplashController());
-  Get.put(SignInController());
   Get.put(ForgotPasswordController());
   Get.put(FileUploadController());
   Get.put(PickedFileFormStorage());
@@ -43,17 +42,17 @@ Future<void> initApp() async {
   Get.put(PasswordController());
   Get.put(LogoutController());
   Get.put(SelectedTaskController());
-  Get.lazyPut(() => LeaveScreenController(), fenix: true);
-  Get.lazyPut(() => LeaveRecordsController(), fenix: true);
-  Get.lazyPut(() => UserProfileController(), fenix: true);
-  Get.lazyPut(() => UpdateProfileController(), fenix: true);
-  Get.lazyPut(() => DashboardController(), fenix: true);
-  Get.lazyPut(() => NotificationController(), fenix: true);
-  Get.lazyPut(() => TimelineController(), fenix: true);
-  Get.lazyPut(() => TimelineSummaryController(), fenix: true);
-  Get.lazyPut(() => DateTimeController(), fenix: true);
-  Get.lazyPut(() => ApplyLeaveController(), fenix: false);
-  Get.lazyPut(() => UpDateLeaveController(), fenix: false);
-  Get.lazyPut(() => NotificationController());
+  Get.put(LeaveScreenController());
+  Get.put(LeaveRecordsController());
+  Get.put(UserProfileController());
+  Get.put(UpdateProfileController());
+  Get.put(NotificationController());
+  Get.put(TimelineController());
+  Get.put(DashboardController());
+  Get.put(TimelineSummaryController());
+  Get.put(DateTimeController());
+  Get.put(ApplyLeaveController());
+  Get.put(UpDateLeaveController());
+  Get.put(NotificationController());
 
 }

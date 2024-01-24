@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -149,3 +148,4 @@ _buttonRadiusLayout() {
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(child: IndividualEventView());
 }
+
