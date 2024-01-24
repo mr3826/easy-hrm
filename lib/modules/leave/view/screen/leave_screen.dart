@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -21,14 +22,23 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.isRegistered<DateTimePickerController>()) {
-      Get.delete<DateTimePickerController>();
+    if (!Get.isRegistered<LeaveScreenController>()) {
+      Get.put(LeaveScreenController());
     }
-    Get.put(DateTimePickerController());
+    if (!Get.isRegistered<DateTimePickerController>()) {
+      Get.put(DateTimePickerController());
+    }
     return controller.obx(
         (state) => Scaffold(
-              body: CustomScrollView(
-                slivers: [sliverAppBar, sliverToBoxAdapter],
+              body: RefreshIndicator(
+                onRefresh: _refreshScreen,
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    sliverAppBar,
+                    sliverToBoxAdapter
+                  ],
+                ),
               ),
               floatingActionButton: _applyLeaveBtn(context),
             ),
@@ -39,8 +49,11 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   _applyLeaveBtn(context) {
     return GestureDetector(
       onTap: () {
+        if (Get.isRegistered<ApplyLeaveController>()) {
+          Get.delete<ApplyLeaveController>();
+        }
+        Get.put(ApplyLeaveController());
         leaveNoteController.clear();
-
         _customButtonSheet(context: context, child: ApplyLeaveScreen());
       },
       child: Padding(
@@ -96,6 +109,11 @@ class LeaveScreen extends GetView<LeaveScreenController> {
           ),
         ));
   }
+
+  Future<void> _refreshScreen() async {
+    await controller.getLeaveSummaryForDashboard();
+    await controller.getLeaveDetailsByDate();
+  }
 }
 
 SliverAppBar get sliverAppBar {
@@ -148,4 +166,3 @@ _buttonRadiusLayout() {
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(child: IndividualEventView());
 }
-

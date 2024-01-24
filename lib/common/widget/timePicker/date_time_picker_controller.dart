@@ -8,9 +8,9 @@ class DateTimePickerController extends GetxController {
     ///out time should be added first
 
     outDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
-    outTime = DateFormat('HH:mm:ss').format(DateTime.now()).obs;
+    outTime = DateFormat('HH:mm').format(DateTime.now()).obs;
     inDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
-    inTime = DateFormat('HH:mm:ss').format(DateTime.now()).obs;
+    inTime = DateFormat('HH:mm').format(DateTime.now()).obs;
     getOutDateTime();
     getInDateTime();
     super.onInit();
@@ -31,12 +31,12 @@ class DateTimePickerController extends GetxController {
         int.parse(inDate.substring(8, 10)),
         int.parse(inTime.substring(0, 2)),
         int.parse(inTime.substring(3, 5)),
-        int.parse(inTime.substring(6, 8)),
       );
-      inDateTime.value = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+      inDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+      print("inDateTime::${inDateTime.value}");
     } catch (e) {
-      inDateTime.value =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+      inDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+      print("inDateTime::${inDateTime.value}");
     }
   }
 
@@ -48,12 +48,10 @@ class DateTimePickerController extends GetxController {
         int.parse(outDate.substring(8, 10)),
         int.parse(outTime.substring(0, 2)),
         int.parse(outTime.substring(3, 5)),
-        int.parse(outTime.substring(6, 8)),
       );
-      outDateTime.value = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+      outDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
     } catch (e) {
-      outDateTime.value =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+      outDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
     }
   }
 }

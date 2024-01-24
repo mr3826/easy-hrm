@@ -51,8 +51,6 @@ Future<void> initApp() async {
   Get.put(DashboardController());
   Get.put(TimelineSummaryController());
   Get.put(DateTimeController());
-  Get.put(ApplyLeaveController());
-  Get.put(UpDateLeaveController());
   Get.put(NotificationController());
 
 }

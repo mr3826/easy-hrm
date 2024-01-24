@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 
@@ -59,12 +60,13 @@ class UpDateLeaveController extends GetxController with StateMixin {
       numberOfLeaves.value = '';
       leaveTypeId = '';
       leaveNoteController.clear();
-
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
 
       Get.off(() => MainScreen(
             routeIndex: 1,
           ));
+      await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
+      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
     }
 
     isUpdateLeaveLoading(false);

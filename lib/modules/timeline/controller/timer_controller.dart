@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 
 import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
@@ -62,6 +64,8 @@ class TimeCounterController extends GetxController {
     isLoading(true);
     final response =
         await NetworkClient().getGraphQuery(queryString: timerStatusQuery);
+
+    print(GetStorage().read(AppString.ORGANIZATION_ID));
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);

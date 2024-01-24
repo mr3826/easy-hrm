@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
-import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_summary_dashboard.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/network/network_client.dart';
@@ -33,14 +30,14 @@ class LeaveScreenController extends GetxController with StateMixin {
   }
 
   getLeaveDetailsByDate() async {
-    print(Get.find<DateTimePickerController>().inDate.value);
-
     isLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: getLeaveDetailsByDateQuery, variables: {
       "queryData": {
-        "startDate": "${Get.find<DateTimePickerController>().inDate.value}T00:00:00",
-        "endDate": "${Get.find<DateTimePickerController>().inDate.value}T23:59:00"
+        "startDate":
+            "${Get.find<DateTimePickerController>().inDate.value}T00:00:00",
+        "endDate":
+            "${Get.find<DateTimePickerController>().inDate.value}T23:59:00"
       }
     });
 
@@ -84,8 +81,8 @@ class LeaveScreenController extends GetxController with StateMixin {
     } else {
       showSuccessMessage(message: AppString.leaveRemovedSuccessMessage.tr);
       Get.off(() => MainScreen(
-        routeIndex: 1,
-      ));
+            routeIndex: 1,
+          ));
       await getLeaveSummaryForDashboard();
       await getLeaveDetailsByDate();
     }
@@ -95,6 +92,7 @@ class LeaveScreenController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
+    Get.put(DateTimePickerController());
     await getLeaveSummaryForDashboard();
     await getLeaveDetailsByDate();
     super.onInit();
