@@ -15,7 +15,7 @@ class TimeLineCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("SFCalendarScreen build called", error: 100);
+    log("TimeLineCalendar build called", error: 100);
     return Obx(() =>
         Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
             ? Container(
@@ -28,6 +28,7 @@ class TimeLineCalendar extends StatelessWidget {
                   view: CalendarView.day,
                   dataSource: _getCalendarDataSource(),
                   backgroundColor: AppColor.cardColor,
+                  viewNavigationMode: ViewNavigationMode.none,
                   appointmentTextStyle:
                       const TextStyle(color: AppColor.normalTextColor),
                   selectionDecoration:
@@ -71,8 +72,6 @@ class TimeLineCalendar extends StatelessWidget {
                   ),
                   showCurrentTimeIndicator: false,
                   initialDisplayDate: DateTime.now(),
-                  headerStyle:
-                      const CalendarHeaderStyle(textAlign: TextAlign.center),
                   monthViewSettings: const MonthViewSettings(
                       appointmentDisplayMode:
                           MonthAppointmentDisplayMode.appointment),
