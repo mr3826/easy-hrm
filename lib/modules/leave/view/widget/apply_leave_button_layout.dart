@@ -38,7 +38,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       customTitleText(
-                          text: AppString.text_leave_type.tr, isRequired: true),
+                          text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
                       const ApplyLeaveDropDown(),
                       customSpacerHeight(height: 8),
@@ -53,6 +53,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                   "2024-01-01 ${Get.find<ApplyLeaveController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
+
                       customSpacerHeight(height: 20),
                       customTitleText(
                           text: AppString.text_to.tr, isRequired: true),
@@ -119,6 +120,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                               },
                               buttonText: AppString.text_apply.tr,
                               cancelAction: () {
+                                leaveNoteController.clear();
                                 Navigator.pop(context);
                                 Get.find<FileUploadController>()
                                     .storageForUpload
