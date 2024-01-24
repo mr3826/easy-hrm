@@ -25,9 +25,6 @@ class TimerScreen extends StatefulWidget {
 }
 
 class _TimerScreenState extends State<TimerScreen> {
-  final TimeCounterController _timeCounterController =
-      Get.put(TimeCounterController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,19 +41,15 @@ class _TimerScreenState extends State<TimerScreen> {
                     .startOrEndTimer(timerType: StartOrEndTimer.start.name);
               }
             },
-            child: const SizedBox(
-              child: Stack(
-                children: [
-                  SizedBox(height: 400, width: 400, child: TimerAnimation()),
-                ],
-              ),
-            ),
+            child: SizedBox(
+                height: AppLayout.getHeight(400),
+                width: AppLayout.getWidth(400),
+                child: const Center(child: TimerAnimation())),
           ),
           _saveBtn(
             onAction: () async {
               customButtonSheet(
                   height: .6, context: context, child: const AddToTaskScreen());
-
             },
           ),
         ],
