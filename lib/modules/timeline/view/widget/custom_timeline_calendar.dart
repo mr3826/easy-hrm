@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -23,16 +24,23 @@ class CustomTimelineCalendar extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Obx(() => Stack(
             children: [
+              const TimeLineCalendar(),
+              _summaryLayout(),
+              _dateCalendarLayout(),
               Get.find<TimelineController>()
                           .isTimelineSummaryByDateLoading
                           .isTrue &&
                       Get.find<TimelineController>()
                           .isTimelineCalendarByDateLoading
                           .isTrue
-                  ? Center(child: Container(color: Colors.transparent))
-                  : const TimeLineCalendar(),
-              _summaryLayout(),
-              _dateCalendarLayout(),
+                  ? const Positioned(
+                      top: 130,
+                      right: 100,
+                      left: 100,
+                      child: Center(
+                          child: CupertinoActivityIndicator(
+                              radius: 20, color: Colors.blueAccent)))
+                  : Container(),
             ],
           )),
     );
@@ -94,11 +102,16 @@ Widget _dateCalendarLayout() {
                         color: AppColor.normalTextColor,
                         size: 20,
                       )),
+                  //  DateFormat('dd MMM yyyy').format()
+
                   Text(
                     Get.find<DateTimeController>().requestedDate.value ==
                             DateFormat('yyyy-MM-dd').format(DateTime.now())
                         ? "Today"
-                        : Get.find<DateTimeController>().requestedDate.value,
+                        : DateFormat('dd MMM yyyy').format(DateTime.parse(
+                            Get.find<DateTimeController>()
+                                .requestedDate
+                                .value)),
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.secondaryColor,
                         fontWeight: FontWeight.bold),
