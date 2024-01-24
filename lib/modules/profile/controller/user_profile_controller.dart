@@ -6,7 +6,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/success_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/init_%20app.dart';
 import 'package:payrun_mobile/modules/auth/domain/organization_info.dart';
+import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
@@ -202,6 +204,9 @@ class UserProfileController extends GetxController with StateMixin {
       required String orgId,
       required String organizationName}) async {
     isOrganizationChangeLoading(true);
+
+    print(
+        "ORGANIZATION_ID:: ${GetStorage().read(AppString.ORGANIZATION_ID) == orgId}");
     try {
       Response response = await NetworkClient().postRequest(
           Api.LOGIN, {"email": email, "password": password, "orgId": orgId});
@@ -212,17 +217,20 @@ class UserProfileController extends GetxController with StateMixin {
             message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
         logSuccessMessage(logName: "login", response: response);
+        GetStorage().write(AppString.ORGANIZATION_ID, orgId);
+        print(
+            "Is itToken Matched:: ${GetStorage().read(AppString.ID_TOKEN) == SignInResponse.fromJson(response.body).data?.idToken}");
         GetStorage().write(AppString.ID_TOKEN,
             SignInResponse.fromJson(response.body).data?.idToken ?? "");
         GetStorage().write(AppString.ACCESS_TOKEN,
             SignInResponse.fromJson(response.body).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN,
             SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
-        GetStorage().write(AppString.LOGGED_IN, true);
         _saveData(email, password, organizationName);
-        Get.offAll(() => MainScreen(
-              routeIndex: 2,
-            ));
+        Get.deleteAll();
+        await initApp();
+        Future.delayed(const Duration(milliseconds: 800),
+            () => Get.offAllNamed(Routes.MAIN_SCREEN));
       }
     } catch (e) {
       log(e.toString());

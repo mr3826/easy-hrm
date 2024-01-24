@@ -15,7 +15,12 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import 'package:get/get.dart';
 import '../../../../utils/dimensions.dart';
+import '../../../dashboard/view/screen/dashboard.dart';
+import '../../../leave/view/screen/leave_screen.dart';
+import '../../../notification/view/screen/notification.dart';
 import '../../../profile/controller/profile_image_selected_controller.dart';
+import '../../../profile/view/screen/user_profile.dart';
+import '../../../timeline/view/screen/timeline.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
@@ -73,7 +78,13 @@ class _MainScreenState extends State<MainScreen> {
         body: PersistentTabView(
           context,
           controller: controller,
-          screens: buildScreens(),
+          screens: [
+            const TimelineScreen(),
+            const LeaveScreen(),
+            Dashboard(),
+            const NotificationScreen(),
+            const ProfileScreen(),
+          ],
           items: _navBarsItems(),
           backgroundColor: AppColor.backgroundColor,
           confineInSafeArea: true,

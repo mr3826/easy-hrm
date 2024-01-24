@@ -23,7 +23,6 @@ class ApplyLeaveController extends GetxController with StateMixin {
   void onInit() async {
     super.onInit();
     await getLeaveType();
-    await getWorkShift();
   }
 
   LeaveTypeDropdown? leaveTypeDropdown;

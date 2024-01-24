@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -14,6 +13,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../utils/utils.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
 
@@ -53,6 +53,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
           Get.delete<ApplyLeaveController>();
         }
         Get.put(ApplyLeaveController());
+        leaveNoteController.clear();
         _customButtonSheet(context: context, child: ApplyLeaveScreen());
       },
       child: Padding(

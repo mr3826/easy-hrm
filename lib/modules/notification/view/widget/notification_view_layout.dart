@@ -29,7 +29,7 @@ class NotificationViewLayout extends StatelessWidget {
   _newNotificationView() {
     return ListView.builder(
         itemCount: _controller.newNotificationIdList?.length ?? 0,
-        physics: const BouncingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         itemBuilder: (context, index) {
           final notification = _controller.newNotification?[index].notification;
@@ -53,7 +53,7 @@ class NotificationViewLayout extends StatelessWidget {
   _seenNotificationView() {
     return ListView.builder(
         itemCount: _controller.seenNotification?.length ?? 0,
-        physics: const BouncingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         itemBuilder: (context, index) {
           final notification =

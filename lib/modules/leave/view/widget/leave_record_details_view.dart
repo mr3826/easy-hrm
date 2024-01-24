@@ -34,28 +34,35 @@ class LeaveRecordDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     _checkLeaveDateDuration(leaveRecords ?? GetLeaveRecords());
 
-    return Column(
-      children: [
-        customButtonSheetAppbar(text: leaveDate, subtext: leaveWeekday),
-        customSpacerHeight(height: 12),
-        _infoLayout(
-            text: AppString.text_type_dot.tr,
-            dynamicText: leaveRecords?.leaveType?.type ?? ""),
-        _infoLayout(
-            text: AppString.text_duration.tr,
-            dynamicText: leaveRecords?.duration != null
-                ? leaveRecords?.duration > 1
-                    ? "${leaveRecords?.duration.toString()} days"
-                    : "${leaveRecords?.duration.toString()} day"
-                : ""),
-        _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
-        _infoLayout(
-            text: AppString.text_date_of_application.tr,
-            dynamicText:
-                dateMonthYearFormatFromDatetime(leaveRecords?.createdAt ?? "")),
-        customSpacerHeight(height: 50),
-        _buttonLayout(context)
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Column(
+        children: [
+          customButtonSheetAppbar(
+              text: leaveDate,
+              subtext: leaveWeekday,
+              isLeave: true,
+              status: status),
+          customSpacerHeight(height: 12),
+          _infoLayout(
+              text: AppString.text_type_dot.tr,
+              dynamicText: leaveRecords?.leaveType?.type ?? ""),
+          _infoLayout(
+              text: AppString.text_duration.tr,
+              dynamicText: leaveRecords?.duration != null
+                  ? leaveRecords?.duration > 1
+                      ? "${leaveRecords?.duration.toString()} days"
+                      : "${leaveRecords?.duration.toString()} day"
+                  : ""),
+          _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
+          _infoLayout(
+              text: AppString.text_date_of_application.tr,
+              dynamicText: dateMonthYearFormatFromDatetime(
+                  leaveRecords?.createdAt ?? "")),
+          customSpacerHeight(height: 50),
+          _buttonLayout(context)
+        ],
+      ),
     );
   }
 

@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 
 import '../../../utils/api_endpoints.dart';

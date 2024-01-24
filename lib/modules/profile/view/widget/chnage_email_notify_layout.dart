@@ -11,6 +11,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import 'action_layout_widget.dart';
+
 class ChangeEmailNotifyLayout extends StatelessWidget {
   ChangeEmailNotifyLayout({super.key});
 
@@ -48,10 +50,10 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
                 ),
                 customSpacerHeight(height: 8),
                 GestureDetector(
-                    onTap: () => customButtonSheet(
-                        context: context,
-                        height: .7,
-                        child: ChangeEmailScreen()),
+                    onTap: () {
+                      customAntButtonSheet(
+                          context: context, child: ChangeEmailScreen());
+                    },
                     child: Text(
                       AppString.text_change_email.tr,
                       style: AppStyle.normal_text_grey.copyWith(

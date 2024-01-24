@@ -30,14 +30,14 @@ class LeaveScreenController extends GetxController with StateMixin {
   }
 
   getLeaveDetailsByDate() async {
-    print(Get.find<DateTimePickerController>().inDate.value);
-
     isLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: getLeaveDetailsByDateQuery, variables: {
       "queryData": {
-        "startDate": "${Get.find<DateTimePickerController>().inDate.value}T00:00:00",
-        "endDate": "${Get.find<DateTimePickerController>().inDate.value}T23:59:00"
+        "startDate":
+            "${Get.find<DateTimePickerController>().inDate.value}T00:00:00",
+        "endDate":
+            "${Get.find<DateTimePickerController>().inDate.value}T23:59:00"
       }
     });
 
@@ -81,8 +81,8 @@ class LeaveScreenController extends GetxController with StateMixin {
     } else {
       showSuccessMessage(message: AppString.leaveRemovedSuccessMessage.tr);
       Get.off(() => MainScreen(
-        routeIndex: 1,
-      ));
+            routeIndex: 1,
+          ));
       await getLeaveSummaryForDashboard();
       await getLeaveDetailsByDate();
     }
@@ -92,6 +92,7 @@ class LeaveScreenController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
+    Get.put(DateTimePickerController());
     await getLeaveSummaryForDashboard();
     await getLeaveDetailsByDate();
     super.onInit();

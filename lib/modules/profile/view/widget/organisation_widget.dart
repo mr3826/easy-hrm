@@ -61,7 +61,11 @@ class OrganisationView extends StatelessWidget {
                         Get.find<UserProfileController>().login(
                             email: lastInput.email ?? "",
                             password: lastInput.password ?? "",
-                            orgId: GetStorage().read(AppString.ORGANIZATION_ID),
+                            orgId: Get.find<UserProfileController>()
+                                .organizationInfo
+                                ?.getUserOrganizations
+                                ?.data?[index]
+                                .organization?.id??"",
                             organizationName: Get.find<UserProfileController>()
                                     .organizationInfo
                                     ?.getUserOrganizations

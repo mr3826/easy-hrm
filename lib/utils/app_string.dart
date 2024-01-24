@@ -256,6 +256,7 @@ class AppString {
   static const String text_new_entry = "New entry";
   static const String text_leave = "Leave";
   static const String text_leave_type = "Leave type";
+  static const String text_leave_name = "Leave name";
   static const String text_apply_leve = "Apply leave";
   static const String text_apply = "Apply";
   static const String text_remove_time_log = "Remove timelog";

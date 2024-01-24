@@ -41,6 +41,7 @@ Widget textFiledLayout() {
                 editFirstNameController.text.isNotEmpty) {
               print(variables);
               Get.find<UpdateProfileController>().updateUserProfile(variables);
+              print(variables.toString());
             }
           },
           cancelAction: () {
@@ -88,7 +89,7 @@ Map<String, dynamic>? _addVariables() {
             ?.firstName ??
         "";
   }
-  inputData["org_user_id"] = "4ce59a0e-4180-4a51-b654-8dd9e5b3d64c";
+  inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
   inputData["department_id"] = Get.find<UserProfileController>()
           .userDetails
           ?.getOrganizationUserDetails
@@ -157,12 +158,7 @@ _userAddress() {
 
 _userLastName() {
   return userTextFieldLayout(
-      hintText: Get.find<UserProfileController>()
-              .userDetails
-              ?.getOrganizationUserDetails
-              ?.profile
-              ?.lastName ??
-          AppString.text_last_name.tr,
+      hintText: AppString.text_last_name.tr,
       titleText: AppString.text_last_name.tr,
       controller: editLastNameController);
 }

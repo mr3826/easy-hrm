@@ -265,6 +265,7 @@ class InTimePicker extends StatelessWidget {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
+
                 if (time.isNotEmpty) {
                   // set time in 00:00:00 format
                   if (time.length < 15) {

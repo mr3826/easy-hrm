@@ -33,9 +33,10 @@ class DateTimePickerController extends GetxController {
         int.parse(inTime.substring(3, 5)),
       );
       inDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+      print("inDateTime::${inDateTime.value}");
     } catch (e) {
-      inDateTime.value =
-          DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+      inDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+      print("inDateTime::${inDateTime.value}");
     }
   }
 
@@ -50,8 +51,7 @@ class DateTimePickerController extends GetxController {
       );
       outDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
     } catch (e) {
-      outDateTime.value =
-          DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+      outDateTime.value = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
     }
   }
 }

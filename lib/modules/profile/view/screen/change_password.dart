@@ -31,7 +31,7 @@ class ChangePasswordScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  customSpacerHeight(height: 12),
+                  customSpacerHeight(height: 14),
                   userTextFieldLayout(
                     titleText: AppString.text_current_password.tr,
                     controller: currentPasswordController,
@@ -68,7 +68,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  customSpacerHeight(height: 20),
+                  customSpacerHeight(height: 30),
                   Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
                       ? const Center(
                           child: CupertinoActivityIndicator(

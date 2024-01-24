@@ -389,7 +389,7 @@ class Dashboard extends GetView<DashboardController> {
                               0,
                           description: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].description),
                     ),
-                    height: 0.5),
+                    height: 0.6),
                 child: Card(
                   elevation: 0,
                   color: AppColor.primaryColor.withOpacity(0.06),
