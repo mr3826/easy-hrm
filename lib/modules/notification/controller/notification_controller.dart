@@ -17,6 +17,7 @@ class NotificationController extends GetxController with StateMixin {
   final isSeenNotificationHasData = false.obs;
   final newNotificationLimit = 50.obs;
   final newNotificationOffset = 0.obs;
+  final notificationTabBarIndex = 0.obs;
 
   getNewNotification() async {
     change(null, status: RxStatus.loading());
