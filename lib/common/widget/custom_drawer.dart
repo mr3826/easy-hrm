@@ -44,7 +44,8 @@ void showCustomAtmBtnSheet(
     pageBuilder: (_, __, ___) {
       return Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height-height),
+        margin:
+            EdgeInsets.only(top: MediaQuery.of(context).size.height - height),
         child: Center(
           child: child,
         ),

@@ -45,7 +45,12 @@ class UpdateLeave extends StatelessWidget {
                     DateTime.parse(leaveRecords!.endDate!).day
                 ? DateFormat('EEEE').format(DateTime.parse(
                     leaveRecords?.startDate ?? DateTime.now().toString()))
-                : "${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))} - ${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}"),
+                : "${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))} - ${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}",
+
+
+        ),
+
+
         Expanded(child: UpdateLeaveButtonLayout(leaveRecords: leaveRecords))
       ],
     );
@@ -80,7 +85,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       customTitleText(
-                          text: AppString.text_leave_type.tr, isRequired: true),
+                          text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
 
                       UpdateLeaveDropdown(

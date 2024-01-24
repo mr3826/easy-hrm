@@ -18,18 +18,17 @@ class NotificationScreen extends GetView<NotificationController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: notificationAppbar(),
-      body: controller.obx(
-          (state) => RefreshIndicator(
-              onRefresh: _reloadPage, child: NotificationTabBar()),
+      body: controller.obx((state) => NotificationTabBar(),
           onLoading: const LoadingIndicator()),
-      floatingActionButton:
-          controller.obx((state) => markAllBtn, onLoading: Container()),
+      floatingActionButton: Obx(() => controller
+                  .notificationTabBarIndex.value ==
+              0
+          ? (controller.newNotificationIdList != null &&
+                  controller.newNotificationIdList!.isNotEmpty)
+              ? controller.obx((state) => markAllBtn, onLoading: Container())
+              : Container()
+          : Container()),
     );
-  }
-
-  Future<void> _reloadPage() async {
-    await controller.getNewNotification();
-    await controller.getSeenNotification();
   }
 
   GestureDetector get markAllBtn {
@@ -48,15 +47,13 @@ class NotificationScreen extends GetView<NotificationController> {
               border: Border.all(color: AppColor.disableColor)),
           child: Center(
               child: Text(
-                AppString.text_mark_all_as_seen.tr,
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.hintColor,
-                    fontSize: Dimensions.fontSizeDefault + 1),
-              )),
+            AppString.text_mark_all_as_seen.tr,
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.hintColor,
+                fontSize: Dimensions.fontSizeDefault + 1),
+          )),
         ),
       ),
     );
   }
-
 }
-

@@ -11,6 +11,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_drawer.dart';
+import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../utils/utils.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
 
@@ -19,6 +21,10 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.isRegistered<DateTimePickerController>()) {
+      Get.delete<DateTimePickerController>();
+    }
+    Get.put(DateTimePickerController());
     return controller.obx(
         (state) => Scaffold(
               body: CustomScrollView(
@@ -32,9 +38,10 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   //component
   _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: (){
-        _customButtonSheet(context: context,child:  ApplyLeaveScreen());
+      onTap: () {
+        leaveNoteController.clear();
 
+        _customButtonSheet(context: context, child: ApplyLeaveScreen());
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
@@ -70,10 +77,11 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   void _customButtonSheet({context, child}) {
     //For screen size
-    double screenHeight=MediaQuery.of(context).size.height==616.0?550:700;
+    double screenHeight =
+        MediaQuery.of(context).size.height == 616.0 ? 550 : 700;
 
     return showCustomAtmBtnSheet(
-      height: screenHeight,
+        height: screenHeight,
         context: context,
         child: Material(
           color: AppColor.noColor,
