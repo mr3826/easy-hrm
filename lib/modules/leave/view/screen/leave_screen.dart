@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -19,7 +20,9 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.height);
+    if (!Get.isRegistered<LeaveScreenController>()) {
+      Get.put(LeaveScreenController());
+    }
     return controller.obx(
         (state) => Scaffold(
               body: CustomScrollView(
@@ -33,9 +36,12 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   //component
   _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: (){
-        _customButtonSheet(context: context,child:  ApplyLeaveScreen());
-
+      onTap: () {
+        if (Get.isRegistered<ApplyLeaveController>()) {
+          Get.delete<ApplyLeaveController>();
+        }
+        Get.put(ApplyLeaveController());
+        _customButtonSheet(context: context, child: ApplyLeaveScreen());
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
@@ -71,10 +77,11 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   void _customButtonSheet({context, child}) {
     //For screen size
-    double screenHeight=MediaQuery.of(context).size.height==616.0?550:700;
+    double screenHeight =
+        MediaQuery.of(context).size.height == 616.0 ? 550 : 700;
 
     return showCustomAtmBtnSheet(
-      height: screenHeight,
+        height: screenHeight,
         context: context,
         child: Material(
           color: AppColor.noColor,
@@ -141,4 +148,3 @@ _buttonRadiusLayout() {
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(child: IndividualEventView());
 }
-

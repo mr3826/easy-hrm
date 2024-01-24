@@ -43,7 +43,6 @@ Future<void> initApp() async {
   Get.put(PasswordController());
   Get.put(LogoutController());
   Get.put(SelectedTaskController());
-  Get.lazyPut(() => LeaveScreenController(), fenix: true);
   Get.lazyPut(() => LeaveRecordsController(), fenix: true);
   Get.lazyPut(() => UserProfileController(), fenix: true);
   Get.lazyPut(() => UpdateProfileController(), fenix: true);
@@ -52,8 +51,6 @@ Future<void> initApp() async {
   Get.lazyPut(() => TimelineController(), fenix: true);
   Get.lazyPut(() => TimelineSummaryController(), fenix: true);
   Get.lazyPut(() => DateTimeController(), fenix: true);
-  Get.lazyPut(() => ApplyLeaveController(), fenix: false);
-  Get.lazyPut(() => UpDateLeaveController(), fenix: false);
   Get.lazyPut(() => NotificationController());
 
 }

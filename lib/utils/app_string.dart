@@ -16,6 +16,7 @@ class AppString {
 
   static String text_mange_your_employee = 'Manage your employee';
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
+  static String dateDifferenceIssueMessage = "In time must be before out time";
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText="Work Shift";

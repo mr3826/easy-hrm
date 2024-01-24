@@ -116,7 +116,7 @@ class CustomTimePickerInTime extends StatelessWidget {
           children: [
             Obx(
               () => Text(
-                DateFormat('HH:mm:ss').format(DateTime.parse(
+                DateFormat('HH:mm').format(DateTime.parse(
                     Get.find<DateTimePickerController>().inDateTime.value)),
                 style: const TextStyle(color: Colors.black, fontSize: 16),
               ),
@@ -140,7 +140,7 @@ class CustomTimePickerInTime extends StatelessWidget {
     }
     if (inTime != null) {
       Get.find<DateTimePickerController>().inTime.value =
-          DateFormat('HH:mm:ss').format(DateTime.parse(inTime!));
+          DateFormat('HH:mm').format(DateTime.parse(inTime!));
       Get.find<DateTimePickerController>().getInDateTime();
     }
   }
@@ -233,7 +233,16 @@ class InTimePicker extends StatelessWidget {
     return Column(
       children: [
         CupertinoTimerPicker(
-          mode: CupertinoTimerPickerMode.hms,
+          initialTimerDuration: Duration(
+              hours: int.parse(Get.find<DateTimePickerController>()
+                  .inTime
+                  .value
+                  .substring(0, 2)),
+              minutes: int.parse(Get.find<DateTimePickerController>()
+                  .inTime
+                  .value
+                  .substring(3, 5))),
+          mode: CupertinoTimerPickerMode.hm,
           backgroundColor: Colors.white,
           onTimerDurationChanged: (value) {
             time = value.toString();

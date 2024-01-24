@@ -202,11 +202,13 @@ class LeaveRecordDetails extends StatelessWidget {
               Get.delete<DateTimePickerController>();
             }
             Get.put(DateTimePickerController());
-            if (!Get.isRegistered<UpDateLeaveController>()) {
-              Get.put(UpDateLeaveController());
+            if (Get.isRegistered<UpDateLeaveController>()) {
+              Get.delete<UpDateLeaveController>();
             }
+            Get.put(UpDateLeaveController());
             customButtonSheet(
                 context: context,
+                height: .8,
                 child: UpdateLeave(leaveRecords: leaveRecords));
           },
           btnColor: AppColor.primaryColor),

@@ -16,6 +16,7 @@ import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
 import '../model/workshief_response_by_date.dart';
+import 'leave_screen_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
   @override
@@ -107,6 +108,9 @@ class ApplyLeaveController extends GetxController with StateMixin {
       Get.off(() => MainScreen(
             routeIndex: 1,
           ));
+
+      await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
+      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
     }
 
     isAssignLeaveLoaderLoading(false);

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_in_time.dart';
 import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_time.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
+import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/leave/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 
@@ -61,7 +62,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
 
   @override
   Widget build(BuildContext context) {
-
     print('''
     leave id: ${leaveRecords?.id}
     isNoteRequired: ${leaveRecords?.leaveType?.isAddNoteRequired}
@@ -250,24 +250,31 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
   }
 
   void _updateLeaveMethod() {
-    Get.find<UpDateLeaveController>().updateLeave(
-        leaveId: leaveRecords?.id ?? "",
-        leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
-        startDate: Get.find<DateTimePickerController>().inDateTime.value,
-        endDate: Get.find<DateTimePickerController>().outDateTime.value);
+    if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
+        .difference(DateTime.parse(
+            Get.find<DateTimePickerController>().inDateTime.value))
+        .isNegative) {
+      Get.find<UpDateLeaveController>().updateLeave(
+          leaveId: leaveRecords?.id ?? "",
+          leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
+          startDate: Get.find<DateTimePickerController>().inDateTime.value,
+          endDate: Get.find<DateTimePickerController>().outDateTime.value);
+    }else{
+      showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);
+    }
   }
 
   void _updateDateFromResponse() {
     Get.find<UpDateLeaveController>().leaveId = leaveRecords?.id ?? '';
     Get.find<UpDateLeaveController>().leaveTypeId =
         leaveRecords?.leaveType?.leaveId ?? "";
-    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm:ss')
+    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
         .format(DateTime.parse(
             leaveRecords?.startDate ?? DateTime.now().toString()));
     Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
         .format(DateTime.parse(
             leaveRecords?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm:ss')
+    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
         .format(
             DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
     Get.find<DateTimePickerController>().outDate.value =
