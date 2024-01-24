@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -12,6 +13,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_drawer.dart';
+import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
 
@@ -23,10 +25,20 @@ class LeaveScreen extends GetView<LeaveScreenController> {
     if (!Get.isRegistered<LeaveScreenController>()) {
       Get.put(LeaveScreenController());
     }
+    if (!Get.isRegistered<DateTimePickerController>()) {
+      Get.put(DateTimePickerController());
+    }
     return controller.obx(
         (state) => Scaffold(
-              body: CustomScrollView(
-                slivers: [sliverAppBar, sliverToBoxAdapter],
+              body: RefreshIndicator(
+                onRefresh: _refreshScreen,
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    sliverAppBar,
+                    sliverToBoxAdapter
+                  ],
+                ),
               ),
               floatingActionButton: _applyLeaveBtn(context),
             ),
@@ -95,6 +107,11 @@ class LeaveScreen extends GetView<LeaveScreenController> {
             child: child,
           ),
         ));
+  }
+
+  Future<void> _refreshScreen() async {
+    await controller.getLeaveSummaryForDashboard();
+    await controller.getLeaveDetailsByDate();
   }
 }
 
