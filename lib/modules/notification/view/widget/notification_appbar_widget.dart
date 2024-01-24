@@ -16,3 +16,5 @@ import 'package:payrun_mobile/utils/dimensions.dart';
       child: Text(AppString.text_notications.tr,style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,fontWeight: FontWeight.w600,fontSize: Dimensions.fontSizeMid+1),),
     ),);
 }
+
+
