@@ -8,8 +8,9 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
+import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/widget/custom_drawer.dart';
+import '../../controller/user_profile_controller.dart';
 import '../screen/change_password.dart';
 
 Widget actionLayout(
@@ -24,7 +25,47 @@ Widget actionLayout(
       customButtonSheetAppbar(text: "$userName", subtext: "$departmentText"),
       customSpacerHeight(height: 20),
       InkWell(
-          onTap: () => Get.toNamed(Routes.EDIT_PROFILE_SCREEN),
+          onTap: () {
+            editFirstNameController.text = Get.find<UserProfileController>()
+                    .userDetails
+                    ?.getOrganizationUserDetails
+                    ?.profile
+                    ?.firstName ??
+                "";
+            editLastNameController.text = Get.find<UserProfileController>()
+                    .userDetails
+                    ?.getOrganizationUserDetails
+                    ?.profile
+                    ?.lastName ??
+                "";
+            editAddressController.text = Get.find<UserProfileController>()
+                    .userDetails
+                    ?.getOrganizationUserDetails
+                    ?.profile
+                    ?.address ??
+                "";
+            editPhoneController.text = Get.find<UserProfileController>()
+                    .userDetails
+                    ?.getOrganizationUserDetails
+                    ?.profile
+                    ?.personalNumber ??
+                "";
+            editEmergencyPhoneController.text =
+                Get.find<UserProfileController>()
+                        .userDetails
+                        ?.getOrganizationUserDetails
+                        ?.profile
+                        ?.emergencyNumber ??
+                    "";
+            editBioController.text = Get.find<UserProfileController>()
+                    .userDetails
+                    ?.getOrganizationUserDetails
+                    ?.profile
+                    ?.about ??
+                "";
+
+            Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
+          },
           child: _fieldLayout(
               hintText: AppString.text_edit_profile.tr,
               prefixIcon: Icons.edit,
