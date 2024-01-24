@@ -49,7 +49,6 @@ class UserProfileController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       userDetails = UserDetails.fromJson(response.data!);
-
       log("getUserProfile:::${UserDetails.fromJson(response.data!).getOrganizationUserDetails?.organization?.orgName}");
     }
     change(null, status: RxStatus.success());
@@ -58,10 +57,8 @@ class UserProfileController extends GetxController with StateMixin {
   void getEmploymentInfo() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
-        queryString: getEmploymentInfoQuery,
-        variables: {
-          "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
-        });
+      queryString: getEmploymentInfoQuery,
+    );
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -94,8 +91,6 @@ class UserProfileController extends GetxController with StateMixin {
       final response = await NetworkClient()
           .postRequest(Api.VERIFY_PASSWORD, {"password": password});
 
-      print(response.body);
-
       if (response.status.hasError) {
         logErrorMessage(logName: "getPasswordVerification", response: response);
         showErrorMessage(
@@ -123,7 +118,6 @@ class UserProfileController extends GetxController with StateMixin {
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
       print("Change email ::: ${response.body}");
-
 
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
