@@ -19,7 +19,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.height);
     return controller.obx(
         (state) => Scaffold(
               body: CustomScrollView(

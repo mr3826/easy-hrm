@@ -24,8 +24,10 @@ class SignInScreen extends GetView<SignInController> {
   final _formKey = GlobalKey<FormState>();
   final ExitAppController _controller = Get.put(ExitAppController());
 
+
   @override
   Widget build(BuildContext context) {
+    Get.put(SignInController());
     return WillPopScope(
       onWillPop: () => _controller.willPop(),
       child: Scaffold(

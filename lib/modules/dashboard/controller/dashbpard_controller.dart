@@ -12,11 +12,18 @@ import '../model/profile_summary_for_dashboard.dart';
 
 class DashboardController extends GetxController with StateMixin {
   @override
-  void onInit() {
-    getProfileInfoForDashboard();
-    getMonthlyTimelineInfoForDashboard();
-    getUpComingInfoForDashboard();
+  void onInit() async {
+    print("on init called");
+    await getProfileInfoForDashboard();
+    await getMonthlyTimelineInfoForDashboard();
+    await getUpComingInfoForDashboard();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    print("on ready called");
+    super.onReady();
   }
 
   ProfileSummaryForDashboard? profileSummaryForDashboard;
