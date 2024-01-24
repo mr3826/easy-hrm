@@ -36,10 +36,15 @@ class Images {
       "assets/images/department_notification.svg";
   static String time_log_notification =
       "assets/images/time_log_notification.svg";
-  static String announment_notification =
-      "assets/images/announce_icon.svg";
+  static String announment_notification = "assets/images/announce_icon.svg";
   static String user = "assets/images/user.jpeg";
   static String EMAIL_POP = "assets/images/email_pop.svg";
+
+  static String LEAVE_TAKAN = "assets/images/leave_taken.svg";
+  static String LEAVE_PENDDING = "assets/images/leave_pending.svg";
+  static String LEAVE_REJECTED = "assets/images/leave_rejected.svg";
+  static String LEAVE_APPROVED = "assets/images/leave_btn_appbar.svg";
+
   static String EMPLOYEE_STATUS = "assets/images/employee_status.svg";
   static String FLAG = "assets/images/flag.svg";
   static String FLAG_PNG = "assets/images/flag.png";

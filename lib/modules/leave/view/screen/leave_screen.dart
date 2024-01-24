@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -11,6 +12,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_drawer.dart';
+import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../utils/utils.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
 
@@ -19,7 +22,10 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.height);
+    if (Get.isRegistered<DateTimePickerController>()) {
+      Get.delete<DateTimePickerController>();
+    }
+    Get.put(DateTimePickerController());
     return controller.obx(
         (state) => Scaffold(
               body: CustomScrollView(
@@ -34,6 +40,8 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   _applyLeaveBtn(context) {
     return GestureDetector(
       onTap: () {
+        leaveNoteController.clear();
+
         _customButtonSheet(context: context, child: ApplyLeaveScreen());
       },
       child: Padding(

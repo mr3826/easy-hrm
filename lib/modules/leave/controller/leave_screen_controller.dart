@@ -95,7 +95,6 @@ class LeaveScreenController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
-    Get.put(DateTimePickerController());
     await getLeaveSummaryForDashboard();
     await getLeaveDetailsByDate();
     super.onInit();
