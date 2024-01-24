@@ -32,9 +32,8 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   //component
   _applyLeaveBtn(context) {
     return GestureDetector(
-      onTap: (){
-        _customButtonSheet(context: context,child:  ApplyLeaveScreen());
-
+      onTap: () {
+        _customButtonSheet(context: context, child: ApplyLeaveScreen());
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
@@ -70,7 +69,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   void _customButtonSheet({context, child}) {
     return showCustomAtmBtnSheet(
-      height: 700,
+        height: 700,
         context: context,
         child: Material(
           color: AppColor.noColor,
@@ -137,4 +136,3 @@ _buttonRadiusLayout() {
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(child: IndividualEventView());
 }
-
