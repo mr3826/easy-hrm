@@ -41,6 +41,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
     return GestureDetector(
       onTap: () {
         leaveNoteController.clear();
+
         _customButtonSheet(context: context, child: ApplyLeaveScreen());
       },
       child: Padding(
