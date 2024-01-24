@@ -49,7 +49,6 @@ class UserProfileController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       userDetails = UserDetails.fromJson(response.data!);
-
       log("getUserProfile:::${UserDetails.fromJson(response.data!).getOrganizationUserDetails?.organization?.orgName}");
     }
     change(null, status: RxStatus.success());
@@ -58,10 +57,8 @@ class UserProfileController extends GetxController with StateMixin {
   void getEmploymentInfo() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
-        queryString: getEmploymentInfoQuery,
-        variables: {
-          "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
-        });
+      queryString: getEmploymentInfoQuery,
+    );
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -94,8 +91,6 @@ class UserProfileController extends GetxController with StateMixin {
       final response = await NetworkClient()
           .postRequest(Api.VERIFY_PASSWORD, {"password": password});
 
-      print(response.body);
-
       if (response.status.hasError) {
         logErrorMessage(logName: "getPasswordVerification", response: response);
         showErrorMessage(
@@ -124,7 +119,6 @@ class UserProfileController extends GetxController with StateMixin {
       });
       print("Change email ::: ${response.body}");
 
-
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
         showErrorMessage(
@@ -145,8 +139,11 @@ class UserProfileController extends GetxController with StateMixin {
   submitVerificationCode({required String verificationCode}) async {
     isVerificationApiLoading(true);
     try {
-      final response = await NetworkClient().postRequest(
-          Api.VERIFY_CHANGE_MAIL_OTP, {"confirmationCode": verificationCode});
+      final response =
+          await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+        "confirmationCode": verificationCode,
+        "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
+      });
 
       if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);

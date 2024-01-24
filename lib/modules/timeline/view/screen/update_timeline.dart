@@ -24,7 +24,7 @@ import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../../leave/view/widget/single_date_picker_calendar.dart';
 import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
-import '../widget/logdetails_widget.dart';
+
 
 class UpdateTimeLineLog extends StatelessWidget {
   const UpdateTimeLineLog({super.key});
@@ -81,62 +81,58 @@ class UpdateTimeLineLog extends StatelessWidget {
                         controller: timelineLogDetailsDrcController,
                       ),
                       customSpacerHeight(height: 20),
-                      Obx(() => Get.find<TimelineController>()
-                              .isUpdateTimeLogLoading
-                              .isTrue
-                          ? const Center(
-                              child: CupertinoActivityIndicator(),
-                            )
-                          : CustomDoubleAppButton(
-                              buttonText: AppString.text_save.tr,
-                              onAction: () {
-                                Get.find<TimelineController>().timeLogStatus !=
-                                        "approved"
-                                    ? Get.find<TimelineController>()
+                      _checkStatus()
+                          ? Obx(() => Get.find<TimelineController>()
+                                  .isUpdateTimeLogLoading
+                                  .isTrue
+                              ? const Center(
+                                  child: CupertinoActivityIndicator(),
+                                )
+                              : CustomDoubleAppButton(
+                                  buttonText: AppString.text_save.tr,
+                                  onAction: () {
+                                    Get.find<TimelineController>()
                                         .updateTimelineLogDetails(
-                                        description:
-                                            timelineLogDetailsDrcController
-                                                .text,
-                                        status: Get.find<TimelineController>()
-                                            .timeLogStatus
-                                            .toString(),
-                                        projectId: "",
-                                        startDate: Get.find<
-                                                        DateTimeController>()
-                                                    .requestedInDate
-                                                    .value
-                                                    .length >
-                                                10
-                                            ? Get.find<DateTimeController>()
-                                                .requestedInDate
-                                                .value
-                                            : DateFormat("yyyy-MM-dd hh:mma")
-                                                .parse(
-                                                    "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
-                                                .toString(),
-                                        endDate: Get.find<DateTimeController>()
-                                                    .requestedOutDate
-                                                    .value
-                                                    .length >
-                                                10
-                                            ? Get.find<DateTimeController>()
-                                                .requestedOutDate
-                                                .value
-                                            : DateFormat("yyyy-MM-dd hh:mma")
-                                                .parse(
-                                                    "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
-                                                .toString(),
-                                        taskId: "",
-                                        timeLineId:
-                                            Get.find<TimelineController>()
-                                                .timeLineID
-                                                .toString(),
-                                      )
-                                    : Container();
-                              },
-                              cancelAction: () {
-                                Navigator.pop(context);
-                              })),
+                                      description:
+                                          timelineLogDetailsDrcController.text,
+                                      status: Get.find<TimelineController>()
+                                          .timeLogStatus
+                                          .toString(),
+                                      projectId: "",
+                                      startDate: Get.find<DateTimeController>()
+                                                  .requestedInDate
+                                                  .value
+                                                  .length >
+                                              10
+                                          ? Get.find<DateTimeController>()
+                                              .requestedInDate
+                                              .value
+                                          : DateFormat("yyyy-MM-dd hh:mma")
+                                              .parse(
+                                                  "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedInTime.value}")
+                                              .toString(),
+                                      endDate: Get.find<DateTimeController>()
+                                                  .requestedOutDate
+                                                  .value
+                                                  .length >
+                                              10
+                                          ? Get.find<DateTimeController>()
+                                              .requestedOutDate
+                                              .value
+                                          : DateFormat("yyyy-MM-dd hh:mma")
+                                              .parse(
+                                                  "${Get.find<DateTimeController>().requestedDate.value} ${Get.find<DateTimeController>().pickedOutTime.value}")
+                                              .toString(),
+                                      taskId: "",
+                                      timeLineId: Get.find<TimelineController>()
+                                          .timeLineID
+                                          .toString(),
+                                    );
+                                  },
+                                  cancelAction: () {
+                                    Navigator.pop(context);
+                                  }))
+                          : Container(),
                       customSpacerHeight(height: 40)
                     ],
                   ),
@@ -368,6 +364,14 @@ class UpdateTimeLineLog extends StatelessWidget {
       ),
     );
   }
+
+  _checkStatus() {
+    return Get.find<TimelineController>().timeLogStatus != ("approved") &&
+        Get.find<TimelineController>().timeLogStatus != ("reject") &&
+        Get.find<TimelineController>().timeLogStatus != ("rejected") &&
+        Get.find<TimelineController>().timeLogStatus != ("cancelled") &&
+        Get.find<TimelineController>().timeLogStatus != ("taken");
+  }
 }
 
 Widget _newEntryStartTime({required BuildContext context}) {
@@ -423,6 +427,29 @@ Widget statusBtn({required text, required textColor}) {
       textColor: textColor,
       bgColor: AppColor.cardColor.withOpacity(0.9),
       text: text,
+    ),
+  );
+}
+
+AppBar timeLogAppbar(context) {
+  return AppBar(
+    elevation: 0,
+    backgroundColor: AppColor.backgroundColor,
+    leading: IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      icon: Icon(
+        Icons.arrow_back_ios,
+        color: AppColor.hintColor,
+        size: Dimensions.fontSizeMid + 4,
+      ),
+    ),
+    centerTitle: true,
+    title: Text(
+      AppString.text_time_log_details.tr,
+      style:
+          AppStyle.normal_text_black.copyWith(fontSize: Dimensions.fontSizeMid),
     ),
   );
 }

@@ -42,7 +42,7 @@ class GetLeaveTypesDropdown {
 }
 
 class LeaveStatuses {
-  int? availableNumberOfDays;
+  dynamic availableNumberOfDays;
 
   LeaveStatuses({this.availableNumberOfDays});
 

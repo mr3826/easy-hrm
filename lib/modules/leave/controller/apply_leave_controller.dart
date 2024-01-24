@@ -108,6 +108,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
             routeIndex: 1,
           ));
     }
+
     isAssignLeaveLoaderLoading(false);
   }
 }

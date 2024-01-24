@@ -2,6 +2,7 @@ class Api {
   Api._();
 
   static const String PUBLIC_URL = "https://api.local.payrun.app";
+
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
   static const String PUBLIC_IMAGE_URL_DOMAIN =
       "https://local-payrun-files.s3.amazonaws.com";
@@ -436,6 +437,57 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
       id
       project_id
     }
+  }
+}
+''';
+
+/// notification apis
+///
+
+const getUnSeenNotificationQuery = r'''
+query GetNotificationActivities($queryData: NotificationActivitiesQueryInputType, $optionData: OptionDataType) {
+  getNotificationActivities(queryData: $queryData, optionData: $optionData) {
+    data {
+      notification {
+        id
+        createdAt
+        context
+        changer {
+          profile {
+            first_name
+            last_name
+          }
+        }
+        timeline {
+          start_date
+        }
+        leave {
+          start_date
+        }
+        affectee {
+          id
+        }
+        department {
+          name
+          manager_id
+        }
+        job {
+          title
+          id
+        }
+      }
+    }
+    metaData {
+      totalRows
+    }
+  }
+}
+''';
+
+const markAsSeenNotificationQuery = r'''
+mutation MarkUnreadNotificationAsSeen($inputData: UnreadNotificationSeenInputType!) {
+  markUnreadNotificationAsSeen(inputData: $inputData) {
+    result
   }
 }
 ''';
