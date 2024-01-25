@@ -30,15 +30,17 @@ import 'duration_time_widget.dart';
 
 class TimeLogEntryTextField extends StatelessWidget {
   final bool? isFromUpdateTimelogEntry;
+  final String? status;
 
   const TimeLogEntryTextField(
-      {this.isFromUpdateTimelogEntry = false, super.key});
+      {this.isFromUpdateTimelogEntry = false, this.status, super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.find<TimelineController>().isTimeInvalid(false);
     return Column(
       children: [
-        durationTimeLayout(),
+        durationTimeLayout(status: status),
         Container(
           decoration: const BoxDecoration(
               color: Colors.white,
@@ -75,8 +77,11 @@ class TimeLogEntryTextField extends StatelessWidget {
                       : CustomDoubleAppButton(
                           buttonText: AppString.text_add.tr,
                           onAction: () {
-
-                          isFromUpdateTimelogEntry==true? Get.find<TimelineController>().updateTimelineLogDetails(): Get.find<TimelineController>().createManualEntry();
+                            isFromUpdateTimelogEntry == true
+                                ? Get.find<TimelineController>()
+                                    .updateTimelineLogDetails()
+                                : Get.find<TimelineController>()
+                                    .createManualEntry();
                           },
                           cancelAction: () {
                             Navigator.pop(context);

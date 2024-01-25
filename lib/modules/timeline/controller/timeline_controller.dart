@@ -156,6 +156,7 @@ class TimelineController extends GetxController with StateMixin {
     """);
 
     if (!timeDifference.isNegative) {
+      isTimeInvalid(false);
       final response = await NetworkClient()
           .mutationGraphData(updateTimelineLogDetailsQueryData, {
         "inputData": {
@@ -371,8 +372,6 @@ class TimelineController extends GetxController with StateMixin {
             
             ${timeFormatTo24h(DateTime.parse(e.endDate ?? Get.find<DateTimeController>().requestedDate.value))}
             
-
-
             
             """,
             color: statusAccordingToColor(e.status),
@@ -391,11 +390,16 @@ class TimelineController extends GetxController with StateMixin {
         ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "No added yet",
-          timeLId: e.leaveType?.id ?? "",
+          leaveId: e.id ?? "",
           endDate: e.endDate ?? "",
           startDate: e.startDate ?? "",
-          duration: e.totalLeaveMinutes ?? "",
-          taskName: e.leaveType?.name ?? "",
+          numberOfDays: e.numberOfDays ?? "",
+          leaveType: LeaveType(
+              leaveName: e.leaveType?.leaveName ?? "",
+              isAttachDocumentRequired: e.leaveType?.isAddNoteRequired ?? false,
+              isAddNoteRequired: e.leaveType?.isAddNoteRequired ?? false,
+              leaveId: e.leaveType?.leaveId ?? "",
+              type: e.leaveType?.type ?? ""),
         );
 
         Map<String, dynamic> jsonModel = modelForDescription.toJson();
@@ -424,7 +428,7 @@ class TimelineController extends GetxController with StateMixin {
             ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
             
 
-            ${e.leaveType?.name ?? "No added yet"}
+            ${e.leaveType?.leaveName ?? "No added yet"}
             ${convertMiniToHour(Duration(minutes: int.parse(e.totalLeaveMinutes.toString()))).toString()}  
             
            

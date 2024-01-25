@@ -49,7 +49,8 @@ class LeaveRecordDetails extends StatelessWidget {
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: AppString.text_duration.tr,
-              dynamicText: leaveRecords?.duration != null
+              dynamicText: leaveRecords?.duration != null &&
+                      leaveRecords?.duration.runtimeType != String
                   ? leaveRecords?.duration > 1
                       ? "${leaveRecords?.duration.toString()} days"
                       : "${leaveRecords?.duration.toString()} day"

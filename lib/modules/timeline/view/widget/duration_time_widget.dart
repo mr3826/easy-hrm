@@ -10,7 +10,9 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
+import '../../../../common/widget/custom_status_button.dart';
 import '../../../../enum.dart';
+import '../../../../utils/app_string.dart';
 import '../../../leave/view/widget/status_btn_widget.dart';
 
 Widget durationTimeLayout({
@@ -49,25 +51,25 @@ Widget durationTimeLayout({
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _verticalDivider(
-                  height: 13, bgColor: AppColor.hintColor.withOpacity(0.3)),
+                  height: 13, bgColor: status==null?AppColor.hintColor.withOpacity(0.3):Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 17, bgColor: AppColor.hintColor.withOpacity(0.5)),
+                  height: 17, bgColor: status==null?AppColor.hintColor.withOpacity(0.5):Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 22, bgColor: AppColor.hintColor.withOpacity(0.7)),
+                  height: 22, bgColor: status==null?AppColor.hintColor.withOpacity(0.7):Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 24, bgColor: AppColor.hintColor.withOpacity(0.9)),
+                  height: 24, bgColor: status==null?AppColor.hintColor.withOpacity(0.9):Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 22, bgColor: AppColor.hintColor.withOpacity(0.7)),
+                  height: 22, bgColor: status==null?AppColor.hintColor.withOpacity(0.7):Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 17, bgColor: AppColor.hintColor.withOpacity(0.5)),
+                  height: 17, bgColor: status==null?AppColor.hintColor.withOpacity(0.5):Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 13, bgColor: AppColor.hintColor.withOpacity(0.3)),
+                  height: 13, bgColor: status==null?AppColor.hintColor.withOpacity(0.3):Colors.white),
             ],
           )
         ],
@@ -89,14 +91,34 @@ _statusButtonLayout({required String status}) {
   );
 }
 
+_getColor(String leaveStatus) {
+  if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
+    return AppColor.primaryColor;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
+    return  AppColor.pendingColor;
+  } else {
+    return AppColor.bgColorWithTimeline;
+  }
+}
+
 _showStatusButton(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
-    return approvedStatusBtn();
+    return _statusBtn(
+        textColor: _getColor(leaveStatus), text: AppString.text_approved);
   } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
-    return pendingStatusBtn();
+    return _statusBtn(
+        textColor: _getColor(leaveStatus), text: AppString.text_pending);
   } else {
     return Container();
   }
+}
+
+Widget _statusBtn({required Color textColor, required String? text}) {
+  return CustomStatusButton(
+    textColor: textColor,
+    bgColor: AppColor.cardColor,
+    text: text,
+  );
 }
 
 String _getTimeDuration() {

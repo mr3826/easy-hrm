@@ -421,10 +421,14 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
         name
         type
         id
+        add_note_required
+        attach_document_required
       }
       start_date
       status
       totalLeaveMinutes
+      id
+      number_of_days
     }
     timelines {
       description

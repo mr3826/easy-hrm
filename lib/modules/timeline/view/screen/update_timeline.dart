@@ -48,7 +48,11 @@ class UpdateTimeLineLog extends StatelessWidget {
     return Scaffold(
       backgroundColor: _statusColor(status: status ?? ""),
       appBar: timeLogAppbar(context),
-      body: const SingleChildScrollView(child: TimeLogEntryTextField()),
+      body: SingleChildScrollView(
+          child: TimeLogEntryTextField(
+        isFromUpdateTimelogEntry: true,
+        status: status,
+      )),
     );
   }
 
