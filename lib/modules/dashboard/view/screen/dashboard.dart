@@ -39,139 +39,143 @@ class Dashboard extends GetView<DashboardController> {
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
-              body: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: SizedBox(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height / 1.8,
-                        decoration: BoxDecoration(
-                            color: AppColor.primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(
-                                    Dimensions.radiusExtraLarge - 14),
-                                bottomRight: Radius.circular(
-                                    Dimensions.radiusExtraLarge - 14))),
-                        width: double.infinity,
-                        child: Padding(
-                          padding: marginLayout,
-                          child: Column(
-                            children: [
-                              customSpacerHeight(height: 46),
-                              _userInfoAppbarLayout(),
-                              customSpacerHeight(height: 28),
-                              Expanded(
-                                child: PageView(
-                                  physics: const BouncingScrollPhysics(),
-                                  controller: _pageController,
-                                  onPageChanged: (page) {
-                                    print("${page.toDouble()}");
-                                    currentPage.value = page;
-                                  },
-                                  children: [
-                                    Center(
-                                        child: Column(
-                                      children: [
-                                        Text(
-                                          AppString.text_daily_summary.tr,
-                                          style: AppStyle.mid_large_text
-                                              .copyWith(
-                                                  color: AppColor
-                                                      .normalTextColor
-                                                      .withOpacity(0.7),
-                                                  fontSize: Dimensions
-                                                          .fontSizeDefault -
-                                                      1,
-                                                  letterSpacing: 5),
-                                        ),
-                                        customSpacerHeight(height: 18),
-                                        _progressBarLayout(
-                                            percent: double.parse(controller
-                                                    .profileSummaryForDashboard
-                                                    ?.getProfileSummaryForDashboard
-                                                    ?.progressPercentage ??
-                                                "0")),
-                                        _golTimeLayout(
-                                            goalText:
-                                                AppString.text_today_goal.tr,
-                                            loggedText:
-                                                AppString.text_logged_time.tr,
-                                            goalValue: controller
-                                                    .profileSummaryForDashboard
-                                                    ?.getProfileSummaryForDashboard
-                                                    ?.totalSchedule ??
-                                                '',
-                                            loggedValue: controller
-                                                    .profileSummaryForDashboard
-                                                    ?.getProfileSummaryForDashboard
-                                                    ?.totalLogged ??
-                                                "")
-                                      ],
-                                    )),
-                                    Center(
-                                        child: Column(
-                                      children: [
-                                        Text(
-                                          AppString.text_monthly_summary.tr,
-                                          style: AppStyle.mid_large_text
-                                              .copyWith(
-                                                  color: AppColor
-                                                      .normalTextColor
-                                                      .withOpacity(0.7),
-                                                  fontSize: Dimensions
-                                                          .fontSizeDefault -
-                                                      1,
-                                                  letterSpacing: 5),
-                                        ),
-                                        customSpacerHeight(height: 18),
-                                        _progressBarLayout(
-                                            percent: double.parse(controller
-                                                    .timelineSummaryDashboard
-                                                    ?.getMonthlyTimelog
-                                                    ?.progressPercentage ??
-                                                "0")),
-                                        _golTimeLayout(
-                                            goalText:
-                                                AppString.text_monthly_goal.tr,
-                                            loggedText:
-                                                AppString.text_logged_time.tr,
-                                            goalValue: controller
-                                                    .timelineSummaryDashboard
-                                                    ?.getMonthlyTimelog
-                                                    ?.totalSchedule ??
-                                                "",
-                                            loggedValue: controller
-                                                    .timelineSummaryDashboard
-                                                    ?.getMonthlyTimelog
-                                                    ?.totalLogged ??
-                                                "")
-                                      ],
-                                    )),
-                                  ],
+              body: RefreshIndicator(
+                backgroundColor: Colors.white,
+                onRefresh: _refreshScreen,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height / 1.8,
+                          decoration: BoxDecoration(
+                              color: AppColor.primaryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(
+                                      Dimensions.radiusExtraLarge - 14),
+                                  bottomRight: Radius.circular(
+                                      Dimensions.radiusExtraLarge - 14))),
+                          width: double.infinity,
+                          child: Padding(
+                            padding: marginLayout,
+                            child: Column(
+                              children: [
+                                customSpacerHeight(height: 46),
+                                _userInfoAppbarLayout(),
+                                customSpacerHeight(height: 28),
+                                Expanded(
+                                  child: PageView(
+                                    physics: const BouncingScrollPhysics(),
+                                    controller: _pageController,
+                                    onPageChanged: (page) {
+                                      print("${page.toDouble()}");
+                                      currentPage.value = page;
+                                    },
+                                    children: [
+                                      Center(
+                                          child: Column(
+                                        children: [
+                                          Text(
+                                            AppString.text_daily_summary.tr,
+                                            style: AppStyle.mid_large_text
+                                                .copyWith(
+                                                    color: AppColor
+                                                        .normalTextColor
+                                                        .withOpacity(0.7),
+                                                    fontSize: Dimensions
+                                                            .fontSizeDefault -
+                                                        1,
+                                                    letterSpacing: 5),
+                                          ),
+                                          customSpacerHeight(height: 18),
+                                          _progressBarLayout(
+                                              percent: double.parse(controller
+                                                      .profileSummaryForDashboard
+                                                      ?.getProfileSummaryForDashboard
+                                                      ?.progressPercentage ??
+                                                  "0")),
+                                          _golTimeLayout(
+                                              goalText:
+                                                  AppString.text_today_goal.tr,
+                                              loggedText:
+                                                  AppString.text_logged_time.tr,
+                                              goalValue: controller
+                                                      .profileSummaryForDashboard
+                                                      ?.getProfileSummaryForDashboard
+                                                      ?.totalSchedule ??
+                                                  '',
+                                              loggedValue: controller
+                                                      .profileSummaryForDashboard
+                                                      ?.getProfileSummaryForDashboard
+                                                      ?.totalLogged ??
+                                                  "")
+                                        ],
+                                      )),
+                                      Center(
+                                          child: Column(
+                                        children: [
+                                          Text(
+                                            AppString.text_monthly_summary.tr,
+                                            style: AppStyle.mid_large_text
+                                                .copyWith(
+                                                    color: AppColor
+                                                        .normalTextColor
+                                                        .withOpacity(0.7),
+                                                    fontSize: Dimensions
+                                                            .fontSizeDefault -
+                                                        1,
+                                                    letterSpacing: 5),
+                                          ),
+                                          customSpacerHeight(height: 18),
+                                          _progressBarLayout(
+                                              percent: double.parse(controller
+                                                      .timelineSummaryDashboard
+                                                      ?.getMonthlyTimelog
+                                                      ?.progressPercentage ??
+                                                  "0")),
+                                          _golTimeLayout(
+                                              goalText:
+                                                  AppString.text_monthly_goal.tr,
+                                              loggedText:
+                                                  AppString.text_logged_time.tr,
+                                              goalValue: controller
+                                                      .timelineSummaryDashboard
+                                                      ?.getMonthlyTimelog
+                                                      ?.totalSchedule ??
+                                                  "",
+                                              loggedValue: controller
+                                                      .timelineSummaryDashboard
+                                                      ?.getMonthlyTimelog
+                                                      ?.totalLogged ??
+                                                  "")
+                                        ],
+                                      )),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Obx(() =>
-                                  _dotsDecorator(currentIndex: currentPage)),
-                              customSpacerHeight(height: 20),
-                            ],
+                                Obx(() =>
+                                    _dotsDecorator(currentIndex: currentPage)),
+                                customSpacerHeight(height: 20),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Obx(() => _entryAndStartTimeLayout()),
-                      controller.upcommingLeaveDashboard
-                                      ?.getUpcomingLeavesForApp !=
-                                  null &&
-                              controller.upcommingLeaveDashboard!
-                                  .getUpcomingLeavesForApp!.isNotEmpty
-                          ? Text(
-                              AppString.text_upcoming_leave.tr,
-                              style: AppStyle.mid_large_text
-                                  .copyWith(color: AppColor.normalTextColor),
-                            )
-                          : Container(),
-                      _upcomingLeaveLayout()
-                    ],
+                        Obx(() => _entryAndStartTimeLayout()),
+                        controller.upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp !=
+                                    null &&
+                                controller.upcommingLeaveDashboard!
+                                    .getUpcomingLeavesForApp!.isNotEmpty
+                            ? Text(
+                                AppString.text_upcoming_leave.tr,
+                                style: AppStyle.mid_large_text
+                                    .copyWith(color: AppColor.normalTextColor),
+                              )
+                            : Container(),
+                        _upcomingLeaveLayout()
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -494,6 +498,12 @@ class Dashboard extends GetView<DashboardController> {
         )
       ],
     );
+  }
+
+  Future<void> _refreshScreen() async {
+    await controller.getProfileInfoForDashboard();
+    await controller.getMonthlyTimelineInfoForDashboard();
+    await controller.getUpComingInfoForDashboard();
   }
 }
 
