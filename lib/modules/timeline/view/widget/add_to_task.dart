@@ -22,8 +22,6 @@ class AddToTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TimeCounterController _timeCounterController =
-    Get.put(TimeCounterController());
     return Padding(
       padding: marginLayout.copyWith(top: 30),
       child: SingleChildScrollView(
@@ -33,7 +31,7 @@ class AddToTaskScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              customTitleText(text: AppString.text_project_or_task.tr),
+              customTitleText(text: AppString.text_project_task.tr,isRequired: true),
               customSpacerHeight(height: 8),
               _selectedTaskLayout(context),
               customSpacerHeight(height: 20),
@@ -56,6 +54,8 @@ class AddToTaskScreen extends StatelessWidget {
                         ));
                   },
                   cancelAction: () {
+                    taskSearchController.clear();
+                    descriptionController.clear();
                     Navigator.pop(context);
                   })
             ],

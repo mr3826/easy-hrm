@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/enum.dart';
@@ -44,7 +43,7 @@ class _TimerScreenState extends State<TimerScreen> {
             child: SizedBox(
                 height: AppLayout.getHeight(400),
                 width: AppLayout.getWidth(400),
-                child: const Center(child: TimerAnimation())),
+                child: const TimerAnimation()),
           ),
           _saveBtn(
             onAction: () async {
