@@ -115,6 +115,11 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                                     "${DateTime(year, month.month, 1, 0, 0, 0)}",
                                 endDate:
                                     "${DateTime(year, month.month + 1, 0, 23, 59, 59)}");
+                            Get.find<TimelineSummaryController>().getTimelogDetailsByMonth(
+                                startDate:
+                                    "${DateTime(year, month.month, 1, 0, 0, 0)}",
+                                endDate:
+                                    "${DateTime(year, month.month + 1, 0, 23, 59, 59)}");
 
                             Get.find<TimelineController>()
                                 .selectedSummaryDate

@@ -24,8 +24,12 @@ class TimelineScreen extends GetView<TimelineController> {
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
-              body: CustomScrollView(
-                slivers: [sliverAppBar, sliverToBoxAdapter],
+              body: RefreshIndicator(
+                backgroundColor: Colors.white,
+                onRefresh: _refreshScreen,
+                child: CustomScrollView(
+                  slivers: [sliverAppBar, sliverToBoxAdapter],
+                ),
               ),
               floatingActionButton: Obx(() => _timerBtnLayout(context)),
             ),
@@ -76,6 +80,30 @@ class TimelineScreen extends GetView<TimelineController> {
         bgBtnColor: AppColor.secondaryColor,
         onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
         btnText: "$time");
+  }
+
+  Future<void> _refreshScreen() async {
+    await controller.getProjectDropdown();
+
+    //monthly summary
+    //by default its current month
+
+    await controller.getTimelineSummaryByMonth(
+        startDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+
+    await controller.getCalendarTimelineDataByDate(
+        startDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+    await controller.getTimelineSummaryByDate(
+        startDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
   }
 }
 
