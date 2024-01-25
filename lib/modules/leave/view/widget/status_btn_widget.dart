@@ -193,7 +193,11 @@ _rejectedBtn({
               timelineId: '',
               status: dtsStatus);
           Get.to(() {
-            return const UpdateTimeLineLog();
+            return UpdateTimeLineLog(
+              endDateTime: dtsEndTime,
+              startDateTime: dtsStartTime,
+              status: dtsStatus,
+            );
           });
         },
         btnColor: AppColor.primaryColor),
@@ -232,9 +236,11 @@ _pendingLayout(
               taskId: '',
               timelineId: timeLineId,
               status: dtsStatus);
-          Get.to(() {
-            return const UpdateTimeLineLog();
-          });
+          Get.to(() => UpdateTimeLineLog(
+                endDateTime: dtsEndTime,
+                startDateTime: dtsStartTime,
+                status: "pending",
+              ));
         },
         btnColor: AppColor.primaryColor),
   );
@@ -275,9 +281,11 @@ _approvedLayout(
             taskId: '',
             timelineId: '',
             status: dtsStatus);
-        Get.to(() {
-          return const UpdateTimeLineLog();
-        });
+        Get.to(() => UpdateTimeLineLog(
+              endDateTime: dtsEndTime,
+              startDateTime: dtsStartTime,
+              status: "pending",
+            ));
       },
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,

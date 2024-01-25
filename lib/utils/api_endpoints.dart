@@ -337,6 +337,13 @@ mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
   }
 }
 ''';
+const removeTimerQueryData = r'''
+mutation RemoveTimeline($inputData: RemoveTimelineInputData) {
+  removeTimeline(inputData: $inputData) {
+    result
+  }
+}
+''';
 
 const updateTimelineLogDetailsQueryData = r'''
 mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {

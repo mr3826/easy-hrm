@@ -48,8 +48,14 @@ class _TimerScreenState extends State<TimerScreen> {
           ),
           _saveBtn(
             onAction: () async {
-              customButtonSheet(
-                  height: .6, context: context, child: const AddToTaskScreen());
+              if (Get.find<TimeCounterController>().isRunning.isTrue) {
+                await Get.find<TimelineController>()
+                    .startOrEndTimer(timerType: StartOrEndTimer.end.name);
+              }
+              if(context.mounted){
+                customButtonSheet(
+                    height: .6, context: context, child: const AddToTaskScreen());
+              }
             },
           ),
         ],

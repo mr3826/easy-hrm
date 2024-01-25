@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
@@ -22,8 +23,6 @@ class AddToTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TimeCounterController _timeCounterController =
-    Get.put(TimeCounterController());
     return Padding(
       padding: marginLayout.copyWith(top: 30),
       child: SingleChildScrollView(
@@ -43,21 +42,26 @@ class AddToTaskScreen extends StatelessWidget {
                 controller: descriptionController,
               ),
               customSpacerHeight(height: 50),
-              CustomDoubleAppButton(
-                  buttonText: AppString.text_save.tr,
-                  onAction: () async {
-                    if (Get.find<TimeCounterController>().isRunning.isTrue) {
-                      await Get.find<TimelineController>()
-                          .startOrEndTimer(timerType: StartOrEndTimer.end.name);
-                    }
-                    Get.find<TimelineController>().saveTimeEntry();
-                    Get.to(() => MainScreen(
-                          routeIndex: 0,
-                        ));
-                  },
-                  cancelAction: () {
-                    Navigator.pop(context);
-                  })
+              Obx(
+                () => Get.find<TimelineController>()
+                        .isTimelogEntryOrRemoveLoading
+                        .isTrue
+                    ? const Center(
+                        child: CupertinoActivityIndicator(
+                          color: Colors.blueAccent,
+                          radius: 16,
+                        ),
+                      )
+                    : CustomDoubleAppButton(
+                        buttonText: AppString.text_save.tr,
+                        onAction: () async {
+                          Get.find<TimelineController>().saveTimeEntry();
+                        },
+                        cancelText: AppString.text_remove,
+                        cancelAction: () {
+                          Get.find<TimelineController>().removeTimeEntry();
+                        }),
+              )
             ],
           ),
         ),

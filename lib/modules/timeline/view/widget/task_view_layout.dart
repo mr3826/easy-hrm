@@ -171,6 +171,7 @@ Widget taskSearchInputField() {
         suffixIcon: GestureDetector(
           onTap: () {
             taskSearchController.clear();
+            Get.find<TimelineController>().getProjectDropdown();
           },
           child: taskSearchController.text.isNotEmpty
               ? const Icon(
