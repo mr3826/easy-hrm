@@ -23,6 +23,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   void onInit() async {
     super.onInit();
     await getLeaveType();
+    await getWorkShift();
   }
 
   LeaveTypeDropdown? leaveTypeDropdown;
@@ -51,6 +52,8 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   getWorkShift() async {
+    print(
+        "GetStorage().read(AppString.ORGANIZATION_USER_ID)::: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: workShiftQuery, variables: {

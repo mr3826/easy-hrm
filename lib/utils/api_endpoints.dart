@@ -1,8 +1,8 @@
 class Api {
   Api._();
 
- //static const String PUBLIC_URL = "https://api.local.payrun.app";
-  static const String PUBLIC_URL = "https://api.dev.payrun.app";
+static const String PUBLIC_URL = "https://api.local.payrun.app";
+ // static const String PUBLIC_URL = "https://api.dev.payrun.app";
 
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
   static const String PUBLIC_IMAGE_URL_DOMAIN =
@@ -338,6 +338,13 @@ mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
   }
 }
 ''';
+const removeTimerQueryData = r'''
+mutation RemoveTimeline($inputData: RemoveTimelineInputData) {
+  removeTimeline(inputData: $inputData) {
+    result
+  }
+}
+''';
 
 const updateTimelineLogDetailsQueryData = r'''
 mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
@@ -415,10 +422,14 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
         name
         type
         id
+        add_note_required
+        attach_document_required
       }
       start_date
       status
       totalLeaveMinutes
+      id
+      number_of_days
     }
     timelines {
       description

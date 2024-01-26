@@ -1,3 +1,5 @@
+import '../../leave/model/leave_record_response.dart';
+
 class CalendarTimeline {
   GetCalenderTimelinesForApp? getCalenderTimelinesForApp;
 
@@ -12,16 +14,16 @@ class CalendarTimeline {
 }
 
 class GetCalenderTimelinesForApp {
-  List<Leaves>? leaves;
+  List<Data>? leaves;
   List<Timelines>? timelines;
 
   GetCalenderTimelinesForApp({this.leaves, this.timelines});
 
   GetCalenderTimelinesForApp.fromJson(Map<String, dynamic> json) {
     if (json['leaves'] != null) {
-      leaves = <Leaves>[];
+      leaves = <Data>[];
       json['leaves'].forEach((v) {
-        leaves!.add(Leaves.fromJson(v));
+        leaves!.add(Data.fromJson(v));
       });
     }
     if (json['timelines'] != null) {
@@ -33,50 +35,6 @@ class GetCalenderTimelinesForApp {
   }
 }
 
-class Leaves {
-  String? createdAt;
-  String? description;
-  String? endDate;
-  LeaveType? leaveType;
-  String? startDate;
-  String? status;
-  String? totalLeaveMinutes;
-
-  Leaves(
-      {this.createdAt,
-      this.description,
-      this.endDate,
-      this.leaveType,
-      this.startDate,
-      this.status,
-      this.totalLeaveMinutes});
-
-  Leaves.fromJson(Map<String, dynamic> json) {
-    createdAt = json['createdAt'];
-    description = json['description'];
-    endDate = json['end_date'];
-    leaveType = json['leaveType'] != null
-        ? LeaveType.fromJson(json['leaveType'])
-        : null;
-    startDate = json['start_date'];
-    status = json['status'];
-    totalLeaveMinutes = json['totalLeaveMinutes'];
-  }
-}
-
-class LeaveType {
-  String? name;
-  String? type;
-  String? id;
-
-  LeaveType({this.name, this.type, this.id});
-
-  LeaveType.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    type = json['type'];
-    id = json['id'];
-  }
-}
 
 class Timelines {
   String? description;

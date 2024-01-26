@@ -65,13 +65,11 @@ class TimeCounterController extends GetxController {
     final response =
         await NetworkClient().getGraphQuery(queryString: timerStatusQuery);
 
-    print(GetStorage().read(AppString.ORGANIZATION_ID));
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       TimerResponse timerResponse = TimerResponse.fromJson(response.data!);
-      if (timerResponse.checkStartOrStopTimeline?.startDate != null) {
+      if (timerResponse.checkStartOrStopTimeline != null) {
         DateTime timestamp =
             DateTime.parse(timerResponse.checkStartOrStopTimeline!.startDate!);
         Duration duration = DateTime.now().difference(timestamp);

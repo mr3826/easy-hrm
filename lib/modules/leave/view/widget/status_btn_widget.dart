@@ -171,7 +171,10 @@ _rejectedBtn({
         cancelAction: () {
           customDialog(
               context: context,
-              saveBtnAction: () => Get.back(),
+              saveBtnAction: () {
+                Get.find<TimelineController>()
+                    .removeTimeEntry(timeLogId: timeLineId.toString());
+              },
               icon: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_time_log.tr,
               subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
@@ -190,10 +193,14 @@ _rejectedBtn({
               duration: dtsDuration,
               color: dtsBgColor,
               taskId: '',
-              timelineId: '',
+              timelineId: timeLineId,
               status: dtsStatus);
           Get.to(() {
-            return const UpdateTimeLineLog();
+            return UpdateTimeLineLog(
+              endDateTime: dtsEndTime,
+              startDateTime: dtsStartTime,
+              status: dtsStatus,
+            );
           });
         },
         btnColor: AppColor.primaryColor),
@@ -232,9 +239,11 @@ _pendingLayout(
               taskId: '',
               timelineId: timeLineId,
               status: dtsStatus);
-          Get.to(() {
-            return const UpdateTimeLineLog();
-          });
+          Get.to(() => UpdateTimeLineLog(
+                endDateTime: dtsEndTime,
+                startDateTime: dtsStartTime,
+                status: dtsStatus,
+              ));
         },
         btnColor: AppColor.primaryColor),
   );
@@ -264,6 +273,8 @@ _approvedLayout(
             fontSize: Dimensions.fontSizeDefault + 2),
       ),
       onPressed: () {
+        //todo
+        ///check what this logic mean
         Get.find<TimelineController>().timeLogStatus == dtsStatus;
         Get.find<TimelineController>().timeLineID == timeLineId;
         _updateDataFromApiResponse(
@@ -273,11 +284,13 @@ _approvedLayout(
             duration: dtsDuration,
             color: dtsBgColor,
             taskId: '',
-            timelineId: '',
+            timelineId: timeLineId,
             status: dtsStatus);
-        Get.to(() {
-          return const UpdateTimeLineLog();
-        });
+        Get.to(() => UpdateTimeLineLog(
+              endDateTime: dtsEndTime,
+              startDateTime: dtsStartTime,
+              status: dtsStatus,
+            ));
       },
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,
@@ -294,21 +307,8 @@ void _updateDataFromApiResponse(
     required duration,
     required timelineId,
     required description}) {
-  Get.find<TimelineController>().timeLogDuration = duration;
   Get.find<TimelineController>().timeLogColor = color;
   Get.find<TimelineController>().timeLogStatus = status;
   Get.find<TimelineController>().timeLineID = timelineId.toString();
-
-  Get.find<DateTimeController>().requestedDate.value =
-      DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
-
-  timelineLogDetailsDrcController.text = description;
-  DateTime startTime = DateTime.parse(startDate);
-
-  DateTime endTime = DateTime.parse(endDate);
-
-  Get.find<DateTimeController>().pickedInTime.value =
-      "${startTime.hour > 11 ? "${startTime.hour - 12}".padLeft(2, "0") : "${startTime.hour}".padLeft(2, "0")}:${startTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
-  Get.find<DateTimeController>().pickedOutTime.value =
-      "${endTime.hour > 11 ? "${endTime.hour - 12}".padLeft(2, "0") : "${endTime.hour}".padLeft(2, "0")}:${endTime.minute.toString().padLeft(2, "0")}${startTime.hour > 11 ? "PM" : "AM"}";
+  descriptionController.text = description;
 }
