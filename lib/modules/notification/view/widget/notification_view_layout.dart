@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -19,60 +20,95 @@ class NotificationViewLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SizedBox(
-        child: index == 0 ? _newNotificationView() : _seenNotificationView(),
-      ),
-    );
+    return Obx(() => Expanded(
+          child: SizedBox(
+            child:
+                index == 0 ? _newNotificationView() : _seenNotificationView(),
+          ),
+        ));
   }
 
   _newNotificationView() {
-    return ListView.builder(
-        itemCount: _controller.newNotificationIdList?.length ?? 0,
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        itemBuilder: (context, index) {
-          final notification = _controller.newNotification?[index].notification;
-          return index == _controller.newNotificationIdList!.length - 1
-              ? customSpacerHeight(height: 100)
-              : _getNotificationByContext(
-                  notificationCreatedDate: notification?.createdAt ?? "",
-                  index: index,
-                  timeLineTimeInfo: notification?.timeline?.startDate ?? "",
-                  changerName:
-                      "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
-                  notificationContext: notification?.context ?? "",
-                  leaveTimeInfo: notification?.leave?.startDate ?? '',
-                  departmentInfo: notification?.department?.name ?? "",
-                  isDepartmentHead: (notification?.department?.managerId ==
-                      notification?.affectee?.id),
-                  jobTitleInfo: notification?.job?.title ?? "");
-        });
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+              shrinkWrap: true,
+              controller: Get.find<NotificationController>()
+                  .newNotificationScrollController,
+              itemCount: _controller.newNotification?.length ?? 0,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              itemBuilder: (context, index) {
+                final notification =
+                    _controller.newNotification?[index].notification;
+                return index == _controller.newNotification!.length - 1
+                    ? customSpacerHeight(height: 100)
+                    : _getNotificationByContext(
+                        notificationCreatedDate: notification?.createdAt ?? "",
+                        index: index,
+                        timeLineTimeInfo:
+                            notification?.timeline?.startDate ?? "",
+                        changerName:
+                            "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
+                        notificationContext: notification?.context ?? "",
+                        leaveTimeInfo: notification?.leave?.startDate ?? '',
+                        departmentInfo: notification?.department?.name ?? "",
+                        isDepartmentHead:
+                            (notification?.department?.managerId ==
+                                notification?.affectee?.id),
+                        jobTitleInfo: notification?.job?.title ?? "");
+              }),
+        ),
+        customSpacerHeight(height: 20),
+        Get.find<NotificationController>().isMoreNewNotificationLoading.isTrue
+            ? const Center(
+                child: CupertinoActivityIndicator(
+                    radius: 18, color: Colors.blueAccent))
+            : Container()
+      ],
+    );
   }
 
   _seenNotificationView() {
-    return ListView.builder(
-        itemCount: _controller.seenNotification?.length ?? 0,
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        itemBuilder: (context, index) {
-          final notification =
-              _controller.seenNotification?[index].notification;
-          return index == _controller.seenNotification!.length - 1
-              ? customSpacerHeight(height: 100)
-              : _getNotificationByContext(
-                  notificationCreatedDate: notification?.createdAt ?? "",
-                  index: index,
-                  timeLineTimeInfo: notification?.timeline?.startDate ?? "",
-                  changerName:
-                      "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
-                  notificationContext: notification?.context ?? "",
-                  leaveTimeInfo: notification?.leave?.startDate ?? '',
-                  departmentInfo: notification?.department?.name ?? "",
-                  isDepartmentHead: (notification?.department?.managerId ==
-                      notification?.affectee?.id),
-                  jobTitleInfo: notification?.job?.title ?? "");
-        });
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+              shrinkWrap: true,
+              controller: _controller.seenNotificationScrollController,
+              itemCount: _controller.seenNotification?.length ?? 0,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              itemBuilder: (context, index) {
+                final notification =
+                    _controller.seenNotification?[index].notification;
+                return index == _controller.seenNotification!.length - 1
+                    ? customSpacerHeight(height: 100)
+                    : _getNotificationByContext(
+                        notificationCreatedDate: notification?.createdAt ?? "",
+                        index: index,
+                        timeLineTimeInfo:
+                            notification?.timeline?.startDate ?? "",
+                        changerName:
+                            "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
+                        notificationContext: notification?.context ?? "",
+                        leaveTimeInfo: notification?.leave?.startDate ?? '',
+                        departmentInfo: notification?.department?.name ?? "",
+                        isDepartmentHead:
+                            (notification?.department?.managerId ==
+                                notification?.affectee?.id),
+                        jobTitleInfo: notification?.job?.title ?? "");
+              }),
+        ),
+        customSpacerHeight(height: 20),
+        _controller.isMoreSeenNotificationLoading.isTrue
+            ? const Center(
+                child: CupertinoActivityIndicator(
+                    radius: 18, color: Colors.blueAccent))
+            : Container()
+      ],
+    );
   }
 
   _getNotificationByContext({
