@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -22,6 +23,8 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    print("ordId: ${GetStorage().read(AppString.ORGANIZATION_ID)}");
+    print("idToken: ${GetStorage().read(AppString.ID_TOKEN)}");
     if (!Get.isRegistered<LeaveScreenController>()) {
       Get.put(LeaveScreenController());
     }

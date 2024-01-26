@@ -498,6 +498,7 @@ class TimelineController extends GetxController with StateMixin {
 }
 
 statusAccordingToColor(status) {
+
   switch (status) {
     case "pending":
       return AppColor.pendingColor.withOpacity(0.1);
