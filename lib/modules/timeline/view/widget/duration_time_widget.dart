@@ -15,9 +15,8 @@ import '../../../../enum.dart';
 import '../../../../utils/app_string.dart';
 import '../../../leave/view/widget/status_btn_widget.dart';
 
-Widget durationTimeLayout({
-  String? status,
-}) {
+Widget durationTimeLayout({String? status}) {
+  print("Status:: $status");
   return SizedBox(
     width: double.infinity,
     child: Padding(
@@ -29,21 +28,25 @@ Widget durationTimeLayout({
                     Get.find<DateTimePickerController>().inDateTime.value)),
                 style: AppStyle.mid_large_text.copyWith(
                     fontSize: Dimensions.fontSizeDefault,
-                    color: AppColor.normalTextColor),
+                    color: status != null
+                        ? Colors.white
+                        : AppColor.normalTextColor),
               )),
           customSpacerHeight(height: 18),
           Text(
             "Duration",
             style: AppStyle.mid_large_text.copyWith(
                 fontSize: Dimensions.fontSizeDefault,
-                color: AppColor.hintColor),
+                color: status != null ? Colors.white : AppColor.hintColor),
           ),
           Obx(() => Text(
                 _getTimeDuration(),
                 style: AppStyle.normal_text_grey.copyWith(
                     fontSize: Dimensions.fontSizeMid + 5,
                     fontWeight: FontWeight.w900,
-                    color: AppColor.normalTextColor),
+                    color: status != null
+                        ? Colors.white
+                        : AppColor.normalTextColor),
               )),
           if (status != null) _statusButtonLayout(status: status),
           customSpacerHeight(height: 20),
@@ -51,25 +54,46 @@ Widget durationTimeLayout({
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _verticalDivider(
-                  height: 13, bgColor: status==null?AppColor.hintColor.withOpacity(0.3):Colors.white),
+                  height: 13,
+                  bgColor: status == null
+                      ? AppColor.hintColor.withOpacity(0.3)
+                      : Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 17, bgColor: status==null?AppColor.hintColor.withOpacity(0.5):Colors.white),
+                  height: 17,
+                  bgColor: status == null
+                      ? AppColor.hintColor.withOpacity(0.5)
+                      : Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 22, bgColor: status==null?AppColor.hintColor.withOpacity(0.7):Colors.white),
+                  height: 22,
+                  bgColor: status == null
+                      ? AppColor.hintColor.withOpacity(0.7)
+                      : Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 24, bgColor: status==null?AppColor.hintColor.withOpacity(0.9):Colors.white),
+                  height: 24,
+                  bgColor: status == null
+                      ? AppColor.hintColor.withOpacity(0.9)
+                      : Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 22, bgColor: status==null?AppColor.hintColor.withOpacity(0.7):Colors.white),
+                  height: 22,
+                  bgColor: status == null
+                      ? AppColor.hintColor.withOpacity(0.7)
+                      : Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 17, bgColor: status==null?AppColor.hintColor.withOpacity(0.5):Colors.white),
+                  height: 17,
+                  bgColor: status == null
+                      ? AppColor.hintColor.withOpacity(0.5)
+                      : Colors.white),
               customSpacerWidth(width: 30),
               _verticalDivider(
-                  height: 13, bgColor: status==null?AppColor.hintColor.withOpacity(0.3):Colors.white),
+                  height: 13,
+                  bgColor: status == null
+                      ? AppColor.hintColor.withOpacity(0.3)
+                      : Colors.white),
             ],
           )
         ],
@@ -95,7 +119,9 @@ _getColor(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
     return AppColor.primaryColor;
   } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
-    return  AppColor.pendingColor;
+    return AppColor.pendingColor;
+  } else if (leaveStatus.toLowerCase() == "reject") {
+    return AppColor.errorColor;
   } else {
     return AppColor.bgColorWithTimeline;
   }
@@ -104,10 +130,13 @@ _getColor(String leaveStatus) {
 _showStatusButton(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
     return _statusBtn(
-        textColor: _getColor(leaveStatus), text: AppString.text_approved);
+        textColor: _getColor(leaveStatus), text: AppString.text_approved.tr);
   } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
     return _statusBtn(
-        textColor: _getColor(leaveStatus), text: AppString.text_pending);
+        textColor: _getColor(leaveStatus), text: AppString.text_pending.tr);
+  } else if (leaveStatus.toLowerCase() == "reject") {
+    return _statusBtn(
+        textColor: _getColor(leaveStatus), text: AppString.text_rejected.tr);
   } else {
     return Container();
   }

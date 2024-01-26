@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/controller/timer_picker.dart';
+import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
@@ -69,8 +70,26 @@ class TimeLogEntryTextField extends StatelessWidget {
                 controller: descriptionController,
               ),
               customSpacerHeight(height: 20),
-              Obx(() =>
-                  Get.find<TimelineController>().isManualEntryLoading.isTrue
+              Obx(() => status != null && status == "reject"
+                  ? CustomAppButton(
+                      isButtonExpanded: false,
+                      buttonText: Get.find<TimelineController>()
+                              .isTimelogEntryOrRemoveLoading
+                              .isTrue
+                          ? const Center(
+                              child: CupertinoActivityIndicator(
+                                  color: Colors.blueAccent, radius: 16),
+                            )
+                          : Text(AppString.text_remove.tr,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16)),
+                      onPressed: () {
+                        Get.find<TimelineController>().removeTimeEntry(
+                            timeLogId:
+                                Get.find<TimelineController>().timeLineID);
+                      },
+                      buttonColor: AppColor.errorColorLight)
+                  : Get.find<TimelineController>().isManualEntryLoading.isTrue
                       ? const Center(
                           child: CupertinoActivityIndicator(),
                         )

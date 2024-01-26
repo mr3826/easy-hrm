@@ -31,6 +31,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
     return controller.obx(
         (state) => Scaffold(
               body: RefreshIndicator(
+                backgroundColor: Colors.white,
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),

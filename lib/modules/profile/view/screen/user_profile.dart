@@ -47,35 +47,39 @@ class ProfileScreen extends GetView<UserProfileController> {
               }),
               body: Padding(
                 padding: marginLayout,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      customSpacerHeight(height: 20),
-                      _userInfoLayout(),
-                      customSpacerHeight(height: 30),
-                      _monthlyStatusLayout(),
-                      customSpacerHeight(height: 30),
-                      _actionBtnLayout(context),
-                      customSpacerHeight(height: 25),
-                      _descriptionTextLayout(),
-                      customSpacerHeight(height: 15),
-                      const Divider(
-                          thickness: .6, color: AppColor.disableColor),
-                      ChangeEmailNotifyLayout(),
-                      customSpacerHeight(height: 15),
-                      _phoneNumberText(),
-                      customSpacerHeight(height: 15),
-                      _emergencyPhoneNumber(),
-                      customSpacerHeight(height: 15),
-                      _addressText(),
-                      customSpacerHeight(height: 15),
-                      departmentLayout(context),
-                      customSpacerHeight(height: 5),
-                      employeeStatusLayout(context: context),
-                      customSpacerHeight(height: 50),
-                    ],
+                child: RefreshIndicator(
+                  backgroundColor: Colors.white,
+                  onRefresh: _refreshScreen,
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        customSpacerHeight(height: 20),
+                        _userInfoLayout(),
+                        customSpacerHeight(height: 30),
+                        _monthlyStatusLayout(),
+                        customSpacerHeight(height: 30),
+                        _actionBtnLayout(context),
+                        customSpacerHeight(height: 25),
+                        _descriptionTextLayout(),
+                        customSpacerHeight(height: 15),
+                        const Divider(
+                            thickness: .6, color: AppColor.disableColor),
+                        ChangeEmailNotifyLayout(),
+                        customSpacerHeight(height: 15),
+                        _phoneNumberText(),
+                        customSpacerHeight(height: 15),
+                        _emergencyPhoneNumber(),
+                        customSpacerHeight(height: 15),
+                        _addressText(),
+                        customSpacerHeight(height: 15),
+                        departmentLayout(context),
+                        customSpacerHeight(height: 5),
+                        employeeStatusLayout(context: context),
+                        customSpacerHeight(height: 50),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -587,5 +591,12 @@ class ProfileScreen extends GetView<UserProfileController> {
             child: child,
           ),
         ));
+  }
+
+  Future<void> _refreshScreen() async {
+    await controller.getUserProfile();
+    await controller.getEmploymentInfo();
+    await controller.getUserLogHistory();
+    await controller.getOrganizationInfo();
   }
 }

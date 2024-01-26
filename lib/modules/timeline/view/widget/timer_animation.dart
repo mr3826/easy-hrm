@@ -78,56 +78,58 @@ class _TimerAnimationState extends State<TimerAnimation> {
 
   _normalContainer() {
     return Positioned(
-        top: 105,
-        left: 105,
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
         child: Center(
           child: CircleAvatar(
             radius: 95,
             backgroundColor: AppColor.primaryColor.withOpacity(0.2),
             child: Obx(() => CircleAvatar(
-              radius: 80,
-              backgroundColor: AppColor.primaryColor,
-              child: Get.find<TimeCounterController>().isLoading.isTrue
-                  ? const CupertinoActivityIndicator(radius: 20,color: Colors.white,)
-                  : Text(
-                _timeCounterController.elapsedTime.toString(),
-                style: AppStyle.normal_text_grey.copyWith(
-                    color: AppColor.cardColor,
-                    fontSize: Dimensions.fontSizeExtraLarge - 2),
-              ),
-            )),
+                  radius: 80,
+                  backgroundColor: AppColor.primaryColor,
+                  child: Get.find<TimeCounterController>().isLoading.isTrue
+                      ? const CupertinoActivityIndicator(
+                          radius: 20,
+                          color: Colors.white,
+                        )
+                      : Text(
+                          _timeCounterController.elapsedTime.toString(),
+                          style: AppStyle.normal_text_grey.copyWith(
+                              color: AppColor.cardColor,
+                              fontSize: Dimensions.fontSizeExtraLarge - 2),
+                        ),
+                )),
           ),
         ));
   }
 
   _totalCountContainer() {
-    return Positioned(
-        top: 105,
-        left: 105,
-        child: Center(
+    return Center(
           child: CircleAvatar(
-            radius: 95,
-            backgroundColor: AppColor.primaryColor.withOpacity(0.2),
-            child: CircleAvatar(
-              radius: 80,
-              backgroundColor: AppColor.primaryColor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppString.text_total.tr,
-                    style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.cardColor,
-                        fontSize: Dimensions.fontSizeMid - 2),
-                  ),
-                  Text(_timeCounterController.elapsedTime.toString(),
-                      style: AppStyle.normal_text_grey.copyWith(
-                          color: AppColor.cardColor,
-                          fontSize: Dimensions.fontSizeExtraLarge - 2))
-                ],
-              ),
-            ),
+    radius: 95,
+    backgroundColor: AppColor.primaryColor.withOpacity(0.2),
+    child: CircleAvatar(
+      radius: 80,
+      backgroundColor: AppColor.primaryColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            AppString.text_total.tr,
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.cardColor,
+                fontSize: Dimensions.fontSizeMid - 2),
           ),
-        ));
+          Text(_timeCounterController.elapsedTime.toString(),
+              style: AppStyle.normal_text_grey.copyWith(
+                  color: AppColor.cardColor,
+                  fontSize: Dimensions.fontSizeExtraLarge - 2))
+        ],
+      ),
+    ),
+          ),
+        );
   }
 }

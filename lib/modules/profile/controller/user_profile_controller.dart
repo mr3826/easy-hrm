@@ -43,7 +43,7 @@ class UserProfileController extends GetxController with StateMixin {
   final isOrganizationChangeLoading = false.obs;
   final isVerificationApiLoading = false.obs;
 
-  void getUserProfile() async {
+  getUserProfile() async {
     change(null, status: RxStatus.loading());
     final response =
         await NetworkClient().getGraphQuery(queryString: getUserProfileQuery);
@@ -56,7 +56,7 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  void getEmploymentInfo() async {
+  getEmploymentInfo() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient().getGraphQuery(
       queryString: getEmploymentInfoQuery,
@@ -73,7 +73,7 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  void getUserLogHistory() async {
+  getUserLogHistory() async {
     change(null, status: RxStatus.loading());
     final response =
         await NetworkClient().getGraphQuery(queryString: userLogHistoryQuery);

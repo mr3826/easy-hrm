@@ -113,12 +113,16 @@ class TimelineController extends GetxController with StateMixin {
     isTimelogEntryOrRemoveLoading(false);
   }
 
-  removeTimeEntry() async {
+  removeTimeEntry({String? timeLogId}) async {
     isTimelogEntryOrRemoveLoading(true);
+
+    print("timelogId: $timeLogId");
+
     final response =
         await NetworkClient().mutationGraphData(removeTimerQueryData, {
       "inputData": {
-        "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
+        "timeline_id":
+            timeLogId ?? startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
       }
     });
 
