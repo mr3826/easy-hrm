@@ -24,7 +24,10 @@ class NotificationController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
       "queryData": {"is_seen": false},
-      "optionData": {"limit": newNotificationLimit.value, "offset": newNotificationOffset.value}
+      "optionData": {
+        "limit": newNotificationLimit.value,
+        "offset": newNotificationOffset.value
+      }
     });
 
     if (response.hasException) {
@@ -70,6 +73,7 @@ class NotificationController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      newNotificationIdList?.clear();
       await getNewNotification();
       await getSeenNotification();
     }

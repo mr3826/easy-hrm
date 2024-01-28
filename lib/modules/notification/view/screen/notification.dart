@@ -23,8 +23,8 @@ class NotificationScreen extends GetView<NotificationController> {
       floatingActionButton: Obx(() => controller
                   .notificationTabBarIndex.value ==
               0
-          ? (controller.newNotificationIdList != null &&
-                  controller.newNotificationIdList!.isNotEmpty)
+          ? (controller.newNotification != null &&
+                  controller.newNotification!.isNotEmpty)
               ? controller.obx((state) => markAllBtn, onLoading: Container())
               : Container()
           : Container()),
