@@ -50,6 +50,7 @@ class UpdateTimeLineLog extends StatelessWidget {
                 width: double.infinity,
                 child: _durationTimeLayout(context),
               ),
+
               Container(
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
@@ -406,6 +407,7 @@ _verticalDivider({required double height, required Color bgColor}) {
     color: bgColor,
   );
 }
+
 
 _statusBtn({required status, required textColor}) {
   if (status == "rejected") {
