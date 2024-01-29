@@ -15,11 +15,17 @@ class SplashController extends GetxController {
   @override
   void onReady() {
     if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
-      if (checkTokenExpiration() < 1) {
-        _getNewToken();
+      if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
+        _getNewToken().then((value) => value == true
+            ? Future.delayed(
+                const Duration(milliseconds: 2500), () => chooseScreen())
+            : Future.delayed(const Duration(milliseconds: 2500),
+                () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
+      } else {
+        Future.delayed(
+            const Duration(milliseconds: 2500), () => chooseScreen());
       }
     }
-    Future.delayed(const Duration(milliseconds: 2500), () =>chooseScreen() );
     super.onReady();
   }
 
@@ -44,7 +50,7 @@ class SplashController extends GetxController {
     // Specify the target date and time
 
     DateTime targetDate =
-    JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
+        JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
 
     // Calculate the difference
     Duration difference = targetDate.difference(now);
@@ -52,7 +58,7 @@ class SplashController extends GetxController {
     return difference.inHours;
   }
 
-  void _getNewToken() async {
+  Future<bool> _getNewToken() async {
     try {
       Response response = await NetworkClient().postRequest(Api.REFRESH_TOKEN, {
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID),
@@ -61,6 +67,7 @@ class SplashController extends GetxController {
 
       if (response.hasError) {
         logErrorMessage(logName: "refresh token", response: response);
+        return false;
       } else {
         logSuccessMessage(logName: "refresh token", response: response);
         GetStorage().write(AppString.ID_TOKEN,
@@ -69,11 +76,11 @@ class SplashController extends GetxController {
             SignInResponse.fromJson(response.body).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN,
             SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
+        return true;
       }
     } catch (e) {
       log(e.toString());
+      return false;
     }
   }
-
 }
-
