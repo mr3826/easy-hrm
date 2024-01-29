@@ -114,6 +114,10 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                         .leaveId
                                         .isNotEmpty) {
                                   Get.find<ApplyLeaveController>().applyLeave();
+
+
+
+
                                 } else {
                                   showWarningMessage(
                                       message: "Provide a Valid Input");

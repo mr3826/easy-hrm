@@ -78,7 +78,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  applyLeave() async {
+  applyLeave({filePath}) async {
     isAssignLeaveLoaderLoading(true);
 
     print('''
@@ -91,7 +91,14 @@ class ApplyLeaveController extends GetxController with StateMixin {
         "end_date": Get.find<DateTimePickerController>().outDateTime.value,
         "start_date": Get.find<DateTimePickerController>().inDateTime.value,
         "status": "pending",
-        "leave_type_id": leaveId
+        "leave_type_id": leaveId,
+        "files": [
+          {
+            "size": null,
+            "name": "${DateTime.now().microsecondsSinceEpoch}.${filePath.split(".").last}",
+            "key": null
+          }
+        ],
       }
     });
 
@@ -131,11 +138,10 @@ class ApplyLeaveController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
       print("getUploadPolicy Error:: $response");
-
     } else {
       print("getUploadPolicy:: $response");
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
-      uploadFile(policyData: {
+      uploadFile(filePath: fileName, policyData: {
         "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.name)}":
             "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.value)}"
       });
@@ -143,16 +149,17 @@ class ApplyLeaveController extends GetxController with StateMixin {
     isUploadPolicyLoading(false);
   }
 
-  uploadFile({required Map<String, dynamic> policyData}) {
+  uploadFile(
+      {required Map<String, dynamic> policyData, required String filePath}) {
     FormData formData = FormData({});
     policyData.forEach((key, value) {
       formData.fields.add(MapEntry(key, value));
     });
 
-    // formData.files.add(MapEntry(
-    //     "file",
-    //     MultipartFile(File(value.toString()),
-    //         filename:
-    //             "${DateTime.now().microsecondsSinceEpoch}")));
+    formData.files.add(MapEntry(
+        "file",
+        MultipartFile(File(filePath),
+            filename:
+                "${DateTime.now().microsecondsSinceEpoch}.${filePath.split(".").last}")));
   }
 }
