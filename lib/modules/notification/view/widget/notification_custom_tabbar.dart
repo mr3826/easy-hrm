@@ -88,15 +88,11 @@ class NotificationTabBar extends StatelessWidget {
                                       child: Text(
                                         index == 0
                                             ? Get.find<NotificationController>()
-                                                    .newNotification
-                                                    ?.length
-                                                    .toString() ??
-                                                "0"
+                                                .newNotificationLength
+                                                .toString()
                                             : Get.find<NotificationController>()
-                                                    .seenNotification
-                                                    ?.length
-                                                    .toString() ??
-                                                "0",
+                                                .seenNotificationLength
+                                                .toString(),
                                         style: AppStyle.mid_large_text.copyWith(
                                             color: currentIndex.value == index
                                                 ? AppColor.primaryColor
@@ -125,6 +121,8 @@ class NotificationTabBar extends StatelessWidget {
 
   Future<void> _reloadPage() async {
     Get.find<NotificationController>().notificationTabBarIndex.value = 0;
+    Get.find<NotificationController>().newNotificationOffset.value = 0;
+    Get.find<NotificationController>().seenNotificationOffset.value = 0;
     await Get.find<NotificationController>().getNewNotification();
     await Get.find<NotificationController>().getSeenNotification();
   }

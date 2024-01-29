@@ -38,10 +38,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: [
-                    sliverAppBar,
-                    sliverToBoxAdapter
-                  ],
+                  slivers: [sliverAppBar, sliverToBoxAdapter],
                 ),
               ),
               floatingActionButton: _applyLeaveBtn(context),
@@ -94,11 +91,11 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   void _customButtonSheet({context, child}) {
     //For screen size
-    double screenHeight =
-        MediaQuery.of(context).size.height == 616.0 ? 550 : 700;
+    // double screenHeight =
+    //     MediaQuery.of(context).size.height == 616.0 ? 550 : 700;
 
     return showCustomAtmBtnSheet(
-        height: screenHeight,
+        height: Get.height * .8,
         context: context,
         child: Material(
           color: AppColor.noColor,
