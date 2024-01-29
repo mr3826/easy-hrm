@@ -24,9 +24,8 @@ Widget btnSheetViewLayout(
     Color? dtsBgColor,
     dtsDrc,
     dtsDuration,
-    dtsDate
-    }) {
-
+    dtsDate}) {
+  print("obj receive status :::: $status");
   print("start date time ::: $startDateTime");
   print("end date time ::: $endDateTime");
 
@@ -37,27 +36,28 @@ Widget btnSheetViewLayout(
         Column(
           children: [
             _infoLayout(
-                text: AppString.text_start.tr, dynamicText: DateFormat('HH:mm')
-                .format(DateTime.parse(startTime.toString()))
-                .toString()),
+                text: AppString.text_start.tr,
+                dynamicText: DateFormat('HH:mm')
+                    .format(DateTime.parse(startTime.toString()))
+                    .toString()),
             customSpacerHeight(height: 6),
             _infoLayout(
-                text: "${AppString.text_end.tr}:", dynamicText: DateFormat('HH:mm')
-                .format(DateTime.parse(endTime.toString()))
-                .toString()),
+                text: "${AppString.text_end.tr}:",
+                dynamicText: DateFormat('HH:mm')
+                    .format(DateTime.parse(endTime.toString()))
+                    .toString()),
             customSpacerHeight(height: 6),
           ],
         ),
         _infoLayout(
             text: "${AppString.text_status.tr}:",
             widget: statusBtn(status: "$status")),
-
-
         customSpacerHeight(height: 6),
         status == "taken"
             ? _infoLayout(
                 text: AppString.text_dete_of_application.tr,
-                dynamicText: DateFormat('dd MMMM yyyy').format(DateTime.parse(dateApplication)))
+                dynamicText: DateFormat('dd MMMM yyyy')
+                    .format(DateTime.parse(dateApplication)))
             : _infoLayout(
                 text: AppString.text_project_task_or_tag,
                 widget: _projectNameLayout(

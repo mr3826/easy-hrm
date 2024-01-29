@@ -40,23 +40,24 @@ class Data {
   dynamic numberOfDays;
   String? startDate;
   String? id;
+  String? totalLeaveMinutes;
 
-  Data({
-    this.createdAt,
-    this.description,
-    this.endDate,
-    this.files,
-    this.leaveType,
-    this.status,
-    this.numberOfDays,
-    this.startDate,
-    this.id
-  });
+  Data(
+      {this.createdAt,
+      this.description,
+      this.endDate,
+      this.files,
+      this.leaveType,
+      this.status,
+      this.numberOfDays,
+      this.startDate,
+      this.id});
 
   Data.fromJson(Map<String, dynamic> json) {
     createdAt = json['createdAt'];
     description = json['description'];
     endDate = json['end_date'];
+    totalLeaveMinutes = json['totalLeaveMinutes'];
     if (json['files'] != null) {
       files = <Files>[];
       json['files'].forEach((v) {
@@ -90,8 +91,12 @@ class LeaveType {
   bool? isAddNoteRequired;
   bool? isAttachDocumentRequired;
 
-
-  LeaveType({this.type, this.leaveId, this.leaveName,this.isAddNoteRequired,this.isAttachDocumentRequired});
+  LeaveType(
+      {this.type,
+      this.leaveId,
+      this.leaveName,
+      this.isAddNoteRequired,
+      this.isAttachDocumentRequired});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     type = json['type'];

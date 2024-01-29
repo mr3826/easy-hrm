@@ -34,7 +34,7 @@ class TaskViewLayout extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  customTitleText(text: AppString.text_project_or_task.tr),
+                  customTitleText(text: AppString.text_project_task.tr,isRequired: true),
                   customSpacerHeight(height: 8),
                   taskSearchInputField(),
                   customSpacerHeight(height: 12),
@@ -162,7 +162,7 @@ Widget taskSearchInputField() {
     child: TextFormField(
       controller: taskSearchController,
       style: subTextFieldTitleStyle,
-      autofocus: false,
+      autofocus: true,
       onChanged: (value) {
         Get.find<TimelineController>().getProjectDropdown();
       },
@@ -171,6 +171,7 @@ Widget taskSearchInputField() {
         suffixIcon: GestureDetector(
           onTap: () {
             taskSearchController.clear();
+            Get.find<TimelineController>().getProjectDropdown();
           },
           child: taskSearchController.text.isNotEmpty
               ? const Icon(

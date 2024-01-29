@@ -146,6 +146,7 @@ class AppString {
 
   static String text_set_end_time = "Set end time *";
   static String text_project_or_task = "Project or task *";
+  static String text_project_task = "Project or task";
 
   static String text_logged = "Logged";
   static const String text_yes = "Yes";
@@ -336,6 +337,10 @@ class AppString {
   static const String password = "Password";
   static const String timerStartedSuccessfulMessage =
       "Timer Started Successfully";
+  static const String timerSavedSuccessfulMessage =
+      "Timer Saved Successfully";
+  static const String timerRemovedSuccessfulMessage =
+      "Timer Removed Successfully";
   static const String passwordChangeSuccessfulMessage =
       "Change password has been Successfully ";
 }
