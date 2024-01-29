@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -35,23 +36,24 @@ class AddAttachmentFile extends StatelessWidget {
                           .storageForUpload
                           .pickFile();
                     },
-                    child: Get.find<FileUploadController>()
-                            .storageForUpload
-                            .filePath
-                            .isNotEmpty
+                    child: Obx(() => Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse? Get.find<FileUploadController>()
+                        .storageForUpload
+                        .filePath
+                        .isNotEmpty
                         ? Get.find<FileUploadController>()
-                                .storageForUpload
-                                .filePath
-                                .endsWith(".pdf")
-                            ? _replaceFileLayout()
-                            : _selectedImageViewLayout()
-                        : _emptyBox())),
+                        .storageForUpload
+                        .filePath
+                        .endsWith(".pdf")
+                        ? _replaceFileLayout()
+                        : _selectedImageViewLayout()
+                        : _emptyBox():const Center(child: CupertinoActivityIndicator(color: AppColor.primaryColor,))))),
             customSpacerHeight(height: 8),
             Obx(() => _pathNameText()),
           ],
         ));
   }
 }
+
 
 _replaceFileLayout() {
   return Row(

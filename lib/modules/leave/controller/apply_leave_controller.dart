@@ -1,19 +1,15 @@
-import 'dart:developer';
-
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/common/controller/date_time_controller.dart';
+import 'package:payrun_mobile/common/domain/upload_policy.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
-import 'package:payrun_mobile/modules/leave/model/apply_leave_response.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-
 import '../../../network/exception_helper.dart';
-import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
 import '../model/workshief_response_by_date.dart';
 import 'leave_screen_controller.dart';
@@ -30,6 +26,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
 
   final isLoading = false.obs;
   final isAssignLeaveLoaderLoading = false.obs;
+  final isUploadPolicyLoading = false.obs;
   String? startTime;
   String? endTime;
   String leaveId = '';
@@ -37,6 +34,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   RxBool isDocumentRequired = false.obs;
   RxString numberOfLeaves = ''.obs;
   RxBool isErrorOccurred = false.obs;
+  UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   getLeaveType() async {
     change(null, status: RxStatus.loading());
@@ -116,5 +114,45 @@ class ApplyLeaveController extends GetxController with StateMixin {
     }
 
     isAssignLeaveLoaderLoading(false);
+  }
+
+  getUploadPolicy({fileName}) async {
+    isUploadPolicyLoading(true);
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
+      "queryData": {
+        "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
+        "filename": "${DateTime.now().millisecondsSinceEpoch}$fileName",
+        "directive": "Files"
+      }
+    });
+    print("getUploadPolicy:: $response");
+
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(exception: response.exception!);
+      print("getUploadPolicy Error:: $response");
+
+    } else {
+      print("getUploadPolicy:: $response");
+      uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
+      uploadFile(policyData: {
+        "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.name)}":
+            "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.value)}"
+      });
+    }
+    isUploadPolicyLoading(false);
+  }
+
+  uploadFile({required Map<String, dynamic> policyData}) {
+    FormData formData = FormData({});
+    policyData.forEach((key, value) {
+      formData.fields.add(MapEntry(key, value));
+    });
+
+    // formData.files.add(MapEntry(
+    //     "file",
+    //     MultipartFile(File(value.toString()),
+    //         filename:
+    //             "${DateTime.now().microsecondsSinceEpoch}")));
   }
 }
