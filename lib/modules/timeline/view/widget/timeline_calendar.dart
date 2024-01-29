@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar_view.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -25,83 +26,10 @@ class TimeLineCalendar extends StatelessWidget {
         ? Container(
             color: Colors.transparent,
           )
-        : Padding(
-            padding: const EdgeInsets.only(
-                top: 90.0, bottom: 110, left: 14, right: 14),
-            child: SfCalendar(
-              view: CalendarView.day,
-              dataSource: _getCalendarDataSource(),
-              backgroundColor: AppColor.cardColor,
-              viewNavigationMode: ViewNavigationMode.none,
-              appointmentTextStyle:
-                  const TextStyle(color: AppColor.normalTextColor),
-              selectionDecoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(12)),
-              viewHeaderStyle: const ViewHeaderStyle(
-                  backgroundColor: Colors.transparent,
-                  dateTextStyle: TextStyle(color: Colors.transparent),
-                  dayTextStyle: TextStyle(color: Colors.transparent)),
-              viewHeaderHeight: 0,
-              onTap: (CalendarTapDetails details) {
-                Appointment tappedAppointment = details.appointments![0];
-                if (details.targetElement != CalendarElement.calendarCell) {
-                  Map<String, dynamic> jsonMap =
-                      json.decode(tappedAppointment.location.toString());
-                  LI.ModelForDescription eventVal =
-                      LI.ModelForDescription.fromJson(jsonMap);
-                  print(eventVal.duration);
-
-                  customButtonSheet(
-                      height: .6,
-                      context: context,
-                      child: eventVal.leaveType == null
-                          ? TaskView(
-                              projectName: eventVal.taskName.toString(),
-                              date: eventVal.startDate.toString(),
-                              startTime: eventVal.startDate.toString(),
-                              endTime: eventVal.endDate.toString(),
-                              status: eventVal.status.toString(),
-                              totalDur: eventVal.duration.toString(),
-                              description: eventVal.description.toString(),
-                              timeLineId: eventVal.timeLId.toString(),
-                            )
-                          : LeaveRecordDetails(
-                              status: eventVal.status ?? "",
-                              leaveRecords: GetLeaveRecords(
-                                  id: eventVal.leaveId ?? "",
-                                  status: eventVal.status ?? "",
-                                  createdAt: eventVal.createdAt ?? "2030-02-02",
-                                  startDate: eventVal.startDate ?? "",
-                                  endDate: eventVal.endDate ?? "",
-                                  leaveType: LeaveType(
-                                    leaveId: eventVal.leaveType?.leaveId,
-                                    isAddNoteRequired:
-                                        eventVal.leaveType?.isAddNoteRequired,
-                                    type: eventVal.leaveType?.type,
-                                    isAttachDocumentRequired: eventVal
-                                        .leaveType?.isAttachDocumentRequired,
-                                    leaveName: eventVal.leaveType?.leaveName,
-                                  ),
-                                  duration: eventVal.numberOfDays ?? 0,
-                                  description: eventVal.description ?? ""),
-                            ));
-                }
-              },
-              headerHeight: 0,
-              showDatePickerButton: false,
-              showNavigationArrow: false,
-              cellEndPadding: 4,
-              allowViewNavigation: false,
-              appointmentTimeTextFormat: "HH:mm",
-              timeSlotViewSettings: const TimeSlotViewSettings(
-                timeFormat: "HH:mm",
-              ),
-              showCurrentTimeIndicator: false,
-              initialDisplayDate: DateTime.now(),
-              monthViewSettings: const MonthViewSettings(
-                  appointmentDisplayMode:
-                      MonthAppointmentDisplayMode.appointment),
-            ),
+        :  const Padding(
+            padding: EdgeInsets.only(
+                top: 0.0, bottom: 110, left: 14, right: 14),
+            child: TimelineCalendarView(),
           ));
   }
 
