@@ -17,6 +17,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../leave/view/widget/widget.dart';
+import '../widget/custom_timeline_calendar.dart';
 import '../widget/timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
@@ -157,20 +158,20 @@ _buttonRadiusLayout() {
   );
 }
 
-// SliverToBoxAdapter get sliverToBoxAdapter {
-//   return const SliverToBoxAdapter(
-//     child: CustomTimelineCalendar(),
-//   );
-// }
-
 SliverToBoxAdapter get sliverToBoxAdapter {
-  return SliverToBoxAdapter(
-    child: SizedBox(
-        height: Get.height,
-        child: Stack(
-          children: [
-            const Expanded(child: TimeLineCalendar()),
-          ],
-        )),
+  return const SliverToBoxAdapter(
+    child: CustomTimelineCalendar(),
   );
 }
+//
+// SliverToBoxAdapter get sliverToBoxAdapter {
+//   return SliverToBoxAdapter(
+//     child: SizedBox(
+//         height: Get.height,
+//         child: const Stack(
+//           children: [
+//             Expanded(child: TimeLineCalendar()),
+//           ],
+//         )),
+//   );
+// }

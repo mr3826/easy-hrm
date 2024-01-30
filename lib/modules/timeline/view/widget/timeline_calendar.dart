@@ -18,9 +18,7 @@ class TimeLineCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() =>
         Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
-            ? const CupertinoActivityIndicator(
-              color: Colors.blueAccent,
-            )
+            ?  Container()
             : Padding(
                 padding: const EdgeInsets.only(
                     top: 0.0, bottom: 110, left: 14, right: 14),

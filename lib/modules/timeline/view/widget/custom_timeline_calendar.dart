@@ -34,14 +34,13 @@ class CustomTimelineCalendar extends StatelessWidget {
                           .isTimelineCalendarByDateLoading
                           .isTrue
                   ? const Positioned(
-                      top: 0,
-                      right: 0,
-                      left: 0,
-                      bottom: 0,
+                      top: 120,
+                      right: 120,
+                      left: 120,
                       child: Center(
                           child: CupertinoActivityIndicator(
                               radius: 20, color: Colors.blueAccent)))
-                  : Container(),
+                  : Container()
             ],
           )),
     );
