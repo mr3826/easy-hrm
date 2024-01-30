@@ -28,7 +28,6 @@ class AddAttachmentFile extends StatelessWidget {
       Get.delete<ApplyLeaveController>();
     }
     Get.put(ApplyLeaveController());
-
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
