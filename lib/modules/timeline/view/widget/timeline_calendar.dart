@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../common/domain/last_input_model.dart';
+import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../controller/time_formate_controller.dart';
@@ -55,23 +57,7 @@ class TimeLineCalendar extends StatelessWidget {
                 return formattedTime;
               },
               onEventTap: (events, date) {
-                print("events ::: $events");
-              },
-              eventTileBuilder: (
-                date,
-                events,
-                status,
-                start,
-                end,
-              ) {
-                print("date :: $date");
-                print("status :: $status");
-                print("start :: $start");
-                print("end :: $end");
-                print("events :: $events");
                 Iterable<String> eventData = events.map((e) => e.description);
-
-
 
                 var durationData = eventData
                     .map((e) =>
@@ -98,7 +84,78 @@ class TimeLineCalendar extends StatelessWidget {
                         ModelForDescription.fromJson(jsonDecode(e)).taskName)
                     .toString();
 
+                var timelineId = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).timeLId)
+                    .toString();
 
+                var description = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).description)
+                    .toString();
+
+                customButtonSheet(
+                    height: .6,
+                    context: context,
+                    child: TaskView(
+                      projectName: taskNameData
+                          .toString()
+                          .substring(1, taskNameData.toString().length - 1),
+                      date: startDateTimeData.toString().substring(
+                          1, startDateTimeData.toString().length - 1),
+                      startTime: startDateTimeData.toString().substring(
+                          1, startDateTimeData.toString().length - 1),
+                      endTime: endDateTimeData
+                          .toString()
+                          .substring(1, endDateTimeData.toString().length - 1),
+                      status: statusData
+                          .toString()
+                          .substring(1, statusData.toString().length - 1),
+                      totalDur: durationData
+                          .toString()
+                          .substring(1, durationData.toString().length - 1),
+                      description: description
+                          .toString()
+                          .substring(1, description.toString().length - 1),
+                      timeLineId: timelineId
+                          .toString()
+                          .substring(1, durationData.toString().length - 1),
+                    ));
+
+              },
+              eventTileBuilder: (
+                date,
+                events,
+                status,
+                start,
+                end,
+              ) {
+                Iterable<String> eventData = events.map((e) => e.description);
+
+                var durationData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).duration)
+                    .toString();
+
+                var statusData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).status)
+                    .toString();
+
+                var startDateTimeData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).startDate)
+                    .toString();
+
+                var endDateTimeData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                    .toString();
+
+                var taskNameData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                    .toString();
 
                 return TaskSolidLayout(
                   duration: durationData

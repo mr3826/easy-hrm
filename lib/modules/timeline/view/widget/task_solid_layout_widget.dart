@@ -55,7 +55,6 @@ class TaskSolidLayout extends StatelessWidget {
             const Spacer(),
             _endTimeLayout(_updateColorAccordingToApiResponse(),
                 _updateIconAccordingToApiResponse(),
-
                 _colorForIconAccordingToApiResponse()
             )
           ],
