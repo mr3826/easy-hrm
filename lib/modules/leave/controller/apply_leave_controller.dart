@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/upload_policy.dart';
+import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
@@ -12,6 +13,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/utils.dart';
 import '../model/workshief_response_by_date.dart';
+import 'file_upload_controller.dart';
 import 'leave_screen_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
@@ -34,6 +36,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   RxBool isDocumentRequired = false.obs;
   RxString numberOfLeaves = ''.obs;
   RxBool isErrorOccurred = false.obs;
+  RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   getLeaveType() async {
@@ -80,6 +83,16 @@ class ApplyLeaveController extends GetxController with StateMixin {
 
   applyLeave({filePath}) async {
     isAssignLeaveLoaderLoading(true);
+    print(Get.find<FileUploadController>()
+        .storageForUpload
+        .fileSize
+        .value
+        .toString());
+
+    print(uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.name));
+    print(uploadPolicyResponse.getUploadPolicy?.policyData?.first.name
+        .toString());
+    print(leaveId.toString());
 
     print('''
             "end_date": ${Get.find<DateTimePickerController>().inDateTime.value},
@@ -94,9 +107,14 @@ class ApplyLeaveController extends GetxController with StateMixin {
         "leave_type_id": leaveId,
         "files": [
           {
-            "size": null,
-            "name": "${DateTime.now().microsecondsSinceEpoch}.${filePath.split(".").last}",
-            "key": null
+            "size": int.parse(Get.find<FileUploadController>()
+                .storageForUpload
+                .fileSize
+                .value
+                .toString()),
+            "name": "",
+            "key":
+                "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.value)}"
           }
         ],
       }
@@ -112,15 +130,16 @@ class ApplyLeaveController extends GetxController with StateMixin {
       isErrorOccurred.value = false;
       showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
       leaveNoteController.clear();
-      Get.off(() => MainScreen(
+      Get.off(() => const MainScreen(
             routeIndex: 1,
           ));
 
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+      Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
     }
 
-    isAssignLeaveLoaderLoading(false);
+  //  isAssignLeaveLoaderLoading(false);
   }
 
   getUploadPolicy({fileName}) async {
@@ -129,37 +148,41 @@ class ApplyLeaveController extends GetxController with StateMixin {
         .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
-        "filename": "${DateTime.now().millisecondsSinceEpoch}$fileName",
+        "filename": fileName.split('/').last,
         "directive": "Files"
       }
     });
-    print("getUploadPolicy:: $response");
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
-      print("getUploadPolicy Error:: $response");
     } else {
-      print("getUploadPolicy:: $response");
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
-      uploadFile(filePath: fileName, policyData: {
-        "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.name)}":
-            "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.value)}"
-      });
+      uploadFile(
+          url: uploadPolicyResponse.getUploadPolicy?.url ?? "",
+          fileName: fileName,
+          list: uploadPolicyResponse.getUploadPolicy?.policyData);
     }
     isUploadPolicyLoading(false);
   }
 
   uploadFile(
-      {required Map<String, dynamic> policyData, required String filePath}) {
-    FormData formData = FormData({});
-    policyData.forEach((key, value) {
-      formData.fields.add(MapEntry(key, value));
-    });
+      {required String fileName, List<PolicyData>? list, required String url}) {
+    if (list == null || url.isEmpty) return;
 
-    formData.files.add(MapEntry(
-        "file",
-        MultipartFile(File(filePath),
-            filename:
-                "${DateTime.now().microsecondsSinceEpoch}.${filePath.split(".").last}")));
+    FormData formData = FormData({});
+    for (var data in list) {
+      formData.fields.add(MapEntry(data.name!, data.value!));
+    }
+
+    formData.files.add(MapEntry("file",
+        MultipartFile(File(fileName), filename: fileName.split('/').last)));
+
+    NetworkClient().post(url, formData).then(
+        (value) => isFileUploadedSuccessfully.value = true,
+        onError: (_){isFileUploadedSuccessfully.value = false;
+          print(_);
+
+
+        });
   }
 }

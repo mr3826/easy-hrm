@@ -30,30 +30,43 @@ class AddAttachmentFile extends StatelessWidget {
                 isErrorOccurred: isFromApplyLeave == true
                     ? Get.find<ApplyLeaveController>().isErrorOccurred.value
                     : Get.find<UpDateLeaveController>().isErrorOccurred.value,
-                child: GestureDetector(
-                    onTap: () {
-                      Get.find<FileUploadController>()
-                          .storageForUpload
-                          .pickFile();
-                    },
-                    child: Obx(() => Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse? Get.find<FileUploadController>()
-                        .storageForUpload
-                        .filePath
-                        .isNotEmpty
-                        ? Get.find<FileUploadController>()
-                        .storageForUpload
-                        .filePath
-                        .endsWith(".pdf")
-                        ? _replaceFileLayout()
-                        : _selectedImageViewLayout()
-                        : _emptyBox():const Center(child: CupertinoActivityIndicator(color: AppColor.primaryColor,))))),
+                child: GestureDetector(onTap: () {
+                  Get.find<FileUploadController>().storageForUpload.pickFile();
+                }, child: Obx(() {
+                  return _documentLayout();
+                }))),
             customSpacerHeight(height: 8),
             Obx(() => _pathNameText()),
           ],
         ));
   }
-}
 
+  Widget _documentLayout() {
+    if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+      /// file image
+      return Text(
+          "isFileUploadedSuccessfully.isTrue &&isUploadPolicyLoading.isFalse");
+    } else if (Get.find<ApplyLeaveController>()
+            .isFileUploadedSuccessfully
+            .isFalse &&
+        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+      if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
+        /// initial stagew
+        return Text("Entry file");
+      } else {
+
+        /// broken image
+        return Text("not Entry file");
+      }
+    } else {
+      return const Center(
+          child: CupertinoActivityIndicator(
+        color: AppColor.primaryColor,
+      ));
+    }
+  }
+}
 
 _replaceFileLayout() {
   return Row(
