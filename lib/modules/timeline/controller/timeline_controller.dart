@@ -364,6 +364,13 @@ class TimelineController extends GetxController with StateMixin {
                   startDate: e.startDate ?? "",
                   duration: e.totalLeaveMinutes ?? "0.0",
                   taskName: e.leaveType?.leaveName ?? "",
+                  leaveType:LeaveType(
+                    isAddNoteRequired: e.leaveType?.isAddNoteRequired??false,
+                    isAttachDocumentRequired: e.leaveType?.isAttachDocumentRequired??false,
+                    leaveId: e.leaveType?.leaveId??"",
+                    leaveName: e.leaveType?.leaveName??""
+
+                  )
                 );
 
                 Map<String, dynamic> jsonModel = modelForDescription.toJson();

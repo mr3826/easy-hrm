@@ -1,18 +1,23 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
+import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+import '../../../../common/domain/last_input_model.dart' as LI;
 import '../../../../common/domain/last_input_model.dart';
-import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
-import '../../controller/time_formate_controller.dart';
+import '../../../leave/model/leave_records.dart';
+import '../widget/task_view_widget.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
@@ -74,7 +79,7 @@ class TimeLineCalendar extends StatelessWidget {
                         ModelForDescription.fromJson(jsonDecode(e)).startDate)
                     .toString();
 
-                var endDateTimeData = eventData
+                String endDateTimeData = eventData
                     .map((e) =>
                         ModelForDescription.fromJson(jsonDecode(e)).endDate)
                     .toString();
@@ -89,39 +94,108 @@ class TimeLineCalendar extends StatelessWidget {
                         ModelForDescription.fromJson(jsonDecode(e)).timeLId)
                     .toString();
 
-                var description = eventData
+                String description = eventData
                     .map((e) =>
                         ModelForDescription.fromJson(jsonDecode(e)).description)
                     .toString();
 
+                String leaveType = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).leaveType)
+                    .toString();
+
+                String createdAt = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).createdAt ??
+                        "2024-01-28 09:00:00")
+                    .toString();
+                String leaveId = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).leaveId)
+                    .toString();
+
+                print("Leave type ::::: ${leaveType
+                    .toString()
+                    .substring(1, leaveType.toString().length - 1)}");
+
+
                 customButtonSheet(
                     height: .6,
                     context: context,
-                    child: TaskView(
-                      projectName: taskNameData
-                          .toString()
-                          .substring(1, taskNameData.toString().length - 1),
-                      date: startDateTimeData.toString().substring(
-                          1, startDateTimeData.toString().length - 1),
-                      startTime: startDateTimeData.toString().substring(
-                          1, startDateTimeData.toString().length - 1),
-                      endTime: endDateTimeData
-                          .toString()
-                          .substring(1, endDateTimeData.toString().length - 1),
-                      status: statusData
-                          .toString()
-                          .substring(1, statusData.toString().length - 1),
-                      totalDur: durationData
-                          .toString()
-                          .substring(1, durationData.toString().length - 1),
-                      description: description
-                          .toString()
-                          .substring(1, description.toString().length - 1),
-                      timeLineId: timelineId
-                          .toString()
-                          .substring(1, durationData.toString().length - 1),
-                    ));
+                    child:  leaveType
+                        .substring(1, leaveType.toString().length - 1) ==null
 
+
+                        ? TaskView(
+                            projectName: taskNameData.toString().substring(
+                                1, taskNameData.toString().length - 1),
+                            date: startDateTimeData.toString().substring(
+                                1, startDateTimeData.toString().length - 1),
+                            startTime: startDateTimeData.toString().substring(
+                                1, startDateTimeData.toString().length - 1),
+                            endTime: endDateTimeData.toString().substring(
+                                1, endDateTimeData.toString().length - 1),
+                            status: statusData
+                                .toString()
+                                .substring(1, statusData.toString().length - 1),
+                            totalDur: durationData.toString().substring(
+                                1, durationData.toString().length - 1),
+                            description: description.toString().substring(
+                                1, description.toString().length - 1),
+                            timeLineId: timelineId.toString().substring(
+                                1, durationData.toString().length - 1),
+                          )
+                        : LeaveRecordDetails(
+                            status: statusData
+                                .toString()
+                                .substring(1, statusData.toString().length - 1),
+                            leaveRecords: GetLeaveRecords(
+                                id: leaveId.toString().substring(
+                                    1, leaveId.toString().length - 1),
+                                status: statusData.toString().substring(
+                                    1, statusData.toString().length - 1),
+                                createdAt: createdAt
+                                    .toString()
+                                    .substring(
+                                        1, createdAt.toString().length - 1)
+                                    .toString(),
+                                startDate: startDateTimeData
+                                    .toString()
+                                    .substring(1,
+                                        startDateTimeData.toString().length - 1)
+                                    .toString(),
+                                endDate: endDateTimeData
+                                    .toString()
+                                    .substring(1,
+                                        endDateTimeData.toString().length - 1)
+                                    .toString(),
+
+                                //
+                                // leaveType: LeaveType(
+                                //
+                                //   leaveId: statusData
+                                //       .toString()
+                                //       .substring(1, statusData.toString().length - 1),
+                                //   isAddNoteRequired:
+                                //   statusData
+                                //       .toString()
+                                //       .substring(1, statusData.toString().length - 1),
+                                //   type: statusData
+                                //       .toString()
+                                //       .substring(1, statusData.toString().length - 1),
+                                //   isAttachDocumentRequired:
+                                //   statusData
+                                //       .toString()
+                                //       .substring(1, statusData.toString().length - 1),
+                                //   leaveName: statusData
+                                //       .toString()
+                                //       .substring(1, statusData.toString().length - 1),
+                                // ),
+
+                                duration: 0,
+                                description: description.toString().substring(
+                                    1, description.toString().length - 1)),
+                          ));
               },
               eventTileBuilder: (
                 date,
