@@ -18,12 +18,17 @@ import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
 
 class AddAttachmentFile extends StatelessWidget {
-  bool? isFromApplyLeave;
+  final bool? isFromApplyLeave;
+  const AddAttachmentFile({this.isFromApplyLeave = false, super.key});
 
-  AddAttachmentFile({this.isFromApplyLeave = false, super.key});
 
   @override
   Widget build(BuildContext context) {
+    if(Get.isRegistered()){
+      Get.delete<ApplyLeaveController>();
+    }
+    Get.put(ApplyLeaveController());
+
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -61,15 +66,14 @@ class AddAttachmentFile extends StatelessWidget {
         return _emptyBox();
       } else {
         /// broken image
-        if(Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse){
-          return   _brokenImageViewLayout();
-        }else{
+        if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+          return _brokenImageViewLayout();
+        } else {
           return const Center(
               child: CupertinoActivityIndicator(
-                color: AppColor.primaryColor,
-              ));
+            color: AppColor.primaryColor,
+          ));
         }
-
       }
     } else {
       return const Center(

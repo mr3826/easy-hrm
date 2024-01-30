@@ -83,38 +83,9 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   applyLeave({filePath}) async {
-    String value1 = uploadPolicyResponse.getUploadPolicy?.policyData
-            ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-            .value ??
-        "";
-
     print(
-        "uploadPolicyResponse.getUploadPolicy?.policyData?.where((e) => e.name == 'key'.toLowerCase()):: $value1");
+        "jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
     isAssignLeaveLoaderLoading(true);
-    print(Get.find<FileUploadController>()
-        .storageForUpload
-        .fileSize
-        .value
-        .toString());
-
-    print(uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.name));
-    print(uploadPolicyResponse.getUploadPolicy?.policyData?.first.name
-        .toString());
-    print(leaveId.toString());
-    log(
-        Get.find<FileUploadController>()
-            .storageForUpload
-            .filePath
-            .value
-            .split("/")
-            .last
-            .toString(),
-        error: 100);
-
-    print('''
-            "end_date": ${Get.find<DateTimePickerController>().inDateTime.value},
-        "start_date": ${Get.find<DateTimePickerController>().outDateTime.value},
-    ''');
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
       "inputData": {
         "description": leaveNoteController.text,
@@ -138,7 +109,9 @@ class ApplyLeaveController extends GetxController with StateMixin {
                 .toString(),
             "key": uploadPolicyResponse.getUploadPolicy?.policyData
                     ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-                    .value ??
+                    .value
+                    ?.split("/")
+                    .last ??
                 ""
           }
         ],
@@ -153,25 +126,25 @@ class ApplyLeaveController extends GetxController with StateMixin {
       isDocumentRequired.value = false;
       numberOfLeaves.value = '';
       isErrorOccurred.value = false;
+      Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
       showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
       leaveNoteController.clear();
       Get.off(() => const MainScreen(routeIndex: 1));
-
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-      Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
     }
 
     isAssignLeaveLoaderLoading(false);
   }
 
   getUploadPolicy({fileName}) async {
+    print("${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
     isUploadPolicyLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
-        "filename": fileName.split('/').last,
+        "filename": "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });
@@ -188,10 +161,8 @@ class ApplyLeaveController extends GetxController with StateMixin {
     isUploadPolicyLoading(false);
   }
 
-  uploadFile(
-      {required String fileName,
-      List<PolicyData>? list,
-      required String url}) async {
+  uploadFile({required String fileName, List<PolicyData>? list, required String url}) async {
+
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 

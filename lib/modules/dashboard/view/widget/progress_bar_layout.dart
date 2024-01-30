@@ -269,7 +269,6 @@ _userImageLayout() {
     borderColor: Colors.transparent,
   );
 }
-
 _decorationStyle() {
   return BoxDecoration(
       color: AppColor.primaryColor.withOpacity(0.1),

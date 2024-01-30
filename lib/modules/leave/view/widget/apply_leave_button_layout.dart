@@ -54,7 +54,6 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                   "2024-01-01 ${Get.find<ApplyLeaveController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
-
                       customSpacerHeight(height: 20),
                       customTitleText(
                           text: AppString.text_to.tr, isRequired: true),
@@ -114,10 +113,6 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                         .leaveId
                                         .isNotEmpty) {
                                   Get.find<ApplyLeaveController>().applyLeave();
-
-
-
-
                                 } else {
                                   showWarningMessage(
                                       message: "Provide a Valid Input");
