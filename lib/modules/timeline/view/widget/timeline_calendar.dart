@@ -1,23 +1,19 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import '../../../../common/domain/last_input_model.dart' as LI;
-import '../../../../common/domain/last_input_model.dart';
+import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../leave/model/leave_records.dart';
 import '../widget/task_view_widget.dart';
+import '../../../leave/model/leave_record_response.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
@@ -64,189 +60,160 @@ class TimeLineCalendar extends StatelessWidget {
               onEventTap: (events, date) {
                 Iterable<String> eventData = events.map((e) => e.description);
 
-                var durationData = eventData
+                String timeLId = eventData
                     .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).duration)
+                        li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
+                    .toString();
+                String startDate = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).startDate)
+                    .toString();
+                String endDate = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                    .toString();
+                String taskName = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                    .toString();
+                String status = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).status)
+                    .toString();
+                String leaveName = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.leaveName)
                     .toString();
 
-                var statusData = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).status)
+                String isAttachDocumentRequired = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.isAttachDocumentRequired)
                     .toString();
 
-                var startDateTimeData = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).startDate)
+                String isAddNoteRequired = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.isAddNoteRequired)
+                    .toString();
+                String type = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.type)
                     .toString();
 
-                String endDateTimeData = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                String leaveId = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.leaveId)
                     .toString();
-
-                var taskNameData = eventData
+                String duration = eventData
                     .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                        li.ModelForDescription.fromJson(jsonDecode(e)).duration)
                     .toString();
-
-                var timelineId = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).timeLId)
-                    .toString();
-
                 String description = eventData
                     .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).description)
+                        li.ModelForDescription.fromJson(jsonDecode(e)).description)
                     .toString();
-
-                String leaveType = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).leaveType)
+                String numberOfDays = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .numberOfDays)
                     .toString();
-
                 String createdAt = eventData
                     .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).createdAt ??
-                        "2024-01-28 09:00:00")
+                        li.ModelForDescription.fromJson(jsonDecode(e)).createdAt)
                     .toString();
-                String leaveId = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).leaveId)
-                    .toString();
-
-                print("Leave type ::::: ${leaveType
-                    .toString()
-                    .substring(1, leaveType.toString().length - 1)}");
-
 
                 customButtonSheet(
                     height: .6,
                     context: context,
-                    child:  leaveType
-                        .substring(1, leaveType.toString().length - 1) ==null
-
-
+                    child: leaveId.substring(1, leaveId.length - 1) == "null"
                         ? TaskView(
-                            projectName: taskNameData.toString().substring(
-                                1, taskNameData.toString().length - 1),
-                            date: startDateTimeData.toString().substring(
-                                1, startDateTimeData.toString().length - 1),
-                            startTime: startDateTimeData.toString().substring(
-                                1, startDateTimeData.toString().length - 1),
-                            endTime: endDateTimeData.toString().substring(
-                                1, endDateTimeData.toString().length - 1),
-                            status: statusData
+                            taskName: taskName.substring(
+                                1, taskName.toString().length - 1),
+                            date: startDate
                                 .toString()
-                                .substring(1, statusData.toString().length - 1),
-                            totalDur: durationData.toString().substring(
-                                1, durationData.toString().length - 1),
+                                .substring(1, startDate.toString().length - 1),
+                            startTime: startDate
+                                .toString()
+                                .substring(1, startDate.toString().length - 1),
+                            endTime: endDate
+                                .toString()
+                                .substring(1, endDate.toString().length - 1),
+                            status: status
+                                .toString()
+                                .substring(1, status.toString().length - 1),
+                            totalDur: duration
+                                .toString()
+                                .substring(1, duration.toString().length - 1),
                             description: description.toString().substring(
                                 1, description.toString().length - 1),
-                            timeLineId: timelineId.toString().substring(
-                                1, durationData.toString().length - 1),
+                            timeLineId: timeLId
+                                .toString()
+                                .substring(1, timeLId.toString().length - 1),
                           )
                         : LeaveRecordDetails(
-                            status: statusData
+                            status: status
                                 .toString()
-                                .substring(1, statusData.toString().length - 1),
+                                .substring(1, status.toString().length - 1),
                             leaveRecords: GetLeaveRecords(
-                                id: leaveId.toString().substring(
-                                    1, leaveId.toString().length - 1),
-                                status: statusData.toString().substring(
-                                    1, statusData.toString().length - 1),
-                                createdAt: createdAt
-                                    .toString()
-                                    .substring(
-                                        1, createdAt.toString().length - 1)
-                                    .toString(),
-                                startDate: startDateTimeData
-                                    .toString()
-                                    .substring(1,
-                                        startDateTimeData.toString().length - 1)
-                                    .toString(),
-                                endDate: endDateTimeData
-                                    .toString()
-                                    .substring(1,
-                                        endDateTimeData.toString().length - 1)
-                                    .toString(),
-
-                                //
-                                // leaveType: LeaveType(
-                                //
-                                //   leaveId: statusData
-                                //       .toString()
-                                //       .substring(1, statusData.toString().length - 1),
-                                //   isAddNoteRequired:
-                                //   statusData
-                                //       .toString()
-                                //       .substring(1, statusData.toString().length - 1),
-                                //   type: statusData
-                                //       .toString()
-                                //       .substring(1, statusData.toString().length - 1),
-                                //   isAttachDocumentRequired:
-                                //   statusData
-                                //       .toString()
-                                //       .substring(1, statusData.toString().length - 1),
-                                //   leaveName: statusData
-                                //       .toString()
-                                //       .substring(1, statusData.toString().length - 1),
-                                // ),
-
-                                duration: 0,
-                                description: description.toString().substring(
-                                    1, description.toString().length - 1)),
+                              id: leaveId
+                                  .toString()
+                                  .substring(1, leaveId.toString().length - 1),
+                              status: status
+                                  .toString()
+                                  .substring(1, status.toString().length - 1),
+                              createdAt: createdAt
+                                  .toString()
+                                  .substring(1, createdAt.toString().length - 1)
+                                  .toString(),
+                              startDate: startDate
+                                  .toString()
+                                  .substring(1, startDate.toString().length - 1)
+                                  .toString(),
+                              endDate: endDate
+                                  .toString()
+                                  .substring(1, endDate.toString().length - 1)
+                                  .toString(),
+                              duration: double.tryParse(numberOfDays) ?? 0,
+                              description: description.toString().substring(
+                                  1, description.toString().length - 1),
+                            ),
                           ));
               },
-              eventTileBuilder: (
-                date,
-                events,
-                status,
-                start,
-                end,
-              ) {
+              eventTileBuilder: (date, events, status, start, end) {
                 Iterable<String> eventData = events.map((e) => e.description);
 
-                var durationData = eventData
+                String status = eventData
                     .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).duration)
+                        li.ModelForDescription.fromJson(jsonDecode(e)).status)
+                    .toString();
+                String startDate = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).startDate)
+                    .toString();
+                String endDate = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
                     .toString();
 
-                var statusData = eventData
+                String taskName = eventData
                     .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).status)
+                        li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
                     .toString();
 
-                var startDateTimeData = eventData
+                String duration = eventData
                     .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).startDate)
-                    .toString();
-
-                var endDateTimeData = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).endDate)
-                    .toString();
-
-                var taskNameData = eventData
-                    .map((e) =>
-                        ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                        li.ModelForDescription.fromJson(jsonDecode(e)).duration)
                     .toString();
 
                 return TaskSolidLayout(
-                  duration: durationData
-                      .toString()
-                      .substring(1, durationData.toString().length - 1),
-                  status: statusData
-                      .toString()
-                      .substring(1, statusData.toString().length - 1),
-                  startDateTime: startDateTimeData
-                      .toString()
-                      .substring(1, startDateTimeData.toString().length - 1),
-                  endDateTime: endDateTimeData
-                      .toString()
-                      .substring(1, endDateTimeData.toString().length - 1),
-                  taskName: taskNameData
-                      .toString()
-                      .substring(1, taskNameData.toString().length - 1),
+                  status: status.substring(1, status.length - 1),
+                  startDateTime: startDate.substring(1, startDate.length - 1),
+                  endDateTime: endDate.substring(1, endDate.length - 1),
+                  taskName: taskName.substring(1, taskName.length - 1),
+                  duration: duration.substring(1, duration.length - 1),
                 );
               },
             ),

@@ -163,15 +163,3 @@ SliverToBoxAdapter get sliverToBoxAdapter {
     child: CustomTimelineCalendar(),
   );
 }
-//
-// SliverToBoxAdapter get sliverToBoxAdapter {
-//   return SliverToBoxAdapter(
-//     child: SizedBox(
-//         height: Get.height,
-//         child: const Stack(
-//           children: [
-//             Expanded(child: TimeLineCalendar()),
-//           ],
-//         )),
-//   );
-// }
