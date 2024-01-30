@@ -37,14 +37,6 @@ Future<void> initApp() async {
   Get.put(PasswordController());
   Get.put(LogoutController());
   Get.put(SelectedTaskController());
-  Get.put(LeaveScreenController());
-  Get.put(LeaveRecordsController());
-  Get.put(UserProfileController());
   Get.put(UpdateProfileController());
-  Get.put(NotificationController());
-  Get.put(TimelineController());
-  Get.put(DashboardController());
   Get.put(DateTimeController());
-  Get.put(NotificationController());
-
 }

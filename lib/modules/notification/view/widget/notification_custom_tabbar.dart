@@ -120,6 +120,7 @@ class NotificationTabBar extends StatelessWidget {
   }
 
   Future<void> _reloadPage() async {
+    Get.find<NotificationController>().notificationTabBarIndex.value = 0;
     Get.find<NotificationController>().newNotificationOffset.value = 0;
     Get.find<NotificationController>().seenNotificationOffset.value = 0;
     await Get.find<NotificationController>().getNewNotification();
