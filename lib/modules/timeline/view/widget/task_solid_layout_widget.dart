@@ -3,6 +3,8 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../utils/utils.dart';
+import '../../controller/time_formate_controller.dart';
 
 class TaskSolidLayout extends StatelessWidget {
   final String taskName;
@@ -44,7 +46,7 @@ class TaskSolidLayout extends StatelessWidget {
             ),
             customSpacerHeight(height: 6),
             Text(
-              duration,
+              convertMiniToHour(Duration(minutes: int.parse(duration))),
               style: AppStyle.mid_large_text.copyWith(
                   fontSize: Dimensions.fontSizeDefault - 2,
                   color: _updateColorAccordingToApiResponse(),
@@ -52,19 +54,22 @@ class TaskSolidLayout extends StatelessWidget {
             ),
             const Spacer(),
             _endTimeLayout(_updateColorAccordingToApiResponse(),
-                _updateIconAccordingToApiResponse())
+                _updateIconAccordingToApiResponse(),
+
+                _colorForIconAccordingToApiResponse()
+            )
           ],
         ),
       ),
     );
   }
 
-  _endTimeLayout(statusColor, statusIcon) {
+  _endTimeLayout(statusColor, statusIcon,iconColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          endDateTime,
+          timeFormatTo24h(DateTime.parse(endDateTime)),
           style: AppStyle.mid_large_text.copyWith(
               color: statusColor,
               fontSize: Dimensions.fontSizeDefault - 2,
@@ -72,7 +77,7 @@ class TaskSolidLayout extends StatelessWidget {
         ),
         Icon(
           statusIcon,
-          color: statusColor,
+          color: iconColor,
           size: 20,
         )
       ],
@@ -87,7 +92,7 @@ class TaskSolidLayout extends StatelessWidget {
 
   _startTimeLayout(statusColor) {
     return Text(
-      startDateTime,
+      timeFormatTo24h(DateTime.parse(startDateTime)),
       style: AppStyle.mid_large_text.copyWith(
           color: statusColor,
           fontSize: Dimensions.fontSizeDefault - 2,
@@ -95,29 +100,57 @@ class TaskSolidLayout extends StatelessWidget {
     );
   }
 
-  Color _updateColorAccordingToApiResponse() {
+
+
+ Color _updateColorAccordingToApiResponse() {
     switch (status) {
+      case "pending":
+        return AppColor.pendingColor;
       case "approved":
         return AppColor.primaryColor;
-      case "pending":
-        return AppColor.primaryOrange;
-      case "(reject)":
+      case "taken":
+        return AppColor.takenColor;
+      case "reject":
         return AppColor.errorColorLight;
+      case "cancelled":
+        return AppColor.errorColor;
+      case "rejected":
+        return AppColor.errorColor;
       default:
-        return AppColor.primaryColor;
+        return AppColor.hintColor;
     }
   }
 
+  Color _colorForIconAccordingToApiResponse() {
+    switch (status) {
+      case "pending":
+        return AppColor.pendingColor;
+      case "approved":
+        return AppColor.primaryColor;
+      case "taken":
+        return AppColor.noColor;
+      case "reject":
+        return AppColor.errorColorLight;
+      case "cancelled":
+        return AppColor.noColor;
+      case "rejected":
+        return AppColor.noColor;
+      default:
+        return AppColor.hintColor;
+    }
+  }
+
+
   IconData _updateIconAccordingToApiResponse() {
     switch (status) {
-      case "(approved)":
+      case "approved":
         return Icons.done;
-      case "(pending)":
+      case "pending":
         return Icons.timeline_outlined;
-      case "(reject)":
+      case "reject":
         return Icons.block_flipped;
       default:
-        return Icons.done;
+        return Icons.cached;
     }
   }
 }

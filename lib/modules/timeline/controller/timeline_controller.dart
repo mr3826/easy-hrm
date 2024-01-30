@@ -329,29 +329,58 @@ class TimelineController extends GetxController with StateMixin {
       }
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
-      timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines
-          ?.map((e) => CalendarEventData(
-                date: DateTime.parse("2024-01-24"),
-                startTime: DateTime.parse(
-                    "2024-01-24 ${e.startDate?.substring(11, 19)}"),
-                endTime: DateTime.parse(
-                    "2024-01-24 ${e.endDate?.substring(11, 19)}"),
-                event: "Event 1",
-                title: 'task 1',
-              ))
-          .toList();
-      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
-              ?.map((e) => CalendarEventData(
-                    date: DateTime.parse("2024-01-24"),
-                    startTime: DateTime.parse(
-                        "2024-01-24 ${e.startDate?.substring(11, 19)}"),
-                    endTime: DateTime.parse(
-                        "2024-01-24 ${e.endDate?.substring(11, 19)}"),
-                    event: "Event 1",
-                    title: 'task 1',
-                  ))
-              .toList() ??
-          []);
+      timelogList =
+          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+        ModelForDescription modelForDescription = ModelForDescription(
+          status: e.status ?? "",
+          description: e.description ?? "No added yet",
+          timeLId: e.timelineId ?? "",
+          endDate: e.endDate ?? "",
+          startDate: e.startDate ?? "",
+          duration: e.totalMinutes ?? "0.0",
+          taskName: e.task?.name ?? "",
+        );
+
+        Map<String, dynamic> jsonModel = modelForDescription.toJson();
+        String objData = jsonEncode(jsonModel);
+
+        return CalendarEventData(
+            date: DateTime.parse("2024-01-24"),
+            startTime:
+                DateTime.parse("2024-01-24 ${e.startDate?.substring(11, 19)}"),
+            endTime:
+                DateTime.parse("2024-01-24 ${e.endDate?.substring(11, 19)}"),
+            event: "",
+            title: '',
+            description: objData);
+      }).toList();
+      timelogList?.addAll(
+          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+                ModelForDescription modelForDescription = ModelForDescription(
+                  status: e.status ?? "",
+                  description: e.description ?? "No added yet",
+                  timeLId: e.id ?? "",
+                  endDate: e.endDate ?? "",
+                  startDate: e.startDate ?? "",
+                  duration: e.totalLeaveMinutes ?? "0.0",
+                  taskName: e.leaveType?.leaveName ?? "",
+                );
+
+                Map<String, dynamic> jsonModel = modelForDescription.toJson();
+                String objData = jsonEncode(jsonModel);
+
+                return CalendarEventData(
+                  date: DateTime.parse("2024-01-24"),
+                  startTime: DateTime.parse(
+                      "2024-01-24 ${e.startDate?.substring(11, 19)}"),
+                  endTime: DateTime.parse(
+                      "2024-01-24 ${e.endDate?.substring(11, 19)}"),
+                  event: "",
+                  title: '',
+                  description: objData,
+                );
+              }).toList() ??
+              []);
 
       CalendarControllerProvider.of(Get.context!)
           .controller
@@ -411,24 +440,5 @@ class TimelineController extends GetxController with StateMixin {
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-  }
-}
-
-statusAccordingToColor(status) {
-  switch (status) {
-    case "pending":
-      return AppColor.pendingColor.withOpacity(0.1);
-    case "approved":
-      return AppColor.primaryColor.withOpacity(0.1);
-    case "taken":
-      return AppColor.takenColor.withOpacity(0.1);
-    case "reject":
-      return AppColor.errorColorLight.withOpacity(0.1);
-    case "cancelled":
-      return AppColor.errorColor.withOpacity(0.1);
-    case "rejected":
-      return AppColor.errorColor.withOpacity(0.1);
-    default:
-      return AppColor.hintColor.withOpacity(0.1);
   }
 }

@@ -1,68 +1,125 @@
-import 'dart:developer';
+import 'dart:convert';
+
 import 'package:calendar_view/calendar_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-
+import '../../../../common/domain/last_input_model.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
+import '../../controller/time_formate_controller.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() =>
-        Get.find<TimelineController>().isTimelineCalendarByDateLoading.isTrue
-            ?  Container()
-            : Padding(
-                padding: const EdgeInsets.only(
-                    top: 0.0, bottom: 110, left: 14, right: 14),
-                child: DayView(
-                  showVerticalLine: false,
-                  minDay: DateTime(2021),
-                  maxDay: DateTime(2030),
-                  initialDay: DateTime.parse("2024-01-24"),
-                  timeLineOffset: 0,
-                  showHalfHours: true,
-                  showLiveTimeLineInAllDays: false,
-                  backgroundColor: AppColor.cardColor,
-                  heightPerMinute: 1.9,
-                  headerStyle: _headerStyle(),
-                  eventArranger: const SideEventArranger(),
-                  scrollPhysics: const NeverScrollableScrollPhysics(),
-                  liveTimeIndicatorSettings: HourIndicatorSettings.none(),
-                  pageViewPhysics: const NeverScrollableScrollPhysics(),
-                  halfHourIndicatorSettings: const HourIndicatorSettings(
-                    dashWidth: 1.4,
-                    lineStyle: LineStyle.dashed,
-                    offset: 35,
-                  ),
-                  minuteSlotSize: MinuteSlotSize.minutes30,
-                  hourIndicatorSettings: HourIndicatorSettings(
-                      lineStyle: LineStyle.solid,
-                      offset: 12,
-                      height: .5,
-                      color: AppColor.hintColor.withOpacity(0.6)),
-                  timeStringBuilder: (date, {secondaryDate}) {
-                    String formattedTime = DateFormat.Hm().format(date);
-                    return formattedTime;
-                  },
-                  eventTileBuilder: (date, events, status, start, end) {
-                    return const TaskSolidLayout(
-                      duration: "0.0",
-                      status: "pending",
-                      startDateTime: "202",
-                      endDateTime: "202",
-                      taskName: "My task",
-                    );
-                  },
-                ),
-              ));
+    return Obx(() => Get.find<TimelineController>()
+            .isTimelineCalendarByDateLoading
+            .isTrue
+        ? Container()
+        : Padding(
+            padding: const EdgeInsets.only(
+                top: 0.0, bottom: 110, left: 14, right: 14),
+            child: DayView(
+              showVerticalLine: false,
+              minDay: DateTime(2021),
+              maxDay: DateTime(2030),
+              initialDay: DateTime.parse("2024-01-24"),
+              timeLineOffset: 0,
+              showHalfHours: true,
+              showLiveTimeLineInAllDays: false,
+              backgroundColor: AppColor.cardColor,
+              heightPerMinute: 1.9,
+              headerStyle: _headerStyle(),
+              eventArranger: const SideEventArranger(),
+              scrollPhysics: const NeverScrollableScrollPhysics(),
+              liveTimeIndicatorSettings: HourIndicatorSettings.none(),
+              pageViewPhysics: const NeverScrollableScrollPhysics(),
+              halfHourIndicatorSettings: const HourIndicatorSettings(
+                dashWidth: 1.4,
+                lineStyle: LineStyle.dashed,
+                offset: 35,
+              ),
+              minuteSlotSize: MinuteSlotSize.minutes30,
+              hourIndicatorSettings: HourIndicatorSettings(
+                  lineStyle: LineStyle.solid,
+                  offset: 12,
+                  height: .5,
+                  color: AppColor.hintColor.withOpacity(0.6)),
+              timeStringBuilder: (date, {secondaryDate}) {
+                String formattedTime = DateFormat.Hm().format(date);
+                return formattedTime;
+              },
+              onEventTap: (events, date) {
+                print("events ::: $events");
+              },
+              eventTileBuilder: (
+                date,
+                events,
+                status,
+                start,
+                end,
+              ) {
+                print("date :: $date");
+                print("status :: $status");
+                print("start :: $start");
+                print("end :: $end");
+                print("events :: $events");
+                Iterable<String> eventData = events.map((e) => e.description);
+
+
+
+                var durationData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).duration)
+                    .toString();
+
+                var statusData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).status)
+                    .toString();
+
+                var startDateTimeData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).startDate)
+                    .toString();
+
+                var endDateTimeData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                    .toString();
+
+                var taskNameData = eventData
+                    .map((e) =>
+                        ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                    .toString();
+
+
+
+                return TaskSolidLayout(
+                  duration: durationData
+                      .toString()
+                      .substring(1, durationData.toString().length - 1),
+                  status: statusData
+                      .toString()
+                      .substring(1, statusData.toString().length - 1),
+                  startDateTime: startDateTimeData
+                      .toString()
+                      .substring(1, startDateTimeData.toString().length - 1),
+                  endDateTime: endDateTimeData
+                      .toString()
+                      .substring(1, endDateTimeData.toString().length - 1),
+                  taskName: taskNameData
+                      .toString()
+                      .substring(1, taskNameData.toString().length - 1),
+                );
+              },
+            ),
+          ));
   }
 
   _headerStyle() {
