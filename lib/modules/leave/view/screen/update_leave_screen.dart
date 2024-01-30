@@ -34,27 +34,61 @@ class UpdateLeave extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _updateDateFromResponse();
     return Column(
       children: [
-        customButtonSheetAppbar(
-            text: DateTime.parse(leaveRecords!.startDate!).day ==
-                    DateTime.parse(leaveRecords!.endDate!).day
+        Obx(
+              () => customButtonSheetAppbar(
+            text: DateTime.parse(
+                Get.find<DateTimePickerController>().inDate.value)
+                .day ==
+                DateTime.parse(
+                    Get.find<DateTimePickerController>().outDate.value)
+                    .day
                 ? DateFormat('d MMMM').format(DateTime.parse(
-                    leaveRecords?.startDate ?? DateTime.now().toString()))
-                : "${DateFormat('d MMMM').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))}- ${DateFormat('d MMMM').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}",
-            subtext: DateTime.parse(leaveRecords!.startDate!).day ==
-                    DateTime.parse(leaveRecords!.endDate!).day
+                Get.find<DateTimePickerController>().inDate.value))
+                : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
+            subtext: DateTime.parse(
+                Get.find<DateTimePickerController>().inDate.value)
+                .day ==
+                DateTime.parse(
+                    Get.find<DateTimePickerController>().outDate.value)
+                    .day
                 ? DateFormat('EEEE').format(DateTime.parse(
-                    leaveRecords?.startDate ?? DateTime.now().toString()))
-                : "${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()))} - ${DateFormat('EEEE').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()))}",
-
-
+                Get.find<DateTimePickerController>().inDate.value))
+                : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
+          ),
         ),
-
-
         Expanded(child: UpdateLeaveButtonLayout(leaveRecords: leaveRecords))
       ],
     );
+  }
+
+  void _updateDateFromResponse() {
+    Get.find<UpDateLeaveController>().leaveId = leaveRecords?.id ?? '';
+    Get.find<UpDateLeaveController>().leaveTypeId =
+        leaveRecords?.leaveType?.leaveId ?? "";
+    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
+        .format(DateTime.parse(
+            leaveRecords?.startDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
+        .format(DateTime.parse(
+            leaveRecords?.startDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
+        .format(
+            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outDate.value =
+        DateFormat('yyyy-MM-dd').format(
+            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
+
+    Get.find<DateTimePickerController>().getInDateTime();
+    Get.find<DateTimePickerController>().getOutDateTime();
+
+    leaveNoteController.text = leaveRecords?.description ?? "";
+    Get.find<UpDateLeaveController>().isNoteRequired.value =
+        leaveRecords?.leaveType?.isAddNoteRequired ?? false;
+    Get.find<UpDateLeaveController>().isDocumentRequired.value =
+        leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
   }
 }
 
@@ -72,8 +106,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
     isNoteRequired: ${leaveRecords?.leaveType?.isAddNoteRequired}
     isDocRequired: ${leaveRecords?.leaveType?.isAttachDocumentRequired}
     ''');
-
-    _updateDateFromResponse();
     return controller.obx(
         (state) => Padding(
               padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
@@ -264,36 +296,9 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
           leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
           startDate: Get.find<DateTimePickerController>().inDateTime.value,
           endDate: Get.find<DateTimePickerController>().outDateTime.value);
-    }else{
+    } else {
       showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);
     }
-  }
-
-  void _updateDateFromResponse() {
-    Get.find<UpDateLeaveController>().leaveId = leaveRecords?.id ?? '';
-    Get.find<UpDateLeaveController>().leaveTypeId =
-        leaveRecords?.leaveType?.leaveId ?? "";
-    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
-        .format(DateTime.parse(
-            leaveRecords?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
-        .format(DateTime.parse(
-            leaveRecords?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
-        .format(
-            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outDate.value =
-        DateFormat('yyyy-MM-dd').format(
-            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
-
-    Get.find<DateTimePickerController>().getInDateTime();
-    Get.find<DateTimePickerController>().getOutDateTime();
-
-    leaveNoteController.text = leaveRecords?.description ?? "";
-    Get.find<UpDateLeaveController>().isNoteRequired.value =
-        leaveRecords?.leaveType?.isAddNoteRequired ?? false;
-    Get.find<UpDateLeaveController>().isDocumentRequired.value =
-        leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
   }
 }
 

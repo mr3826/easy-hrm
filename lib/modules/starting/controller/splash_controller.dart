@@ -25,6 +25,9 @@ class SplashController extends GetxController {
         Future.delayed(
             const Duration(milliseconds: 2500), () => chooseScreen());
       }
+    }else{
+      Future.delayed(
+          const Duration(milliseconds: 2500), () => chooseScreen());
     }
     super.onReady();
   }

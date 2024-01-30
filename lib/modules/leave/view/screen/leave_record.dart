@@ -9,7 +9,6 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -26,15 +25,21 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(LeaveRecordsController());
     return controller.obx(
         (state) => Scaffold(
             appBar: customAppbar(title: AppString.text_leave_records),
-            body: ListView.builder(
-              itemCount: controller.leaveRecordList?.length ?? 0,
-              itemBuilder: (context, index) => Column(children: [
-                _dateTextLayout(date: controller.leaveRecordList?[index].date),
-                _leaveRecordViewLayout(index)
-              ]),
+            body: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: controller.leaveRecordList?.length ?? 0,
+                itemBuilder: (context, index) => Column(children: [
+                  _dateTextLayout(date: controller.leaveRecordList?[index].date),
+                  _leaveRecordViewLayout(index)
+                ]),
+              ),
             )),
         onLoading: const LoadingIndicator());
   }
@@ -160,7 +165,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     );
   }
 
-  //todo
   _showDateDurationText(GetLeaveRecords leaveRecord) {
     String? leaveDate;
     String starDate =
