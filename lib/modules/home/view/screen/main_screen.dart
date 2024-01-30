@@ -16,9 +16,12 @@ import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
 import '../../../leave/view/screen/leave_screen.dart';
+import '../../../notification/controller/notification_controller.dart';
 import '../../../notification/view/screen/notification.dart';
 import '../../../profile/controller/profile_image_selected_controller.dart';
+import '../../../profile/controller/user_profile_controller.dart';
 import '../../../profile/view/screen/user_profile.dart';
+import '../../../timeline/controller/timeline_controller.dart';
 import '../../../timeline/view/screen/timeline.dart';
 
 class MainScreen extends StatefulWidget {
@@ -71,6 +74,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(LeaveScreenController());
+    Get.put(UserProfileController());
+    Get.put(TimelineController());
+    Get.put(DashboardController());
+    Get.put(NotificationController());
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
