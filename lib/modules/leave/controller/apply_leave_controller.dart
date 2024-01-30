@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -82,6 +83,13 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   applyLeave({filePath}) async {
+    String value1 = uploadPolicyResponse.getUploadPolicy?.policyData
+            ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+            .value ??
+        "";
+
+    print(
+        "uploadPolicyResponse.getUploadPolicy?.policyData?.where((e) => e.name == 'key'.toLowerCase()):: $value1");
     isAssignLeaveLoaderLoading(true);
     print(Get.find<FileUploadController>()
         .storageForUpload
@@ -93,6 +101,15 @@ class ApplyLeaveController extends GetxController with StateMixin {
     print(uploadPolicyResponse.getUploadPolicy?.policyData?.first.name
         .toString());
     print(leaveId.toString());
+    log(
+        Get.find<FileUploadController>()
+            .storageForUpload
+            .filePath
+            .value
+            .split("/")
+            .last
+            .toString(),
+        error: 100);
 
     print('''
             "end_date": ${Get.find<DateTimePickerController>().inDateTime.value},
@@ -112,9 +129,17 @@ class ApplyLeaveController extends GetxController with StateMixin {
                 .fileSize
                 .value
                 .toString()),
-            "name": "",
-            "key":
-                "${uploadPolicyResponse.getUploadPolicy?.policyData?.map((e) => e.value)}"
+            "name": Get.find<FileUploadController>()
+                .storageForUpload
+                .filePath
+                .value
+                .split(".")
+                .last
+                .toString(),
+            "key": uploadPolicyResponse.getUploadPolicy?.policyData
+                    ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+                    .value ??
+                ""
           }
         ],
       }
@@ -130,16 +155,14 @@ class ApplyLeaveController extends GetxController with StateMixin {
       isErrorOccurred.value = false;
       showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
       leaveNoteController.clear();
-      Get.off(() => const MainScreen(
-            routeIndex: 1,
-          ));
+      Get.off(() => const MainScreen(routeIndex: 1));
 
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
       Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
     }
 
-  //  isAssignLeaveLoaderLoading(false);
+    isAssignLeaveLoaderLoading(false);
   }
 
   getUploadPolicy({fileName}) async {
@@ -166,8 +189,11 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   uploadFile(
-      {required String fileName, List<PolicyData>? list, required String url}) {
+      {required String fileName,
+      List<PolicyData>? list,
+      required String url}) async {
     if (list == null || url.isEmpty) return;
+    isUploadPolicyLoading(true);
 
     FormData formData = FormData({});
     for (var data in list) {
@@ -177,12 +203,10 @@ class ApplyLeaveController extends GetxController with StateMixin {
     formData.files.add(MapEntry("file",
         MultipartFile(File(fileName), filename: fileName.split('/').last)));
 
-    NetworkClient().post(url, formData).then(
-        (value) => isFileUploadedSuccessfully.value = true,
-        onError: (_){isFileUploadedSuccessfully.value = false;
-          print(_);
-
-
-        });
+    await NetworkClient().post(url, formData).then((value) {
+      print(value.statusCode);
+      isFileUploadedSuccessfully.value = true;
+    }, onError: (_) => isFileUploadedSuccessfully.value = false);
+    isUploadPolicyLoading(false);
   }
 }

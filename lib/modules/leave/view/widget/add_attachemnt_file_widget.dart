@@ -12,6 +12,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/images.dart';
 
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
@@ -45,19 +46,30 @@ class AddAttachmentFile extends StatelessWidget {
     if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
-      return Text(
-          "isFileUploadedSuccessfully.isTrue &&isUploadPolicyLoading.isFalse");
+      return Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .endsWith(".pdf")
+          ? _replaceFileLayout()
+          : _selectedImageViewLayout();
     } else if (Get.find<ApplyLeaveController>()
             .isFileUploadedSuccessfully
             .isFalse &&
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
-        /// initial stagew
-        return Text("Entry file");
+        /// initial stage
+        return _emptyBox();
       } else {
-
         /// broken image
-        return Text("not Entry file");
+        if(Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse){
+          return   _brokenImageViewLayout();
+        }else{
+          return const Center(
+              child: CupertinoActivityIndicator(
+                color: AppColor.primaryColor,
+              ));
+        }
+
       }
     } else {
       return const Center(
@@ -159,6 +171,19 @@ _selectedImageViewLayout() {
                 .filePath
                 .value)
             .absolute),
+        fit: BoxFit.cover,
+      ),
+    ),
+  );
+}
+
+_brokenImageViewLayout() {
+  return Container(
+    height: AppLayout.getHeight(100),
+    decoration: BoxDecoration(
+      color: AppColor.disableColor.withOpacity(0.4),
+      image: DecorationImage(
+        image: AssetImage(Images.PLACEHOLDER),
         fit: BoxFit.cover,
       ),
     ),
