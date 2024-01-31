@@ -5,7 +5,6 @@ static const String PUBLIC_URL = "https://api.local.payrun.app";
 
   //static const String PUBLIC_URL = "https://api.dev.payrun.app";
 
-
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
   static const String PUBLIC_IMAGE_URL_DOMAIN =
       "https://local-payrun-files.s3.amazonaws.com";

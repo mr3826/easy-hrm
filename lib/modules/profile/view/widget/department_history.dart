@@ -233,7 +233,7 @@ class DepartmentHistory extends StatelessWidget {
         radius: 19.4,
         child: CustomNetworkImage(
           height: 18,
-          imgUrl: imageUrl,
+          imgUrlKey: imageUrl,
           borderColor: Colors.transparent,
         ),
       ),

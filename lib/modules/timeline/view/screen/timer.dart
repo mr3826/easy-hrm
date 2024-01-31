@@ -49,11 +49,15 @@ class _TimerScreenState extends State<TimerScreen> {
             onAction: () async {
               if (Get.find<TimeCounterController>().isRunning.isTrue) {
                 await Get.find<TimelineController>()
-                    .startOrEndTimer(timerType: StartOrEndTimer.end.name);
-              }
-              if(context.mounted){
-                customButtonSheet(
-                    height: .6, context: context, child: const AddToTaskScreen());
+                    .startOrEndTimer(timerType: StartOrEndTimer.end.name)
+                    .then((value) {
+                  if (value == true) {
+                    customButtonSheet(
+                        height: .6,
+                        context: context,
+                        child: const AddToTaskScreen());
+                  }
+                });
               }
             },
           ),
