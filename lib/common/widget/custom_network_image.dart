@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:imgix_core_dart/url_builder.dart';
+import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 
 import '../../utils/app_string.dart';
@@ -25,9 +26,9 @@ class CustomNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final client = URLBuilder(
-      domain: 'payrun-local.imgix.net',
+      domain: Api.CDN_DOMAIN,
       shouldUseHttpsByDefault: true,
-      defaultSignKey: 'AbuprUHFbUncYjep',
+      defaultSignKey: Api.CDN_KEY,
     );
 
     final url = client.createURLString(

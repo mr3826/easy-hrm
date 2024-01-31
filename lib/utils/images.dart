@@ -50,7 +50,7 @@ class Images {
   static String FLAG = "assets/images/flag.svg";
   static String FLAG_PNG = "assets/images/flag.png";
   static String EDIT_ICON = "assets/images/edit_icon.png";
-  static String KEY_ICON = "assets/images/Key.png";
+  static String KEY_ICON = "assets/images/key.png";
   static String ORG = "assets/images/org.png";
   static String timer_animation = "assets/json/timer.json";
 }

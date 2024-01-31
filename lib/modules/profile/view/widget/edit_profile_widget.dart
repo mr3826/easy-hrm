@@ -16,6 +16,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
 
 Widget textFiledLayout() {
@@ -46,6 +47,10 @@ Widget textFiledLayout() {
           },
           cancelAction: () {
             _clearInputField();
+            Get.find<PikedProfileImgController>()
+                .storageForUpload
+                .filePath
+                .value="";
             Get.back();
           }),
       customSpacerHeight(height: AppLayout.getHeight(80)),

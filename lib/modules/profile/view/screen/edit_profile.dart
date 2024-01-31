@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
@@ -18,7 +17,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_network_image.dart';
-import '../../../../utils/api_endpoints.dart';
 import '../../../../utils/utils.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../widget/edit_profile_widget.dart';
@@ -33,10 +31,6 @@ class EditProfileScreen extends StatelessWidget {
           title: AppString.text_edit_profile.tr,
           onPressAction: () {
             _clearInputField();
-            Get.find<PikedProfileImgController>()
-                .storageForUpload
-                .filePath
-                .value = "";
             Get.back();
           }),
       body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
@@ -64,6 +58,10 @@ class EditProfileScreen extends StatelessWidget {
     editAddressController.clear();
     editLastNameController.clear();
     editFirstNameController.clear();
+    Get.find<PikedProfileImgController>()
+        .storageForUpload
+        .filePath
+        .value="";
   }
 
   _profileSectionLayout(context) {
