@@ -2,28 +2,30 @@ import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
+import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import 'package:payrun_mobile/utils/utils.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
-import 'package:get/get.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
 import '../../../leave/view/screen/leave_screen.dart';
+import '../../../notification/controller/notification_controller.dart';
 import '../../../notification/view/screen/notification.dart';
 import '../../../profile/controller/profile_image_selected_controller.dart';
+import '../../../profile/controller/user_profile_controller.dart';
 import '../../../profile/view/screen/user_profile.dart';
+import '../../../timeline/controller/timeline_controller.dart';
 import '../../../timeline/view/screen/timeline.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
+  const MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
   final int? routeIndex;
 
   @override
@@ -72,18 +74,23 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(LeaveScreenController());
+    Get.put(UserProfileController());
+    Get.put(TimelineController());
+    Get.put(DashboardController());
+    Get.put(NotificationController());
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
         body: PersistentTabView(
           context,
           controller: controller,
-          screens: [
-            const TimelineScreen(),
-            const LeaveScreen(),
+          screens: const [
+            TimelineScreen(),
+            LeaveScreen(),
             Dashboard(),
-            const NotificationScreen(),
-            const ProfileScreen(),
+            NotificationScreen(),
+            ProfileScreen(),
           ],
           items: _navBarsItems(),
           backgroundColor: AppColor.backgroundColor,

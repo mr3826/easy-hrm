@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -11,17 +12,22 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/images.dart';
 
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
 
 class AddAttachmentFile extends StatelessWidget {
-  bool? isFromApplyLeave;
+  final bool? isFromApplyLeave;
+  const AddAttachmentFile({this.isFromApplyLeave = false, super.key});
 
-  AddAttachmentFile({this.isFromApplyLeave = false, super.key});
 
   @override
   Widget build(BuildContext context) {
+    if(Get.isRegistered()){
+      Get.delete<ApplyLeaveController>();
+    }
+    Get.put(ApplyLeaveController());
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,27 +35,51 @@ class AddAttachmentFile extends StatelessWidget {
                 isErrorOccurred: isFromApplyLeave == true
                     ? Get.find<ApplyLeaveController>().isErrorOccurred.value
                     : Get.find<UpDateLeaveController>().isErrorOccurred.value,
-                child: GestureDetector(
-                    onTap: () {
-                      Get.find<FileUploadController>()
-                          .storageForUpload
-                          .pickFile();
-                    },
-                    child: Get.find<FileUploadController>()
-                            .storageForUpload
-                            .filePath
-                            .isNotEmpty
-                        ? Get.find<FileUploadController>()
-                                .storageForUpload
-                                .filePath
-                                .endsWith(".pdf")
-                            ? _replaceFileLayout()
-                            : _selectedImageViewLayout()
-                        : _emptyBox())),
+                child: GestureDetector(onTap: () {
+                  Get.find<FileUploadController>().storageForUpload.pickFile();
+                }, child: Obx(() {
+                  return _documentLayout();
+                }))),
             customSpacerHeight(height: 8),
             Obx(() => _pathNameText()),
           ],
         ));
+  }
+
+  Widget _documentLayout() {
+    if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+      /// file image
+      return Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .endsWith(".pdf")
+          ? _replaceFileLayout()
+          : _selectedImageViewLayout();
+    } else if (Get.find<ApplyLeaveController>()
+            .isFileUploadedSuccessfully
+            .isFalse &&
+        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+      if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
+        /// initial stage
+        return _emptyBox();
+      } else {
+        /// broken image
+        if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+          return _brokenImageViewLayout();
+        } else {
+          return const Center(
+              child: CupertinoActivityIndicator(
+            color: AppColor.primaryColor,
+          ));
+        }
+      }
+    } else {
+      return const Center(
+          child: CupertinoActivityIndicator(
+        color: AppColor.primaryColor,
+      ));
+    }
   }
 }
 
@@ -144,6 +174,19 @@ _selectedImageViewLayout() {
                 .filePath
                 .value)
             .absolute),
+        fit: BoxFit.cover,
+      ),
+    ),
+  );
+}
+
+_brokenImageViewLayout() {
+  return Container(
+    height: AppLayout.getHeight(100),
+    decoration: BoxDecoration(
+      color: AppColor.disableColor.withOpacity(0.4),
+      image: DecorationImage(
+        image: AssetImage(Images.PLACEHOLDER),
         fit: BoxFit.cover,
       ),
     ),

@@ -9,11 +9,15 @@ import '../../../../utils/app_string.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
+import 'apply_leave_controller.dart';
+import 'file_upload_controller.dart';
+
 class PickedFileFormStorage {
   final box = GetStorage();
 
   Rx<File?> selectedFile = Rx<File?>(null);
   RxString filePath = ''.obs;
+  RxString fileSize = ''.obs;
   final isLoading = false.obs;
 
   //picked file form storage here
@@ -42,6 +46,15 @@ class PickedFileFormStorage {
           File file = File(result.files.single.path!);
           selectedFile.value = file;
           filePath.value = result.files.single.path!;
+          int size = await file.length();
+          fileSize.value = size.toString();
+          print('File size: ${fileSize.value} bytes');
+
+          Get.find<ApplyLeaveController>().getUploadPolicy(
+              fileName: Get.find<FileUploadController>()
+                  .storageForUpload
+                  .filePath
+                  .value);
         } else {
           showWarningMessage(message: AppString.text_please_valid_file);
           filePath.value = "";

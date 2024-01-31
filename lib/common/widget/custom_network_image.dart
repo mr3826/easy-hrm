@@ -2,11 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+
 import 'package:imgix_core_dart/url_builder.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/images.dart';
 
 import '../../utils/app_string.dart';
+import '../../utils/images.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imgUrlKey;

@@ -61,7 +61,7 @@ class LeaveScreenController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
-      Get.off(() => MainScreen(
+      Get.off(() => const MainScreen(
             routeIndex: 1,
           ));
     }

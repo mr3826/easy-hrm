@@ -25,12 +25,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   Widget build(BuildContext context) {
     print("ordId: ${GetStorage().read(AppString.ORGANIZATION_ID)}");
     print("idToken: ${GetStorage().read(AppString.ID_TOKEN)}");
-    if (!Get.isRegistered<LeaveScreenController>()) {
-      Get.put(LeaveScreenController());
-    }
-    if (!Get.isRegistered<DateTimePickerController>()) {
-      Get.put(DateTimePickerController());
-    }
     return controller.obx(
         (state) => Scaffold(
               body: RefreshIndicator(
@@ -47,15 +41,20 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   }
 
   //component
-  _applyLeaveBtn(context) {
+  _applyLeaveBtn(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        leaveNoteController.clear();
+        if (Get.isRegistered<DateTimePickerController>()) {
+          Get.delete<DateTimePickerController>();
+        }
+        Get.put(DateTimePickerController());
+
         if (Get.isRegistered<ApplyLeaveController>()) {
           Get.delete<ApplyLeaveController>();
         }
         Get.put(ApplyLeaveController());
-        leaveNoteController.clear();
-        _customButtonSheet(context: context, child: ApplyLeaveScreen());
+          _customButtonSheet(context: context, child: const ApplyLeaveScreen());
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),

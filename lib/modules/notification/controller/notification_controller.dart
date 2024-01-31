@@ -186,6 +186,7 @@ class NotificationController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      newNotificationIdList?.clear();
       await getNewNotification();
       await getSeenNotification();
     }

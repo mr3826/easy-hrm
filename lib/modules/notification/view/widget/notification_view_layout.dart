@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 
 import '../../../../common/widget/custom_icon_shape_style.dart';
@@ -287,6 +288,35 @@ class NotificationViewLayout extends StatelessWidget {
                 notificationCreatedDate: notificationCreatedDate),
             jobTitleInfo: jobTitleInfo,
             index: index);
+      //todo
+      case "added_leave_approver":
+        return _addedAsApproverNotification(
+          changerName: changerName,
+          index: index,
+          contextInfoText:
+              _getContextInfoText(contextName: notificationContext),
+          notificationDuration: _getNotificationDuration(
+              notificationCreatedDate: notificationCreatedDate),
+          approverContext: "Leave approver",
+        );
+      case "added_timeline_approver":
+        return _addedAsApproverNotification(
+          changerName: changerName,
+          index: index,
+          contextInfoText:
+              _getContextInfoText(contextName: notificationContext),
+          notificationDuration: _getNotificationDuration(
+              notificationCreatedDate: notificationCreatedDate),
+          approverContext: "Timelog approver",
+        );
+      case "new_user_joined":
+        return _newUserNotification(
+          index: index,
+          contextInfoText:
+              _getContextInfoText(contextName: notificationContext),
+          notificationDuration: _getNotificationDuration(
+              notificationCreatedDate: notificationCreatedDate),
+        );
 
       default:
         return Container();
@@ -335,8 +365,11 @@ class NotificationViewLayout extends StatelessWidget {
       case "added_to_hiring_team":
         return "has added you as a ";
 
+      case "new_user_joined":
+        return "A new user has joined";
+
       default:
-        return '';
+        return 'has added you as a ';
     }
   }
 
@@ -754,6 +787,123 @@ class NotificationViewLayout extends StatelessWidget {
                             fontSize: Dimensions.fontSizeDefault,
                             color: AppColor.secondaryColor),
                       ),
+                    ],
+                  ),
+                ),
+                Text(
+                  notificationDuration,
+                  style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  ///added as approver
+
+  _addedAsApproverNotification(
+      {required String changerName,
+      required String contextInfoText,
+      required String approverContext,
+      required String notificationDuration,
+      required int index}) {
+    return Container(
+      width: Get.width,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customIconShapeStyle(
+              image: Images.announment_notification, color: AppColor.primaryColor),
+          customSpacerWidth(width: 20),
+          SizedBox(
+            width: Get.width / 1.5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  changerName,
+                  style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.secondaryColor,
+                      fontSize: Dimensions.fontSizeMid,
+                      fontWeight: FontWeight.w500),
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                          text: contextInfoText,
+                          style: TextStyle(
+                            color: AppColor.normalTextColor,
+                            fontSize: Dimensions.fontSizeDefault,
+                          )),
+                      TextSpan(
+                        text: approverContext,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: Dimensions.fontSizeDefault,
+                            color: AppColor.secondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  notificationDuration,
+                  style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _newUserNotification(
+      {required String contextInfoText,
+      required String notificationDuration,
+      required int index}) {
+    return Container(
+      width: Get.width,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customIconShapeStyle(
+              image: Images.announment_notification,
+              color: AppColor.primaryColor),
+          customSpacerWidth(width: 20),
+          SizedBox(
+            width: Get.width / 1.5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                          text: contextInfoText,
+                          style: TextStyle(
+                            color: AppColor.normalTextColor,
+                            fontSize: Dimensions.fontSizeDefault,
+                          )),
                     ],
                   ),
                 ),
