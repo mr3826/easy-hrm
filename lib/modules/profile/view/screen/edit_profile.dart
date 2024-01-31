@@ -226,7 +226,7 @@ Widget _imageLayout() {
 
 Widget _brokenImageViewLayout() {
   return CircleAvatar(
-    radius: 38,
+    radius: 39,
     backgroundColor: AppColor.primaryColor,
     backgroundImage: AssetImage(Images.PLACEHOLDER),
   );
