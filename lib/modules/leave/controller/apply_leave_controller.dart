@@ -180,7 +180,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     }
 
     formData.files.add(MapEntry("file",
-        MultipartFile(File(fileName), filename: fileName.split('/').last)));
+        MultipartFile(File(fileName), filename: "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
       print(value.statusCode);
