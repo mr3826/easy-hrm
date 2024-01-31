@@ -62,10 +62,12 @@ class OrganisationView extends StatelessWidget {
                             email: lastInput.email ?? "",
                             password: lastInput.password ?? "",
                             orgId: Get.find<UserProfileController>()
-                                .organizationInfo
-                                ?.getUserOrganizations
-                                ?.data?[index]
-                                .organization?.id??"",
+                                    .organizationInfo
+                                    ?.getUserOrganizations
+                                    ?.data?[index]
+                                    .organization
+                                    ?.id ??
+                                "",
                             organizationName: Get.find<UserProfileController>()
                                     .organizationInfo
                                     ?.getUserOrganizations
@@ -78,7 +80,9 @@ class OrganisationView extends StatelessWidget {
                       }
                     },
                     childForSaveBtn: Obx(
-                      () => Get.find<UserProfileController>().isOrganizationChangeLoading.isTrue
+                      () => Get.find<UserProfileController>()
+                              .isOrganizationChangeLoading
+                              .isTrue
                           ? const Center(
                               child: CupertinoActivityIndicator(
                                 color: Colors.blueAccent,
@@ -106,7 +110,7 @@ class OrganisationView extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              _organisationLogoLayout(),
+                              _organisationLogoLayout(index),
                               customSpacerWidth(width: 12),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,10 +171,17 @@ class OrganisationView extends StatelessWidget {
     );
   }
 
-  _organisationLogoLayout() {
+  _organisationLogoLayout(int index) {
     return CustomNetworkImage(
       height: 22,
-      imgUrl: "",
+      imgUrlKey: Get.find<UserProfileController>()
+              .organizationInfo
+              ?.getUserOrganizations
+              ?.data?[index]
+              .organization
+              ?.organizationSetting
+              ?.logoKey ??
+          "",
       borderColor: Colors.transparent,
       logoUrl: Images.ORG,
     );

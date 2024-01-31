@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
@@ -13,7 +14,7 @@ import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../leave/model/leave_records.dart';
 import '../widget/task_view_widget.dart';
-import '../../../leave/model/leave_record_response.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
@@ -36,7 +37,7 @@ class TimeLineCalendar extends StatelessWidget {
               showHalfHours: true,
               showLiveTimeLineInAllDays: false,
               backgroundColor: AppColor.cardColor,
-              heightPerMinute: 1.9,
+              heightPerMinute: 2,
               headerStyle: _headerStyle(),
               eventArranger: const SideEventArranger(),
               scrollPhysics: const NeverScrollableScrollPhysics(),
@@ -47,7 +48,6 @@ class TimeLineCalendar extends StatelessWidget {
                 lineStyle: LineStyle.dashed,
                 offset: 35,
               ),
-              minuteSlotSize: MinuteSlotSize.minutes30,
               hourIndicatorSettings: HourIndicatorSettings(
                   lineStyle: LineStyle.solid,
                   offset: 12,
@@ -65,8 +65,8 @@ class TimeLineCalendar extends StatelessWidget {
                         li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
                     .toString();
                 String startDate = eventData
-                    .map((e) =>
-                        li.ModelForDescription.fromJson(jsonDecode(e)).startDate)
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .startDate)
                     .toString();
                 String endDate = eventData
                     .map((e) =>
@@ -113,17 +113,20 @@ class TimeLineCalendar extends StatelessWidget {
                         li.ModelForDescription.fromJson(jsonDecode(e)).duration)
                     .toString();
                 String description = eventData
-                    .map((e) =>
-                        li.ModelForDescription.fromJson(jsonDecode(e)).description)
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .description)
                     .toString();
                 String numberOfDays = eventData
                     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
                         .numberOfDays)
                     .toString();
                 String createdAt = eventData
-                    .map((e) =>
-                        li.ModelForDescription.fromJson(jsonDecode(e)).createdAt)
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .createdAt)
                     .toString();
+
+                /// have to sub string
+                /// otherwise it returns with (value) pattern
 
                 customButtonSheet(
                     height: .6,
@@ -179,19 +182,48 @@ class TimeLineCalendar extends StatelessWidget {
                               duration: double.tryParse(numberOfDays) ?? 0,
                               description: description.toString().substring(
                                   1, description.toString().length - 1),
+                              leaveType: LeaveType(
+                                  leaveName: leaveName.substring(
+                                      1, leaveName.length - 1),
+                                  leaveId: leaveId.substring(
+                                      1, leaveId.length - 1),
+                                  isAttachDocumentRequired:
+                                      isAttachDocumentRequired
+                                                  .substring(
+                                                      1,
+                                                      isAttachDocumentRequired
+                                                              .length -
+                                                          1)
+                                                  .toLowerCase() ==
+                                              "true"
+                                          ? true
+                                          : false,
+                                  isAddNoteRequired: isAddNoteRequired
+                                              .substring(1,
+                                                  isAddNoteRequired.length - 1)
+                                              .toLowerCase() ==
+                                          "true"
+                                      ? true
+                                      : false,
+                                  type: type.substring(1, type.length - 1)),
                             ),
                           ));
               },
               eventTileBuilder: (date, events, status, start, end) {
+                ///for building calendar uo
+
                 Iterable<String> eventData = events.map((e) => e.description);
+
+                /// have to sub string
+                /// otherwise it returns with (value) pattern
 
                 String status = eventData
                     .map((e) =>
                         li.ModelForDescription.fromJson(jsonDecode(e)).status)
                     .toString();
                 String startDate = eventData
-                    .map((e) =>
-                        li.ModelForDescription.fromJson(jsonDecode(e)).startDate)
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .startDate)
                     .toString();
                 String endDate = eventData
                     .map((e) =>
@@ -208,7 +240,16 @@ class TimeLineCalendar extends StatelessWidget {
                         li.ModelForDescription.fromJson(jsonDecode(e)).duration)
                     .toString();
 
+                String leaveId = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.leaveId)
+                    .toString();
+
                 return TaskSolidLayout(
+                  isForLeave: leaveId.substring(1, leaveId.length - 1) == 'null'
+                      ? false
+                      : true,
                   status: status.substring(1, status.length - 1),
                   startDateTime: startDate.substring(1, startDate.length - 1),
                   endDateTime: endDate.substring(1, endDate.length - 1),

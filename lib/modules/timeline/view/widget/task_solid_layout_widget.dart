@@ -12,6 +12,7 @@ class TaskSolidLayout extends StatelessWidget {
   final String endDateTime;
   final String status;
   final String duration;
+  final bool? isForLeave;
 
   const TaskSolidLayout(
       {required this.taskName,
@@ -19,56 +20,31 @@ class TaskSolidLayout extends StatelessWidget {
       required this.endDateTime,
       required this.status,
       required this.duration,
+      this.isForLeave,
       super.key});
 
   @override
   Widget build(BuildContext context) {
+    print("""
+  taskName:$taskName
+  startDateTime:$startDateTime
+  endDateTime:$endDateTime
+  status:$status
+  duration:$duration
+  isForLeave:$isForLeave
+    """);
+
     _updateColorAccordingToApiResponse();
     _updateIconAccordingToApiResponse();
-    return Card(
-      elevation: 0,
-      color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-      shape: _style(_updateColorAccordingToApiResponse()),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _startTimeLayout(_updateColorAccordingToApiResponse()),
-            customSpacerHeight(height: 6),
-            Text(
-              taskName,
-              maxLines: 2,
-              style: AppStyle.mid_large_text.copyWith(
-                  fontSize: Dimensions.fontSizeDefault,
-                  color: _updateColorAccordingToApiResponse(),
-                  overflow: TextOverflow.ellipsis),
-            ),
-            customSpacerHeight(height: 6),
-            Text(
-              convertMiniToHour(Duration(minutes: int.parse(duration))),
-              style: AppStyle.mid_large_text.copyWith(
-                  fontSize: Dimensions.fontSizeDefault - 2,
-                  color: _updateColorAccordingToApiResponse(),
-                  overflow: TextOverflow.ellipsis),
-            ),
-            const Spacer(),
-            _endTimeLayout(_updateColorAccordingToApiResponse(),
-                _updateIconAccordingToApiResponse(),
-                _colorForIconAccordingToApiResponse()
-            )
-          ],
-        ),
-      ),
-    );
+    return _taskCard();
   }
 
-  _endTimeLayout(statusColor, statusIcon,iconColor) {
+  _endTimeLayout(statusColor, statusIcon, iconColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          timeFormatTo24h(DateTime.parse(endDateTime)),
+          timeFormatTo24h(DateTime.tryParse(endDateTime) ?? DateTime.now()),
           style: AppStyle.mid_large_text.copyWith(
               color: statusColor,
               fontSize: Dimensions.fontSizeDefault - 2,
@@ -99,9 +75,7 @@ class TaskSolidLayout extends StatelessWidget {
     );
   }
 
-
-
- Color _updateColorAccordingToApiResponse() {
+  Color _updateColorAccordingToApiResponse() {
     switch (status) {
       case "pending":
         return AppColor.pendingColor;
@@ -139,7 +113,6 @@ class TaskSolidLayout extends StatelessWidget {
     }
   }
 
-
   IconData _updateIconAccordingToApiResponse() {
     switch (status) {
       case "approved":
@@ -150,6 +123,125 @@ class TaskSolidLayout extends StatelessWidget {
         return Icons.block_flipped;
       default:
         return Icons.cached;
+    }
+  }
+
+  int _getTimeDifference({required String startTime, required String endTime}) {
+    if (startTime.isEmpty) {
+      startTime = DateTime.now().toString();
+    }
+    if (endDateTime.isEmpty) {
+      endTime = DateTime.now().toString();
+    }
+    return DateTime.parse(endTime)
+        .difference(DateTime.parse(startTime))
+        .inMinutes;
+  }
+
+  Widget _taskCard() {
+    switch (
+        _getTimeDifference(startTime: startDateTime, endTime: endDateTime)) {
+      case < 5:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Container(),
+          ),
+        );
+      case < 15:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(),
+          ),
+        );
+      case < 30:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _startTimeLayout(_updateColorAccordingToApiResponse()),
+              ],
+            ),
+          ),
+        );
+      case < 45:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _startTimeLayout(_updateColorAccordingToApiResponse()),
+                Text(
+                  taskName,
+                  maxLines: 1,
+                  style: AppStyle.mid_large_text.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: _updateColorAccordingToApiResponse(),
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+          ),
+        );
+      default:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _startTimeLayout(_updateColorAccordingToApiResponse()),
+                customSpacerHeight(height: 6),
+                Text(
+                  taskName,
+                  maxLines: 1,
+                  style: AppStyle.mid_large_text.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: _updateColorAccordingToApiResponse(),
+                      overflow: TextOverflow.ellipsis),
+                ),
+                customSpacerHeight(height: 6),
+                Text(
+                  duration.isNotEmpty
+                      ? convertMiniToHour(
+                          Duration(minutes: int.parse(duration)))
+                      : convertMiniToHour(Duration(
+                          minutes: DateTime.now()
+                              .difference(DateTime.parse(startDateTime))
+                              .inMinutes)),
+                  style: AppStyle.mid_large_text.copyWith(
+                      fontSize: Dimensions.fontSizeDefault - 2,
+                      color: _updateColorAccordingToApiResponse(),
+                      overflow: TextOverflow.ellipsis),
+                ),
+                const Spacer(),
+                _endTimeLayout(
+                    _updateColorAccordingToApiResponse(),
+                    _updateIconAccordingToApiResponse(),
+                    _colorForIconAccordingToApiResponse())
+              ],
+            ),
+          ),
+        );
     }
   }
 }

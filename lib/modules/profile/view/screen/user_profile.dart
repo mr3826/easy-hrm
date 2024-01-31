@@ -529,15 +529,15 @@ class ProfileScreen extends GetView<UserProfileController> {
   _userImageLayout({double? height}) {
     return CustomNetworkImage(
         height: height ?? 32,
-        imgUrl:
-            "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+        imgUrlKey:
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
   }
 
   _organisationLogoLayout() {
     return CustomNetworkImage(
       height: AppLayout.getHeight(25),
-      imgUrl:
-          "${Api.PUBLIC_IMAGE_URL_DOMAIN}/${controller.userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}",
+      imgUrlKey:
+          "${controller.userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}",
       borderColor: Colors.transparent,
       logoUrl: Images.ORG,
     );

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
@@ -61,7 +62,7 @@ class TimelineController extends GetxController with StateMixin {
   TimelineSummaryByDate? timelineSummaryByDate;
   TimelineSummaryByMonth? timelineSummaryByMonth;
 
-  startOrEndTimer({required String timerType}) async {
+  Future<bool> startOrEndTimer({required String timerType}) async {
     final response =
         await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
       "inputData": {"timer_type": timerType}
@@ -69,6 +70,7 @@ class TimelineController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
+      return false;
     } else {
       startOrEndTimerResponse =
           StartOrEndTimerResponse.fromJson(response.data!);
@@ -80,6 +82,7 @@ class TimelineController extends GetxController with StateMixin {
           Get.find<TimeCounterController>().stop();
         }
       }
+      return true;
     }
   }
 
@@ -231,8 +234,8 @@ class TimelineController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
     print("""timeDifference.isNegative:: ${timeDifference.isNegative}
     
-    start time: "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"
-    end time: "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}"
+    start time: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString()}"
+    end time: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString()}"
     """);
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
@@ -240,26 +243,33 @@ class TimelineController extends GetxController with StateMixin {
         final response =
             await NetworkClient().mutationGraphData(createNewEntryQuery, {
           "inputData": {
-            "end_date":
-                "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}",
+            "end_date": DateTime.parse(
+                    "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+                .toUtc()
+                .toString(),
             "description": descriptionController.text,
-            "start_date":
-                "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}",
+            "start_date": DateTime.parse(
+                    "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
+                .toUtc()
+                .toString(),
             "status": "pending",
             "task_id": taskId.value
           }
         });
         if (response.hasException) {
-          log(response.exception.toString());
+          ExceptionHelper.errorHandler(exception: response.exception!);
         } else {
           print(CreateTimelineEntryResponse.fromJson(response.data!)
               .createTimelineEntry
               ?.id);
+          showSuccessMessage(message: "Time entry created successfully");
           taskId.value = "";
           descriptionController.clear();
           Get.back(canPop: false);
           _refreshTimeline();
         }
+      } else {
+        showWarningMessage(message: "Provide a valid project/task ");
       }
     } else {
       isTimeInvalid(true);

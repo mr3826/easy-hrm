@@ -166,7 +166,7 @@ class EditProfileScreen extends StatelessWidget {
   _profileImageLayout() {
     return CustomNetworkImage(
         height: 37,
-        imgUrl:
-            "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+        imgUrlKey:
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
   }
 }
