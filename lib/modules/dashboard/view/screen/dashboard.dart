@@ -16,7 +16,6 @@ class Dashboard extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-
     print(""""
     orgID:: ${GetStorage().read(AppString.ORGANIZATION_ID)}
     orgUserID: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}

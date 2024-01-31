@@ -2,7 +2,9 @@ class Api {
   Api._();
 
 static const String PUBLIC_URL = "https://api.local.payrun.app";
-//  static const String PUBLIC_URL = "https://api.dev.payrun.app";
+
+  //static const String PUBLIC_URL = "https://api.dev.payrun.app";
+
 
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
   static const String PUBLIC_IMAGE_URL_DOMAIN =
@@ -41,6 +43,17 @@ query GetWorkScheduleForAssignLeave($queryData: WorkSchedulesQueryData!) {
     end_time
     is_holiday
     start_time
+  }
+}
+''';
+const getUploadPolicyQuery = r'''
+query GetUploadPolicy($queryData: UploadPolicyQueryData) {
+  getUploadPolicy(queryData: $queryData) {
+    url
+    policy_data {
+      value
+      name
+    }
   }
 }
 ''';

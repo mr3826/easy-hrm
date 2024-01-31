@@ -44,10 +44,13 @@ class Images {
   static String LEAVE_PENDDING = "assets/images/leave_pending.svg";
   static String LEAVE_REJECTED = "assets/images/leave_rejected.svg";
   static String LEAVE_APPROVED = "assets/images/leave_btn_appbar.svg";
+  static String PLACEHOLDER = "assets/images/placeholder.png";
 
   static String EMPLOYEE_STATUS = "assets/images/employee_status.svg";
   static String FLAG = "assets/images/flag.svg";
   static String FLAG_PNG = "assets/images/flag.png";
+  static String EDIT_ICON = "assets/images/edit_icon.png";
+  static String KEY_ICON = "assets/images/Key.png";
   static String ORG = "assets/images/org.png";
   static String timer_animation = "assets/json/timer.json";
 }
