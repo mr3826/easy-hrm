@@ -179,11 +179,11 @@ class EditProfileScreen extends StatelessWidget {
             .value
             .isNotEmpty
         ? CircleAvatar(
-            radius: 38,
-            backgroundColor: AppColor.hintColor,
+            radius: 42,
+            backgroundColor: AppColor.hintColor.withOpacity(0.8),
             child: CircleAvatar(
               backgroundColor: AppColor.cardColor,
-              radius: 37.4,
+              radius: 41,
               child: _imageLayout(),
             ))
         : _placeholderImage();
@@ -226,7 +226,7 @@ Widget _imageLayout() {
 
 Widget _brokenImageViewLayout() {
   return CircleAvatar(
-    radius: 35,
+    radius: 38,
     backgroundColor: AppColor.primaryColor,
     backgroundImage: AssetImage(Images.PLACEHOLDER),
   );
@@ -234,13 +234,14 @@ Widget _brokenImageViewLayout() {
 
 _placeholderImage() {
   return CustomNetworkImage(
+      height: 42,
       imgUrl:
           "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
 }
 
 Widget _selectedImageViewLayout() {
   return CircleAvatar(
-    radius: 35,
+    radius: 39,
     backgroundColor: AppColor.primaryColor,
     backgroundImage: FileImage(File(Get.find<PikedProfileImgController>()
             .storageForUpload

@@ -14,19 +14,14 @@ class PikedProfileImgController extends GetxController {
   PickedProfileFormStorage storageForUpload = PickedProfileFormStorage();
 }
 
-
 class PickedProfileFormStorage {
-
-
   Rx<File?> selectedFile = Rx<File?>(null);
   RxString filePath = ''.obs;
   final isLoading = false.obs;
   RxString fileSize = ''.obs;
 
-
   //picked file form storage here
   Future<void> pickFile() async {
-
     PermissionStatus permissionStatus;
     final deviceInfo = await DeviceInfoPlugin().androidInfo;
 
@@ -44,15 +39,17 @@ class PickedProfileFormStorage {
       if (result != null) {
         if (result.files.single.path!.length > 500.toInt()) {
           showWarningMessage(message: AppString.text_jpeg_format_not_support);
-        }else if(result.files.single.path!.endsWith(".png") || result.files.single.path!.endsWith(".jpg")||result.files.single.path!.endsWith(".jpeg")){
+        } else if (result.files.single.path!.endsWith(".png") ||
+            result.files.single.path!.endsWith(".jpg") ||
+            result.files.single.path!.endsWith(".jpeg")) {
           File file = File(result.files.single.path!);
           selectedFile.value = file;
           filePath.value = result.files.single.path!;
           int size = await file.length();
           fileSize.value = size.toString();
-          Get.find<UpdateProfileController>().getUploadPolicy(fileName:filePath.value.toString());
-        }
-        else {
+          Get.find<UpdateProfileController>()
+              .getUploadPolicy(fileName: filePath.value.toString());
+        } else {
           showWarningMessage(message: AppString.text_please_valid_photo.tr);
         }
       }
@@ -66,7 +63,7 @@ class PickedProfileFormStorage {
   toastMessage(bool status) {
     return status == false
         ? showSuccessMessage(
-        message: AppString.text_file_upload_update_successfully)
+            message: AppString.text_file_upload_update_successfully)
         : showErrorMessage(message: AppString.text_file_upload_file);
   }
 }
