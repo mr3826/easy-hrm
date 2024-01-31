@@ -5,9 +5,11 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/widget/custom_drawer.dart';
 import '../../controller/user_profile_controller.dart';
@@ -68,8 +70,10 @@ Widget actionLayout(
           },
           child: _fieldLayout(
               hintText: AppString.text_edit_profile.tr,
-              prefixIcon: Icons.edit,
-              onAction: editAction)),
+              onAction: editAction,
+
+          url: Images.EDIT_ICON
+          )),
       InkWell(
           onTap: () {
             customAntButtonSheet(
@@ -77,14 +81,16 @@ Widget actionLayout(
           },
           child: _fieldLayout(
               hintText: AppString.text_change_password.tr,
-              prefixIcon: Icons.key,
-              onAction: changePassAction)),
+              onAction: changePassAction,
+              url: Images.KEY_ICON
+
+          )),
     ],
   );
 }
 
 Widget _fieldLayout(
-    {required hintText, required IconData? prefixIcon, required onAction}) {
+    {required hintText, required onAction, required url}) {
   return Padding(
     padding: marginLayout,
     child: Column(
@@ -111,10 +117,7 @@ Widget _fieldLayout(
                   color: AppColor.normalTextColor.withOpacity(0.7),
                   fontSize: Dimensions.fontSizeDefault + 1),
             ),
-            Icon(
-              prefixIcon,
-              color: AppColor.hintColor,
-            ),
+            Image.asset(url,height: AppLayout.getHeight(50),width: AppLayout.getWidth(50),)
           ],
         ),
         customSpacerHeight(height: 12),
