@@ -104,6 +104,16 @@ Map<String, dynamic>? _addVariables() {
           ?.id ??
       "";
 
+  inputData["image"] = Get.find<UpdateProfileController>()
+          .uploadPolicyResponse
+          .getUploadPolicy
+          ?.policyData
+          ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+          .value
+          ?.split("/")
+          .last ??
+      "";
+
   return inputData;
 }
 
@@ -184,9 +194,7 @@ userTextFieldLayout(
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-
-      customTitleText(
-          text: titleText, isRequired: true),
+      customTitleText(text: titleText, isRequired: true),
       customSpacerHeight(height: 12),
       isNoteFieldVisible != false
           ? InputNote(

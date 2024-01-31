@@ -48,9 +48,8 @@ class PickedFileFormStorage {
           filePath.value = result.files.single.path!;
           int size = await file.length();
           fileSize.value = size.toString();
-
           print('File size: ${fileSize.value} bytes');
-          //
+
           Get.find<ApplyLeaveController>().getUploadPolicy(
               fileName: Get.find<FileUploadController>()
                   .storageForUpload

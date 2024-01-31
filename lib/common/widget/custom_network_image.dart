@@ -33,9 +33,6 @@ class CustomNetworkImage extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: imgUrl,
             placeholder: (context, url) => const CupertinoActivityIndicator(),
-            httpHeaders: {
-              "Authorization": GetStorage().read(AppString.ID_TOKEN) ?? ""
-            },
             errorWidget: (context, url, error) => CircleAvatar(
                 radius: radius,
                 backgroundImage: AssetImage(logoUrl ?? Images.user)),

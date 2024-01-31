@@ -71,9 +71,7 @@ Widget actionLayout(
           child: _fieldLayout(
               hintText: AppString.text_edit_profile.tr,
               onAction: editAction,
-
-          url: Images.EDIT_ICON
-          )),
+              url: Images.EDIT_ICON)),
       InkWell(
           onTap: () {
             customAntButtonSheet(
@@ -82,15 +80,12 @@ Widget actionLayout(
           child: _fieldLayout(
               hintText: AppString.text_change_password.tr,
               onAction: changePassAction,
-              url: Images.KEY_ICON
-
-          )),
+              url: Images.KEY_ICON)),
     ],
   );
 }
 
-Widget _fieldLayout(
-    {required hintText, required onAction, required url}) {
+Widget _fieldLayout({required hintText, required onAction, required url}) {
   return Padding(
     padding: marginLayout,
     child: Column(
@@ -117,12 +112,17 @@ Widget _fieldLayout(
                   color: AppColor.normalTextColor.withOpacity(0.7),
                   fontSize: Dimensions.fontSizeDefault + 1),
             ),
-            Image.asset(url,height: AppLayout.getHeight(50),width: AppLayout.getWidth(50),)
+            Image.asset(
+              url,
+              height: AppLayout.getHeight(50),
+              width: AppLayout.getWidth(50),
+            )
           ],
         ),
         customSpacerHeight(height: 12),
         const Divider(
           thickness: 1,
+          color: AppColor.disableColor,
         ),
       ],
     ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import '../../../../common/widget/error_message.dart';
 import '../../../../common/widget/success_message.dart';
 import '../../../../common/widget/warning_message.dart';
@@ -20,6 +21,8 @@ class PickedProfileFormStorage {
   Rx<File?> selectedFile = Rx<File?>(null);
   RxString filePath = ''.obs;
   final isLoading = false.obs;
+  RxString fileSize = ''.obs;
+
 
   //picked file form storage here
   Future<void> pickFile() async {
@@ -45,6 +48,9 @@ class PickedProfileFormStorage {
           File file = File(result.files.single.path!);
           selectedFile.value = file;
           filePath.value = result.files.single.path!;
+          int size = await file.length();
+          fileSize.value = size.toString();
+          Get.find<UpdateProfileController>().getUploadPolicy(fileName:filePath.value.toString());
         }
         else {
           showWarningMessage(message: AppString.text_please_valid_photo.tr);

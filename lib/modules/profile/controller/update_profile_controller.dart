@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,8 +9,8 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-
 import '../../../common/domain/error_model.dart';
+import '../../../common/domain/upload_policy.dart';
 import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
@@ -17,6 +18,9 @@ import '../../../utils/utils.dart';
 
 class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
+  final isUploadPolicyLoading = false.obs;
+  final isFileUploadedSuccessfully = false.obs;
+  UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   void updateUserProfile(Map<String, dynamic> variables) async {
     isLoading(true);
@@ -64,5 +68,59 @@ class UpdateProfileController extends GetxController {
       log(e.toString());
     }
     isLoading(false);
+  }
+
+
+  getUploadPolicy({fileName}) async {
+    print("${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
+    isUploadPolicyLoading(true);
+
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
+      "queryData": {
+        "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
+        "filename":
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "directive": "Files"
+      }
+    });
+
+    print("get policy ::: $response");
+
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(exception: response.exception!);
+    } else {
+      uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
+      uploadFile(
+          url: uploadPolicyResponse.getUploadPolicy?.url ?? "",
+          fileName: fileName,
+          list: uploadPolicyResponse.getUploadPolicy?.policyData);
+    }
+    isUploadPolicyLoading(false);
+  }
+
+  uploadFile(
+      {required String fileName,
+      List<PolicyData>? list,
+      required String url}) async {
+    if (list == null || url.isEmpty) return;
+    isUploadPolicyLoading(true);
+
+    FormData formData = FormData({});
+    for (var data in list) {
+      formData.fields.add(MapEntry(data.name!, data.value!));
+    }
+
+    formData.files.add(MapEntry(
+        "file",
+        MultipartFile(File(fileName),
+            filename:
+                "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+
+    await NetworkClient().post(url, formData).then((value) {
+      print(value.statusCode);
+      isFileUploadedSuccessfully.value = true;
+    }, onError: (_) => isFileUploadedSuccessfully.value = false);
+    isUploadPolicyLoading(false);
   }
 }

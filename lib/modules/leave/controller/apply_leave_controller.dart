@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/upload_policy.dart';
-import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
@@ -83,14 +81,9 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   applyLeave({filePath}) async {
-    print(
-        "jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
+    print("jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
+
     isAssignLeaveLoaderLoading(true);
-
-
-
-
-
 
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
       "inputData": {
