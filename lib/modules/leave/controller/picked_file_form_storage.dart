@@ -8,7 +8,6 @@ import '../../../../common/widget/warning_message.dart';
 import '../../../../utils/app_string.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-
 import 'apply_leave_controller.dart';
 import 'file_upload_controller.dart';
 
@@ -23,12 +22,14 @@ class PickedFileFormStorage {
   //picked file form storage here
   Future<void> pickFile() async {
     PermissionStatus permissionStatus;
-    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
 
     //device sdk version check here
-    if (deviceInfo.version.sdkInt > 32) {
+    if (androidInfo.version.sdkInt > 32 && Platform.isAndroid) {
       permissionStatus = await Permission.photos.request();
-    } else {
+    } else if(Platform.isIOS) {
+      permissionStatus = await Permission.photos.request();
+    }else{
       permissionStatus = await Permission.storage.request();
     }
 
