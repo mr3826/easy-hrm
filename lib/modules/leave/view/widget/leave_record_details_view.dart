@@ -170,14 +170,14 @@ class LeaveRecordDetails extends StatelessWidget {
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     )),
               icon: Icons.delete_outline_outlined,
-              titleText: AppString.text_remove_time_log.tr,
-              subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
+              titleText: AppString.text_remove_leave.tr,
+              subText: AppString.text_sure_you_want_to_deleted_this_leave.tr,
               drcText: "",
               iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColor.withOpacity(.6),
+              btnBgColor: AppColor.errorColorLight,
               btnText: AppString.text_remove.tr);
         },
-        buttonColor: AppColor.errorColor.withOpacity(0.6),
+        buttonColor: AppColor.errorColorLight,
         isButtonExpanded: false,
       ),
     );
@@ -195,12 +195,13 @@ class LeaveRecordDetails extends StatelessWidget {
                   Get.find<LeaveScreenController>()
                       .cancelLeave(leaveId: leaveRecords?.id ?? "");
                 },
+                childForSaveBtn: Obx(() => _cancelLeaveProgress()),
                 drcText: "",
                 icon: Icons.document_scanner_rounded,
                 titleText: AppString.cancelLeaveText.tr,
                 subText: AppString.cancelLeaveNotificationText.tr,
                 iconBgColor: AppColor.cardColor,
-                btnBgColor: AppColor.hintColor,
+                btnBgColor: AppColor.errorColorLight,
                 btnText: AppString.confirmText.tr);
           },
           buttonText: AppString.text_edit.tr,
@@ -225,19 +226,48 @@ class LeaveRecordDetails extends StatelessWidget {
   _approvedLayout(context) {
     return Padding(
       padding: marginLayout,
-      child: CustomAppButton(
-        buttonText: Text(
-          AppString.text_back.tr,
+      child: CustomDoubleAppButton(
+        cancelAction: () {
+          Navigator.pop(context);
+        },
+        saveBtn: Text(
+          AppString.cancelLeaveText.tr,
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.cardColor,
               fontSize: Dimensions.fontSizeDefault + 2),
         ),
-        onPressed: () {
-          Navigator.pop(context);
+        onAction: () {
+          customDialog(
+              context: context,
+              saveBtnAction: () {
+                Get.find<LeaveScreenController>()
+                    .cancelLeave(leaveId: leaveRecords?.id ?? "");
+              },
+              childForSaveBtn: Obx(() => _cancelLeaveProgress()),
+              drcText: "",
+              icon: Icons.document_scanner_rounded,
+              titleText: AppString.cancelLeaveText.tr,
+              subText: AppString.cancelLeaveNotificationText.tr,
+              iconBgColor: AppColor.cardColor,
+              btnBgColor: AppColor.errorColorLight,
+              btnText: AppString.confirmText.tr);
         },
-        buttonColor: AppColor.hintColor,
-        isButtonExpanded: false,
+        cancelText: AppString.text_back.tr,
+        btnColor: AppColor.errorColorLight,
       ),
+    );
+  }
+
+  _cancelLeaveProgress() {
+    return Get.find<LeaveScreenController>().cancelLeaveLoader.value
+        ? const CupertinoActivityIndicator(
+      color: AppColor.cardColor,
+    )
+        : Text(
+      AppString.confirmText.tr,
+      style: AppStyle.normal_text_grey.copyWith(
+          fontSize: Dimensions.fontSizeDefault + 1,
+          color: AppColor.cardColor),
     );
   }
 }

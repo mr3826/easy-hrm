@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_summary_dashboard.dart';
@@ -8,6 +9,7 @@ import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import '../../dashboard/controller/dashbpard_controller.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/leave_details_by_date.dart';
 
@@ -16,6 +18,8 @@ class LeaveScreenController extends GetxController with StateMixin {
   LeaveDetailsByDate? leaveDetailsByDate;
   final isLoading = false.obs;
   final cancelLeaveLoader = false.obs;
+
+  late RxString date;
 
   getLeaveSummaryForDashboard() async {
     change(null, status: RxStatus.loading());
@@ -36,10 +40,8 @@ class LeaveScreenController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .getGraphQuery(queryString: getLeaveDetailsByDateQuery, variables: {
       "queryData": {
-        "startDate":
-            "${Get.find<DateTimePickerController>().inDate.value}T00:00:00",
-        "endDate":
-            "${Get.find<DateTimePickerController>().inDate.value}T23:59:00"
+        "startDate": "${date.value}T00:00:00",
+        "endDate": "${date.value}T23:59:00"
       }
     });
     log("getLeaveDetailsByDate details :::: $response",error: 200);
@@ -68,6 +70,10 @@ class LeaveScreenController extends GetxController with StateMixin {
       Get.off(() => const MainScreen(
             routeIndex: 1,
           ));
+      await getLeaveSummaryForDashboard();
+      await getLeaveDetailsByDate();
+      await Get.find<DashboardController>()
+          .getMonthlyTimelineInfoForDashboard();
     }
 
     cancelLeaveLoader(false);
@@ -89,6 +95,8 @@ class LeaveScreenController extends GetxController with StateMixin {
           ));
       await getLeaveSummaryForDashboard();
       await getLeaveDetailsByDate();
+      await Get.find<DashboardController>()
+          .getMonthlyTimelineInfoForDashboard();
     }
 
     cancelLeaveLoader(false);
@@ -97,6 +105,7 @@ class LeaveScreenController extends GetxController with StateMixin {
   @override
   void onInit() async {
     Get.put(DateTimePickerController());
+    date = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
     await getLeaveSummaryForDashboard();
     await getLeaveDetailsByDate();
     super.onInit();

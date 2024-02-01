@@ -261,6 +261,7 @@ class AppString {
   static const String text_apply_leve = "Apply leave";
   static const String text_apply = "Apply";
   static const String text_remove_time_log = "Remove timelog";
+  static const String text_remove_leave = "Remove leave";
 
   static const String cancelLeaveText = "Cancel Leave";
 
@@ -269,6 +270,8 @@ class AppString {
 
   static const String text_sure_you_want_to_deleted_this_log =
       "Sure you want to deleted this log?";
+  static const String text_sure_you_want_to_deleted_this_leave =
+      "Sure you want to deleted this leave?";
   static const String text_sure_you_want_to_deleted_this_photo =
       "Sure you want to deleted this photo?";
   static const String text_if_you_deleted_this_time_log_etc =
