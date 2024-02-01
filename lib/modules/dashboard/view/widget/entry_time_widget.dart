@@ -54,8 +54,9 @@ _startingTimeOpen({required time, context}) {
             height: MediaQuery.of(context).size.height / 7,
             width: MediaQuery.of(context).size.width / 2.5),
         Positioned(
-            bottom: 45,
+            bottom: 0,
             left: 36,
+            top: 50,
             child: Row(
               children: [
                 Icon(

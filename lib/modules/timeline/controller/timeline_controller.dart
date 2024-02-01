@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
@@ -42,6 +43,9 @@ class TimelineController extends GetxController with StateMixin {
   String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
 
+  CalendarTimeline calendarTimeline = CalendarTimeline();
+  List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
+
   final isTimelogEntryOrRemoveLoading = false.obs;
 
   RxList<CalendarEventData<String>> eventsOfTask =
@@ -56,10 +60,9 @@ class TimelineController extends GetxController with StateMixin {
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
   TimelineSummaryByDate? timelineSummaryByDate;
-  CalendarTimeline? calendarTimeline;
   TimelineSummaryByMonth? timelineSummaryByMonth;
 
-  startOrEndTimer({required String timerType}) async {
+  Future<bool> startOrEndTimer({required String timerType}) async {
     final response =
         await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
       "inputData": {"timer_type": timerType}
@@ -67,6 +70,7 @@ class TimelineController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
+      return false;
     } else {
       startOrEndTimerResponse =
           StartOrEndTimerResponse.fromJson(response.data!);
@@ -78,6 +82,7 @@ class TimelineController extends GetxController with StateMixin {
           Get.find<TimeCounterController>().stop();
         }
       }
+      return true;
     }
   }
 
@@ -139,14 +144,15 @@ class TimelineController extends GetxController with StateMixin {
     isTimelogEntryOrRemoveLoading(false);
   }
 
-  updateTimelineLogDetails(
-      {timeLineId,
-      description,
-      endDate,
-      startDate,
-      status,
-      taskId,
-      projectId}) async {
+  updateTimelineLogDetails({
+    timeLineId,
+    description,
+    endDate,
+    startDate,
+    status,
+    taskId,
+    projectId,
+  }) async {
     isUpdateTimeLogLoading(true);
 
     Duration timeDifference = DateTime.parse(
@@ -228,8 +234,8 @@ class TimelineController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
     print("""timeDifference.isNegative:: ${timeDifference.isNegative}
     
-    start time: "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"
-    end time: "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}"
+    start time: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString()}"
+    end time: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString()}"
     """);
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
@@ -237,26 +243,33 @@ class TimelineController extends GetxController with StateMixin {
         final response =
             await NetworkClient().mutationGraphData(createNewEntryQuery, {
           "inputData": {
-            "end_date":
-                "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}",
+            "end_date": DateTime.parse(
+                    "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+                .toUtc()
+                .toString(),
             "description": descriptionController.text,
-            "start_date":
-                "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}",
+            "start_date": DateTime.parse(
+                    "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
+                .toUtc()
+                .toString(),
             "status": "pending",
             "task_id": taskId.value
           }
         });
         if (response.hasException) {
-          log(response.exception.toString());
+          ExceptionHelper.errorHandler(exception: response.exception!);
         } else {
           print(CreateTimelineEntryResponse.fromJson(response.data!)
               .createTimelineEntry
               ?.id);
+          showSuccessMessage(message: "Time entry created successfully");
           taskId.value = "";
           descriptionController.clear();
           Get.back(canPop: false);
           _refreshTimeline();
         }
+      } else {
+        showWarningMessage(message: "Provide a valid project/task ");
       }
     } else {
       isTimeInvalid(true);
@@ -313,138 +326,100 @@ class TimelineController extends GetxController with StateMixin {
 
     final responseForCalendar = await NetworkClient()
         .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
-      "queryData": {"start_time": "$startDate", "end_time": "$endDate"}
+      "queryData": {"start_time": startDate, "end_time": endDate}
     });
 
     if (responseForCalendar.hasException) {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
-      isTimelineCalendarByDateLoading(false);
     } else {
+      if (timelogList!.isNotEmpty) {
+        for (var value in timelogList!) {
+          CalendarControllerProvider.of(Get.context!).controller.remove(value);
+        }
+      }
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
-      print("time line calendar ::: $responseForCalendar");
-
-      meetings.clear();
-      calendarTimeline?.getCalenderTimelinesForApp?.timelines?.map((e) {
-        DateTime dateTimeNow = DateTime.now();
-        DateTime dateStartTimeValue =
-            DateTime.parse(e.startDate ?? DateTime.now().toString());
-        DateTime dateEndTimeValue =
-            DateTime.parse(e.endDate ?? DateTime.now().toString());
-
+      timelogList =
+          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "No added yet",
           timeLId: e.timelineId ?? "",
           endDate: e.endDate ?? "",
-          startDate: e.startDate ?? "",
           duration: e.totalMinutes ?? "",
+          startDate: e.startDate ?? "",
           taskName: e.task?.name ?? "",
         );
 
         Map<String, dynamic> jsonModel = modelForDescription.toJson();
-        String jsonObject = jsonEncode(jsonModel);
-        log(jsonModel.toString(), error: 1);
+        String objData = jsonEncode(jsonModel);
 
-        log(jsonModel.toString(), error: 1);
-        return meetings.add(
-          Appointment(
-            notes: "Note",
-            location: jsonObject,
-            startTime: DateTime(
-              dateTimeNow.year,
-              dateTimeNow.month,
-              dateTimeNow.day,
-              dateStartTimeValue.hour,
-              dateStartTimeValue.minute,
-              dateStartTimeValue.second,
-            ),
-            endTime: DateTime(
-              dateTimeNow.year,
-              dateTimeNow.month,
-              dateTimeNow.day,
-              dateEndTimeValue.hour,
-              dateEndTimeValue.minute,
-              dateEndTimeValue.second,
-            ),
-            subject: """
-            ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
-            
-            
-            ${e.task?.project?.name ?? "No added yet"} 
-            ${convertMiniToHour(Duration(minutes: int.parse(e.totalMinutes ?? "00"))).toString()} 
-            
-            ${timeFormatTo24h(DateTime.parse(e.endDate ?? Get.find<DateTimeController>().requestedDate.value))}
-            
-            
-            """,
-            color: statusAccordingToColor(e.status),
-            isAllDay: false,
-          ),
-        );
+        return CalendarEventData(
+            date: DateTime.parse("2024-01-24"),
+            startTime: e.startDate != null
+                ? DateTime.parse("2024-01-24 ${e.startDate?.substring(11, 19)}")
+                : DateTime.parse(
+                    "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+            endTime: e.endDate != null
+                ? DateTime.parse("2024-01-24 ${e.endDate?.substring(11, 19)}")
+                : DateTime.parse(
+                    "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+            event: "",
+            title: '',
+            description: objData);
       }).toList();
+      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
+              ?.map((e) {
+            //todo
+            /// add files info
+            ModelForDescription modelForDescription = ModelForDescription(
+                status: e.status ?? "",
+                description: e.description ?? "No added yet",
+                endDate: e.endDate ?? "",
+                startDate: e.startDate ?? "",
+                duration: e.totalLeaveMinutes ?? "",
+                numberOfDays: e.numberOfDays ?? 0,
+                createdAt: e.createdAt ?? "",
+                leaveId: e.id ?? "",
+                taskName: e.leaveType?.leaveName ?? "",
+                leaveType: LeaveType(
+                    type: e.leaveType?.type ?? "",
+                    isAddNoteRequired: e.leaveType?.isAddNoteRequired ?? false,
+                    isAttachDocumentRequired:
+                        e.leaveType?.isAttachDocumentRequired ?? false,
+                    leaveId: e.leaveType?.leaveId ?? "",
+                    leaveName: e.leaveType?.leaveName ?? ""));
 
-      calendarTimeline?.getCalenderTimelinesForApp?.leaves?.map((e) {
-        DateTime dateTimeNow = DateTime.now();
-        DateTime dateStartTimeValue =
-            DateTime.parse(e.startDate ?? DateTime.now().toString());
-        DateTime dateEndTimeValue =
-            DateTime.parse(e.endDate ?? DateTime.now().toString());
+            Map<String, dynamic> jsonModel = modelForDescription.toJson();
+            String objData = jsonEncode(jsonModel);
 
-        ModelForDescription modelForDescription = ModelForDescription(
-          status: e.status ?? "",
-          description: e.description ?? "No added yet",
-          leaveId: e.id ?? "",
-          endDate: e.endDate ?? "",
-          startDate: e.startDate ?? "",
-          numberOfDays: e.numberOfDays ?? "",
-          leaveType: LeaveType(
-              leaveName: e.leaveType?.leaveName ?? "",
-              isAttachDocumentRequired: e.leaveType?.isAddNoteRequired ?? false,
-              isAddNoteRequired: e.leaveType?.isAddNoteRequired ?? false,
-              leaveId: e.leaveType?.leaveId ?? "",
-              type: e.leaveType?.type ?? ""),
-        );
+            return CalendarEventData(
+              date: DateTime.parse("2024-01-24"),
+              startTime: e.startDate != null
+                  ? DateTime.parse(
+                      "2024-01-24 ${e.startDate?.substring(11, 19)}")
+                  : DateTime.parse(
+                      "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+              endTime: e.endDate != null
+                  ? DateTime.parse("2024-01-24 ${e.endDate?.substring(11, 19)}")
+                  : DateTime.parse(
+                      "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+              event: "",
+              title: '',
+              description: objData,
+            );
+          }).toList() ??
+          []);
 
-        Map<String, dynamic> jsonModel = modelForDescription.toJson();
-        String jsonObject = jsonEncode(jsonModel);
-        log(jsonModel.toString(), error: 1);
+      CalendarControllerProvider.of(Get.context!)
+          .controller
+          .addAll(timelogList ?? []);
 
-        return meetings.add(
-          Appointment(
-            startTime: DateTime(
-              dateTimeNow.year,
-              dateTimeNow.month,
-              dateTimeNow.day,
-              dateStartTimeValue.hour,
-              dateStartTimeValue.minute,
-              dateStartTimeValue.second,
-            ),
-            endTime: DateTime(
-              dateTimeNow.year,
-              dateTimeNow.month,
-              dateTimeNow.day,
-              dateEndTimeValue.hour,
-              dateEndTimeValue.minute,
-              dateEndTimeValue.second,
-            ),
-            subject: """
-            ${timeFormatTo24h(DateTime.parse(e.startDate.toString()))}
-            
-
-            ${e.leaveType?.leaveName ?? "No added yet"}
-            ${convertMiniToHour(Duration(minutes: int.parse(e.totalLeaveMinutes.toString()))).toString()}  
-            
-           
-            ${timeFormatTo24h(DateTime.parse(e.endDate ?? "00:00"))}
-            
-            """,
-            color: statusAccordingToColor(e.status),
-            isAllDay: false,
-            location: jsonObject,
-          ),
-        );
-      }).toList();
+      print("""
+        
+        timelogList?.length:: ${timelogList?.length}
+        
+        """);
     }
 
     isTimelineCalendarByDateLoading(false);
@@ -494,25 +469,5 @@ class TimelineController extends GetxController with StateMixin {
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-  }
-}
-
-statusAccordingToColor(status) {
-
-  switch (status) {
-    case "pending":
-      return AppColor.pendingColor.withOpacity(0.1);
-    case "approved":
-      return AppColor.primaryColor.withOpacity(0.1);
-    case "taken":
-      return AppColor.takenColor.withOpacity(0.1);
-    case "reject":
-      return AppColor.errorColorLight.withOpacity(0.1);
-    case "cancelled":
-      return AppColor.errorColor.withOpacity(0.1);
-    case "rejected":
-      return AppColor.errorColor.withOpacity(0.1);
-    default:
-      return AppColor.hintColor.withOpacity(0.1);
   }
 }

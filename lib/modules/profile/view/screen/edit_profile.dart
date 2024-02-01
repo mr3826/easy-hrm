@@ -1,10 +1,10 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
-import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -15,7 +15,8 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../utils/api_endpoints.dart';
+import 'package:payrun_mobile/utils/images.dart';
+import '../../../../common/widget/custom_network_image.dart';
 import '../../../../utils/utils.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../widget/edit_profile_widget.dart';
@@ -57,13 +58,19 @@ class EditProfileScreen extends StatelessWidget {
     editAddressController.clear();
     editLastNameController.clear();
     editFirstNameController.clear();
+    Get.find<PikedProfileImgController>()
+        .storageForUpload
+        .filePath
+        .value="";
   }
 
   _profileSectionLayout(context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _profileImageLayout(),
+        Obx(
+          () => _profileImageLayout(),
+        ),
         customSpacerWidth(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,9 +171,80 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   _profileImageLayout() {
-    return CustomNetworkImage(
-        height: 37,
-        imgUrl:
-            "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+    return Get.find<PikedProfileImgController>()
+            .storageForUpload
+            .filePath
+            .value
+            .isNotEmpty
+        ? CircleAvatar(
+            radius: 42,
+            backgroundColor: AppColor.hintColor.withOpacity(0.8),
+            child: CircleAvatar(
+              backgroundColor: AppColor.cardColor,
+              radius: 41,
+              child: _imageLayout(),
+            ))
+        : _placeholderImage();
   }
+}
+
+Widget _imageLayout() {
+  if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue &&
+      Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+    /// file image
+    return _selectedImageViewLayout();
+  } else if (Get.find<UpdateProfileController>()
+          .isFileUploadedSuccessfully
+          .isFalse &&
+      Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+    if (Get.find<PikedProfileImgController>()
+        .storageForUpload
+        .filePath
+        .isEmpty) {
+      /// initial stage
+      return _placeholderImage();
+    } else {
+      /// broken image
+      if (Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+        return _brokenImageViewLayout();
+      } else {
+        return const Center(
+            child: CupertinoActivityIndicator(
+          color: AppColor.primaryColor,
+        ));
+      }
+    }
+  } else {
+    return const Center(
+        child: CupertinoActivityIndicator(
+      color: AppColor.primaryColor,
+    ));
+  }
+}
+
+Widget _brokenImageViewLayout() {
+  return CircleAvatar(
+    radius: 39,
+    backgroundColor: AppColor.primaryColor,
+    backgroundImage: AssetImage(Images.PLACEHOLDER),
+  );
+}
+
+_placeholderImage() {
+  return CustomNetworkImage(
+      height: 42,
+      imgUrlKey:
+          "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+}
+
+Widget _selectedImageViewLayout() {
+  return CircleAvatar(
+    radius: 39,
+    backgroundColor: AppColor.primaryColor,
+    backgroundImage: FileImage(File(Get.find<PikedProfileImgController>()
+            .storageForUpload
+            .filePath
+            .value)
+        .absolute),
+  );
 }

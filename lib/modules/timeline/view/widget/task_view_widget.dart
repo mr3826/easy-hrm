@@ -10,7 +10,7 @@ class TaskView extends StatelessWidget {
   final String startTime;
   final String endTime;
   final String status;
-  final String projectName;
+  final String taskName;
   final String totalDur;
   final String description;
   final String timeLineId;
@@ -22,7 +22,7 @@ class TaskView extends StatelessWidget {
       required this.endTime,
       required this.timeLineId,
       required this.status,
-      required this.projectName,
+      required this.taskName,
       super.key,
       required this.totalDur});
 
@@ -48,7 +48,7 @@ class TaskView extends StatelessWidget {
           startTime: startTime,
           endTime: endTime,
           dateApplication: date.toString(),
-          projectName: projectName,
+          projectName: taskName,
           bgColor: statusColor(status),
           dtsDuration:
               convertMiniToHour(Duration(minutes: int.parse(totalDur))),

@@ -16,6 +16,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
 
 Widget textFiledLayout() {
@@ -46,6 +47,10 @@ Widget textFiledLayout() {
           },
           cancelAction: () {
             _clearInputField();
+            Get.find<PikedProfileImgController>()
+                .storageForUpload
+                .filePath
+                .value="";
             Get.back();
           }),
       customSpacerHeight(height: AppLayout.getHeight(80)),
@@ -102,6 +107,16 @@ Map<String, dynamic>? _addVariables() {
           ?.employmentHistories?[0]
           .employmentStatus
           ?.id ??
+      "";
+
+  inputData["image"] = Get.find<UpdateProfileController>()
+          .uploadPolicyResponse
+          .getUploadPolicy
+          ?.policyData
+          ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+          .value
+          ?.split("/")
+          .last ??
       "";
 
   return inputData;
@@ -184,9 +199,7 @@ userTextFieldLayout(
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-
-      customTitleText(
-          text: titleText, isRequired: true),
+      customTitleText(text: titleText, isRequired: true),
       customSpacerHeight(height: 12),
       isNoteFieldVisible != false
           ? InputNote(

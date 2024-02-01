@@ -1,182 +1,282 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import '../../../../common/domain/last_input_model.dart' as LI;
+import '../../../../common/domain/last_input_model.dart' as li;
+import '../../../../utils/app_style.dart';
+import '../../../../utils/dimensions.dart';
 import '../../../leave/model/leave_records.dart';
 import '../widget/task_view_widget.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    log("TimeLineCalendar build called", error: 100);
     return Obx(() => Get.find<TimelineController>()
             .isTimelineCalendarByDateLoading
             .isTrue
-        ? Container(
-            color: Colors.transparent,
-          )
+        ? Container()
         : Padding(
             padding: const EdgeInsets.only(
-                top: 90.0, bottom: 110, left: 14, right: 14),
-            child: SfCalendar(
-              view: CalendarView.day,
-              dataSource: _getCalendarDataSource(),
+                top: 0.0, bottom: 110, left: 14, right: 14),
+            child: DayView(
+              showVerticalLine: false,
+              minDay: DateTime(2021),
+              maxDay: DateTime(2030),
+              initialDay: DateTime.parse("2024-01-24"),
+              timeLineOffset: 0,
+              showHalfHours: true,
+              showLiveTimeLineInAllDays: false,
               backgroundColor: AppColor.cardColor,
-              viewNavigationMode: ViewNavigationMode.none,
-              appointmentTextStyle:
-                  const TextStyle(color: AppColor.normalTextColor),
-              selectionDecoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(12)),
-              viewHeaderStyle: const ViewHeaderStyle(
-                  backgroundColor: Colors.transparent,
-                  dateTextStyle: TextStyle(color: Colors.transparent),
-                  dayTextStyle: TextStyle(color: Colors.transparent)),
-              viewHeaderHeight: 0,
-              onTap: (CalendarTapDetails details) {
-                Appointment tappedAppointment = details.appointments![0];
-                if (details.targetElement != CalendarElement.calendarCell) {
-                  Map<String, dynamic> jsonMap =
-                      json.decode(tappedAppointment.location.toString());
-                  LI.ModelForDescription eventVal =
-                      LI.ModelForDescription.fromJson(jsonMap);
-                  print(eventVal.duration);
-
-                  customButtonSheet(
-                      height: .6,
-                      context: context,
-                      child: eventVal.leaveType == null
-                          ? TaskView(
-                              projectName: eventVal.taskName.toString(),
-                              date: eventVal.startDate.toString(),
-                              startTime: eventVal.startDate.toString(),
-                              endTime: eventVal.endDate.toString(),
-                              status: eventVal.status.toString(),
-                              totalDur: eventVal.duration.toString(),
-                              description: eventVal.description.toString(),
-                              timeLineId: eventVal.timeLId.toString(),
-                            )
-                          : LeaveRecordDetails(
-                              status: eventVal.status ?? "",
-                              leaveRecords: GetLeaveRecords(
-                                  id: eventVal.leaveId ?? "",
-                                  status: eventVal.status ?? "",
-                                  createdAt: eventVal.createdAt ?? "2030-02-02",
-                                  startDate: eventVal.startDate ?? "",
-                                  endDate: eventVal.endDate ?? "",
-                                  leaveType: LeaveType(
-                                    leaveId: eventVal.leaveType?.leaveId,
-                                    isAddNoteRequired:
-                                        eventVal.leaveType?.isAddNoteRequired,
-                                    type: eventVal.leaveType?.type,
-                                    isAttachDocumentRequired: eventVal
-                                        .leaveType?.isAttachDocumentRequired,
-                                    leaveName: eventVal.leaveType?.leaveName,
-                                  ),
-                                  duration: eventVal.numberOfDays ?? 0,
-                                  description: eventVal.description ?? ""),
-                            ));
-                }
-              },
-              headerHeight: 0,
-              showDatePickerButton: false,
-              showNavigationArrow: false,
-              cellEndPadding: 4,
-              allowViewNavigation: false,
-              appointmentTimeTextFormat: "HH:mm",
-              timeSlotViewSettings: const TimeSlotViewSettings(
-                timeFormat: "HH:mm",
+              heightPerMinute: 2,
+              headerStyle: _headerStyle(),
+              eventArranger: const SideEventArranger(),
+              scrollPhysics: const NeverScrollableScrollPhysics(),
+              liveTimeIndicatorSettings: HourIndicatorSettings.none(),
+              pageViewPhysics: const NeverScrollableScrollPhysics(),
+              halfHourIndicatorSettings: const HourIndicatorSettings(
+                dashWidth: 1.4,
+                lineStyle: LineStyle.dashed,
+                offset: 35,
               ),
-              showCurrentTimeIndicator: false,
-              initialDisplayDate: DateTime.now(),
-              monthViewSettings: const MonthViewSettings(
-                  appointmentDisplayMode:
-                      MonthAppointmentDisplayMode.appointment),
+              hourIndicatorSettings: HourIndicatorSettings(
+                  lineStyle: LineStyle.solid,
+                  offset: 12,
+                  height: .5,
+                  color: AppColor.hintColor.withOpacity(0.6)),
+              timeStringBuilder: (date, {secondaryDate}) {
+                String formattedTime = DateFormat.Hm().format(date);
+                return formattedTime;
+              },
+              onEventTap: (events, date) {
+                Iterable<String> eventData = events.map((e) => e.description);
+
+                String timeLId = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
+                    .toString();
+                String startDate = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .startDate)
+                    .toString();
+                String endDate = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                    .toString();
+                String taskName = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                    .toString();
+                String status = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).status)
+                    .toString();
+                String leaveName = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.leaveName)
+                    .toString();
+
+                String isAttachDocumentRequired = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.isAttachDocumentRequired)
+                    .toString();
+
+                String isAddNoteRequired = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.isAddNoteRequired)
+                    .toString();
+                String type = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.type)
+                    .toString();
+
+                String leaveId = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.leaveId)
+                    .toString();
+                String duration = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).duration)
+                    .toString();
+                String description = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .description)
+                    .toString();
+                String numberOfDays = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .numberOfDays)
+                    .toString();
+                String createdAt = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .createdAt)
+                    .toString();
+
+                /// have to sub string
+                /// otherwise it returns with (value) pattern
+
+                customButtonSheet(
+                    height: .6,
+                    context: context,
+                    child: leaveId.substring(1, leaveId.length - 1) == "null"
+                        ? TaskView(
+                            taskName: taskName.substring(
+                                1, taskName.toString().length - 1),
+                            date: startDate
+                                .toString()
+                                .substring(1, startDate.toString().length - 1),
+                            startTime: startDate
+                                .toString()
+                                .substring(1, startDate.toString().length - 1),
+                            endTime: endDate
+                                .toString()
+                                .substring(1, endDate.toString().length - 1),
+                            status: status
+                                .toString()
+                                .substring(1, status.toString().length - 1),
+                            totalDur: duration
+                                .toString()
+                                .substring(1, duration.toString().length - 1),
+                            description: description.toString().substring(
+                                1, description.toString().length - 1),
+                            timeLineId: timeLId
+                                .toString()
+                                .substring(1, timeLId.toString().length - 1),
+                          )
+                        : LeaveRecordDetails(
+                            status: status
+                                .toString()
+                                .substring(1, status.toString().length - 1),
+                            leaveRecords: GetLeaveRecords(
+                              id: leaveId
+                                  .toString()
+                                  .substring(1, leaveId.toString().length - 1),
+                              status: status
+                                  .toString()
+                                  .substring(1, status.toString().length - 1),
+                              createdAt: createdAt
+                                  .toString()
+                                  .substring(1, createdAt.toString().length - 1)
+                                  .toString(),
+                              startDate: startDate
+                                  .toString()
+                                  .substring(1, startDate.toString().length - 1)
+                                  .toString(),
+                              endDate: endDate
+                                  .toString()
+                                  .substring(1, endDate.toString().length - 1)
+                                  .toString(),
+                              duration: double.tryParse(numberOfDays) ?? 0,
+                              description: description.toString().substring(
+                                  1, description.toString().length - 1),
+                              leaveType: LeaveType(
+                                  leaveName: leaveName.substring(
+                                      1, leaveName.length - 1),
+                                  leaveId: leaveId.substring(
+                                      1, leaveId.length - 1),
+                                  isAttachDocumentRequired:
+                                      isAttachDocumentRequired
+                                                  .substring(
+                                                      1,
+                                                      isAttachDocumentRequired
+                                                              .length -
+                                                          1)
+                                                  .toLowerCase() ==
+                                              "true"
+                                          ? true
+                                          : false,
+                                  isAddNoteRequired: isAddNoteRequired
+                                              .substring(1,
+                                                  isAddNoteRequired.length - 1)
+                                              .toLowerCase() ==
+                                          "true"
+                                      ? true
+                                      : false,
+                                  type: type.substring(1, type.length - 1)),
+                            ),
+                          ));
+              },
+              eventTileBuilder: (date, events, status, start, end) {
+                ///for building calendar uo
+
+                Iterable<String> eventData = events.map((e) => e.description);
+
+                /// have to sub string
+                /// otherwise it returns with (value) pattern
+
+                String status = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).status)
+                    .toString();
+                String startDate = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .startDate)
+                    .toString();
+                String endDate = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                    .toString();
+
+                String taskName = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                    .toString();
+
+                String duration = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).duration)
+                    .toString();
+
+                String leaveId = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.leaveId)
+                    .toString();
+
+                return TaskSolidLayout(
+                  isForLeave: leaveId.substring(1, leaveId.length - 1) == 'null'
+                      ? false
+                      : true,
+                  status: status.substring(1, status.length - 1),
+                  startDateTime: startDate.substring(1, startDate.length - 1),
+                  endDateTime: endDate.substring(1, endDate.length - 1),
+                  taskName: taskName.substring(1, taskName.length - 1),
+                  duration: duration.substring(1, duration.length - 1),
+                );
+              },
             ),
           ));
   }
 
-  // Create a calendar data source using the appointments list
-  _DataSource _getCalendarDataSource() {
-    return _DataSource(Get.find<TimelineController>().meetings);
+  _headerStyle() {
+    return HeaderStyle(
+        headerPadding: const EdgeInsets.all(0),
+        decoration: const BoxDecoration(color: Colors.transparent),
+        headerMargin: const EdgeInsets.only(bottom: 0),
+        headerTextStyle: AppStyle.normal_text_grey.copyWith(
+            color: AppColor.noColor, fontSize: Dimensions.fontSizeMid),
+        leftIcon: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: 0,
+          color: AppColor.noColor,
+        ),
+        rightIcon: const Icon(
+          Icons.arrow_forward_ios,
+          size: 0,
+          color: AppColor.noColor,
+        ));
   }
-}
-
-// Data source class for the calendar
-class _DataSource extends CalendarDataSource {
-  _DataSource(List<Appointment> appointments) {
-    this.appointments = appointments;
-  }
-}
-
-class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return _getMeetingData(index).from;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return _getMeetingData(index).to;
-  }
-
-  @override
-  String getSubject(int index) {
-    return _getMeetingData(index).eventName;
-  }
-
-  @override
-  Color getColor(int index) {
-    return _getMeetingData(index).background;
-  }
-
-  @override
-  bool isAllDay(int index) {
-    return _getMeetingData(index).isAllDay;
-  }
-
-  Meeting _getMeetingData(int index) {
-    final dynamic meeting = appointments![index];
-    late final Meeting meetingData;
-    if (meeting is Meeting) {
-      meetingData = meeting;
-    }
-
-    return meetingData;
-  }
-}
-
-/// Custom business object class which contains properties to hold the detailed
-/// information about the event data which will be rendered in calendar.
-class Meeting {
-  /// Creates a meeting class with required details.
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
-
-  /// Event name which is equivalent to subject property of [Appointment].
-  String eventName;
-
-  /// From which is equivalent to start time property of [Appointment].
-  DateTime from;
-
-  /// To which is equivalent to end time property of [Appointment].
-  DateTime to;
-
-  /// Background which is equivalent to color property of [Appointment].
-  Color background;
-
-  /// IsAllDay which is equivalent to isAllDay property of [Appointment].
-  bool isAllDay;
 }

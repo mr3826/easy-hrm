@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:imgix_core_dart/url_builder.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -15,6 +16,7 @@ import 'dashboad_widget.dart';
 
 class ProgressbarLayout extends GetView<DashboardController> {
   ProgressbarLayout({super.key});
+
   final PageController _pageController = PageController();
   final currentPage = 0.obs;
 
@@ -264,11 +266,13 @@ _userImageLayout() {
 
   return CustomNetworkImage(
     height: 22,
-    imgUrl:
-        "${Api.PUBLIC_IMAGE_URL_DOMAIN}/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.image}",
+    imgUrlKey: controller.profileSummaryForDashboard
+            ?.getProfileSummaryForDashboard?.profile?.image ??
+        "",
     borderColor: Colors.transparent,
   );
 }
+
 _decorationStyle() {
   return BoxDecoration(
       color: AppColor.primaryColor.withOpacity(0.1),

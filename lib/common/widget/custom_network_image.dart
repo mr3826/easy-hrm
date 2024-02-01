@@ -2,24 +2,41 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+
+import 'package:imgix_core_dart/url_builder.dart';
+import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/images.dart';
 
 import '../../utils/app_string.dart';
+import '../../utils/images.dart';
 
 class CustomNetworkImage extends StatelessWidget {
-  final String imgUrl;
+  final String imgUrlKey;
   final String? logoUrl;
   final double height;
   final Color? borderColor;
+
   const CustomNetworkImage(
       {super.key,
       this.height = 32,
-      required this.imgUrl,
+      required this.imgUrlKey,
       this.borderColor,
       this.logoUrl});
+
   @override
   Widget build(BuildContext context) {
+    final client = URLBuilder(
+      domain: Api.CDN_DOMAIN,
+      shouldUseHttpsByDefault: true,
+      defaultSignKey: Api.CDN_KEY,
+    );
+
+    final url = client.createURLString(
+      '/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey',
+      params: {'w': '500', 'h': '500'},
+    );
+    print({"url imgix:: $url"});
+
     var radius = height;
     return CircleAvatar(
       radius: radius + 2.5,
@@ -31,11 +48,8 @@ class CustomNetworkImage extends StatelessWidget {
           radius: radius,
           backgroundColor: AppColor.cardColor,
           child: CachedNetworkImage(
-            imageUrl: imgUrl,
+            imageUrl: url,
             placeholder: (context, url) => const CupertinoActivityIndicator(),
-            httpHeaders: {
-              "Authorization": GetStorage().read(AppString.ID_TOKEN) ?? ""
-            },
             errorWidget: (context, url, error) => CircleAvatar(
                 radius: radius,
                 backgroundImage: AssetImage(logoUrl ?? Images.user)),
