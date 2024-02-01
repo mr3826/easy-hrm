@@ -23,17 +23,19 @@ class PickedProfileFormStorage {
   //picked file form storage here
   Future<void> pickFile() async {
     PermissionStatus permissionStatus;
-    final deviceInfo = await DeviceInfoPlugin().androidInfo;
-
     //device sdk version check here
-    if (deviceInfo.version.sdkInt > 32 && Platform.isAndroid) {
-      permissionStatus = await Permission.photos.request();
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt > 32) {
+        permissionStatus = await Permission.photos.request();
+      } else {
+        permissionStatus = await Permission.storage.request();
+      }
     } else if (Platform.isIOS) {
       permissionStatus = await Permission.photos.request();
     } else {
       permissionStatus = await Permission.storage.request();
     }
-
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     // permission check for device form storage
