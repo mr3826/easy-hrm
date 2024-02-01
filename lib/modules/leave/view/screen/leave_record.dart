@@ -25,6 +25,9 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.isRegistered<LeaveRecordsController>()) {
+      Get.delete<LeaveRecordsController>();
+    }
     Get.put(LeaveRecordsController());
     return controller.obx(
         (state) => Scaffold(
@@ -116,10 +119,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   _infoLayoutView(
       {required BuildContext context, required GetLeaveRecords leaveRecord}) {
-    print('''
-    leaveRecord id ${leaveRecord.id}
-    leaveRecord.status:: ${leaveRecord.status}
-    ''');
     return GestureDetector(
       onTap: () => customButtonSheet(
           context: context,
