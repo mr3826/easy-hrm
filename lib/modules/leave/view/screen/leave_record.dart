@@ -29,16 +29,20 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     return controller.obx(
         (state) => Scaffold(
             appBar: customAppbar(title: AppString.text_leave_records),
-            body: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.leaveRecordList?.length ?? 0,
-                itemBuilder: (context, index) => Column(children: [
-                  _dateTextLayout(date: controller.leaveRecordList?[index].date),
-                  _leaveRecordViewLayout(index)
-                ]),
+            body: RefreshIndicator(
+              onRefresh: _refreshScreen,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.leaveRecordList?.length ?? 0,
+                  itemBuilder: (context, index) => Column(children: [
+                    _dateTextLayout(
+                        date: controller.leaveRecordList?[index].date),
+                    _leaveRecordViewLayout(index)
+                  ]),
+                ),
               ),
             )),
         onLoading: const LoadingIndicator());
@@ -201,5 +205,9 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     } else {
       return Container();
     }
+  }
+
+  Future<void> _refreshScreen() async {
+    controller.getLeaveRecordsData();
   }
 }

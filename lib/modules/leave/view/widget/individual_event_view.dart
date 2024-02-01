@@ -9,18 +9,15 @@ import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
-import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
-import '../../controller/calendar_date_controller.dart';
 import '../../model/leave_record_response.dart';
 import 'leave_record_details_view.dart';
 
@@ -265,11 +262,6 @@ class IndividualEventView extends StatelessWidget {
 }
 
 Widget horizontalCalendarLayout() {
-  if (Get.isRegistered<DateTimePickerController>()) {
-    Get.delete<DateTimePickerController>();
-  }
-  Get.put(DateTimePickerController());
-
   return GestureDetector(
     onTap: () {
       showDialog<String>(
@@ -302,10 +294,10 @@ Widget horizontalCalendarLayout() {
                 children: [
                   GestureDetector(
                       onTap: () async {
-                        Get.find<DateTimePickerController>().inDate.value =
+                        Get.find<LeaveScreenController>().date.value =
                             DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                                    Get.find<DateTimePickerController>()
-                                        .inDate
+                                    Get.find<LeaveScreenController>()
+                                        .date
                                         .value)
                                 .subtract(const Duration(days: 1)));
                         await Get.find<LeaveScreenController>()
@@ -319,22 +311,21 @@ Widget horizontalCalendarLayout() {
                   Text(
                     DateFormat("dd MMM yyyy").format(DateTime.now()) ==
                             DateFormat("dd MMM yyyy").format(DateTime.parse(
-                                Get.find<DateTimePickerController>()
-                                    .inDate
-                                    .value))
+                                Get.find<LeaveScreenController>().date.value))
                         ? "Today"
                         : DateFormat("dd MMM yyyy").format(DateTime.parse(
-                            Get.find<DateTimePickerController>().inDate.value)),
+                            Get.find<LeaveScreenController>().date.value)),
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.normalTextColor,
                         fontWeight: FontWeight.bold),
                   ),
                   GestureDetector(
                       onTap: () async {
-                        Get.find<DateTimePickerController>().inDate.value =
+                        Get.find<LeaveScreenController>()
+                            .date.value =
                             DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                                    Get.find<DateTimePickerController>()
-                                        .inDate
+                                Get.find<LeaveScreenController>()
+                                    .date
                                         .value)
                                 .add(const Duration(days: 1)));
                         await Get.find<LeaveScreenController>()
@@ -350,7 +341,7 @@ Widget horizontalCalendarLayout() {
               Center(
                   child: Text(
                 DateFormat('EEEE').format(DateTime.parse(
-                    Get.find<DateTimePickerController>().inDate.value)),
+                    Get.find<LeaveScreenController>().date.value)),
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.hintColor,
                     fontSize: Dimensions.fontSizeDefault - 1),

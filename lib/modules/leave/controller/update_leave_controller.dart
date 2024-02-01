@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -30,7 +31,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
   void updateLeave(
       {required String leaveId,
       required String startDate,
-      required String? endDate,
+      required String endDate,
       required String? leaveTypeId}) async {
     print("""
     required String leaveId::$leaveId,
@@ -45,8 +46,8 @@ class UpDateLeaveController extends GetxController with StateMixin {
         "leave_id": leaveId,
         "status": "pending",
         "description": leaveNoteController.text,
-        "end_date": endDate,
-        "start_date": startDate,
+        "end_date": DateTime.parse(endDate).toUtc().toString(),
+        "start_date": DateTime.parse(startDate).toUtc().toString(),
         "leave_type_id": leaveTypeId
       }
     });
@@ -62,11 +63,13 @@ class UpDateLeaveController extends GetxController with StateMixin {
       leaveNoteController.clear();
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
 
-      Get.off(() => MainScreen(
+      Get.off(() => const MainScreen(
             routeIndex: 1,
           ));
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+      await Get.find<DashboardController>()
+          .getMonthlyTimelineInfoForDashboard();
     }
 
     isUpdateLeaveLoading(false);
