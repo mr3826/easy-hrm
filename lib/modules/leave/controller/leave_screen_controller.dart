@@ -40,6 +40,8 @@ class LeaveScreenController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value}T23:59:00"
       }
     });
+    print("getLeaveDetailsByDate details :::: $response");
+
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -80,7 +82,7 @@ class LeaveScreenController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       showSuccessMessage(message: AppString.leaveRemovedSuccessMessage.tr);
-      Get.off(() => MainScreen(
+      Get.off(() => const MainScreen(
             routeIndex: 1,
           ));
       await getLeaveSummaryForDashboard();
