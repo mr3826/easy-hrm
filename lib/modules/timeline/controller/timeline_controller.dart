@@ -37,6 +37,7 @@ class TimelineController extends GetxController with StateMixin {
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
   RxString selectedSummaryDate = "".obs;
+  RxInt selectedYearIndex = 10.obs;
   RxInt currentYear = DateTime.now().year.obs;
   String timeLogStatus = "";
   String timeLogDuration = "";

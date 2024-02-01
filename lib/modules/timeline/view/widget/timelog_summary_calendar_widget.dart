@@ -149,6 +149,8 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
 
                 Get.find<TimelineController>().selectedSummaryDate.value =
                     index.toString();
+                Get.find<TimelineController>().selectedYearIndex.value =
+                    yearIndex;
               },
               child: SizedBox(
                 width: 90,
@@ -158,10 +160,14 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                     Text(
                       DateFormat('MMMM').format(month),
                       style: AppStyle.normal_text_grey.copyWith(
-                          color: (index.toString() ==
-                                      Get.find<TimelineController>()
-                                          .selectedSummaryDate
-                                          .value) ||
+                          color: yearIndex ==
+                                          Get.find<TimelineController>()
+                                              .selectedYearIndex
+                                              .value &&
+                                      (index.toString() ==
+                                          Get.find<TimelineController>()
+                                              .selectedSummaryDate
+                                              .value) ||
                                   (isCurrentMonth &&
                                       Get.find<TimelineController>()
                                           .selectedSummaryDate
@@ -173,10 +179,14 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                               ? Dimensions.fontSizeDefault + 2
                               : Dimensions.fontSizeDefault),
                     ),
-                    (index.toString() ==
-                                Get.find<TimelineController>()
-                                    .selectedSummaryDate
-                                    .value) ||
+                    yearIndex ==
+                                    Get.find<TimelineController>()
+                                        .selectedYearIndex
+                                        .value &&
+                                (index.toString() ==
+                                    Get.find<TimelineController>()
+                                        .selectedSummaryDate
+                                        .value) ||
                             (isCurrentMonth &&
                                 Get.find<TimelineController>()
                                     .selectedSummaryDate
