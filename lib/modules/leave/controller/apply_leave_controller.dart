@@ -11,6 +11,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/utils.dart';
+import '../../dashboard/controller/dashbpard_controller.dart';
 import '../model/workshief_response_by_date.dart';
 import 'file_upload_controller.dart';
 import 'leave_screen_controller.dart';
@@ -81,15 +82,22 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   applyLeave({filePath}) async {
-    print("jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
+    print(
+        "jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
 
     isAssignLeaveLoaderLoading(true);
 
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
       "inputData": {
         "description": leaveNoteController.text,
-        "end_date": Get.find<DateTimePickerController>().outDateTime.value,
-        "start_date": Get.find<DateTimePickerController>().inDateTime.value,
+        "end_date": DateTime.parse(
+                Get.find<DateTimePickerController>().outDateTime.value)
+            .toUtc()
+            .toString(),
+        "start_date": DateTime.parse(
+                Get.find<DateTimePickerController>().inDateTime.value)
+            .toUtc()
+            .toString(),
         "status": "pending",
         "leave_type_id": leaveId,
         "files": [
@@ -131,24 +139,28 @@ class ApplyLeaveController extends GetxController with StateMixin {
       Get.off(() => const MainScreen(routeIndex: 1));
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+      await Get.find<DashboardController>()
+          .getMonthlyTimelineInfoForDashboard();
+
     }
 
     isAssignLeaveLoaderLoading(false);
   }
 
   getUploadPolicy({fileName}) async {
-    print("${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
+    print(
+        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
-        "filename": "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "filename":
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });
-
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -162,8 +174,10 @@ class ApplyLeaveController extends GetxController with StateMixin {
     isUploadPolicyLoading(false);
   }
 
-  uploadFile({required String fileName, List<PolicyData>? list, required String url}) async {
-
+  uploadFile(
+      {required String fileName,
+      List<PolicyData>? list,
+      required String url}) async {
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 
@@ -172,8 +186,11 @@ class ApplyLeaveController extends GetxController with StateMixin {
       formData.fields.add(MapEntry(data.name!, data.value!));
     }
 
-    formData.files.add(MapEntry("file",
-        MultipartFile(File(fileName), filename: "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+    formData.files.add(MapEntry(
+        "file",
+        MultipartFile(File(fileName),
+            filename:
+                "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
       print(value.statusCode);

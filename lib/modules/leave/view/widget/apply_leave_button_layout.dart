@@ -93,7 +93,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customSpacerHeight(height: 6),
                       _pathFormatText(),
                       customSpacerHeight(height: 8),
-                      AddAttachmentFile(
+                      const AddAttachmentFile(
                         isFromApplyLeave: true,
                       ),
                       customSpacerHeight(height: 20),

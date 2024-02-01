@@ -9,16 +9,22 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 class CustomDoubleAppButton extends StatelessWidget {
   final String? buttonText;
-  final String ?cancelText;
+  final String? cancelText;
 
   final Color btnColor;
   final Function onAction;
-  final Function  cancelAction;
+  final Function cancelAction;
 
- final Widget ?saveBtn;
+  final Widget? saveBtn;
 
   const CustomDoubleAppButton(
-      {super.key,  this.buttonText,this.cancelText, required this.onAction,required this.cancelAction,this.btnColor=AppColor.primaryColor,this.saveBtn});
+      {super.key,
+      this.buttonText,
+      this.cancelText,
+      required this.onAction,
+      required this.cancelAction,
+      this.btnColor = AppColor.primaryColor,
+      this.saveBtn});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,7 @@ class CustomDoubleAppButton extends StatelessWidget {
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: ()=> cancelAction(),
+            onTap: () => cancelAction(),
             child: Container(
               height: AppLayout.getHeight(48),
               decoration: BoxDecoration(
@@ -37,7 +43,8 @@ class CustomDoubleAppButton extends StatelessWidget {
                     BorderRadius.circular(Dimensions.radiusExtraLarge),
               ),
               child: Center(
-                  child: Text(cancelText??AppString.text_close.tr,
+                  child: Text(
+                cancelText ?? AppString.text_close.tr,
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.hintColor.withOpacity(0.8),
                     fontSize: Dimensions.fontSizeMid - 3,
@@ -49,7 +56,7 @@ class CustomDoubleAppButton extends StatelessWidget {
         customSpacerWidth(width: 20),
         Expanded(
           child: GestureDetector(
-            onTap: ()=>onAction(),
+            onTap: () => onAction(),
             child: Container(
               height: AppLayout.getHeight(48),
               decoration: BoxDecoration(
@@ -58,13 +65,14 @@ class CustomDoubleAppButton extends StatelessWidget {
                     BorderRadius.circular(Dimensions.radiusExtraLarge),
               ),
               child: Center(
-                  child: saveBtn?? Text(
-                    buttonText??AppString.text_save.tr,
-                style: AppStyle.normal_text.copyWith(
-                    color: AppColor.cardColor,
-                    fontSize: Dimensions.fontSizeMid - 3,
-                    fontWeight: FontWeight.w700),
-              )),
+                  child: saveBtn ??
+                      Text(
+                        buttonText ?? AppString.text_save.tr,
+                        style: AppStyle.normal_text.copyWith(
+                            color: AppColor.cardColor,
+                            fontSize: Dimensions.fontSizeMid - 3,
+                            fontWeight: FontWeight.w700),
+                      )),
             ),
           ),
         ),

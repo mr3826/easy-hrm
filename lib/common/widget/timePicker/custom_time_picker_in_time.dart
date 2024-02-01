@@ -210,10 +210,10 @@ class _InDatePickerState extends State<InDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-                Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Get.find<DateTimePickerController>().inDate.value =
                     DateFormat('yyyy-MM-dd').format(today);
                 Get.find<DateTimePickerController>().getInDateTime();
+                Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Navigator.pop(context);
               },
             ),
