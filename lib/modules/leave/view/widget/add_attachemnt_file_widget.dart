@@ -13,18 +13,20 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
-import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
+import '../../../../common/widget/custom_network_image.dart';
+import '../../model/leave_records.dart';
 
 class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;
-  const AddAttachmentFile({this.isFromApplyLeave = false, super.key});
+  final GetLeaveRecords? leaveRecords;
 
+  const AddAttachmentFile(
+      {this.isFromApplyLeave = false, super.key, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
-    if(Get.isRegistered()){
+    if (Get.isRegistered()) {
       Get.delete<ApplyLeaveController>();
     }
     Get.put(ApplyLeaveController());
@@ -50,6 +52,7 @@ class AddAttachmentFile extends StatelessWidget {
     if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
+
       return Get.find<FileUploadController>()
               .storageForUpload
               .filePath
@@ -62,7 +65,14 @@ class AddAttachmentFile extends StatelessWidget {
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
-        return _emptyBox();
+        return isFromApplyLeave == true
+            ? _emptyBox()
+            : leaveRecords?.leaveType?.fileKey.endsWith(".pdf")
+                ? _replaceFileLayout()
+                : CustomNetworkImage(
+                    imgUrlKey: leaveRecords?.leaveType?.fileKey,
+                    isDocumentLayout: true,
+                  );
       } else {
         /// broken image
         if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {

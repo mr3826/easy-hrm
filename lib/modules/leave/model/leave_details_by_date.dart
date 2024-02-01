@@ -13,7 +13,6 @@ class LeaveDetailsByDate {
       });
     }
   }
-
 }
 
 class GetLeaveDetailsByDate {
@@ -29,5 +28,4 @@ class GetLeaveDetailsByDate {
       });
     }
   }
-
 }

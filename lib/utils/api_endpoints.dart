@@ -1,13 +1,12 @@
 class Api {
   Api._();
 
-  //for local
+  ///for local
   static const String PUBLIC_URL = "https://api.local.payrun.app";
   static const CDN_DOMAIN = "payrun-local.imgix.net";
   static const CDN_KEY = "AbuprUHFbUncYjep";
 
-  //for dev
-
+  ///for dev
  // static const String PUBLIC_URL = "https://api.dev.payrun.app";
  // static const CDN_DOMAIN = "payrun-dev.imgix.net";
  // static const CDN_KEY = "CrC9CKWZTqR2EyUW";
@@ -74,6 +73,10 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
       end_date
       files {
         name
+        size
+        createdAt
+        key
+        id
       }
       leave_status
        leaveType {

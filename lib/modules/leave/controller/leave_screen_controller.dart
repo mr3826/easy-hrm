@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
@@ -40,7 +42,7 @@ class LeaveScreenController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value}T23:59:00"
       }
     });
-    print("getLeaveDetailsByDate details :::: $response");
+    log("getLeaveDetailsByDate details :::: $response",error: 200);
 
 
     if (response.hasException) {

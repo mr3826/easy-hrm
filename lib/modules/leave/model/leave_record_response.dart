@@ -76,17 +76,26 @@ class Data {
 
 class Files {
   String? name;
+  dynamic size;
+  dynamic createdAt;
+  String? key;
+  String? id;
 
-  Files({this.name});
+  Files({this.name, this.size, this.createdAt, this.key, this.id});
 
   Files.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-  }
-}
+    size = json['size'];
+    createdAt = json['createdAt'];
+    key = json['key'];
+    id = json['id'];
+  }}
+
 
 class LeaveType {
   String? type;
   String? leaveId;
+  dynamic fileKey;
   String? leaveName;
   bool? isAddNoteRequired;
   bool? isAttachDocumentRequired;
@@ -94,6 +103,7 @@ class LeaveType {
   LeaveType(
       {this.type,
       this.leaveId,
+        this.fileKey,
       this.leaveName,
       this.isAddNoteRequired,
       this.isAttachDocumentRequired});
@@ -102,6 +112,7 @@ class LeaveType {
     type = json['type'];
     leaveId = json['id'];
     leaveName = json['name'];
+    fileKey = json['fileKey'];
     isAddNoteRequired = json['add_note_required'];
     isAttachDocumentRequired = json['attach_document_required'];
   }
