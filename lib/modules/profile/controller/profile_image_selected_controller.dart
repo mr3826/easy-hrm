@@ -26,7 +26,9 @@ class PickedProfileFormStorage {
     final deviceInfo = await DeviceInfoPlugin().androidInfo;
 
     //device sdk version check here
-    if (deviceInfo.version.sdkInt > 32) {
+    if (deviceInfo.version.sdkInt > 32 && Platform.isAndroid) {
+      permissionStatus = await Permission.photos.request();
+    } else if (Platform.isIOS) {
       permissionStatus = await Permission.photos.request();
     } else {
       permissionStatus = await Permission.storage.request();

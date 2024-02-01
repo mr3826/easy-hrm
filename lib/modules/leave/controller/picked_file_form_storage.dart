@@ -27,9 +27,9 @@ class PickedFileFormStorage {
     //device sdk version check here
     if (androidInfo.version.sdkInt > 32 && Platform.isAndroid) {
       permissionStatus = await Permission.photos.request();
-    } else if(Platform.isIOS) {
+    } else if (Platform.isIOS) {
       permissionStatus = await Permission.photos.request();
-    }else{
+    } else {
       permissionStatus = await Permission.storage.request();
     }
 
