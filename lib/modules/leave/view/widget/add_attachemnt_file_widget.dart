@@ -43,7 +43,7 @@ class AddAttachmentFile extends StatelessWidget {
                   return _documentLayout();
                 }))),
             customSpacerHeight(height: 8),
-            Obx(() => _pathNameText()),
+            _pathNameText(leaveRecords?.leaveType?.fileKey.toString()),
           ],
         ));
   }
@@ -160,17 +160,27 @@ _emptyBox() {
   );
 }
 
-_pathNameText() {
-  return Text(
-      Get.find<FileUploadController>()
-          .storageForUpload
-          .filePath
-          .value
-          .split('/')
-          .last,
-      style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.primaryColor,
-          fontSize: Dimensions.fontSizeDefault - 2));
+_pathNameText(remoteUrl) {
+  return remoteUrl == null ||
+          Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .value
+              .isNotEmpty
+      ? Obx(() => Text(
+          Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .value
+              .split('/')
+              .last,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.primaryColor,
+              fontSize: Dimensions.fontSizeDefault - 2)))
+      : Text(remoteUrl,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.primaryColor,
+              fontSize: Dimensions.fontSizeDefault - 2));
 }
 
 _selectedImageViewLayout() {
