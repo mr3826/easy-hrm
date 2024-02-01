@@ -24,6 +24,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../controller/apply_leave_controller.dart';
 import '../../controller/file_upload_controller.dart';
 import '../../model/leave_type.dart';
 
@@ -105,6 +106,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
     leave id: ${leaveRecords?.id}
     isNoteRequired: ${leaveRecords?.leaveType?.isAddNoteRequired}
     isDocRequired: ${leaveRecords?.leaveType?.isAttachDocumentRequired}
+    fileKey: ${leaveRecords?.leaveType?.fileKey}
     ''');
     return controller.obx(
         (state) => Padding(
@@ -166,7 +168,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 6),
                       _pathFormatText(),
                       customSpacerHeight(height: 8),
-                      AddAttachmentFile(),
+                       AddAttachmentFile(leaveRecords: leaveRecords,),
                       customSpacerHeight(height: 20),
                       Obx(() => Get.find<UpDateLeaveController>()
                               .isUpdateLeaveLoading
@@ -210,6 +212,8 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                                     .storageForUpload
                                     .filePath
                                     .value = "";
+                                Get.find<ApplyLeaveController>().isUploadPolicyLoading.value=false;
+                                Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.value=false;
                               },
                             )),
                       customSpacerHeight(height: 100),

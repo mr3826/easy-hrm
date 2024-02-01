@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -42,6 +44,8 @@ class LeaveScreenController extends GetxController with StateMixin {
         "endDate": "${date.value}T23:59:00"
       }
     });
+    log("getLeaveDetailsByDate details :::: $response",error: 200);
+
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);

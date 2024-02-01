@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:imgix_core_dart/url_builder.dart';
-import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../../../common/widget/custom_network_image.dart';

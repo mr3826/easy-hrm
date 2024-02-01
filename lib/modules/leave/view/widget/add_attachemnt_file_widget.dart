@@ -13,18 +13,20 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
-import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
+import '../../../../common/widget/custom_network_image.dart';
+import '../../model/leave_records.dart';
 
 class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;
-  const AddAttachmentFile({this.isFromApplyLeave = false, super.key});
+  final GetLeaveRecords? leaveRecords;
 
+  const AddAttachmentFile(
+      {this.isFromApplyLeave = false, super.key, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
-    if(Get.isRegistered()){
+    if (Get.isRegistered()) {
       Get.delete<ApplyLeaveController>();
     }
     Get.put(ApplyLeaveController());
@@ -41,7 +43,7 @@ class AddAttachmentFile extends StatelessWidget {
                   return _documentLayout();
                 }))),
             customSpacerHeight(height: 8),
-            Obx(() => _pathNameText()),
+            _pathNameText(leaveRecords?.leaveType?.fileKey.toString()),
           ],
         ));
   }
@@ -50,6 +52,7 @@ class AddAttachmentFile extends StatelessWidget {
     if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
+
       return Get.find<FileUploadController>()
               .storageForUpload
               .filePath
@@ -62,7 +65,14 @@ class AddAttachmentFile extends StatelessWidget {
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
-        return _emptyBox();
+        return isFromApplyLeave == true
+            ? _emptyBox()
+            : leaveRecords?.leaveType?.fileKey.endsWith(".pdf")
+                ? _replaceFileLayout()
+                : CustomNetworkImage(
+                    imgUrlKey: leaveRecords?.leaveType?.fileKey,
+                    isDocumentLayout: true,
+                  );
       } else {
         /// broken image
         if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
@@ -150,17 +160,27 @@ _emptyBox() {
   );
 }
 
-_pathNameText() {
-  return Text(
-      Get.find<FileUploadController>()
-          .storageForUpload
-          .filePath
-          .value
-          .split('/')
-          .last,
-      style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.primaryColor,
-          fontSize: Dimensions.fontSizeDefault - 2));
+_pathNameText(remoteUrl) {
+  return remoteUrl == null ||
+          Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .value
+              .isNotEmpty
+      ? Obx(() => Text(
+          Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .value
+              .split('/')
+              .last,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.primaryColor,
+              fontSize: Dimensions.fontSizeDefault - 2)))
+      : Text(remoteUrl,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.primaryColor,
+              fontSize: Dimensions.fontSizeDefault - 2));
 }
 
 _selectedImageViewLayout() {

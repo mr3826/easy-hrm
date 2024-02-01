@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -107,8 +109,22 @@ class IndividualEventView extends StatelessWidget {
               .leaveRequests
               ?.length,
           itemBuilder: (context, index) {
+
+            log("key :::: ${ Get.find<LeaveScreenController>()
+                .leaveDetailsByDate
+                ?.getLeaveDetailsByDate![0]
+                .leaveRequests![index].files?[index].key??""}",error: 100
+                );
+
+
+
             return InkWell(
               onTap: () {
+                log( Get.find<LeaveScreenController>()
+                    .leaveDetailsByDate
+                    ?.getLeaveDetailsByDate![0]
+                    .leaveRequests![index]
+                    .files?[index].name.toString()??"",error: 20);
                 customButtonSheet(
                   context: context,
                   child: LeaveRecordDetails(
@@ -127,6 +143,10 @@ class IndividualEventView extends StatelessWidget {
                             .leaveRequests?[index]
                             .leaveType
                             ?.type,
+                        fileKey: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests![index].files?[index].key??"",
                         leaveName: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
                             ?.getLeaveDetailsByDate![0]
@@ -188,7 +208,11 @@ class IndividualEventView extends StatelessWidget {
                           ?.getLeaveDetailsByDate![0]
                           .leaveRequests?[index]
                           .id,
+
+
+
                     ),
+
                   ),
                   height: 0.6,
                 );
