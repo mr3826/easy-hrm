@@ -137,7 +137,6 @@ SliverAppBar get sliverAppBar {
                   customSpacerHeight(height: 45),
                   _leaveText(),
                   customSpacerHeight(height: 14),
-
                   leaveLayout(),
                   customSpacerHeight(height: 14),
                 ],

@@ -28,7 +28,6 @@ class TimelineScreen extends GetView<TimelineController> {
                 backgroundColor: Colors.white,
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
                   slivers: [sliverAppBar, sliverToBoxAdapter],
                 ),
               ),
