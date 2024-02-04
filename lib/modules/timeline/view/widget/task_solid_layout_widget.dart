@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/images.dart';
+import '../../../../enum.dart';
 import '../../../../utils/utils.dart';
 import '../../controller/time_formate_controller.dart';
 
@@ -36,7 +41,7 @@ class TaskSolidLayout extends StatelessWidget {
 
     _updateColorAccordingToApiResponse();
     _updateIconAccordingToApiResponse();
-    return _taskCard();
+    return isForLeave == true ? _leaveTaskLayout() : _taskCard();
   }
 
   _endTimeLayout(statusColor, statusIcon, iconColor) {
@@ -244,6 +249,121 @@ class TaskSolidLayout extends StatelessWidget {
         );
     }
   }
+
+  Widget _leaveTaskLayout() {
+    switch (
+        _getTimeDifference(startTime: startDateTime, endTime: endDateTime)) {
+      case < 5:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Container(),
+          ),
+        );
+      case < 15:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(),
+          ),
+        );
+      case < 30:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _startTimeLayout(_updateColorAccordingToApiResponse()),
+              ],
+            ),
+          ),
+        );
+      case < 45:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _startTimeLayout(_updateColorAccordingToApiResponse()),
+                Text(
+                  taskName,
+                  maxLines: 1,
+                  style: AppStyle.mid_large_text.copyWith(
+                      fontSize: Dimensions.fontSizeDefault,
+                      color: _updateColorAccordingToApiResponse(),
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+          ),
+        );
+      default:
+        return Card(
+          elevation: 0,
+          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse()),
+          child: Stack(
+            children: [
+              SvgPicture.asset(
+                _getStatusViewLayout(status),
+                fit: BoxFit.cover,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _startTimeLayout(_updateColorAccordingToApiResponse()),
+                    customSpacerHeight(height: 6),
+                    Text(
+                      taskName,
+                      maxLines: 1,
+                      style: AppStyle.mid_large_text.copyWith(
+                          fontSize: Dimensions.fontSizeDefault,
+                          color: _updateColorAccordingToApiResponse(),
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                    customSpacerHeight(height: 6),
+                    Text(
+                      duration.isNotEmpty
+                          ? convertMiniToHour(
+                              Duration(minutes: int.parse(duration)))
+                          : convertMiniToHour(Duration(
+                              minutes: DateTime.now()
+                                  .difference(DateTime.parse(startDateTime))
+                                  .inMinutes)),
+                      style: AppStyle.mid_large_text.copyWith(
+                          fontSize: Dimensions.fontSizeDefault - 2,
+                          color: _updateColorAccordingToApiResponse(),
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                    const Spacer(),
+                    _endTimeLayout(
+                        _updateColorAccordingToApiResponse(),
+                        _updateIconAccordingToApiResponse(),
+                        _colorForIconAccordingToApiResponse())
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+    }
+  }
 }
 
 Widget nullContainer(
@@ -275,4 +395,20 @@ Widget nullContainer(
             color: bgColor.withOpacity(0.09),
           ),
   );
+}
+
+_getStatusViewLayout(String leaveStatus) {
+  if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
+    return Images.LEAVE_APPROVED;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
+    return Images.LEAVE_REJECTED;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
+    return Images.LEAVE_PENDDING;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
+    return Images.LEAVE_TAKAN;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
+    return Images.LEAVE_REJECTED;
+  } else {
+    return Images.LEAVE_APPROVED;
+  }
 }

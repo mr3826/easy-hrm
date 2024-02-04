@@ -9,25 +9,29 @@ import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_vie
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../leave/model/leave_records.dart';
 import '../widget/task_view_widget.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    _modelHeightAccordingScreenSize();
     return Obx(() => Get.find<TimelineController>()
             .isTimelineCalendarByDateLoading
             .isTrue
         ? Container()
         : Padding(
-            padding: const EdgeInsets.only(
-                top: 0.0, bottom: 110, left: 14, right: 14),
+            padding: EdgeInsets.only(
+                top: 0.0,
+                bottom: AppLayout.getHeight(400),
+                left: 14,
+                right: 14),
             child: DayView(
               showVerticalLine: false,
               minDay: DateTime(2021),
@@ -41,6 +45,7 @@ class TimeLineCalendar extends StatelessWidget {
               headerStyle: _headerStyle(),
               eventArranger: const SideEventArranger(),
               scrollPhysics: const NeverScrollableScrollPhysics(),
+
               liveTimeIndicatorSettings: HourIndicatorSettings.none(),
               pageViewPhysics: const NeverScrollableScrollPhysics(),
               halfHourIndicatorSettings: const HourIndicatorSettings(
@@ -129,7 +134,7 @@ class TimeLineCalendar extends StatelessWidget {
                 /// otherwise it returns with (value) pattern
 
                 customButtonSheet(
-                    height: .6,
+                    height: _modelHeightAccordingScreenSize(),
                     context: context,
                     child: leaveId.substring(1, leaveId.length - 1) == "null"
                         ? TaskView(
@@ -278,5 +283,14 @@ class TimeLineCalendar extends StatelessWidget {
           size: 0,
           color: AppColor.noColor,
         ));
+  }
+
+  double _modelHeightAccordingScreenSize() {
+    double value = MediaQuery.of(Get.context!).size.width;
+    if (value <= 360.0) {
+      return 0.7;
+    } else {
+      return 0.6;
+    }
   }
 }
