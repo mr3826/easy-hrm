@@ -113,7 +113,7 @@ class TimelineController extends GetxController with StateMixin {
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
-      Get.to(() => MainScreen(
+      Get.to(() => const MainScreen(
             routeIndex: 0,
           ));
     }
@@ -122,8 +122,6 @@ class TimelineController extends GetxController with StateMixin {
 
   removeTimeEntry({String? timeLogId}) async {
     isTimelogEntryOrRemoveLoading(true);
-
-    print("timelogId: $timeLogId");
 
     final response =
         await NetworkClient().mutationGraphData(removeTimerQueryData, {

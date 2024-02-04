@@ -24,7 +24,14 @@ class LogoutController extends GetxController {
 
       if (response.hasError) {
         logErrorMessage(logName: "logout", response: response);
-
+        if (ErrorModel.fromJson(response.body).message != null &&
+            ErrorModel.fromJson(response.body)
+                .message!
+                .startsWith("Authorization failed, error: UserDoesNotExist")) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        }
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
