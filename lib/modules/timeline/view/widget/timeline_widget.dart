@@ -13,10 +13,12 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget timelineLayout() {
   return SizedBox(
-    height: AppLayout.getHeight(115),
+    height: AppLayout.getHeight(120),
     width: double.infinity,
     child: Padding(
-      padding: EdgeInsets.only(left: AppLayout.getHeight(12)),
+
+      padding: EdgeInsets.only(left: AppLayout.getHeight(0)),
+
       child: Card(
         elevation: 0,
         shape: roundedRectangleBorder.copyWith(

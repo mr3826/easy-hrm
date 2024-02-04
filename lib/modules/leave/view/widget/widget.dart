@@ -13,37 +13,34 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget leaveLayout() {
   return SizedBox(
-    height: AppLayout.getHeight(115),
+    height: AppLayout.getHeight(120),
     width: double.infinity,
-    child: Padding(
-      padding: EdgeInsets.only(left: AppLayout.getHeight(12)),
-      child: Card(
-        elevation: 0,
-        shape: roundedRectangleBorder.copyWith(
-            borderRadius: BorderRadius.circular(8)),
-        color: AppColor.cardColor.withOpacity(0.2),
-        child: Padding(
-          padding: marginLayout.copyWith(top: 12, bottom: 12),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _totalLeave(),
-                  const Spacer(),
-                  _divider(),
-                  const Spacer(),
-                  _takenLeave(),
-                  const Spacer(),
-                  _divider(),
-                  const Spacer(),
-                  _balanceLeave(),
-                ],
-              ),
-              const Spacer(),
-              _tabToViewLeaveRecord()
-            ],
-          ),
+    child: Card(
+      elevation: 0,
+      shape: roundedRectangleBorder.copyWith(
+          borderRadius: BorderRadius.circular(8)),
+      color: AppColor.cardColor.withOpacity(0.2),
+      child: Padding(
+        padding: marginLayout.copyWith(top: 12, bottom: 12),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _totalLeave(),
+                const Spacer(),
+                _divider(),
+                const Spacer(),
+                _takenLeave(),
+                const Spacer(),
+                _divider(),
+                const Spacer(),
+                _balanceLeave(),
+              ],
+            ),
+            const Spacer(),
+            _tabToViewLeaveRecord()
+          ],
         ),
       ),
     ),

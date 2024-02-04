@@ -210,7 +210,7 @@ class _InDatePickerState extends State<InDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-                Get.find<DateTimePickerController>().inDate.value =
+                Get.find<LeaveScreenController>().date.value =
                     DateFormat('yyyy-MM-dd').format(today);
                 Get.find<DateTimePickerController>().getInDateTime();
                 Get.find<LeaveScreenController>().getLeaveDetailsByDate();
@@ -265,7 +265,6 @@ class InTimePicker extends StatelessWidget {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-
                 if (time.isNotEmpty) {
                   // set time in 00:00:00 format
                   if (time.length < 15) {

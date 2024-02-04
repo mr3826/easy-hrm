@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/horizontal_dotted_style.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -27,16 +30,36 @@ class IndividualTimeLayout extends StatelessWidget {
           ?.getTimelogsForApp
           ?.length,
       itemBuilder: (context, index) {
-        return _infoTextLayout(index);
+        return InkWell(
+            onTap: () async {
+              /// call api according to given date
+              /// change showing date by updating request date value
+              DateTime requestedDate = DateTime.parse(
+                  Get.find<TimelineSummaryController>()
+                          .timelogDetailsByMonth
+                          ?.getTimelogsForApp?[index]
+                          .date ??
+                      DateTime.now().toString());
+              Get.find<DateTimeController>().requestedDate.value =
+                  DateFormat('yyyy-MM-dd').format(requestedDate);
+              Get.back(canPop: false);
+              await Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                  startDate:
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                  endDate:
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+              await Get.find<TimelineController>().getTimelineSummaryByDate(
+                  startDate:
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                  endDate:
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+            },
+            child: _infoTextLayout(index));
       },
     ));
   }
 
   Widget _infoTextLayout(int index) {
-    print(Get.find<TimelineSummaryController>()
-        .timelogDetailsByMonth
-        ?.getTimelogsForApp?[index]
-        .date);
     Color itemColor = index % 2 == 0
         ? AppColor.primaryColor.withOpacity(0.03)
         : Colors.transparent;

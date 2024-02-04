@@ -1,20 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-import 'package:imgix_core_dart/url_builder.dart';
-import 'package:payrun_mobile/utils/api_endpoints.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
-
-import '../../utils/app_string.dart';
-import '../../utils/app_style.dart';
-import '../../utils/dimensions.dart';
-import '../../utils/images.dart';
-import 'custom_card_style.dart';
 import 'custom_image_network_widget.dart';
-import 'custom_spacer.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imgUrlKey;
@@ -35,6 +22,7 @@ class CustomNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String url = urlBuilder(imgUrlKey);
+    log("image url key ::: $imgUrlKey");
     var radius = height;
     return isDocumentLayout != true
         ? circleImageLayout(
