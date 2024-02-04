@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -14,11 +12,10 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:table_calendar/table_calendar.dart';
 import '../../../../common/controller/date_time_controller.dart';
+import '../../../../utils/app_style.dart';
 import '../../../leave/view/widget/widget.dart';
 import '../widget/custom_timeline_calendar.dart';
-import '../widget/timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
@@ -120,22 +117,33 @@ SliverAppBar get sliverAppBar {
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
       background: SizedBox(
-        height: AppLayout.getHeight(100),
-        width: AppLayout.getWidth(200),
         child: Padding(
           padding: marginLayout,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              customSpacerHeight(height: 6),
-              appBar(text: AppString.text_time_line.tr),
-              customSpacerHeight(height: 4),
-              timelineLayout(),
-              customSpacerHeight(height: 14),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customSpacerHeight(height: 45),
+                 _timelineText(),
+                  customSpacerHeight(height: 14),
+                  timelineLayout(),
+                  customSpacerHeight(height: 14),
+                ],
+              ),
             ],
           ),
         ),
       ),
     ),
+  );
+}
+
+_timelineText() {
+  return  Text(
+    AppString.text_time_line.tr,
+    style: AppStyle.mid_large_text.copyWith(fontSize: 20),
   );
 }
 
@@ -146,8 +154,8 @@ _buttonRadiusLayout() {
         decoration: BoxDecoration(
             color: AppColor.cardColor,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid + 100),
-                topLeft: Radius.circular(Dimensions.radiusMid + 100))),
+                topRight: Radius.circular(Dimensions.radiusMid),
+                topLeft: Radius.circular(Dimensions.radiusMid))),
         width: double.maxFinite,
         padding: const EdgeInsets.only(top: 0, bottom: 0),
         child: const Center(

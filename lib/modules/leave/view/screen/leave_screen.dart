@@ -126,21 +126,33 @@ SliverAppBar get sliverAppBar {
     flexibleSpace: FlexibleSpaceBar(
       background: SizedBox(
         height: AppLayout.getHeight(100),
-        width: AppLayout.getWidth(200),
         child: Padding(
           padding: marginLayout,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              customSpacerHeight(height: 6),
-              appBar(text: AppString.text_leave.tr),
-              customSpacerHeight(height: 6),
-              leaveLayout(),
-              customSpacerHeight(height: 14),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customSpacerHeight(height: 45),
+                  _leaveText(),
+                  customSpacerHeight(height: 14),
+                  leaveLayout(),
+                  customSpacerHeight(height: 14),
+                ],
+              ),
             ],
           ),
         ),
       ),
     ),
+  );
+}
+
+_leaveText() {
+  return  Text(
+    AppString.text_leave.tr,
+    style: AppStyle.mid_large_text.copyWith(fontSize: 20),
   );
 }
 

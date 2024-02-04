@@ -2,14 +2,14 @@ class Api {
   Api._();
 
   ///for local
-  static const String PUBLIC_URL = "https://api.local.payrun.app";
-  static const CDN_DOMAIN = "payrun-local.imgix.net";
-  static const CDN_KEY = "AbuprUHFbUncYjep";
+  // static const String PUBLIC_URL = "https://api.local.payrun.app";
+  // static const CDN_DOMAIN = "payrun-local.imgix.net";
+  // static const CDN_KEY = "AbuprUHFbUncYjep";
 
   ///for dev
- // static const String PUBLIC_URL = "https://api.dev.payrun.app";
- // static const CDN_DOMAIN = "payrun-dev.imgix.net";
- // static const CDN_KEY = "CrC9CKWZTqR2EyUW";
+ static const String PUBLIC_URL = "https://api.dev.payrun.app";
+ static const CDN_DOMAIN = "payrun-dev.imgix.net";
+ static const CDN_KEY = "CrC9CKWZTqR2EyUW";
 
 
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
