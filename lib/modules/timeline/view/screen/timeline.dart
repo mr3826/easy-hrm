@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -14,11 +12,9 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:table_calendar/table_calendar.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../leave/view/widget/widget.dart';
 import '../widget/custom_timeline_calendar.dart';
-import '../widget/timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
@@ -92,6 +88,9 @@ class TimelineScreen extends GetView<TimelineController> {
     //monthly summary
     //by default its current month
 
+    DateTime requestedDate =
+        DateTime.parse(Get.find<DateTimeController>().requestedDate.value);
+
     await controller.getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
@@ -100,14 +99,14 @@ class TimelineScreen extends GetView<TimelineController> {
 
     await controller.getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
     await controller.getTimelineSummaryByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
   }
 }
 

@@ -1,7 +1,6 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timelog_details_by_month.dart';
 
@@ -26,6 +25,8 @@ class TimelineSummaryController extends GetxController with StateMixin {
   }
 
   RxBool isMonthlySummaryDataLoading = false.obs;
+  RxString selectedSummaryDate = "".obs;
+  RxInt selectedYearIndex = 10.obs;
 
   TimelineSummaryByMonth? timelineSummaryByMonth;
   TimelogDetailsByMonth? timelogDetailsByMonth;
