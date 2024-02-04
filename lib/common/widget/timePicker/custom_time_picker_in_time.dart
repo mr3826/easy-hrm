@@ -147,7 +147,9 @@ class CustomTimePickerInTime extends StatelessWidget {
 }
 
 class InDatePicker extends StatefulWidget {
-  const InDatePicker({super.key});
+  final bool? isFromIndividualLeave;
+
+  const InDatePicker({this.isFromIndividualLeave, super.key});
 
   @override
   State<InDatePicker> createState() => _InDatePickerState();
@@ -210,10 +212,17 @@ class _InDatePickerState extends State<InDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-                Get.find<LeaveScreenController>().date.value =
-                    DateFormat('yyyy-MM-dd').format(today);
-                Get.find<DateTimePickerController>().getInDateTime();
-                Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                if (widget.isFromIndividualLeave != null &&
+                    widget.isFromIndividualLeave == true) {
+                  Get.find<LeaveScreenController>().date.value =
+                      DateFormat('yyyy-MM-dd').format(today);
+                  Get.find<DateTimePickerController>().getInDateTime();
+                  Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                } else {
+                  Get.find<DateTimePickerController>().inDate.value =
+                      DateFormat('yyyy-MM-dd').format(today);
+                  Get.find<DateTimePickerController>().getInDateTime();
+                }
                 Navigator.pop(context);
               },
             ),

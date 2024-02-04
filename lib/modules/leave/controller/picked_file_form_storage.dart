@@ -14,7 +14,7 @@ class PickedFileFormStorage {
 
   Rx<File?> selectedFile = Rx<File?>(null);
   RxString filePath = ''.obs;
-  RxString fileSize = ''.obs;
+  RxString fileSize = '0'.obs;
   final isLoading = false.obs;
 
   //picked file form storage here

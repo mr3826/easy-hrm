@@ -43,9 +43,9 @@ class NotificationViewLayout extends StatelessWidget {
               itemBuilder: (context, index) {
                 final notification =
                     _controller.newNotification?[index].notification;
-                return index == _controller.newNotification!.length - 1
-                    ? customSpacerHeight(height: 100)
-                    : _getNotificationByContext(
+                return Column(
+                  children: [
+                    _getNotificationByContext(
                         notificationCreatedDate: notification?.createdAt ?? "",
                         index: index,
                         timeLineTimeInfo:
@@ -58,7 +58,11 @@ class NotificationViewLayout extends StatelessWidget {
                         isDepartmentHead:
                             (notification?.department?.managerId ==
                                 notification?.affectee?.id),
-                        jobTitleInfo: notification?.job?.title ?? "");
+                        jobTitleInfo: notification?.job?.title ?? ""),
+                    if (index == _controller.newNotification!.length - 1)
+                      customSpacerHeight(height: 100)
+                  ],
+                );
               }),
         ),
         customSpacerHeight(height: 20),
@@ -84,9 +88,9 @@ class NotificationViewLayout extends StatelessWidget {
               itemBuilder: (context, index) {
                 final notification =
                     _controller.seenNotification?[index].notification;
-                return index == _controller.seenNotification!.length - 1
-                    ? customSpacerHeight(height: 100)
-                    : _getNotificationByContext(
+                return Column(
+                  children: [
+                    _getNotificationByContext(
                         notificationCreatedDate: notification?.createdAt ?? "",
                         index: index,
                         timeLineTimeInfo:
@@ -99,7 +103,11 @@ class NotificationViewLayout extends StatelessWidget {
                         isDepartmentHead:
                             (notification?.department?.managerId ==
                                 notification?.affectee?.id),
-                        jobTitleInfo: notification?.job?.title ?? "");
+                        jobTitleInfo: notification?.job?.title ?? ""),
+                    if (index == _controller.seenNotification!.length - 1)
+                      customSpacerHeight(height: 100)
+                  ],
+                );
               }),
         ),
         customSpacerHeight(height: 20),
@@ -166,6 +174,17 @@ class NotificationViewLayout extends StatelessWidget {
                 notificationCreatedDate: notificationCreatedDate),
             index: index);
 
+      case "added_timeline_approver":
+        return _addedAsApproverNotification(
+          changerName: changerName,
+          index: index,
+          contextInfoText:
+              _getContextInfoText(contextName: notificationContext),
+          notificationDuration: _getNotificationDuration(
+              notificationCreatedDate: notificationCreatedDate),
+          approverContext: "Timelog approver",
+        );
+
       /// leave
       case "pending_a_leave":
         return _leaveNotification(
@@ -230,6 +249,17 @@ class NotificationViewLayout extends StatelessWidget {
                 notificationCreatedDate: notificationCreatedDate),
             index: index);
 
+      case "added_leave_approver":
+        return _addedAsApproverNotification(
+          changerName: changerName,
+          index: index,
+          contextInfoText:
+              _getContextInfoText(contextName: notificationContext),
+          notificationDuration: _getNotificationDuration(
+              notificationCreatedDate: notificationCreatedDate),
+          approverContext: "Leave approver",
+        );
+
       ///department
       case "added_to_department":
         return isDepartmentHead == false
@@ -288,27 +318,7 @@ class NotificationViewLayout extends StatelessWidget {
                 notificationCreatedDate: notificationCreatedDate),
             jobTitleInfo: jobTitleInfo,
             index: index);
-      //todo
-      case "added_leave_approver":
-        return _addedAsApproverNotification(
-          changerName: changerName,
-          index: index,
-          contextInfoText:
-              _getContextInfoText(contextName: notificationContext),
-          notificationDuration: _getNotificationDuration(
-              notificationCreatedDate: notificationCreatedDate),
-          approverContext: "Leave approver",
-        );
-      case "added_timeline_approver":
-        return _addedAsApproverNotification(
-          changerName: changerName,
-          index: index,
-          contextInfoText:
-              _getContextInfoText(contextName: notificationContext),
-          notificationDuration: _getNotificationDuration(
-              notificationCreatedDate: notificationCreatedDate),
-          approverContext: "Timelog approver",
-        );
+
       case "new_user_joined":
         return _newUserNotification(
           index: index,
@@ -823,7 +833,8 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.announment_notification, color: AppColor.primaryColor),
+              image: Images.announment_notification,
+              color: AppColor.primaryColor),
           customSpacerWidth(width: 20),
           SizedBox(
             width: Get.width / 1.5,
@@ -937,7 +948,7 @@ class NotificationViewLayout extends StatelessWidget {
       if (diffHr < 1) {
         return diffMin < 2 ? "$diffMin min" : "$diffMin mins";
       } else {
-        return "$diffHr ${diffHr > 1 ? "hr" : "hrs"} $diffMin ${diffMin > 1 ? "mins" : "min"}";
+        return "$diffHr ${diffHr > 1 ? "hrs" : "hr"} $diffMin ${diffMin > 1 ? "mins" : "min"}";
       }
     } else if (duration.inDays == 1) {
       return "Yesterday";

@@ -100,28 +100,31 @@ class ApplyLeaveController extends GetxController with StateMixin {
             .toString(),
         "status": "pending",
         "leave_type_id": leaveId,
-        "files": [
-          {
-            "size": int.parse(Get.find<FileUploadController>()
-                .storageForUpload
-                .fileSize
-                .value
-                .toString()),
-            "name": Get.find<FileUploadController>()
-                .storageForUpload
-                .filePath
-                .value
-                .split(".")
-                .last
-                .toString(),
-            "key": uploadPolicyResponse.getUploadPolicy?.policyData
-                    ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-                    .value
-                    ?.split("/")
-                    .last ??
-                ""
-          }
-        ],
+        "files":
+            Get.find<FileUploadController>().storageForUpload.filePath.isEmpty
+                ? null
+                : [
+                    {
+                      "size": int.parse(Get.find<FileUploadController>()
+                          .storageForUpload
+                          .fileSize
+                          .value
+                          .toString()),
+                      "name": Get.find<FileUploadController>()
+                          .storageForUpload
+                          .filePath
+                          .value
+                          .split(".")
+                          .last
+                          .toString(),
+                      "key": uploadPolicyResponse.getUploadPolicy?.policyData
+                              ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+                              .value
+                              ?.split("/")
+                              .last ??
+                          ""
+                    }
+                  ],
       }
     });
 
@@ -141,7 +144,6 @@ class ApplyLeaveController extends GetxController with StateMixin {
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
       await Get.find<DashboardController>()
           .getMonthlyTimelineInfoForDashboard();
-
     }
 
     isAssignLeaveLoaderLoading(false);
