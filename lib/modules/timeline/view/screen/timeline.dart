@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
+import '../../../../utils/app_style.dart';
 import '../../../leave/view/widget/widget.dart';
 import '../widget/custom_timeline_calendar.dart';
 
@@ -119,22 +120,33 @@ SliverAppBar get sliverAppBar {
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
       background: SizedBox(
-        height: AppLayout.getHeight(100),
-        width: AppLayout.getWidth(200),
         child: Padding(
           padding: marginLayout,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              customSpacerHeight(height: 6),
-              appBar(text: AppString.text_time_line.tr),
-              customSpacerHeight(height: 4),
-              timelineLayout(),
-              customSpacerHeight(height: 14),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customSpacerHeight(height: 45),
+                 _timelineText(),
+                  customSpacerHeight(height: 14),
+                  timelineLayout(),
+                  customSpacerHeight(height: 14),
+                ],
+              ),
             ],
           ),
         ),
       ),
     ),
+  );
+}
+
+_timelineText() {
+  return  Text(
+    AppString.text_time_line.tr,
+    style: AppStyle.mid_large_text.copyWith(fontSize: 20),
   );
 }
 
@@ -145,8 +157,8 @@ _buttonRadiusLayout() {
         decoration: BoxDecoration(
             color: AppColor.cardColor,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid + 100),
-                topLeft: Radius.circular(Dimensions.radiusMid + 100))),
+                topRight: Radius.circular(Dimensions.radiusMid),
+                topLeft: Radius.circular(Dimensions.radiusMid))),
         width: double.maxFinite,
         padding: const EdgeInsets.only(top: 0, bottom: 0),
         child: const Center(
