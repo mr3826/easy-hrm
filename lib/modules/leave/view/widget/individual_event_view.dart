@@ -109,22 +109,21 @@ class IndividualEventView extends StatelessWidget {
               .leaveRequests
               ?.length,
           itemBuilder: (context, index) {
-
-            log("key :::: ${ Get.find<LeaveScreenController>()
-                .leaveDetailsByDate
-                ?.getLeaveDetailsByDate![0]
-                .leaveRequests![index].files?[index].key??""}",error: 100
-                );
-
-
+            log("key :::: ${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate![0].leaveRequests![index].files?[index].key ?? ""}",
+                error: 100);
 
             return InkWell(
               onTap: () {
-                log( Get.find<LeaveScreenController>()
-                    .leaveDetailsByDate
-                    ?.getLeaveDetailsByDate![0]
-                    .leaveRequests![index]
-                    .files?[index].name.toString()??"",error: 20);
+                log(
+                    Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveDetailsByDate![0]
+                            .leaveRequests![index]
+                            .files?[index]
+                            .name
+                            .toString() ??
+                        "",
+                    error: 20);
                 customButtonSheet(
                   context: context,
                   child: LeaveRecordDetails(
@@ -144,9 +143,12 @@ class IndividualEventView extends StatelessWidget {
                             .leaveType
                             ?.type,
                         fileKey: Get.find<LeaveScreenController>()
-                            .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate![0]
-                            .leaveRequests![index].files?[index].key??"",
+                                .leaveDetailsByDate
+                                ?.getLeaveDetailsByDate![0]
+                                .leaveRequests![index]
+                                .files?[index]
+                                .key ??
+                            "",
                         leaveName: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
                             ?.getLeaveDetailsByDate![0]
@@ -208,11 +210,7 @@ class IndividualEventView extends StatelessWidget {
                           ?.getLeaveDetailsByDate![0]
                           .leaveRequests?[index]
                           .id,
-
-
-
                     ),
-
                   ),
                   height: 0.6,
                 );
@@ -301,7 +299,10 @@ Widget horizontalCalendarLayout() {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                InDatePicker(),
+                /// have to provide bool value due to have different method called in same component
+                InDatePicker(
+                  isFromIndividualLeave: true,
+                ),
               ],
             ),
           ),
@@ -345,11 +346,10 @@ Widget horizontalCalendarLayout() {
                   ),
                   GestureDetector(
                       onTap: () async {
-                        Get.find<LeaveScreenController>()
-                            .date.value =
+                        Get.find<LeaveScreenController>().date.value =
                             DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                                Get.find<LeaveScreenController>()
-                                    .date
+                                    Get.find<LeaveScreenController>()
+                                        .date
                                         .value)
                                 .add(const Duration(days: 1)));
                         await Get.find<LeaveScreenController>()
