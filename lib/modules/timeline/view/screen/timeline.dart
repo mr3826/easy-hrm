@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/view/widget/widget.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
@@ -21,6 +22,10 @@ class TimelineScreen extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+
+    print("media ::: ${MediaQuery.of(context).viewPadding.top}");
+    print("context for getx ::: ${MediaQuery.of(Get.context!).viewPadding.top}");
+    print("statusBarHeight ::: ${Get.statusBarHeight}");
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
@@ -28,6 +33,7 @@ class TimelineScreen extends GetView<TimelineController> {
                 backgroundColor: Colors.white,
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
                   slivers: [sliverAppBar, sliverToBoxAdapter],
                 ),
               ),
@@ -111,6 +117,7 @@ class TimelineScreen extends GetView<TimelineController> {
 }
 
 SliverAppBar get sliverAppBar {
+
   return SliverAppBar(
     expandedHeight: AppLayout.getHeight(230),
     elevation: 0,
@@ -129,9 +136,9 @@ SliverAppBar get sliverAppBar {
                 children: [
                   customSpacerHeight(height: 45),
                   _timelineText(),
-                  customSpacerHeight(height: 14),
+                  customSpacerHeight(height: 8),
                   timelineLayout(),
-                  customSpacerHeight(height: 14),
+                  customSpacerHeight(height: 6),
                 ],
               ),
             ],

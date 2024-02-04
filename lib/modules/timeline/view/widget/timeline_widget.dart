@@ -13,7 +13,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget timelineLayout() {
   return SizedBox(
-    height: AppLayout.getHeight(120),
+    height: AppLayout.getHeight(130),
     width: double.infinity,
     child: Padding(
 
