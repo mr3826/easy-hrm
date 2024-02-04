@@ -14,6 +14,7 @@ Future customButtonSheet(
     double? height = 0.9,
     child,
     int duration = 500,
+    bool? isDismissible,
     int reverseDuration = 400}) {
   final AnimationController controller = AnimationController(
     duration: Duration(milliseconds: duration),
@@ -26,6 +27,7 @@ Future customButtonSheet(
     transitionAnimationController: controller,
     isScrollControlled: true,
     backgroundColor: AppColor.cardColor,
+    isDismissible: isDismissible ?? true,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(

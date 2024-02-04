@@ -14,7 +14,6 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/app_style.dart';
-import '../../../leave/view/widget/widget.dart';
 import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
@@ -29,6 +28,7 @@ class TimelineScreen extends GetView<TimelineController> {
                 backgroundColor: Colors.white,
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
                   slivers: [sliverAppBar, sliverToBoxAdapter],
                 ),
               ),
@@ -126,7 +126,7 @@ SliverAppBar get sliverAppBar {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   customSpacerHeight(height: 45),
-                 _timelineText(),
+                  _timelineText(),
                   customSpacerHeight(height: 14),
                   timelineLayout(),
                   customSpacerHeight(height: 14),
@@ -141,7 +141,7 @@ SliverAppBar get sliverAppBar {
 }
 
 _timelineText() {
-  return  Text(
+  return Text(
     AppString.text_time_line.tr,
     style: AppStyle.mid_large_text.copyWith(fontSize: 20),
   );

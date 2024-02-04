@@ -79,7 +79,8 @@ class TimelineController extends GetxController with StateMixin {
         showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
         Get.find<TimeCounterController>().start();
       } else {
-        if (Get.find<TimeCounterController>().timer.isActive) {
+        if (Get.find<TimeCounterController>().timer.isActive &&
+            Get.find<TimeCounterController>().animationTimer.isActive) {
           Get.find<TimeCounterController>().stop();
         }
       }

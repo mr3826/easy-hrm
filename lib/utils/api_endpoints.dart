@@ -1,20 +1,11 @@
 class Api {
   Api._();
 
-  ///for local
-  // static const String PUBLIC_URL = "https://api.local.payrun.app";
-  // static const CDN_DOMAIN = "payrun-local.imgix.net";
-  // static const CDN_KEY = "AbuprUHFbUncYjep";
-
-  ///for dev
- static const String PUBLIC_URL = "https://api.dev.payrun.app";
- static const CDN_DOMAIN = "payrun-dev.imgix.net";
- static const CDN_KEY = "CrC9CKWZTqR2EyUW";
-
-
+  static const String PUBLIC_URL = String.fromEnvironment("PUBLIC_URL");
+  static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
+  static const CDN_KEY = String.fromEnvironment("CDN_KEY");
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
-  static const String PUBLIC_IMAGE_URL_DOMAIN =
-      "https://local-payrun-files.s3.amazonaws.com";
+  static const String PUBLIC_IMAGE_URL_DOMAIN = String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
 
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";

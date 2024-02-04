@@ -16,14 +16,9 @@ import '../../controller/timeline_controller.dart';
 import '../../controller/timer_controller.dart';
 import '../widget/timer_animation.dart';
 
-class TimerScreen extends StatefulWidget {
+class TimerScreen extends StatelessWidget {
   const TimerScreen({super.key});
 
-  @override
-  State<TimerScreen> createState() => _TimerScreenState();
-}
-
-class _TimerScreenState extends State<TimerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +50,7 @@ class _TimerScreenState extends State<TimerScreen> {
                     customButtonSheet(
                         height: .6,
                         context: context,
+                        isDismissible: false,
                         child: const AddToTaskScreen());
                   }
                 });
