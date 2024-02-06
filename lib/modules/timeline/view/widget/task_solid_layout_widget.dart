@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -278,14 +276,19 @@ class TaskSolidLayout extends StatelessWidget {
           elevation: 0,
           color: _updateColorAccordingToApiResponse().withOpacity(0.09),
           shape: _style(_updateColorAccordingToApiResponse()),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _startTimeLayout(_updateColorAccordingToApiResponse()),
-              ],
-            ),
+          child: Stack(
+            children: [
+              _backgroundLayout(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _startTimeLayout(_updateColorAccordingToApiResponse()),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       case < 45:
@@ -293,22 +296,27 @@ class TaskSolidLayout extends StatelessWidget {
           elevation: 0,
           color: _updateColorAccordingToApiResponse().withOpacity(0.09),
           shape: _style(_updateColorAccordingToApiResponse()),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _startTimeLayout(_updateColorAccordingToApiResponse()),
-                Text(
-                  taskName,
-                  maxLines: 1,
-                  style: AppStyle.mid_large_text.copyWith(
-                      fontSize: Dimensions.fontSizeDefault,
-                      color: _updateColorAccordingToApiResponse(),
-                      overflow: TextOverflow.ellipsis),
+          child: Stack(
+            children: [
+              _backgroundLayout(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _startTimeLayout(_updateColorAccordingToApiResponse()),
+                    Text(
+                      taskName,
+                      maxLines: 1,
+                      style: AppStyle.mid_large_text.copyWith(
+                          fontSize: Dimensions.fontSizeDefault,
+                          color: _updateColorAccordingToApiResponse(),
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       default:
@@ -318,10 +326,7 @@ class TaskSolidLayout extends StatelessWidget {
           shape: _style(_updateColorAccordingToApiResponse()),
           child: Stack(
             children: [
-              SvgPicture.asset(
-                _getStatusViewLayout(status),
-                fit: BoxFit.cover,
-              ),
+              _backgroundLayout(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -363,6 +368,15 @@ class TaskSolidLayout extends StatelessWidget {
           ),
         );
     }
+  }
+
+  _backgroundLayout() {
+    return SvgPicture.asset(
+      _getStatusViewLayout(status),
+      height: double.infinity,
+      width: double.infinity,
+      fit: BoxFit.fill,
+    );
   }
 }
 

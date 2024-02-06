@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/leave/view/widget/widget.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
@@ -30,7 +29,9 @@ class TimelineScreen extends GetView<TimelineController> {
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
                   physics: const NeverScrollableScrollPhysics(),
-                  slivers: [sliverAppBar, sliverToBoxAdapter],
+                  slivers: [sliverAppBar,
+
+                    sliverToBoxAdapter],
                 ),
               ),
               floatingActionButton: Obx(() => _timerBtnLayout(context)),
@@ -104,11 +105,17 @@ class TimelineScreen extends GetView<TimelineController> {
             "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
         endDate:
             "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+
+
     await controller.getTimelineSummaryByDate(
         startDate:
             "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
         endDate:
             "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+
+
+
+
   }
 }
 
@@ -172,7 +179,13 @@ _buttonRadiusLayout() {
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(
-    child: CustomTimelineCalendar(),
+  return  const SliverToBoxAdapter(
+    child: RefreshIndicator(
+        onRefresh: _refreshScreen,
+
+        child: CustomTimelineCalendar()),
   );
+}
+Future<void> _refreshScreen() async {
+
 }
