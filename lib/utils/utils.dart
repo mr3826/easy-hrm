@@ -2,15 +2,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/modules/notification/view/screen/notification.dart';
-import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
-import '../modules/dashboard/view/screen/dashboard.dart';
-import '../modules/timeline/view/screen/timeline.dart';
 import 'package:intl/intl.dart';
-import '../modules/leave/view/screen/leave_screen.dart';
 
 //global items here
 TextEditingController _searchController = TextEditingController();
@@ -38,7 +33,8 @@ TextEditingController _editBioController = TextEditingController();
 TextEditingController _currentPassController = TextEditingController();
 TextEditingController _taskController = TextEditingController();
 TextEditingController _descriptionController = TextEditingController();
-TextEditingController _timelineLogDetailsDrcController = TextEditingController();
+TextEditingController _timelineLogDetailsDrcController =
+    TextEditingController();
 
 TextEditingController _changeEmailController = TextEditingController();
 
@@ -62,7 +58,8 @@ TextEditingController get restPasswordController => _restPasswordController;
 
 TextEditingController get descriptionController => _descriptionController;
 
-TextEditingController get timelineLogDetailsDrcController => _timelineLogDetailsDrcController;
+TextEditingController get timelineLogDetailsDrcController =>
+    _timelineLogDetailsDrcController;
 
 TextEditingController get addCountyController => _addCountyController;
 
@@ -147,6 +144,24 @@ String amPmFormatTimeFromString(String dateString) {
   return formattedTime;
 }
 
+List<Map<String, dynamic>> onboardInfoList = [
+  {
+    "image": Images.time_log_on,
+    "title": AppString.text_track_your_time.tr,
+    "description": AppString.text_with_the_help_etc.tr,
+  },
+  {
+    "image": Images.leave_on,
+    "title": AppString.text_manage_your_leave.tr,
+    "description": AppString.text_leave_management_etc.tr,
+  },
+  {
+    "image": Images.employee_on,
+    "title": AppString.text_stitch_org.tr,
+    "description": AppString.text_there_is_not_etc.tr,
+  },
+];
+
 String getTimeDifference(String startTimeString, String endTimeString) {
   if (startTimeString.isEmpty || endTimeString.isEmpty) return "";
   // Parse the time strings into DateTime objects
@@ -183,7 +198,6 @@ String workingTimeSinceFormString(String dateString) {
   }
 }
 
-
 String convertMiniToHour(Duration duration) {
   int hours = duration.inHours;
   int minutes = duration.inMinutes % 60;
@@ -196,10 +210,6 @@ String convertMiniToHour(Duration duration) {
     return '$minutes m';
   }
 }
-
-
-
-
 
 String _getWeekday(int weekday) {
   switch (weekday) {
@@ -236,7 +246,8 @@ void logErrorMessage({required String logName, Response? response}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: ErrorModel.fromJson(response?.body).message);
 
-void logSuccessMessage({required String logName, Response? response, String? message}) =>
+void logSuccessMessage(
+        {required String logName, Response? response, String? message}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
 
