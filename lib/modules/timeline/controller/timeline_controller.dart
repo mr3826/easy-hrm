@@ -36,6 +36,7 @@ class TimelineController extends GetxController with StateMixin {
   final taskName = "".obs;
   final isTimeInvalid = false.obs;
   final taskId = "".obs;
+  final projectId = "".obs;
   RxString selectedSummaryDate = "".obs;
   RxInt selectedYearIndex = 10.obs;
   RxInt currentYear = DateTime.now().year.obs;
@@ -90,6 +91,17 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   saveTimeEntry() async {
+    print('''
+     "description": ${descriptionController.text},
+        "end_date": ${startOrEndTimerResponse?.startOrStopTimer?.endDate ?? ""},
+        "start_date":
+            ${startOrEndTimerResponse?.startOrStopTimer?.startDate ?? ""},
+        "status": "pending",
+        "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
+        "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
+        "timeline_id": ${startOrEndTimerResponse?.startOrStopTimer?.id ?? ""}
+    ''');
+
     isTimelogEntryOrRemoveLoading(true);
     final response =
         await NetworkClient().mutationGraphData(saveTimerQueryData, {
@@ -99,7 +111,8 @@ class TimelineController extends GetxController with StateMixin {
         "start_date":
             startOrEndTimerResponse?.startOrStopTimer?.startDate ?? "",
         "status": "pending",
-        "task_id": taskId.value,
+        "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+        "project_id": projectId.value.isNotEmpty ? projectId.value : null,
         "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
       }
     });
@@ -109,11 +122,13 @@ class TimelineController extends GetxController with StateMixin {
     } else {
       showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
       timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
-      print(timerEntryResponse?.updateTimelineEntry?.startDate);
       taskId.value = "";
+      taskName.value = '';
+      projectId.value = '';
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
+      _refreshTimeline();
       Get.to(() => const MainScreen(
             routeIndex: 0,
           ));
@@ -160,11 +175,16 @@ class TimelineController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
         .difference(DateTime.parse(
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-    print("""timeDifference.isNegative:: ${timeDifference.isNegative}
-    
-    start time: "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"
-    end time: "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}"
-    """);
+    print('''
+     "description": ${descriptionController.text},
+        "end_date": ${startOrEndTimerResponse?.startOrStopTimer?.endDate ?? ""},
+        "start_date":
+            ${startOrEndTimerResponse?.startOrStopTimer?.startDate ?? ""},
+        "status": "pending",
+        "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
+        "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
+        "timeline_id": ${startOrEndTimerResponse?.startOrStopTimer?.id ?? ""}
+    ''');
 
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
@@ -233,11 +253,6 @@ class TimelineController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
         .difference(DateTime.parse(
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-    print("""timeDifference.isNegative:: ${timeDifference.isNegative}
-    
-    start time: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString()}"
-    end time: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString()}"
-    """);
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
       if (taskId.isNotEmpty) {
@@ -254,7 +269,8 @@ class TimelineController extends GetxController with StateMixin {
                 .toUtc()
                 .toString(),
             "status": "pending",
-            "task_id": taskId.value
+            "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+            "project_id": projectId.value.isNotEmpty ? projectId.value : null,
           }
         });
         if (response.hasException) {
