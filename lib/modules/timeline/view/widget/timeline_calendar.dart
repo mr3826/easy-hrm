@@ -45,7 +45,6 @@ class TimeLineCalendar extends StatelessWidget {
               headerStyle: _headerStyle(),
               eventArranger: const SideEventArranger(),
               scrollPhysics: const NeverScrollableScrollPhysics(),
-
               liveTimeIndicatorSettings: HourIndicatorSettings.none(),
               pageViewPhysics: const NeverScrollableScrollPhysics(),
               halfHourIndicatorSettings: const HourIndicatorSettings(
@@ -184,7 +183,8 @@ class TimeLineCalendar extends StatelessWidget {
                                   .toString()
                                   .substring(1, endDate.toString().length - 1)
                                   .toString(),
-                              duration: double.tryParse(numberOfDays) ?? 0,
+                              duration: double.parse(numberOfDays.substring(
+                                      1, numberOfDays.length - 1)),
                               description: description.toString().substring(
                                   1, description.toString().length - 1),
                               leaveType: LeaveType(

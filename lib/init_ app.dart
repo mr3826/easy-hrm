@@ -38,4 +38,5 @@ Future<void> initApp() async {
   Get.put(SelectedTaskController());
   Get.put(UpdateProfileController());
   Get.put(DateTimeController());
+  Get.put(SplashController());
 }
