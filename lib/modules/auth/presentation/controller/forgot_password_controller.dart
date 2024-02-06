@@ -64,7 +64,8 @@ class ForgotPasswordController extends GetxController {
     isLoading(false);
   }
 
-  Future<void> resetPassword({required String confirmationCode, required String emailAddress}) async {
+  Future<void> resetPassword(
+      {required String confirmationCode, required String emailAddress}) async {
     isLoading(true);
     print('''
             "email": $emailAddress,
@@ -86,6 +87,7 @@ class ForgotPasswordController extends GetxController {
                 AppString.error_text);
       } else {
         logSuccessMessage(logName: "resetPassword");
+        confirmPasswordController.clear();
         showSuccessMessage(
             message: SuccessModel.fromJson(response.body).message);
         Get.toNamed(Routes.PASSWORD_UPDATE_SCRREN);

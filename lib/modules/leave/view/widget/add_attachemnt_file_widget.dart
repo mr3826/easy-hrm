@@ -43,7 +43,7 @@ class AddAttachmentFile extends StatelessWidget {
                   return _documentLayout();
                 }))),
             customSpacerHeight(height: 8),
-            _pathNameText(leaveRecords?.leaveType?.fileKey.toString()),
+            _pathNameText(leaveRecords?.leaveType?.fileKey ?? '')
           ],
         ));
   }
@@ -65,12 +65,13 @@ class AddAttachmentFile extends StatelessWidget {
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
-        return isFromApplyLeave == true
+        return leaveRecords?.leaveType?.fileKey == null ||
+                isFromApplyLeave == true
             ? _emptyBox()
-            : leaveRecords?.leaveType?.fileKey.endsWith(".pdf")
+            : leaveRecords!.leaveType!.fileKey!.endsWith(".pdf")
                 ? _replaceFileLayout()
                 : CustomNetworkImage(
-                    imgUrlKey: leaveRecords?.leaveType?.fileKey,
+                    imgUrlKey: leaveRecords?.leaveType?.fileKey ?? "",
                     isDocumentLayout: true,
                   );
       } else {
@@ -160,8 +161,8 @@ _emptyBox() {
   );
 }
 
-_pathNameText(remoteUrl) {
-  return remoteUrl == null ||
+_pathNameText(String remoteUrl) {
+  return remoteUrl.isEmpty ||
           Get.find<FileUploadController>()
               .storageForUpload
               .filePath
