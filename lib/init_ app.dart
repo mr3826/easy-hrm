@@ -39,4 +39,3 @@ Future<void> initApp() async {
   Get.put(UpdateProfileController());
   Get.put(DateTimeController());
 }
-

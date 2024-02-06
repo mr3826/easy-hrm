@@ -23,7 +23,6 @@ class AppColor {
   static const Color bgColorWithPrimary = Color(0xffEDECFE);
   static const Color bgColorWithTimeline = Color(0xffFBFAFF);
 
-
   static const Color iconBoxColor = Color(0xffFF6347);
 
   static const Color primaryGreen = Color(0xFF3EAC55);

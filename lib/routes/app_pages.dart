@@ -19,7 +19,6 @@ import '../modules/starting/view/onboarding_screen.dart';
 import '../modules/timeline/view/screen/new_entry.dart';
 part 'app_routes.dart';
 
-
 class AppPages {
   AppPages._();
   static const INITIAL = Routes.SPLASH_SCREEN;
@@ -27,99 +26,84 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.SPLASH_SCREEN,
-      page: ()=>const SplashScreen(),
+      page: () => const SplashScreen(),
     ),
     GetPage(
       name: _Paths.ONBOARD_SCRREN,
-      page: ()=>  OnboardScreen(),
-    ),   GetPage(
+      page: () => OnboardScreen(),
+    ),
+    GetPage(
       name: _Paths.TIMER_SCREEN,
-      page: ()=> TimerScreen(),
+      page: () => TimerScreen(),
     ),
     GetPage(
       name: _Paths.SIGN_IN_SCREEN,
-      page: ()=>  SignInScreen(),
-
+      page: () => SignInScreen(),
     ),
-
     GetPage(
       name: _Paths.FIRGIR_PASSWORD_SCREEN,
       transition: Transition.size,
-      page: ()=> const ForgotScreen(),
+      page: () => const ForgotScreen(),
     ),
-
     GetPage(
       name: _Paths.OTP,
       transition: Transition.size,
-      page: ()=> const OTPScreen(),
+      page: () => const OTPScreen(),
     ),
-
     GetPage(
       name: _Paths.RESET_PASSWORD,
-
       transition: Transition.size,
-      page: ()=>  ResetPasswordScreen(),
+      page: () => ResetPasswordScreen(),
     ),
-
     GetPage(
       name: _Paths.PASSWORD_UPDATE_SCRREN,
       transition: Transition.size,
-      page: ()=> const PasswordUpdateScreen(),
+      page: () => const PasswordUpdateScreen(),
     ),
-
     GetPage(
       name: _Paths.MAIN_SCREEN,
       transition: Transition.size,
-      page: ()=>  MainScreen(),
+      page: () => MainScreen(),
     ),
-
     GetPage(
       name: _Paths.LEAVE_SCREEN,
       transition: Transition.size,
-      page: ()=> const LeaveScreen(),
+      page: () => const LeaveScreen(),
     ),
-
     GetPage(
       name: _Paths.LEAVE_RECORD_SCREEN,
       transition: Transition.size,
-
-      page: ()=>  LeaveRecordScreen(),
+      page: () => LeaveRecordScreen(),
     ),
-
     GetPage(
       name: _Paths.NOTIFICATION_SCREEN,
       transition: Transition.size,
-      page: ()=> const NotificationScreen(),
+      page: () => const NotificationScreen(),
     ),
     GetPage(
       name: _Paths.HOME_SCREEN,
       transition: Transition.size,
-      page: ()=>  Dashboard(),
+      page: () => Dashboard(),
     ),
-
     GetPage(
       name: _Paths.PROFILE_SCREEN,
       transition: Transition.size,
-      page: ()=> const ProfileScreen(),
+      page: () => const ProfileScreen(),
     ),
-
     GetPage(
       name: _Paths.EDIT_PROFILE_SCREEN,
       transition: Transition.size,
-      page: ()=> const EditProfileScreen(),
+      page: () => const EditProfileScreen(),
     ),
-
-
     GetPage(
       name: _Paths.TIME_LOG_SUMMARY,
       transition: Transition.size,
-      page: ()=> const TimeLogSummary(),
+      page: () => const TimeLogSummary(),
     ),
     GetPage(
       name: _Paths.NEW_ENTRY_SCREEN,
       transition: Transition.size,
-      page: ()=> const NewEntryScreen(),
+      page: () => const NewEntryScreen(),
     ),
-
   ];
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,13 +6,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/utils/utils.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
-import '../../../utils/images.dart';
-import 'onboarding_screen.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -38,75 +36,79 @@ class _OnboardScreenState extends State<OnboardScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => _controller.willPop(),
-
       child: Scaffold(
           body: PageView.builder(
-            controller: _pageController,
-            itemCount: demoData.length,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  const Spacer(
-                    flex: 2,
-                  ),
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: _onboardByImage(imageUrl: demoData[index]["image"]),
-                  ),
-                  Padding(
-                    padding: marginLayout,
-                    child: Container(
-                      decoration: AppStyle.ContainerStyle.copyWith(
-                          color: AppColor.bgColorWithPrimary,
-                          borderRadius:
+        controller: _pageController,
+        itemCount: onboardInfoList.length,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              const Spacer(
+                flex: 2,
+              ),
+              AspectRatio(
+                aspectRatio: 2,
+                child:
+                    _onboardByImage(imageUrl: onboardInfoList[index]["image"]),
+              ),
+              const Spacer(),
+              Padding(
+                padding: marginLayout,
+                child: Container(
+                  decoration: AppStyle.ContainerStyle.copyWith(
+                      color: AppColor.bgColorWithPrimary,
+                      borderRadius:
                           BorderRadius.circular(Dimensions.radiusMid + 2)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(demoData.length, (index) {
-                                return ActiveDot(
-                                  isActive: _currentIndex == index,
-                                );
-                              }),
-                            ),
-                            customSpacerHeight(height: 20),
-                            _onboardTitleText(text: demoData[index]["title"]),
-                            customSpacerHeight(height: 12),
-                            _descriptionText(text: demoData[index]["description"]),
-                            customSpacerHeight(height: 70),
-                            _buttonLayout(
-                                index: _currentIndex,
-                                onAction: () {
-                                  setState(() {
-                                    _pageController.nextPage(
-                                        duration: const Duration(milliseconds: 300),
-                                        curve: Curves.ease);
-                                  });
-
-                                  if (_currentIndex == 2) {
-                                    GetStorage().write(
-                                        AppString.IS_LOGGED_IN_FIRST_TIME, false);
-                                    Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
-                                  }
-                                }),
-                          ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children:
+                              List.generate(onboardInfoList.length, (index) {
+                            return ActiveDot(
+                              isActive: _currentIndex == index,
+                            );
+                          }),
                         ),
-                      ),
+                        customSpacerHeight(height: 20),
+                        _onboardTitleText(
+                            text: onboardInfoList[index]["title"]),
+                        customSpacerHeight(height: 12),
+                        _descriptionText(
+                            text: onboardInfoList[index]["description"]),
+                        customSpacerHeight(height: 70),
+                        _buttonLayout(
+                            index: _currentIndex,
+                            onAction: () {
+                              setState(() {
+                                _pageController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.ease);
+                              });
+
+                              if (_currentIndex == 2) {
+                                GetStorage().write(
+                                    AppString.IS_LOGGED_IN_FIRST_TIME, false);
+                                Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
+                              }
+                            }),
+                      ],
                     ),
                   ),
-                  customSpacerHeight(height: 20),
-                ],
-              );
-            },
-          )),
+                ),
+              ),
+              customSpacerHeight(height: 20),
+            ],
+          );
+        },
+      )),
     );
   }
 }
@@ -139,13 +141,13 @@ Widget _buttonLayout({context, onAction, int index = 0}) {
           backgroundColor: AppColor.primaryColor,
           child: index == 2
               ? const Icon(
-            Icons.done,
-            color: AppColor.backgroundColor,
-          )
+                  Icons.done,
+                  color: AppColor.backgroundColor,
+                )
               : const Icon(
-            Icons.arrow_forward,
-            color: AppColor.backgroundColor,
-          ),
+                  Icons.arrow_forward,
+                  color: AppColor.backgroundColor,
+                ),
         ),
       ),
       _skipButton(context: context),
@@ -164,7 +166,7 @@ class ActiveDot extends StatelessWidget {
         child: CircleAvatar(
           radius: 9,
           backgroundColor:
-          isActive ? AppColor.primaryColor : Colors.transparent,
+              isActive ? AppColor.primaryColor : Colors.transparent,
           child: CircleAvatar(
             radius: 8,
             backgroundColor: isActive ? AppColor.cardColor : Colors.transparent,
@@ -178,24 +180,6 @@ class ActiveDot extends StatelessWidget {
         ));
   }
 }
-
-List<Map<String, dynamic>> demoData = [
-  {
-    "image": Images.time_log_on,
-    "title": AppString.text_track_your_time.tr,
-    "description": AppString.text_with_the_help_etc.tr,
-  },
-  {
-    "image": Images.leave_on,
-    "title": AppString.text_manage_your_leave.tr,
-    "description": AppString.text_leave_management_etc.tr,
-  },
-  {
-    "image": Images.employee_on,
-    "title": AppString.text_stitch_org.tr,
-    "description": AppString.text_there_is_not_etc.tr,
-  },
-];
 
 Widget _descriptionText({required text}) {
   return Text(
@@ -230,6 +214,7 @@ Widget _onboardByImage({required imageUrl}) {
     ),
   );
 }
+
 class ExitAppController extends GetxController {
   Future<bool> willPop() async {
     if (Platform.isAndroid) {

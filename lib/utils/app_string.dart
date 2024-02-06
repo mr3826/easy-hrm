@@ -20,7 +20,7 @@ class AppString {
   static String text_stitch_org = "Switch Organization";
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
-  static String workShiftText="Work Shift";
+  static String workShiftText = "Work Shift";
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
   static String text_leave_management_etc =
@@ -30,7 +30,8 @@ class AppString {
   static String text_mange_your_employee_with =
       'Manage your employee with so many advanced features.Like, Leave management, Time log, Employee hiring, and much more.';
   static String text_password = 'Password';
-  static String text_there_is_not_etc = 'There is no need for several apps for different organization. You can manage all of your organization from a single app! ';
+  static String text_there_is_not_etc =
+      'There is no need for several apps for different organization. You can manage all of your organization from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
   static String textManager = 'Manager';
@@ -106,8 +107,7 @@ class AppString {
   static String password_not_matched = 'Password not matched';
   static String profile_update_successfully_text =
       'Profile updated successfully';
-  static String leaveUpdatedSuccessMessage =
-      'Leave updated successfully';
+  static String leaveUpdatedSuccessMessage = 'Leave updated successfully';
   static String leaveCanceledSuccessMessage = 'Leave canceled successfully';
   static String leaveRemovedSuccessMessage = 'Leave removed successfully';
 
@@ -344,8 +344,7 @@ class AppString {
   static const String password = "Password";
   static const String timerStartedSuccessfulMessage =
       "Timer Started Successfully";
-  static const String timerSavedSuccessfulMessage =
-      "Timer Saved Successfully";
+  static const String timerSavedSuccessfulMessage = "Timer Saved Successfully";
   static const String timerRemovedSuccessfulMessage =
       "Timer Removed Successfully";
   static const String passwordChangeSuccessfulMessage =
