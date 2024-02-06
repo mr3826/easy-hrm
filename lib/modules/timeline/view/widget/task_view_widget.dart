@@ -28,17 +28,14 @@ class TaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("receive status :::: $status");
-    print("start date time ---> ::: $startTime");
-    print("end date time ---> ::: $endTime");
-
     return Column(
       children: [
         //button sheet appbar here
         projectViewBtnSheetAppbar(
             date: DateTime.parse(startTime),
-            duration: convertMiniToHour(Duration(minutes: int.parse(totalDur)))
-                .toString(),
+            duration: totalDur.isEmpty
+                ? convertMiniToHour(Duration(minutes: DateTime.now().minute))
+                : convertMiniToHour(Duration(minutes: int.parse(totalDur))),
             bgColor: statusColor(status)),
 
         //button sheet body here
@@ -50,8 +47,9 @@ class TaskView extends StatelessWidget {
           dateApplication: date.toString(),
           projectName: taskName,
           bgColor: statusColor(status),
-          dtsDuration:
-              convertMiniToHour(Duration(minutes: int.parse(totalDur))),
+          dtsDuration: totalDur.isEmpty
+              ? convertMiniToHour(Duration(minutes: DateTime.now().minute))
+              : convertMiniToHour(Duration(minutes: int.parse(totalDur))),
           dtsBgColor: statusColor(status),
           timeLineId: timeLineId,
           dtsDate: DateFormat('HH:mm')
@@ -61,9 +59,11 @@ class TaskView extends StatelessWidget {
           startDateTime: DateFormat('HH:mm')
               .format(DateTime.parse(startTime.toString()))
               .toString(),
-          endDateTime: DateFormat('HH:mm')
-              .format(DateTime.parse(endTime.toString()))
-              .toString(),
+          endDateTime: endTime.isEmpty
+              ? DateFormat('HH:mm').format(DateTime.now()).toString()
+              : DateFormat('HH:mm')
+                  .format(DateTime.parse(endTime.toString()))
+                  .toString(),
         ),
       ],
     );

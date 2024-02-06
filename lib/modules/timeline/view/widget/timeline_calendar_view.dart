@@ -7,7 +7,7 @@ import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 
 class TimelineCalendarView extends StatefulWidget {
-   const TimelineCalendarView({super.key});
+  const TimelineCalendarView({super.key});
 
   @override
   State<TimelineCalendarView> createState() => _TimelineCalendarViewState();
@@ -28,7 +28,6 @@ class _TimelineCalendarViewState extends State<TimelineCalendarView> {
       heightPerMinute: 1.9,
       headerStyle: _headerStyle(),
       eventArranger: const SideEventArranger(),
-
       scrollPhysics: const NeverScrollableScrollPhysics(),
       liveTimeIndicatorSettings: HourIndicatorSettings.none(),
       pageViewPhysics: const NeverScrollableScrollPhysics(),
@@ -47,11 +46,7 @@ class _TimelineCalendarViewState extends State<TimelineCalendarView> {
         String formattedTime = DateFormat.Hm().format(date);
         return formattedTime;
       },
-
-
-
       eventTileBuilder: (date, events, status, start, end) {
-
         return const TaskSolidLayout(
           duration: "0.0",
           status: "pending",

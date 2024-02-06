@@ -44,18 +44,18 @@ Widget workingScheduleLayout({
   );
 }
 
-_countLayout({required dynamicText, required staticText}) {
+_countLayout({required String dynamicText, required String staticText}) {
   return Column(
     children: [
       Text(
-        "$dynamicText",
+        dynamicText,
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.normalTextColor,
             fontWeight: FontWeight.bold,
             fontSize: Dimensions.fontSizeMid - 3),
       ),
       Text(
-        "$staticText",
+        staticText,
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.normalTextColor.withOpacity(0.5),
             fontSize: Dimensions.fontSizeDefault - 2),

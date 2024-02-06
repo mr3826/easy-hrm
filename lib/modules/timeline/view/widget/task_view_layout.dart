@@ -1,12 +1,9 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -15,7 +12,6 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 
 class TaskViewLayout extends StatelessWidget {
@@ -34,11 +30,11 @@ class TaskViewLayout extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  customTitleText(text: AppString.text_project_task.tr,isRequired: true),
+                  customTitleText(
+                      text: AppString.text_project_task.tr, isRequired: true),
                   customSpacerHeight(height: 8),
                   taskSearchInputField(),
                   customSpacerHeight(height: 12),
-
                   Obx(() => Get.find<TimelineController>().isLoading.isTrue
                       ? const Center(
                           child: CupertinoActivityIndicator(),
@@ -52,7 +48,7 @@ class TaskViewLayout extends StatelessWidget {
                                 0,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return _projectListLayout(index,context);
+                              return _projectListLayout(index, context);
                             },
                           ),
                         )),
@@ -65,7 +61,7 @@ class TaskViewLayout extends StatelessWidget {
     );
   }
 
-  _projectListLayout(int index,context) {
+  _projectListLayout(int index, context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Get.find<TimelineController>()
@@ -115,7 +111,7 @@ class TaskViewLayout extends StatelessWidget {
                             .projectDropDownResponse
                             ?.getProjectsDropdown?[index]
                             .tasks
-                            ?.map((Tasks task) => _taskLayout(task,context))
+                            ?.map((Tasks task) => _taskLayout(task, context))
                             .toList(growable: true),
                       ],
                     ),
@@ -130,14 +126,14 @@ class TaskViewLayout extends StatelessWidget {
                     .projectDropDownResponse
                     ?.getProjectsDropdown?[index]
                     .tasks
-                    ?.map((Tasks tasks) => _taskLayout(tasks,context))
+                    ?.map((Tasks tasks) => _taskLayout(tasks, context))
                     .toList(growable: true),
               ],
             ),
     );
   }
 
-  Widget _taskLayout(Tasks task,context) {
+  Widget _taskLayout(Tasks task, context) {
     return InkWell(
       onTap: () {
         taskSearchController.text = task.name ?? "";

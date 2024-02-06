@@ -4,7 +4,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget customTitleText({required text,bool isRequired=false}) {
+Widget customTitleText({required String text, bool isRequired = false}) {
   return Row(
     children: [
       Text(
@@ -15,17 +15,18 @@ Widget customTitleText({required text,bool isRequired=false}) {
             fontSize: Dimensions.fontSizeDefault + 2),
       ),
       customSpacerWidth(width: 4),
-      isRequired !=false?
-      Text("*",style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.errorColor,
-          fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeDefault + 1)):Container()
-
+      isRequired != false
+          ? Text("*",
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.errorColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: Dimensions.fontSizeDefault + 1))
+          : Container()
     ],
   );
 }
 
-Widget customTitleTextRedText({required text}) {
+Widget customTitleTextRedText({required String text}) {
   return Text(
     text,
     style: AppStyle.mid_large_text.copyWith(

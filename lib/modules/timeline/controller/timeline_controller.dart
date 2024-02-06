@@ -333,7 +333,6 @@ class TimelineController extends GetxController with StateMixin {
     if (responseForCalendar.hasException) {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
     } else {
-
       // fetchDataAfterTwoMinutes();
 
       if (timelogList!.isNotEmpty) {
@@ -430,10 +429,9 @@ class TimelineController extends GetxController with StateMixin {
     isTimelineCalendarByDateLoading(false);
   }
 
-
   @override
   void onClose() {
-    if(_apiCallAfter2MinsTimer.isActive){
+    if (_apiCallAfter2MinsTimer.isActive) {
       _apiCallAfter2MinsTimer.cancel();
     }
     super.onClose();
@@ -467,7 +465,6 @@ class TimelineController extends GetxController with StateMixin {
     super.onInit();
   }
 
-
   _refreshTimeline() async {
     getTimelineSummaryByMonth(
         startDate:
@@ -488,7 +485,8 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   void fetchDataAfterTwoMinutes() {
-    _apiCallAfter2MinsTimer=Timer.periodic(const Duration(minutes: 2), (timer) async {
+    _apiCallAfter2MinsTimer =
+        Timer.periodic(const Duration(minutes: 2), (timer) async {
       await getCalendarTimelineDataByDate(
           startDate:
               "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",

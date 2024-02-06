@@ -8,8 +8,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget projectViewBtnSheetAppbar(
-    {required date, required duration, required bgColor}) {
+Widget projectViewBtnSheetAppbar({required  DateTime date, required String duration, required Color bgColor}) {
 
 
   return Padding(
