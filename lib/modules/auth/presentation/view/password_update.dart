@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -9,6 +10,9 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+
+import '../../../../utils/app_layout.dart';
+import '../../../../utils/images.dart';
 
 class PasswordUpdateScreen extends StatelessWidget {
   const PasswordUpdateScreen({super.key});
@@ -21,16 +25,12 @@ class PasswordUpdateScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            _imageLayout(),
             _passwordUpdateText(),
             customSpacerHeight(height: 12),
             Center(
                 child: Text(
-              AppString.text_your_password_has_been_etc.tr,
-              style: style,
-            )),
-            Center(
-                child: Text(
-              AppString.text_password_to_log_in.tr,
+              "${AppString.text_your_password_has_been_etc.tr} ${AppString.text_password_to_log_in.tr}",
               style: style,
             )),
             customSpacerHeight(height: 40),
@@ -68,6 +68,16 @@ class PasswordUpdateScreen extends StatelessWidget {
       },
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,
+    );
+  }
+
+  _imageLayout() {
+    return Center(
+      child: SizedBox(
+          height: AppLayout.getHeight(200),
+          width: AppLayout.getWidth(200),
+          child: SvgPicture.asset(Images.passwordResetSuccessfull,
+              fit: BoxFit.cover)),
     );
   }
 }

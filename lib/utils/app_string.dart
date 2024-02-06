@@ -32,7 +32,7 @@ class AppString {
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
   static String textManager = 'Manager';
-  static String text_reset_password = ' Rest password';
+  static String text_reset_password = ' Reset password';
   static String text_dete_of_application = 'Date of application:';
   static String text_remove = 'Remove';
   static String text_remove_photo = 'Remove photo';
@@ -42,8 +42,8 @@ class AppString {
       'Don’t worry! It happens. Please enter the email';
   static String text_associated = 'address associated with your account';
   static String text_enter_code = 'Enter your code';
-  static String text_a_5_digit_has_been_etc =
-      'An 5 digit code has been sent to demouser@gmail.com';
+  static String text_a_6_digit_has_been_etc =
+      'An 6 digit code has been sent to ';
   static String inputTimeInvalidMessage = "End time must be after start time";
   static String text_setup_your_code_etc =
       'Setup your new password now. Minimum 8 letter or digits';
@@ -124,7 +124,9 @@ class AppString {
   static String text_we_have_sent_a_verification_etc =
       "We have sent a Verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
   static String text_do_not_receive_email = "Don't receive email? ";
+  static String text_do_not_receive_otp = "Don't receive code? ";
   static String text_resend = "Resend";
+  static String validOtpText = "Please provide a valid OTP";
   static String resend_otp_text = "Otp Send to your email";
   static String text_verify_email = "Verify email";
   static String text_revert_change = "Revert changes";

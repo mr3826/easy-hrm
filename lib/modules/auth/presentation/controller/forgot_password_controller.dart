@@ -11,17 +11,17 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
+import '../../../../routes/app_pages.dart';
+
 class ForgotPasswordController extends GetxController {
   final isLoading = false.obs;
 
   Future<void> forgotPassword() async {
     isLoading(true);
+    print("emailController.text: ${restPasswordController.text}");
     try {
-      Response response =
-          await NetworkClient().postRequest(Api.FORGOT_PASSWORD, {
-        "email": emailController.text,
-        "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
-      });
+      Response response = await NetworkClient().postRequest(
+          Api.FORGOT_PASSWORD, {"email": restPasswordController.text});
 
       if (response.status.hasError) {
         logErrorMessage(logName: "forgotPassword", response: response);
@@ -29,6 +29,10 @@ class ForgotPasswordController extends GetxController {
             message: ErrorModel.fromJson(response.body).message ??
                 AppString.error_text);
       } else {
+        Get.toNamed(Routes.OTP, arguments: [restPasswordController.text]);
+        restPasswordController.clear();
+        showSuccessMessage(
+            message: SuccessModel.fromJson(response.body!).message);
         logSuccessMessage(logName: "forgotPassword");
       }
     } catch (exp) {
@@ -38,12 +42,11 @@ class ForgotPasswordController extends GetxController {
     isLoading(false);
   }
 
-  Future<void> resendOtp() async {
+  Future<void> resendOtp({required String mailAddress}) async {
     isLoading(true);
     try {
       Response response = await NetworkClient().postRequest(Api.RESEND_OTP, {
-        "email": emailController.text,
-        "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
+        "email": mailAddress,
       });
 
       if (response.status.hasError) {
@@ -52,6 +55,7 @@ class ForgotPasswordController extends GetxController {
             message: ErrorModel.fromJson(response.body).message ??
                 AppString.error_text);
       } else {
+        print(SuccessModel.fromJson(response.body).message);
         logSuccessMessage(logName: "resendOtp");
       }
     } catch (exp) {
@@ -60,15 +64,19 @@ class ForgotPasswordController extends GetxController {
     isLoading(false);
   }
 
-  Future<void> resetPassword({required String confirmationCode}) async {
+  Future<void> resetPassword({required String confirmationCode, required String emailAddress}) async {
     isLoading(true);
+    print('''
+            "email": $emailAddress,
+        "confirmationCode": $confirmationCode,
+        "password": ${confirmPasswordController.text},
+    ''');
     try {
       Response response =
           await NetworkClient().postRequest(Api.RESET_PASSWORD, {
-        "email": emailController.text,
+        "email": emailAddress,
         "confirmationCode": confirmationCode,
         "password": confirmPasswordController.text,
-        "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
       log(response.body.toString());
       if (response.status.hasError) {
@@ -80,12 +88,11 @@ class ForgotPasswordController extends GetxController {
         logSuccessMessage(logName: "resetPassword");
         showSuccessMessage(
             message: SuccessModel.fromJson(response.body).message);
+        Get.toNamed(Routes.PASSWORD_UPDATE_SCRREN);
       }
     } catch (exp) {
       log(exp.toString());
     }
     isLoading(false);
   }
-
-
 }
