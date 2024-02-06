@@ -1,20 +1,39 @@
+import 'package:flutter_svg/svg.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 
+import '../../enum.dart';
+import '../../utils/images.dart';
 
-Future customButtonSheet({context,double? height=0.9, child}) {
+Future customButtonSheet(
+    {context,
+    double? height = 0.9,
+    child,
+    int duration = 500,
+    bool? isDismissible,
+    int reverseDuration = 400}) {
+  final AnimationController controller = AnimationController(
+    duration: Duration(milliseconds: duration),
+    reverseDuration: Duration(milliseconds: reverseDuration),
+    vsync: Navigator.of(context),
+  );
+
   return showModalBottomSheet(
     context: context,
+    transitionAnimationController: controller,
     isScrollControlled: true,
-    backgroundColor: AppColor.backgroundColor,
+    backgroundColor: AppColor.cardColor,
+    isDismissible: isDismissible ?? true,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(
-              Dimensions.radiusMid,
+              Dimensions.radiusMid + 4,
             ),
-            topLeft: Radius.circular(Dimensions.fontSizeMid))),
+            topLeft: Radius.circular(Dimensions.fontSizeMid + 4))),
     builder: (
       context,
     ) {
@@ -24,4 +43,110 @@ Future customButtonSheet({context,double? height=0.9, child}) {
       );
     },
   );
+}
+
+Widget customButtonSheetAppbar(
+    {required text, subtext, bool isLeave = false, status}) {
+  return isLeave != false
+      ? _leaveBtnAppbarLayout(text, subtext, status)
+      : Container(
+          color: AppColor.primaryColor.withOpacity(0.05),
+          height: 100,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                  child: Text(
+                text ?? "",
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontWeight: FontWeight.w700),
+              )),
+              if (subtext != null) customSpacerHeight(height: 5),
+              if (subtext != null)
+                Center(
+                    child: Text(
+                  subtext ?? "",
+                  style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault + 2),
+                )),
+            ],
+          ),
+        );
+}
+
+_leaveBtnAppbarLayout(text, subtext, status) {
+  return Stack(
+    children: [
+      transformDashLayout(status),
+      Positioned(
+          top: 30,
+          left: 30,
+          bottom: 30,
+          right: 30,
+          child: Column(
+            children: [
+              Center(
+                  child: Text(
+                text ?? "",
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontWeight: FontWeight.w700),
+              )),
+              if (subtext != null) customSpacerHeight(height: 5),
+              if (subtext != null)
+                Center(
+                    child: Text(
+                  subtext ?? "",
+                  style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault + 2),
+                )),
+            ],
+          )),
+      Positioned(
+          top: 8,
+          right: 9,
+          left: 9,
+          child: Center(
+            child: Container(
+              height: 4,
+              width: 140,
+              decoration: BoxDecoration(
+                  color: AppColor.backgroundColor,
+                  borderRadius:
+                      BorderRadius.circular(Dimensions.radiusExtraLarge)),
+            ),
+          ))
+    ],
+  );
+}
+
+transformDashLayout(status) {
+  return SizedBox(
+    height: 115,
+    width: double.infinity,
+    child: SvgPicture.asset(
+      _getStatusButton(status),
+      fit: BoxFit.fill,
+    ),
+  );
+}
+
+_getStatusButton(String leaveStatus) {
+  if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
+    return Images.LEAVE_APPROVED;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
+    return Images.LEAVE_REJECTED;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
+    return Images.LEAVE_PENDDING;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
+    return Images.LEAVE_TAKAN;
+  } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
+    return Images.LEAVE_REJECTED;
+  } else {
+    return Images.LEAVE_APPROVED;
+  }
 }

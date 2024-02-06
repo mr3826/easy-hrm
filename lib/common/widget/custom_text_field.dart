@@ -1,188 +1,219 @@
-import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class AppInputField extends StatelessWidget {
-  final String title;
+import '../../utils/utils.dart';
+
+class CustomInputField extends StatelessWidget {
   final String hint;
   final TextEditingController? controller;
   final Widget? weight;
-  final bool? isButtonExpanded;
-  final bool? isFieldTitleHide;
-  final bool? isFieldElevationHide;
-  final bool? obsValue;
-  final bool? isReadVal;
-  final Function?onAction;
+  final Function? onAction;
+  final IconData? prefixIcon;
+  final String? Function(String?)? validator;
+  final bool? isObscureText;
 
-  const AppInputField(
+  const CustomInputField(
       {super.key,
-      required this.title,
       required this.hint,
       this.controller,
       this.weight,
-      this.isButtonExpanded = false,
-      this.isFieldElevationHide = false,
-      this.isFieldTitleHide = false,
-      this.obsValue = false,
-        this.isReadVal = false,
-        this.onAction,
-
-
-      });
+      this.validator,
+      this.prefixIcon,
+      this.onAction,
+      this.isObscureText});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        isFieldTitleHide != true
-            ? Text(title,
-                style: _titleStyle(context.isDarkMode
-                    ? AppColor.cardColor
-                    : AppColor.normalTextColor))
-            : Container(),
-
-        isFieldTitleHide != true ? customSpacerHeight(height: 10) : Container(),
-
-        isFieldElevationHide != true
-            ? Card(
-                elevation: 3,
-                shadowColor: Colors.grey.withOpacity(0.2),
-                shape: _cardStyle,
-                child: _textFieldLayout(context),
-              )
-            : Card(
-                color: Theme.of(context).hintColor.withOpacity(0.1),
-                elevation: 0,
-                shadowColor: Colors.grey.withOpacity(0.2),
-                shape: _cardStyle,
-                child: _passwordFieldLayout(context,obsValue),
-              )
-      ],
-    );
+    final focusedCtx = FocusManager.instance.primaryFocus?.context;
+    Future.delayed(const Duration(milliseconds: 200))
+        .then((value) => Scrollable.ensureVisible(
+              focusedCtx ?? context,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.bounceInOut,
+            ));
+    return prefixIcon != null
+        ? _textFieldLayout(context)
+        : _noPrefixIconField();
   }
 
   _textFieldLayout(context) {
-    return Row(
-      children: [
-        customSpacerWidth(width: 12),
-        isFieldTitleHide != true
-            ? Expanded(
-                child: TextFormField(
-                  controller: controller,
-                  style: _subTitleStyle,
-                  autofocus: false,
-                  decoration: InputDecoration(
-                    hintText: hint,
-                    hintStyle: GoogleFonts.poppins(
-                      color: Theme.of(context).hintColor,
-                    ),
-                    focusColor: Theme.of(context).primaryColor,
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(
-                            Dimensions.radiusDefault + 7)),
-                  ),
-                  maxLines: isButtonExpanded == true ? 8 : 1,
-                  minLines: isButtonExpanded == true ? 6 : 1,
-                ),
-              )
-            : Expanded(
-                child: TextFormField(
-                  controller: controller,
-                  style: _subTitleStyle,
-                  autofocus: false,
-                  readOnly: isReadVal??false,
-                  onTap: ()=>onAction!(),
-
-                  decoration: InputDecoration(
-                    hintText: hint,
-
-                    hintStyle: GoogleFonts.poppins(
-                      color: Theme.of(context).hintColor,
-                    ),
-                    prefixIcon: Icon(
-                      CupertinoIcons.search,
-                      color: Theme.of(context).hintColor,
-                    ),
-                    focusColor: Theme.of(context).primaryColor,
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(
-                            Dimensions.radiusDefault + 7)),
-                  ),
-                  maxLines: isButtonExpanded == true ? 8 : 1,
-                  minLines: isButtonExpanded == true ? 6 : 1,
-                ),
-              )
-      ],
+    return TextFormField(
+      controller: controller,
+      style: subTextFieldTitleStyle,
+      validator: validator,
+      autofocus: false,
+      obscureText: isObscureText == null ? false : true,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(
+            color: AppColor.hintColor,
+            fontFamily: "Poppins",
+            fontSize: Dimensions.fontSizeDefault + 1),
+        prefixIcon: Icon(
+          prefixIcon,
+          color: AppColor.hintColor,
+        ),
+        suffixIcon: weight,
+        border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+        ),
+        focusColor: AppColor.primaryColor,
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.disableColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColor.disableColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+      ),
     );
+  }
+
+  _noPrefixIconField() {
+    return TextFormField(
+      controller: controller,
+      style: subTextFieldTitleStyle,
+      validator: validator,
+      autofocus: false,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(
+            color: AppColor.hintColor,
+            fontFamily: "Poppins",
+            fontSize: Dimensions.fontSizeDefault + 1),
+        border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+        ),
+        focusColor: AppColor.primaryColor,
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.normalTextColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColor.hintColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+      ),
+    );
+  }
+}
+
+class CustomPassInputField extends StatelessWidget {
+  final String hint;
+  final TextEditingController? controller;
+  final Widget? weight;
+  final Function? onAction;
+  final bool? obsValue;
+  final IconData? prefixIcon;
+  final String? Function(String?)? validator;
+
+  const CustomPassInputField({
+    super.key,
+    required this.hint,
+    this.controller,
+    this.obsValue,
+    this.weight,
+    this.validator,
+    this.prefixIcon,
+    this.onAction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final focusedCtx = FocusManager.instance.primaryFocus?.context;
+    Future.delayed(const Duration(milliseconds: 200))
+        .then((value) => Scrollable.ensureVisible(
+              focusedCtx ?? context,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.bounceInOut,
+            ));
+    return prefixIcon != null
+        ? _passwordFieldLayout(context, obsValue)
+        : _changeEmailFieldLayout(context, obsValue);
   }
 
   _passwordFieldLayout(context, obsValue) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextFormField(
-            controller: controller,
-            style: _subTitleStyle1(context),
-            autofocus: false,
-            obscureText: obsValue,
-            decoration: InputDecoration(
-              hintText: hint,
-              suffixIcon: weight,
-              hintStyle: GoogleFonts.poppins(
-                color: Theme.of(context).hintColor,
-              ),
-              focusColor: Theme.of(context).primaryColor,
-              focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent)),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.transparent),
-                  borderRadius:
-                      BorderRadius.circular(Dimensions.radiusDefault + 5)),
-            ),
-            maxLines: isButtonExpanded == true ? 8 : 1,
-            minLines: isButtonExpanded == true ? 6 : 1,
-          ),
+    return TextFormField(
+      controller: controller,
+      style: _subTitleStyle1(context),
+      autofocus: false,
+      obscureText: obsValue,
+      validator: validator,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(
+            color: AppColor.hintColor,
+            fontFamily: "Poppins",
+            fontSize: Dimensions.fontSizeDefault + 1),
+        suffixIcon: weight,
+        prefixIcon: Icon(
+          prefixIcon,
+          color: AppColor.hintColor,
         ),
-      ],
+        focusColor: AppColor.primaryColor,
+        border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+        ),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.disableColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColor.disableColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+      ),
     );
   }
 
-  _subTitleStyle1(BuildContext context) {
-      return AppStyle.mid_large_text.copyWith(
-        fontWeight: FontWeight.w400,
-        color: context.isDarkMode?AppColor.cardColor:AppColor.normalTextColor,
-        fontSize: Dimensions.fontSizeDefault);
+  _changeEmailFieldLayout(context, obsValue) {
+    return TextFormField(
+      controller: controller,
+      style: _subTitleStyle1(context),
+      autofocus: false,
+      obscureText: obsValue,
+      validator: validator,
+      decoration: InputDecoration(
+        suffixIcon: weight,
+        hintText: hint,
+        contentPadding: const EdgeInsets.all(18),
+        hintStyle: TextStyle(
+            color: AppColor.hintColor,
+            fontFamily: "Poppins",
+            fontSize: Dimensions.fontSizeDefault + 1),
+        focusColor: AppColor.primaryColor,
+        border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+        ),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.disableColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColor.disableColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+      ),
+    );
   }
+}
+
+_subTitleStyle1(BuildContext context) {
+  return AppStyle.mid_large_text.copyWith(
+      fontWeight: FontWeight.w400,
+      color: context.isDarkMode ? AppColor.cardColor : AppColor.normalTextColor,
+      fontSize: Dimensions.fontSizeDefault);
 }
 
 RoundedRectangleBorder get _cardStyle {
   return RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(Dimensions.radiusMid-5));
+      // side: const BorderSide(width: 1,color: AppColor.disableColor),
+      borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
 }
 
-TextStyle _titleStyle(color) {
-  return AppStyle.mid_large_text.copyWith(
-      fontWeight: FontWeight.w400,
-      color: color,
-      fontSize: Dimensions.fontSizeDefault + 2);
-}
-
-TextStyle get _subTitleStyle {
+TextStyle get subTextFieldTitleStyle {
   return AppStyle.mid_large_text.copyWith(
       fontWeight: FontWeight.w400,
       color: AppColor.normalTextColor,
       fontSize: Dimensions.fontSizeDefault);
 }
-

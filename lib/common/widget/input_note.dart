@@ -7,12 +7,14 @@ import '../../utils/app_style.dart';
 class InputNote extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final Color ?hintColor;
   final String? Function(String?)? validator;
 
   const InputNote(
       {super.key,
       required this.controller,
-      this.hintText = AppString.text_add_note_here,
+        this.hintColor,
+      this.hintText = AppString.text_add_description,
       this.validator});
 
   @override
@@ -32,7 +34,7 @@ class InputNote extends StatelessWidget {
       decoration: InputDecoration(
           hintText: hintText,
           hintStyle: AppStyle.normal_text
-              .copyWith(color: AppColor.solidGray, fontWeight: FontWeight.w400),
+              .copyWith(color:hintColor?? AppColor.solidGray, fontWeight: FontWeight.w400),
           focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: AppColor.primaryColor),
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
@@ -40,7 +42,9 @@ class InputNote extends StatelessWidget {
               borderSide: const BorderSide(color: AppColor.solidGray),
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
           border: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.solidGray))),
+              borderSide: BorderSide(color: AppColor.solidGray))
+
+      ),
       maxLines: 4,
       maxLength: 150,
       minLines: 4,
