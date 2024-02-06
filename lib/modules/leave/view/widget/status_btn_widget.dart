@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
@@ -13,7 +10,6 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/utils.dart';
 import '../../../timeline/view/screen/update_timeline.dart';
 
@@ -85,18 +81,18 @@ statusBtn({required status}) {
 
 Widget buttonLayout({
   required context,
-  required timeLineId,
-  required startDateTime,
-  required endDateTime,
-  required status,
-  dtsStartTime,
-  dtsEndTime,
-  required dtsDateStatus,
-  dtsProjectName,
-  Color? dtsBgColor,
-  dtsDrc,
-  dtsDuration,
-  dtsDate,
+  required String timeLineId,
+  required String startDateTime,
+  required String endDateTime,
+  required String status,
+  String? dtsStartTime,
+  String? dtsEndTime,
+  required String dtsDateStatus,
+  String? dtsProjectName,
+  required Color dtsBgColor,
+  String? dtsDrc,
+  String? dtsDuration,
+  String? dtsDate,
 }) {
   if (status == "reject") {
     return _rejectedBtn(
@@ -105,13 +101,13 @@ Widget buttonLayout({
         timeLineId: timeLineId,
         context: context,
         dtsBgColor: dtsBgColor,
-        dtsDate: dtsDate,
+        dtsDate: dtsDate ?? "",
         dtsDateStatus: dtsDateStatus,
-        dtsDrc: dtsDrc,
-        dtsDuration: dtsDuration,
-        dtsEndTime: dtsEndTime,
-        dtsStartTime: dtsStartTime,
-        dtsProjectName: dtsProjectName,
+        dtsDrc: dtsDrc ?? "",
+        dtsDuration: dtsDuration ?? "",
+        dtsEndTime: dtsEndTime ?? "",
+        dtsStartTime: dtsStartTime ?? "",
+        dtsProjectName: dtsProjectName ?? "",
         dtsStatus: dtsDateStatus);
   } else if (status == "pending") {
     return _pendingLayout(
@@ -141,7 +137,7 @@ Widget buttonLayout({
         dtsBgColor: dtsBgColor,
         dtsDate: dtsDate,
         dtsDateStatus: dtsDateStatus,
-        dtsDrc: dtsDrc,
+        dtsDrc: dtsDrc ?? "",
         dtsDuration: dtsDuration,
         dtsEndTime: dtsEndTime,
         dtsStartTime: dtsStartTime,
@@ -151,19 +147,19 @@ Widget buttonLayout({
 }
 
 _rejectedBtn({
-  context,
-  dtsStartTime,
-  dtsEndTime,
-  dtsDateStatus,
-  dtsProjectName,
-  Color? dtsBgColor,
-  dtsDrc,
-  dtsDuration,
-  dtsDate,
-  dtsStatus,
-  required timeLineId,
-  required startDateTime,
-  required endDateTime,
+  required BuildContext context,
+  required String dtsStartTime,
+  required String dtsEndTime,
+  required String dtsDateStatus,
+  required String dtsProjectName,
+  required Color dtsBgColor,
+  required String dtsDrc,
+  required String dtsDuration,
+  required String dtsDate,
+  required String dtsStatus,
+  required String timeLineId,
+  required String startDateTime,
+  required String endDateTime,
 }) {
   return Padding(
     padding: marginLayout,
@@ -208,19 +204,19 @@ _rejectedBtn({
 }
 
 _pendingLayout(
-    {context,
-    dtsStartTime,
-    dtsEndTime,
-    dtsDateStatus,
-    dtsProjectName,
+    {required BuildContext context,
+    required dtsStartTime,
+    required dtsEndTime,
+    required dtsDateStatus,
+    required dtsProjectName,
     Color? dtsBgColor,
-    required startDateTime,
-    required endDateTime,
-    dtsDrc,
-    dtsDuration,
-    required timeLineId,
-    dtsDate,
-    dtsStatus}) {
+    required String startDateTime,
+    required String endDateTime,
+    String? dtsDrc,
+    String? dtsDuration,
+    required String timeLineId,
+    required dtsDate,
+    required dtsStatus}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
@@ -233,15 +229,15 @@ _pendingLayout(
           _updateDataFromApiResponse(
               startDate: dtsStartTime,
               endDate: dtsEndTime,
-              description: dtsDrc,
-              duration: dtsDuration,
+              description: dtsDrc ?? "",
+              duration: dtsDuration ?? "",
               color: dtsBgColor,
               taskId: '',
               timelineId: timeLineId,
-              status: dtsStatus);
+              status: dtsStatus ?? "");
           Get.to(() => UpdateTimeLineLog(
-                endDateTime: dtsEndTime,
-                startDateTime: dtsStartTime,
+                endDateTime: dtsEndTime ?? "",
+                startDateTime: dtsStartTime ?? "",
                 status: dtsStatus,
               ));
         },
@@ -250,18 +246,18 @@ _pendingLayout(
 }
 
 _approvedLayout(
-    {context,
-    required startDateTime,
-    required endDateTime,
-    dtsStartTime,
-    dtsEndTime,
-    dtsDateStatus,
-    dtsProjectName,
+    {required BuildContext context,
+    required String startDateTime,
+    required String endDateTime,
+    String? dtsStartTime,
+    String? dtsEndTime,
+    String? dtsDateStatus,
+    String? dtsProjectName,
     Color? dtsBgColor,
-    dtsDrc,
-    dtsDuration,
-    dtsDate,
-    dtsStatus,
+    required String dtsDrc,
+    String? dtsDuration,
+    String? dtsDate,
+    String? dtsStatus,
     required timeLineId}) {
   return Padding(
     padding: marginLayout,
@@ -278,17 +274,17 @@ _approvedLayout(
         Get.find<TimelineController>().timeLogStatus == dtsStatus;
         Get.find<TimelineController>().timeLineID == timeLineId;
         _updateDataFromApiResponse(
-            startDate: dtsStartTime,
-            endDate: dtsEndTime,
+            startDate: dtsStartTime ?? "",
+            endDate: dtsEndTime ?? "",
             description: dtsDrc,
-            duration: dtsDuration,
+            duration: dtsDuration ?? "",
             color: dtsBgColor,
             taskId: '',
             timelineId: timeLineId,
-            status: dtsStatus);
+            status: dtsStatus ?? "");
         Get.to(() => UpdateTimeLineLog(
-              endDateTime: dtsEndTime,
-              startDateTime: dtsStartTime,
+              endDateTime: dtsEndTime ?? "",
+              startDateTime: dtsStartTime ?? "",
               status: dtsStatus,
             ));
       },
@@ -299,14 +295,14 @@ _approvedLayout(
 }
 
 void _updateDataFromApiResponse(
-    {required startDate,
-    required endDate,
-    required taskId,
-    required status,
+    {required String startDate,
+    required String endDate,
+    required String taskId,
+    required String status,
     required color,
-    required duration,
-    required timelineId,
-    required description}) {
+    required String duration,
+    required String timelineId,
+    required String description}) {
   Get.find<TimelineController>().timeLogColor = color;
   Get.find<TimelineController>().timeLogStatus = status;
   Get.find<TimelineController>().timeLineID = timelineId.toString();

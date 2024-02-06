@@ -29,9 +29,7 @@ class TimelineScreen extends GetView<TimelineController> {
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
                   physics: const NeverScrollableScrollPhysics(),
-                  slivers: [sliverAppBar,
-
-                    sliverToBoxAdapter],
+                  slivers: [sliverAppBar, sliverToBoxAdapter],
                 ),
               ),
               floatingActionButton: Obx(() => _timerBtnLayout(context)),
@@ -182,7 +180,6 @@ SliverToBoxAdapter get sliverToBoxAdapter {
   return  const SliverToBoxAdapter(
     child: RefreshIndicator(
         onRefresh: _refreshScreen,
-
         child: CustomTimelineCalendar()),
   );
 }
