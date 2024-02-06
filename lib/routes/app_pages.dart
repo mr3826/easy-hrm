@@ -29,7 +29,6 @@ class AppPages {
       name: _Paths.SPLASH_SCREEN,
       page: ()=>const SplashScreen(),
     ),
-
     GetPage(
       name: _Paths.ONBOARD_SCRREN,
       page: ()=>  OnboardScreen(),
