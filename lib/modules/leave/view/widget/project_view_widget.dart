@@ -119,7 +119,7 @@ _infoLayout({required String text, String? dynamicText, widget}) {
         ),
         widget ??
             Text(
-              dynamicText??"",
+              dynamicText ?? "",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeDefault + 1),

@@ -72,7 +72,7 @@ class UpdateTimeLineLog extends StatelessWidget {
   }
 }
 
-AppBar timeLogAppbar(context) {
+AppBar timeLogAppbar(BuildContext context) {
   return AppBar(
     elevation: 0,
     backgroundColor: AppColor.backgroundColor,

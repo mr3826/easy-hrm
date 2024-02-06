@@ -16,9 +16,7 @@ Widget timelineLayout() {
     height: AppLayout.getHeight(130),
     width: double.infinity,
     child: Padding(
-
       padding: EdgeInsets.only(left: AppLayout.getHeight(0)),
-
       child: Card(
         elevation: 0,
         shape: roundedRectangleBorder.copyWith(
@@ -106,18 +104,18 @@ _tabToViewTimeLogSummery() {
   );
 }
 
-_countLayout({required dynamicText, required staticText}) {
+_countLayout({required String dynamicText, required String staticText}) {
   return Column(
     children: [
       Text(
-        "$dynamicText",
+        dynamicText,
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor,
             fontWeight: FontWeight.bold,
             fontSize: Dimensions.fontSizeMid - 2),
       ),
       Text(
-        "$staticText",
+        staticText,
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor.withOpacity(0.9),
             fontSize: Dimensions.fontSizeDefault - 1),

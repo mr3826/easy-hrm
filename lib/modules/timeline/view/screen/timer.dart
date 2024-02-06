@@ -75,7 +75,7 @@ class TimerScreen extends StatelessWidget {
     ));
   }
 
-  _saveBtn({required onAction}) {
+  _saveBtn({required Function onAction}) {
     return GestureDetector(
       onTap: () {
         onAction();

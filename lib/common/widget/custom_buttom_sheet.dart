@@ -12,7 +12,7 @@ import '../../utils/images.dart';
 Future customButtonSheet(
     {context,
     double? height = 0.9,
-    child,
+     required Widget child,
     int duration = 500,
     bool? isDismissible,
     int reverseDuration = 400}) {
@@ -45,10 +45,9 @@ Future customButtonSheet(
   );
 }
 
-Widget customButtonSheetAppbar(
-    {required text, subtext, bool isLeave = false, status}) {
+Widget customButtonSheetAppbar({required text, subtext, bool isLeave = false,   String ?status}) {
   return isLeave != false
-      ? _leaveBtnAppbarLayout(text, subtext, status)
+      ? _leaveBtnAppbarLayout(text, subtext, status??"")
       : Container(
           color: AppColor.primaryColor.withOpacity(0.05),
           height: 100,
@@ -77,7 +76,7 @@ Widget customButtonSheetAppbar(
         );
 }
 
-_leaveBtnAppbarLayout(text, subtext, status) {
+_leaveBtnAppbarLayout(String text, String subtext, String status) {
   return Stack(
     children: [
       transformDashLayout(status),
@@ -95,8 +94,8 @@ _leaveBtnAppbarLayout(text, subtext, status) {
                     color: AppColor.normalTextColor,
                     fontWeight: FontWeight.w700),
               )),
-              if (subtext != null) customSpacerHeight(height: 5),
-              if (subtext != null)
+              if (subtext.isNotEmpty) customSpacerHeight(height: 5),
+              if (subtext.isNotEmpty)
                 Center(
                     child: Text(
                   subtext ?? "",

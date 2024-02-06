@@ -1,16 +1,11 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
-
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/dimensions.dart';
-import '../../controller/timeline_controller.dart';
-
 import '../../controller/timelog_summary_controller.dart';
 
 class SummaryTimeLogCalendar extends StatefulWidget {
@@ -147,8 +142,9 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
                     endDate:
                         "${DateTime(year, month.month + 1, 0, 23, 59, 59)}");
 
-                Get.find<TimelineSummaryController>().selectedSummaryDate.value =
-                    index.toString();
+                Get.find<TimelineSummaryController>()
+                    .selectedSummaryDate
+                    .value = index.toString();
                 Get.find<TimelineSummaryController>().selectedYearIndex.value =
                     yearIndex;
               },

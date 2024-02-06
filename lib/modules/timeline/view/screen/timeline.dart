@@ -104,21 +104,15 @@ class TimelineScreen extends GetView<TimelineController> {
         endDate:
             "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
 
-
     await controller.getTimelineSummaryByDate(
         startDate:
             "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
         endDate:
             "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
-
-
-
-
   }
 }
 
 SliverAppBar get sliverAppBar {
-
   return SliverAppBar(
     expandedHeight: AppLayout.getHeight(230),
     elevation: 0,
@@ -177,12 +171,10 @@ _buttonRadiusLayout() {
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
-  return  const SliverToBoxAdapter(
+  return const SliverToBoxAdapter(
     child: RefreshIndicator(
-        onRefresh: _refreshScreen,
-        child: CustomTimelineCalendar()),
+        onRefresh: _refreshScreen, child: CustomTimelineCalendar()),
   );
 }
-Future<void> _refreshScreen() async {
 
-}
+Future<void> _refreshScreen() async {}

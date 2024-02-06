@@ -5,7 +5,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget  floatingButton({required Color bgBtnColor,required btnText,required onAction,IconData ?icon}) {
+Widget  floatingButton({required Color bgBtnColor,required String btnText,required Function onAction,IconData ?icon}) {
   return  Expanded(
     child: InkWell(
       onTap: ()=>onAction(),
@@ -30,7 +30,7 @@ Widget  floatingButton({required Color bgBtnColor,required btnText,required onAc
 }
 
 
-Widget  startTimerOpenBtn({required Color bgBtnColor,required btnText,required onAction,IconData ?icon}) {
+Widget  startTimerOpenBtn({required Color bgBtnColor,required String btnText,required Function onAction,IconData ?icon}) {
   return  Expanded(
     child: InkWell(
       onTap: ()=>onAction(),

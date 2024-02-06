@@ -167,7 +167,7 @@ class TimeLogEntryTextField extends StatelessWidget {
     );
   }
 
-  _timerLayout( BuildContext context) {
+  _timerLayout(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
