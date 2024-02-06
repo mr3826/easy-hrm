@@ -12,10 +12,6 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.isRegistered<SplashController>()) {
-      Get.delete<SplashController>();
-    }
-    Get.put(SplashController());
     return Scaffold(
       body: Container(
           width: double.infinity,
