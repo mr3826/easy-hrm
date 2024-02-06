@@ -90,6 +90,8 @@ class TimelineController extends GetxController with StateMixin {
     }
   }
 
+  ///done
+  ///dev check
   saveTimeEntry() async {
     print('''
      "description": ${descriptionController.text},
@@ -135,40 +137,61 @@ class TimelineController extends GetxController with StateMixin {
     }
     isTimelogEntryOrRemoveLoading(false);
   }
+///check again
+  createManualEntry() async {
+    isManualEntryLoading(true);
 
-  removeTimeEntry({String? timeLogId}) async {
-    isTimelogEntryOrRemoveLoading(true);
+    print('''
+     "description": ${descriptionController.text},
+        "end_date": ${startOrEndTimerResponse?.startOrStopTimer?.endDate ?? ""},
+        "start_date":
+            ${startOrEndTimerResponse?.startOrStopTimer?.startDate ?? ""},
+        "status": "pending",
+        "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
+        "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
+    ''');
 
-    final response =
-        await NetworkClient().mutationGraphData(removeTimerQueryData, {
-      "inputData": {
-        "timeline_id":
-            timeLogId ?? startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
+    Duration timeDifference = DateTime.parse(
+            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+        .difference(DateTime.parse(
+            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+    if (!timeDifference.isNegative) {
+      isTimeInvalid(false);
+      final response =
+          await NetworkClient().mutationGraphData(createNewEntryQuery, {
+        "inputData": {
+          "end_date": DateTime.parse(
+                  "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+              .toUtc()
+              .toString(),
+          "description": descriptionController.text,
+          "start_date": DateTime.parse(
+                  "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
+              .toUtc()
+              .toString(),
+          "status": "pending",
+          "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+          "project_id": projectId.value.isNotEmpty ? projectId.value : null,
+        }
+      });
+      if (response.hasException) {
+        ExceptionHelper.errorHandler(exception: response.exception!);
+      } else {
+        showSuccessMessage(message: "Time entry created successfully");
+        taskId.value = "";
+        taskName.value = '';
+        projectId.value = '';
+        descriptionController.clear();
+        Get.back(canPop: false);
+        _refreshTimeline();
       }
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-      taskId.value = "";
-      Get.find<TimeCounterController>().isTotalCount(true);
-      descriptionController.clear();
-      Get.find<TimeCounterController>().reset();
-      Get.back(canPop: false);
+      showWarningMessage(message: "Provide a valid project/task ");
     }
-    isTimelogEntryOrRemoveLoading(false);
+    isManualEntryLoading(false);
   }
 
-  updateTimelineLogDetails({
-    timeLineId,
-    description,
-    endDate,
-    startDate,
-    status,
-    taskId,
-    projectId,
-  }) async {
+  updateTimelineLogDetails() async {
     isUpdateTimeLogLoading(true);
 
     Duration timeDifference = DateTime.parse(
@@ -183,7 +206,7 @@ class TimelineController extends GetxController with StateMixin {
         "status": "pending",
         "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
         "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
-        "timeline_id": ${startOrEndTimerResponse?.startOrStopTimer?.id ?? ""}
+        "timeline_id": $timeLineID
     ''');
 
     if (!timeDifference.isNegative) {
@@ -197,7 +220,9 @@ class TimelineController extends GetxController with StateMixin {
               "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}",
           "start_date":
               "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}",
-          "status": "pending"
+          "status": "pending",
+          "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+          "project_id": projectId.value.isNotEmpty ? projectId.value : null,
         }
       });
 
@@ -247,51 +272,28 @@ class TimelineController extends GetxController with StateMixin {
     isLoading(false);
   }
 
-  createManualEntry() async {
-    isManualEntryLoading(true);
-    Duration timeDifference = DateTime.parse(
-            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-        .difference(DateTime.parse(
-            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-    if (!timeDifference.isNegative) {
-      isTimeInvalid(false);
-      if (taskId.isNotEmpty) {
-        final response =
-            await NetworkClient().mutationGraphData(createNewEntryQuery, {
-          "inputData": {
-            "end_date": DateTime.parse(
-                    "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-                .toUtc()
-                .toString(),
-            "description": descriptionController.text,
-            "start_date": DateTime.parse(
-                    "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
-                .toUtc()
-                .toString(),
-            "status": "pending",
-            "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-            "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-          }
-        });
-        if (response.hasException) {
-          ExceptionHelper.errorHandler(exception: response.exception!);
-        } else {
-          print(CreateTimelineEntryResponse.fromJson(response.data!)
-              .createTimelineEntry
-              ?.id);
-          showSuccessMessage(message: "Time entry created successfully");
-          taskId.value = "";
-          descriptionController.clear();
-          Get.back(canPop: false);
-          _refreshTimeline();
-        }
-      } else {
-        showWarningMessage(message: "Provide a valid project/task ");
+  removeTimeEntry({String? timeLogId}) async {
+    isTimelogEntryOrRemoveLoading(true);
+
+    final response =
+        await NetworkClient().mutationGraphData(removeTimerQueryData, {
+      "inputData": {
+        "timeline_id":
+            timeLogId ?? startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
       }
+    });
+
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      isTimeInvalid(true);
+      showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
+      taskId.value = "";
+      Get.find<TimeCounterController>().isTotalCount(true);
+      descriptionController.clear();
+      Get.find<TimeCounterController>().reset();
+      Get.back(canPop: false);
     }
-    isManualEntryLoading(false);
+    isTimelogEntryOrRemoveLoading(false);
   }
 
   getTimelineSummaryByMonth(
