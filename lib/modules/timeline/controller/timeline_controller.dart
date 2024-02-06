@@ -43,6 +43,7 @@ class TimelineController extends GetxController with StateMixin {
   String timeLogDuration = "";
   String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
+  late Timer _apiCallAfter2MinsTimer;
 
   CalendarTimeline calendarTimeline = CalendarTimeline();
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
@@ -332,11 +333,15 @@ class TimelineController extends GetxController with StateMixin {
     if (responseForCalendar.hasException) {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
     } else {
+
+      // fetchDataAfterTwoMinutes();
+
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
           CalendarControllerProvider.of(Get.context!).controller.remove(value);
         }
       }
+
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
       timelogList =
@@ -425,6 +430,15 @@ class TimelineController extends GetxController with StateMixin {
     isTimelineCalendarByDateLoading(false);
   }
 
+
+  @override
+  void onClose() {
+    if(_apiCallAfter2MinsTimer.isActive){
+      _apiCallAfter2MinsTimer.cancel();
+    }
+    super.onClose();
+  }
+
   @override
   void onInit() {
     getProjectDropdown();
@@ -448,9 +462,11 @@ class TimelineController extends GetxController with StateMixin {
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+    fetchDataAfterTwoMinutes();
 
     super.onInit();
   }
+
 
   _refreshTimeline() async {
     getTimelineSummaryByMonth(
@@ -469,5 +485,15 @@ class TimelineController extends GetxController with StateMixin {
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+  }
+
+  void fetchDataAfterTwoMinutes() {
+    _apiCallAfter2MinsTimer=Timer.periodic(const Duration(minutes: 2), (timer) async {
+      await getCalendarTimelineDataByDate(
+          startDate:
+              "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+          endDate:
+              "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+    });
   }
 }
