@@ -92,7 +92,7 @@ class IndividualEventView extends StatelessWidget {
               null ||
           Get.find<LeaveScreenController>()
               .leaveDetailsByDate!
-              .getLeaveDetailsByDate!
+              .getLeaveRequests!
               .isEmpty
       ? Text(
           AppString.no_event_found_text,
@@ -105,20 +105,15 @@ class IndividualEventView extends StatelessWidget {
           padding: marginLayout,
           itemCount: Get.find<LeaveScreenController>()
               .leaveDetailsByDate
-              ?.getLeaveDetailsByDate?[0]
-              .leaveRequests
+              ?.getLeaveRequests
               ?.length,
           itemBuilder: (context, index) {
-            log("key :::: ${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate![0].leaveRequests![index].files?[index].key ?? ""}",
-                error: 100);
-
             return InkWell(
               onTap: () {
                 log(
                     Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate![0]
-                            .leaveRequests![index]
+                            ?.getLeaveRequests?[index]
                             .files?[index]
                             .name
                             .toString() ??
@@ -129,8 +124,7 @@ class IndividualEventView extends StatelessWidget {
                   child: LeaveRecordDetails(
                     status: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate![0]
-                            .leaveRequests?[index]
+                            ?.getLeaveRequests?[index]
                             .status
                             ?.toLowerCase() ??
                         "",
@@ -138,77 +132,64 @@ class IndividualEventView extends StatelessWidget {
                       leaveType: LeaveType(
                         type: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate![0]
-                            .leaveRequests?[index]
+                            ?.getLeaveRequests?[index]
                             .leaveType
                             ?.type,
                         fileKey: Get.find<LeaveScreenController>()
                                 .leaveDetailsByDate
-                                ?.getLeaveDetailsByDate![0]
-                                .leaveRequests![index]
+                                ?.getLeaveRequests?[index]
                                 .files?[index]
                                 .key ??
                             "",
                         leaveName: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate![0]
-                            .leaveRequests?[index]
+                            ?.getLeaveRequests?[index]
                             .leaveType
                             ?.leaveName,
                         leaveId: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate![0]
-                            .leaveRequests?[index]
+                            ?.getLeaveRequests?[index]
                             .leaveType
                             ?.leaveId,
                         isAddNoteRequired: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
-                            ?.getLeaveDetailsByDate![0]
-                            .leaveRequests?[index]
+                            ?.getLeaveRequests?[index]
                             .leaveType
                             ?.isAddNoteRequired,
                         isAttachDocumentRequired:
-                            Get.find<LeaveScreenController>()
-                                .leaveDetailsByDate
-                                ?.getLeaveDetailsByDate![0]
-                                .leaveRequests?[index]
+                        Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
                                 .leaveType
                                 ?.isAttachDocumentRequired,
                       ),
                       description: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
-                          ?.getLeaveDetailsByDate![0]
-                          .leaveRequests?[index]
+                          ?.getLeaveRequests?[index]
                           .description,
                       createdAt: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
-                          ?.getLeaveDetailsByDate![0]
-                          .leaveRequests?[index]
+                          ?.getLeaveRequests?[index]
                           .createdAt,
                       duration: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
-                          ?.getLeaveDetailsByDate![0]
-                          .leaveRequests?[index]
+                          ?.getLeaveRequests?[index]
                           .numberOfDays,
                       status: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
-                          ?.getLeaveDetailsByDate![0]
-                          .leaveRequests?[index]
+                          ?.getLeaveRequests?[index]
                           .status,
                       endDate: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
-                          ?.getLeaveDetailsByDate![0]
-                          .leaveRequests?[index]
+                          ?.getLeaveRequests?[index]
                           .endDate,
                       startDate: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
-                          ?.getLeaveDetailsByDate![0]
-                          .leaveRequests?[index]
+                          ?.getLeaveRequests?[index]
                           .startDate,
                       id: Get.find<LeaveScreenController>()
                           .leaveDetailsByDate
-                          ?.getLeaveDetailsByDate![0]
-                          .leaveRequests?[index]
+                          ?.getLeaveRequests?[index]
                           .id,
                     ),
                   ),
@@ -233,9 +214,8 @@ class IndividualEventView extends StatelessWidget {
                         children: [
                           Text(
                             Get.find<LeaveScreenController>()
-                                    .leaveDetailsByDate
-                                    ?.getLeaveDetailsByDate![0]
-                                    .leaveRequests?[index]
+                                .leaveDetailsByDate
+                                ?.getLeaveRequests?[index]
                                     .leaveType
                                     ?.leaveName ??
                                 "",
@@ -246,20 +226,22 @@ class IndividualEventView extends StatelessWidget {
                                 fontWeight: FontWeight.w500),
                           ),
                           Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveDetailsByDate![0]
-                                      .leaveRequests?[index]
+                              .leaveDetailsByDate
+                              ?.getLeaveRequests?[index]
                                       .numberOfDays !=
                                   null
                               ? Text(
-                                  Get.find<LeaveScreenController>()
-                                              .leaveDetailsByDate
-                                              ?.getLeaveDetailsByDate![0]
-                                              .leaveRequests?[index]
+                            Get.find<LeaveScreenController>()
+                                .leaveDetailsByDate
+                                ?.getLeaveRequests?[index]
                                               .numberOfDays >
                                           1
-                                      ? "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate![0].leaveRequests?[index].numberOfDays} days"
-                                      : "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveDetailsByDate![0].leaveRequests?[index].numberOfDays} day",
+                                      ? "${Get.find<LeaveScreenController>()
+                                .leaveDetailsByDate
+                                ?.getLeaveRequests?[index].numberOfDays} days"
+                                      : "${Get.find<LeaveScreenController>()
+                                .leaveDetailsByDate
+                                ?.getLeaveRequests?[index].numberOfDays} day",
                                   style: AppStyle.normal_text_black.copyWith(
                                       color: AppColor.hintColor,
                                       fontSize: Dimensions.fontSizeDefault - 1),
@@ -269,9 +251,8 @@ class IndividualEventView extends StatelessWidget {
                         ],
                       ),
                       _getStatusButton(Get.find<LeaveScreenController>()
-                              .leaveDetailsByDate
-                              ?.getLeaveDetailsByDate?[0]
-                              .leaveRequests?[index]
+                          .leaveDetailsByDate
+                          ?.getLeaveRequests?[index]
                               .status ??
                           ""),
                     ],

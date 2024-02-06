@@ -56,10 +56,9 @@ query GetUploadPolicy($queryData: UploadPolicyQueryData) {
 ''';
 
 const getLeaveDetailsByDateQuery = r"""
-query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
-  getLeaveDetailsByDate(queryData: $queryData) {
-    leave_requests {
-      createdAt
+query GetLeaveRequests($queryData: LeaveRequestQueryType) {
+  getLeaveRequests(queryData: $queryData) {
+    createdAt
       description
       end_date
       files {
@@ -69,7 +68,6 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
         key
         id
       }
-      leave_status
        leaveType {
         type
         id
@@ -81,7 +79,6 @@ query GetLeaveDetailsByDate($queryData: CommonDateRangeInput!) {
       number_of_days
       start_date
       id
-    }
   }
 }
         """;
