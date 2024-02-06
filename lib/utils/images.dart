@@ -11,6 +11,7 @@ class Images {
   static String start_time = "assets/images/start_time.svg";
   static String start_time_open = "assets/images/start_timer_open.svg";
   static String add_time_entry = "assets/images/add_time_entry.svg";
+  static String passwordResetSuccessfull = "assets/images/password_reset_succeessful.svg";
 
   static String forgot = "assets/images/forgot_src.svg";
   static String otp = "assets/images/otp_src.svg";

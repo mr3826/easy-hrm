@@ -95,7 +95,7 @@ class Files {
 class LeaveType {
   String? type;
   String? leaveId;
-  dynamic fileKey;
+  String? fileKey;
   String? leaveName;
   bool? isAddNoteRequired;
   bool? isAttachDocumentRequired;

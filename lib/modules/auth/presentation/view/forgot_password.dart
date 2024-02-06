@@ -92,10 +92,9 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
                 ),
           onPressed: () async {
             await controller.forgotPassword();
-            Get.toNamed(Routes.OTP);
           },
           buttonColor: AppColor.primaryColor,
-          btnTextSize: Dimensions.fontSizeMid + 2,
+          btnTextSize: Dimensions.fontSizeLarge,
           isButtonExpanded: false,
         ));
   }
@@ -118,7 +117,7 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
       AppString.text_forgot_password,
       style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeLarge + 2,
+          fontSize: Dimensions.fontSizeLarge,
           color: AppColor.normalTextColor,
           fontFamily: "Poppins"),
     ));

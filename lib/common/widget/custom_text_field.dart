@@ -4,7 +4,6 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../utils/utils.dart';
 
 class CustomInputField extends StatelessWidget {
   final String hint;

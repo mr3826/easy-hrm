@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
+import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -22,39 +23,41 @@ class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
 
   String OTPCode = Get.arguments[0];
+  String emailAddress = Get.arguments[1];
 
   @override
   Widget build(BuildContext context) {
-    print(OTPCode);
     return Scaffold(
-      body: Container(
-        padding: marginLayout,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              customSpacerHeight(height: 50),
-              _imageLayout(),
-              customSpacerHeight(height: 50),
-              _codeTitleText(),
-              customSpacerHeight(height: 6),
-              Center(
-                  child: Text(
-                AppString.text_setup_your_code_etc.tr,
-                style: style,
-              )),
-              customSpacerHeight(height: 40),
-              _newPasswordLayout(),
-              customSpacerHeight(height: 20),
-              _confirmPasswordLayout(),
-              customSpacerHeight(height: 36),
-              customSpacerHeight(height: 12),
-              _submitBtnLayout(),
-              customSpacerHeight(height: 22),
-              _backToLoginLayout(),
-            ],
+      body: SafeArea(
+        child: Container(
+          padding: marginLayout,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                customSpacerHeight(height: 50),
+                _imageLayout(),
+                customSpacerHeight(height: 50),
+                _codeTitleText(),
+                customSpacerHeight(height: 6),
+                Center(
+                    child: Text(
+                  AppString.text_setup_your_code_etc.tr,
+                  style: style,
+                )),
+                customSpacerHeight(height: 40),
+                _newPasswordLayout(),
+                customSpacerHeight(height: 20),
+                _confirmPasswordLayout(),
+                customSpacerHeight(height: 36),
+                customSpacerHeight(height: 12),
+                _submitBtnLayout(),
+                customSpacerHeight(height: 22),
+                _backToLoginLayout(),
+              ],
+            ),
           ),
         ),
       ),
@@ -64,10 +67,10 @@ class ResetPasswordScreen extends StatelessWidget {
   _codeTitleText() {
     return Center(
         child: Text(
-      AppString.text_enter_code.tr,
+      AppString.text_reset_password.tr,
       style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeLarge + 2,
+          fontSize: Dimensions.fontSizeLarge,
           color: AppColor.normalTextColor,
           fontFamily: "Poppins"),
     ));
@@ -82,13 +85,15 @@ class ResetPasswordScreen extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: AppStyle.normal_text.copyWith(
                 fontWeight: FontWeight.w600,
+                fontSize: 18
               ),
             ),
       onPressed: () async {
         if (newPasswordController.text == confirmPasswordController.text) {
           await Get.find<ForgotPasswordController>()
-              .resetPassword(confirmationCode: OTPCode);
-          Get.toNamed(Routes.PASSWORD_UPDATE_SCRREN);
+              .resetPassword(confirmationCode: OTPCode,emailAddress: emailAddress);
+        }else{
+          showWarningMessage(message: AppString.password_not_matched);
         }
       },
       buttonColor: AppColor.primaryColor,
