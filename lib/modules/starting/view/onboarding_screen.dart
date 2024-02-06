@@ -60,17 +60,27 @@ class OnboardScreen extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       decoration: AppStyle.ContainerStyle.copyWith(
-                          color: AppColor.primaryColor.withOpacity(0.2)),
+                          color: AppColor.bgColorWithPrimary
+                      ),
+
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Obx(
-                              () => _dotsDecorator(
-                                  onboardImg: _onboardImage.length,
-                                  currentIndex: _currentIndex.toInt()),
+                            // Obx(() => _dotsDecorator(
+                            //       onboardImg: _onboardImage.length,
+                            //       currentIndex: _currentIndex.toInt())),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(_onboardImage.length, (index) {
+                                return ActiveDot(
+                                  isActive: _onboardImage.length == index,
+                                );
+                              }),
                             ),
+
                             Obx(() => _onboardTitleText(
                                 text: '${_title[_currentIndex.toInt()]}')),
                             Obx(() => _descriptionText(
@@ -83,6 +93,8 @@ class OnboardScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+
+
                     )),
               ],
             ),
@@ -151,6 +163,32 @@ Widget _dotsDecorator({required onboardImg, required currentIndex}) {
   );
 }
 
+
+
+class ActiveDot extends StatelessWidget {
+  final bool isActive;
+  const ActiveDot({super.key, this.isActive = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CircleAvatar(
+          radius: 9,
+          backgroundColor: isActive ? Colors.orangeAccent : Colors.transparent,
+          child: const CircleAvatar(
+            radius: 8,
+            backgroundColor: Colors.white,
+            child: CircleAvatar(
+              radius: 6,
+              backgroundColor: Colors.blue,
+            ),
+          ),
+        ));
+  }
+}
+
+
 Widget _onboardByImage({required imageUrl}) {
   return Center(
     child: SvgPicture.asset(
@@ -193,3 +231,14 @@ class ExitAppController extends GetxController {
     return false;
   }
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -10,12 +10,12 @@ import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/notification/view/screen/notification.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
-import 'package:payrun_mobile/modules/starting/view/onboarding_screen.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../modules/leave/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
+import '../modules/starting/view/onboard.dart';
 import '../modules/timeline/view/screen/new_entry.dart';
 part 'app_routes.dart';
 
@@ -32,7 +32,7 @@ class AppPages {
 
     GetPage(
       name: _Paths.ONBOARD_SCRREN,
-      page: ()=> OnboardScreen(),
+      page: ()=>  OnboardScreen(),
     ),   GetPage(
       name: _Paths.TIMER_SCREEN,
       page: ()=> TimerScreen(),

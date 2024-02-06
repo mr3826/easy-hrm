@@ -22,10 +22,6 @@ class TimelineScreen extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
-
-    print("media ::: ${MediaQuery.of(context).viewPadding.top}");
-    print("context for getx ::: ${MediaQuery.of(Get.context!).viewPadding.top}");
-    print("statusBarHeight ::: ${Get.statusBarHeight}");
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,

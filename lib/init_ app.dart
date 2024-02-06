@@ -28,7 +28,6 @@ Future<void> initApp() async {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
 
-  Get.put(SplashController());
   Get.put(ForgotPasswordController());
   Get.put(FileUploadController());
   Get.put(PickedFileFormStorage());
