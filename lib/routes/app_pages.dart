@@ -15,7 +15,7 @@ import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../modules/leave/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
-import '../modules/starting/view/onboard.dart';
+import '../modules/starting/view/onboarding_screen.dart';
 import '../modules/timeline/view/screen/new_entry.dart';
 part 'app_routes.dart';
 
