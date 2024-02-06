@@ -43,9 +43,11 @@ Widget btnSheetViewLayout(
             customSpacerHeight(height: 6),
             _infoLayout(
                 text: "${AppString.text_end.tr}:",
-                dynamicText: DateFormat('HH:mm')
-                    .format(DateTime.parse(endTime.toString()))
-                    .toString()),
+                dynamicText: endTime.isEmpty
+                    ? DateFormat('HH:mm').format(DateTime.now()).toString()
+                    : DateFormat('HH:mm')
+                        .format(DateTime.parse(endTime.toString()))
+                        .toString()),
             customSpacerHeight(height: 6),
           ],
         ),

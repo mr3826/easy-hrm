@@ -46,10 +46,13 @@ class UpdateTimeLineLog extends StatelessWidget {
     Get.find<DateTimePickerController>().inTime.value =
         DateFormat('HH:mm').format(DateTime.parse(startDateTime));
 
-    Get.find<DateTimePickerController>().outDate.value =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(endDateTime));
-    Get.find<DateTimePickerController>().outTime.value =
-        DateFormat('HH:mm').format(DateTime.parse(endDateTime));
+    Get.find<DateTimePickerController>().outDate.value = endDateTime.isEmpty
+        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+        : DateFormat('yyyy-MM-dd').format(DateTime.parse(endDateTime));
+
+    Get.find<DateTimePickerController>().outTime.value = endDateTime.isEmpty
+        ? DateFormat('HH:mm').format(DateTime.now())
+        : DateFormat('HH:mm').format(DateTime.parse(endDateTime));
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();

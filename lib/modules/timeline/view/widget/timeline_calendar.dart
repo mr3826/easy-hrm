@@ -45,7 +45,6 @@ class TimeLineCalendar extends StatelessWidget {
               headerStyle: _headerStyle(),
               eventArranger: const SideEventArranger(),
               scrollPhysics: const NeverScrollableScrollPhysics(),
-
               liveTimeIndicatorSettings: HourIndicatorSettings.none(),
               pageViewPhysics: const NeverScrollableScrollPhysics(),
               halfHourIndicatorSettings: const HourIndicatorSettings(

@@ -89,7 +89,12 @@ class TimeLogEntryTextField extends StatelessWidget {
                                 Get.find<TimelineController>().timeLineID);
                       },
                       buttonColor: AppColor.errorColorLight)
-                  : Get.find<TimelineController>().isManualEntryLoading.isTrue
+                  : Get.find<TimelineController>()
+                              .isManualEntryLoading
+                              .isTrue ||
+                          Get.find<TimelineController>()
+                              .isUpdateTimeLogLoading
+                              .isTrue
                       ? const Center(
                           child: CupertinoActivityIndicator(),
                         )
