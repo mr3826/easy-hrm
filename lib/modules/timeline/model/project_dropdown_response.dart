@@ -15,13 +15,15 @@ class ProjectDropDownResponse {
 
 class GetProjectsDropdown {
   String? color;
+  String? projectId;
   String? name;
   List<Tasks>? tasks;
 
-  GetProjectsDropdown({this.color, this.name, this.tasks});
+  GetProjectsDropdown({this.color, this.name, this.tasks,this.projectId});
 
   GetProjectsDropdown.fromJson(Map<String, dynamic> json) {
     color = json['color'];
+    projectId = json['id'];
     name = json['name'];
     if (json['tasks'] != null) {
       tasks = <Tasks>[];

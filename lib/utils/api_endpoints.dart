@@ -346,6 +346,7 @@ mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
     start_date
     status
     task_id
+    project_id
   }
 }
 ''';
@@ -368,6 +369,7 @@ mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
 const getProjectDropdownQuery = r'''
 query GetProjectsDropdown($queryData: ProjectQueryInputType, $optionData: OptionDataType) {
   getProjectsDropdown(queryData: $queryData, optionData: $optionData) {
+    id
     color
     name
     tasks {

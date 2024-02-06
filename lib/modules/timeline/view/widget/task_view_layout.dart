@@ -94,15 +94,44 @@ class TaskViewLayout extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      Get.find<TimelineController>()
-                              .projectDropDownResponse
-                              ?.getProjectsDropdown?[index]
-                              .name ??
-                          "",
-                      style: AppStyle.mid_large_text.copyWith(
-                          fontSize: Dimensions.fontSizeMid - 3,
-                          color: AppColor.normalTextColor),
+                    InkWell(
+                      onTap: () {
+                        print(Get.find<TimelineController>()
+                            .projectDropDownResponse
+                            ?.getProjectsDropdown?[index]
+                            .projectId);
+
+                        /// when it select project
+                        /// then it became task name that shown in ui
+                        /// pass its name to task name
+
+                        Get.find<TimelineController>().taskName.value =
+                            Get.find<TimelineController>()
+                                    .projectDropDownResponse
+                                    ?.getProjectsDropdown?[index]
+                                    .name ??
+                                "";
+                        Get.find<TimelineController>().projectId.value =
+                            Get.find<TimelineController>()
+                                    .projectDropDownResponse
+                                    ?.getProjectsDropdown?[index]
+                                    .projectId ??
+                                "";
+
+                        Get.find<TimelineController>().taskId.value = "";
+
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        Get.find<TimelineController>()
+                                .projectDropDownResponse
+                                ?.getProjectsDropdown?[index]
+                                .name ??
+                            "",
+                        style: AppStyle.mid_large_text.copyWith(
+                            fontSize: Dimensions.fontSizeMid - 3,
+                            color: AppColor.normalTextColor),
+                      ),
                     ),
                     customSpacerHeight(height: 8),
                     Column(
@@ -139,6 +168,7 @@ class TaskViewLayout extends StatelessWidget {
         taskSearchController.text = task.name ?? "";
         Get.find<TimelineController>().taskName.value = task.name ?? "";
         Get.find<TimelineController>().taskId.value = task.taskId ?? "";
+        Get.find<TimelineController>().projectId.value = "";
         Navigator.pop(context);
       },
       child: Column(
