@@ -142,14 +142,14 @@ class AppString {
   static String text_out = "Out";
   static String text_total = "Total";
   static String text_schedule = "Schedule";
-  static String text_set_start_time = "Set start time *";
+  static String text_set_start_time = "Set start time";
 
   static String text_start = "Start:";
   static String text_status = "Status";
   static String text_project_task_or_tag = "Project, task or tag:";
 
-  static String text_set_end_time = "Set end time *";
-  static String text_project_or_task = "Project or task *";
+  static String text_set_end_time = "Set end time";
+  static String text_project_or_task = "Project or task";
   static String text_project_task = "Project or task";
 
   static String text_logged = "Logged";
