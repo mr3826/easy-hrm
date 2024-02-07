@@ -2,11 +2,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
@@ -22,32 +24,39 @@ import '../../controller/profile_image_selected_controller.dart';
 import '../widget/edit_profile_widget.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
+  EditProfileScreen({super.key});
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customInsideAppbar(
-          title: AppString.text_edit_profile.tr,
-          onPressAction: () {
-            _clearInputField();
-            Get.back();
-          }),
-      body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
-          ? const LoadingIndicator()
-          : Padding(
-              padding: marginLayout,
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    _profileSectionLayout(context),
-                    customSpacerHeight(height: 30),
-                    textFiledLayout()
-                  ],
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        appBar: customInsideAppbar(
+            title: AppString.text_edit_profile.tr,
+            onPressAction: () {
+              _clearInputField();
+              Get.back();
+            }),
+        body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
+            ? const LoadingIndicator()
+            : Padding(
+                padding: marginLayout,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      _profileSectionLayout(context),
+                      customSpacerHeight(height: 30),
+                      TextFiledLayout(
+                        formKey: _formKey,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            )),
+              )),
+      ),
     );
   }
 
@@ -58,19 +67,14 @@ class EditProfileScreen extends StatelessWidget {
     editAddressController.clear();
     editLastNameController.clear();
     editFirstNameController.clear();
-    Get.find<PikedProfileImgController>()
-        .storageForUpload
-        .filePath
-        .value="";
+    Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
   }
 
   _profileSectionLayout(context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Obx(
-          () => _profileImageLayout(),
-        ),
+        Obx(() => _profileImageLayout()),
         customSpacerWidth(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,6 +150,18 @@ class EditProfileScreen extends StatelessWidget {
                     .storageForUpload
                     .filePath
                     .value = "";
+
+                final variables = _addVariables();
+
+                if (editFirstNameController.text.isNotEmpty &&
+                    editLastNameController.text.isNotEmpty) {
+                  Get.find<UpdateProfileController>()
+                      .updateUserProfile(variables!);
+                } else {
+                  showWarningMessage(
+                      message: "First and last name field is required!");
+                }
+
                 Get.find<PikedProfileImgController>()
                         .storageForUpload
                         .filePath
@@ -186,6 +202,52 @@ class EditProfileScreen extends StatelessWidget {
             ))
         : _placeholderImage();
   }
+}
+
+Map<String, dynamic>? _addVariables() {
+  Map<String, dynamic> inputData = {};
+
+  inputData["about"] = editBioController.text;
+
+  inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
+
+  inputData["personal_phone_number"] = editPhoneController.text;
+
+  inputData["address"] = editAddressController.text;
+
+  inputData["last_name"] = editLastNameController.text;
+
+  if (editFirstNameController.text.isNotEmpty) {
+    inputData["first_name"] = editFirstNameController.text;
+  } else {
+    inputData["first_name"] = Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.firstName ??
+        "";
+  }
+
+  inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
+
+  inputData["department_id"] = Get.find<UserProfileController>()
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.department
+          ?.id ??
+      "";
+
+  inputData["employment_status_id"] = Get.find<UserProfileController>()
+          .employeeWorkHistory
+          ?.getOrganizationUserHistory
+          ?.employmentHistories?[0]
+          .employmentStatus
+          ?.id ??
+      "";
+
+  inputData["image"] = "";
+
+  return inputData;
 }
 
 Widget _imageLayout() {

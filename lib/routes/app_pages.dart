@@ -93,7 +93,7 @@ class AppPages {
     GetPage(
       name: _Paths.EDIT_PROFILE_SCREEN,
       transition: Transition.size,
-      page: () => const EditProfileScreen(),
+      page: () => EditProfileScreen(),
     ),
     GetPage(
       name: _Paths.TIME_LOG_SUMMARY,
