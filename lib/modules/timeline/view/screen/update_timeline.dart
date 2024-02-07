@@ -15,9 +15,11 @@ class UpdateTimeLineLog extends StatelessWidget {
   final String? status;
   final String startDateTime;
   final String endDateTime;
+  final Color projectOrTaskColor;
 
   const UpdateTimeLineLog(
       {this.status,
+      required this.projectOrTaskColor,
       required this.startDateTime,
       required this.endDateTime,
       super.key});
@@ -30,7 +32,7 @@ class UpdateTimeLineLog extends StatelessWidget {
     Get.put(DateTimePickerController());
     _updateTimelogFromApiResponse();
     return Scaffold(
-      backgroundColor: _statusColor(status: status ?? ""),
+      backgroundColor: projectOrTaskColor,
       appBar: timeLogAppbar(context),
       body: SingleChildScrollView(
           child: TimeLogEntryTextField(

@@ -29,27 +29,34 @@ class ModelForDescription {
   String? startDate;
   String? endDate;
   String? duration;
-  String? taskName;
   String? createdAt;
   List<Files>? files;
   LeaveType? leaveType;
   dynamic numberOfDays;
   String? leaveId;
+  String? taskId;
+  String? taskName;
+  String? projectId;
+  String? projectName;
+  String? projectColor;
 
-  ModelForDescription({
-    this.status,
-    this.description,
-    this.timeLId,
-    this.startDate,
-    this.endDate,
-    this.duration,
-    this.taskName,
-    this.createdAt,
-    this.files,
-    this.leaveType,
-    this.numberOfDays,
-    this.leaveId,
-  });
+  ModelForDescription(
+      {this.status,
+      this.description,
+      this.timeLId,
+      this.startDate,
+      this.endDate,
+      this.duration,
+      this.taskName,
+      this.createdAt,
+      this.files,
+      this.leaveType,
+      this.numberOfDays,
+      this.leaveId,
+      this.taskId,
+      this.projectId,
+      this.projectName,
+      this.projectColor});
 
   ModelForDescription.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -58,7 +65,6 @@ class ModelForDescription {
     startDate = json['startDate'];
     endDate = json['endDate'];
     duration = json['duration'];
-    taskName = json['taskName'];
     createdAt = json['createdAt'];
     if (json['files'] != null) {
       files = List<Files>.from(json['files'].map((x) => Files.fromJson(x)));
@@ -68,10 +74,15 @@ class ModelForDescription {
         : null;
     numberOfDays = json['numberOfDays'];
     leaveId = json['leaveId'];
+    taskName = json['taskName'];
+    taskId = json['taskId'];
+    projectId = json['projectId'];
+    projectName = json['projectName'];
+    projectColor = json['projectColor'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['description'] = description;
     data['timeLId'] = timeLId;
@@ -88,6 +99,10 @@ class ModelForDescription {
     }
     data['numberOfDays'] = numberOfDays;
     data['leaveId'] = leaveId;
+    data['projectColor'] = projectColor;
+    data['projectName'] = projectName;
+    data['projectId'] = projectId;
+    data['taskId'] = taskId;
     return data;
   }
 }
@@ -141,5 +156,3 @@ class LeaveType {
     return data;
   }
 }
-
-

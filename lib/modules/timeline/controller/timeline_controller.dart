@@ -137,15 +137,17 @@ class TimelineController extends GetxController with StateMixin {
     }
     isTimelogEntryOrRemoveLoading(false);
   }
-///check again
+
+  ///done
+  ///dev check
   createManualEntry() async {
     isManualEntryLoading(true);
 
     print('''
      "description": ${descriptionController.text},
-        "end_date": ${startOrEndTimerResponse?.startOrStopTimer?.endDate ?? ""},
+        "end_date": ${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString()},
         "start_date":
-            ${startOrEndTimerResponse?.startOrStopTimer?.startDate ?? ""},
+            ${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString()},
         "status": "pending",
         "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
         "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
@@ -191,6 +193,7 @@ class TimelineController extends GetxController with StateMixin {
     isManualEntryLoading(false);
   }
 
+  ///todo
   updateTimelineLogDetails() async {
     isUpdateTimeLogLoading(true);
 
@@ -200,9 +203,9 @@ class TimelineController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
     print('''
      "description": ${descriptionController.text},
-        "end_date": ${startOrEndTimerResponse?.startOrStopTimer?.endDate ?? ""},
+        "end_date": "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}",
         "start_date":
-            ${startOrEndTimerResponse?.startOrStopTimer?.startDate ?? ""},
+            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}",
         "status": "pending",
         "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
         "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
@@ -233,20 +236,11 @@ class TimelineController extends GetxController with StateMixin {
       } else {
         descriptionController.clear();
         timeLineID = '';
-        getCalendarTimelineDataByDate(
-            startDate:
-                "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
-            endDate:
-                "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-
-        getTimelineSummaryByMonth(
-            startDate:
-                "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-            endDate:
-                "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
-        Get.find<TimelineController>().timeLineID = "";
-
-        Get.back();
+        taskId.value = "";
+        taskName.value = '';
+        projectId.value = '';
+        Get.back(canPop: false);
+        _refreshTimeline();
       }
     } else {
       isTimeInvalid(true);
@@ -352,7 +346,6 @@ class TimelineController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
     } else {
       // fetchDataAfterTwoMinutes();
-
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
           CalendarControllerProvider.of(Get.context!).controller.remove(value);
@@ -364,14 +357,17 @@ class TimelineController extends GetxController with StateMixin {
       timelogList =
           calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
-          status: e.status ?? "",
-          description: e.description ?? "No added yet",
-          timeLId: e.timelineId ?? "",
-          endDate: e.endDate ?? "",
-          duration: e.totalMinutes ?? "",
-          startDate: e.startDate ?? "",
-          taskName: e.task?.name ?? "",
-        );
+            status: e.status ?? "",
+            description: e.description ?? "No added yet",
+            timeLId: e.id ?? "",
+            endDate: e.endDate ?? "",
+            duration: e.totalMinutes ?? "",
+            startDate: e.startDate ?? "",
+            taskName: e.task?.name ?? "",
+            taskId: e.task?.id ?? "",
+            projectId: e.project?.id ?? "",
+            projectName: e.project?.name ?? "",
+            projectColor: e.project?.color ?? "");
 
         Map<String, dynamic> jsonModel = modelForDescription.toJson();
         String objData = jsonEncode(jsonModel);
@@ -458,48 +454,29 @@ class TimelineController extends GetxController with StateMixin {
   @override
   void onInit() {
     getProjectDropdown();
-
-    //monthly summary
-    //by default its current month
-
-    getTimelineSummaryByMonth(
-        startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-        endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
-
-    getCalendarTimelineDataByDate(
-        startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
-        endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-    getTimelineSummaryByDate(
-        startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
-        endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+    _refreshTimeline();
     fetchDataAfterTwoMinutes();
 
     super.onInit();
   }
 
   _refreshTimeline() async {
-    getTimelineSummaryByMonth(
+    await getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
 
-    getCalendarTimelineDataByDate(
+    await getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
-    getTimelineSummaryByDate(
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+    await getTimelineSummaryByDate(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   }
 
   void fetchDataAfterTwoMinutes() {

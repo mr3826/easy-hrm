@@ -232,6 +232,7 @@ Widget taskSearchInputField() {
 
 class HexColor extends Color {
   static int _getColor(String hex) {
+    if (hex.isEmpty) return int.parse("FF8F99AD", radix: 16);
     String formattedHex = "FF${hex.toUpperCase().replaceAll("#", "")}";
     return int.parse(formattedHex, radix: 16);
   }

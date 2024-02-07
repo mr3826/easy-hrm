@@ -35,59 +35,62 @@ class GetCalenderTimelinesForApp {
   }
 }
 
-
 class Timelines {
+  String? id;
   String? description;
   String? endDate;
   String? startDate;
   String? status;
   Task? task;
   String? totalMinutes;
-  String? timelineId;
-
+  Project? project;
 
   Timelines(
-      {this.description,
-      this.endDate,
-      this.startDate,
-      this.status,
-      this.task,     this.timelineId,
-      this.totalMinutes});
+      {this.id,
+        this.description,
+        this.endDate,
+        this.startDate,
+        this.status,
+        this.task,
+        this.totalMinutes,
+        this.project});
 
   Timelines.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     description = json['description'];
     endDate = json['end_date'];
     startDate = json['start_date'];
     status = json['status'];
     task = json['task'] != null ? Task.fromJson(json['task']) : null;
     totalMinutes = json['total_minutes'];
-    timelineId = json['id'];
+    project =
+    json['project'] != null ? Project.fromJson(json['project']) : null;
   }
 }
 
 class Task {
   String? name;
   String? id;
-  Project? project;
 
-  Task({this.name, this.id, this.project});
+  Task({this.name, this.id});
 
   Task.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
-    project =
-        json['project'] != null ? Project.fromJson(json['project']) : null;
   }
+
 }
 
 class Project {
   String? id;
   String? name;
+  String? color;
 
-  Project({this.id, this.name});
+  Project({this.id, this.name, this.color});
 
   Project.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    color = json['color'];
   }
 }

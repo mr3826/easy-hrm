@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -79,88 +81,22 @@ statusBtn({required status}) {
   }
 }
 
-Widget buttonLayout({
-  required context,
-  required String timeLineId,
-  required String startDateTime,
-  required String endDateTime,
-  required String status,
-  String? dtsStartTime,
-  String? dtsEndTime,
-  required String dtsDateStatus,
-  String? dtsProjectName,
-  required Color dtsBgColor,
-  String? dtsDrc,
-  String? dtsDuration,
-  String? dtsDate,
-}) {
-  if (status == "reject") {
-    return _rejectedBtn(
-        startDateTime: startDateTime,
-        endDateTime: endDateTime,
-        timeLineId: timeLineId,
-        context: context,
-        dtsBgColor: dtsBgColor,
-        dtsDate: dtsDate ?? "",
-        dtsDateStatus: dtsDateStatus,
-        dtsDrc: dtsDrc ?? "",
-        dtsDuration: dtsDuration ?? "",
-        dtsEndTime: dtsEndTime ?? "",
-        dtsStartTime: dtsStartTime ?? "",
-        dtsProjectName: dtsProjectName ?? "",
-        dtsStatus: dtsDateStatus);
-  } else if (status == "pending") {
-    return _pendingLayout(
-        endDateTime: endDateTime,
-        startDateTime: startDateTime,
-        timeLineId: timeLineId,
-        context: context,
-        dtsBgColor: dtsBgColor,
-        dtsDate: dtsDate,
-        dtsDateStatus: dtsDateStatus,
-        dtsDrc: dtsDrc,
-        dtsDuration: dtsDuration,
-        dtsEndTime: dtsEndTime,
-        dtsStartTime: dtsStartTime,
-        dtsProjectName: dtsProjectName,
-        dtsStatus: dtsDateStatus);
-  } else if (status == "cancelled") {
+Widget buttonLayout(
+    {required BuildContext context, required TaskInfo taskInfo}) {
+  if (taskInfo.status == "reject") {
+    return _rejectedBtn(context: context, taskInfo: taskInfo);
+  } else if (taskInfo.status == "pending") {
+    return _pendingLayout(taskInfo: taskInfo, context: context);
+  } else if (taskInfo.status == "cancelled") {
     return Container();
-  } else if (status == "taken") {
+  } else if (taskInfo.status == "taken") {
     return Container();
   } else {
-    return _approvedLayout(
-        endDateTime: endDateTime,
-        startDateTime: startDateTime,
-        timeLineId: timeLineId,
-        context: context,
-        dtsBgColor: dtsBgColor,
-        dtsDate: dtsDate,
-        dtsDateStatus: dtsDateStatus,
-        dtsDrc: dtsDrc ?? "",
-        dtsDuration: dtsDuration,
-        dtsEndTime: dtsEndTime,
-        dtsStartTime: dtsStartTime,
-        dtsProjectName: dtsProjectName,
-        dtsStatus: dtsDateStatus);
+    return _approvedLayout(context: context, taskInfo: taskInfo);
   }
 }
 
-_rejectedBtn({
-  required BuildContext context,
-  required String dtsStartTime,
-  required String dtsEndTime,
-  required String dtsDateStatus,
-  required String dtsProjectName,
-  required Color dtsBgColor,
-  required String dtsDrc,
-  required String dtsDuration,
-  required String dtsDate,
-  required String dtsStatus,
-  required String timeLineId,
-  required String startDateTime,
-  required String endDateTime,
-}) {
+_rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
@@ -169,7 +105,7 @@ _rejectedBtn({
               context: context,
               saveBtnAction: () {
                 Get.find<TimelineController>()
-                    .removeTimeEntry(timeLogId: timeLineId.toString());
+                    .removeTimeEntry(timeLogId: taskInfo.timeLineId);
               },
               icon: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_time_log.tr,
@@ -182,20 +118,15 @@ _rejectedBtn({
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
         onAction: () {
-          _updateDataFromApiResponse(
-              startDate: dtsStartTime,
-              endDate: dtsEndTime,
-              description: dtsDrc,
-              duration: dtsDuration,
-              color: dtsBgColor,
-              taskId: '',
-              timelineId: timeLineId,
-              status: dtsStatus);
+          _updateDataFromApiResponse(taskInfo: taskInfo);
           Get.to(() {
             return UpdateTimeLineLog(
-              endDateTime: dtsEndTime,
-              startDateTime: dtsStartTime,
-              status: dtsStatus,
+              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                  ? colorFromHex(taskInfo.projectColor)
+                  : AppColor.primaryColor,
+              endDateTime: taskInfo.endTime,
+              startDateTime: taskInfo.startTime,
+              status: taskInfo.status ?? "",
             );
           });
         },
@@ -203,62 +134,43 @@ _rejectedBtn({
   );
 }
 
-_pendingLayout(
-    {required BuildContext context,
-    required dtsStartTime,
-    required dtsEndTime,
-    required dtsDateStatus,
-    required dtsProjectName,
-    Color? dtsBgColor,
-    required String startDateTime,
-    required String endDateTime,
-    String? dtsDrc,
-    String? dtsDuration,
-    required String timeLineId,
-    required dtsDate,
-    required dtsStatus}) {
+_pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
         cancelAction: () {
-          Navigator.pop(context);
+          customDialog(
+              context: context,
+              saveBtnAction: () {
+                Get.find<TimelineController>()
+                    .removeTimeEntry(timeLogId: taskInfo.timeLineId);
+              },
+              icon: Icons.delete_outline_outlined,
+              titleText: AppString.text_remove_time_log.tr,
+              subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
+              drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
+              iconBgColor: AppColor.errorColorLight,
+              btnBgColor: AppColor.errorColorLight,
+              btnText: AppString.text_remove.tr);
         },
         buttonText: AppString.text_details.tr,
-        cancelText: AppString.text_cancel.tr,
+        cancelText: AppString.text_remove.tr,
         onAction: () {
-          _updateDataFromApiResponse(
-              startDate: dtsStartTime,
-              endDate: dtsEndTime,
-              description: dtsDrc ?? "",
-              duration: dtsDuration ?? "",
-              color: dtsBgColor,
-              taskId: '',
-              timelineId: timeLineId,
-              status: dtsStatus ?? "");
+          _updateDataFromApiResponse(taskInfo: taskInfo);
           Get.to(() => UpdateTimeLineLog(
-                endDateTime: dtsEndTime ?? "",
-                startDateTime: dtsStartTime ?? "",
-                status: dtsStatus,
+            projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                ? colorFromHex(taskInfo.projectColor)
+                : AppColor.primaryColor,
+                endDateTime: taskInfo.endTime,
+                startDateTime: taskInfo.startTime,
+                status: taskInfo.status ?? "",
               ));
         },
         btnColor: AppColor.primaryColor),
   );
 }
 
-_approvedLayout(
-    {required BuildContext context,
-    required String startDateTime,
-    required String endDateTime,
-    String? dtsStartTime,
-    String? dtsEndTime,
-    String? dtsDateStatus,
-    String? dtsProjectName,
-    Color? dtsBgColor,
-    required String dtsDrc,
-    String? dtsDuration,
-    String? dtsDate,
-    String? dtsStatus,
-    required timeLineId}) {
+_approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(
@@ -269,23 +181,14 @@ _approvedLayout(
             fontSize: Dimensions.fontSizeDefault + 2),
       ),
       onPressed: () {
-        //todo
-        ///check what this logic mean
-        Get.find<TimelineController>().timeLogStatus == dtsStatus;
-        Get.find<TimelineController>().timeLineID == timeLineId;
-        _updateDataFromApiResponse(
-            startDate: dtsStartTime ?? "",
-            endDate: dtsEndTime ?? "",
-            description: dtsDrc,
-            duration: dtsDuration ?? "",
-            color: dtsBgColor,
-            taskId: '',
-            timelineId: timeLineId,
-            status: dtsStatus ?? "");
+        _updateDataFromApiResponse(taskInfo: taskInfo);
         Get.to(() => UpdateTimeLineLog(
-              endDateTime: dtsEndTime ?? "",
-              startDateTime: dtsStartTime ?? "",
-              status: dtsStatus,
+          projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+              ? colorFromHex(taskInfo.projectColor)
+              : AppColor.primaryColor,
+              endDateTime: taskInfo.endTime,
+              startDateTime: taskInfo.startTime,
+              status: taskInfo.status,
             ));
       },
       buttonColor: AppColor.primaryColor,
@@ -294,17 +197,12 @@ _approvedLayout(
   );
 }
 
-void _updateDataFromApiResponse(
-    {required String startDate,
-    required String endDate,
-    required String taskId,
-    required String status,
-    required color,
-    required String duration,
-    required String timelineId,
-    required String description}) {
-  Get.find<TimelineController>().timeLogColor = color;
-  Get.find<TimelineController>().timeLogStatus = status;
-  Get.find<TimelineController>().timeLineID = timelineId.toString();
-  descriptionController.text = description;
+void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
+  Get.find<TimelineController>().timeLogStatus = taskInfo.status ?? "";
+  Get.find<TimelineController>().timeLineID = taskInfo.timeLineId ?? "";
+  Get.find<TimelineController>().taskId.value = taskInfo.taskId ?? "";
+  Get.find<TimelineController>().projectId.value = taskInfo.projectId ?? "";
+  Get.find<TimelineController>().taskName.value =
+      taskInfo.taskOrProjectName ?? "";
+  descriptionController.text = taskInfo.description ?? "";
 }

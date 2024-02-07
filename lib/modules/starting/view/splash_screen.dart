@@ -11,9 +11,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+          height: double.infinity,
           width: double.infinity,
           decoration: decorationStyle,
-          child: _logoLayout()),
+          child: Center(child: _logoLayout())),
     );
   }
 

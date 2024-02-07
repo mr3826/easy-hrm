@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -15,6 +16,8 @@ class TaskSolidLayout extends StatelessWidget {
   final String endDateTime;
   final String status;
   final String duration;
+  final String projectName;
+  final String projectColors;
   final bool? isForLeave;
 
   const TaskSolidLayout(
@@ -23,6 +26,8 @@ class TaskSolidLayout extends StatelessWidget {
       required this.endDateTime,
       required this.status,
       required this.duration,
+      required this.projectName,
+      required this.projectColors,
       this.isForLeave,
       super.key});
 
@@ -35,10 +40,9 @@ class TaskSolidLayout extends StatelessWidget {
   status:$status
   duration:$duration
   isForLeave:$isForLeave
+  colors:$projectColors
     """);
 
-    _updateColorAccordingToApiResponse();
-    _updateIconAccordingToApiResponse();
     return isForLeave == true ? _leaveTaskLayout() : _taskCard();
   }
 
@@ -78,43 +82,11 @@ class TaskSolidLayout extends StatelessWidget {
     );
   }
 
-  Color _updateColorAccordingToApiResponse() {
-    switch (status) {
-      case "pending":
-        return AppColor.pendingColor;
-      case "approved":
-        return AppColor.primaryColor;
-      case "taken":
-        return AppColor.takenColor;
-      case "reject":
-        return AppColor.errorColorLight;
-      case "cancelled":
-        return AppColor.errorColor;
-      case "rejected":
-        return AppColor.errorColor;
-      default:
-        return AppColor.hintColor;
-    }
-  }
+  Color _updateColorAccordingToApiResponseForTimelog() =>
+      colorFromHex(projectColors);
 
-  Color _colorForIconAccordingToApiResponse() {
-    switch (status) {
-      case "pending":
-        return AppColor.pendingColor;
-      case "approved":
-        return AppColor.primaryColor;
-      case "taken":
-        return AppColor.noColor;
-      case "reject":
-        return AppColor.errorColorLight;
-      case "cancelled":
-        return AppColor.noColor;
-      case "rejected":
-        return AppColor.noColor;
-      default:
-        return AppColor.hintColor;
-    }
-  }
+  Color _colorForIconAccordingToApiResponseTimelog() =>
+      colorFromHex(projectColors);
 
   IconData _updateIconAccordingToApiResponse() {
     switch (status) {
@@ -142,13 +114,16 @@ class TaskSolidLayout extends StatelessWidget {
   }
 
   Widget _taskCard() {
+    _updateColorAccordingToApiResponseForTimelog();
+    _updateIconAccordingToApiResponse();
     switch (
         _getTimeDifference(startTime: startDateTime, endTime: endDateTime)) {
       case < 5:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color:
+              _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponseForTimelog()),
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             child: Container(),
@@ -157,8 +132,9 @@ class TaskSolidLayout extends StatelessWidget {
       case < 15:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color:
+              _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponseForTimelog()),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(),
@@ -167,14 +143,16 @@ class TaskSolidLayout extends StatelessWidget {
       case < 30:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color:
+              _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponseForTimelog()),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _startTimeLayout(_updateColorAccordingToApiResponse()),
+                _startTimeLayout(
+                    _updateColorAccordingToApiResponseForTimelog()),
               ],
             ),
           ),
@@ -182,20 +160,22 @@ class TaskSolidLayout extends StatelessWidget {
       case < 45:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color:
+              _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponseForTimelog()),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _startTimeLayout(_updateColorAccordingToApiResponse()),
+                _startTimeLayout(
+                    _updateColorAccordingToApiResponseForTimelog()),
                 Text(
                   taskName,
                   maxLines: 1,
                   style: AppStyle.mid_large_text.copyWith(
                       fontSize: Dimensions.fontSizeDefault,
-                      color: _updateColorAccordingToApiResponse(),
+                      color: _updateColorAccordingToApiResponseForTimelog(),
                       overflow: TextOverflow.ellipsis),
                 ),
               ],
@@ -205,21 +185,23 @@ class TaskSolidLayout extends StatelessWidget {
       default:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color:
+              _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponseForTimelog()),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _startTimeLayout(_updateColorAccordingToApiResponse()),
+                _startTimeLayout(
+                    _updateColorAccordingToApiResponseForTimelog()),
                 customSpacerHeight(height: 6),
                 Text(
                   taskName,
                   maxLines: 1,
                   style: AppStyle.mid_large_text.copyWith(
                       fontSize: Dimensions.fontSizeDefault,
-                      color: _updateColorAccordingToApiResponse(),
+                      color: _updateColorAccordingToApiResponseForTimelog(),
                       overflow: TextOverflow.ellipsis),
                 ),
                 customSpacerHeight(height: 6),
@@ -233,18 +215,56 @@ class TaskSolidLayout extends StatelessWidget {
                               .inMinutes)),
                   style: AppStyle.mid_large_text.copyWith(
                       fontSize: Dimensions.fontSizeDefault - 2,
-                      color: _updateColorAccordingToApiResponse(),
+                      color: _updateColorAccordingToApiResponseForTimelog(),
                       overflow: TextOverflow.ellipsis),
                 ),
                 const Spacer(),
                 _endTimeLayout(
-                    _updateColorAccordingToApiResponse(),
+                    _updateColorAccordingToApiResponseForTimelog(),
                     _updateIconAccordingToApiResponse(),
-                    _colorForIconAccordingToApiResponse())
+                    _colorForIconAccordingToApiResponseTimelog())
               ],
             ),
           ),
         );
+    }
+  }
+
+  Color _updateColorAccordingToApiResponse({required String status}) {
+    switch (status) {
+      case "pending":
+        return AppColor.pendingColor;
+      case "approved":
+        return AppColor.primaryColor;
+      case "taken":
+        return AppColor.takenColor;
+      case "reject":
+        return AppColor.errorColorLight;
+      case "cancelled":
+        return AppColor.errorColor;
+      case "rejected":
+        return AppColor.errorColor;
+      default:
+        return AppColor.hintColor;
+    }
+  }
+
+  Color _colorForIconAccordingToApiResponse({required String status}) {
+    switch (status) {
+      case "pending":
+        return AppColor.pendingColor;
+      case "approved":
+        return AppColor.primaryColor;
+      case "taken":
+        return AppColor.noColor;
+      case "reject":
+        return AppColor.errorColorLight;
+      case "cancelled":
+        return AppColor.noColor;
+      case "rejected":
+        return AppColor.noColor;
+      default:
+        return AppColor.hintColor;
     }
   }
 
@@ -254,8 +274,9 @@ class TaskSolidLayout extends StatelessWidget {
       case < 5:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color: _updateColorAccordingToApiResponse(status: status)
+              .withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse(status: status)),
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             child: Container(),
@@ -264,8 +285,9 @@ class TaskSolidLayout extends StatelessWidget {
       case < 15:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color: _updateColorAccordingToApiResponse(status: status)
+              .withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse(status: status)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(),
@@ -274,8 +296,9 @@ class TaskSolidLayout extends StatelessWidget {
       case < 30:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color: _updateColorAccordingToApiResponse(status: status)
+              .withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse(status: status)),
           child: Stack(
             children: [
               _backgroundLayout(),
@@ -284,7 +307,8 @@ class TaskSolidLayout extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _startTimeLayout(_updateColorAccordingToApiResponse()),
+                    _startTimeLayout(
+                        _updateColorAccordingToApiResponse(status: status)),
                   ],
                 ),
               ),
@@ -294,8 +318,9 @@ class TaskSolidLayout extends StatelessWidget {
       case < 45:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color: _updateColorAccordingToApiResponse(status: status)
+              .withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse(status: status)),
           child: Stack(
             children: [
               _backgroundLayout(),
@@ -304,13 +329,15 @@ class TaskSolidLayout extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _startTimeLayout(_updateColorAccordingToApiResponse()),
+                    _startTimeLayout(
+                        _updateColorAccordingToApiResponse(status: status)),
                     Text(
                       taskName,
                       maxLines: 1,
                       style: AppStyle.mid_large_text.copyWith(
                           fontSize: Dimensions.fontSizeDefault,
-                          color: _updateColorAccordingToApiResponse(),
+                          color: _updateColorAccordingToApiResponse(
+                              status: status),
                           overflow: TextOverflow.ellipsis),
                     ),
                   ],
@@ -322,8 +349,9 @@ class TaskSolidLayout extends StatelessWidget {
       default:
         return Card(
           elevation: 0,
-          color: _updateColorAccordingToApiResponse().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse()),
+          color: _updateColorAccordingToApiResponse(status: status)
+              .withOpacity(0.09),
+          shape: _style(_updateColorAccordingToApiResponse(status: status)),
           child: Stack(
             children: [
               _backgroundLayout(),
@@ -332,14 +360,16 @@ class TaskSolidLayout extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _startTimeLayout(_updateColorAccordingToApiResponse()),
+                    _startTimeLayout(
+                        _updateColorAccordingToApiResponse(status: status)),
                     customSpacerHeight(height: 6),
                     Text(
                       taskName,
                       maxLines: 1,
                       style: AppStyle.mid_large_text.copyWith(
                           fontSize: Dimensions.fontSizeDefault,
-                          color: _updateColorAccordingToApiResponse(),
+                          color: _updateColorAccordingToApiResponse(
+                              status: status),
                           overflow: TextOverflow.ellipsis),
                     ),
                     customSpacerHeight(height: 6),
@@ -353,14 +383,15 @@ class TaskSolidLayout extends StatelessWidget {
                                   .inMinutes)),
                       style: AppStyle.mid_large_text.copyWith(
                           fontSize: Dimensions.fontSizeDefault - 2,
-                          color: _updateColorAccordingToApiResponse(),
+                          color: _updateColorAccordingToApiResponse(
+                              status: status),
                           overflow: TextOverflow.ellipsis),
                     ),
                     const Spacer(),
                     _endTimeLayout(
-                        _updateColorAccordingToApiResponse(),
+                        _updateColorAccordingToApiResponse(status: status),
                         _updateIconAccordingToApiResponse(),
-                        _colorForIconAccordingToApiResponse())
+                        _colorForIconAccordingToApiResponse(status: status))
                   ],
                 ),
               ),

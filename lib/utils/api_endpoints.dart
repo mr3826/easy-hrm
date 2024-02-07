@@ -5,7 +5,8 @@ class Api {
   static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
   static const CDN_KEY = String.fromEnvironment("CDN_KEY");
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
-  static const String PUBLIC_IMAGE_URL_DOMAIN = String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
+  static const String PUBLIC_IMAGE_URL_DOMAIN =
+      String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
 
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
@@ -445,6 +446,7 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
       number_of_days
     }
     timelines {
+      id
       description
       end_date
       start_date
@@ -452,15 +454,13 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
       task {
         name
         id
-        project {
-          id
-          name
-        }
       }
       total_minutes
-      task_id
-      id
-      project_id
+      project {
+        id
+        name
+        color
+      }
     }
   }
 }

@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -10,98 +13,45 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../auth/presentation/view/otp_screen.dart';
 
 Widget btnSheetViewLayout(
-    {required String startTime,
-    required String endTime,
-    required String status,
-    required String timeLineId,
-    required context,
-    required String startDateTime,
-    required String endDateTime,
-    required Color? bgColor,
-    required String dateApplication,
-    String? projectName,
-    String? dtsProjectName,
-    required Color dtsBgColor,
-    String? dtsDrc,
-    String? dtsDuration,
-    String? dtsDate}) {
+    {required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
     child: Column(
       children: [
+        ///start and end time layout
         Column(
           children: [
             _infoLayout(
                 text: AppString.text_start.tr,
                 dynamicText: DateFormat('HH:mm')
-                    .format(DateTime.parse(startTime.toString()))
-                    .toString()),
+                    .format(DateTime.parse(taskInfo.startTime))),
             customSpacerHeight(height: 6),
             _infoLayout(
                 text: "${AppString.text_end.tr}:",
-                dynamicText: endTime.isEmpty
-                    ? DateFormat('HH:mm').format(DateTime.now()).toString()
-                    : DateFormat('HH:mm')
-                        .format(DateTime.parse(endTime.toString()))
-                        .toString()),
+                dynamicText: DateFormat('HH:mm')
+                    .format(DateTime.parse(taskInfo.endTime))),
             customSpacerHeight(height: 6),
           ],
         ),
+
+        ///status layout
         _infoLayout(
             text: "${AppString.text_status.tr}:",
-            widget: statusBtn(status: status)),
+            widget: statusBtn(status: taskInfo.status)),
         customSpacerHeight(height: 6),
-        status == "taken"
-            ? _infoLayout(
-                text: AppString.text_dete_of_application.tr,
-                dynamicText: DateFormat('dd MMMM yyyy')
-                    .format(DateTime.parse(dateApplication)))
-            : _infoLayout(
-                text: AppString.text_project_task_or_tag,
-                widget: _projectNameLayout(
-                    color: dtsBgColor, name: "$projectName")),
+
+        ///project/task name
+        _infoLayout(
+            text: AppString.text_project_task_or_tag,
+            widget: _projectNameLayout(
+                color: colorFromHex(taskInfo.projectColor!),
+                name: taskInfo.taskOrProjectName)),
         customSpacerHeight(height: 50),
-        buttonLayout(
-            context: context,
-            status: status,
-            dtsProjectName: "$dtsProjectName",
-            dtsStartTime: startTime,
-            dtsEndTime: endTime,
-            dtsDuration: "$dtsDuration",
-            dtsDrc: "$dtsDrc",
-            dtsDateStatus: status,
-            dtsDate: "$dtsDate",
-            timeLineId: timeLineId,
-            endDateTime: endDateTime,
-            startDateTime: startDateTime,
-            dtsBgColor: dtsBgColor)
+
+        ///action double button
+        buttonLayout(context: context, taskInfo: taskInfo)
       ],
     ),
-  );
-}
-
-//For status taken
-// approved button
-
-_approvedLayout(projectName, dtsDuration) {
-  return Column(
-    children: [
-      _infoLayout(
-          text: "${AppString.text_type.tr}:", dynamicText: "$projectName"),
-      _infoLayout(
-          text: "${AppString.text_duration.tr}:", dynamicText: "$dtsDuration"),
-    ],
-  );
-}
-
-_takenLayout(projectName, dtsDuration) {
-  return Column(
-    children: [
-      _infoLayout(
-          text: "${AppString.text_type.tr}:", dynamicText: "$projectName"),
-      _infoLayout(
-          text: "${AppString.text_duration.tr}:", dynamicText: "$dtsDuration"),
-    ],
   );
 }
 
