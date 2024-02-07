@@ -16,7 +16,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
 Widget employeeStatusLayout({BuildContext? context}) {
-  return Row(
+   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Expanded(
@@ -112,7 +112,7 @@ _employmentInfo() {
               ),
             ),
             Text(
-              "From - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[0].startDate ?? "")}",
+              "From - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   overflow: TextOverflow.ellipsis,

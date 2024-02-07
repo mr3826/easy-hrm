@@ -446,6 +446,7 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
       number_of_days
     }
     timelines {
+      id
       description
       end_date
       start_date
@@ -453,15 +454,13 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
       task {
         name
         id
-        project {
-          id
-          name
-        }
       }
       total_minutes
-      task_id
-      id
-      project_id
+      project {
+        id
+        name
+        color
+      }
     }
   }
 }

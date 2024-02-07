@@ -128,6 +128,22 @@ class TimeLineCalendar extends StatelessWidget {
                     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
                         .createdAt)
                     .toString();
+                String taskId = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e)).taskId)
+                    .toString();
+                String projectId = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .projectId)
+                    .toString();
+                String projectName = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .projectName)
+                    .toString();
+                String projectColor = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .projectColor)
+                    .toString();
 
                 /// have to sub string
                 /// otherwise it returns with (value) pattern
@@ -159,6 +175,16 @@ class TimeLineCalendar extends StatelessWidget {
                             timeLineId: timeLId
                                 .toString()
                                 .substring(1, timeLId.toString().length - 1),
+                            taskId: taskId
+                                .toString()
+                                .substring(1, taskId.toString().length - 1),
+                            projectId: projectId
+                                .toString()
+                                .substring(1, projectId.toString().length - 1),
+                            projectName: projectName.toString().substring(
+                                1, projectName.toString().length - 1),
+                            projectColor: projectColor.toString().substring(
+                                1, projectColor.toString().length - 1),
                           )
                         : LeaveRecordDetails(
                             status: status
@@ -251,6 +277,15 @@ class TimeLineCalendar extends StatelessWidget {
                         ?.leaveId)
                     .toString();
 
+                String projectName = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .projectName)
+                    .toString();
+                String projectColor = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .projectColor)
+                    .toString();
+
                 return TaskSolidLayout(
                   isForLeave: leaveId.substring(1, leaveId.length - 1) == 'null'
                       ? false
@@ -260,6 +295,9 @@ class TimeLineCalendar extends StatelessWidget {
                   endDateTime: endDate.substring(1, endDate.length - 1),
                   taskName: taskName.substring(1, taskName.length - 1),
                   duration: duration.substring(1, duration.length - 1),
+                  projectName: projectName.substring(1, projectName.length - 1),
+                  projectColors:
+                      projectColor.substring(1, projectColor.length - 1),
                 );
               },
             ),
