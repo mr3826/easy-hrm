@@ -8,6 +8,7 @@ import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
@@ -23,37 +24,39 @@ import '../../controller/profile_image_selected_controller.dart';
 import '../widget/edit_profile_widget.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
+  EditProfileScreen({super.key});
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customInsideAppbar(
-          title: AppString.text_edit_profile.tr,
-          onPressAction: () {
-            _clearInputField();
-            Get.back();
-          }),
-      body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
-          ? const LoadingIndicator()
-          : Padding(
-              padding: marginLayout,
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    _profileSectionLayout(context),
-                    customSpacerHeight(height: 30),
-
-
-                    textFiledLayout()
-
-
-
-                  ],
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        appBar: customInsideAppbar(
+            title: AppString.text_edit_profile.tr,
+            onPressAction: () {
+              _clearInputField();
+              Get.back();
+            }),
+        body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
+            ? const LoadingIndicator()
+            : Padding(
+                padding: marginLayout,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      _profileSectionLayout(context),
+                      customSpacerHeight(height: 30),
+                      TextFiledLayout(
+                        formKey: _formKey,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            )),
+              )),
+      ),
     );
   }
 
@@ -150,18 +153,13 @@ class EditProfileScreen extends StatelessWidget {
 
                 final variables = _addVariables();
 
-                if (variables!.containsKey("about") ||
-                    variables.containsKey("emergency_phone_number") ||
-                    variables.containsKey("personal_phone_number") ||
-                    variables.containsKey("address") ||
-                    variables.containsKey("last_name") ||
-                    editFirstNameController.text.isNotEmpty) {
-
-
-                  print(variables);
+                if (editFirstNameController.text.isNotEmpty &&
+                    editLastNameController.text.isNotEmpty) {
                   Get.find<UpdateProfileController>()
-                      .updateUserProfile(variables);
-                  print(variables.toString());
+                      .updateUserProfile(variables!);
+                } else {
+                  showWarningMessage(
+                      message: "First and last name field is required!");
                 }
 
                 Get.find<PikedProfileImgController>()
@@ -206,24 +204,19 @@ class EditProfileScreen extends StatelessWidget {
   }
 }
 
-
 Map<String, dynamic>? _addVariables() {
   Map<String, dynamic> inputData = {};
-  if (editBioController.text.isNotEmpty) {
-    inputData["about"] = editBioController.text;
-  }
-  if (editEmergencyPhoneController.text.isNotEmpty) {
-    inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
-  }
-  if (editPhoneController.text.isNotEmpty) {
-    inputData["personal_phone_number"] = editPhoneController.text;
-  }
-  if (editAddressController.text.isNotEmpty) {
-    inputData["address"] = editAddressController.text;
-  }
-  if (editLastNameController.text.isNotEmpty) {
-    inputData["last_name"] = editLastNameController.text;
-  }
+
+  inputData["about"] = editBioController.text;
+
+  inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
+
+  inputData["personal_phone_number"] = editPhoneController.text;
+
+  inputData["address"] = editAddressController.text;
+
+  inputData["last_name"] = editLastNameController.text;
+
   if (editFirstNameController.text.isNotEmpty) {
     inputData["first_name"] = editFirstNameController.text;
   } else {
@@ -234,13 +227,16 @@ Map<String, dynamic>? _addVariables() {
             ?.firstName ??
         "";
   }
+
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
+
   inputData["department_id"] = Get.find<UserProfileController>()
           .userDetails
           ?.getOrganizationUserDetails
           ?.department
           ?.id ??
       "";
+
   inputData["employment_status_id"] = Get.find<UserProfileController>()
           .employeeWorkHistory
           ?.getOrganizationUserHistory

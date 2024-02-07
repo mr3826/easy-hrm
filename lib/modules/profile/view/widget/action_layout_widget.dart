@@ -30,26 +30,6 @@ Widget actionLayout(
       customSpacerHeight(height: 20),
       InkWell(
           onTap: () {
-
-            log( editFirstNameController.text = Get.find<UserProfileController>()
-                .userDetails
-                ?.getOrganizationUserDetails
-                ?.profile
-                ?.firstName ??
-                "",error: 300);
-
-            log( editFirstNameController.text = Get.find<UserProfileController>()
-                .userDetails
-                ?.getOrganizationUserDetails
-                ?.profile
-                ?.lastName ??
-                "",error: 300);
-
-
-
-
-
-
             editFirstNameController.text = Get.find<UserProfileController>()
                     .userDetails
                     ?.getOrganizationUserDetails

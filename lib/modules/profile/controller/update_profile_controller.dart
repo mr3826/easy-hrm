@@ -23,12 +23,9 @@ class UpdateProfileController extends GetxController {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   void updateUserProfile(Map<String, dynamic> variables) async {
-
-    print("variable ::::: $variables");
     isLoading(true);
     final response = await NetworkClient()
         .mutationGraphData(updateUserProfileMutation, {"inputData": variables});
-    print("variable 1 ::::: ${response.data}");
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -73,9 +70,9 @@ class UpdateProfileController extends GetxController {
     isLoading(false);
   }
 
-
   getUploadPolicy({fileName}) async {
-    print("${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
+    print(
+        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()

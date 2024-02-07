@@ -302,6 +302,8 @@ class AppString {
       "Organization name is required.";
   static const String the_first_name_field_is_required =
       "The first name field is required.";
+  static const String the_last_name_field_is_required =
+      "The last name field is required.";
   static const String the_password_field_is_required =
       "The password field is required.";
   static const String please_insert_a_valid_email_address =
