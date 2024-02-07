@@ -70,9 +70,9 @@ class UpdateProfileController extends GetxController {
     isLoading(false);
   }
 
-
   getUploadPolicy({fileName}) async {
-    print("${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
+    print(
+        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()

@@ -52,7 +52,7 @@ class TimeLogEntryTextField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               customSpacerHeight(height: 12),
-              customTitleText(text: "${AppString.text_date.tr} *"),
+              customTitleText(text: AppString.text_date.tr,isRequired: true),
               customSpacerHeight(height: 8),
               Obx(() => _dateLayoutField()),
               customSpacerHeight(height: 8),
@@ -60,7 +60,7 @@ class TimeLogEntryTextField extends StatelessWidget {
               customSpacerHeight(height: 20),
               Obx(() => _timerLayout(context)),
               customSpacerHeight(height: 20),
-              customTitleText(text: AppString.text_project_or_task.tr),
+              customTitleText(text: AppString.text_project_or_task.tr,isRequired: true),
               customSpacerHeight(height: 8),
               _selectedTaskLayout(context),
               customSpacerHeight(height: 20),
@@ -171,11 +171,11 @@ class TimeLogEntryTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        customTitleText(text: AppString.text_set_start_time.tr),
+        customTitleText(text: AppString.text_set_start_time.tr,isRequired: true),
         customSpacerHeight(height: 8),
         _newEntryStartTime(context: context),
         customSpacerHeight(height: 20),
-        customTitleText(text: AppString.text_set_end_time.tr),
+        customTitleText(text: AppString.text_set_end_time.tr,isRequired: true),
         customSpacerHeight(height: 8),
         _newEntryEndTime(context: context),
         customSpacerHeight(height: 8),
