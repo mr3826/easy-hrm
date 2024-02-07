@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
@@ -43,7 +44,12 @@ class EditProfileScreen extends StatelessWidget {
                   children: [
                     _profileSectionLayout(context),
                     customSpacerHeight(height: 30),
+
+
                     textFiledLayout()
+
+
+
                   ],
                 ),
               ),
@@ -58,19 +64,14 @@ class EditProfileScreen extends StatelessWidget {
     editAddressController.clear();
     editLastNameController.clear();
     editFirstNameController.clear();
-    Get.find<PikedProfileImgController>()
-        .storageForUpload
-        .filePath
-        .value="";
+    Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
   }
 
   _profileSectionLayout(context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Obx(
-          () => _profileImageLayout(),
-        ),
+        Obx(() => _profileImageLayout()),
         customSpacerWidth(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,6 +147,23 @@ class EditProfileScreen extends StatelessWidget {
                     .storageForUpload
                     .filePath
                     .value = "";
+
+                final variables = _addVariables();
+
+                if (variables!.containsKey("about") ||
+                    variables.containsKey("emergency_phone_number") ||
+                    variables.containsKey("personal_phone_number") ||
+                    variables.containsKey("address") ||
+                    variables.containsKey("last_name") ||
+                    editFirstNameController.text.isNotEmpty) {
+
+
+                  print(variables);
+                  Get.find<UpdateProfileController>()
+                      .updateUserProfile(variables);
+                  print(variables.toString());
+                }
+
                 Get.find<PikedProfileImgController>()
                         .storageForUpload
                         .filePath
@@ -186,6 +204,54 @@ class EditProfileScreen extends StatelessWidget {
             ))
         : _placeholderImage();
   }
+}
+
+
+Map<String, dynamic>? _addVariables() {
+  Map<String, dynamic> inputData = {};
+  if (editBioController.text.isNotEmpty) {
+    inputData["about"] = editBioController.text;
+  }
+  if (editEmergencyPhoneController.text.isNotEmpty) {
+    inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
+  }
+  if (editPhoneController.text.isNotEmpty) {
+    inputData["personal_phone_number"] = editPhoneController.text;
+  }
+  if (editAddressController.text.isNotEmpty) {
+    inputData["address"] = editAddressController.text;
+  }
+  if (editLastNameController.text.isNotEmpty) {
+    inputData["last_name"] = editLastNameController.text;
+  }
+  if (editFirstNameController.text.isNotEmpty) {
+    inputData["first_name"] = editFirstNameController.text;
+  } else {
+    inputData["first_name"] = Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.firstName ??
+        "";
+  }
+  inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
+  inputData["department_id"] = Get.find<UserProfileController>()
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.department
+          ?.id ??
+      "";
+  inputData["employment_status_id"] = Get.find<UserProfileController>()
+          .employeeWorkHistory
+          ?.getOrganizationUserHistory
+          ?.employmentHistories?[0]
+          .employmentStatus
+          ?.id ??
+      "";
+
+  inputData["image"] = "";
+
+  return inputData;
 }
 
 Widget _imageLayout() {

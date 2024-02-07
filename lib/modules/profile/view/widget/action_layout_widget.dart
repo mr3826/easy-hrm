@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -28,6 +30,26 @@ Widget actionLayout(
       customSpacerHeight(height: 20),
       InkWell(
           onTap: () {
+
+            log( editFirstNameController.text = Get.find<UserProfileController>()
+                .userDetails
+                ?.getOrganizationUserDetails
+                ?.profile
+                ?.firstName ??
+                "",error: 300);
+
+            log( editFirstNameController.text = Get.find<UserProfileController>()
+                .userDetails
+                ?.getOrganizationUserDetails
+                ?.profile
+                ?.lastName ??
+                "",error: 300);
+
+
+
+
+
+
             editFirstNameController.text = Get.find<UserProfileController>()
                     .userDetails
                     ?.getOrganizationUserDetails

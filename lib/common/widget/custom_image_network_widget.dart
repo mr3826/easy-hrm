@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:imgix_core_dart/url_builder.dart';
+import '../../modules/dashboard/controller/dashbpard_controller.dart';
+import '../../modules/profile/controller/user_profile_controller.dart';
 import '../../utils/api_endpoints.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_string.dart';
@@ -41,8 +43,10 @@ Widget circleImageLayout({radius, url, borderColor, logoUrl}) {
           imageUrl: url,
           placeholder: (context, url) => const CupertinoActivityIndicator(),
           errorWidget: (context, url, error) => CircleAvatar(
-              radius: radius,
-              backgroundImage: AssetImage(logoUrl ?? Images.user)),
+            radius: radius,
+            backgroundColor: AppColor.bgColorWithPrimary,
+            child: _errorText(),
+          ),
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -58,6 +62,13 @@ Widget circleImageLayout({radius, url, borderColor, logoUrl}) {
       ),
     ),
   );
+}
+
+_errorText() {
+  return Text(
+      "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}",
+      style: AppStyle.normal_text_grey.copyWith(
+          fontSize: Dimensions.fontSizeMid + 4, color: AppColor.primaryColor));
 }
 
 Widget rectangleImageLayout({url}) {

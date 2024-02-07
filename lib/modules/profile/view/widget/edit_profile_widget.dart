@@ -34,15 +34,16 @@ Widget textFiledLayout() {
           buttonText: AppString.text_save.tr,
           onAction: () {
             final variables = _addVariables();
-            if (variables!.containsKey("about") ||
-                variables.containsKey("emergency_phone_number") ||
-                variables.containsKey("personal_phone_number") ||
-                variables.containsKey("address") ||
+
+            if (
+
+            variables!.containsKey("first_name") ||
                 variables.containsKey("last_name") ||
-                editFirstNameController.text.isNotEmpty) {
-              print(variables);
+
+                editFirstNameController.text.isNotEmpty ||editFirstNameController.text.isNotEmpty ) {
+
               Get.find<UpdateProfileController>().updateUserProfile(variables);
-              print(variables.toString());
+
             }
           },
           cancelAction: () {
@@ -50,7 +51,7 @@ Widget textFiledLayout() {
             Get.find<PikedProfileImgController>()
                 .storageForUpload
                 .filePath
-                .value="";
+                .value = "";
             Get.back();
           }),
       customSpacerHeight(height: AppLayout.getHeight(80)),
@@ -69,38 +70,28 @@ void _clearInputField() {
 
 Map<String, dynamic>? _addVariables() {
   Map<String, dynamic> inputData = {};
-  if (editBioController.text.isNotEmpty) {
-    inputData["about"] = editBioController.text;
-  }
-  if (editEmergencyPhoneController.text.isNotEmpty) {
-    inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
-  }
-  if (editPhoneController.text.isNotEmpty) {
-    inputData["personal_phone_number"] = editPhoneController.text;
-  }
-  if (editAddressController.text.isNotEmpty) {
-    inputData["address"] = editAddressController.text;
-  }
-  if (editLastNameController.text.isNotEmpty) {
-    inputData["last_name"] = editLastNameController.text;
-  }
-  if (editFirstNameController.text.isNotEmpty) {
-    inputData["first_name"] = editFirstNameController.text;
-  } else {
-    inputData["first_name"] = Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.firstName ??
-        "";
-  }
+
+  inputData["about"] = editBioController.text;
+
+  inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
+
+  inputData["personal_phone_number"] = editPhoneController.text;
+
+  inputData["address"] = editAddressController.text;
+
+  inputData["last_name"] = editLastNameController.text;
+
+  inputData["first_name"] = editFirstNameController.text;
+
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
+
   inputData["department_id"] = Get.find<UserProfileController>()
           .userDetails
           ?.getOrganizationUserDetails
           ?.department
           ?.id ??
       "";
+
   inputData["employment_status_id"] = Get.find<UserProfileController>()
           .employeeWorkHistory
           ?.getOrganizationUserHistory
