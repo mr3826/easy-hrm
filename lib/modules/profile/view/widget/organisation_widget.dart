@@ -174,6 +174,26 @@ class OrganisationView extends StatelessWidget {
   _organisationLogoLayout(int index) {
     return CustomNetworkImage(
       height: 22,
+      errorText: (Get.find<UserProfileController>()
+                      .userDetails
+                      ?.getOrganizationUserDetails
+                      ?.organization!
+                      .orgName !=
+                  null &&
+              Get.find<UserProfileController>()
+                  .userDetails!
+                  .getOrganizationUserDetails!
+                  .organization!
+                  .orgName!
+                  .isNotEmpty)
+          ? Get.find<UserProfileController>()
+                  .userDetails
+                  ?.getOrganizationUserDetails
+                  ?.organization!
+                  .orgName![0]
+                  .toUpperCase() ??
+              ""
+          : "",
       imgUrlKey: Get.find<UserProfileController>()
               .organizationInfo
               ?.getUserOrganizations

@@ -73,6 +73,7 @@ class AddAttachmentFile extends StatelessWidget {
                 : CustomNetworkImage(
                     imgUrlKey: leaveRecords?.leaveType?.fileKey ?? "",
                     isDocumentLayout: true,
+                    errorText: "",
                   );
       } else {
         /// broken image
