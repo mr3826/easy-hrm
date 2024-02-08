@@ -12,7 +12,7 @@ import '../../utils/images.dart';
 Future customButtonSheet(
     {context,
     double? height = 0.9,
-     required Widget child,
+    required Widget child,
     int duration = 500,
     bool? isDismissible,
     int reverseDuration = 400}) {
@@ -26,6 +26,7 @@ Future customButtonSheet(
     context: context,
     transitionAnimationController: controller,
     isScrollControlled: true,
+    enableDrag: isDismissible ?? true,
     backgroundColor: AppColor.cardColor,
     isDismissible: isDismissible ?? true,
     shape: RoundedRectangleBorder(
@@ -45,9 +46,10 @@ Future customButtonSheet(
   );
 }
 
-Widget customButtonSheetAppbar({required text, subtext, bool isLeave = false,   String ?status}) {
+Widget customButtonSheetAppbar(
+    {required text, subtext, bool isLeave = false, String? status}) {
   return isLeave != false
-      ? _leaveBtnAppbarLayout(text, subtext, status??"")
+      ? _leaveBtnAppbarLayout(text, subtext, status ?? "")
       : Container(
           color: AppColor.primaryColor.withOpacity(0.05),
           height: 100,

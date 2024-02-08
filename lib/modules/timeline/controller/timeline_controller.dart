@@ -273,9 +273,7 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   removeTimeEntry({String? timeLogId}) async {
-    isTimelogEntryOrRemoveLoading(true);
-    log("status first :::: => ${isTimelogEntryOrRemoveLoading}");
-
+    isTimelogRemoveLoading(true);
     final response =
         await NetworkClient().mutationGraphData(removeTimerQueryData, {
       "inputData": {
@@ -296,12 +294,8 @@ class TimelineController extends GetxController with StateMixin {
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
-      log("status else  :::: => $isTimelogEntryOrRemoveLoading");
-
     }
-    isTimelogEntryOrRemoveLoading(false);
-    log("status stop  :::: => $isTimelogEntryOrRemoveLoading");
-
+    isTimelogRemoveLoading(false);
   }
 
   getTimelineSummaryByMonth(
