@@ -50,6 +50,7 @@ class TimelineController extends GetxController with StateMixin {
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
 
   final isTimelogEntryOrRemoveLoading = false.obs;
+  final isTimelogRemoveLoading = false.obs;
 
   RxList<CalendarEventData<String>> eventsOfTask =
       <CalendarEventData<String>>[].obs;
@@ -180,15 +181,17 @@ class TimelineController extends GetxController with StateMixin {
         ExceptionHelper.errorHandler(exception: response.exception!);
       } else {
         showSuccessMessage(message: "Time entry created successfully");
+        Get.to(() => const MainScreen(
+              routeIndex: 0,
+            ));
         taskId.value = "";
         taskName.value = '';
         projectId.value = '';
         descriptionController.clear();
-        Get.back(canPop: false);
         _refreshTimeline();
       }
     } else {
-      showWarningMessage(message: "Provide a valid project/task ");
+      showWarningMessage(message: "Provide a valid project task ");
     }
     isManualEntryLoading(false);
   }
@@ -234,12 +237,15 @@ class TimelineController extends GetxController with StateMixin {
       if (response.hasException) {
         ExceptionHelper.errorHandler(exception: response.exception!);
       } else {
+        showSuccessMessage(message: AppString.timelogUpdateSuccessfully);
+        Get.to(() => const MainScreen(
+              routeIndex: 0,
+            ));
         descriptionController.clear();
         timeLineID = '';
         taskId.value = "";
         taskName.value = '';
         projectId.value = '';
-        Get.back(canPop: false);
         _refreshTimeline();
       }
     } else {
@@ -268,6 +274,7 @@ class TimelineController extends GetxController with StateMixin {
 
   removeTimeEntry({String? timeLogId}) async {
     isTimelogEntryOrRemoveLoading(true);
+    log("status first :::: => ${isTimelogEntryOrRemoveLoading}");
 
     final response =
         await NetworkClient().mutationGraphData(removeTimerQueryData, {
@@ -280,14 +287,21 @@ class TimelineController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      Get.to(() => const MainScreen(
+            routeIndex: 0,
+          ));
       showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
+      _refreshTimeline();
       taskId.value = "";
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
-      Get.back(canPop: false);
+      log("status else  :::: => $isTimelogEntryOrRemoveLoading");
+
     }
     isTimelogEntryOrRemoveLoading(false);
+    log("status stop  :::: => $isTimelogEntryOrRemoveLoading");
+
   }
 
   getTimelineSummaryByMonth(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
@@ -101,19 +102,22 @@ _rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
     padding: marginLayout,
     child: CustomDoubleAppButton(
         cancelAction: () {
+
+
           customDialog(
               context: context,
               saveBtnAction: () {
                 Get.find<TimelineController>()
                     .removeTimeEntry(timeLogId: taskInfo.timeLineId);
               },
+              childForSaveBtn: Obx(() => _removeText()),
               icon: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_time_log.tr,
               subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
               drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
               iconBgColor: AppColor.errorColorLight,
               btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr);
+              btnText: "");
         },
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
@@ -134,33 +138,52 @@ _rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
   );
 }
 
+_removeText() {
+  return Get.find<TimelineController>().isTimelogEntryOrRemoveLoading.isTrue
+      ? const CupertinoActivityIndicator(
+          color: AppColor.cardColor,
+        ):Text(AppString.text_remove.tr,
+      style: AppStyle.normal_text.copyWith(
+          color: AppColor.cardColor,
+          fontSize: Dimensions.fontSizeMid - 3,
+          fontWeight: FontWeight.w700))
+  ;
+}
+
 _pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
     padding: marginLayout,
     child: CustomDoubleAppButton(
         cancelAction: () {
+          print("boool ::::: ${ Get.find<TimelineController>().isTimelogEntryOrRemoveLoading}");
+
           customDialog(
               context: context,
               saveBtnAction: () {
                 Get.find<TimelineController>()
                     .removeTimeEntry(timeLogId: taskInfo.timeLineId);
+
+                print("boool ::::: ${ Get.find<TimelineController>().isTimelogEntryOrRemoveLoading}");
+
               },
+              childForSaveBtn: Obx(() => _removeText()),
+
               icon: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_time_log.tr,
               subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
               drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
               iconBgColor: AppColor.errorColorLight,
               btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr);
+              btnText: "");
         },
         buttonText: AppString.text_details.tr,
         cancelText: AppString.text_remove.tr,
         onAction: () {
           _updateDataFromApiResponse(taskInfo: taskInfo);
           Get.to(() => UpdateTimeLineLog(
-            projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                ? colorFromHex(taskInfo.projectColor)
-                : AppColor.primaryColor,
+                projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                    ? colorFromHex(taskInfo.projectColor)
+                    : AppColor.primaryColor,
                 endDateTime: taskInfo.endTime,
                 startDateTime: taskInfo.startTime,
                 status: taskInfo.status ?? "",
@@ -183,9 +206,9 @@ _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
       onPressed: () {
         _updateDataFromApiResponse(taskInfo: taskInfo);
         Get.to(() => UpdateTimeLineLog(
-          projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-              ? colorFromHex(taskInfo.projectColor)
-              : AppColor.primaryColor,
+              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                  ? colorFromHex(taskInfo.projectColor)
+                  : AppColor.primaryColor,
               endDateTime: taskInfo.endTime,
               startDateTime: taskInfo.startTime,
               status: taskInfo.status,
