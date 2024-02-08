@@ -236,16 +236,7 @@ class DepartmentHistory extends StatelessWidget {
         backgroundColor: AppColor.cardColor,
         radius: 19.4,
         child: CustomNetworkImage(
-          errorText: Get.find<UserProfileController>()
-                  .employeeWorkHistory
-                  ?.getOrganizationUserHistory
-                  ?.deptHistories?[index]
-                  .department
-                  ?.manager
-                  ?.profile
-                  ?.firstName?[0]
-                  .toUpperCase() ??
-              "",
+          errorText: _getFirstCharOfName(index),
           height: 18,
           imgUrlKey: imageUrl,
           borderColor: Colors.transparent,
@@ -300,5 +291,65 @@ class DepartmentHistory extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getFirstCharOfName(int index) {
+    String firstCharOfFirstName = Get.find<UserProfileController>()
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.deptHistories?[index]
+                    .department
+                    ?.manager
+                    ?.profile !=
+                null &&
+            Get.find<UserProfileController>()
+                .employeeWorkHistory!
+                .getOrganizationUserHistory!
+                .deptHistories![index]
+                .department!
+                .manager!
+                .profile!
+                .firstName!
+                .isNotEmpty
+        ? Get.find<UserProfileController>()
+            .employeeWorkHistory!
+            .getOrganizationUserHistory!
+            .deptHistories![index]
+            .department!
+            .manager!
+            .profile!
+            .firstName![0]
+            .toUpperCase()
+        : "";
+
+    String lastCharOfFirstName = Get.find<UserProfileController>()
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.deptHistories?[index]
+                    .department
+                    ?.manager
+                    ?.profile !=
+                null &&
+            Get.find<UserProfileController>()
+                .employeeWorkHistory!
+                .getOrganizationUserHistory!
+                .deptHistories![index]
+                .department!
+                .manager!
+                .profile!
+                .lastName!
+                .isNotEmpty
+        ? Get.find<UserProfileController>()
+            .employeeWorkHistory!
+            .getOrganizationUserHistory!
+            .deptHistories![index]
+            .department!
+            .manager!
+            .profile!
+            .lastName![0]
+            .toUpperCase()
+        : "";
+
+    return "$firstCharOfFirstName$lastCharOfFirstName";
   }
 }
