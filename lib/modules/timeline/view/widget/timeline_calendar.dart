@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -107,10 +108,17 @@ class TimeLineCalendar extends StatelessWidget {
                         ?.type)
                     .toString();
 
+                // String leaveId = eventData
+                //     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                //         .leaveType
+                //         ?.leaveId)
+
                 String leaveId = eventData
                     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-                        .leaveType
-                        ?.leaveId)
+                        .leaveId
+                        )
+
+
                     .toString();
                 String duration = eventData
                     .map((e) =>

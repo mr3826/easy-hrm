@@ -347,6 +347,7 @@ class AppString {
   static const String timerStartedSuccessfulMessage =
       "Timer Started Successfully";
   static const String timerSavedSuccessfulMessage = "Timer Saved Successfully";
+  static const String timelogUpdateSuccessfully = "Timelog Updated Successfully";
   static const String timerRemovedSuccessfulMessage =
       "Timer Removed Successfully";
   static const String passwordChangeSuccessfulMessage =

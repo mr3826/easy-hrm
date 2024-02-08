@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
-import 'package:payrun_mobile/common/controller/timer_picker.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -24,10 +22,10 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
-import '../../../leave/view/widget/single_date_picker_calendar.dart';
 import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
 import 'duration_time_widget.dart';
+
 
 class TimeLogEntryTextField extends StatelessWidget {
   final bool? isFromUpdateTimelogEntry;
@@ -74,7 +72,7 @@ class TimeLogEntryTextField extends StatelessWidget {
                   ? CustomAppButton(
                       isButtonExpanded: false,
                       buttonText: Get.find<TimelineController>()
-                              .isTimelogEntryOrRemoveLoading
+                              .isTimelogRemoveLoading
                               .isTrue
                           ? const Center(
                               child: CupertinoActivityIndicator(

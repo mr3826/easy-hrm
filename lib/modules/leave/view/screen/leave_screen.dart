@@ -54,7 +54,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
           Get.delete<ApplyLeaveController>();
         }
         Get.put(ApplyLeaveController());
-          _customButtonSheet(context: context, child: const ApplyLeaveScreen());
+        _customButtonSheet(context: context, child: const ApplyLeaveScreen());
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
@@ -150,7 +150,7 @@ SliverAppBar get sliverAppBar {
 }
 
 _leaveText() {
-  return  Text(
+  return Text(
     AppString.text_leave.tr,
     style: AppStyle.mid_large_text.copyWith(fontSize: 20),
   );
