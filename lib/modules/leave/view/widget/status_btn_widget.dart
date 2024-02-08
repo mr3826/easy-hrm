@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
-import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -97,76 +97,78 @@ Widget buttonLayout(
 }
 
 _rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
-  return Padding(
-    padding: marginLayout,
-    child: CustomDoubleAppButton(
-        cancelAction: () {
-          customDialog(
-              context: context,
-              saveBtnAction: () {
-                Get.find<TimelineController>()
-                    .removeTimeEntry(timeLogId: taskInfo.timeLineId);
+  return Obx(
+    () => Padding(
+      padding: marginLayout,
+      child: Get.find<TimelineController>().isTimelogEntryOrRemoveLoading.isTrue
+          ? const CupertinoActivityIndicator(
+              color: Colors.blueAccent,
+              radius: 16,
+            )
+          : CustomDoubleAppButton(
+              cancelAction: () async {
+                await Get.find<TimelineController>()
+                    .removeTimeEntry(timeLogId: taskInfo.timeLineId)
+                    .then((value) {
+                  if (value == true) {
+                    Navigator.pop(context);
+                  }
+                });
               },
-              icon: Icons.delete_outline_outlined,
-              titleText: AppString.text_remove_time_log.tr,
-              subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
-              drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
-              iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr);
-        },
-        buttonText: AppString.text_details.tr,
-        cancelText: AppString.text_remove.tr,
-        onAction: () {
-          _updateDataFromApiResponse(taskInfo: taskInfo);
-          Get.to(() {
-            return UpdateTimeLineLog(
-              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                  ? colorFromHex(taskInfo.projectColor)
-                  : AppColor.primaryColor,
-              endDateTime: taskInfo.endTime,
-              startDateTime: taskInfo.startTime,
-              status: taskInfo.status ?? "",
-            );
-          });
-        },
-        btnColor: AppColor.primaryColor),
+              buttonText: AppString.text_details.tr,
+              cancelText: AppString.text_remove.tr,
+              onAction: () {
+                _updateDataFromApiResponse(taskInfo: taskInfo);
+                Get.to(() {
+                  return UpdateTimeLineLog(
+                    projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                        ? colorFromHex(taskInfo.projectColor)
+                        : AppColor.primaryColor,
+                    endDateTime: taskInfo.endTime,
+                    startDateTime: taskInfo.startTime,
+                    status: taskInfo.status ?? "",
+                  );
+                });
+              },
+              btnColor: AppColor.primaryColor),
+    ),
   );
 }
 
 _pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
-  return Padding(
-    padding: marginLayout,
-    child: CustomDoubleAppButton(
-        cancelAction: () {
-          customDialog(
-              context: context,
-              saveBtnAction: () {
-                Get.find<TimelineController>()
-                    .removeTimeEntry(timeLogId: taskInfo.timeLineId);
+  return Obx(
+    () => Padding(
+      padding: marginLayout,
+      child: Get.find<TimelineController>().isTimelogEntryOrRemoveLoading.isTrue
+          ? const CupertinoActivityIndicator(
+              color: Colors.blueAccent,
+              radius: 16,
+            )
+          : CustomDoubleAppButton(
+              cancelAction: () async {
+                await Get.find<TimelineController>()
+                    .removeTimeEntry(timeLogId: taskInfo.timeLineId)
+                    .then((value) {
+                  if (value == true) {
+                    Navigator.pop(context);
+                  }
+                });
               },
-              icon: Icons.delete_outline_outlined,
-              titleText: AppString.text_remove_time_log.tr,
-              subText: AppString.text_sure_you_want_to_deleted_this_log.tr,
-              drcText: AppString.text_if_you_deleted_this_time_log_etc.tr,
-              iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr);
-        },
-        buttonText: AppString.text_details.tr,
-        cancelText: AppString.text_remove.tr,
-        onAction: () {
-          _updateDataFromApiResponse(taskInfo: taskInfo);
-          Get.to(() => UpdateTimeLineLog(
-            projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                ? colorFromHex(taskInfo.projectColor)
-                : AppColor.primaryColor,
-                endDateTime: taskInfo.endTime,
-                startDateTime: taskInfo.startTime,
-                status: taskInfo.status ?? "",
-              ));
-        },
-        btnColor: AppColor.primaryColor),
+              buttonText: AppString.text_details.tr,
+              cancelText: AppString.text_remove.tr,
+              onAction: () {
+                _updateDataFromApiResponse(taskInfo: taskInfo);
+                Get.to(() => UpdateTimeLineLog(
+                      projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                          ? colorFromHex(taskInfo.projectColor)
+                          : AppColor.primaryColor,
+                      endDateTime: taskInfo.endTime,
+                      startDateTime: taskInfo.startTime,
+                      status: taskInfo.status ?? "",
+                    ));
+              },
+              btnColor: AppColor.primaryColor),
+    ),
   );
 }
 
@@ -183,9 +185,9 @@ _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
       onPressed: () {
         _updateDataFromApiResponse(taskInfo: taskInfo);
         Get.to(() => UpdateTimeLineLog(
-          projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-              ? colorFromHex(taskInfo.projectColor)
-              : AppColor.primaryColor,
+              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                  ? colorFromHex(taskInfo.projectColor)
+                  : AppColor.primaryColor,
               endDateTime: taskInfo.endTime,
               startDateTime: taskInfo.startTime,
               status: taskInfo.status,

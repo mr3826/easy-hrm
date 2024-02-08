@@ -17,14 +17,15 @@ class TimeCounterController extends GetxController {
   var totalTime = ''.obs;
   var isRunning = false.obs;
   var isTotalCount = true.obs;
-  late Timer _timer;
-  late Timer _aniTimer;
+  Timer _timer=Timer(Duration.zero, () {});
+  Timer _aniTimer=Timer(Duration.zero, () {});
   int _seconds = 0;
   final isLoading = false.obs;
   RxBool isContainerGrowing = true.obs;
   RxDouble containerSize = 20.0.obs;
 
   Timer get timer => _timer;
+
   Timer get animationTimer => _aniTimer;
 
   void start() {
@@ -53,8 +54,12 @@ class TimeCounterController extends GetxController {
 
   void reset() {
     isRunning.value = false;
-    _timer.cancel();
-    _aniTimer.cancel();
+    if (_timer.isActive) {
+      _timer.cancel();
+    }
+    if (_aniTimer.isActive) {
+      _aniTimer.cancel();
+    }
     _seconds = 0;
     _updateTimer(Timer(Duration.zero, () {
       elapsedTime.value = 'Start';
