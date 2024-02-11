@@ -224,4 +224,8 @@ class ExitAppController extends GetxController {
     }
     return false;
   }
+
+  Future<bool> willPopForTimeLog() async {
+    return false;
+  }
 }

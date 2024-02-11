@@ -29,7 +29,8 @@ String urlBuilder(imgUrlKey) {
   return url;
 }
 
-Widget circleImageLayout({radius, url, borderColor, logoUrl}) {
+Widget circleImageLayout(
+    {radius, required url, borderColor, required errorText}) {
   return CircleAvatar(
     radius: radius + 2.5,
     backgroundColor: borderColor ?? AppColor.hintColor,
@@ -45,7 +46,7 @@ Widget circleImageLayout({radius, url, borderColor, logoUrl}) {
           errorWidget: (context, url, error) => CircleAvatar(
             radius: radius,
             backgroundColor: AppColor.bgColorWithPrimary,
-            child: _errorText(logoUrl),
+            child: _errorText(errorText),
           ),
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
@@ -64,24 +65,10 @@ Widget circleImageLayout({radius, url, borderColor, logoUrl}) {
   );
 }
 
-_errorText(logoUrl) {
-  return logoUrl == null
-      ? Text(
-          "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}",
-          style: AppStyle.normal_text_grey.copyWith(
-              fontSize: Dimensions.fontSizeMid + 4,
-              color: AppColor.primaryColor))
-      : Text(
-          Get.find<UserProfileController>()
-                  .userDetails
-                  ?.getOrganizationUserDetails
-                  ?.organization!
-                  .orgName?[0]
-                  .toUpperCase() ??
-              "",
-          style: AppStyle.normal_text_grey.copyWith(
-              fontSize: Dimensions.fontSizeMid + 4,
-              color: AppColor.primaryColor));
+_errorText(errorText) {
+  return Text("$errorText",
+      style: AppStyle.normal_text_grey.copyWith(
+          fontSize: Dimensions.fontSizeMid + 4, color: AppColor.primaryColor));
 }
 
 Widget rectangleImageLayout({url}) {

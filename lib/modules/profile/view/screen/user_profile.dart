@@ -528,6 +528,33 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _userImageLayout({double? height}) {
     return CustomNetworkImage(
+        errorText: (Get.find<UserProfileController>()
+                            .userDetails
+                            ?.getOrganizationUserDetails
+                            ?.profile
+                            ?.firstName !=
+                        null &&
+                    Get.find<UserProfileController>()
+                        .userDetails!
+                        .getOrganizationUserDetails!
+                        .profile!
+                        .firstName!
+                        .isNotEmpty) &&
+                (Get.find<UserProfileController>()
+                            .userDetails
+                            ?.getOrganizationUserDetails
+                            ?.profile
+                            ?.lastName !=
+                        null &&
+                    Get.find<UserProfileController>()
+                        .userDetails!
+                        .getOrganizationUserDetails!
+                        .profile!
+                        .lastName!
+                        .isNotEmpty)
+            ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
+                "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
+            : "",
         height: height ?? 32,
         imgUrlKey:
             "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
@@ -536,6 +563,26 @@ class ProfileScreen extends GetView<UserProfileController> {
   _organisationLogoLayout() {
     return CustomNetworkImage(
       height: AppLayout.getHeight(25),
+      errorText: (Get.find<UserProfileController>()
+                      .userDetails
+                      ?.getOrganizationUserDetails
+                      ?.organization!
+                      .orgName !=
+                  null &&
+              Get.find<UserProfileController>()
+                  .userDetails!
+                  .getOrganizationUserDetails!
+                  .organization!
+                  .orgName!
+                  .isNotEmpty)
+          ? Get.find<UserProfileController>()
+                  .userDetails
+                  ?.getOrganizationUserDetails
+                  ?.organization!
+                  .orgName![0]
+                  .toUpperCase() ??
+              ""
+          : "",
       imgUrlKey:
           "${controller.userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}",
       borderColor: Colors.transparent,

@@ -8,6 +8,7 @@ import '../../../../utils/app_color.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../auth/presentation/view/otp_screen.dart';
+import '../../../profile/controller/user_profile_controller.dart';
 import '../../controller/dashbpard_controller.dart';
 import 'dashboad_widget.dart';
 
@@ -263,6 +264,14 @@ _userImageLayout() {
 
   return CustomNetworkImage(
     height: 22,
+    errorText: (controller.profileSummaryForDashboard
+                    ?.getProfileSummaryForDashboard?.profile?.firstName !=
+                null &&
+            controller.profileSummaryForDashboard!
+                .getProfileSummaryForDashboard!.profile!.firstName!.isNotEmpty)
+        ? "${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.firstName?[0].toUpperCase() ?? ""}"
+            "${(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName != null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.profile!.lastName!.isNotEmpty) ? Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName![0].toUpperCase() ?? "" : ""}"
+        : "",
     imgUrlKey: controller.profileSummaryForDashboard
             ?.getProfileSummaryForDashboard?.profile?.image ??
         "",

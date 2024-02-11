@@ -20,12 +20,10 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../common/domain/last_input_model.dart';
-import '../../../common/widget/error_message.dart';
 import '../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../network/exception_helper.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/calendar_timeline.dart';
-import '../model/create_time_entry.dart';
 
 class TimelineController extends GetxController with StateMixin {
   final isLoading = false.obs;
@@ -45,6 +43,7 @@ class TimelineController extends GetxController with StateMixin {
   String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
   late Timer _apiCallAfter2MinsTimer;
+  final searchInputData = TextEditingController().obs;
 
   CalendarTimeline calendarTimeline = CalendarTimeline();
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
@@ -263,6 +262,15 @@ class TimelineController extends GetxController with StateMixin {
     } else {
       projectDropDownResponse =
           ProjectDropDownResponse.fromJson(response.data!);
+
+      if (taskSearchController.text.isEmpty &&
+          projectDropDownResponse?.getProjectsDropdown != null &&
+          projectDropDownResponse!.getProjectsDropdown!.isNotEmpty) {
+        taskName.value =
+            projectDropDownResponse?.getProjectsDropdown?.first.name ?? "";
+        projectId.value =
+            projectDropDownResponse?.getProjectsDropdown?.first.projectId ?? "";
+      }
     }
     isLoading(false);
   }
@@ -457,7 +465,6 @@ class TimelineController extends GetxController with StateMixin {
 
   @override
   void onInit() {
-    getProjectDropdown();
     _refreshTimeline();
     fetchDataAfterTwoMinutes();
 

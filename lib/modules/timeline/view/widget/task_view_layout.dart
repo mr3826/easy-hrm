@@ -33,7 +33,7 @@ class TaskViewLayout extends StatelessWidget {
                   customTitleText(
                       text: AppString.text_project_task.tr, isRequired: true),
                   customSpacerHeight(height: 8),
-                  taskSearchInputField(),
+                  const TaskSearchInputField(),
                   customSpacerHeight(height: 12),
                   Obx(() => Get.find<TimelineController>().isLoading.isTrue
                       ? const Center(
@@ -182,53 +182,69 @@ class TaskViewLayout extends StatelessWidget {
   }
 }
 
-Widget taskSearchInputField() {
-  return SizedBox(
-    height: AppLayout.getHeight(55),
-    child: TextFormField(
-      controller: taskSearchController,
-      style: subTextFieldTitleStyle,
-      autofocus: true,
-      onChanged: (value) {
-        Get.find<TimelineController>().getProjectDropdown();
-      },
-      decoration: InputDecoration(
-        hintText: AppString.text_select_option.tr,
-        suffixIcon: GestureDetector(
-          onTap: () {
-            taskSearchController.clear();
-            Get.find<TimelineController>().getProjectDropdown();
-          },
-          child: taskSearchController.text.isNotEmpty
-              ? const Icon(
-                  Icons.close,
-                  size: 30,
-                  color: AppColor.hintColor,
-                )
-              : const Icon(CupertinoIcons.search),
-        ),
-        hintStyle: TextStyle(
-            color: AppColor.hintColor,
-            fontFamily: "Poppins",
-            fontSize: Dimensions.fontSizeDefault + 1),
-        border: OutlineInputBorder(
-          borderSide:
-              const BorderSide(width: 0.0, color: AppColor.primaryColor),
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
-        ),
-        focusColor: AppColor.primaryColor,
-        focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: AppColor.hintColor,
-            ),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-        enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColor.hintColor),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-      ),
-    ),
-  );
+class TaskSearchInputField extends StatefulWidget {
+  const TaskSearchInputField({super.key});
+
+  @override
+  State<TaskSearchInputField> createState() => _TaskSearchInputFieldState();
 }
+
+class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: AppLayout.getHeight(55),
+      child: TextFormField(
+        controller: taskSearchController,
+        style: subTextFieldTitleStyle,
+        autofocus: true,
+        onChanged: (value) {
+          setState(() {
+
+          });
+          Get.find<TimelineController>().getProjectDropdown();
+        },
+        decoration: InputDecoration(
+          hintText: AppString.text_select_option.tr,
+          suffixIcon: GestureDetector(
+            onTap: () {
+              setState(() {
+              });
+              taskSearchController.clear();
+              Get.find<TimelineController>().getProjectDropdown();
+            },
+            child: taskSearchController.text.isNotEmpty
+                ? const Icon(
+              Icons.close,
+              size: 30,
+              color: AppColor.hintColor,
+            )
+                : const Icon(CupertinoIcons.search),
+          ),
+          hintStyle: TextStyle(
+              color: AppColor.hintColor,
+              fontFamily: "Poppins",
+              fontSize: Dimensions.fontSizeDefault + 1),
+          border: OutlineInputBorder(
+            borderSide:
+            const BorderSide(width: 0.0, color: AppColor.primaryColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
+          ),
+          focusColor: AppColor.primaryColor,
+          focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: AppColor.hintColor,
+              ),
+              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColor.hintColor),
+              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+        ),
+      ),
+    );
+  }
+}
+
 
 class HexColor extends Color {
   static int _getColor(String hex) {
