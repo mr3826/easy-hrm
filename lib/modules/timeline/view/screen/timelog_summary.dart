@@ -13,57 +13,66 @@ class TimeLogSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.isRegistered<TimelineSummaryController>()) {
-      Get.delete<TimelineSummaryController>();
-    }
     Get.put(TimelineSummaryController());
-
     return Scaffold(
       appBar: customAppbar(title: AppString.text_time_log_summary.tr),
-      body: Column(
-        children: [
-          const SummaryTimeLogCalendar(),
-          Obx(() => Get.find<TimelineSummaryController>()
-                  .isMonthlySummaryDataLoading
-                  .isTrue
-              ? Center(
-                  child: Padding(
-                      padding: EdgeInsets.only(top: Get.height * .35),
-                      child: const CupertinoActivityIndicator(
-                        color: Colors.blueAccent,
-                        radius: 18,
+      body: RefreshIndicator(
+        onRefresh: _refreshScreen,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                const SummaryTimeLogCalendar(),
+                Obx(() => Get.find<TimelineSummaryController>()
+                        .isMonthlySummaryDataLoading
+                        .isTrue
+                    ? Center(
+                        child: Padding(
+                            padding: EdgeInsets.only(top: Get.height * .35),
+                            child: const CupertinoActivityIndicator(
+                              color: Colors.blueAccent,
+                              radius: 18,
+                            )),
+                      )
+                    : Expanded(
+                        child: Column(
+                          children: [
+                            workingScheduleLayout(
+                                schedule: Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.totalSchedule ??
+                                    "",
+                                balanceTime: Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.balanced ??
+                                    "",
+                                loggedTime: Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.totalLogged ??
+                                    "",
+                                paidLeave: Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.paidLeave ??
+                                    ""),
+                            const IndividualTimeLayout(),
+                          ],
+                        ),
                       )),
-                )
-              : Expanded(
-                  child: Column(
-                    children: [
-                      workingScheduleLayout(
-                          schedule: Get.find<TimelineSummaryController>()
-                                  .timelineSummaryByMonth
-                                  ?.getTimelogSummaryForApp
-                                  ?.totalSchedule ??
-                              "",
-                          balanceTime: Get.find<TimelineSummaryController>()
-                                  .timelineSummaryByMonth
-                                  ?.getTimelogSummaryForApp
-                                  ?.balanced ??
-                              "",
-                          loggedTime: Get.find<TimelineSummaryController>()
-                                  .timelineSummaryByMonth
-                                  ?.getTimelogSummaryForApp
-                                  ?.totalLogged ??
-                              "",
-                          paidLeave: Get.find<TimelineSummaryController>()
-                                  .timelineSummaryByMonth
-                                  ?.getTimelogSummaryForApp
-                                  ?.paidLeave ??
-                              ""),
-                      const IndividualTimeLayout(),
-                    ],
-                  ),
-                )),
-        ],
+              ],
+            ),
+          ),
+        ),
       ),
     );
+  }
+
+  Future<void> _refreshScreen() async{
+    await Get.find<TimelineSummaryController>().getTimelineByMonth();
+    await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
   }
 }
