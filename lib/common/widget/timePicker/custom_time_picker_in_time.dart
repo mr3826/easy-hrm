@@ -10,6 +10,7 @@ import '../../../modules/leave/controller/leave_screen_controller.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
+import '../../controller/date_time_controller.dart';
 
 class CustomTimePickerInTime extends StatelessWidget {
   final String? inDate;
@@ -222,6 +223,7 @@ class _InDatePickerState extends State<InDatePicker> {
                   Get.find<DateTimePickerController>().inDate.value =
                       DateFormat('yyyy-MM-dd').format(today);
                   Get.find<DateTimePickerController>().getInDateTime();
+                  setIndexForPrevTdayOrTomListTimelog(today);
                 }
                 Navigator.pop(context);
               },
@@ -293,5 +295,37 @@ class InTimePicker extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+void setIndexForPrevTdayOrTomListTimelog(DateTime selectedDate) {
+  // Get the current date
+  DateTime currentDate = DateTime.now();
+
+  // Get yesterday's date
+  DateTime yesterdayDate = currentDate.subtract(const Duration(days: 1));
+  // Get tomorrow's date
+  DateTime tomorrowDate = currentDate.add(const Duration(days: 1));
+
+  // Check if the given date is yesterday
+  bool isYesterday = selectedDate.year == yesterdayDate.year &&
+      selectedDate.month == yesterdayDate.month &&
+      selectedDate.day == yesterdayDate.day;
+
+  bool isTomorrow = selectedDate.year == tomorrowDate.year &&
+      selectedDate.month == tomorrowDate.month &&
+      selectedDate.day == tomorrowDate.day;
+
+  bool isToday = selectedDate.year == currentDate.year &&
+      selectedDate.month == currentDate.month &&
+      selectedDate.day == currentDate.day;
+
+  if (isToday) {
+    Get.find<DateTimeController>().currentIndex.value = 1;
+  } else if (isYesterday) {
+    Get.find<DateTimeController>().currentIndex.value = 0;
+  } else if (isTomorrow) {
+    Get.find<DateTimeController>().currentIndex.value = 2;
+  } else {
+    Get.find<DateTimeController>().currentIndex.value = 4;
   }
 }

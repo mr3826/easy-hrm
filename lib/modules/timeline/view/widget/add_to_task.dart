@@ -74,18 +74,6 @@ class AddToTaskScreen extends StatelessWidget {
     );
   }
 
-  // _removeText() {
-  //   return Get.find<TimelineController>().isTimelogRemoveLoading.isTrue
-  //       ? const CupertinoActivityIndicator(
-  //           color: AppColor.cardColor,
-  //         )
-  //       : Text(AppString.text_remove.tr,
-  //           style: AppStyle.normal_text.copyWith(
-  //               color: AppColor.cardColor,
-  //               fontSize: Dimensions.fontSizeMid - 3,
-  //               fontWeight: FontWeight.w700));
-  // }
-
   _selectedTaskLayout(context) {
     return taskInputFieldLayout(onAction: () {
       customButtonSheet(

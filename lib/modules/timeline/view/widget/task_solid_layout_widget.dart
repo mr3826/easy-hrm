@@ -51,7 +51,9 @@ class TaskSolidLayout extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          timeFormatTo24h(DateTime.tryParse(endDateTime) ?? DateTime.now()),
+          endDateTime.isNotEmpty
+              ? timeFormatTo24h(DateTime.parse(endDateTime))
+              : timeFormatTo24h(DateTime.now()),
           style: AppStyle.mid_large_text.copyWith(
               color: statusColor,
               fontSize: Dimensions.fontSizeDefault - 2,
@@ -73,6 +75,7 @@ class TaskSolidLayout extends StatelessWidget {
   }
 
   _startTimeLayout(statusColor) {
+    print("start date:: $startDateTime statusColor: $statusColor");
     return Text(
       timeFormatTo24h(DateTime.parse(startDateTime)),
       style: AppStyle.mid_large_text.copyWith(
@@ -83,10 +86,10 @@ class TaskSolidLayout extends StatelessWidget {
   }
 
   Color _updateColorAccordingToApiResponseForTimelog() =>
-      colorFromHex(projectColors);
+      HexColor(projectColors.isNotEmpty ? projectColors : "#2C67FF");
 
   Color _colorForIconAccordingToApiResponseTimelog() =>
-      colorFromHex(projectColors);
+      HexColor(projectColors.isNotEmpty ? projectColors : "#2C67FF");
 
   IconData _updateIconAccordingToApiResponse() {
     switch (status) {
@@ -118,17 +121,6 @@ class TaskSolidLayout extends StatelessWidget {
     _updateIconAccordingToApiResponse();
     switch (
         _getTimeDifference(startTime: startDateTime, endTime: endDateTime)) {
-      case < 5:
-        return Card(
-          elevation: 0,
-          color:
-              _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponseForTimelog()),
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Container(),
-          ),
-        );
       case < 15:
         return Card(
           elevation: 0,
@@ -140,7 +132,7 @@ class TaskSolidLayout extends StatelessWidget {
             child: Container(),
           ),
         );
-      case < 30:
+      case > 15 && < 30:
         return Card(
           elevation: 0,
           color:
@@ -157,7 +149,7 @@ class TaskSolidLayout extends StatelessWidget {
             ),
           ),
         );
-      case < 45:
+      case > 30 && < 55:
         return Card(
           elevation: 0,
           color:
@@ -171,7 +163,7 @@ class TaskSolidLayout extends StatelessWidget {
                 _startTimeLayout(
                     _updateColorAccordingToApiResponseForTimelog()),
                 Text(
-                  taskName,
+                  projectName.isNotEmpty ? projectName : taskName,
                   maxLines: 1,
                   style: AppStyle.mid_large_text.copyWith(
                       fontSize: Dimensions.fontSizeDefault,
@@ -197,7 +189,7 @@ class TaskSolidLayout extends StatelessWidget {
                     _updateColorAccordingToApiResponseForTimelog()),
                 customSpacerHeight(height: 6),
                 Text(
-                  taskName,
+                  projectName.isNotEmpty ? projectName : taskName,
                   maxLines: 1,
                   style: AppStyle.mid_large_text.copyWith(
                       fontSize: Dimensions.fontSizeDefault,
@@ -271,17 +263,6 @@ class TaskSolidLayout extends StatelessWidget {
   Widget _leaveTaskLayout() {
     switch (
         _getTimeDifference(startTime: startDateTime, endTime: endDateTime)) {
-      case < 5:
-        return Card(
-          elevation: 0,
-          color: _updateColorAccordingToApiResponse(status: status)
-              .withOpacity(0.09),
-          shape: _style(_updateColorAccordingToApiResponse(status: status)),
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Container(),
-          ),
-        );
       case < 15:
         return Card(
           elevation: 0,
@@ -293,7 +274,7 @@ class TaskSolidLayout extends StatelessWidget {
             child: Container(),
           ),
         );
-      case < 30:
+      case > 15 && < 30:
         return Card(
           elevation: 0,
           color: _updateColorAccordingToApiResponse(status: status)
@@ -315,7 +296,7 @@ class TaskSolidLayout extends StatelessWidget {
             ],
           ),
         );
-      case < 45:
+      case > 30 && < 55:
         return Card(
           elevation: 0,
           color: _updateColorAccordingToApiResponse(status: status)
