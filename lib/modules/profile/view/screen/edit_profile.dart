@@ -294,6 +294,33 @@ Widget _brokenImageViewLayout() {
 
 _placeholderImage() {
   return CustomNetworkImage(
+      errorText: (Get.find<UserProfileController>()
+                          .userDetails
+                          ?.getOrganizationUserDetails
+                          ?.profile
+                          ?.firstName !=
+                      null &&
+                  Get.find<UserProfileController>()
+                      .userDetails!
+                      .getOrganizationUserDetails!
+                      .profile!
+                      .firstName!
+                      .isNotEmpty) &&
+              (Get.find<UserProfileController>()
+                          .userDetails
+                          ?.getOrganizationUserDetails
+                          ?.profile
+                          ?.lastName !=
+                      null &&
+                  Get.find<UserProfileController>()
+                      .userDetails!
+                      .getOrganizationUserDetails!
+                      .profile!
+                      .lastName!
+                      .isNotEmpty)
+          ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
+              "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
+          : "",
       height: 42,
       imgUrlKey:
           "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");

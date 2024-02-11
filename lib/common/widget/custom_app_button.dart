@@ -13,7 +13,8 @@ class CustomAppButton extends StatelessWidget {
   final IconData? iconsData;
   final double? btnTextSize;
 
-  const CustomAppButton({super.key,
+  const CustomAppButton({
+    super.key,
     this.hasOutline = false,
     required this.buttonText,
     required this.onPressed,
@@ -23,7 +24,6 @@ class CustomAppButton extends StatelessWidget {
     this.isButtonExpanded = true,
     this.iconsData,
     this.btnTextSize,
-
   });
 
   @override
@@ -34,29 +34,34 @@ class CustomAppButton extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: TextButton.icon(
-                icon: iconsData == null ? Container() : Icon(iconsData,size: 20,color: textColor),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(Dimensions.radiusMid)),
-                    side: BorderSide(width: 1, color: borderColor!)),
-                onPressed: () async {
-                  onPressed();
-                },
-                label:buttonText
-              ),
+                  icon: iconsData == null
+                      ? Container()
+                      : Icon(iconsData, size: 20, color: textColor),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: buttonColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radiusMid)),
+                      side: BorderSide(width: 1, color: borderColor!)),
+                  onPressed: () async {
+                    onPressed();
+                  },
+                  label: buttonText),
             ),
           )
         : SizedBox(
             width: double.infinity,
             height: AppLayout.getHeight(50),
             child: TextButton.icon(
-              icon: iconsData == null ? Container() : Icon(iconsData,color: textColor),
+              icon: iconsData == null
+                  ? Container()
+                  : Icon(iconsData, color: textColor),
               style: ElevatedButton.styleFrom(
                   backgroundColor: buttonColor,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
-                  side: BorderSide(width: 1, color: buttonColor)),
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusExtraLarge)),
+                  side: const BorderSide(width: 1, color: Colors.transparent)),
               onPressed: () async {
                 onPressed();
               },
@@ -65,4 +70,3 @@ class CustomAppButton extends StatelessWidget {
           );
   }
 }
-

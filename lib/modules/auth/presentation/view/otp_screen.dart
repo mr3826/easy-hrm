@@ -77,7 +77,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 customSpacerHeight(height: 6),
                 Center(
                     child: Text(
-                  "${AppString.text_a_6_digit_has_been_etc.tr}$emailAddress",
+                  "We have sent a Verification code to your email address.Enter this code bellow to verify your account.",
                   textAlign: TextAlign.center,
                   style: style,
                 )),

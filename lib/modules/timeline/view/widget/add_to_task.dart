@@ -16,68 +16,58 @@ import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/utils.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../../starting/view/onboarding_screen.dart';
 
 class AddToTaskScreen extends StatelessWidget {
   const AddToTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: marginLayout.copyWith(top: 30),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              customTitleText(
-                  text: AppString.text_project_task.tr, isRequired: true),
-              customSpacerHeight(height: 8),
-              _selectedTaskLayout(context),
-              customSpacerHeight(height: 20),
-              customTitleText(text: AppString.text_description.tr),
-              customSpacerHeight(height: 8),
-              InputNote(
-                controller: descriptionController,
-              ),
-              customSpacerHeight(height: 50),
-              Obx(
-                () => Get.find<TimelineController>()
-                        .isTimelogEntryOrRemoveLoading
-                        .isTrue
-                    ? const Center(
-                        child: CupertinoActivityIndicator(
-                          color: Colors.blueAccent,
-                          radius: 16,
-                        ),
-                      )
-                    : CustomDoubleAppButton(
-                        buttonText: AppString.text_save.tr,
-                        onAction: () async {
-                          Get.find<TimelineController>().saveTimeEntry();
-                        },
-                        cancelText: AppString.text_remove,
-                        cancelAction: () {
-                          customDialog(
-                              context: context,
-                              saveBtnAction: () {
-                                Get.find<TimelineController>()
-                                    .removeTimeEntry();
-                              },
-                              childForSaveBtn: Obx(() => _removeText()),
-                              icon: Icons.delete_outline_outlined,
-                              titleText: AppString.text_remove_time_log.tr,
-                              subText: AppString
-                                  .text_sure_you_want_to_deleted_this_log.tr,
-                              drcText: AppString
-                                  .text_if_you_deleted_this_time_log_etc.tr,
-                              iconBgColor: AppColor.errorColorLight,
-                              btnBgColor: AppColor.errorColorLight,
-                              btnText: "");
-                        }),
-              )
-            ],
+    final ExitAppController exitAppController = Get.put(ExitAppController());
+    return WillPopScope(
+      onWillPop: () => exitAppController.willPopForTimeLog(),
+      child: Padding(
+        padding: marginLayout.copyWith(top: 30),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customTitleText(
+                    text: AppString.text_project_task.tr, isRequired: true),
+                customSpacerHeight(height: 8),
+                _selectedTaskLayout(context),
+                customSpacerHeight(height: 20),
+                customTitleText(text: AppString.text_description.tr),
+                customSpacerHeight(height: 8),
+                InputNote(
+                  controller: descriptionController,
+                ),
+                customSpacerHeight(height: 50),
+                Obx(
+                  () => Get.find<TimelineController>()
+                          .isTimelogEntryOrRemoveLoading
+                          .isTrue
+                      ? const Center(
+                          child: CupertinoActivityIndicator(
+                            color: Colors.blueAccent,
+                            radius: 16,
+                          ),
+                        )
+                      : CustomDoubleAppButton(
+                          buttonText: AppString.text_save.tr,
+                          onAction: () async {
+                            Get.find<TimelineController>().saveTimeEntry();
+                          },
+                          cancelText: AppString.text_remove,
+                          cancelAction: () {
+                            Get.find<TimelineController>().removeTimeEntry();
+                          }),
+                )
+              ],
+            ),
           ),
         ),
       ),
