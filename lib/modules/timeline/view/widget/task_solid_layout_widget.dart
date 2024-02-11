@@ -124,9 +124,9 @@ class TaskSolidLayout extends StatelessWidget {
           color:
               _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
           shape: _style(_updateColorAccordingToApiResponseForTimelog()),
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Container(),
+          child: Container(
+            padding: const EdgeInsets.all(3),
+            child: Text("data"),
           ),
         );
       case < 15:

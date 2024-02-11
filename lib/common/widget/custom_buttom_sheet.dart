@@ -29,7 +29,6 @@ Future customButtonSheet(
     enableDrag: isDismissible ?? true,
     backgroundColor: AppColor.cardColor,
     isDismissible: isDismissible ?? true,
-    enableDrag: isDismissible ?? true,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(

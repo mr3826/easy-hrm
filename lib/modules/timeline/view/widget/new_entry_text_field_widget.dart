@@ -72,7 +72,7 @@ class TimeLogEntryTextField extends StatelessWidget {
                   ? CustomAppButton(
                       isButtonExpanded: false,
                       buttonText: Get.find<TimelineController>()
-                              .isTimelogRemoveLoading
+                              .isTimelogEntryOrRemoveLoading
                               .isTrue
                           ? const Center(
                               child: CupertinoActivityIndicator(

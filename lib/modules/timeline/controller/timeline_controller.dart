@@ -433,7 +433,7 @@ class TimelineController extends GetxController with StateMixin {
               endTime: e.endDate != null
                   ? DateTime.parse("2024-01-24 ${e.endDate?.substring(11, 19)}")
                   : DateTime.parse(
-                      "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+                      "2024-01-24 ${DateTime.now().add(const Duration(minutes: 10)).toString().substring(11, 19)}"),
               event: "",
               title: '',
               description: objData,
@@ -444,12 +444,6 @@ class TimelineController extends GetxController with StateMixin {
       CalendarControllerProvider.of(Get.context!)
           .controller
           .addAll(timelogList ?? []);
-
-      print("""
-        
-        timelogList?.length:: ${timelogList?.length}
-        
-        """);
     }
 
     isTimelineCalendarByDateLoading(false);

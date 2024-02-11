@@ -108,11 +108,6 @@ class TimeLineCalendar extends StatelessWidget {
               ?.type)
               .toString();
 
-          // String leaveId = eventData
-          //     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-          //         .leaveType
-          //         ?.leaveId)
-
           String leaveId = eventData
               .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
               .leaveId
