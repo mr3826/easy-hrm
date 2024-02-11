@@ -120,6 +120,27 @@ class IndividualEventView extends StatelessWidget {
                             ?.toLowerCase() ??
                         "",
                     leaveRecords: GetLeaveRecords(
+                      files: Files(
+                        createdAt: Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveRequests?[index].files?[0].createdAt??"",
+                        size: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index].files?[0].size??"",
+
+                        name: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index].files?[0].name??"",
+
+                        id:Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index].files?[0].id??"" ,
+
+                        key: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index].files?[0].key??"",
+                      ),
+
                       leaveType: LeaveType(
                         type: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate

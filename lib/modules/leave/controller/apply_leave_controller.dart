@@ -82,8 +82,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   applyLeave({filePath}) async {
-    print(
-        "jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
+    print("applyLeave filePath:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
 
     isAssignLeaveLoaderLoading(true);
 
@@ -136,14 +135,17 @@ class ApplyLeaveController extends GetxController with StateMixin {
       isDocumentRequired.value = false;
       numberOfLeaves.value = '';
       isErrorOccurred.value = false;
+      Get.off(() => const MainScreen(routeIndex: 1));
       Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
+      Get.find<FileUploadController>().storageForUpload.filePath.value = "";
+      Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
       showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
       leaveNoteController.clear();
-      Get.off(() => const MainScreen(routeIndex: 1));
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
       await Get.find<DashboardController>()
           .getMonthlyTimelineInfoForDashboard();
+      isFileUploadedSuccessfully(false);
     }
 
     isAssignLeaveLoaderLoading(false);

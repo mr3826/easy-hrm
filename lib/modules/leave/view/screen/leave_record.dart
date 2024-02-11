@@ -52,6 +52,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   }
 
   _leaveRecordViewLayout(int monthIndex) {
+
     return ListView.builder(
       shrinkWrap: true,
       padding: marginLayout,
@@ -71,6 +72,34 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                   .leaveRecordList?[monthIndex].data?[index].numberOfDays,
               createdAt: controller
                   .leaveRecordList?[monthIndex].data?[index].createdAt,
+              files:
+                  (controller.leaveRecordList?[monthIndex].data?[index].files !=
+                              null &&
+                          controller.leaveRecordList![monthIndex].data![index]
+                              .files!.isNotEmpty)
+                      ? Files(
+                          createdAt: controller.leaveRecordList?[monthIndex]
+                                  .data?[index].files?[0].createdAt ??
+                              "",
+                          size: controller.leaveRecordList?[monthIndex]
+                                  .data?[index].files?[0].size ??
+                              "",
+                          name: controller.leaveRecordList?[monthIndex]
+                                  .data?[index].files?[0].name ??
+                              "",
+                          id: controller.leaveRecordList?[monthIndex]
+                                  .data?[index].files?[0].id ??
+                              "",
+                          key: controller.leaveRecordList?[monthIndex]
+                                  .data?[index].files?[0].key ??
+                              "",
+                        )
+                      : Files(
+                    key: "",
+                    name: "",
+                    size: "",
+                    createdAt: ""
+                  ),
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
                     .leaveRecordList?[monthIndex]

@@ -94,7 +94,12 @@ query GetLeaveRecordsForApp($optionData: OptionDataType) {
       end_date
       files {
         name
+        size
+        createdAt
+        key
+        id
       }
+      
       leave_status
       leaveType {
         type
@@ -295,6 +300,13 @@ query GetUpcomingLeavesForApp {
     status
     createdAt
     number_of_days
+    files {
+        name
+        size
+        createdAt
+        key
+        id
+      }
     leaveType {
         type
         id
@@ -432,6 +444,13 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
       createdAt
       description
       end_date
+      files {
+        name
+        size
+        createdAt
+        key
+        id
+      }
       leaveType {
         name
         type

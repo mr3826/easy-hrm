@@ -20,12 +20,12 @@ import '../../model/leave_records.dart';
 class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;
   final GetLeaveRecords? leaveRecords;
-
   const AddAttachmentFile(
       {this.isFromApplyLeave = false, super.key, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
+    print("afasdf ::: ${leaveRecords?.leaveType?.fileKey}");
     if (Get.isRegistered()) {
       Get.delete<ApplyLeaveController>();
     }
@@ -49,10 +49,8 @@ class AddAttachmentFile extends StatelessWidget {
   }
 
   Widget _documentLayout() {
-    if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
-        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+    if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue && Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
-
       return Get.find<FileUploadController>()
               .storageForUpload
               .filePath
@@ -66,6 +64,7 @@ class AddAttachmentFile extends StatelessWidget {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
         return leaveRecords?.leaveType?.fileKey == null ||
+                leaveRecords?.leaveType?.fileKey == "null" ||
                 isFromApplyLeave == true
             ? _emptyBox()
             : leaveRecords!.leaveType!.fileKey!.endsWith(".pdf")

@@ -28,6 +28,7 @@ class LeaveRecordsController extends GetxController with StateMixin {
           LeaveRecord.fromJson(response.data!).getLeaveRecordsForApp!;
       print(leaveRecordList?.length);
     }
+    print("response :::::: ${response.data}");
     change(null, status: RxStatus.success());
   }
 

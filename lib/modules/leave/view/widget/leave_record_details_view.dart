@@ -22,7 +22,7 @@ import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../utils/utils.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
-  dynamic status;
+   dynamic status;
   final GetLeaveRecords? leaveRecords;
   dynamic leaveDate;
   dynamic leaveWeekday;

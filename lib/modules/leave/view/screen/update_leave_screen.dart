@@ -29,17 +29,16 @@ import '../../controller/file_upload_controller.dart';
 import '../../model/leave_type.dart';
 
 class UpdateLeave extends StatelessWidget {
-  GetLeaveRecords? leaveRecords;
+ final GetLeaveRecords? leaveRecords;
 
-  UpdateLeave({super.key, this.leaveRecords});
+  const UpdateLeave({super.key, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
     _updateDateFromResponse();
     return Column(
       children: [
-        Obx(
-              () => customButtonSheetAppbar(
+        Obx(() => customButtonSheetAppbar(
             text: DateTime.parse(
                 Get.find<DateTimePickerController>().inDate.value)
                 .day ==
@@ -83,13 +82,14 @@ class UpdateLeave extends StatelessWidget {
             DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
 
     Get.find<DateTimePickerController>().getInDateTime();
-    Get.find<DateTimePickerController>().getOutDateTime();
+    Get.find<DateTimePickerController>().getOutDateTime();;
 
     leaveNoteController.text = leaveRecords?.description ?? "";
     Get.find<UpDateLeaveController>().isNoteRequired.value =
         leaveRecords?.leaveType?.isAddNoteRequired ?? false;
     Get.find<UpDateLeaveController>().isDocumentRequired.value =
         leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
+
   }
 }
 
@@ -122,9 +122,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                           text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
 
-                      UpdateLeaveDropdown(
-                          dropdownValue:
-                              leaveRecords?.leaveType?.leaveId ?? ""),
+                      UpdateLeaveDropdown(dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
 
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
@@ -168,7 +166,9 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 6),
                       _pathFormatText(),
                       customSpacerHeight(height: 8),
+
                        AddAttachmentFile(leaveRecords: leaveRecords,),
+
                       customSpacerHeight(height: 20),
                       Obx(() => Get.find<UpDateLeaveController>()
                               .isUpdateLeaveLoading

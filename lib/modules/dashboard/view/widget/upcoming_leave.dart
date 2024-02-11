@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../common/widget/custom_spacer.dart';
@@ -54,10 +55,27 @@ class UpcomingLeaveLayout extends StatelessWidget {
                           endDate: controller.upcommingLeaveDashboard
                               ?.getUpcomingLeavesForApp?[index].endDate ??
                               "",
+                          files: Files(createdAt: controller.upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index].files?[0].createdAt??"",
+
+                            size: controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].files?[0].size ??
+                                "",
+                            name: controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].files?[0].name ??
+                                "",
+                            id:controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].files?[0].id ??
+                                "" ,
+                            key: controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].files?[0].key ??
+                                "",
+                          ),
                           leaveType: controller.upcommingLeaveDashboard
                               ?.getUpcomingLeavesForApp?[index].leaveType,
                           duration: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays ?? 0,
-                          description: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].description),
+                          description: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].description,
+                      ),
                     ),
                     height: 0.6),
                 child: Card(

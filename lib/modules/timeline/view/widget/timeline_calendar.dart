@@ -108,16 +108,10 @@ class TimeLineCalendar extends StatelessWidget {
               ?.type)
               .toString();
 
-          // String leaveId = eventData
-          //     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-          //         .leaveType
-          //         ?.leaveId)
-
           String leaveId = eventData
               .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
               .leaveId
           )
-
 
               .toString();
           String duration = eventData
@@ -221,6 +215,7 @@ class TimeLineCalendar extends StatelessWidget {
                       1, numberOfDays.length - 1)),
                   description: description.toString().substring(
                       1, description.toString().length - 1),
+
                   leaveType: LeaveType(
                       leaveName: leaveName.substring(
                           1, leaveName.length - 1),
