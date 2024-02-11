@@ -22,18 +22,33 @@ class TimelineScreen extends GetView<TimelineController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx(
-        (state) => Scaffold(
-              backgroundColor: AppColor.backgroundColor,
-              body: RefreshIndicator(
-                backgroundColor: Colors.white,
-                onRefresh: _refreshScreen,
-                child: CustomScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  slivers: [sliverAppBar, sliverToBoxAdapter],
+            (state) => Scaffold(
+          backgroundColor: AppColor.backgroundColor,
+          body: RefreshIndicator(
+            backgroundColor: Colors.white,
+            onRefresh: _refreshScreen,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: CustomScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        slivers: [
+                          sliverAppBar,
+                          sliverToBoxAdapter,
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              floatingActionButton: Obx(() => _timerBtnLayout(context)),
             ),
+          ),
+          floatingActionButton: Obx(() => _timerBtnLayout(context)),
+        ),
         onLoading: const LoadingIndicator());
   }
 
@@ -47,7 +62,7 @@ class TimelineScreen extends GetView<TimelineController> {
         children: [
           controller.isRunning.value
               ? _timerStringOpenBtn(
-                  time: controller.starTimeDashboard.toString())
+              time: controller.starTimeDashboard.toString())
               : _timerStringBtn(),
           customSpacerWidth(width: 18),
           _addTimeEntryBtn(),
@@ -84,31 +99,22 @@ class TimelineScreen extends GetView<TimelineController> {
   }
 
   Future<void> _refreshScreen() async {
-    await controller.getProjectDropdown();
-
-    //monthly summary
-    //by default its current month
-
-    DateTime requestedDate =
-        DateTime.parse(Get.find<DateTimeController>().requestedDate.value);
-
     await controller.getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
 
     await controller.getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
-
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
     await controller.getTimelineSummaryByDate(
         startDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   }
 }
 
@@ -164,17 +170,14 @@ _buttonRadiusLayout() {
         padding: const EdgeInsets.only(top: 0, bottom: 0),
         child: const Center(
             child: Text(
-          "",
-          style: TextStyle(fontSize: 12),
-        ))),
+              "",
+              style: TextStyle(fontSize: 12),
+            ))),
   );
 }
 
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(
-    child: RefreshIndicator(
-        onRefresh: _refreshScreen, child: CustomTimelineCalendar()),
+    child: CustomTimelineCalendar(),
   );
 }
-
-Future<void> _refreshScreen() async {}
