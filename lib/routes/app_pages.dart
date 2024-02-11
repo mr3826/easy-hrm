@@ -43,7 +43,7 @@ class AppPages {
     GetPage(
       name: _Paths.FIRGIR_PASSWORD_SCREEN,
       transition: Transition.size,
-      page: () => const ForgotScreen(),
+      page: () =>  ForgotScreen(),
     ),
     GetPage(
       name: _Paths.OTP,
