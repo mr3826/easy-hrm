@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
+import 'package:payrun_mobile/common/controller/timer_picker.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -22,10 +24,10 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../../leave/view/widget/single_date_picker_calendar.dart';
 import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
 import 'duration_time_widget.dart';
-
 
 class TimeLogEntryTextField extends StatelessWidget {
   final bool? isFromUpdateTimelogEntry;
@@ -88,26 +90,26 @@ class TimeLogEntryTextField extends StatelessWidget {
                       },
                       buttonColor: AppColor.errorColorLight)
                   : Get.find<TimelineController>()
-                              .isManualEntryLoading
-                              .isTrue ||
-                          Get.find<TimelineController>()
-                              .isUpdateTimeLogLoading
-                              .isTrue
-                      ? const Center(
-                          child: CupertinoActivityIndicator(),
-                        )
-                      : CustomDoubleAppButton(
-                          buttonText: AppString.text_add.tr,
-                          onAction: () {
-                            isFromUpdateTimelogEntry == true
-                                ? Get.find<TimelineController>()
-                                    .updateTimelineLogDetails()
-                                : Get.find<TimelineController>()
-                                    .createManualEntry();
-                          },
-                          cancelAction: () {
-                            Navigator.pop(context);
-                          })),
+                  .isManualEntryLoading
+                  .isTrue ||
+                  Get.find<TimelineController>()
+                      .isUpdateTimeLogLoading
+                      .isTrue
+                  ? const Center(
+                child: CupertinoActivityIndicator(),
+              )
+                  : CustomDoubleAppButton(
+                  buttonText: AppString.text_add.tr,
+                  onAction: () {
+                    isFromUpdateTimelogEntry == true
+                        ? Get.find<TimelineController>()
+                        .updateTimelineLogDetails()
+                        : Get.find<TimelineController>()
+                        .createManualEntry();
+                  },
+                  cancelAction: () {
+                    Navigator.pop(context);
+                  })),
               customSpacerHeight(height: 40)
             ],
           ),
@@ -145,7 +147,7 @@ class TimeLogEntryTextField extends StatelessWidget {
                 border: Border.all(width: .8, color: AppColor.hintColor),
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
             padding:
-                marginLayout.copyWith(top: 14, bottom: 14, left: 14, right: 14),
+            marginLayout.copyWith(top: 14, bottom: 14, left: 14, right: 14),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -185,10 +187,10 @@ class TimeLogEntryTextField extends StatelessWidget {
   _timeInvalidMessage() {
     return Get.find<TimelineController>().isTimeInvalid.isTrue
         ? Text(
-            "**${AppString.inputTimeInvalidMessage}",
-            style:
-                AppStyle.small_text.copyWith(color: AppColor.errorColorLight),
-          )
+      "**${AppString.inputTimeInvalidMessage}",
+      style:
+      AppStyle.small_text.copyWith(color: AppColor.errorColorLight),
+    )
         : Container();
   }
 
@@ -225,33 +227,33 @@ class TimeLogEntryTextField extends StatelessWidget {
               }
             },
             child: Obx(() => SizedBox(
-                  width: (Get.width - 40) / 3,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Card(
-                      color:
-                          Get.find<DateTimeController>().currentIndex.value ==
-                                  index
-                              ? AppColor.primaryColor.withOpacity(0.05)
-                              : Colors.transparent,
-                      shape: roundedRectangleBorder.copyWith(
-                          side: BorderSide(
-                              width: 1,
-                              color: Get.find<DateTimeController>()
-                                          .currentIndex
-                                          .value ==
-                                      index
-                                  ? AppColor.primaryColor
-                                  : AppColor.hintColor)),
-                      elevation: 0,
-                      child: Center(
-                          child: Text(
+              width: (Get.width - 40) / 3,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Card(
+                  color:
+                  Get.find<DateTimeController>().currentIndex.value ==
+                      index
+                      ? AppColor.primaryColor.withOpacity(0.05)
+                      : Colors.transparent,
+                  shape: roundedRectangleBorder.copyWith(
+                      side: BorderSide(
+                          width: 1,
+                          color: Get.find<DateTimeController>()
+                              .currentIndex
+                              .value ==
+                              index
+                              ? AppColor.primaryColor
+                              : AppColor.hintColor)),
+                  elevation: 0,
+                  child: Center(
+                      child: Text(
                         selectedBeforeDayAndAfterDay[index],
                         style: AppStyle.mid_large_text.copyWith(
                             color: Get.find<DateTimeController>()
-                                        .currentIndex
-                                        .value ==
-                                    index
+                                .currentIndex
+                                .value ==
+                                index
                                 ? AppColor.primaryColor
                                 : AppColor.hintColor,
                             fontSize: Dimensions.fontSizeDefault),
