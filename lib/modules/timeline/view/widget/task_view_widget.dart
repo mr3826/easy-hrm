@@ -62,7 +62,7 @@ class TaskView extends StatelessWidget {
                 ? convertMiniToHour(Duration(minutes: DateTime.now().minute))
                 : convertMiniToHour(Duration(minutes: int.parse(totalDur))),
             bgColor: projectColor.isNotEmpty
-                ? colorFromHex(projectColor)
+                ? HexColor(projectColor)
                 : AppColor.primaryColor),
 
         //button sheet body here
