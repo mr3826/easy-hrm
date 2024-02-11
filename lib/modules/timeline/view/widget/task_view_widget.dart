@@ -59,7 +59,10 @@ class TaskView extends StatelessWidget {
         projectViewBtnSheetAppbar(
             date: DateTime.parse(startTime),
             duration: totalDur.isEmpty
-                ? convertMiniToHour(Duration(minutes: DateTime.now().minute))
+                ? convertMiniToHour(Duration(
+                    minutes: DateTime.now()
+                        .difference(DateTime.parse(startTime))
+                        .inMinutes))
                 : convertMiniToHour(Duration(minutes: int.parse(totalDur))),
             bgColor: projectColor.isNotEmpty
                 ? HexColor(projectColor)
@@ -73,8 +76,7 @@ class TaskView extends StatelessWidget {
                 projectColor: projectColor,
                 projectId: projectId,
                 taskId: taskId,
-                endTime:
-                    endTime.isNotEmpty ? endTime : DateTime.now().toString(),
+                endTime: endTime,
                 startTime: startTime.isNotEmpty
                     ? startTime
                     : DateTime.now().toString(),

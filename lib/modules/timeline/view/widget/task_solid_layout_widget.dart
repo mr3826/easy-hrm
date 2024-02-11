@@ -149,7 +149,7 @@ class TaskSolidLayout extends StatelessWidget {
             ),
           ),
         );
-      case > 30 && < 45:
+      case > 30 && < 55:
         return Card(
           elevation: 0,
           color:
@@ -296,7 +296,7 @@ class TaskSolidLayout extends StatelessWidget {
             ],
           ),
         );
-      case > 30 && < 45:
+      case > 30 && < 55:
         return Card(
           elevation: 0,
           color: _updateColorAccordingToApiResponse(status: status)

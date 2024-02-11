@@ -28,8 +28,10 @@ Widget btnSheetViewLayout(
             customSpacerHeight(height: 6),
             _infoLayout(
                 text: "${AppString.text_end.tr}:",
-                dynamicText: DateFormat('HH:mm')
-                    .format(DateTime.parse(taskInfo.endTime))),
+                dynamicText: taskInfo.endTime.isNotEmpty
+                    ? DateFormat('HH:mm')
+                        .format(DateTime.parse(taskInfo.endTime))
+                    : ""),
             customSpacerHeight(height: 6),
           ],
         ),
