@@ -175,6 +175,7 @@ class TaskViewLayout extends StatelessWidget {
         Get.find<TimelineController>().taskName.value = task.name ?? "";
         Get.find<TimelineController>().taskId.value = task.taskId ?? "";
         Get.find<TimelineController>().projectId.value = "";
+        Get.find<TimelineController>().projectColor.value ="";
         Navigator.pop(context);
       },
       child: Column(
