@@ -139,7 +139,7 @@ class TaskSolidLayout extends StatelessWidget {
               _updateColorAccordingToApiResponseForTimelog().withOpacity(0.09),
           shape: _style(_updateColorAccordingToApiResponseForTimelog()),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

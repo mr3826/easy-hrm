@@ -8,12 +8,8 @@ import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.da
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
-import '../../../../common/widget/custom_dialog.dart';
 import '../../../../common/widget/custom_spacer.dart';
-import '../../../../utils/app_color.dart';
 import '../../../../utils/app_string.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
 import '../../../../utils/utils.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../../starting/view/onboarding_screen.dart';

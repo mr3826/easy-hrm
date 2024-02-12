@@ -204,6 +204,7 @@ void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
   Get.find<TimelineController>().timeLineID = taskInfo.timeLineId ?? "";
   Get.find<TimelineController>().taskId.value = taskInfo.taskId ?? "";
   Get.find<TimelineController>().projectId.value = taskInfo.projectId ?? "";
+  Get.find<TimelineController>().projectColor.value = taskInfo.projectColor ?? "";
   Get.find<TimelineController>().taskName.value =
       taskInfo.taskOrProjectName ?? "";
   descriptionController.text = taskInfo.description ?? "";
