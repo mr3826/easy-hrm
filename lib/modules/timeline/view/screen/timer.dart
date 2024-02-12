@@ -47,6 +47,12 @@ class TimerScreen extends StatelessWidget {
                     .startOrEndTimer(timerType: StartOrEndTimer.end.name)
                     .then((value) {
                   if (value == true) {
+                    if (Get.find<TimelineController>()
+                            .projectDropDownResponse
+                            ?.getProjectsDropdown ==
+                        null) {
+                      Get.find<TimelineController>().getProjectDropdown();
+                    }
                     customButtonSheet(
                         height: .6,
                         context: context,

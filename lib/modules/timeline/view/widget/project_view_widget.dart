@@ -28,8 +28,10 @@ Widget btnSheetViewLayout(
             customSpacerHeight(height: 6),
             _infoLayout(
                 text: "${AppString.text_end.tr}:",
-                dynamicText: DateFormat('HH:mm')
-                    .format(DateTime.parse(taskInfo.endTime))),
+                dynamicText: taskInfo.endTime.isNotEmpty
+                    ? DateFormat('HH:mm')
+                        .format(DateTime.parse(taskInfo.endTime))
+                    : ""),
             customSpacerHeight(height: 6),
           ],
         ),
@@ -44,7 +46,7 @@ Widget btnSheetViewLayout(
         _infoLayout(
             text: AppString.text_project_task_or_tag,
             widget: _projectNameLayout(
-                color: colorFromHex(taskInfo.projectColor!),
+                color: HexColor(taskInfo.projectColor!),
                 name: taskInfo.taskOrProjectName)),
         customSpacerHeight(height: 50),
 

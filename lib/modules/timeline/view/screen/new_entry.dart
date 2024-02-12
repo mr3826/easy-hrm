@@ -18,8 +18,9 @@ class NewEntryScreen extends StatelessWidget {
 
     Get.put(DateTimePickerController());
 
-    Get.find<TimelineController>().projectId.value='';
-    Get.find<TimelineController>().taskName.value='';
+    Get.find<TimelineController>().projectId.value = '';
+    Get.find<TimelineController>().taskName.value = '';
+    Get.find<TimelineController>().projectColor.value = '';
 
     Get.find<TimelineController>().getProjectDropdown();
 

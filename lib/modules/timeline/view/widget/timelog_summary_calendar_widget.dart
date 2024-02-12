@@ -129,24 +129,28 @@ class _SummaryTimeLogCalendarState extends State<SummaryTimeLogCalendar> {
         return Padding(
           padding: const EdgeInsets.only(left: 0.0, right: 25),
           child: Obx(() => GestureDetector(
-              onTap: () {
-                print("year index: $yearIndex");
-                print("year index: $year");
-                print("month index: $index");
-                Get.find<TimelineSummaryController>().getTimelineByMonth(
-                    startDate: "${DateTime(year, month.month, 1, 0, 0, 0)}",
-                    endDate:
-                        "${DateTime(year, month.month + 1, 0, 23, 59, 59)}");
-                Get.find<TimelineSummaryController>().getTimelogDetailsByMonth(
-                    startDate: "${DateTime(year, month.month, 1, 0, 0, 0)}",
-                    endDate:
-                        "${DateTime(year, month.month + 1, 0, 23, 59, 59)}");
+              onTap: () async {
 
+                //set index data to show selected month and year
                 Get.find<TimelineSummaryController>()
                     .selectedSummaryDate
                     .value = index.toString();
                 Get.find<TimelineSummaryController>().selectedYearIndex.value =
                     yearIndex;
+
+                //add selected date info
+                Get.find<TimelineSummaryController>()
+                    .selectedMonthStartDate
+                    .value = "${DateTime(year, month.month, 1, 0, 0, 0)}";
+                Get.find<TimelineSummaryController>()
+                        .selectedMonthEndDate
+                        .value =
+                    "${DateTime(year, month.month + 1, 0, 23, 59, 59)}";
+
+                await Get.find<TimelineSummaryController>()
+                    .getTimelineByMonth();
+                await Get.find<TimelineSummaryController>()
+                    .getTimelogDetailsByMonth();
               },
               child: SizedBox(
                 width: 90,

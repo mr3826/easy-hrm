@@ -122,7 +122,7 @@ _rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
                 Get.to(() {
                   return UpdateTimeLineLog(
                     projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                        ? colorFromHex(taskInfo.projectColor)
+                        ? HexColor(taskInfo.projectColor)
                         : AppColor.primaryColor,
                     endDateTime: taskInfo.endTime,
                     startDateTime: taskInfo.startTime,
@@ -160,7 +160,7 @@ _pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
                 _updateDataFromApiResponse(taskInfo: taskInfo);
                 Get.to(() => UpdateTimeLineLog(
                       projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                          ? colorFromHex(taskInfo.projectColor)
+                          ? HexColor(taskInfo.projectColor)
                           : AppColor.primaryColor,
                       endDateTime: taskInfo.endTime,
                       startDateTime: taskInfo.startTime,
@@ -186,7 +186,7 @@ _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
         _updateDataFromApiResponse(taskInfo: taskInfo);
         Get.to(() => UpdateTimeLineLog(
               projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                  ? colorFromHex(taskInfo.projectColor)
+                  ? HexColor(taskInfo.projectColor)
                   : AppColor.primaryColor,
               endDateTime: taskInfo.endTime,
               startDateTime: taskInfo.startTime,
@@ -204,6 +204,7 @@ void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
   Get.find<TimelineController>().timeLineID = taskInfo.timeLineId ?? "";
   Get.find<TimelineController>().taskId.value = taskInfo.taskId ?? "";
   Get.find<TimelineController>().projectId.value = taskInfo.projectId ?? "";
+  Get.find<TimelineController>().projectColor.value = taskInfo.projectColor ?? "";
   Get.find<TimelineController>().taskName.value =
       taskInfo.taskOrProjectName ?? "";
   descriptionController.text = taskInfo.description ?? "";

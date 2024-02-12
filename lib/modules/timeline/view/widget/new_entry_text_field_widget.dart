@@ -72,23 +72,23 @@ class TimeLogEntryTextField extends StatelessWidget {
               customSpacerHeight(height: 20),
               Obx(() => status != null && status == "reject"
                   ? CustomAppButton(
-                  isButtonExpanded: false,
-                  buttonText: Get.find<TimelineController>()
-                      .isTimelogEntryOrRemoveLoading
-                      .isTrue
-                      ? const Center(
-                    child: CupertinoActivityIndicator(
-                        color: Colors.blueAccent, radius: 16),
-                  )
-                      : Text(AppString.text_remove.tr,
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 16)),
-                  onPressed: () {
-                    Get.find<TimelineController>().removeTimeEntry(
-                        timeLogId:
-                        Get.find<TimelineController>().timeLineID);
-                  },
-                  buttonColor: AppColor.errorColorLight)
+                      isButtonExpanded: false,
+                      buttonText: Get.find<TimelineController>()
+                              .isTimelogEntryOrRemoveLoading
+                              .isTrue
+                          ? const Center(
+                              child: CupertinoActivityIndicator(
+                                  color: Colors.blueAccent, radius: 16),
+                            )
+                          : Text(AppString.text_remove.tr,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16)),
+                      onPressed: () {
+                        Get.find<TimelineController>().removeTimeEntry(
+                            timeLogId:
+                                Get.find<TimelineController>().timeLineID);
+                      },
+                      buttonColor: AppColor.errorColorLight)
                   : Get.find<TimelineController>()
                   .isManualEntryLoading
                   .isTrue ||
@@ -258,9 +258,9 @@ class TimeLogEntryTextField extends StatelessWidget {
                                 : AppColor.hintColor,
                             fontSize: Dimensions.fontSizeDefault),
                       )),
-                ),
-              ),
-            )),
+                    ),
+                  ),
+                )),
           );
         },
       ),

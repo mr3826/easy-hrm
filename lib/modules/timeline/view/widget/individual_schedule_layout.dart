@@ -22,7 +22,7 @@ class IndividualTimeLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: ListView.builder(
-      physics: const BouncingScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: Get.find<TimelineSummaryController>()

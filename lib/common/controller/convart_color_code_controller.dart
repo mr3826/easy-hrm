@@ -10,12 +10,3 @@ class HexColor extends Color {
     return int.parse(formattedHex, radix: 16);
   }
 }
-
-Color colorFromHex(String hexColor) {
-  if (hexColor.isEmpty && hexColor == "null") {
-    return AppColor.primaryColor;
-  } else {
-    hexColor = hexColor.replaceAll('#', '');
-    return Color(int.parse('FF$hexColor', radix: 16));
-  }
-}

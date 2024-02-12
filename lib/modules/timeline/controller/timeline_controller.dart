@@ -42,6 +42,7 @@ class TimelineController extends GetxController with StateMixin {
   String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
   late Timer _apiCallAfter2MinsTimer;
+  RxString projectColor = ''.obs;
   final searchInputData = TextEditingController().obs;
 
   CalendarTimeline calendarTimeline = CalendarTimeline();
@@ -78,6 +79,7 @@ class TimelineController extends GetxController with StateMixin {
       if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
         showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
         Get.find<TimeCounterController>().start();
+        _refreshTimeline();
       } else {
         if (Get.find<TimeCounterController>().timer.isActive &&
             Get.find<TimeCounterController>().animationTimer.isActive) {
@@ -257,7 +259,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      log("getProjectDropdown", error: response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       projectDropDownResponse =
           ProjectDropDownResponse.fromJson(response.data!);
@@ -269,6 +271,8 @@ class TimelineController extends GetxController with StateMixin {
             projectDropDownResponse?.getProjectsDropdown?.first.name ?? "";
         projectId.value =
             projectDropDownResponse?.getProjectsDropdown?.first.projectId ?? "";
+        projectColor.value =
+            projectDropDownResponse?.getProjectsDropdown?.first.color ?? "";
       }
     }
     isLoading(false);
@@ -356,7 +360,6 @@ class TimelineController extends GetxController with StateMixin {
     if (responseForCalendar.hasException) {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
     } else {
-      // fetchDataAfterTwoMinutes();
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
           CalendarControllerProvider.of(Get.context!).controller.remove(value);
@@ -369,7 +372,7 @@ class TimelineController extends GetxController with StateMixin {
           calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
-            description: e.description ?? "No added yet",
+            description: e.description ?? "",
             timeLId: e.id ?? "",
             endDate: e.endDate ?? "",
             duration: e.totalMinutes ?? "",
@@ -389,69 +392,91 @@ class TimelineController extends GetxController with StateMixin {
                 ? DateTime.parse("2024-01-24 ${e.startDate?.substring(11, 19)}")
                 : DateTime.parse(
                     "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
-            endTime: e.endDate != null
-                ? DateTime.parse("2024-01-24 ${e.endDate?.substring(11, 19)}")
-                : DateTime.parse(
-                    "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+            endTime: _createEndDateForTimeLine(
+                startDate: e.startDate ?? DateTime.now().toString(),
+                endDate: e.endDate),
             event: "",
             title: '',
             description: objData);
       }).toList();
-      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
-              ?.map((e) {
-            //todo
-            /// add files info
-            ModelForDescription modelForDescription = ModelForDescription(
-                status: e.status ?? "",
-                description: e.description ?? "No added yet",
-                endDate: e.endDate ?? "",
-                startDate: e.startDate ?? "",
-                duration: e.totalLeaveMinutes ?? "",
-                numberOfDays: e.numberOfDays ?? 0,
-                createdAt: e.createdAt ?? "",
-                leaveId: e.id ?? "",
-                taskName: e.leaveType?.leaveName ?? "",
-                leaveType: LeaveType(
-                    type: e.leaveType?.type ?? "",
-                    isAddNoteRequired: e.leaveType?.isAddNoteRequired ?? false,
-                    isAttachDocumentRequired:
-                        e.leaveType?.isAttachDocumentRequired ?? false,
-                    leaveId: e.leaveType?.leaveId ?? "",
-                    leaveName: e.leaveType?.leaveName ?? ""));
+      timelogList?.addAll(
+          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+                //todo
+                /// add files info
+                ModelForDescription modelForDescription = ModelForDescription(
+                    status: e.status ?? "",
+                    description: e.description ?? "",
+                    endDate: e.endDate ?? "",
+                    startDate: e.startDate ?? "",
+                    duration: e.totalLeaveMinutes ?? "",
+                    numberOfDays: e.numberOfDays ?? 0,
+                    createdAt: e.createdAt ?? "",
+                    leaveId: e.id ?? "",
+                    taskName: e.leaveType?.leaveName ?? "",
+                    leaveType: LeaveType(
+                        type: e.leaveType?.type ?? "",
+                        isAddNoteRequired:
+                            e.leaveType?.isAddNoteRequired ?? false,
+                        isAttachDocumentRequired:
+                            e.leaveType?.isAttachDocumentRequired ?? false,
+                        leaveId: e.leaveType?.leaveId ?? "",
+                        leaveName: e.leaveType?.leaveName ?? ""));
 
-            Map<String, dynamic> jsonModel = modelForDescription.toJson();
-            String objData = jsonEncode(jsonModel);
+                Map<String, dynamic> jsonModel = modelForDescription.toJson();
 
-            return CalendarEventData(
-              date: DateTime.parse("2024-01-24"),
-              startTime: e.startDate != null
-                  ? DateTime.parse(
-                      "2024-01-24 ${e.startDate?.substring(11, 19)}")
-                  : DateTime.parse(
-                      "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
-              endTime: e.endDate != null
-                  ? DateTime.parse("2024-01-24 ${e.endDate?.substring(11, 19)}")
-                  : DateTime.parse(
-                      "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
-              event: "",
-              title: '',
-              description: objData,
-            );
-          }).toList() ??
-          []);
+                String objData = jsonEncode(jsonModel);
+                return CalendarEventData(
+                  date: DateTime.parse("2024-01-24"),
+                  startTime: e.startDate != null
+                      ? DateTime.parse(
+                          "2024-01-24 ${e.startDate?.substring(11, 19)}")
+                      : DateTime.parse(
+                          "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+                  endTime: _createEndDateForTimeLine(
+                      startDate: e.startDate ?? DateTime.now().toString(),
+                      endDate: e.endDate),
+                  event: "",
+                  title: '',
+                  description: objData,
+                );
+              }).toList() ??
+              []);
 
       CalendarControllerProvider.of(Get.context!)
           .controller
           .addAll(timelogList ?? []);
-
-      print("""
-        
-        timelogList?.length:: ${timelogList?.length}
-        
-        """);
     }
 
     isTimelineCalendarByDateLoading(false);
+  }
+
+  DateTime _createEndDateForTimeLine(
+      {required String startDate, String? endDate}) {
+    if (endDate != null) {
+      int diffInMins = DateTime.parse(endDate)
+          .difference(DateTime.parse(startDate))
+          .inMinutes;
+      if (!diffInMins.isNegative) {
+        if (diffInMins <= 10) {
+          return DateTime.parse(
+              "2024-01-24 ${DateTime.parse(endDate).add(const Duration(minutes: 10)).toString().substring(11, 19)}");
+        } else {
+          return DateTime.parse("2024-01-24 ${endDate.substring(11, 19)}");
+        }
+      } else {
+        return DateTime.parse("2024-01-24 ${endDate.substring(11, 19)}");
+      }
+    } else {
+      int diffInMins =
+          DateTime.now().difference(DateTime.parse(startDate)).inMinutes;
+      if (diffInMins > 10) {
+        return DateTime.parse(
+            "2024-01-24 ${DateTime.now().toString().substring(11, 19)}");
+      } else {
+        return DateTime.parse(
+            "2024-01-24 ${DateTime.now().add(const Duration(minutes: 10)).toString().substring(11, 19)}");
+      }
+    }
   }
 
   @override
@@ -465,8 +490,7 @@ class TimelineController extends GetxController with StateMixin {
   @override
   void onInit() {
     _refreshTimeline();
-    fetchDataAfterTwoMinutes();
-
+    updateDataAfterTwoMinutes();
     super.onInit();
   }
 
@@ -489,14 +513,97 @@ class TimelineController extends GetxController with StateMixin {
             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   }
 
-  void fetchDataAfterTwoMinutes() {
+  void updateDataAfterTwoMinutes() {
     _apiCallAfter2MinsTimer =
         Timer.periodic(const Duration(minutes: 2), (timer) async {
-      await getCalendarTimelineDataByDate(
-          startDate:
-              "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-              "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+      if (calendarTimeline.getCalenderTimelinesForApp != null) {
+        if (timelogList!.isNotEmpty) {
+          for (var value in timelogList!) {
+            CalendarControllerProvider.of(Get.context!)
+                .controller
+                .remove(value);
+          }
+        }
+
+        timelogList =
+            calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+          ModelForDescription modelForDescription = ModelForDescription(
+              status: e.status ?? "",
+              description: e.description ?? "",
+              timeLId: e.id ?? "",
+              endDate: e.endDate ?? "",
+              duration: e.totalMinutes ?? "",
+              startDate: e.startDate ?? "",
+              taskName: e.task?.name ?? "",
+              taskId: e.task?.id ?? "",
+              projectId: e.project?.id ?? "",
+              projectName: e.project?.name ?? "",
+              projectColor: e.project?.color ?? "");
+
+          Map<String, dynamic> jsonModel = modelForDescription.toJson();
+          String objData = jsonEncode(jsonModel);
+
+          return CalendarEventData(
+              date: DateTime.parse("2024-01-24"),
+              startTime: e.startDate != null
+                  ? DateTime.parse(
+                      "2024-01-24 ${e.startDate?.substring(11, 19)}")
+                  : DateTime.parse(
+                      "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+              endTime: _createEndDateForTimeLine(
+                  startDate: e.startDate ?? DateTime.now().toString(),
+                  endDate: e.endDate),
+              event: "",
+              title: '',
+              description: objData);
+        }).toList();
+        timelogList?.addAll(
+            calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+                  //todo
+                  /// add files info
+                  ModelForDescription modelForDescription = ModelForDescription(
+                      status: e.status ?? "",
+                      description: e.description ?? "",
+                      endDate: e.endDate ?? "",
+                      startDate: e.startDate ?? "",
+                      duration: e.totalLeaveMinutes ?? "",
+                      numberOfDays: e.numberOfDays ?? 0,
+                      createdAt: e.createdAt ?? "",
+                      leaveId: e.id ?? "",
+                      taskName: e.leaveType?.leaveName ?? "",
+                      leaveType: LeaveType(
+                          type: e.leaveType?.type ?? "",
+                          isAddNoteRequired:
+                              e.leaveType?.isAddNoteRequired ?? false,
+                          isAttachDocumentRequired:
+                              e.leaveType?.isAttachDocumentRequired ?? false,
+                          leaveId: e.leaveType?.leaveId ?? "",
+                          leaveName: e.leaveType?.leaveName ?? ""));
+
+                  Map<String, dynamic> jsonModel = modelForDescription.toJson();
+
+                  String objData = jsonEncode(jsonModel);
+                  return CalendarEventData(
+                    date: DateTime.parse("2024-01-24"),
+                    startTime: e.startDate != null
+                        ? DateTime.parse(
+                            "2024-01-24 ${e.startDate?.substring(11, 19)}")
+                        : DateTime.parse(
+                            "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+                    endTime: _createEndDateForTimeLine(
+                        startDate: e.startDate ?? DateTime.now().toString(),
+                        endDate: e.endDate),
+                    event: "",
+                    title: '',
+                    description: objData,
+                  );
+                }).toList() ??
+                []);
+
+        CalendarControllerProvider.of(Get.context!)
+            .controller
+            .addAll(timelogList ?? []);
+      }
     });
   }
 }
