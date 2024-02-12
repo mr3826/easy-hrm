@@ -32,6 +32,14 @@ class LogoutController extends GetxController {
           GetStorage().remove(AppString.LOGGED_IN);
           Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
+        if (ErrorModel.fromJson(response.body).message != null &&
+            ErrorModel.fromJson(response.body)
+                .message!
+                .startsWith("Unauthorized")) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        }
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
