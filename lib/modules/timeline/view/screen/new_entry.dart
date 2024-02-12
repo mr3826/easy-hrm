@@ -18,16 +18,11 @@ class NewEntryScreen extends StatelessWidget {
 
     Get.put(DateTimePickerController());
 
-    Get.find<TimelineController>().projectId.value='';
-    Get.find<TimelineController>().taskName.value='';
-    Get.find<TimelineController>().projectColor.value='';
+    Get.find<TimelineController>().projectId.value = '';
+    Get.find<TimelineController>().taskName.value = '';
+    Get.find<TimelineController>().projectColor.value = '';
 
-    if (Get.find<TimelineController>()
-        .projectDropDownResponse
-        ?.getProjectsDropdown ==
-        null) {
-      Get.find<TimelineController>().getProjectDropdown();
-    }
+    Get.find<TimelineController>().getProjectDropdown();
 
     return Scaffold(
       appBar: customAppbar(title: AppString.text_new_entry.tr),
