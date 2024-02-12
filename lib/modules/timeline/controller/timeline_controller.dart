@@ -42,6 +42,7 @@ class TimelineController extends GetxController with StateMixin {
   String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
   late Timer _apiCallAfter2MinsTimer;
+  RxString projectColor = ''.obs;
   final searchInputData = TextEditingController().obs;
 
   CalendarTimeline calendarTimeline = CalendarTimeline();
@@ -78,6 +79,7 @@ class TimelineController extends GetxController with StateMixin {
       if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
         showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
         Get.find<TimeCounterController>().start();
+        _refreshTimeline();
       } else {
         if (Get.find<TimeCounterController>().timer.isActive &&
             Get.find<TimeCounterController>().animationTimer.isActive) {
@@ -257,7 +259,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      log("getProjectDropdown", error: response.exception.toString());
+      ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       projectDropDownResponse =
           ProjectDropDownResponse.fromJson(response.data!);
@@ -269,6 +271,8 @@ class TimelineController extends GetxController with StateMixin {
             projectDropDownResponse?.getProjectsDropdown?.first.name ?? "";
         projectId.value =
             projectDropDownResponse?.getProjectsDropdown?.first.projectId ?? "";
+        projectColor.value =
+            projectDropDownResponse?.getProjectsDropdown?.first.color ?? "";
       }
     }
     isLoading(false);
