@@ -1,4 +1,3 @@
-import '../../modules/leave/model/leave_record_response.dart';
 
 class LastInput {
   String? email;
@@ -72,6 +71,9 @@ class ModelForDescription {
     leaveType = json['leaveType'] != null
         ? LeaveType.fromJson(json['leaveType'])
         : null;
+
+
+
     numberOfDays = json['numberOfDays'];
     leaveId = json['leaveId'];
     taskName = json['taskName'];
@@ -109,7 +111,6 @@ class ModelForDescription {
 
 class Files {
   String? name;
-
   Files({this.name});
 
   Files.fromJson(Map<String, dynamic> json) {
@@ -117,7 +118,7 @@ class Files {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     return data;
   }

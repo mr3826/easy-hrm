@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/modules/timeline/controller/time_formate_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';

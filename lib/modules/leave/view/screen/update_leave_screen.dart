@@ -29,33 +29,36 @@ import '../../controller/file_upload_controller.dart';
 import '../../model/leave_type.dart';
 
 class UpdateLeave extends StatelessWidget {
- final GetLeaveRecords? leaveRecords;
+  final GetLeaveRecords? leaveRecords;
 
   const UpdateLeave({super.key, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
+    print("leave record 4 :::: ${leaveRecords?.files?.key}");
+
     _updateDateFromResponse();
     return Column(
       children: [
-        Obx(() => customButtonSheetAppbar(
+        Obx(
+          () => customButtonSheetAppbar(
             text: DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value)
-                .day ==
-                DateTime.parse(
-                    Get.find<DateTimePickerController>().outDate.value)
-                    .day
+                            Get.find<DateTimePickerController>().inDate.value)
+                        .day ==
+                    DateTime.parse(
+                            Get.find<DateTimePickerController>().outDate.value)
+                        .day
                 ? DateFormat('d MMMM').format(DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value))
+                    Get.find<DateTimePickerController>().inDate.value))
                 : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
             subtext: DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value)
-                .day ==
-                DateTime.parse(
-                    Get.find<DateTimePickerController>().outDate.value)
-                    .day
+                            Get.find<DateTimePickerController>().inDate.value)
+                        .day ==
+                    DateTime.parse(
+                            Get.find<DateTimePickerController>().outDate.value)
+                        .day
                 ? DateFormat('EEEE').format(DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value))
+                    Get.find<DateTimePickerController>().inDate.value))
                 : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           ),
         ),
@@ -82,14 +85,14 @@ class UpdateLeave extends StatelessWidget {
             DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
 
     Get.find<DateTimePickerController>().getInDateTime();
-    Get.find<DateTimePickerController>().getOutDateTime();;
+    Get.find<DateTimePickerController>().getOutDateTime();
+    ;
 
     leaveNoteController.text = leaveRecords?.description ?? "";
     Get.find<UpDateLeaveController>().isNoteRequired.value =
         leaveRecords?.leaveType?.isAddNoteRequired ?? false;
     Get.find<UpDateLeaveController>().isDocumentRequired.value =
         leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
-
   }
 }
 
@@ -108,6 +111,8 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
     isDocRequired: ${leaveRecords?.leaveType?.isAttachDocumentRequired}
     fileKey: ${leaveRecords?.leaveType?.fileKey}
     ''');
+    print("leave record 5 :::: ${leaveRecords?.files?.key}");
+
     return controller.obx(
         (state) => Padding(
               padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
@@ -122,7 +127,9 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                           text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
 
-                      UpdateLeaveDropdown(dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
+                      UpdateLeaveDropdown(
+                          dropdownValue:
+                              leaveRecords?.leaveType?.leaveId ?? ""),
 
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
@@ -167,7 +174,9 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       _pathFormatText(),
                       customSpacerHeight(height: 8),
 
-                       AddAttachmentFile(leaveRecords: leaveRecords,),
+                      AddAttachmentFile(
+                        leaveRecords: leaveRecords,
+                      ),
 
                       customSpacerHeight(height: 20),
                       Obx(() => Get.find<UpDateLeaveController>()
@@ -212,8 +221,12 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                                     .storageForUpload
                                     .filePath
                                     .value = "";
-                                Get.find<ApplyLeaveController>().isUploadPolicyLoading.value=false;
-                                Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.value=false;
+                                Get.find<ApplyLeaveController>()
+                                    .isUploadPolicyLoading
+                                    .value = false;
+                                Get.find<ApplyLeaveController>()
+                                    .isFileUploadedSuccessfully
+                                    .value = false;
                               },
                             )),
                       customSpacerHeight(height: 100),
@@ -291,15 +304,21 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
   }
 
   void _updateLeaveMethod() {
+    print("key ::::::::: ${leaveRecords?.files?.key}");
     if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
         .difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
       Get.find<UpDateLeaveController>().updateLeave(
-          leaveId: leaveRecords?.id ?? "",
-          leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
-          startDate: Get.find<DateTimePickerController>().inDateTime.value,
-          endDate: Get.find<DateTimePickerController>().outDateTime.value);
+        leaveId: leaveRecords?.id ?? "",
+        leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
+        startDate: Get.find<DateTimePickerController>().inDateTime.value,
+        endDate: Get.find<DateTimePickerController>().outDateTime.value,
+        size: leaveRecords?.files?.size ?? "",
+        name: leaveRecords?.files?.name ?? "",
+        key: leaveRecords?.files?.key ?? "",
+        id: leaveRecords?.files?.id??""
+      );
     } else {
       showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);
     }

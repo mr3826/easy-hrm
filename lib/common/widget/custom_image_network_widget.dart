@@ -74,7 +74,7 @@ _errorText(errorText) {
 Widget rectangleImageLayout({url}) {
   return CachedNetworkImage(
     imageUrl: url,
-    placeholder: (context, url) => const CupertinoActivityIndicator(),
+    placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
     errorWidget: (context, url, error) => _emptyBox(),
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(

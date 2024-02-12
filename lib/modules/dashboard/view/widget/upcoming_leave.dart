@@ -19,14 +19,14 @@ class UpcomingLeaveLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller=Get.find<DashboardController>();
+    var controller = Get.find<DashboardController>();
     return Padding(
       padding: marginLayout,
       child: ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: controller
-            .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
+                .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
             0,
         itemBuilder: (context, index) {
           return SizedBox(
@@ -38,43 +38,75 @@ class UpcomingLeaveLayout extends StatelessWidget {
                     context: context,
                     child: LeaveRecordDetails(
                       status: controller.upcommingLeaveDashboard
-                          ?.getUpcomingLeavesForApp?[index].status ??
+                              ?.getUpcomingLeavesForApp?[index].status ??
                           "taken",
                       leaveRecords: GetLeaveRecords(
-                          id: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].id,
-                          status: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].status ??
-                              "",
-                          createdAt: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].createdAt ??
-                              "",
-                          startDate: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].startDate ??
-                              "",
-                          endDate: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].endDate ??
-                              "",
-                          files: Files(createdAt: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].files?[0].createdAt??"",
-
-                            size: controller.upcommingLeaveDashboard
-                                ?.getUpcomingLeavesForApp?[index].files?[0].size ??
-                                "",
-                            name: controller.upcommingLeaveDashboard
-                                ?.getUpcomingLeavesForApp?[index].files?[0].name ??
-                                "",
-                            id:controller.upcommingLeaveDashboard
-                                ?.getUpcomingLeavesForApp?[index].files?[0].id ??
-                                "" ,
-                            key: controller.upcommingLeaveDashboard
-                                ?.getUpcomingLeavesForApp?[index].files?[0].key ??
-                                "",
-                          ),
-                          leaveType: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].leaveType,
-                          duration: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays ?? 0,
-                          description: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].description,
+                        id: controller.upcommingLeaveDashboard
+                            ?.getUpcomingLeavesForApp?[index].id,
+                        status: controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].status ??
+                            "",
+                        createdAt: controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].createdAt ??
+                            "",
+                        startDate: controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].startDate ??
+                            "",
+                        endDate: controller.upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index].endDate ??
+                            "",
+                        files: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .files !=
+                                    null &&
+                                controller
+                                    .upcommingLeaveDashboard!
+                                    .getUpcomingLeavesForApp![index]
+                                    .files!
+                                    .isNotEmpty
+                            ? Files(
+                                createdAt: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .files?[0]
+                                        .createdAt ??
+                                    "",
+                                size: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .files?[0]
+                                        .size ??
+                                    "",
+                                name: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .files?[0]
+                                        .name ??
+                                    "",
+                                id: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .files?[0]
+                                        .id ??
+                                    "",
+                                key: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .files?[0]
+                                        .key ??
+                                    "",
+                              )
+                            : Files(),
+                        leaveType: controller.upcommingLeaveDashboard
+                            ?.getUpcomingLeavesForApp?[index].leaveType,
+                        duration: controller
+                                .upcommingLeaveDashboard
+                                ?.getUpcomingLeavesForApp?[index]
+                                .numberOfDays ??
+                            0,
+                        description: controller.upcommingLeaveDashboard
+                            ?.getUpcomingLeavesForApp?[index].description,
                       ),
                     ),
                     height: 0.6),
@@ -93,23 +125,23 @@ class UpcomingLeaveLayout extends StatelessWidget {
                           children: [
                             Text(
                               controller
-                                  .upcommingLeaveDashboard
-                                  ?.getUpcomingLeavesForApp?[index]
-                                  .status!
-                                  .capitalizeFirst ??
+                                      .upcommingLeaveDashboard
+                                      ?.getUpcomingLeavesForApp?[index]
+                                      .status!
+                                      .capitalizeFirst ??
                                   "",
                               style: AppStyle.normal_text_grey.copyWith(
                                 color:
-                                AppColor.normalTextColor.withOpacity(0.8),
+                                    AppColor.normalTextColor.withOpacity(0.8),
                                 fontSize: Dimensions.fontSizeDefault,
                               ),
                             ),
                             customSpacerHeight(height: 4),
-                            _leaveInfoRow(index,controller),
+                            _leaveInfoRow(index, controller),
                           ],
                         ),
                         getStatusButton(controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].status ??
+                                ?.getUpcomingLeavesForApp?[index].status ??
                             "taken"),
                       ],
                     ),
@@ -123,23 +155,24 @@ class UpcomingLeaveLayout extends StatelessWidget {
     );
   }
 }
-_leaveInfoRow(int index,controller) {
+
+_leaveInfoRow(int index, controller) {
   String? leaveDate;
   String starDate = dateMonthFormatFromDatetime(controller
-      .upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate
-      ?.substring(0, 10) ??
+          .upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate
+          ?.substring(0, 10) ??
       "2023-01-01T08:23:49.550Z");
   String endDate = dateMonthFormatFromDatetime(controller
-      .upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].endDate
-      ?.substring(0, 10) ??
+          .upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].endDate
+          ?.substring(0, 10) ??
       "2023-01-01T08:23:49.550Z");
   if (starDate == endDate) {
     leaveDate = dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard
-        ?.getUpcomingLeavesForApp?[index].startDate ??
+            ?.getUpcomingLeavesForApp?[index].startDate ??
         "2023-01-01T08:23:49.550Z");
   } else {
     leaveDate =
-    "${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].endDate ?? "2023-01-01T08:23:49.550Z")}";
+        "${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].endDate ?? "2023-01-01T08:23:49.550Z")}";
   }
 
   return Row(
@@ -153,14 +186,14 @@ _leaveInfoRow(int index,controller) {
       customSpacerWidth(width: 8),
       Text(
         controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
-            .numberOfDays ==
-            null
+                    .numberOfDays ==
+                null
             ? ""
             : controller.upcommingLeaveDashboard
-            ?.getUpcomingLeavesForApp?[index].numberOfDays >
-            1
-            ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} days"
-            : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} day",
+                        ?.getUpcomingLeavesForApp?[index].numberOfDays >
+                    1
+                ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} days"
+                : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} day",
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
       )

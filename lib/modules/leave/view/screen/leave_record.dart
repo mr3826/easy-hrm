@@ -33,6 +33,8 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
         (state) => Scaffold(
             appBar: customAppbar(title: AppString.text_leave_records),
             body: RefreshIndicator(
+              backgroundColor: AppColor.cardColor,
+              color: AppColor.primaryColor,
               onRefresh: _refreshScreen,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -59,6 +61,11 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
+
+        print("path :::: ${controller.leaveRecordList?[monthIndex].data?[index].files?.length}");
+
+
+
         return _infoLayoutView(
           context: context,
           leaveRecord: GetLeaveRecords(
@@ -94,12 +101,8 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                                   .data?[index].files?[0].key ??
                               "",
                         )
-                      : Files(
-                    key: "",
-                    name: "",
-                    size: "",
-                    createdAt: ""
-                  ),
+                      : Files(),
+
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
                     .leaveRecordList?[monthIndex]
@@ -146,8 +149,10 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     );
   }
 
-  _infoLayoutView(
-      {required BuildContext context, required GetLeaveRecords leaveRecord}) {
+  _infoLayoutView({required BuildContext context, required GetLeaveRecords leaveRecord}) {
+
+    print("leave record :::: ${leaveRecord.files?.key}");
+
     return GestureDetector(
       onTap: () => customButtonSheet(
           context: context,
@@ -156,6 +161,9 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
             leaveRecords: leaveRecord,
           ),
           height: 0.5),
+
+
+
       child: SizedBox(
         child: Card(
           elevation: 0,

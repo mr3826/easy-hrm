@@ -47,13 +47,13 @@ class Timelines {
 
   Timelines(
       {this.id,
-        this.description,
-        this.endDate,
-        this.startDate,
-        this.status,
-        this.task,
-        this.totalMinutes,
-        this.project});
+      this.description,
+      this.endDate,
+      this.startDate,
+      this.status,
+      this.task,
+      this.totalMinutes,
+      this.project});
 
   Timelines.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -64,21 +64,19 @@ class Timelines {
     task = json['task'] != null ? Task.fromJson(json['task']) : null;
     totalMinutes = json['total_minutes'];
     project =
-    json['project'] != null ? Project.fromJson(json['project']) : null;
+        json['project'] != null ? Project.fromJson(json['project']) : null;
   }
 }
 
 class Task {
   String? name;
   String? id;
-
   Task({this.name, this.id});
 
   Task.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
   }
-
 }
 
 class Project {

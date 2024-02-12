@@ -26,6 +26,7 @@ class AddAttachmentFile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("afasdf ::: ${leaveRecords?.leaveType?.fileKey}");
+    print("leave record 6 :::: ${leaveRecords?.files?.key}");
     if (Get.isRegistered()) {
       Get.delete<ApplyLeaveController>();
     }
@@ -38,9 +39,9 @@ class AddAttachmentFile extends StatelessWidget {
                     ? Get.find<ApplyLeaveController>().isErrorOccurred.value
                     : Get.find<UpDateLeaveController>().isErrorOccurred.value,
                 child: GestureDetector(onTap: () {
-                  Get.find<FileUploadController>().storageForUpload.pickFile();
+                  Get.find<FileUploadController>().storageForUpload.pickFile(isApplyLeave: isFromApplyLeave);
                 }, child: Obx(() {
-                  return _documentLayout();
+                  return isFromApplyLeave==true?_documentLayout():_updateDocumentLayout();
                 }))),
             customSpacerHeight(height: 8),
             _pathNameText(leaveRecords?.leaveType?.fileKey ?? '')
@@ -49,7 +50,9 @@ class AddAttachmentFile extends StatelessWidget {
   }
 
   Widget _documentLayout() {
-    if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue && Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+    if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+      print("1 ");
       /// file image
       return Get.find<FileUploadController>()
               .storageForUpload
@@ -63,20 +66,67 @@ class AddAttachmentFile extends StatelessWidget {
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
-        return leaveRecords?.leaveType?.fileKey == null ||
-                leaveRecords?.leaveType?.fileKey == "null" ||
-                isFromApplyLeave == true
+        return leaveRecords?.files?.key == null ||
+                leaveRecords?.files?.key == "null"
             ? _emptyBox()
-            : leaveRecords!.leaveType!.fileKey!.endsWith(".pdf")
+            : leaveRecords!.files!.key!.endsWith(".pdf")
                 ? _replaceFileLayout()
                 : CustomNetworkImage(
-                    imgUrlKey: leaveRecords?.leaveType?.fileKey ?? "",
+                    imgUrlKey: leaveRecords?.files?.key ?? "",
                     isDocumentLayout: true,
                     errorText: "",
                   );
       } else {
         /// broken image
         if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+          return _brokenImageViewLayout();
+        } else {
+          return const Center(
+              child: CupertinoActivityIndicator(
+            color: AppColor.primaryColor,
+          ));
+        }
+      }
+    } else {
+      return const Center(
+          child: CupertinoActivityIndicator(
+        color: AppColor.primaryColor,
+      ));
+    }
+  }
+
+  Widget _updateDocumentLayout() {
+    if (Get.find<UpDateLeaveController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
+      print("1 upd0");
+      /// file image
+      return Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .endsWith(".pdf")
+          ? _replaceFileLayout()
+          : _selectedImageViewLayout();
+    } else if (Get.find<UpDateLeaveController>()
+            .isFileUploadedSuccessfully
+            .isFalse &&
+        Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
+      if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
+        /// initial stage
+        return leaveRecords?.files?.key == null ||
+                leaveRecords?.files?.key == "null"
+            ? _emptyBox()
+            : leaveRecords!.files!.key!.endsWith(".pdf")
+                ? _replaceFileLayout()
+                : CustomNetworkImage(
+                    imgUrlKey: leaveRecords?.files?.key ?? "",
+                    isDocumentLayout: true,
+                    errorText: "",
+                  );
+      } else {
+        /// broken image
+        if (Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
+          print("3 upd0");
+
           return _brokenImageViewLayout();
         } else {
           return const Center(
