@@ -158,7 +158,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
             status: leaveRecord.status ?? "",
             leaveRecords: leaveRecord,
           ),
-          height: 0.5),
+          height: 0.6),
       child: SizedBox(
         child: Card(
           elevation: 0,
