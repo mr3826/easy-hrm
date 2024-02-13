@@ -22,6 +22,7 @@ import 'apply_leave_dropdown.dart';
 
 class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
   ApplyLeaveButtonLayout({super.key});
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -110,7 +111,19 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                     Get.find<ApplyLeaveController>()
                                         .leaveId
                                         .isNotEmpty) {
-                                  Get.find<ApplyLeaveController>().applyLeave();
+                                  if (Get.find<ApplyLeaveController>()
+                                          .numberOfLeaves
+                                          .isNotEmpty &&
+                                      Get.find<ApplyLeaveController>()
+                                              .numberOfLeaves
+                                              .value !=
+                                          "0") {
+                                    Get.find<ApplyLeaveController>()
+                                        .applyLeave();
+                                  } else {
+                                    showWarningMessage(
+                                        message: "No available leave");
+                                  }
                                 } else {
                                   showWarningMessage(
                                       message: "Provide a Valid Input");

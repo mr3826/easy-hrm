@@ -229,6 +229,7 @@ class NotificationViewLayout extends StatelessWidget {
                 notificationCreatedDate: notificationCreatedDate),
             index: index);
       case "added_leave":
+        print("added_leave:: $leaveTimeInfo");
         return _leaveNotification(
             changerName: changerName,
             iconColor: AppColor.successColor,
@@ -960,6 +961,6 @@ class NotificationViewLayout extends StatelessWidget {
 
   _getCreationDate({required String creationDate}) {
     if (creationDate.isEmpty) return "";
-    return DateFormat("d MMM y").format(DateTime.parse("2024-01-21T16:40:00"));
+    return DateFormat("d MMM y").format(DateTime.parse(creationDate));
   }
 }

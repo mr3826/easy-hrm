@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
+import '../../../../utils/images.dart';
 import '../../controller/apply_leave_controller.dart';
 
 class ApplyLeaveDropDown extends StatefulWidget {
@@ -42,7 +46,36 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
               .map((e) {
             return DropdownMenuItem(
               value: e.id,
-              child: Text(e.name.toString()),
+              child: SizedBox(
+                width: double.infinity,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    getIconAccordingToLeaveType(e.type),
+                    customSpacerWidth(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.name.toString(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          Text(
+                            e.type.toString(),
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColor.hintColor,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             );
           }).toList(),
           onChanged: (valueType) {
@@ -58,17 +91,61 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
 
             //set data according to leave type
             Get.find<ApplyLeaveController>().numberOfLeaves.value =
-                getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
-                        .toString() ??
+                getLeaveDaysAccordingToLeave(
+                        getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
                     "";
             Get.find<ApplyLeaveController>().leaveId = valueType!;
             print(
                 "Leave type id:: ${Get.find<ApplyLeaveController>().leaveId}");
             Get.find<ApplyLeaveController>().isDocumentRequired.value =
-                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
+                getLeaveTypesDropdown.attachDocumentRequired ?? false;
             Get.find<ApplyLeaveController>().isNoteRequired.value =
-                getLeaveTypesDropdown?.addNoteRequired ?? false;
+                getLeaveTypesDropdown.addNoteRequired ?? false;
           }),
     );
+  }
+}
+
+getIconAccordingToLeaveType(String? type) {
+  switch (type) {
+    case "Vacationing":
+      return customSvgImage(imageUrl: Images.leaveImage7);
+    case "Paternity":
+      return customSvgImage(imageUrl: Images.leaveImage6);
+    case "Maternity":
+      return customSvgImage(imageUrl: Images.leaveImage5);
+    case "School closed":
+      return customSvgImage(imageUrl: Images.leaveImage4);
+    case "Children-minder illness":
+      return customSvgImage(imageUrl: Images.leaveImage3);
+    case "Children illness":
+      return customSvgImage(imageUrl: Images.leaveImage2);
+    case "Doctor declaration":
+      return customSvgImage(imageUrl: Images.leaveImage1);
+    case "Self declaration":
+      return customSvgImage(imageUrl: Images.leaveImage);
+    default:
+      return customSvgImage(imageUrl: Images.leaveImage8);
+  }
+}
+
+String? getLeaveDaysAccordingToLeave(
+    {required GetLeaveTypesDropdown getLeaveTypesDropdown}) {
+  print(getLeaveTypesDropdown);
+  if (getLeaveTypesDropdown.isEarned == true) {
+    return (getLeaveTypesDropdown.leaveStatuses?.first.earnedDays ?? 0)
+        .toString();
+  } else {
+    if (getLeaveTypesDropdown.calculateAllowanceBy == "no_of_application") {
+      return (getLeaveTypesDropdown
+                  .leaveStatuses?.first.availableNumberOfApplications ??
+              0)
+          .toString();
+    } else {
+      return (getLeaveTypesDropdown
+                  .leaveStatuses?.first.availableNumberOfDays ??
+              0)
+          .toString();
+    }
   }
 }

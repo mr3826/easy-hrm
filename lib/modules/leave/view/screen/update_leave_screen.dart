@@ -29,6 +29,7 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/apply_leave_controller.dart';
 import '../../controller/file_upload_controller.dart';
 import '../../model/leave_type.dart';
+import '../widget/apply_leave_dropdown.dart';
 
 class UpdateLeave extends StatelessWidget {
   final GetLeaveRecords? leaveRecords;
@@ -172,7 +173,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 6),
                       _pathFormatText(),
                       customSpacerHeight(height: 8),
-
                       AddAttachmentFile(
                         leaveRecords: leaveRecords,
                       ),
@@ -359,7 +359,36 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
               .map((e) {
             return DropdownMenuItem(
               value: e.id,
-              child: Text(e.name.toString()),
+              child: SizedBox(
+                width: double.infinity,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    getIconAccordingToLeaveType(e.type),
+                    customSpacerWidth(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.name.toString(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          Text(
+                            e.type.toString(),
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColor.hintColor,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             );
           }).toList(),
           onChanged: (value) {
@@ -375,14 +404,14 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
 
             //set data according to leave type
             Get.find<UpDateLeaveController>().numberOfLeaves.value =
-                getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
-                        .toString() ??
+                getLeaveDaysAccordingToLeave(
+                        getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
                     "";
             Get.find<UpDateLeaveController>().leaveTypeId = value ?? "";
             Get.find<UpDateLeaveController>().isDocumentRequired.value =
-                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
+                getLeaveTypesDropdown.attachDocumentRequired ?? false;
             Get.find<UpDateLeaveController>().isNoteRequired.value =
-                getLeaveTypesDropdown?.addNoteRequired ?? false;
+                getLeaveTypesDropdown.addNoteRequired ?? false;
           }),
     );
   }
