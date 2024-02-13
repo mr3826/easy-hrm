@@ -1,3 +1,4 @@
+import '../../../common/domain/files_model.dart';
 import 'leave_record_response.dart';
 
 class LeaveRecords {

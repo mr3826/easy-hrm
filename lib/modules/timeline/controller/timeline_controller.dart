@@ -5,6 +5,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
+import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
@@ -571,6 +572,15 @@ class TimelineController extends GetxController with StateMixin {
                       createdAt: e.createdAt ?? "",
                       leaveId: e.id ?? "",
                       taskName: e.leaveType?.leaveName ?? "",
+                      files: (e.files != null && e.files!.isNotEmpty)
+                          ? Files(
+                              name: e.files?[0].name ?? "",
+                              id: e.files?[0].id ?? "",
+                              key: e.files?[0].key ?? "",
+                              size: e.files?[0].size ?? "",
+                              createdAt: e.files?[0].createdAt ?? "",
+                            )
+                          : Files(),
                       leaveType: LeaveType(
                           type: e.leaveType?.type ?? "",
                           isAddNoteRequired:

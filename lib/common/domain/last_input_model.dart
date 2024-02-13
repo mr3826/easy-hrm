@@ -1,4 +1,7 @@
 
+import '../../modules/leave/model/leave_record_response.dart';
+import 'files_model.dart';
+
 class LastInput {
   String? email;
   String? password;
@@ -29,7 +32,7 @@ class ModelForDescription {
   String? endDate;
   String? duration;
   String? createdAt;
-  List<Files>? files;
+  Files? files;
   LeaveType? leaveType;
   dynamic numberOfDays;
   String? leaveId;
@@ -65,11 +68,12 @@ class ModelForDescription {
     endDate = json['endDate'];
     duration = json['duration'];
     createdAt = json['createdAt'];
-    if (json['files'] != null) {
-      files = List<Files>.from(json['files'].map((x) => Files.fromJson(x)));
-    }
     leaveType = json['leaveType'] != null
         ? LeaveType.fromJson(json['leaveType'])
+        : null;
+
+    files = json['files'] != null
+        ? Files.fromJson(json['files'])
         : null;
 
 
@@ -94,7 +98,7 @@ class ModelForDescription {
     data['taskName'] = taskName;
     data['createdAt'] = createdAt;
     if (files != null) {
-      data['files'] = files!.map((x) => x.toJson()).toList();
+      data['files'] = files!.toJson();
     }
     if (leaveType != null) {
       data['leaveType'] = leaveType!.toJson();
@@ -109,20 +113,6 @@ class ModelForDescription {
   }
 }
 
-class Files {
-  String? name;
-  Files({this.name});
-
-  Files.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    return data;
-  }
-}
 
 class LeaveType {
   String? type;
