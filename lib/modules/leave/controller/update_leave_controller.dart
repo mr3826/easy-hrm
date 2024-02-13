@@ -35,8 +35,8 @@ class UpDateLeaveController extends GetxController with StateMixin {
       required String? leaveTypeId}) async {
     print("""
     required String leaveId::$leaveId,
-      required String startDate::$startDate,
-      required String? endDate::$endDate
+      required String startDate::${DateTime.parse(startDate).toUtc().toString()},
+      required String? endDate::${DateTime.parse(endDate).toUtc().toString()}
       leaveType id:: $leaveTypeId
     """);
     isUpdateLeaveLoading(true);
