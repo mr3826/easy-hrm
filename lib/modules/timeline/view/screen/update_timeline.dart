@@ -59,18 +59,6 @@ class UpdateTimeLineLog extends StatelessWidget {
     setIndexForPrevTdayOrTomListTimelog(DateTime.parse(startDateTime));
   }
 
-  _statusColor({required String status}) {
-    switch (status) {
-      case "approved":
-        return AppColor.primaryColor;
-      case "pending":
-        return AppColor.pendingColor;
-      case "reject":
-        return AppColor.errorColorLight;
-      default:
-        return AppColor.bgColorWithTimeline;
-    }
-  }
 }
 
 AppBar timeLogAppbar(BuildContext context) {
