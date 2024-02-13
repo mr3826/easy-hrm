@@ -34,11 +34,6 @@ class GetLeaveTypesDropdown {
       this.isEarned});
 
 
-  @override
-  String toString() {
-    return 'GetLeaveTypesDropdown{name: $name, id: $id, type: $type, attachDocumentRequired: $attachDocumentRequired, addNoteRequired: $addNoteRequired, leaveStatuses: $leaveStatuses, calculateAllowanceBy: $calculateAllowanceBy, isEarned: $isEarned}';
-  }
-
   GetLeaveTypesDropdown.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
@@ -60,12 +55,6 @@ class LeaveStatuses {
   dynamic availableNumberOfDays;
   dynamic availableNumberOfApplications;
   dynamic earnedDays;
-
-
-  @override
-  String toString() {
-    return 'LeaveStatuses{availableNumberOfDays: $availableNumberOfDays, availableNumberOfApplications: $availableNumberOfApplications, earnedDays: $earnedDays}';
-  }
 
   LeaveStatuses(
       {this.availableNumberOfDays,
