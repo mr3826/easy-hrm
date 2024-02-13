@@ -25,8 +25,7 @@ class AddAttachmentFile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("afasdf ::: ${leaveRecords?.leaveType?.fileKey}");
-    print("leave record 6 :::: ${leaveRecords?.files?.key}");
+    print("AddAttachmentFile receive ::: ${leaveRecords?.leaveType?.fileKey}");
     if (Get.isRegistered()) {
       Get.delete<ApplyLeaveController>();
     }
@@ -39,9 +38,13 @@ class AddAttachmentFile extends StatelessWidget {
                     ? Get.find<ApplyLeaveController>().isErrorOccurred.value
                     : Get.find<UpDateLeaveController>().isErrorOccurred.value,
                 child: GestureDetector(onTap: () {
-                  Get.find<FileUploadController>().storageForUpload.pickFile(isApplyLeave: isFromApplyLeave);
+                  Get.find<FileUploadController>()
+                      .storageForUpload
+                      .pickFile(isApplyLeave: isFromApplyLeave);
                 }, child: Obx(() {
-                  return isFromApplyLeave==true?_documentLayout():_updateDocumentLayout();
+                  return isFromApplyLeave == true
+                      ? _documentLayout()
+                      : _updateDocumentLayout();
                 }))),
             customSpacerHeight(height: 8),
             _pathNameText(leaveRecords?.leaveType?.fileKey ?? '')
@@ -53,6 +56,7 @@ class AddAttachmentFile extends StatelessWidget {
     if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       print("1 ");
+
       /// file image
       return Get.find<FileUploadController>()
               .storageForUpload
@@ -66,16 +70,18 @@ class AddAttachmentFile extends StatelessWidget {
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
-        return leaveRecords?.files?.key == null ||
-                leaveRecords?.files?.key == "null"
-            ? _emptyBox()
-            : leaveRecords!.files!.key!.endsWith(".pdf")
-                ? _replaceFileLayout()
-                : CustomNetworkImage(
-                    imgUrlKey: leaveRecords?.files?.key ?? "",
-                    isDocumentLayout: true,
-                    errorText: "",
-                  );
+        return (leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty)
+            ? leaveRecords?.files![0].key == null ||
+                    leaveRecords?.files![0].key == "null"
+                ? _emptyBox()
+                : leaveRecords!.files![0].key!.endsWith(".pdf")
+                    ? _replaceFileLayout()
+                    : CustomNetworkImage(
+                        imgUrlKey: leaveRecords?.files?[0].key ?? "",
+                        isDocumentLayout: true,
+                        errorText: "",
+                      )
+            : _emptyBox();
       } else {
         /// broken image
         if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
@@ -99,6 +105,7 @@ class AddAttachmentFile extends StatelessWidget {
     if (Get.find<UpDateLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
       print("1 upd0");
+
       /// file image
       return Get.find<FileUploadController>()
               .storageForUpload
@@ -112,16 +119,18 @@ class AddAttachmentFile extends StatelessWidget {
         Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
-        return leaveRecords?.files?.key == null ||
-                leaveRecords?.files?.key == "null"
-            ? _emptyBox()
-            : leaveRecords!.files!.key!.endsWith(".pdf")
-                ? _replaceFileLayout()
-                : CustomNetworkImage(
-                    imgUrlKey: leaveRecords?.files?.key ?? "",
-                    isDocumentLayout: true,
-                    errorText: "",
-                  );
+        return (leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty)
+            ? leaveRecords?.files![0].key == null ||
+                    leaveRecords?.files![0].key == "null"
+                ? _emptyBox()
+                : leaveRecords!.files![0].key!.endsWith(".pdf")
+                    ? _replaceFileLayout()
+                    : CustomNetworkImage(
+                        imgUrlKey: leaveRecords?.files?[0].key ?? "",
+                        isDocumentLayout: true,
+                        errorText: "",
+                      )
+            : _emptyBox();
       } else {
         /// broken image
         if (Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {

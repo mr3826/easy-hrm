@@ -572,15 +572,17 @@ class TimelineController extends GetxController with StateMixin {
                       createdAt: e.createdAt ?? "",
                       leaveId: e.id ?? "",
                       taskName: e.leaveType?.leaveName ?? "",
-                      files: (e.files != null && e.files!.isNotEmpty)
-                          ? Files(
-                              name: e.files?[0].name ?? "",
-                              id: e.files?[0].id ?? "",
-                              key: e.files?[0].key ?? "",
-                              size: e.files?[0].size ?? "",
-                              createdAt: e.files?[0].createdAt ?? "",
-                            )
-                          : Files(),
+                      files: [
+                        (e.files != null && e.files!.isNotEmpty)
+                            ? Files(
+                                name: e.files?[0].name ?? "",
+                                id: e.files?[0].id ?? "",
+                                key: e.files?[0].key ?? "",
+                                size: e.files?[0].size ?? "",
+                                createdAt: e.files?[0].createdAt ?? "",
+                              )
+                            : Files()
+                      ],
                       leaveType: LeaveType(
                           type: e.leaveType?.type ?? "",
                           isAddNoteRequired:

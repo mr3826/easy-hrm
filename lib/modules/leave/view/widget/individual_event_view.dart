@@ -121,49 +121,49 @@ class IndividualEventView extends StatelessWidget {
                             ?.toLowerCase() ??
                         "",
                     leaveRecords: GetLeaveRecords(
-                      files: (Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveRequests?[index]
-                                      .files !=
-                                  null &&
-                              Get.find<LeaveScreenController>()
-                                  .leaveDetailsByDate!
-                                  .getLeaveRequests![index]
-                                  .files!
-                                  .isNotEmpty)
+                      files: [(Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveRequests?[index]
+                          .files !=
+                          null &&
+                          Get.find<LeaveScreenController>()
+                              .leaveDetailsByDate!
+                              .getLeaveRequests![index]
+                              .files!
+                              .isNotEmpty)
                           ? Files(
-                              createdAt: Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveRequests?[index]
-                                      .files?[0]
-                                      .createdAt ??
-                                  "",
-                              size: Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveRequests?[index]
-                                      .files?[0]
-                                      .size ??
-                                  "",
-                              name: Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveRequests?[index]
-                                      .files?[0]
-                                      .name ??
-                                  "",
-                              id: Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveRequests?[index]
-                                      .files?[0]
-                                      .id ??
-                                  "",
-                              key: Get.find<LeaveScreenController>()
-                                      .leaveDetailsByDate
-                                      ?.getLeaveRequests?[index]
-                                      .files?[0]
-                                      .key ??
-                                  "",
-                            )
-                          : Files(),
+                        createdAt: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .createdAt ??
+                            "",
+                        size: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .size ??
+                            "",
+                        name: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .name ??
+                            "",
+                        id: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .id ??
+                            "",
+                        key: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .key ??
+                            "",
+                      )
+                          : Files()],
                       leaveType: LeaveType(
                         type: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate

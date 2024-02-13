@@ -56,49 +56,49 @@ class UpcomingLeaveLayout extends StatelessWidget {
                         endDate: controller.upcommingLeaveDashboard
                                 ?.getUpcomingLeavesForApp?[index].endDate ??
                             "",
-                        files: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files !=
-                                    null &&
-                                controller
-                                    .upcommingLeaveDashboard!
-                                    .getUpcomingLeavesForApp![index]
-                                    .files!
-                                    .isNotEmpty
+                        files:[ controller
+                            .upcommingLeaveDashboard
+                            ?.getUpcomingLeavesForApp?[index]
+                            .files !=
+                            null &&
+                            controller
+                                .upcommingLeaveDashboard!
+                                .getUpcomingLeavesForApp![index]
+                                .files!
+                                .isNotEmpty
                             ? Files(
-                                createdAt: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .createdAt ??
-                                    "",
-                                size: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .size ??
-                                    "",
-                                name: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .name ??
-                                    "",
-                                id: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .id ??
-                                    "",
-                                key: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .key ??
-                                    "",
-                              )
-                            : Files(),
+                          createdAt: controller
+                              .upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index]
+                              .files?[0]
+                              .createdAt ??
+                              "",
+                          size: controller
+                              .upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index]
+                              .files?[0]
+                              .size ??
+                              "",
+                          name: controller
+                              .upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index]
+                              .files?[0]
+                              .name ??
+                              "",
+                          id: controller
+                              .upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index]
+                              .files?[0]
+                              .id ??
+                              "",
+                          key: controller
+                              .upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index]
+                              .files?[0]
+                              .key ??
+                              "",
+                        )
+                            : Files()],
                         leaveType: controller.upcommingLeaveDashboard
                             ?.getUpcomingLeavesForApp?[index].leaveType,
                         duration: controller

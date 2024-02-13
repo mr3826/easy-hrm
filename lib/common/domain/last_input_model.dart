@@ -1,5 +1,3 @@
-
-import '../../modules/leave/model/leave_record_response.dart';
 import 'files_model.dart';
 
 class LastInput {
@@ -32,7 +30,9 @@ class ModelForDescription {
   String? endDate;
   String? duration;
   String? createdAt;
-  Files? files;
+//  Files? files;
+  List<Files>?files;
+
   LeaveType? leaveType;
   dynamic numberOfDays;
   String? leaveId;
@@ -72,12 +72,12 @@ class ModelForDescription {
         ? LeaveType.fromJson(json['leaveType'])
         : null;
 
-    files = json['files'] != null
-        ? Files.fromJson(json['files'])
-        : null;
-
-
-
+    if (json['files'] != null) {
+      files = <Files>[];
+      json['files'].forEach((v) {
+        files!.add(Files.fromJson(v));
+      });
+    }
     numberOfDays = json['numberOfDays'];
     leaveId = json['leaveId'];
     taskName = json['taskName'];
@@ -98,7 +98,7 @@ class ModelForDescription {
     data['taskName'] = taskName;
     data['createdAt'] = createdAt;
     if (files != null) {
-      data['files'] = files!.toJson();
+      List<dynamic>.from(files!.map((x) => x.toJson()));
     }
     if (leaveType != null) {
       data['leaveType'] = leaveType!.toJson();
@@ -112,7 +112,6 @@ class ModelForDescription {
     return data;
   }
 }
-
 
 class LeaveType {
   String? type;

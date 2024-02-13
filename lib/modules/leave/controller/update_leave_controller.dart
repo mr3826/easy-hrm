@@ -114,12 +114,12 @@ class UpDateLeaveController extends GetxController with StateMixin {
       leaveNoteController.clear();
       Get.find<FileUploadController>().storageForUpload.filePath.value="";
       Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
+      Get.off(() => const MainScreen(routeIndex: 1));
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
       await Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
      isFileUploadedSuccessfully(false);
-      Get.off(() => const MainScreen(routeIndex: 1));
     }
 
     isUpdateLeaveLoading(false);

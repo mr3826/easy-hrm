@@ -80,29 +80,28 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                   .leaveRecordList?[monthIndex].data?[index].numberOfDays,
               createdAt: controller
                   .leaveRecordList?[monthIndex].data?[index].createdAt,
-              files:
-                  (controller.leaveRecordList?[monthIndex].data?[index].files !=
-                              null &&
-                          controller.leaveRecordList![monthIndex].data![index]
-                              .files!.isNotEmpty)
-                      ? Files(
-                          createdAt: controller.leaveRecordList?[monthIndex]
-                                  .data?[index].files?[0].createdAt ??
-                              "",
-                          size: controller.leaveRecordList?[monthIndex]
-                                  .data?[index].files?[0].size ??
-                              "",
-                          name: controller.leaveRecordList?[monthIndex]
-                                  .data?[index].files?[0].name ??
-                              "",
-                          id: controller.leaveRecordList?[monthIndex]
-                                  .data?[index].files?[0].id ??
-                              "",
-                          key: controller.leaveRecordList?[monthIndex]
-                                  .data?[index].files?[0].key ??
-                              "",
-                        )
-                      : Files(),
+              files:[(controller.leaveRecordList?[monthIndex].data?[index].files !=
+                  null &&
+                  controller.leaveRecordList![monthIndex].data![index]
+                      .files!.isNotEmpty)
+                  ? Files(
+                createdAt: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].createdAt ??
+                    "",
+                size: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].size ??
+                    "",
+                name: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].name ??
+                    "",
+                id: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].id ??
+                    "",
+                key: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].key ??
+                    "",
+              )
+                  : Files()],
 
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
@@ -152,8 +151,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   _infoLayoutView({required BuildContext context, required GetLeaveRecords leaveRecord}) {
 
-    print("leave record :::: ${leaveRecord.files?.key}");
-
     return GestureDetector(
       onTap: () => customButtonSheet(
           context: context,
@@ -162,9 +159,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
             leaveRecords: leaveRecord,
           ),
           height: 0.5),
-
-
-
       child: SizedBox(
         child: Card(
           elevation: 0,

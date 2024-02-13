@@ -35,8 +35,6 @@ class UpdateLeave extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("leave record 4 :::: ${leaveRecords?.files?.key}");
-
     _updateDateFromResponse();
     return Column(
       children: [
@@ -111,7 +109,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
     isDocRequired: ${leaveRecords?.leaveType?.isAttachDocumentRequired}
     fileKey: ${leaveRecords?.leaveType?.fileKey}
     ''');
-    print("leave record 5 :::: ${leaveRecords?.files?.key}");
 
     return controller.obx(
         (state) => Padding(
@@ -304,7 +301,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
   }
 
   void _updateLeaveMethod() {
-    print("key ::::::::: ${leaveRecords?.files?.key}");
     if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
         .difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
@@ -314,10 +310,10 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
         leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,
         endDate: Get.find<DateTimePickerController>().outDateTime.value,
-        size: leaveRecords?.files?.size ?? "",
-        name: leaveRecords?.files?.name ?? "",
-        key: leaveRecords?.files?.key ?? "",
-        id: leaveRecords?.files?.id??""
+        size:  leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].size:"",
+        name: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].name.toString():"",
+        key: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].key.toString():"",
+        id:leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].id.toString():"",
       );
     } else {
       showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);

@@ -33,8 +33,6 @@ class LeaveRecordDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     _checkLeaveDateDuration(leaveRecords ?? GetLeaveRecords());
 
-    print("leave record 2 :::: ${leaveRecords?.files?.key}");
-
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Column(
@@ -186,8 +184,6 @@ class LeaveRecordDetails extends StatelessWidget {
   }
 
   _pendingLayout(context) {
-    print("leave record 3 :::: ${leaveRecords?.files?.key}");
-
     return Padding(
       padding: marginLayout,
       child: CustomDoubleAppButton(

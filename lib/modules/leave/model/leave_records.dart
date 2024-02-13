@@ -25,7 +25,9 @@ class GetLeaveRecords {
   LeaveType? leaveType;
   dynamic duration;
   String? status;
-  Files ?files;
+  //Files ?files;
+  List<Files>?files;
+
 
   GetLeaveRecords(
       {this.endDate,
