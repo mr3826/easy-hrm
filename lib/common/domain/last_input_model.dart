@@ -98,8 +98,8 @@ class ModelForDescription {
     data['taskName'] = taskName;
     data['createdAt'] = createdAt;
     if (files != null) {
-      List<dynamic>.from(files!.map((x) => x.toJson()));
-    }
+      data['files'] = files!.map((v) => v.toJson()).toList();
+  }
     if (leaveType != null) {
       data['leaveType'] = leaveType!.toJson();
     }
@@ -137,7 +137,7 @@ class LeaveType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['type'] = type;
     data['leaveId'] = leaveId;
     data['leaveName'] = leaveName;

@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -33,28 +34,33 @@ class UpDateLeaveController extends GetxController with StateMixin {
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
-  void updateLeave(
-      {required String leaveId,
-      required String startDate,
-      required String endDate,
-      required String key,
-      required String size,
-      required String name,
-      required String id,
-      required String? leaveTypeId}) async {
+  void updateLeave({required String leaveId,
+    required String startDate,
+    required String endDate,
+    required String key,
+    required String size,
+    required String name,
+    required String id,
+    required String? leaveTypeId}) async {
     print("""
     required String leaveId::$leaveId,
       required String startDate::$startDate,
       required String? endDate::$endDate
       leaveType id:: $leaveTypeId
-      "file ::: ${Get.find<FileUploadController>().storageForUpload.filePath}
+      "file ::: ${Get
+        .find<FileUploadController>()
+        .storageForUpload
+        .filePath}
        
             "name": $name,
              "key": $key,
-             "size": $size
-        
-        
-    
+             "size": $size,
+             "file key ::: ${Get
+        .find<FileUploadController>()
+        .storageForUpload
+        .filePath
+        .isNotEmpty}
+                          "remove id": 
     """);
 
     isUpdateLeaveLoading(true);
@@ -67,67 +73,76 @@ class UpDateLeaveController extends GetxController with StateMixin {
         "end_date": DateTime.parse(endDate).toUtc().toString(),
         "start_date": DateTime.parse(startDate).toUtc().toString(),
         "leave_type_id": leaveTypeId,
-        "files": {
-          "addData": Get.find<FileUploadController>()
-                  .storageForUpload
-                  .filePath
-                  .isNotEmpty
-              ? [
-                  {
-                    "size": int.parse(Get.find<FileUploadController>()
-                        .storageForUpload
-                        .fileSize
-                        .value
-                        .toString()),
-                    "name": Get.find<FileUploadController>()
-                        .storageForUpload
-                        .filePath
-                        .value
-                        .split(".")
-                        .last
-                        .toString(),
-                    "key": uploadPolicyResponse.getUploadPolicy?.policyData
-                            ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-                            .value
-                            ?.split("/")
-                            .last ??
-                        ""
-                  }
-                ]
-              : [
-                  {"name": name, "key": key, "size": int.parse(size)}
-                ],
-          "removeData": id
 
-        }
+        "files": _getFileInfo(
+          id: id,
+          key: key,
+          size: size,
+          name: name,filePath: Get.find<FileUploadController>().storageForUpload.filePath.value,
+          uploadPolicyResponse: uploadPolicyResponse
+        )
       }
     });
+
+
+    print(
+        "path check in controller ::::: ${Get
+            .find<FileUploadController>()
+            .storageForUpload
+            .filePath
+            .value
+            .split(".")
+            .last
+            .toString()}");
+
+    print(
+        "response ::::: ${Get
+            .find<FileUploadController>()
+            .storageForUpload
+            .filePath
+            .value
+            .split(".")
+            .last
+            .toString()}");
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      Get.off(() => const MainScreen(routeIndex: 1));
       leaveId = '';
       isNoteRequired.value = false;
       isDocumentRequired.value = false;
       numberOfLeaves.value = '';
       leaveTypeId = '';
       leaveNoteController.clear();
-      Get.find<FileUploadController>().storageForUpload.filePath.value="";
-      Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
-      Get.off(() => const MainScreen(routeIndex: 1));
-      showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
+      Get.find<FileUploadController>()
+          .storageForUpload
+          .filePath
+          .value = "";
+      Get.find<FileUploadController>()
+          .storageForUpload
+          .filePath
+          .isEmpty;
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-      await Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
-     isFileUploadedSuccessfully(false);
+      await Get.find<DashboardController>()
+          .getMonthlyTimelineInfoForDashboard();
+      isUpdateLeaveLoading(false);
+      showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
+      isFileUploadedSuccessfully(false);
     }
-
     isUpdateLeaveLoading(false);
   }
 
+
   getUploadPolicy({fileName}) async {
     print(
-        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
+        "${DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString()}.${fileName
+            .split('.')
+            .last}");
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()
@@ -135,7 +150,12 @@ class UpDateLeaveController extends GetxController with StateMixin {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
         "filename":
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "${DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString()}.${fileName
+            .split('.')
+            .last}",
         "directive": "Files"
       }
     });
@@ -152,10 +172,9 @@ class UpDateLeaveController extends GetxController with StateMixin {
     isUploadPolicyLoading(false);
   }
 
-  uploadFile(
-      {required String fileName,
-      List<PolicyData>? list,
-      required String url}) async {
+  uploadFile({required String fileName,
+    List<PolicyData>? list,
+    required String url}) async {
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 
@@ -168,7 +187,12 @@ class UpDateLeaveController extends GetxController with StateMixin {
         "file",
         MultipartFile(File(fileName),
             filename:
-                "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+            "${DateTime
+                .now()
+                .millisecondsSinceEpoch
+                .toString()}.${fileName
+                .split('.')
+                .last}")));
 
     await NetworkClient().post(url, formData).then((value) {
       print(value.statusCode);
@@ -189,4 +213,54 @@ class UpDateLeaveController extends GetxController with StateMixin {
     }
     change(null, status: RxStatus.success());
   }
+}
+
+_getFileInfo({required String key, required String filePath,required UploadPolicyResponse uploadPolicyResponse,required String size,required String name,required String id}) {
+print("Key for get::: $key ");
+print("Key for get::: $filePath ");
+
+///use case for user
+///not file added not change file direct update
+///not file added but will be upload file
+///key added but not change file direct update
+/// key added and change file than update
+
+
+
+  return ( key!="null" && key.isNotEmpty || filePath.isNotEmpty)
+      ? {
+    "addData":filePath.isNotEmpty
+        ? [
+
+       {
+        "size": int.parse(Get
+            .find<FileUploadController>()
+            .storageForUpload
+            .fileSize
+            .value
+            .toString()),
+        "name": Get
+            .find<FileUploadController>()
+            .storageForUpload
+            .filePath
+            .value
+            .split(".")
+            .last
+            .toString(),
+        "key": uploadPolicyResponse
+            .getUploadPolicy?.policyData
+            ?.firstWhere(
+                (e) => e.name == 'key'.toLowerCase())
+            .value
+            ?.split("/")
+            .last ??
+            ""
+      }
+    ]
+        : [
+      {"name": name, "key": key, "size": int.parse(size)}
+    ],
+    "removeData": id.isNotEmpty && id != "null" ? id : null
+  }
+      : null;
 }

@@ -136,21 +136,22 @@ class ApplyLeaveController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      Get.off(() => const MainScreen(routeIndex: 1));
       leaveId = '';
       isNoteRequired.value = false;
       isDocumentRequired.value = false;
       numberOfLeaves.value = '';
       isErrorOccurred.value = false;
-      Get.off(() => const MainScreen(routeIndex: 1));
       Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
       Get.find<FileUploadController>().storageForUpload.filePath.value = "";
       Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
-      showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
       leaveNoteController.clear();
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
       await Get.find<DashboardController>()
           .getMonthlyTimelineInfoForDashboard();
+      isAssignLeaveLoaderLoading(false);
+      showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
       isFileUploadedSuccessfully(false);
     }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -201,8 +203,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                                         .isNotEmpty) {
                                       _updateLeaveMethod();
                                     } else {
-                                      Get.find<DateTimeController>()
-                                          .isErrorOccurred(true);
+                                      Get.find<DateTimeController>().isErrorOccurred(true);
                                     }
                                   } else {
                                     _updateLeaveMethod();
@@ -310,7 +311,8 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
         leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,
         endDate: Get.find<DateTimePickerController>().outDateTime.value,
-        size:  leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].size:"",
+        ///dev
+        size: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].size.toString():"",
         name: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].name.toString():"",
         key: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].key.toString():"",
         id:leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].id.toString():"",

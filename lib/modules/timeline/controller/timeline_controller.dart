@@ -361,6 +361,7 @@ class TimelineController extends GetxController with StateMixin {
     if (responseForCalendar.hasException) {
       ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
     } else {
+
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
           CalendarControllerProvider.of(Get.context!).controller.remove(value);
@@ -414,6 +415,17 @@ class TimelineController extends GetxController with StateMixin {
                     createdAt: e.createdAt ?? "",
                     leaveId: e.id ?? "",
                     taskName: e.leaveType?.leaveName ?? "",
+                    files: [
+                      (e.files != null && e.files!.isNotEmpty)
+                          ? Files(
+                        name: e.files?[0].name ?? "",
+                        id: e.files?[0].id ?? "",
+                        key: e.files?[0].key ?? "",
+                        size: e.files?[0].size ?? "",
+                        createdAt: e.files?[0].createdAt ?? "",
+                      )
+                          : Files()
+                    ],
                     leaveType: LeaveType(
                         type: e.leaveType?.type ?? "",
                         isAddNoteRequired:
