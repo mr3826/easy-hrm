@@ -38,7 +38,7 @@ class NotificationController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": false},
+      "queryData": {"is_seen": false,"is_mobile_notification": true},
       "optionData": {
         "limit": notificationLimit,
         "offset": newNotificationOffset.value
@@ -79,7 +79,7 @@ class NotificationController extends GetxController with StateMixin {
         "newNotificationLimit: $notificationLimit newNotificationOffset:: $newNotificationOffset");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": false},
+      "queryData": {"is_seen": false,"is_mobile_notification": true},
       "optionData": {
         "limit": notificationLimit,
         "offset": newNotificationOffset.value
@@ -114,7 +114,7 @@ class NotificationController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": true},
+      "queryData": {"is_seen": true,"is_mobile_notification": true},
       "optionData": {"limit": notificationLimit, "offset": 0}
     });
 
@@ -148,7 +148,7 @@ class NotificationController extends GetxController with StateMixin {
         "newNotificationLimit: $notificationLimit newNotificationOffset:: $newNotificationOffset");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": true},
+      "queryData": {"is_seen": true, "is_mobile_notification": true},
       "optionData": {
         "limit": notificationLimit,
         "offset": newNotificationOffset.value
