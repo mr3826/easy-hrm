@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -83,28 +82,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
         )
       }
     });
-
-
-    print(
-        "path check in controller ::::: ${Get
-            .find<FileUploadController>()
-            .storageForUpload
-            .filePath
-            .value
-            .split(".")
-            .last
-            .toString()}");
-
-    print(
-        "response ::::: ${Get
-            .find<FileUploadController>()
-            .storageForUpload
-            .filePath
-            .value
-            .split(".")
-            .last
-            .toString()}");
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -216,17 +193,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
 }
 
 _getFileInfo({required String key, required String filePath,required UploadPolicyResponse uploadPolicyResponse,required String size,required String name,required String id}) {
-print("Key for get::: $key ");
-print("Key for get::: $filePath ");
-
-///use case for user
-///not file added not change file direct update
-///not file added but will be upload file
-///key added but not change file direct update
-/// key added and change file than update
-
-
-
   return ( key!="null" && key.isNotEmpty || filePath.isNotEmpty)
       ? {
     "addData":filePath.isNotEmpty
