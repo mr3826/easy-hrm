@@ -4,6 +4,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
@@ -91,6 +92,12 @@ class TimeLineCalendar extends StatelessWidget {
                         ?.leaveName)
                     .toString();
 
+                String leaveTypeId = eventData
+                    .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                        .leaveType
+                        ?.leaveId)
+                    .toString();
+
                 String isAttachDocumentRequired = eventData
                     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
                         .leaveType
@@ -140,9 +147,39 @@ class TimeLineCalendar extends StatelessWidget {
                     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
                         .projectName)
                     .toString();
+
                 String projectColor = eventData
                     .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
                         .projectColor)
+                    .toString();
+
+                String fileName = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e))
+                            .files?[0]
+                            .name ??
+                        "")
+                    .toString();
+                String fileSize = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e))
+                            .files?[0]
+                            .size ??
+                        "")
+                    .toString();
+                String fileKey = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e))
+                            .files?[0]
+                            .key ??
+                        "")
+                    .toString();
+                String fileId = eventData
+                    .map((e) =>
+                        li.ModelForDescription.fromJson(jsonDecode(e))
+                            .files?[0]
+                            .id ??
+                        "")
                     .toString();
 
                 /// have to sub string
@@ -191,6 +228,19 @@ class TimeLineCalendar extends StatelessWidget {
                                 .toString()
                                 .substring(1, status.toString().length - 1),
                             leaveRecords: GetLeaveRecords(
+                              ///For view file
+                              files: [
+                                Files(
+                                  name: fileName.toString().substring(
+                                      1, fileName.toString().length - 1),
+                                  size: fileSize.toString().substring(
+                                      1, fileSize.toString().length - 1),
+                                  key: fileKey.toString().substring(
+                                      1, fileKey.toString().length - 1),
+                                  id: fileId.toString().substring(
+                                      1, fileId.toString().length - 1),
+                                )
+                              ],
                               id: leaveId
                                   .toString()
                                   .substring(1, leaveId.toString().length - 1),
@@ -216,8 +266,8 @@ class TimeLineCalendar extends StatelessWidget {
                               leaveType: LeaveType(
                                   leaveName: leaveName.substring(
                                       1, leaveName.length - 1),
-                                  leaveId: leaveId.substring(
-                                      1, leaveId.length - 1),
+                                  leaveId: leaveTypeId.substring(
+                                      1, leaveTypeId.length - 1),
                                   isAttachDocumentRequired:
                                       isAttachDocumentRequired
                                                   .substring(

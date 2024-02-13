@@ -66,7 +66,7 @@ class AppString {
   static String text_your_password_has_been_etc =
       'Your password has been changed successfully. Use your';
   static String text_password_to_log_in = 'new password to log in.';
-  static String text_organization_name = 'Organization name';
+  static String text_organization_name = 'Subdomain name';
   static String text_organization = 'Organization';
   static String text_total_leave = 'Total leave';
   static String text_paid_leave = 'Paid leave';

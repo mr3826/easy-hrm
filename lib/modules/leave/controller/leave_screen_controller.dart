@@ -35,6 +35,8 @@ class LeaveScreenController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+
+
   getLeaveDetailsByDate() async {
     isLoading(true);
     final response = await NetworkClient()

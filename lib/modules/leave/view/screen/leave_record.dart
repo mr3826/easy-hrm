@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../common/domain/files_model.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../enum.dart';
 import '../../../../utils/utils.dart';
@@ -33,6 +34,8 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
         (state) => Scaffold(
             appBar: customAppbar(title: AppString.text_leave_records),
             body: RefreshIndicator(
+              backgroundColor: AppColor.cardColor,
+              color: AppColor.primaryColor,
               onRefresh: _refreshScreen,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -52,12 +55,18 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   }
 
   _leaveRecordViewLayout(int monthIndex) {
+
     return ListView.builder(
       shrinkWrap: true,
       padding: marginLayout,
       itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
+
+        print("path :::: ${controller.leaveRecordList?[monthIndex].data?[index].files?.length}");
+
+
+
         return _infoLayoutView(
           context: context,
           leaveRecord: GetLeaveRecords(
@@ -71,6 +80,29 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                   .leaveRecordList?[monthIndex].data?[index].numberOfDays,
               createdAt: controller
                   .leaveRecordList?[monthIndex].data?[index].createdAt,
+              files:[(controller.leaveRecordList?[monthIndex].data?[index].files !=
+                  null &&
+                  controller.leaveRecordList![monthIndex].data![index]
+                      .files!.isNotEmpty)
+                  ? Files(
+                createdAt: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].createdAt ??
+                    "",
+                size: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].size ??
+                    "",
+                name: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].name ??
+                    "",
+                id: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].id ??
+                    "",
+                key: controller.leaveRecordList?[monthIndex]
+                    .data?[index].files?[0].key ??
+                    "",
+              )
+                  : Files()],
+
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
                     .leaveRecordList?[monthIndex]
@@ -117,8 +149,8 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     );
   }
 
-  _infoLayoutView(
-      {required BuildContext context, required GetLeaveRecords leaveRecord}) {
+  _infoLayoutView({required BuildContext context, required GetLeaveRecords leaveRecord}) {
+
     return GestureDetector(
       onTap: () => customButtonSheet(
           context: context,
@@ -126,7 +158,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
             status: leaveRecord.status ?? "",
             leaveRecords: leaveRecord,
           ),
-          height: 0.5),
+          height: 0.6),
       child: SizedBox(
         child: Card(
           elevation: 0,

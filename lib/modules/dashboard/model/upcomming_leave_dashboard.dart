@@ -1,3 +1,4 @@
+import '../../../common/domain/files_model.dart';
 import '../../leave/model/leave_record_response.dart';
 
 class UpcommingLeaveDashboard {
@@ -24,6 +25,8 @@ class GetUpcomingLeavesForApp {
   String? description;
   dynamic numberOfDays;
   LeaveType? leaveType;
+  List<Files>?files;
+
 
   GetUpcomingLeavesForApp(
       {this.endDate,
@@ -33,6 +36,7 @@ class GetUpcomingLeavesForApp {
       this.numberOfDays,
       this.description,
       this.leaveType,
+        this.files,
       this.id});
 
   GetUpcomingLeavesForApp.fromJson(Map<String, dynamic> json) {
@@ -43,6 +47,12 @@ class GetUpcomingLeavesForApp {
     description = json['description'];
     createdAt = json['createdAt'];
     numberOfDays = json['number_of_days'];
+    if (json['files'] != null) {
+      files = <Files>[];
+      json['files'].forEach((v) {
+        files!.add(Files.fromJson(v));
+      });
+    }
     leaveType = json['leaveType'] != null
         ? LeaveType.fromJson(json['leaveType'])
         : null;

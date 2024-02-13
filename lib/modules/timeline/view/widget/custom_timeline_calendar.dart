@@ -60,11 +60,7 @@ Widget _dateCalendarLayout() {
           showDialog(
             context: Get.context!,
             builder: (context) {
-              return const Dialog(
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16))),
-                  insetPadding: EdgeInsets.zero,
+              return  const Dialog(
                   child: SingleDatePicker(
                     isCalledFormTimeLog: true,
                   ));

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
 
 class HexColor extends Color {
   HexColor(final String hex) : super(_getColor(hex));

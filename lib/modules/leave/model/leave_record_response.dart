@@ -1,3 +1,5 @@
+import '../../../common/domain/files_model.dart';
+
 class LeaveRecord {
   List<GetLeaveRecordsForApp>? getLeaveRecordsForApp;
 
@@ -74,22 +76,7 @@ class Data {
   }
 }
 
-class Files {
-  String? name;
-  dynamic size;
-  dynamic createdAt;
-  String? key;
-  String? id;
 
-  Files({this.name, this.size, this.createdAt, this.key, this.id});
-
-  Files.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    size = json['size'];
-    createdAt = json['createdAt'];
-    key = json['key'];
-    id = json['id'];
-  }}
 
 
 class LeaveType {

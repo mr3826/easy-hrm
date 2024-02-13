@@ -1,15 +1,18 @@
+import 'dart:io';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-
+import '../../../common/domain/upload_policy.dart';
 import '../../../network/network_client.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/leave_type.dart';
+import 'file_upload_controller.dart';
 
 class UpDateLeaveController extends GetxController with StateMixin {
   @override
@@ -25,20 +28,40 @@ class UpDateLeaveController extends GetxController with StateMixin {
   RxString numberOfLeaves = ''.obs;
   RxBool isUpdateLeaveLoading = false.obs;
   RxBool isErrorOccurred = false.obs;
-
   LeaveTypeDropdown? leaveTypeDropdown;
+  final isUploadPolicyLoading = false.obs;
+  RxBool isFileUploadedSuccessfully = false.obs;
+  UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
-  void updateLeave(
-      {required String leaveId,
-      required String startDate,
-      required String endDate,
-      required String? leaveTypeId}) async {
+  void updateLeave({required String leaveId,
+    required String startDate,
+    required String endDate,
+    required String key,
+    required String size,
+    required String name,
+    required String id,
+    required String? leaveTypeId}) async {
     print("""
     required String leaveId::$leaveId,
       required String startDate::${DateTime.parse(startDate).toUtc().toString()},
       required String? endDate::${DateTime.parse(endDate).toUtc().toString()}
       leaveType id:: $leaveTypeId
+      "file ::: ${Get
+        .find<FileUploadController>()
+        .storageForUpload
+        .filePath}
+       
+            "name": $name,
+             "key": $key,
+             "size": $size,
+             "file key ::: ${Get
+        .find<FileUploadController>()
+        .storageForUpload
+        .filePath
+        .isNotEmpty}
+                          "remove id": 
     """);
+
     isUpdateLeaveLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: cancelLeaveQuery, variables: {
@@ -48,31 +71,111 @@ class UpDateLeaveController extends GetxController with StateMixin {
         "description": leaveNoteController.text,
         "end_date": DateTime.parse(endDate).toUtc().toString(),
         "start_date": DateTime.parse(startDate).toUtc().toString(),
-        "leave_type_id": leaveTypeId
+        "leave_type_id": leaveTypeId,
+
+        "files": _getFileInfo(
+          id: id,
+          key: key,
+          size: size,
+          name: name,filePath: Get.find<FileUploadController>().storageForUpload.filePath.value,
+          uploadPolicyResponse: uploadPolicyResponse
+        )
       }
     });
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      Get.off(() => const MainScreen(routeIndex: 1));
       leaveId = '';
       isNoteRequired.value = false;
       isDocumentRequired.value = false;
       numberOfLeaves.value = '';
       leaveTypeId = '';
       leaveNoteController.clear();
-      showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
-
-      Get.off(() => const MainScreen(
-            routeIndex: 1,
-          ));
+      Get.find<FileUploadController>()
+          .storageForUpload
+          .filePath
+          .value = "";
+      Get.find<FileUploadController>()
+          .storageForUpload
+          .filePath
+          .isEmpty;
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
       await Get.find<DashboardController>()
           .getMonthlyTimelineInfoForDashboard();
+      isUpdateLeaveLoading(false);
+      showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
+      isFileUploadedSuccessfully(false);
+    }
+    isUpdateLeaveLoading(false);
+  }
+
+
+  getUploadPolicy({fileName}) async {
+    print(
+        "${DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString()}.${fileName
+            .split('.')
+            .last}");
+    isUploadPolicyLoading(true);
+
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
+      "queryData": {
+        "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
+        "filename":
+        "${DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString()}.${fileName
+            .split('.')
+            .last}",
+        "directive": "Files"
+      }
+    });
+
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(exception: response.exception!);
+    } else {
+      uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
+      uploadFile(
+          url: uploadPolicyResponse.getUploadPolicy?.url ?? "",
+          fileName: fileName,
+          list: uploadPolicyResponse.getUploadPolicy?.policyData);
+    }
+    isUploadPolicyLoading(false);
+  }
+
+  uploadFile({required String fileName,
+    List<PolicyData>? list,
+    required String url}) async {
+    if (list == null || url.isEmpty) return;
+    isUploadPolicyLoading(true);
+
+    FormData formData = FormData({});
+    for (var data in list) {
+      formData.fields.add(MapEntry(data.name!, data.value!));
     }
 
-    isUpdateLeaveLoading(false);
+    formData.files.add(MapEntry(
+        "file",
+        MultipartFile(File(fileName),
+            filename:
+            "${DateTime
+                .now()
+                .millisecondsSinceEpoch
+                .toString()}.${fileName
+                .split('.')
+                .last}")));
+
+    await NetworkClient().post(url, formData).then((value) {
+      print(value.statusCode);
+      isFileUploadedSuccessfully.value = true;
+    }, onError: (_) => isFileUploadedSuccessfully.value = false);
+    isUploadPolicyLoading(false);
   }
 
   getLeaveType() async {
@@ -87,4 +190,43 @@ class UpDateLeaveController extends GetxController with StateMixin {
     }
     change(null, status: RxStatus.success());
   }
+}
+
+_getFileInfo({required String key, required String filePath,required UploadPolicyResponse uploadPolicyResponse,required String size,required String name,required String id}) {
+  return ( key!="null" && key.isNotEmpty || filePath.isNotEmpty)
+      ? {
+    "addData":filePath.isNotEmpty
+        ? [
+
+       {
+        "size": int.parse(Get
+            .find<FileUploadController>()
+            .storageForUpload
+            .fileSize
+            .value
+            .toString()),
+        "name": Get
+            .find<FileUploadController>()
+            .storageForUpload
+            .filePath
+            .value
+            .split(".")
+            .last
+            .toString(),
+        "key": uploadPolicyResponse
+            .getUploadPolicy?.policyData
+            ?.firstWhere(
+                (e) => e.name == 'key'.toLowerCase())
+            .value
+            ?.split("/")
+            .last ??
+            ""
+      }
+    ]
+        : [
+      {"name": name, "key": key, "size": int.parse(size)}
+    ],
+    "removeData": id.isNotEmpty && id != "null" ? id : null
+  }
+      : null;
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -30,9 +32,9 @@ import '../../model/leave_type.dart';
 import '../widget/apply_leave_dropdown.dart';
 
 class UpdateLeave extends StatelessWidget {
-  GetLeaveRecords? leaveRecords;
+  final GetLeaveRecords? leaveRecords;
 
-  UpdateLeave({super.key, this.leaveRecords});
+  const UpdateLeave({super.key, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +87,7 @@ class UpdateLeave extends StatelessWidget {
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
+    ;
 
     leaveNoteController.text = leaveRecords?.description ?? "";
     Get.find<UpDateLeaveController>().isNoteRequired.value =
@@ -109,6 +112,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
     isDocRequired: ${leaveRecords?.leaveType?.isAttachDocumentRequired}
     fileKey: ${leaveRecords?.leaveType?.fileKey}
     ''');
+
     return controller.obx(
         (state) => Padding(
               padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
@@ -172,6 +176,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       AddAttachmentFile(
                         leaveRecords: leaveRecords,
                       ),
+
                       customSpacerHeight(height: 20),
                       Obx(() => Get.find<UpDateLeaveController>()
                               .isUpdateLeaveLoading
@@ -198,8 +203,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                                         .isNotEmpty) {
                                       _updateLeaveMethod();
                                     } else {
-                                      Get.find<DateTimeController>()
-                                          .isErrorOccurred(true);
+                                      Get.find<DateTimeController>().isErrorOccurred(true);
                                     }
                                   } else {
                                     _updateLeaveMethod();
@@ -302,15 +306,17 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
         .difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
-      if (Get.find<UpDateLeaveController>().numberOfLeaves.value != "0") {
-        Get.find<UpDateLeaveController>().updateLeave(
-            leaveId: leaveRecords?.id ?? "",
-            leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
-            startDate: Get.find<DateTimePickerController>().inDateTime.value,
-            endDate: Get.find<DateTimePickerController>().outDateTime.value);
-      } else {
-        showWarningMessage(message: "No available leave");
-      }
+      Get.find<UpDateLeaveController>().updateLeave(
+        leaveId: leaveRecords?.id ?? "",
+        leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
+        startDate: Get.find<DateTimePickerController>().inDateTime.value,
+        endDate: Get.find<DateTimePickerController>().outDateTime.value,
+        ///dev
+        size: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].size.toString():"",
+        name: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].name.toString():"",
+        key: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].key.toString():"",
+        id:leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].id.toString():"",
+      );
     } else {
       showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);
     }

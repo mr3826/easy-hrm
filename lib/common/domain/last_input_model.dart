@@ -1,4 +1,4 @@
-import '../../modules/leave/model/leave_record_response.dart';
+import 'files_model.dart';
 
 class LastInput {
   String? email;
@@ -30,7 +30,8 @@ class ModelForDescription {
   String? endDate;
   String? duration;
   String? createdAt;
-  List<Files>? files;
+  List<Files>?files;
+
   LeaveType? leaveType;
   dynamic numberOfDays;
   String? leaveId;
@@ -66,12 +67,16 @@ class ModelForDescription {
     endDate = json['endDate'];
     duration = json['duration'];
     createdAt = json['createdAt'];
-    if (json['files'] != null) {
-      files = List<Files>.from(json['files'].map((x) => Files.fromJson(x)));
-    }
     leaveType = json['leaveType'] != null
         ? LeaveType.fromJson(json['leaveType'])
         : null;
+
+    if (json['files'] != null) {
+      files = <Files>[];
+      json['files'].forEach((v) {
+        files!.add(Files.fromJson(v));
+      });
+    }
     numberOfDays = json['numberOfDays'];
     leaveId = json['leaveId'];
     taskName = json['taskName'];
@@ -92,8 +97,8 @@ class ModelForDescription {
     data['taskName'] = taskName;
     data['createdAt'] = createdAt;
     if (files != null) {
-      data['files'] = files!.map((x) => x.toJson()).toList();
-    }
+      data['files'] = files!.map((v) => v.toJson()).toList();
+  }
     if (leaveType != null) {
       data['leaveType'] = leaveType!.toJson();
     }
@@ -103,34 +108,6 @@ class ModelForDescription {
     data['projectName'] = projectName;
     data['projectId'] = projectId;
     data['taskId'] = taskId;
-    return data;
-  }
-}
-
-class Files {
-  String? name;
-  dynamic size;
-  dynamic createdAt;
-  String? key;
-  String? id;
-
-  Files({this.name, this.size, this.createdAt, this.key, this.id});
-
-  Files.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    size = json['size'];
-    createdAt = json['createdAt'];
-    key = json['key'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['size'] = size;
-    data['createdAt'] = createdAt;
-    data['key'] = key;
-    data['id'] = id;
     return data;
   }
 }
@@ -159,7 +136,7 @@ class LeaveType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['type'] = type;
     data['leaveId'] = leaveId;
     data['leaveName'] = leaveName;

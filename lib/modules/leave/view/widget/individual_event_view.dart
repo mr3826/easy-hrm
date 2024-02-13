@@ -17,6 +17,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/domain/files_model.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
@@ -120,6 +121,49 @@ class IndividualEventView extends StatelessWidget {
                             ?.toLowerCase() ??
                         "",
                     leaveRecords: GetLeaveRecords(
+                      files: [(Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveRequests?[index]
+                          .files !=
+                          null &&
+                          Get.find<LeaveScreenController>()
+                              .leaveDetailsByDate!
+                              .getLeaveRequests![index]
+                              .files!
+                              .isNotEmpty)
+                          ? Files(
+                        createdAt: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .createdAt ??
+                            "",
+                        size: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .size ??
+                            "",
+                        name: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .name ??
+                            "",
+                        id: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .id ??
+                            "",
+                        key: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .key ??
+                            "",
+                      )
+                          : Files()],
                       leaveType: LeaveType(
                         type: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate

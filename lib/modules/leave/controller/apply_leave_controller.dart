@@ -28,7 +28,6 @@ class ApplyLeaveController extends GetxController with StateMixin {
 
   final isLoading = false.obs;
   final isAssignLeaveLoaderLoading = false.obs;
-  final isUploadPolicyLoading = false.obs;
   String? startTime;
   String? endTime;
   String leaveId = '';
@@ -36,6 +35,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   RxBool isDocumentRequired = false.obs;
   RxString numberOfLeaves = ''.obs;
   RxBool isErrorOccurred = false.obs;
+  final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
@@ -82,9 +82,14 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   applyLeave({filePath}) async {
-    print(
-        "jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
+    print("applyLeave filePath:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
 
+
+    print("size :::: ${Get.find<FileUploadController>()
+        .storageForUpload
+        .fileSize
+        .value
+        .toString()}");
     isAssignLeaveLoaderLoading(true);
 
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
@@ -131,19 +136,23 @@ class ApplyLeaveController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
+      Get.off(() => const MainScreen(routeIndex: 1));
       leaveId = '';
       isNoteRequired.value = false;
       isDocumentRequired.value = false;
       numberOfLeaves.value = '';
       isErrorOccurred.value = false;
       Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
-      showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
+      Get.find<FileUploadController>().storageForUpload.filePath.value = "";
+      Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
       leaveNoteController.clear();
-      Get.off(() => const MainScreen(routeIndex: 1));
       await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
       await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
       await Get.find<DashboardController>()
           .getMonthlyTimelineInfoForDashboard();
+      isAssignLeaveLoaderLoading(false);
+      showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
+      isFileUploadedSuccessfully(false);
     }
 
     isAssignLeaveLoaderLoading(false);
