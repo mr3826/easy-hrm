@@ -27,6 +27,7 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/apply_leave_controller.dart';
 import '../../controller/file_upload_controller.dart';
 import '../../model/leave_type.dart';
+import '../widget/apply_leave_dropdown.dart';
 
 class UpdateLeave extends StatelessWidget {
   GetLeaveRecords? leaveRecords;
@@ -39,24 +40,24 @@ class UpdateLeave extends StatelessWidget {
     return Column(
       children: [
         Obx(
-              () => customButtonSheetAppbar(
+          () => customButtonSheetAppbar(
             text: DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value)
-                .day ==
-                DateTime.parse(
-                    Get.find<DateTimePickerController>().outDate.value)
-                    .day
+                            Get.find<DateTimePickerController>().inDate.value)
+                        .day ==
+                    DateTime.parse(
+                            Get.find<DateTimePickerController>().outDate.value)
+                        .day
                 ? DateFormat('d MMMM').format(DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value))
+                    Get.find<DateTimePickerController>().inDate.value))
                 : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
             subtext: DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value)
-                .day ==
-                DateTime.parse(
-                    Get.find<DateTimePickerController>().outDate.value)
-                    .day
+                            Get.find<DateTimePickerController>().inDate.value)
+                        .day ==
+                    DateTime.parse(
+                            Get.find<DateTimePickerController>().outDate.value)
+                        .day
                 ? DateFormat('EEEE').format(DateTime.parse(
-                Get.find<DateTimePickerController>().inDate.value))
+                    Get.find<DateTimePickerController>().inDate.value))
                 : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           ),
         ),
@@ -168,7 +169,9 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 6),
                       _pathFormatText(),
                       customSpacerHeight(height: 8),
-                       AddAttachmentFile(leaveRecords: leaveRecords,),
+                      AddAttachmentFile(
+                        leaveRecords: leaveRecords,
+                      ),
                       customSpacerHeight(height: 20),
                       Obx(() => Get.find<UpDateLeaveController>()
                               .isUpdateLeaveLoading
@@ -212,8 +215,12 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                                     .storageForUpload
                                     .filePath
                                     .value = "";
-                                Get.find<ApplyLeaveController>().isUploadPolicyLoading.value=false;
-                                Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.value=false;
+                                Get.find<ApplyLeaveController>()
+                                    .isUploadPolicyLoading
+                                    .value = false;
+                                Get.find<ApplyLeaveController>()
+                                    .isFileUploadedSuccessfully
+                                    .value = false;
                               },
                             )),
                       customSpacerHeight(height: 100),
@@ -342,7 +349,36 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
               .map((e) {
             return DropdownMenuItem(
               value: e.id,
-              child: Text(e.name.toString()),
+              child: SizedBox(
+                width: double.infinity,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    getIconAccordingToLeaveType(e.type),
+                    customSpacerWidth(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.name.toString(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          Text(
+                            e.type.toString(),
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColor.hintColor,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             );
           }).toList(),
           onChanged: (value) {

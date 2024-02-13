@@ -11,7 +11,17 @@ class Images {
   static String start_time = "assets/images/start_time.svg";
   static String start_time_open = "assets/images/start_timer_open.svg";
   static String add_time_entry = "assets/images/add_time_entry.svg";
-  static String passwordResetSuccessfull = "assets/images/password_reset_succeessful.svg";
+  static String passwordResetSuccessfull =
+      "assets/images/password_reset_succeessful.svg";
+  static String leaveImage = "assets/images/Custom Icons.svg";
+  static String leaveImage1 = "assets/images/Custom Icons-1.svg";
+  static String leaveImage2 = "assets/images/Custom Icons-2.svg";
+  static String leaveImage3 = "assets/images/Custom Icons-3.svg";
+  static String leaveImage4 = "assets/images/Custom Icons-4.svg";
+  static String leaveImage5 = "assets/images/Custom Icons-5.svg";
+  static String leaveImage6 = "assets/images/Custom Icons-6.svg";
+  static String leaveImage7 = "assets/images/Custom Icons-7.svg";
+  static String leaveImage8 = "assets/images/Custom Icons-8.svg";
 
   static String forgot = "assets/images/forgot_src.svg";
   static String otp = "assets/images/otp_src.svg";

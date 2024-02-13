@@ -140,6 +140,7 @@ query GetLeaveTypesDropdown {
   getLeaveTypesDropdown {
     name
     id
+    type
     attach_document_required
     add_note_required
     leave_statuses {
