@@ -138,14 +138,18 @@ mutation RemoveRejectedLeaves($inputData: DeleteLeaveInputData) {
 const leaveTypeDropdownQuery = '''
 query GetLeaveTypesDropdown {
   getLeaveTypesDropdown {
-    name
     id
+    name
     type
     attach_document_required
     add_note_required
     leave_statuses {
       available_number_of_days
+      available_number_of_applications
+      earned_days
     }
+    calculate_allowance_by
+    is_earned
   }
 }
 ''';

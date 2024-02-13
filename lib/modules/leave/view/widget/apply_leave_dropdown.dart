@@ -91,20 +91,21 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
 
             //set data according to leave type
             Get.find<ApplyLeaveController>().numberOfLeaves.value =
-                getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
-                        .toString() ??
+                getLeaveDaysAccordingToLeave(
+                        getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
                     "";
             Get.find<ApplyLeaveController>().leaveId = valueType!;
             print(
                 "Leave type id:: ${Get.find<ApplyLeaveController>().leaveId}");
             Get.find<ApplyLeaveController>().isDocumentRequired.value =
-                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
+                getLeaveTypesDropdown.attachDocumentRequired ?? false;
             Get.find<ApplyLeaveController>().isNoteRequired.value =
-                getLeaveTypesDropdown?.addNoteRequired ?? false;
+                getLeaveTypesDropdown.addNoteRequired ?? false;
           }),
     );
   }
 }
+
 getIconAccordingToLeaveType(String? type) {
   switch (type) {
     case "Vacationing":
@@ -125,5 +126,26 @@ getIconAccordingToLeaveType(String? type) {
       return customSvgImage(imageUrl: Images.leaveImage);
     default:
       return customSvgImage(imageUrl: Images.leaveImage8);
+  }
+}
+
+String? getLeaveDaysAccordingToLeave(
+    {required GetLeaveTypesDropdown getLeaveTypesDropdown}) {
+  print(getLeaveTypesDropdown);
+  if (getLeaveTypesDropdown.isEarned == true) {
+    return (getLeaveTypesDropdown.leaveStatuses?.first.earnedDays ?? 0)
+        .toString();
+  } else {
+    if (getLeaveTypesDropdown.calculateAllowanceBy == "no_of_application") {
+      return (getLeaveTypesDropdown
+                  .leaveStatuses?.first.availableNumberOfApplications ??
+              0)
+          .toString();
+    } else {
+      return (getLeaveTypesDropdown
+                  .leaveStatuses?.first.availableNumberOfDays ??
+              0)
+          .toString();
+    }
   }
 }

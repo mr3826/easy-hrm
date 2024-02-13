@@ -20,6 +20,8 @@ class GetLeaveTypesDropdown {
   bool? attachDocumentRequired;
   bool? addNoteRequired;
   List<LeaveStatuses>? leaveStatuses;
+  String? calculateAllowanceBy;
+  bool? isEarned;
 
   GetLeaveTypesDropdown(
       {this.name,
@@ -27,7 +29,15 @@ class GetLeaveTypesDropdown {
       this.type,
       this.attachDocumentRequired,
       this.addNoteRequired,
-      this.leaveStatuses});
+      this.leaveStatuses,
+      this.calculateAllowanceBy,
+      this.isEarned});
+
+
+  @override
+  String toString() {
+    return 'GetLeaveTypesDropdown{name: $name, id: $id, type: $type, attachDocumentRequired: $attachDocumentRequired, addNoteRequired: $addNoteRequired, leaveStatuses: $leaveStatuses, calculateAllowanceBy: $calculateAllowanceBy, isEarned: $isEarned}';
+  }
 
   GetLeaveTypesDropdown.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -35,6 +45,8 @@ class GetLeaveTypesDropdown {
     type = json['type'];
     attachDocumentRequired = json['attach_document_required'];
     addNoteRequired = json['add_note_required'];
+    calculateAllowanceBy = json['calculate_allowance_by'];
+    isEarned = json['is_earned'];
     if (json['leave_statuses'] != null) {
       leaveStatuses = <LeaveStatuses>[];
       json['leave_statuses'].forEach((v) {
@@ -46,10 +58,23 @@ class GetLeaveTypesDropdown {
 
 class LeaveStatuses {
   dynamic availableNumberOfDays;
+  dynamic availableNumberOfApplications;
+  dynamic earnedDays;
 
-  LeaveStatuses({this.availableNumberOfDays});
+
+  @override
+  String toString() {
+    return 'LeaveStatuses{availableNumberOfDays: $availableNumberOfDays, availableNumberOfApplications: $availableNumberOfApplications, earnedDays: $earnedDays}';
+  }
+
+  LeaveStatuses(
+      {this.availableNumberOfDays,
+      this.availableNumberOfApplications,
+      this.earnedDays});
 
   LeaveStatuses.fromJson(Map<String, dynamic> json) {
     availableNumberOfDays = json['available_number_of_days'];
+    availableNumberOfApplications = json['available_number_of_applications'];
+    earnedDays = json['earned_days'];
   }
 }

@@ -302,11 +302,15 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
         .difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
-      Get.find<UpDateLeaveController>().updateLeave(
-          leaveId: leaveRecords?.id ?? "",
-          leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
-          startDate: Get.find<DateTimePickerController>().inDateTime.value,
-          endDate: Get.find<DateTimePickerController>().outDateTime.value);
+      if (Get.find<UpDateLeaveController>().numberOfLeaves.value != "0") {
+        Get.find<UpDateLeaveController>().updateLeave(
+            leaveId: leaveRecords?.id ?? "",
+            leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
+            startDate: Get.find<DateTimePickerController>().inDateTime.value,
+            endDate: Get.find<DateTimePickerController>().outDateTime.value);
+      } else {
+        showWarningMessage(message: "No available leave");
+      }
     } else {
       showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);
     }
@@ -394,14 +398,14 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
 
             //set data according to leave type
             Get.find<UpDateLeaveController>().numberOfLeaves.value =
-                getLeaveTypesDropdown?.leaveStatuses?[0].availableNumberOfDays
-                        .toString() ??
+                getLeaveDaysAccordingToLeave(
+                        getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
                     "";
             Get.find<UpDateLeaveController>().leaveTypeId = value ?? "";
             Get.find<UpDateLeaveController>().isDocumentRequired.value =
-                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
+                getLeaveTypesDropdown.attachDocumentRequired ?? false;
             Get.find<UpDateLeaveController>().isNoteRequired.value =
-                getLeaveTypesDropdown?.addNoteRequired ?? false;
+                getLeaveTypesDropdown.addNoteRequired ?? false;
           }),
     );
   }
