@@ -33,7 +33,6 @@ class GetLeaveTypesDropdown {
       this.calculateAllowanceBy,
       this.isEarned});
 
-
   GetLeaveTypesDropdown.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
