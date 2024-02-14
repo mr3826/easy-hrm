@@ -66,10 +66,11 @@ class ChangeEmailScreen extends StatelessWidget {
                               } else {
                                 if (context.mounted) {
                                   editMailPasswordController.clear();
-                                  customButtonMiddleSheet1(
+                                  customButtonMiddleSheet(
                                       context: context,
+
                                       child: ChangEmailFieldLayout(),
-                                      height: 19);
+                                      height: MediaQuery.of(context).size.height);
                                 }
                               }
                             }
@@ -130,43 +131,4 @@ class SelectedOtpVerifyController extends GetxController {
   RxBool isSelected = false.obs;
 }
 
-
-
-Future customButtonMiddleSheet1(
-    {context,
-      double height = 0.9,
-      required Widget child,
-      int duration = 500,
-      bool? isDismissible,
-      int reverseDuration = 400}) {
-  final AnimationController controller = AnimationController(
-    duration: Duration(milliseconds: duration),
-    reverseDuration: Duration(milliseconds: reverseDuration),
-    vsync: Navigator.of(context),
-  );
-
-  return showModalBottomSheet(
-    context: context,
-    transitionAnimationController: controller,
-    isScrollControlled: true,
-    enableDrag: isDismissible ?? true,
-    backgroundColor: AppColor.cardColor,
-    isDismissible: isDismissible ?? true,
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(
-              Dimensions.radiusMid + 4,
-            ),
-            topLeft: Radius.circular(Dimensions.fontSizeMid + 4))),
-    builder: (
-        context,
-        ) {
-      return FractionallySizedBox(
-        heightFactor:
-        AppLayout.getHeight(10),
-        child: child,
-      );
-    },
-  );
-}
 
