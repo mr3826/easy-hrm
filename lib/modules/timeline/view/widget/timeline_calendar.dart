@@ -376,7 +376,7 @@ class TimeLineCalendar extends StatelessWidget {
   double _modelHeightAccordingScreenSize() {
     double value = MediaQuery.of(Get.context!).size.width;
     if (value <= 360.0) {
-      return 0.7;
+      return 0.8;
     } else {
       return 0.6;
     }

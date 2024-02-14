@@ -82,7 +82,7 @@ class AppString {
   static String text_phone = 'Phone';
   static String text_emergency_phone = 'Emergency phone';
   static String text_address = 'Address';
-  static String text_jpeg_jpg_png_etc = 'pdf,image or doc file';
+  static String text_jpeg_jpg_png_etc = 'pdf, image or doc file';
   static String text_document = 'Document';
   static String text_storage_permission = 'Storage permission needed';
   static String text_file_upload_file = 'File upload file';

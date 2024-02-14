@@ -52,7 +52,7 @@ class TimeLogEntryTextField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               customSpacerHeight(height: 12),
-              customTitleText(text: AppString.text_date.tr,isRequired: true),
+              customTitleText(text: AppString.text_date.tr, isRequired: true),
               customSpacerHeight(height: 8),
               Obx(() => _dateLayoutField()),
               customSpacerHeight(height: 8),
@@ -60,7 +60,8 @@ class TimeLogEntryTextField extends StatelessWidget {
               customSpacerHeight(height: 20),
               Obx(() => _timerLayout(context)),
               customSpacerHeight(height: 20),
-              customTitleText(text: AppString.text_project_or_task.tr,isRequired: true),
+              customTitleText(
+                  text: AppString.text_project_or_task.tr, isRequired: true),
               customSpacerHeight(height: 8),
               _selectedTaskLayout(context),
               customSpacerHeight(height: 20),
@@ -90,26 +91,26 @@ class TimeLogEntryTextField extends StatelessWidget {
                       },
                       buttonColor: AppColor.errorColorLight)
                   : Get.find<TimelineController>()
-                  .isManualEntryLoading
-                  .isTrue ||
-                  Get.find<TimelineController>()
-                      .isUpdateTimeLogLoading
-                      .isTrue
-                  ? const Center(
-                child: CupertinoActivityIndicator(),
-              )
-                  : CustomDoubleAppButton(
-                  buttonText: AppString.text_add.tr,
-                  onAction: () {
-                    isFromUpdateTimelogEntry == true
-                        ? Get.find<TimelineController>()
-                        .updateTimelineLogDetails()
-                        : Get.find<TimelineController>()
-                        .createManualEntry();
-                  },
-                  cancelAction: () {
-                    Navigator.pop(context);
-                  })),
+                              .isManualEntryLoading
+                              .isTrue ||
+                          Get.find<TimelineController>()
+                              .isUpdateTimeLogLoading
+                              .isTrue
+                      ? const Center(
+                          child: CupertinoActivityIndicator(),
+                        )
+                      : CustomDoubleAppButton(
+                          buttonText: AppString.text_add.tr,
+                          onAction: () {
+                            isFromUpdateTimelogEntry == true
+                                ? Get.find<TimelineController>()
+                                    .updateTimelineLogDetails()
+                                : Get.find<TimelineController>()
+                                    .createManualEntry();
+                          },
+                          cancelAction: () {
+                            Navigator.pop(context);
+                          })),
               customSpacerHeight(height: 40)
             ],
           ),
@@ -147,7 +148,7 @@ class TimeLogEntryTextField extends StatelessWidget {
                 border: Border.all(width: .8, color: AppColor.hintColor),
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
             padding:
-            marginLayout.copyWith(top: 14, bottom: 14, left: 14, right: 14),
+                marginLayout.copyWith(top: 14, bottom: 14, left: 14, right: 14),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -171,11 +172,12 @@ class TimeLogEntryTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        customTitleText(text: AppString.text_set_start_time.tr,isRequired: true),
+        customTitleText(
+            text: AppString.text_set_start_time.tr, isRequired: true),
         customSpacerHeight(height: 8),
         _newEntryStartTime(context: context),
         customSpacerHeight(height: 20),
-        customTitleText(text: AppString.text_set_end_time.tr,isRequired: true),
+        customTitleText(text: AppString.text_set_end_time.tr, isRequired: true),
         customSpacerHeight(height: 8),
         _newEntryEndTime(context: context),
         customSpacerHeight(height: 8),
@@ -187,10 +189,10 @@ class TimeLogEntryTextField extends StatelessWidget {
   _timeInvalidMessage() {
     return Get.find<TimelineController>().isTimeInvalid.isTrue
         ? Text(
-      "**${AppString.inputTimeInvalidMessage}",
-      style:
-      AppStyle.small_text.copyWith(color: AppColor.errorColorLight),
-    )
+            "**${AppString.inputTimeInvalidMessage}",
+            style:
+                AppStyle.small_text.copyWith(color: AppColor.errorColorLight),
+          )
         : Container();
   }
 
@@ -227,33 +229,33 @@ class TimeLogEntryTextField extends StatelessWidget {
               }
             },
             child: Obx(() => SizedBox(
-              width: (Get.width - 40) / 3,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Card(
-                  color:
-                  Get.find<DateTimeController>().currentIndex.value ==
-                      index
-                      ? AppColor.primaryColor.withOpacity(0.05)
-                      : Colors.transparent,
-                  shape: roundedRectangleBorder.copyWith(
-                      side: BorderSide(
-                          width: 1,
-                          color: Get.find<DateTimeController>()
-                              .currentIndex
-                              .value ==
-                              index
-                              ? AppColor.primaryColor
-                              : AppColor.hintColor)),
-                  elevation: 0,
-                  child: Center(
-                      child: Text(
+                  width: (Get.width - 40) / 3,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Card(
+                      color:
+                          Get.find<DateTimeController>().currentIndex.value ==
+                                  index
+                              ? AppColor.primaryColor.withOpacity(0.05)
+                              : Colors.transparent,
+                      shape: roundedRectangleBorder.copyWith(
+                          side: BorderSide(
+                              width: 1,
+                              color: Get.find<DateTimeController>()
+                                          .currentIndex
+                                          .value ==
+                                      index
+                                  ? AppColor.primaryColor
+                                  : AppColor.hintColor)),
+                      elevation: 0,
+                      child: Center(
+                          child: Text(
                         selectedBeforeDayAndAfterDay[index],
                         style: AppStyle.mid_large_text.copyWith(
                             color: Get.find<DateTimeController>()
-                                .currentIndex
-                                .value ==
-                                index
+                                        .currentIndex
+                                        .value ==
+                                    index
                                 ? AppColor.primaryColor
                                 : AppColor.hintColor,
                             fontSize: Dimensions.fontSizeDefault),

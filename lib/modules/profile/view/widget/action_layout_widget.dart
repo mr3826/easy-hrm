@@ -133,7 +133,7 @@ Widget _fieldLayout({required hintText, required onAction, required url}) {
 
 void customAntButtonSheet({context, child}) {
   return showCustomAtmBtnSheet(
-      height: 618,
+      height: 600,
       context: context,
       child: Material(
         color: AppColor.noColor,

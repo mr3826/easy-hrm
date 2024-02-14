@@ -178,9 +178,9 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _actionBtnLayout(context) {
     return GestureDetector(
-      onTap: () => customButtonSheet(
+      onTap: () => customButtonMiddleSheet(
           context: context,
-          height: .5,
+          height: MediaQuery.of(context).size.height,
           child: actionLayout(
               context: context,
               userName:
