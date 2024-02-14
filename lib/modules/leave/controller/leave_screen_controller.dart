@@ -9,7 +9,6 @@ import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../dashboard/controller/dashbpard_controller.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/leave_details_by_date.dart';
 
@@ -67,13 +66,9 @@ class LeaveScreenController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
-      Get.off(() => const MainScreen(
+      Get.offAll(() => const MainScreen(
             routeIndex: 1,
           ));
-      await getLeaveSummaryForDashboard();
-      await getLeaveDetailsByDate();
-      await Get.find<DashboardController>()
-          .getMonthlyTimelineInfoForDashboard();
     }
 
     cancelLeaveLoader(false);
@@ -90,13 +85,9 @@ class LeaveScreenController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       showSuccessMessage(message: AppString.leaveRemovedSuccessMessage.tr);
-      Get.off(() => const MainScreen(
+      Get.offAll(() => const MainScreen(
             routeIndex: 1,
           ));
-      await getLeaveSummaryForDashboard();
-      await getLeaveDetailsByDate();
-      await Get.find<DashboardController>()
-          .getMonthlyTimelineInfoForDashboard();
     }
 
     cancelLeaveLoader(false);

@@ -85,7 +85,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      Get.off(() => const MainScreen(routeIndex: 1));
       leaveId = '';
       isNoteRequired.value = false;
       isDocumentRequired.value = false;
@@ -100,13 +99,10 @@ class UpDateLeaveController extends GetxController with StateMixin {
           .storageForUpload
           .filePath
           .isEmpty;
-      await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
-      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-      await Get.find<DashboardController>()
-          .getMonthlyTimelineInfoForDashboard();
       isUpdateLeaveLoading(false);
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
       isFileUploadedSuccessfully(false);
+      Get.offAll(() => const MainScreen(routeIndex: 1));
     }
     isUpdateLeaveLoading(false);
   }

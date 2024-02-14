@@ -217,6 +217,11 @@ class _InDatePickerState extends State<InDatePicker> {
                     widget.isFromIndividualLeave == true) {
                   Get.find<LeaveScreenController>().date.value =
                       DateFormat('yyyy-MM-dd').format(today);
+
+                  if (!Get.isRegistered<DateTimePickerController>()) {
+                    Get.put(DateTimePickerController());
+                  }
+
                   Get.find<DateTimePickerController>().getInDateTime();
                   Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 } else {
@@ -297,6 +302,7 @@ class InTimePicker extends StatelessWidget {
     );
   }
 }
+
 void setIndexForPrevTdayOrTomListTimelog(DateTime selectedDate) {
   // Get the current date
   DateTime currentDate = DateTime.now();
