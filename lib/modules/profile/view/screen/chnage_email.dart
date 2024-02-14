@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../utils/app_layout.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../controller/password_controller.dart';
 import '../widget/change_email_widget.dart';
@@ -65,10 +66,11 @@ class ChangeEmailScreen extends StatelessWidget {
                               } else {
                                 if (context.mounted) {
                                   editMailPasswordController.clear();
-                                  customButtonSheet(
+                                  customButtonMiddleSheet(
                                       context: context,
+
                                       child: ChangEmailFieldLayout(),
-                                      height: .7);
+                                      height: MediaQuery.of(context).size.height);
                                 }
                               }
                             }
@@ -128,3 +130,5 @@ class ChangeEmailScreen extends StatelessWidget {
 class SelectedOtpVerifyController extends GetxController {
   RxBool isSelected = false.obs;
 }
+
+

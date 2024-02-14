@@ -11,7 +11,7 @@ import '../../utils/images.dart';
 
 Future customButtonSheet(
     {context,
-    double? height = 0.9,
+    double height = 0.9,
     required Widget child,
     int duration = 500,
     bool? isDismissible,
@@ -21,7 +21,6 @@ Future customButtonSheet(
     reverseDuration: Duration(milliseconds: reverseDuration),
     vsync: Navigator.of(context),
   );
-
   return showModalBottomSheet(
     context: context,
     transitionAnimationController: controller,
@@ -39,15 +38,80 @@ Future customButtonSheet(
       context,
     ) {
       return FractionallySizedBox(
-        heightFactor: AppLayout.getHeight(height!),
+        heightFactor:
+            AppLayout.getHeight(height),
         child: child,
       );
     },
   );
 }
 
-Widget customButtonSheetAppbar(
-    {required text, subtext, bool isLeave = false, String? status}) {
+
+
+
+
+Future customButtonMiddleSheet(
+    {context,
+      double height = 0.9,
+      required Widget child,
+      int duration = 500,
+      bool? isDismissible,
+      int reverseDuration = 400}) {
+  final AnimationController controller = AnimationController(
+    duration: Duration(milliseconds: duration),
+    reverseDuration: Duration(milliseconds: reverseDuration),
+    vsync: Navigator.of(context),
+  );
+  _heightCheckAccordingToScreen(height);
+
+  return showModalBottomSheet(
+    context: context,
+    transitionAnimationController: controller,
+    isScrollControlled: true,
+    enableDrag: isDismissible ?? true,
+    backgroundColor: AppColor.cardColor,
+    isDismissible: isDismissible ?? true,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(
+              Dimensions.radiusMid + 4,
+            ),
+            topLeft: Radius.circular(Dimensions.fontSizeMid + 4))),
+    builder: (
+        context,
+        ) {
+      return FractionallySizedBox(
+        heightFactor:
+        AppLayout.getHeight(_heightCheckAccordingToScreen(height)),
+        child: child,
+      );
+    },
+  );
+}
+
+_heightCheckAccordingToScreen(double height) {
+  switch (height) {
+    case < 700:
+      return 0.8;
+    case > 400:
+      return 0.5;
+    case > 0.8:
+      return 0.9;
+    default:
+      return 0.9;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+Widget customButtonSheetAppbar({required text, subtext, bool isLeave = false, String? status}) {
   return isLeave != false
       ? _leaveBtnAppbarLayout(text, subtext, status ?? "")
       : Container(

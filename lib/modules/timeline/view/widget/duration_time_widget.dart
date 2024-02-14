@@ -20,7 +20,7 @@ Widget durationTimeLayout({String? status}) {
       child: Column(
         children: [
           Obx(() => Text(
-                DateFormat('EEE, dd MMM yyyy').format(DateTime.parse(
+                DateFormat('EEE, dd MMM - yyyy').format(DateTime.parse(
                     Get.find<DateTimePickerController>().inDateTime.value)),
                 style: AppStyle.mid_large_text.copyWith(
                     fontSize: Dimensions.fontSizeDefault,

@@ -80,7 +80,7 @@ class EditProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.of(context).size.width/2,
               child: Text.rich(
                 TextSpan(
                   children: [

@@ -35,7 +35,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: GestureDetector(
-                onTap: () => customButtonSheet(
+                onTap: () => customButtonMiddleSheet(
                     context: context,
                     child: LeaveRecordDetails(
                       status: controller.upcommingLeaveDashboard
@@ -110,7 +110,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
                             ?.getUpcomingLeavesForApp?[index].description,
                       ),
                     ),
-                    height: 0.6),
+                    height: MediaQuery.of(context).size.height),
                 child: Card(
                   elevation: 0,
                   color: AppColor.primaryColor.withOpacity(0.06),

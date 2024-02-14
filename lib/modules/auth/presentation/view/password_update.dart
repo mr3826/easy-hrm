@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -10,8 +9,6 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
-import '../../../../utils/app_layout.dart';
 import '../../../../utils/images.dart';
 
 class PasswordUpdateScreen extends StatelessWidget {
@@ -22,32 +19,51 @@ class PasswordUpdateScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         margin: marginLayout,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _imageLayout(),
-            _passwordUpdateText(),
-            customSpacerHeight(height: 12),
-            Center(
-                child: Text(
-              "${AppString.text_your_password_has_been_etc.tr} ${AppString.text_password_to_log_in.tr}",
-              style: style,
-            )),
-            customSpacerHeight(height: 40),
-            _continueBtnLayout()
-          ],
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  imageLayout(url: Images.passwordResetSuccessfull),
+                  customSpacerHeight(height: 50),
+                  _passwordUpdateTitleText(),
+                  customSpacerHeight(height: 6),
+                  _descriptionText(),
+                  customSpacerHeight(height: 25),
+                  _continueBtnLayout(),
+                  const Spacer(
+                    flex: 2,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  _passwordUpdateText() {
+  _descriptionText() {
+    return Text(
+      "${AppString.text_your_password_has_been_etc.tr} ${AppString.text_password_to_log_in.tr}",
+      textAlign: TextAlign.center,
+      style: style.copyWith(
+          fontSize: Dimensions.fontSizeDefault - 2, color: AppColor.hintColor),
+    );
+  }
+
+  _passwordUpdateTitleText() {
     return Center(
         child: Text(
       AppString.text_password_update.tr,
       style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeLarge + 2,
+          fontSize: Dimensions.fontSizeMid - 2,
           color: AppColor.normalTextColor,
           fontFamily: "Poppins"),
     ));
@@ -68,16 +84,6 @@ class PasswordUpdateScreen extends StatelessWidget {
       },
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,
-    );
-  }
-
-  _imageLayout() {
-    return Center(
-      child: SizedBox(
-          height: AppLayout.getHeight(200),
-          width: AppLayout.getWidth(200),
-          child: SvgPicture.asset(Images.passwordResetSuccessfull,
-              fit: BoxFit.cover)),
     );
   }
 }

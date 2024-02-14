@@ -111,7 +111,7 @@ class IndividualEventView extends StatelessWidget {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                customButtonSheet(
+                customButtonMiddleSheet(
                   context: context,
                   child: LeaveRecordDetails(
                     status: Get.find<LeaveScreenController>()
@@ -234,7 +234,7 @@ class IndividualEventView extends StatelessWidget {
                           .id,
                     ),
                   ),
-                  height: 0.6,
+                  height: MediaQuery.of(context).size.height,
                 );
               },
               child: Padding(
