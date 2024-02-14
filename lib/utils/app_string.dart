@@ -41,7 +41,7 @@ class AppString {
   static String text_remove_photo = 'Remove photo';
   static String text_back_to_login = 'Back to login';
   static String text_done_of_save = 'Done and Save';
-  static String text_we_have_a_verification_etc = 'We have sent a Verification code to your email address.Enter this code bellow to verify your account.';
+  static String text_we_have_a_verification_etc = 'We have sent a Verification code to your email address. Enter this code bellow to verify your account.';
   static String text_dont_not_worry =
       'Don’t worry! It happens. Please enter the email address associated with your account';
   static String text_associated = 'address associated with your account';
@@ -82,7 +82,7 @@ class AppString {
   static String text_phone = 'Phone';
   static String text_emergency_phone = 'Emergency phone';
   static String text_address = 'Address';
-  static String text_jpeg_jpg_png_etc = 'pdf,image or doc file';
+  static String text_jpeg_jpg_png_etc = 'pdf, image or doc file';
   static String text_document = 'Document';
   static String text_storage_permission = 'Storage permission needed';
   static String text_file_upload_file = 'File upload file';
