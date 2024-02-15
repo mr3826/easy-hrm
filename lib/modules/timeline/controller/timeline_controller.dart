@@ -502,6 +502,9 @@ class TimelineController extends GetxController with StateMixin {
 
   @override
   void onInit() {
+    if (!Get.isRegistered<DateTimeController>()) {
+      Get.put(DateTimeController());
+    }
     _refreshTimeline();
     updateDataAfterTwoMinutes();
     super.onInit();

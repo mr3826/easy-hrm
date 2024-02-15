@@ -220,8 +220,6 @@ class UserProfileController extends GetxController with StateMixin {
         GetStorage().write(AppString.REFRESH_TOKEN,
             SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
         _saveData(email, password, organizationName);
-        // Get.deleteAll();
-        // await initApp();
         Future.delayed(const Duration(milliseconds: 800),
             () => Get.offAllNamed(Routes.MAIN_SCREEN));
       }

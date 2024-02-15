@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../modules/leave/controller/leave_screen_controller.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
@@ -162,14 +163,18 @@ class _OutDatePickerState extends State<OutDatePicker> {
         Container(
           color: Colors.white,
           child: TableCalendar(
-            calendarStyle: const CalendarStyle(
-                defaultTextStyle: TextStyle(fontSize: 16),
-                weekendTextStyle: TextStyle(fontSize: 16),
-                selectedDecoration: BoxDecoration(
+            calendarStyle: CalendarStyle(
+                defaultTextStyle: const TextStyle(fontSize: 16),
+                weekendDecoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColor.hintColor.withOpacity(.1)),
+                weekendTextStyle: TextStyle(
+                    fontSize: 14, color: AppColor.hintColor.withOpacity(.5)),
+                selectedDecoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.blueAccent),
-                todayDecoration: BoxDecoration(
+                todayDecoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.transparent),
-                todayTextStyle: TextStyle(
+                todayTextStyle: const TextStyle(
                     fontSize: 18,
                     color: Colors.blueAccent,
                     fontWeight: FontWeight.bold)),
@@ -182,9 +187,10 @@ class _OutDatePickerState extends State<OutDatePicker> {
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeDefault + 1),
             ),
-            firstDay: DateTime.utc(2010, 01, 01),
-            lastDay: DateTime.utc(2030, 12, 31),
+            firstDay: DateTime.utc(DateTime.now().year - 2, 01, 01),
+            lastDay: DateTime.utc(DateTime.now().year + 2, 12, 31),
             selectedDayPredicate: (day) => isSameDay(day, today),
+            weekendDays: Get.find<LeaveScreenController>().holidays,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 today = selectedDay;
@@ -209,10 +215,14 @@ class _OutDatePickerState extends State<OutDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-                Get.find<DateTimePickerController>().outDate.value =
-                    DateFormat('yyyy-MM-dd').format(today);
-                Get.find<DateTimePickerController>().getOutDateTime();
-                Navigator.pop(context);
+                if (!Get.find<LeaveScreenController>()
+                    .holidays
+                    .contains(today.weekday)) {
+                  Get.find<DateTimePickerController>().outDate.value =
+                      DateFormat('yyyy-MM-dd').format(today);
+                  Get.find<DateTimePickerController>().getOutDateTime();
+                  Navigator.pop(context);
+                }
               },
             ),
           ],
