@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
-import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
-import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../common/domain/upload_policy.dart';
@@ -49,11 +47,11 @@ class UpDateLeaveController extends GetxController with StateMixin {
       required String? endDate::${DateTime.parse(endDate).toUtc().toString()}
       leaveType id:: $leaveTypeId
       "file ::: ${Get.find<FileUploadController>().storageForUpload.filePath}
-       
-      "name": $name,
+            "name": $name,
              "key": $key,
              "size": $size,
              "file key ::: ${Get.find<FileUploadController>().storageForUpload.filePath.isNotEmpty}
+                         
     """);
 
     isUpdateLeaveLoading(true);
@@ -81,7 +79,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      Get.off(() => const MainScreen(routeIndex: 1));
       leaveId = '';
       isNoteRequired.value = false;
       isDocumentRequired.value = false;
@@ -90,13 +87,10 @@ class UpDateLeaveController extends GetxController with StateMixin {
       leaveNoteController.clear();
       Get.find<FileUploadController>().storageForUpload.filePath.value = "";
       Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
-      await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
-      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-      await Get.find<DashboardController>()
-          .getMonthlyTimelineInfoForDashboard();
       isUpdateLeaveLoading(false);
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
       isFileUploadedSuccessfully(false);
+      Get.offAll(() => const MainScreen(routeIndex: 1));
     }
     isUpdateLeaveLoading(false);
   }
@@ -144,7 +138,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
                 "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
-      log("file upload in server ::: ${value.statusCode}");
       isFileUploadedSuccessfully.value = true;
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);
