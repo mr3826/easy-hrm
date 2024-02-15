@@ -35,3 +35,4 @@ Future<void> initApp() async {
   Get.put(SplashController());
 
 }
+

@@ -18,7 +18,6 @@ import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return controller.obx(
@@ -52,7 +51,7 @@ class TimelineScreen extends GetView<TimelineController> {
         onLoading: const LoadingIndicator());
   }
 
-  //component
+  ///component
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 

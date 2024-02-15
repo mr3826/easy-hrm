@@ -41,18 +41,32 @@ class ResetPasswordScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Spacer(),
+
+                      ///Reset password image
                       imageLayout(url: Images.reset_password),
                       customSpacerHeight(height: 50),
+
+                      ///Title Text
                       _codeTitleText(),
                       customSpacerHeight(height: 6),
+
+                      ///Description text
                       _descriptionText(),
                       customSpacerHeight(height: 30),
+
+                      ///New password text field
                       _newPasswordLayout(),
                       customSpacerHeight(height: 20),
+
+                      ///Confirm password text field
                       _confirmPasswordLayout(),
                       customSpacerHeight(height: 25),
+
+                      ///Submit button
                       _submitBtnLayout(),
                       customSpacerHeight(height: 22),
+
+                      ///Back login button
                       _backToLoginLayout(),
                       const Spacer(
                         flex: 2,
@@ -136,7 +150,7 @@ class ResetPasswordScreen extends StatelessWidget {
       controller: newPasswordController,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_new_password_field_is_required;
+          return AppString.the_new_password_field_is_required.tr;
         } else {
           return null;
         }
@@ -147,12 +161,12 @@ class ResetPasswordScreen extends StatelessWidget {
   _confirmPasswordLayout() {
     return CustomInputField(
       isObscureText: true,
-      hint: AppString.text_confirm_password,
+      hint: AppString.text_confirm_password.tr,
       prefixIcon: Icons.lock_open,
       controller: confirmPasswordController,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_confirm_password_field_is_required;
+          return AppString.the_confirm_password_field_is_required.tr;
         } else {
           return null;
         }

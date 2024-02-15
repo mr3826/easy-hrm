@@ -29,12 +29,20 @@ class PasswordUpdateScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(),
+
+                  ///Password updated image
                   imageLayout(url: Images.passwordResetSuccessfull),
                   customSpacerHeight(height: 50),
+
+                  ///Title text
                   _passwordUpdateTitleText(),
                   customSpacerHeight(height: 6),
+
+                  ///Description
                   _descriptionText(),
                   customSpacerHeight(height: 25),
+
+                  ///Continue button
                   _continueBtnLayout(),
                   const Spacer(
                     flex: 2,

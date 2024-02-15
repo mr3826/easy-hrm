@@ -96,11 +96,6 @@ class TaskViewLayout extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        print(Get.find<TimelineController>()
-                            .projectDropDownResponse
-                            ?.getProjectsDropdown?[index]
-                            .projectId);
-
                         /// when it select project
                         /// then it became task name that shown in ui
                         /// pass its name to task name

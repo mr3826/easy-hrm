@@ -36,10 +36,16 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Spacer(),
+
+                      ///Forgot Image
                       imageLayout(url: Images.forgot),
                       customSpacerHeight(height: 50),
+
+                      ///Title text
                       _forgotTitleText(),
                       customSpacerHeight(height: 4),
+
+                      ///Description text
                       _descriptionText(),
                       customSpacerHeight(height: 40),
 
@@ -50,6 +56,8 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
                       ///Send code button
                       _sendCodeBtnLayout(),
                       customSpacerHeight(height: 40),
+
+                      ///Back to login button
                       _backToLoginLayout(),
                       const Spacer(
                         flex: 2,
@@ -67,12 +75,12 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
 
   _emailAddressLayout() {
     return CustomInputField(
-      hint: AppString.text_email,
+      hint: AppString.text_email.tr,
       prefixIcon: Icons.email_outlined,
       controller: restPasswordController,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_email_field_is_required;
+          return AppString.the_email_field_is_required.tr;
         } else {
           return null;
         }
@@ -119,7 +127,7 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
   _forgotTitleText() {
     return Center(
         child: Text(
-      AppString.text_forgot_password,
+      AppString.text_forgot_password.tr,
       style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: Dimensions.fontSizeMid - 2,
@@ -146,10 +154,10 @@ TextStyle get style {
       fontWeight: FontWeight.w300);
 }
 
-Widget  imageLayout({required url}) {
+Widget imageLayout({required url}) {
   return Center(
       child: SvgPicture.asset(
-        url,
-        fit: BoxFit.cover,
-      ));
+    url,
+    fit: BoxFit.cover,
+  ));
 }

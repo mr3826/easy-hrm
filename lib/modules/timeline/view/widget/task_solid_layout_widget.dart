@@ -75,7 +75,6 @@ class TaskSolidLayout extends StatelessWidget {
   }
 
   _startTimeLayout(statusColor) {
-    print("start date:: $startDateTime statusColor: $statusColor");
     return Text(
       timeFormatTo24h(DateTime.parse(startDateTime)),
       style: AppStyle.mid_large_text.copyWith(
