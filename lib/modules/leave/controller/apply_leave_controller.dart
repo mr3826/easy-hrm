@@ -21,15 +21,12 @@ class ApplyLeaveController extends GetxController with StateMixin {
   void onInit() async {
     super.onInit();
     await getLeaveType();
-    await getWorkShift();
   }
 
   LeaveTypeDropdown? leaveTypeDropdown;
 
   final isLoading = false.obs;
   final isAssignLeaveLoaderLoading = false.obs;
-  String? startTime;
-  String? endTime;
   String leaveId = '';
   RxBool isNoteRequired = false.obs;
   RxBool isDocumentRequired = false.obs;
@@ -52,44 +49,12 @@ class ApplyLeaveController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  getWorkShift() async {
-    print(
-        "GetStorage().read(AppString.ORGANIZATION_USER_ID)::: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: workShiftQuery, variables: {
-      "queryData": {
-        "employee_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
-      }
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      WorkShiftResponse workShiftResponse =
-          WorkShiftResponse.fromJson(response.data!);
-      GetWorkScheduleForAssignLeave? value = workShiftResponse
-          .getWorkScheduleForAssignLeave
-          ?.firstWhere((element) => element.isHoliday == false);
-
-      print(value?.startTime);
-      startTime = value?.startTime;
-      endTime = value?.endTime;
-
-      print("workShiftTime?.startTime:: $startTime");
-    }
-    change(null, status: RxStatus.success());
-  }
-
   applyLeave({filePath}) async {
-    print("applyLeave filePath:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
+    print(
+        "applyLeave filePath:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
 
-
-    print("size :::: ${Get.find<FileUploadController>()
-        .storageForUpload
-        .fileSize
-        .value
-        .toString()}");
+    print(
+        "size :::: ${Get.find<FileUploadController>().storageForUpload.fileSize.value.toString()}");
     isAssignLeaveLoaderLoading(true);
 
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {

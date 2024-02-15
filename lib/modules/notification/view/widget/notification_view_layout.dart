@@ -131,6 +131,10 @@ class NotificationViewLayout extends StatelessWidget {
     required bool isDepartmentHead,
     required String jobTitleInfo,
   }) {
+    print("""
+    timeLineTimeInfo: $timeLineTimeInfo
+    leaveTimeInfo:: $leaveTimeInfo
+    """);
     switch (notificationContext) {
       /// timeline
       case "reject_a_timeline":

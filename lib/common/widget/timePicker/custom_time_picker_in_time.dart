@@ -166,14 +166,18 @@ class _InDatePickerState extends State<InDatePicker> {
         Container(
           color: Colors.white,
           child: TableCalendar(
-            calendarStyle: const CalendarStyle(
-                defaultTextStyle: TextStyle(fontSize: 16),
-                weekendTextStyle: TextStyle(fontSize: 16),
-                selectedDecoration: BoxDecoration(
+            calendarStyle: CalendarStyle(
+                defaultTextStyle: const TextStyle(fontSize: 16),
+                weekendDecoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColor.hintColor.withOpacity(.1)),
+                weekendTextStyle: TextStyle(
+                    fontSize: 14, color: AppColor.hintColor.withOpacity(.5)),
+                selectedDecoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.blueAccent),
-                todayDecoration: BoxDecoration(
+                todayDecoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.transparent),
-                todayTextStyle: TextStyle(
+                todayTextStyle: const TextStyle(
                     fontSize: 18,
                     color: Colors.blueAccent,
                     fontWeight: FontWeight.bold)),
@@ -186,9 +190,10 @@ class _InDatePickerState extends State<InDatePicker> {
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeDefault + 1),
             ),
-            firstDay: DateTime.utc(2010, 01, 01),
-            lastDay: DateTime.utc(2030, 12, 31),
+            firstDay: DateTime.utc(DateTime.now().year - 2, 01, 01),
+            lastDay: DateTime.utc(DateTime.now().year + 2, 12, 31),
             selectedDayPredicate: (day) => isSameDay(day, today),
+            weekendDays: Get.find<LeaveScreenController>().holidays,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 today = selectedDay;
@@ -213,24 +218,28 @@ class _InDatePickerState extends State<InDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-                if (widget.isFromIndividualLeave != null &&
-                    widget.isFromIndividualLeave == true) {
-                  Get.find<LeaveScreenController>().date.value =
-                      DateFormat('yyyy-MM-dd').format(today);
+                if (!Get.find<LeaveScreenController>()
+                    .holidays
+                    .contains(today.weekday)) {
+                  if (widget.isFromIndividualLeave != null &&
+                      widget.isFromIndividualLeave == true) {
+                    Get.find<LeaveScreenController>().date.value =
+                        DateFormat('yyyy-MM-dd').format(today);
 
-                  if (!Get.isRegistered<DateTimePickerController>()) {
-                    Get.put(DateTimePickerController());
+                    if (!Get.isRegistered<DateTimePickerController>()) {
+                      Get.put(DateTimePickerController());
+                    }
+
+                    Get.find<DateTimePickerController>().getInDateTime();
+                    Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                  } else {
+                    Get.find<DateTimePickerController>().inDate.value =
+                        DateFormat('yyyy-MM-dd').format(today);
+                    Get.find<DateTimePickerController>().getInDateTime();
+                    setIndexForPrevTdayOrTomListTimelog(today);
                   }
-
-                  Get.find<DateTimePickerController>().getInDateTime();
-                  Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-                } else {
-                  Get.find<DateTimePickerController>().inDate.value =
-                      DateFormat('yyyy-MM-dd').format(today);
-                  Get.find<DateTimePickerController>().getInDateTime();
-                  setIndexForPrevTdayOrTomListTimelog(today);
+                  Navigator.pop(context);
                 }
-                Navigator.pop(context);
               },
             ),
           ],

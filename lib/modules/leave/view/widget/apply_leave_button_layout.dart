@@ -9,6 +9,7 @@ import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_ti
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/add_attachemnt_file_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -47,20 +48,20 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customTitleText(
                           text: AppString.text_from.tr, isRequired: true),
                       customSpacerHeight(height: 8),
-                      Get.find<ApplyLeaveController>().startTime != null
+                      Get.find<LeaveScreenController>().startTime != null
                           ? CustomTimePickerInTime(
                               inTime:
-                                  "2024-01-01 ${Get.find<ApplyLeaveController>().startTime}",
+                                  "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
                       customSpacerHeight(height: 20),
                       customTitleText(
                           text: AppString.text_to.tr, isRequired: true),
                       customSpacerHeight(height: 8),
-                      Get.find<ApplyLeaveController>().endTime != null
+                      Get.find<LeaveScreenController>().endTime != null
                           ? CustomTimePickerOutTime(
                               outTime:
-                                  "2024-01-01 ${Get.find<ApplyLeaveController>().endTime}",
+                                  "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
                             )
                           : const CustomTimePickerOutTime(),
                       customSpacerHeight(height: 12),
