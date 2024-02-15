@@ -115,6 +115,25 @@ class AppString {
   static String text_account = 'account';
   static String text_you_have = 'You have';
   static String text_org_linked_with_your = 'organisations linked with your';
+  static String textDay = 'day';
+  static String textDays = 'days';
+  static String rejectedATimelogText = 'has reject your time log on ';
+  static String pendingATimelogText = 'has marked your time log as pending on ';
+  static String addedATimelogText = 'has added your time log on ';
+  static String approveATimelogText = 'has approved your time log on ';
+  static String pendingALeaveText = 'has marked your leave as pending on ';
+  static String approvedALeaveText = 'has approved a leave on ';
+  static String rejectALeaveText = 'has rejected a leave on ';
+  static String cancelALeaveText = 'has cancelled a leave on ';
+  static String addedALeaveText = 'has added a leave on ';
+  static String updateALeaveText = 'has updated a leave on ';
+  static String addedDepartmentHead = 'has added you as a ';
+  static String addedDepartment = 'has added you on ';
+  static String removeDepartment = 'has removed you from ';
+  static String newUserJoined = 'A new user has joined';
+  static String textHiringManager = 'Hiring Manager';
+  static String textHiringTeam = 'Hiring team';
+  static String textOn = 'on';
 
   static String text_current_password = 'Current Password';
   static String text_new_password = 'New Password';
