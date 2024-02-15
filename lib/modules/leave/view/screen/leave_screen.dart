@@ -23,8 +23,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    print("ordId: ${GetStorage().read(AppString.ORGANIZATION_ID)}");
-    print("idToken: ${GetStorage().read(AppString.ID_TOKEN)}");
     return controller.obx(
         (state) => Scaffold(
               body: RefreshIndicator(
@@ -89,10 +87,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   }
 
   void _customButtonSheet({context, child}) {
-    //For screen size
-    // double screenHeight =
-    //     MediaQuery.of(context).size.height == 616.0 ? 550 : 700;
-
     return showCustomAtmBtnSheet(
         height: Get.height * .8,
         context: context,

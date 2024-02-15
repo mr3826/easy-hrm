@@ -74,23 +74,31 @@ class _OTPScreenState extends State<OTPScreen> {
                   children: [
                     const Spacer(),
 
+                    ///Otp image
                     imageLayout(url: Images.otp),
-
                     customSpacerHeight(height: 50),
+
+                    ///Title Text
                     _codeTitleText(),
                     customSpacerHeight(height: 6),
+
+                    ///Description Text
                     _descriptionText(),
                     customSpacerHeight(height: 30),
 
                     ///Otp layout
                     _otpLayout(),
                     customSpacerHeight(height: 15),
+
+                    ///Reset otp button
                     _resetBtnLayout(),
                     customSpacerHeight(height: 18),
 
                     ///Confirm button
                     _confirmBtnLayout(),
                     customSpacerHeight(height: 22),
+
+                    ///Back login button
                     _backToLoginLayout(),
                     const Spacer(
                       flex: 2,
@@ -198,7 +206,7 @@ class _OTPScreenState extends State<OTPScreen> {
       length: 6,
       onChanged: (verificationCode) {
         // Handle OTP changes
-        print("value :: $verificationCode");
+        log("value :: $verificationCode");
         OTPCode = verificationCode;
       },
       onCompleted: (verificationCode) {

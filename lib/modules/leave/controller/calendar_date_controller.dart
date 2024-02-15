@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -18,14 +20,14 @@ class DateController extends GetxController {
     currentDate.value = currentDate.value.add(const Duration(days: 1));
     formattedDateTime = DateFormat("yyyy-MM-dd").format(currentDate.value);
     Get.find<DateTimeController>().requestedDate.value=formattedDateTime;
-    print(formattedDateTime);
+    log(formattedDateTime);
   }
 
   void decrementDate() {
     currentDate.value = currentDate.value.subtract(const Duration(days: 1));
     formattedDateTime = DateFormat("yyyy-MM-dd").format(currentDate.value);
     Get.find<DateTimeController>().requestedDate.value=formattedDateTime;
-    print(currentDate.value);
+    log(currentDate.value.toString());
   }
 
   String formattedDateTime = DateFormat("yyyy-MM-dd").format(DateTime.now());

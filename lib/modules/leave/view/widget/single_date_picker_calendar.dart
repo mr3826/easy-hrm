@@ -71,8 +71,6 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
             ),
             _divider(),
             _buttonLayout(onAction: () {
-              print("isCalledFormTimeLog::${widget.isCalledFormTimeLog}");
-
               if (widget.isCalledFormTimeLog == false) {
                 Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Get.find<DateController>().currentDate.value = today;

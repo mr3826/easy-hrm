@@ -189,7 +189,7 @@ class TimeLogEntryTextField extends StatelessWidget {
   _timeInvalidMessage() {
     return Get.find<TimelineController>().isTimeInvalid.isTrue
         ? Text(
-            "**${AppString.inputTimeInvalidMessage}",
+            "**${AppString.inputTimeInvalidMessage.tr}",
             style:
                 AppStyle.small_text.copyWith(color: AppColor.errorColorLight),
           )
@@ -341,9 +341,9 @@ class InTimePicker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GestureDetector(
-              child: const SizedBox(
+              child:  SizedBox(
                 width: 50,
-                child: Text('Close'),
+                child: Text(AppString.text_close.tr),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -351,7 +351,7 @@ class InTimePicker extends StatelessWidget {
             ),
             const SizedBox(width: 40),
             GestureDetector(
-              child: const SizedBox(width: 50, child: Text('Ok')),
+              child:  SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
               onTap: () {
                 if (time.length < 15) {
                   Get.find<DateTimePickerController>().inTime.value =
@@ -406,9 +406,9 @@ class OutTimePicker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GestureDetector(
-              child: const SizedBox(
+              child:  SizedBox(
                 width: 50,
-                child: Text('Close'),
+                child: Text(AppString.text_close.tr),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -416,12 +416,10 @@ class OutTimePicker extends StatelessWidget {
             ),
             const SizedBox(width: 40),
             GestureDetector(
-              child: const SizedBox(width: 50, child: Text('Ok')),
+              child:  SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
               onTap: () {
-                print(time);
                 if (time.isNotEmpty) {
                   // set time in 00:00:00 format
-
                   if (time.length < 15) {
                     Get.find<DateTimePickerController>().outTime.value =
                         DateFormat('HH:mm').format(

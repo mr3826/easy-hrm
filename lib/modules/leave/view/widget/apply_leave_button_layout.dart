@@ -123,11 +123,11 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                         .applyLeave();
                                   } else {
                                     showWarningMessage(
-                                        message: "No available leave");
+                                        message: AppString.text_no_available_leave.tr);
                                   }
                                 } else {
                                   showWarningMessage(
-                                      message: "Provide a Valid Input");
+                                      message: AppString.text_provid_a_valid_input.tr);
                                 }
                               },
                               buttonText: AppString.text_apply.tr,
@@ -172,7 +172,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
 
   _pathFormatText() {
     return Text(
-      AppString.text_jpeg_jpg_png_etc,
+      AppString.text_jpeg_jpg_png_etc.tr,
       style: AppStyle.normal_text_black
           .copyWith(color: AppColor.hintColor.withOpacity(0.7)),
     );
@@ -199,7 +199,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                               .copyWith(color: AppColor.normalTextColor),
                         ),
                         Text(
-                          "Balance (No.of days)",
+                          AppString.text_balance_no_of_days.tr,
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.hintColor,
                               fontSize: Dimensions.fontSizeDefault),

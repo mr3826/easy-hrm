@@ -132,7 +132,7 @@ class IndividualTimeLayout extends StatelessWidget {
                       Get.find<TimelineSummaryController>()
                           .timelogDetailsByMonth
                           ?.getTimelogsForApp?[index]
-                          ?.logged ??
+                          .logged ??
                           "",
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,
@@ -153,7 +153,7 @@ class IndividualTimeLayout extends StatelessWidget {
                       Get.find<TimelineSummaryController>()
                           .timelogDetailsByMonth
                           ?.getTimelogsForApp?[index]
-                          ?.leave ??
+                          .leave ??
                           "",
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,
@@ -174,7 +174,7 @@ class IndividualTimeLayout extends StatelessWidget {
                       Get.find<TimelineSummaryController>()
                           .timelogDetailsByMonth
                           ?.getTimelogsForApp?[index]
-                          ?.balance ??
+                          .balance ??
                           "",
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,

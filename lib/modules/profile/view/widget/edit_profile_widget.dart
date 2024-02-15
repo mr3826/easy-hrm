@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,13 +6,9 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
-import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
@@ -160,7 +154,7 @@ _userLastName() {
       titleText: AppString.text_last_name.tr,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_last_name_field_is_required;
+          return AppString.the_last_name_field_is_required.tr;
         } else {
           return null;
         }
@@ -174,7 +168,7 @@ _userFirstName() {
       titleText: AppString.text_first_name.tr,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_first_name_field_is_required;
+          return AppString.the_first_name_field_is_required.tr;
         } else {
           return null;
         }

@@ -23,13 +23,13 @@ Widget orgButtonSheetAppbar({required orgLength}) {
         customSpacerHeight(height: 5),
         Center(
             child: Text(
-          "You have $orgLength organisations linked with your",
+          "${AppString.text_you_have.tr} $orgLength ${AppString.text_org_linked_with_your.tr}",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         )),
         Center(
             child: Text(
-          "account",
+          AppString.text_account.tr,
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         )),

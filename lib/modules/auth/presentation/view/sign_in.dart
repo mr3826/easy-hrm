@@ -57,18 +57,30 @@ class SignInScreen extends GetView<SignInController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           customSpacerHeight(height: 50),
+
+                          ///App logo
                           _logoLayout(context),
                           customSpacerHeight(height: 70),
+
+                          ///Organization domain
                           Obx(() => _organizationNameLayout()),
                           customSpacerHeight(height: 8),
                           Obx(() => _organizationNameErrorLayout()),
                           customSpacerHeight(height: 20),
+
+                          ///Email address
                           _emailAddressLayout(),
                           customSpacerHeight(height: 20),
+
+                          ///User password
                           Obx(() => _userPasswordField()),
                           customSpacerHeight(height: 12),
+
+                          ///Forgot password
                           _forgotPassword(),
                           customSpacerHeight(height: 34),
+
+                          ///Login button
                           Obx(() => _logInBtnLayout(context)),
                         ],
                       ),
@@ -89,9 +101,9 @@ class SignInScreen extends GetView<SignInController> {
       obsValue: controller.isValue.value,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_password_field_is_required;
+          return AppString.the_password_field_is_required.tr;
         } else if (value.length < 6) {
-          return AppString.incorrect_user_or_password;
+          return AppString.incorrect_user_or_password.tr;
         } else {
           return null;
         }
@@ -132,9 +144,9 @@ class SignInScreen extends GetView<SignInController> {
       controller: emailController,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_email_field_is_required;
+          return AppString.the_email_field_is_required.tr;
         } else if (value.isEmpty || !RegExp(emailExp()).hasMatch(value)) {
-          return AppString.please_insert_a_valid_email_address;
+          return AppString.please_insert_a_valid_email_address.tr;
         } else {
           return null;
         }

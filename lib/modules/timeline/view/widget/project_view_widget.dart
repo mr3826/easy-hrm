@@ -46,7 +46,7 @@ Widget btnSheetViewLayout(
         _infoLayout(
             text: AppString.text_project_task_or_tag,
             widget: _projectNameLayout(
-                color: HexColor(taskInfo.projectColor!),
+                color: HexColor(taskInfo.projectColor),
                 name: taskInfo.taskOrProjectName)),
         customSpacerHeight(height: 50),
 

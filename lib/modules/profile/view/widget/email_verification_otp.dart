@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -123,7 +125,7 @@ _verifyBtnLayout({verifyAction, closeAction}) {
                 color: AppColor.cardColor,
                 child: Center(
                     child: Text(
-                  "close",
+                  AppString.text_close.tr,
                   style: AppStyle.small_text_black.copyWith(
                       color: AppColor.hintColor,
                       fontSize: Dimensions.fontSizeDefault),
@@ -145,7 +147,7 @@ _verifyBtnLayout({verifyAction, closeAction}) {
                 color: AppColor.primaryColor,
                 child: Center(
                     child: Text(
-                  "Verify",
+                  AppString.text_verify.tr,
                   style: AppStyle.small_text_black.copyWith(
                       color: AppColor.cardColor,
                       fontSize: Dimensions.fontSizeDefault),
@@ -171,7 +173,7 @@ class OtpLayout extends StatelessWidget {
         length: 6,
         onChanged: (value) {
           // Handle OTP changes
-          print("value :: $value");
+          log("Otp :: $value");
         },
         onCompleted: (verificationCode) {
           Get.find<UserProfileController>()

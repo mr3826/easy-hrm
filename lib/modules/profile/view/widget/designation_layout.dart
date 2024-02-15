@@ -25,7 +25,6 @@ class DesignationLayout extends StatelessWidget {
             text: AppString.text_designation.tr,
             subtext: AppString.text_history.tr),
         Expanded(
-
             child: ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: Get.find<UserProfileController>()
@@ -51,14 +50,14 @@ class DesignationLayout extends StatelessWidget {
                             .startDate ??
                         ""),
                 durationText:
-                    "Form last ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index].startDate ?? "")}",
+                    "${AppString.text_form_last.tr} ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index].startDate ?? "")}",
                 employeeCurrentStatus: Get.find<UserProfileController>()
                             .employeeWorkHistory
                             ?.getOrganizationUserHistory
                             ?.designationHistories?[index]
                             .endDate ==
                         null
-                    ? "present"
+                    ? AppString.textPresent.tr
                     : dateMonthYearFormatFromDatetime(
                         Get.find<UserProfileController>()
                                 .employeeWorkHistory
