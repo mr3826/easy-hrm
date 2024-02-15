@@ -87,10 +87,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   }
 
   void _customButtonSheet({context, child}) {
-    //For screen size
-    // double screenHeight =
-    //     MediaQuery.of(context).size.height == 616.0 ? 550 : 700;
-
     return showCustomAtmBtnSheet(
         height: Get.height * .8,
         context: context,

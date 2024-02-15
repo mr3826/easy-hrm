@@ -206,7 +206,7 @@ class _OTPScreenState extends State<OTPScreen> {
       length: 6,
       onChanged: (verificationCode) {
         // Handle OTP changes
-        print("value :: $verificationCode");
+        log("value :: $verificationCode");
         OTPCode = verificationCode;
       },
       onCompleted: (verificationCode) {
