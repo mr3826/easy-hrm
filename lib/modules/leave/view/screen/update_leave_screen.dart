@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +7,6 @@ import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controll
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/leave/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
-
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_card_style.dart';
@@ -106,13 +103,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
 
   @override
   Widget build(BuildContext context) {
-    print('''
-    leave id: ${leaveRecords?.id}
-    isNoteRequired: ${leaveRecords?.leaveType?.isAddNoteRequired}
-    isDocRequired: ${leaveRecords?.leaveType?.isAttachDocumentRequired}
-    fileKey: ${leaveRecords?.leaveType?.fileKey}
-    ''');
-
     return controller.obx(
         (state) => Padding(
               padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
@@ -144,7 +134,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 8),
                       const CustomTimePickerOutTime(),
                       customSpacerHeight(height: 12),
-                      // _errorAlertLayout(),
                       customSpacerHeight(height: 18),
                       Obx(() => Row(
                             children: [
@@ -259,7 +248,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
 
   _pathFormatText() {
     return Text(
-      AppString.text_jpeg_jpg_png_etc,
+      AppString.text_jpeg_jpg_png_etc.tr,
       style: AppStyle.normal_text_black
           .copyWith(color: AppColor.hintColor.withOpacity(0.7)),
     );
@@ -288,7 +277,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                               .copyWith(color: AppColor.normalTextColor),
                         ),
                         Text(
-                          "Balance (No.of days)",
+                        AppString.text_balance_no_of_days.tr,
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.hintColor,
                               fontSize: Dimensions.fontSizeDefault),

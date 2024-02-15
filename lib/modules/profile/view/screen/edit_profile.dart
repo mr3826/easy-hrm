@@ -159,7 +159,7 @@ class EditProfileScreen extends StatelessWidget {
                       .updateUserProfile(variables!);
                 } else {
                   showWarningMessage(
-                      message: "First and last name field is required!");
+                      message: AppString.text_first_and_last_field_is_requured.tr);
                 }
 
                 Get.find<PikedProfileImgController>()

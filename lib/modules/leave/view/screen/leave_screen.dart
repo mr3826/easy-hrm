@@ -23,8 +23,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    print("ordId: ${GetStorage().read(AppString.ORGANIZATION_ID)}");
-    print("idToken: ${GetStorage().read(AppString.ID_TOKEN)}");
     return controller.obx(
         (state) => Scaffold(
               body: RefreshIndicator(

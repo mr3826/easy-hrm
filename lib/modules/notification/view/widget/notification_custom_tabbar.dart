@@ -12,7 +12,6 @@ import 'notification_view_layout.dart';
 
 class NotificationTabBar extends StatelessWidget {
   NotificationTabBar({super.key});
-
   final currentIndex = 0.obs;
 
   @override
@@ -37,13 +36,9 @@ class NotificationTabBar extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             currentIndex.value = index;
-                            print(currentIndex);
                             Get.find<NotificationController>()
                                 .notificationTabBarIndex
                                 .value = currentIndex.toInt();
-                            print(Get.find<NotificationController>()
-                                .notificationTabBarIndex
-                                .value);
                           },
                           child: AnimatedContainer(
                               duration: const Duration(milliseconds: 200),

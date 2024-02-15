@@ -14,7 +14,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
 import 'department_history.dart';
 
 Widget departmentLayout(context) {
@@ -133,7 +132,7 @@ _workingShiftLayout(context) {
             _workShiftDetailsLayout(),
             customSpacerHeight(height: 8),
             Text(
-              "Working day",
+              AppString.text_working_day.tr,
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor.withOpacity(0.7),
                   fontSize: Dimensions.fontSizeDefault + 1),
@@ -244,7 +243,7 @@ _generateWorkShift(List<WorkSchedules> workSchedules) {
         shrinkWrap: true,
         separatorBuilder: (context, index) => customSpacerHeight(height: 10),
         itemBuilder: (context, index) => Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
                 color:
                     index.isEven ? Colors.grey.shade200 : Colors.grey.shade300,
@@ -254,11 +253,11 @@ _generateWorkShift(List<WorkSchedules> workSchedules) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                    "Start: ${amPmFormatTimeFromString(workSchedules?[index].startTime ?? "")}"),
+                    "Start: ${amPmFormatTimeFromString(workSchedules[index].startTime ?? "")}"),
                 Text(
-                    "End: ${amPmFormatTimeFromString(workSchedules?[index].endTime ?? "")}"),
+                    "End: ${amPmFormatTimeFromString(workSchedules[index].endTime ?? "")}"),
                 Text(
-                    "Total: ${getTimeDifference(workSchedules?[index].startTime ?? "", workSchedules?[index].endTime ?? "")}"),
+                    "Total: ${getTimeDifference(workSchedules[index].startTime ?? "", workSchedules[index].endTime ?? "")}"),
               ],
             )),
         itemCount: workSchedules.length,

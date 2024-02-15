@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,7 +17,6 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/domain/files_model.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
-import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../model/leave_record_response.dart';
 import 'leave_record_details_view.dart';
 
@@ -355,7 +351,7 @@ Widget horizontalCalendarLayout() {
                     DateFormat("dd MMM yyyy").format(DateTime.now()) ==
                             DateFormat("dd MMM yyyy").format(DateTime.parse(
                                 Get.find<LeaveScreenController>().date.value))
-                        ? "Today"
+                        ? AppString.text_today.tr
                         : DateFormat("dd MMM yyyy").format(DateTime.parse(
                             Get.find<LeaveScreenController>().date.value)),
                     style: AppStyle.mid_large_text.copyWith(

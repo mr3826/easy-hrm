@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -79,7 +78,6 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
             );
           }).toList(),
           onChanged: (valueType) {
-            print("value::: $valueType");
             setState(() {
               dropDownValue = valueType as String;
             });
@@ -95,8 +93,6 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
                         getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
                     "";
             Get.find<ApplyLeaveController>().leaveId = valueType!;
-            print(
-                "Leave type id:: ${Get.find<ApplyLeaveController>().leaveId}");
             Get.find<ApplyLeaveController>().isDocumentRequired.value =
                 getLeaveTypesDropdown.attachDocumentRequired ?? false;
             Get.find<ApplyLeaveController>().isNoteRequired.value =

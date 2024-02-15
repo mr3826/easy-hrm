@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
 import '../../../../common/widget/custom_icon_shape_style.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../../utils/app_style.dart';
@@ -16,7 +14,6 @@ class NotificationViewLayout extends StatelessWidget {
   final int index;
 
   NotificationViewLayout({super.key, required this.index});
-
   final _controller = Get.find<NotificationController>();
 
   @override

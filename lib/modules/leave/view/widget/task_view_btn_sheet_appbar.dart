@@ -9,8 +9,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget projectViewBtnSheetAppbar({required  DateTime date, required String duration, required Color bgColor}) {
-
-
   return Padding(
     padding: const EdgeInsets.all(2.0),
     child: Container(
@@ -47,7 +45,7 @@ Widget projectViewBtnSheetAppbar({required  DateTime date, required String durat
           )),
           Center(
               child: Text(
-            "$duration",
+            duration,
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.cardColor.withOpacity(0.9),
                 fontWeight: FontWeight.w700,

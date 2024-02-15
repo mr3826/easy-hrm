@@ -25,7 +25,6 @@ class AddAttachmentFile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("AddAttachmentFile receive ::: ${leaveRecords?.leaveType?.fileKey}");
     if (Get.isRegistered()) {
       Get.delete<ApplyLeaveController>();
     }
@@ -55,8 +54,6 @@ class AddAttachmentFile extends StatelessWidget {
   Widget _documentLayout() {
     if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
-      print("1 ");
-
       /// file image
       return Get.find<FileUploadController>()
               .storageForUpload
@@ -104,8 +101,6 @@ class AddAttachmentFile extends StatelessWidget {
   Widget _updateDocumentLayout() {
     if (Get.find<UpDateLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
-      print("1 upd0");
-
       /// file image
       return Get.find<FileUploadController>()
               .storageForUpload
@@ -134,8 +129,6 @@ class AddAttachmentFile extends StatelessWidget {
       } else {
         /// broken image
         if (Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
-          print("3 upd0");
-
           return _brokenImageViewLayout();
         } else {
           return const Center(

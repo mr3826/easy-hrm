@@ -9,7 +9,7 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/modules/profile/view/widget/designation_layout.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/employeement_status_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
@@ -112,7 +112,7 @@ _employmentInfo() {
               ),
             ),
             Text(
-              "From - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+              "${AppString.text_from.tr} - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   overflow: TextOverflow.ellipsis,
@@ -156,7 +156,7 @@ _designationInfo() {
               ),
             ),
             Text(
-              "From - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[0].startDate ?? "")}",
+              "${AppString.text_from.tr} - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[0].startDate ?? "")}",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   overflow: TextOverflow.ellipsis,

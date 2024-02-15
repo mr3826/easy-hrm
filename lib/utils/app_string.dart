@@ -18,9 +18,13 @@ class AppString {
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
   static String dateDifferenceIssueMessage = "In time must be before out time";
   static String text_stitch_org = "Switch Organization";
+  static String text_first_and_last_field_is_requured = "First and last name field is required!";
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText = "Work Shift";
+  static String text_provid_a_valid_input = "Provide a Valid Input";
+  static String text_no_available_leave = "No available leave";
+  static String text_balance_no_of_days = "Balance (No.of days)";
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
   static String text_leave_management_etc =
@@ -34,10 +38,13 @@ class AppString {
       'There is no need for several apps for different organization. You can manage all of your organization from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
+  static String text_from = 'From';
+  static String text_form_last = 'Form last';
   static String textManager = 'Manager';
   static String text_reset_password = ' Reset password';
   static String text_dete_of_application = 'Date of application:';
   static String text_remove = 'Remove';
+  static String text_working_day = 'Working day';
   static String text_remove_photo = 'Remove photo';
   static String text_back_to_login = 'Back to login';
   static String text_done_of_save = 'Done and Save';
@@ -115,7 +122,9 @@ class AppString {
   static String text_approved = 'Approved';
   static String text_profile = 'Profile';
   static String text_action = 'Actions';
-  static String text_from = 'From';
+  static String text_account = 'account';
+  static String text_you_have = 'You have';
+  static String text_org_linked_with_your = 'organisations linked with your';
 
   static String text_current_password = 'Current Password';
   static String text_new_password = 'New Password';
@@ -138,6 +147,7 @@ class AppString {
 
   static String text_take_break = 'Take Break';
   static String text_on_break = 'On Break';
+  static String text_verify = 'Verify';
   static String text_swich_organisation = 'Switch organization';
   static String text_in = "In";
   static String text_out = "Out";
@@ -169,6 +179,8 @@ class AppString {
   static String text_date = "Date";
   static String text_to = "To";
   static String text_save = "Save";
+  static String text_show = "Show";
+  static String text_hide = "Hide";
   static String text_ok = "Ok";
   static String text_select_date = "Selected date";
   static String text_select_option = "Selected option";
@@ -211,6 +223,7 @@ class AppString {
   static String text_last_name = "Last name";
   static String text_email = "Email";
   static String text_full_day = "Full day";
+  static String text_days = "days";
   static String text_slected_an_option = "Selected an option";
   static String text_child_of_deparmtnet = "Child of";
   static String text_deparmtnet = "Department";

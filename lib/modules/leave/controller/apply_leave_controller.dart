@@ -53,8 +53,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   getWorkShift() async {
-    print(
-        "GetStorage().read(AppString.ORGANIZATION_USER_ID)::: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
+    print("GetStorage().read(AppString.ORGANIZATION_USER_ID)::: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: workShiftQuery, variables: {
@@ -71,27 +70,14 @@ class ApplyLeaveController extends GetxController with StateMixin {
       GetWorkScheduleForAssignLeave? value = workShiftResponse
           .getWorkScheduleForAssignLeave
           ?.firstWhere((element) => element.isHoliday == false);
-
-      print(value?.startTime);
       startTime = value?.startTime;
       endTime = value?.endTime;
-
-      print("workShiftTime?.startTime:: $startTime");
     }
     change(null, status: RxStatus.success());
   }
 
   applyLeave({filePath}) async {
-    print("applyLeave filePath:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
-
-
-    print("size :::: ${Get.find<FileUploadController>()
-        .storageForUpload
-        .fileSize
-        .value
-        .toString()}");
     isAssignLeaveLoaderLoading(true);
-
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
       "inputData": {
         "description": leaveNoteController.text,
@@ -159,8 +145,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   getUploadPolicy({fileName}) async {
-    print(
-        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
+    print("${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()
@@ -204,7 +189,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
                 "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
-      print(value.statusCode);
+      print("File upload in server ::: ${value.statusCode}");
       isFileUploadedSuccessfully.value = true;
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);

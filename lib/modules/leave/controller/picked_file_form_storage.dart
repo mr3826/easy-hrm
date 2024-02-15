@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
@@ -34,7 +35,7 @@ class PickedFileFormStorage {
         filePath.value = result.files.single.path!;
         int size = await file.length();
         fileSize.value = size.toString();
-        print('File size: ${fileSize.value} bytes');
+        log('File size::: ${fileSize.value} bytes');
 
         isApplyLeave==true?
         Get.find<ApplyLeaveController>().getUploadPolicy(
