@@ -17,7 +17,8 @@ class AppString {
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
   static String dateDifferenceIssueMessage = "In time must be before out time";
   static String text_stitch_org = "Switch Organization";
-  static String text_first_and_last_field_is_requured = "First and last name field is required!";
+  static String text_first_and_last_field_is_requured =
+      "First and last name field is required!";
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText = "Work Shift";
@@ -44,7 +45,8 @@ class AppString {
   static String text_remove_photo = 'Remove photo';
   static String text_back_to_login = 'Back to login';
   static String text_done_of_save = 'Done and Save';
-  static String text_we_have_a_verification_etc = 'We have sent a Verification code to your email address. Enter this code bellow to verify your account.';
+  static String text_we_have_a_verification_etc =
+      'We have sent a Verification code to your email address. Enter this code bellow to verify your account.';
   static String text_dont_not_worry =
       'Don’t worry! It happens. Please enter the email address associated with your account';
   static String text_enter_code = 'Enter your code';
@@ -119,20 +121,6 @@ class AppString {
   static String text_confirm_password = 'Confirm Password';
   static String text_confirm_your_password = 'Confirm your password';
   static String text_min_8_character = 'Min. 8 characters';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   static String text_verify_your_email_address = 'Verify your email address';
   static String text_we_have_sent_a_verification_etc =
@@ -275,18 +263,13 @@ class AppString {
       "Please insert a valid email address";
   static const String incorrect_user_or_password = "Incorrect user or password";
 
-
-
-
   static const String the_new_password_field_is_required =
       "The new password field is required.";
   static const String the_confirm_password_field_is_required =
       "The confirm password field is required.";
 
-
   static const String the_email_field_is_required =
       "The email field is required.";
-
 
   static const String timerStartedSuccessfulMessage =
       "Timer Started Successfully";

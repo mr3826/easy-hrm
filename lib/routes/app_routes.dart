@@ -3,24 +3,23 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
 
-   static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
-   static const ONBOARD_SCRREN = _Paths.ONBOARD_SCRREN;
-   static const SIGN_IN_SCREEN = _Paths.SIGN_IN_SCREEN;
-   static const FIRGIR_PASSWORD_SCREEN = _Paths.FIRGIR_PASSWORD_SCREEN;
-   static const OTP = _Paths.OTP;
-   static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
-   static const PASSWORD_UPDATE_SCRREN = _Paths.PASSWORD_UPDATE_SCRREN;
-   static const MAIN_SCREEN = _Paths.MAIN_SCREEN;
-   static const LEAVE_SCREEN = _Paths.LEAVE_SCREEN;
-   static const LEAVE_RECORD_SCREEN = _Paths.LEAVE_RECORD_SCREEN;
-   static const NOTIFICATION_SCREEN = _Paths.NOTIFICATION_SCREEN;
-   static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
-   static const EDIT_PROFILE_SCREEN = _Paths.EDIT_PROFILE_SCREEN;
-   static const TIME_LOG_SUMMARY = _Paths.TIME_LOG_SUMMARY;
-   static const NEW_ENTRY_SCREEN = _Paths.NEW_ENTRY_SCREEN;
-   static const TIMER_SCREEN = _Paths.TIMER_SCREEN;
-   static const HOME_SCREEN = _Paths.HOME_SCREEN;
-
+  static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
+  static const ONBOARD_SCRREN = _Paths.ONBOARD_SCRREN;
+  static const SIGN_IN_SCREEN = _Paths.SIGN_IN_SCREEN;
+  static const FIRGIR_PASSWORD_SCREEN = _Paths.FIRGIR_PASSWORD_SCREEN;
+  static const OTP = _Paths.OTP;
+  static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
+  static const PASSWORD_UPDATE_SCRREN = _Paths.PASSWORD_UPDATE_SCRREN;
+  static const MAIN_SCREEN = _Paths.MAIN_SCREEN;
+  static const LEAVE_SCREEN = _Paths.LEAVE_SCREEN;
+  static const LEAVE_RECORD_SCREEN = _Paths.LEAVE_RECORD_SCREEN;
+  static const NOTIFICATION_SCREEN = _Paths.NOTIFICATION_SCREEN;
+  static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
+  static const EDIT_PROFILE_SCREEN = _Paths.EDIT_PROFILE_SCREEN;
+  static const TIME_LOG_SUMMARY = _Paths.TIME_LOG_SUMMARY;
+  static const NEW_ENTRY_SCREEN = _Paths.NEW_ENTRY_SCREEN;
+  static const TIMER_SCREEN = _Paths.TIMER_SCREEN;
+  static const HOME_SCREEN = _Paths.HOME_SCREEN;
 }
 
 abstract class _Paths {
@@ -43,5 +42,4 @@ abstract class _Paths {
   static const NEW_ENTRY_SCREEN = '/new_entry_screen';
   static const TIMER_SCREEN = '/timer_screen';
   static const HOME_SCREEN = '/home_screen';
-
 }
