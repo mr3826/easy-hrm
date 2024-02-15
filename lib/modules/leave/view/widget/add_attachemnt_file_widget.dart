@@ -46,7 +46,10 @@ class AddAttachmentFile extends StatelessWidget {
                       : _updateDocumentLayout();
                 }))),
             customSpacerHeight(height: 8),
-            _pathNameText(leaveRecords?.leaveType?.fileKey ?? '')
+            _pathNameText(
+                (leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty)
+                    ? leaveRecords?.files![0].key.toString() ?? ""
+                    : leaveRecords?.leaveType?.fileKey ?? ""),
           ],
         ));
   }

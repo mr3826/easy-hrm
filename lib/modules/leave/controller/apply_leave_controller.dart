@@ -58,40 +58,40 @@ class ApplyLeaveController extends GetxController with StateMixin {
       "inputData": {
         "description": leaveNoteController.text,
         "end_date": DateTime.parse(
-            Get.find<DateTimePickerController>().outDateTime.value)
+                Get.find<DateTimePickerController>().outDateTime.value)
             .toUtc()
             .toString(),
         "start_date": DateTime.parse(
-            Get.find<DateTimePickerController>().inDateTime.value)
+                Get.find<DateTimePickerController>().inDateTime.value)
             .toUtc()
             .toString(),
         "status": "pending",
         "leave_type_id": leaveId,
         "files":
-        Get.find<FileUploadController>().storageForUpload.filePath.isEmpty
-            ? null
-            : [
-          {
-            "size": int.parse(Get.find<FileUploadController>()
-                .storageForUpload
-                .fileSize
-                .value
-                .toString()),
-            "name": Get.find<FileUploadController>()
-                .storageForUpload
-                .filePath
-                .value
-                .split(".")
-                .last
-                .toString(),
-            "key": uploadPolicyResponse.getUploadPolicy?.policyData
-                ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-                .value
-                ?.split("/")
-                .last ??
-                ""
-          }
-        ],
+            Get.find<FileUploadController>().storageForUpload.filePath.isEmpty
+                ? null
+                : [
+                    {
+                      "size": int.parse(Get.find<FileUploadController>()
+                          .storageForUpload
+                          .fileSize
+                          .value
+                          .toString()),
+                      "name": Get.find<FileUploadController>()
+                          .storageForUpload
+                          .filePath
+                          .value
+                          .split(".")
+                          .last
+                          .toString(),
+                      "key": uploadPolicyResponse.getUploadPolicy?.policyData
+                              ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+                              .value
+                              ?.split("/")
+                              .last ??
+                          ""
+                    }
+                  ],
       }
     });
 
@@ -126,7 +126,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
         "filename":
-        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });
@@ -145,8 +145,8 @@ class ApplyLeaveController extends GetxController with StateMixin {
 
   uploadFile(
       {required String fileName,
-        List<PolicyData>? list,
-        required String url}) async {
+      List<PolicyData>? list,
+      required String url}) async {
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 
@@ -159,7 +159,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
         "file",
         MultipartFile(File(fileName),
             filename:
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+                "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
       print(value.statusCode);
