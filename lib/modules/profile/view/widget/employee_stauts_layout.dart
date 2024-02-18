@@ -19,36 +19,58 @@ Widget employeeStatusLayout({BuildContext? context}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Expanded(
-        child: GestureDetector(
-          onTap: () => customAntButtonSheet(
-              child: const DesignationLayout(), context: context!),
-          child: SizedBox(
-            height: 160,
-            child: Card(
-              elevation: 0,
-              color: AppColor.primaryColor.withOpacity(0.05),
-              shape: roundedRectangleBorder,
-              child: Padding(
-                padding: marginLayout.copyWith(top: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customSvgImage(
-                        imageUrl: Images.EMPLOYEE_STATUS,
-                        height: 25,
-                        width: 25),
-                    customSpacerHeight(height: 12),
-                    _designationInfo(),
-                    customSpacerHeight(height: 12),
-                  ],
+      Get.find<UserProfileController>()
+                      .employeeWorkHistory
+                      ?.getOrganizationUserHistory
+                      ?.designationHistories !=
+                  null &&
+              Get.find<UserProfileController>()
+                  .employeeWorkHistory!
+                  .getOrganizationUserHistory!
+                  .designationHistories!
+                  .isNotEmpty
+          ? Expanded(
+              child: GestureDetector(
+                onTap: () => customAntButtonSheet(
+                    child: const DesignationLayout(), context: context!),
+                child: SizedBox(
+                  height: 160,
+                  child: Card(
+                    elevation: 0,
+                    color: AppColor.primaryColor.withOpacity(0.05),
+                    shape: roundedRectangleBorder,
+                    child: Padding(
+                      padding: marginLayout.copyWith(top: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          customSvgImage(
+                              imageUrl: Images.EMPLOYEE_STATUS,
+                              height: 25,
+                              width: 25),
+                          customSpacerHeight(height: 12),
+                          _designationInfo(),
+                          customSpacerHeight(height: 12),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
-      customSpacerWidth(width: 4),
+            )
+          : Container(),
+      Get.find<UserProfileController>()
+                      .employeeWorkHistory
+                      ?.getOrganizationUserHistory
+                      ?.designationHistories !=
+                  null &&
+              Get.find<UserProfileController>()
+                  .employeeWorkHistory!
+                  .getOrganizationUserHistory!
+                  .designationHistories!
+                  .isNotEmpty
+          ? customSpacerWidth(width: 4)
+          : Container(),
       Expanded(
         child: GestureDetector(
           onTap: () => customAntButtonSheet(
