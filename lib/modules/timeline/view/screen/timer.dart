@@ -83,35 +83,6 @@ class TimerScreen extends StatelessWidget {
     );
   }
 
-  _horizontalLineAnimation() {
-    return Obx(
-      () => (Get.find<TimeCounterController>().isRunning.isTrue &&
-              Get.find<TimeCounterController>().isRunningHorizontalLine.isTrue)
-          ? Lottie.asset(Images.timer_animation,
-              height: 300, width: 300, fit: BoxFit.cover)
-          : Padding(
-              padding: const EdgeInsets.only(
-                bottom: 70.0,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: List.generate(
-                    4,
-                    (index) => Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Icon(
-                            Icons.circle,
-                            color: AppColor.cardColor.withOpacity(0.2),
-                            size: 12,
-                          ),
-                        )),
-              ),
-            ),
-    );
-  }
-
   _dateText({required String date}) {
     return Center(
         child: Padding(
