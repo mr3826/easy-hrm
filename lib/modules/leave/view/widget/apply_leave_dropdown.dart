@@ -127,7 +127,6 @@ getIconAccordingToLeaveType(String? type) {
 
 String? getLeaveDaysAccordingToLeave(
     {required GetLeaveTypesDropdown getLeaveTypesDropdown}) {
-  print(getLeaveTypesDropdown);
   if (getLeaveTypesDropdown.isEarned == true) {
     return (getLeaveTypesDropdown.leaveStatuses?.first.earnedDays ?? 0)
         .toString();
