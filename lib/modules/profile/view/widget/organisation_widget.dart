@@ -47,58 +47,74 @@ class OrganisationView extends StatelessWidget {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  customDialog(
-                    context: context,
-                    saveBtnAction: () {
-                      if (GetStorage().read(AppString.LAST_INPUT) != null) {
-                        Map<String, dynamic> jsonMap = json
-                            .decode(GetStorage().read(AppString.LAST_INPUT));
-                        LastInput lastInput = LastInput.fromJson(jsonMap);
-                        Get.find<UserProfileController>().login(
-                            email: lastInput.email ?? "",
-                            password: lastInput.password ?? "",
-                            orgId: Get.find<UserProfileController>()
-                                    .organizationInfo
-                                    ?.getUserOrganizations
-                                    ?.data?[index]
-                                    .organization
-                                    ?.id ??
-                                "",
-                            organizationName: Get.find<UserProfileController>()
-                                    .organizationInfo
-                                    ?.getUserOrganizations
-                                    ?.data?[index]
-                                    .organization
-                                    ?.subDomain ??
-                                "");
-                      } else {
-                        showErrorMessage(message: AppString.error_text);
-                      }
-                    },
-                    childForSaveBtn: Obx(
-                      () => Get.find<UserProfileController>()
-                              .isOrganizationChangeLoading
-                              .isTrue
-                          ? const Center(
-                              child: CupertinoActivityIndicator(
-                                color: Colors.blueAccent,
-                              ),
-                            )
-                          : Text(
-                              AppString.text_yes.tr,
-                              style:
-                                  AppStyle.normal_text.copyWith(fontSize: 16),
-                            ),
-                    ),
-                    icon: Icons.swap_horiz,
-                    titleText: AppString.text_are_you_sure.tr,
-                    subText: AppString.changeOrganizationWarningMessage.tr,
-                    iconBgColor: AppColor.bgColor,
-                    btnBgColor: AppColor.errorColorLight,
-                    btnText: AppString.text_yes.tr,
-                    drcText: "",
-                    drcFontSize: Dimensions.fontSizeDefault,
-                  );
+                  // customDialog(
+                  //   context: context,
+                  //   saveBtnAction: () {
+                  //     if (GetStorage().read(AppString.LAST_INPUT) != null) {
+                  //       Map<String, dynamic> jsonMap = json
+                  //           .decode(GetStorage().read(AppString.LAST_INPUT));
+                  //       LastInput lastInput = LastInput.fromJson(jsonMap);
+                  //       Get.find<UserProfileController>().login(
+                  //           email: lastInput.email ?? "",
+                  //           password: lastInput.password ?? "",
+                  //           orgId: Get.find<UserProfileController>()
+                  //                   .organizationInfo
+                  //                   ?.getUserOrganizations
+                  //                   ?.data?[index]
+                  //                   .organization
+                  //                   ?.id ??
+                  //               "",
+                  //           organizationName: Get.find<UserProfileController>()
+                  //                   .organizationInfo
+                  //                   ?.getUserOrganizations
+                  //                   ?.data?[index]
+                  //                   .organization
+                  //                   ?.subDomain ??
+                  //               "");
+                  //     } else {
+                  //       showErrorMessage(message: AppString.error_text);
+                  //     }
+                  //
+                  //   },
+                  //   childForSaveBtn: Obx(
+                  //     () => Get.find<UserProfileController>()
+                  //             .isOrganizationChangeLoading
+                  //             .isTrue
+                  //         ? const Center(
+                  //             child: CupertinoActivityIndicator(
+                  //               color: Colors.blueAccent,
+                  //             ),
+                  //           )
+                  //         : Text(
+                  //             AppString.text_yes.tr,
+                  //             style:
+                  //                 AppStyle.normal_text.copyWith(fontSize: 16),
+                  //           ),
+                  //   ),
+                  //   icon: Icons.swap_horiz,
+                  //   titleText: AppString.text_are_you_sure.tr,
+                  //   subText: AppString.changeOrganizationWarningMessage.tr,
+                  //   iconBgColor: AppColor.bgColor,
+                  //   btnBgColor: AppColor.errorColorLight,
+                  //   btnText: AppString.text_yes.tr,
+                  //   drcText: "",
+                  //   drcFontSize: Dimensions.fontSizeDefault,
+                  // );
+                  if (GetStorage().read(AppString.LAST_INPUT) != null) {
+                    Map<String, dynamic> jsonMap =
+                        json.decode(GetStorage().read(AppString.LAST_INPUT));
+                    LastInput lastInput = LastInput.fromJson(jsonMap);
+
+                    Get.find<UserProfileController>().switchOrganization(
+                        orgId: Get.find<UserProfileController>()
+                                .organizationInfo
+                                ?.getUserOrganizations
+                                ?.data?[index]
+                                .organization
+                                ?.id ??
+                            "",
+                        email: lastInput.email ?? "");
+                  }
                 },
                 child: Obx(() => Padding(
                       padding: const EdgeInsets.all(8.0),

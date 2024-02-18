@@ -186,7 +186,7 @@ class NotificationViewLayout extends StatelessWidget {
               _getContextInfoText(contextName: notificationContext),
           notificationDuration: _getNotificationDuration(
               notificationCreatedDate: notificationCreatedDate),
-          approverContext: "Timelog approver",
+          approverContext: AppString.textTimelogApprover.tr,
         );
 
       /// leave

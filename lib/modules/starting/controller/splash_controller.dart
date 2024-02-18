@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -7,6 +8,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../../common/domain/token_model.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
@@ -86,3 +88,4 @@ class SplashController extends GetxController {
     }
   }
 }
+

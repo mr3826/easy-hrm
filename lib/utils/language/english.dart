@@ -1,6 +1,8 @@
 import '../app_string.dart';
 
 Map<String, String> eng = {
+  AppString.textTimelogApprover: 'Time log approver',
+
 
   AppString.leaveAddedSuccessMessage: "Leave Added Successfully",
   AppString.dateDifferenceIssueMessage: "In time must be before out time",

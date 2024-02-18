@@ -132,6 +132,7 @@ class AppString {
   static String removeDepartment = 'has removed you from ';
   static String newUserJoined = 'A new user has joined';
   static String textHiringManager = 'Hiring manager';
+  static String textTimelogApprover = 'Time log approver';
   static String textHiringTeam = 'Hiring team';
   static String textOn = 'on';
 
