@@ -148,11 +148,12 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       {required BuildContext context, required GetLeaveRecords leaveRecord}) {
     return GestureDetector(
       onTap: () => customAntButtonSheet(
-          context: context,
-          child: LeaveRecordDetails(
-            status: leaveRecord.status ?? "",
-            leaveRecords: leaveRecord,
-          ),),
+        context: context,
+        child: LeaveRecordDetails(
+          status: leaveRecord.status ?? "",
+          leaveRecords: leaveRecord,
+        ),
+      ),
       child: SizedBox(
         child: Card(
           elevation: 0,

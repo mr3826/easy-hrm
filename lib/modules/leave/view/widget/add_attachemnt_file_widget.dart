@@ -29,6 +29,7 @@ class AddAttachmentFile extends StatelessWidget {
       Get.delete<ApplyLeaveController>();
     }
     Get.put(ApplyLeaveController());
+
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -46,10 +47,12 @@ class AddAttachmentFile extends StatelessWidget {
                       : _updateDocumentLayout();
                 }))),
             customSpacerHeight(height: 8),
-            _pathNameText(
-                (leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty)
-                    ? leaveRecords?.files![0].key.toString() ?? ""
-                    : leaveRecords?.leaveType?.fileKey ?? ""),
+            _pathNameText(leaveRecords?.files != null &&
+                    leaveRecords!.files!.isNotEmpty &&
+                    leaveRecords?.files?.first.key != null &&
+                    leaveRecords!.files!.first.key!.isNotEmpty
+                ? leaveRecords?.files![0].key.toString() ?? ""
+                : ""),
           ],
         ));
   }
