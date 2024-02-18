@@ -6,6 +6,7 @@ import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../../utils/app_color.dart';
+import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/utils.dart';
@@ -195,8 +196,8 @@ _leaveInfoRow(int index, controller) {
             : controller.upcommingLeaveDashboard
                         ?.getUpcomingLeavesForApp?[index].numberOfDays >
                     1
-                ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} days"
-                : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} day",
+                ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} ${AppString.textDays.tr}"
+                : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} ${AppString.textDay.tr}",
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
       )

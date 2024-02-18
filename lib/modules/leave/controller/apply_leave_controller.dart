@@ -108,7 +108,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
       Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
       leaveNoteController.clear();
       isAssignLeaveLoaderLoading(false);
-      showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
+      showSuccessMessage(message: AppString.leaveAddedSuccessMessage.tr);
       isFileUploadedSuccessfully(false);
       Get.offAll(() => const MainScreen(routeIndex: 1));
     }
