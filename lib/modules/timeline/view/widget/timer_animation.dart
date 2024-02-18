@@ -128,7 +128,7 @@ class TimerAnimation extends GetView<TimeCounterController> {
                   child: Icon(
                     Icons.circle,
                     color: AppColor.cardColor.withOpacity(0.2),
-                    size: 25,
+                    size: 20,
                   ),
                 )),
       ),
