@@ -9,6 +9,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -107,7 +108,7 @@ class IndividualEventView extends StatelessWidget {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                customButtonMiddleSheet(
+                customAntButtonSheet(
                   context: context,
                   child: LeaveRecordDetails(
                     status: Get.find<LeaveScreenController>()
@@ -230,7 +231,7 @@ class IndividualEventView extends StatelessWidget {
                           .id,
                     ),
                   ),
-                  height: MediaQuery.of(context).size.height,
+
                 );
               },
               child: Padding(

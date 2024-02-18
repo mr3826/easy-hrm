@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -14,15 +13,16 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 
 Widget employeeStatusLayout({BuildContext? context}) {
-   return Row(
+  return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Expanded(
         child: GestureDetector(
-          onTap: () => customButtonSheet(
-              child: const DesignationLayout(), height: .7, context: context),
+          onTap: () => customAntButtonSheet(
+              child: const DesignationLayout(), context: context!),
           child: SizedBox(
             height: 160,
             child: Card(
@@ -51,8 +51,8 @@ Widget employeeStatusLayout({BuildContext? context}) {
       customSpacerWidth(width: 4),
       Expanded(
         child: GestureDetector(
-          onTap: () => customButtonSheet(
-              context: context, height: .7, child: const EmploymentLayout()),
+          onTap: () => customAntButtonSheet(
+              context: context!, child: const EmploymentLayout()),
           child: SizedBox(
             height: 160,
             child: Card(

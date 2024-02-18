@@ -20,9 +20,10 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../utils/utils.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
-   dynamic status;
+  dynamic status;
   final GetLeaveRecords? leaveRecords;
   dynamic leaveDate;
   dynamic leaveWeekday;
@@ -214,9 +215,8 @@ class LeaveRecordDetails extends StatelessWidget {
               Get.delete<UpDateLeaveController>();
             }
             Get.put(UpDateLeaveController());
-            customButtonSheet(
+            customAntButtonSheet(
                 context: context,
-                height: .8,
                 child: UpdateLeave(leaveRecords: leaveRecords));
           },
           btnColor: AppColor.primaryColor),
@@ -261,13 +261,13 @@ class LeaveRecordDetails extends StatelessWidget {
   _cancelLeaveProgress() {
     return Get.find<LeaveScreenController>().cancelLeaveLoader.value
         ? const CupertinoActivityIndicator(
-      color: AppColor.cardColor,
-    )
+            color: AppColor.cardColor,
+          )
         : Text(
-      AppString.confirmText.tr,
-      style: AppStyle.normal_text_grey.copyWith(
-          fontSize: Dimensions.fontSizeDefault + 1,
-          color: AppColor.cardColor),
-    );
+            AppString.confirmText.tr,
+            style: AppStyle.normal_text_grey.copyWith(
+                fontSize: Dimensions.fontSizeDefault + 1,
+                color: AppColor.cardColor),
+          );
   }
 }

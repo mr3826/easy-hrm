@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
@@ -12,6 +11,7 @@ import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_wid
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import '../../../../common/domain/last_input_model.dart' as li;
+import '../../../../common/widget/custom_drawer.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../leave/model/leave_records.dart';
@@ -184,8 +184,7 @@ class TimeLineCalendar extends StatelessWidget {
                 /// have to sub string
                 /// otherwise it returns with (value) pattern
 
-                customButtonSheet(
-                    height: _modelHeightAccordingScreenSize(),
+                customAntButtonSheet(
                     context: context,
                     child: leaveId.substring(1, leaveId.length - 1) == "null"
                         ? TaskView(
@@ -371,13 +370,31 @@ class TimeLineCalendar extends StatelessWidget {
           color: AppColor.noColor,
         ));
   }
+}
 
-  double _modelHeightAccordingScreenSize() {
-    double value = MediaQuery.of(Get.context!).size.width;
-    if (value <= 360.0) {
-      return 0.8;
-    } else {
-      return 0.6;
-    }
+customAntButtonSheet({required BuildContext context, child, double? height}) {
+  return showCustomAtmBtnSheet(
+      height: height ?? _modelHeightAccordingScreenSize(),
+      context: context,
+      child: Material(
+        color: AppColor.noColor,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(Dimensions.radiusMid),
+                topLeft: Radius.circular(Dimensions.radiusMid)),
+            color: AppColor.cardColor,
+          ),
+          child: child,
+        ),
+      ));
+}
+
+double _modelHeightAccordingScreenSize() {
+  double value = MediaQuery.of(Get.context!).size.width;
+  if (value <= 360.0) {
+    return 480;
+  } else {
+    return 500;
   }
 }

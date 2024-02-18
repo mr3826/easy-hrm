@@ -13,6 +13,8 @@ import '../../../../utils/utils.dart';
 import '../../../auth/presentation/view/otp_screen.dart';
 import '../../../leave/model/leave_records.dart';
 import '../../../leave/view/widget/leave_record_details_view.dart';
+import '../../../profile/view/widget/action_layout_widget.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../controller/dashbpard_controller.dart';
 import 'dashboad_widget.dart';
 
@@ -36,8 +38,8 @@ class UpcomingLeaveLayout extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: GestureDetector(
-                onTap: () => customButtonMiddleSheet(
-                    context: context,
+                onTap: () => customAntButtonSheet(
+                  context: context,
                     child: LeaveRecordDetails(
                       status: controller.upcommingLeaveDashboard
                               ?.getUpcomingLeavesForApp?[index].status ??
@@ -113,7 +115,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
                             ?.getUpcomingLeavesForApp?[index].description,
                       ),
                     ),
-                    height: MediaQuery.of(context).size.height),
+                    ),
                 child: Card(
                   elevation: 0,
                   color: AppColor.primaryColor.withOpacity(0.06),

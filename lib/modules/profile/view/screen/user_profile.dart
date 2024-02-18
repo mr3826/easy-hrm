@@ -14,6 +14,7 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/user_info_section_layout.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -176,9 +177,8 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _actionBtnLayout(context) {
     return GestureDetector(
-      onTap: () => customButtonMiddleSheet(
+      onTap: () => customAntButtonSheet(
           context: context,
-          height: MediaQuery.of(context).size.height,
           child: actionLayout(
               context: context,
               userName:
