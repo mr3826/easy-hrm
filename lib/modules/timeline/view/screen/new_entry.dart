@@ -7,6 +7,8 @@ import 'package:payrun_mobile/modules/timeline/view/widget/new_entry_text_field_
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 
+import '../../../../utils/utils.dart';
+
 class NewEntryScreen extends StatelessWidget {
   const NewEntryScreen({super.key});
 
@@ -17,11 +19,10 @@ class NewEntryScreen extends StatelessWidget {
     }
 
     Get.put(DateTimePickerController());
-
+    descriptionController.text="";
     Get.find<TimelineController>().projectId.value = '';
     Get.find<TimelineController>().taskName.value = '';
     Get.find<TimelineController>().projectColor.value = '';
-
     Get.find<TimelineController>().getProjectDropdown();
 
     return Scaffold(
