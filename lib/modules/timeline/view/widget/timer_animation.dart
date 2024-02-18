@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../utils/images.dart';
 import '../../controller/timer_controller.dart';
 
 class TimerAnimation extends GetView<TimeCounterController> {
@@ -17,7 +20,12 @@ class TimerAnimation extends GetView<TimeCounterController> {
             controller.isRunning.isTrue ? _animatedContainer() : Container(),
             controller.isTotalCount.value == false
                 ? _totalCountContainer()
-                : _normalContainer()
+                : _normalContainer(),
+            Positioned(
+                bottom: 0,
+                left: 50,
+                right: 50,
+                child: _horizontalLineAnimation()),
           ],
         ));
   }
@@ -90,6 +98,34 @@ class TimerAnimation extends GetView<TimeCounterController> {
           ),
         ),
       ),
+    );
+  }
+
+  _horizontalLineAnimation() {
+    return Obx(
+      () => (Get.find<TimeCounterController>().isRunning.isTrue &&
+              Get.find<TimeCounterController>().isRunningHorizontalLine.isTrue)
+          ? Lottie.asset(Images.timer_animation)
+          : Padding(
+              padding: const EdgeInsets.only(
+                bottom: 70.0,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: List.generate(
+                    4,
+                    (index) => Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Icon(
+                            Icons.circle,
+                            color: AppColor.cardColor.withOpacity(0.2),
+                            size: 12,
+                          ),
+                        )),
+              ),
+            ),
     );
   }
 }

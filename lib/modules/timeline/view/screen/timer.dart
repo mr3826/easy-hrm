@@ -33,36 +33,40 @@ class TimerScreen extends StatelessWidget {
               if (Get.find<TimeCounterController>().isRunning.isFalse) {
                 await Get.find<TimelineController>()
                     .startOrEndTimer(timerType: StartOrEndTimer.start.name);
+
+                Get.find<TimeCounterController>().isRunningHorizontalLine(true);
               }
             },
             child: SizedBox(
-                height: AppLayout.getHeight(400),
                 width: AppLayout.getWidth(400),
+                height: AppLayout.getWidth(500),
                 child: const TimerAnimation()),
           ),
-          _saveBtn(
-            onAction: () async {
-              if (Get.find<TimeCounterController>().isRunning.isTrue) {
-                await Get.find<TimelineController>()
-                    .startOrEndTimer(timerType: StartOrEndTimer.end.name)
-                    .then((value) {
-                  if (value == true) {
-                    if (Get.find<TimelineController>()
-                            .projectDropDownResponse
-                            ?.getProjectsDropdown ==
-                        null) {
-                      Get.find<TimelineController>().getProjectDropdown();
+          Obx(
+            () => _saveBtn(
+              onAction: () async {
+                if (Get.find<TimeCounterController>().isRunning.isTrue) {
+                  await Get.find<TimelineController>()
+                      .startOrEndTimer(timerType: StartOrEndTimer.end.name)
+                      .then((value) {
+                    if (value == true) {
+                      if (Get.find<TimelineController>()
+                              .projectDropDownResponse
+                              ?.getProjectsDropdown ==
+                          null) {
+                        Get.find<TimelineController>().getProjectDropdown();
+                      }
+                      customButtonSheet(
+                          height: .6,
+                          context: context,
+                          isDismissible: false,
+                          child: const AddToTaskScreen());
                     }
-                    customButtonSheet(
-                        height: .6,
-                        context: context,
-                        isDismissible: false,
-                        child: const AddToTaskScreen());
-                  }
-                });
-              }
-            },
-          ),
+                  });
+                }
+              },
+            ),
+          )
         ],
       ),
     );
@@ -93,13 +97,17 @@ class TimerScreen extends StatelessWidget {
             shape: roundedRectangleBorder.copyWith(
                 borderRadius:
                     BorderRadius.circular(Dimensions.radiusExtraLarge)),
-            color: AppColor.cardColor.withOpacity(0.3),
+            color: Get.find<TimeCounterController>().isRunning.isTrue
+                ? AppColor.cardColor.withOpacity(0.3)
+                : AppColor.cardColor.withOpacity(0.1),
             elevation: 0,
             child: Center(
                 child: Text(
               AppString.text_done_of_save.tr,
               style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.cardColor,
+                  color: Get.find<TimeCounterController>().isRunning.isTrue
+                      ? AppColor.cardColor
+                      : AppColor.cardColor.withOpacity(0.6),
                   fontSize: Dimensions.fontSizeMid - 2),
             ))),
       ),
