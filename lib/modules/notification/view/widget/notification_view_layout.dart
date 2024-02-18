@@ -186,7 +186,7 @@ class NotificationViewLayout extends StatelessWidget {
               _getContextInfoText(contextName: notificationContext),
           notificationDuration: _getNotificationDuration(
               notificationCreatedDate: notificationCreatedDate),
-          approverContext: "Timelog approver",
+          approverContext: AppString.timelogApprover.tr,
         );
 
       /// leave
@@ -263,7 +263,7 @@ class NotificationViewLayout extends StatelessWidget {
               _getContextInfoText(contextName: notificationContext),
           notificationDuration: _getNotificationDuration(
               notificationCreatedDate: notificationCreatedDate),
-          approverContext: "Leave approver",
+          approverContext: AppString.leaveApprover.tr,
         );
 
       ///department
@@ -288,7 +288,7 @@ class NotificationViewLayout extends StatelessWidget {
                 departmentInfo: departmentInfo,
                 notificationDuration: _getNotificationDuration(
                     notificationCreatedDate: notificationCreatedDate),
-                departmentRoleInfo: "Department Head",
+                departmentRoleInfo: AppString.departmentHeaDText.tr,
                 index: index);
 
       case "removed_from_department":

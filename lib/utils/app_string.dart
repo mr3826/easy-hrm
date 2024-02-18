@@ -123,10 +123,10 @@ class AppString {
   static String approveATimelogText = 'has approved your time log on ';
   static String pendingALeaveText = 'has marked your leave as pending on ';
   static String approvedALeaveText = 'has approved your leave on ';
-  static String rejectALeaveText = 'has rejected a leave on ';
+  static String rejectALeaveText = 'has rejected your leave on ';
   static String cancelALeaveText = 'has cancelled your leave on ';
-  static String addedALeaveText = 'has added a leave on ';
-  static String updateALeaveText = 'has updated a leave on ';
+  static String addedALeaveText = 'has added your leave on ';
+  static String updateALeaveText = 'has updated your leave on ';
   static String addedDepartmentHead = 'has added you as a ';
   static String addedDepartment = 'has added you on ';
   static String removeDepartment = 'has removed you from ';
@@ -134,6 +134,9 @@ class AppString {
   static String textHiringManager = 'Hiring manager';
   static String textHiringTeam = 'Hiring team';
   static String textOn = 'on';
+  static String timelogApprover = 'Time log approver';
+  static String leaveApprover = 'Time log approver';
+  static String departmentHeaDText = 'Department head';
 
   static String text_current_password = 'Current Password';
   static String text_new_password = 'New Password';
