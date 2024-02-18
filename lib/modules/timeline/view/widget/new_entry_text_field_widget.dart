@@ -100,7 +100,9 @@ class TimeLogEntryTextField extends StatelessWidget {
                           child: CupertinoActivityIndicator(),
                         )
                       : CustomDoubleAppButton(
-                          buttonText: AppString.text_add.tr,
+                          buttonText: isFromUpdateTimelogEntry == true
+                              ? AppString.text_save.tr
+                              : AppString.text_add.tr,
                           onAction: () {
                             isFromUpdateTimelogEntry == true
                                 ? Get.find<TimelineController>()
@@ -341,7 +343,7 @@ class InTimePicker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GestureDetector(
-              child:  SizedBox(
+              child: SizedBox(
                 width: 50,
                 child: Text(AppString.text_close.tr),
               ),
@@ -351,7 +353,7 @@ class InTimePicker extends StatelessWidget {
             ),
             const SizedBox(width: 40),
             GestureDetector(
-              child:  SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
+              child: SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
               onTap: () {
                 if (time.length < 15) {
                   Get.find<DateTimePickerController>().inTime.value =
@@ -406,7 +408,7 @@ class OutTimePicker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GestureDetector(
-              child:  SizedBox(
+              child: SizedBox(
                 width: 50,
                 child: Text(AppString.text_close.tr),
               ),
@@ -416,7 +418,7 @@ class OutTimePicker extends StatelessWidget {
             ),
             const SizedBox(width: 40),
             GestureDetector(
-              child:  SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
+              child: SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
               onTap: () {
                 if (time.isNotEmpty) {
                   // set time in 00:00:00 format

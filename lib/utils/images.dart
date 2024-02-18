@@ -64,4 +64,5 @@ class Images {
   static String KEY_ICON = "assets/images/key.png";
   static String ORG = "assets/images/org.png";
   static String timer_animation = "assets/json/timer.json";
+  static String timer_stop_line_animation = "assets/json/timer_stop_horizontal_line.json";
 }

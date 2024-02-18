@@ -59,7 +59,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
         .getGraphQuery(queryString: cancelLeaveQuery, variables: {
       "inputData": {
         "leave_id": leaveId,
-        "status": "pending",
         "description": leaveNoteController.text,
         "end_date": DateTime.parse(endDate).toUtc().toString(),
         "start_date": DateTime.parse(startDate).toUtc().toString(),

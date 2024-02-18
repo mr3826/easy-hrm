@@ -16,6 +16,7 @@ import '../../../../common/domain/files_model.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../enum.dart';
 import '../../../../utils/utils.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../model/leave_record_response.dart';
 import '../widget/leave_record_details_view.dart';
 import '../widget/status_btn_widget.dart';
@@ -146,13 +147,12 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   _infoLayoutView(
       {required BuildContext context, required GetLeaveRecords leaveRecord}) {
     return GestureDetector(
-      onTap: () => customButtonMiddleSheet(
+      onTap: () => customAntButtonSheet(
           context: context,
           child: LeaveRecordDetails(
             status: leaveRecord.status ?? "",
             leaveRecords: leaveRecord,
-          ),
-          height: MediaQuery.of(context).size.height),
+          ),),
       child: SizedBox(
         child: Card(
           elevation: 0,

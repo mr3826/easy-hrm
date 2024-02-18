@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -16,7 +17,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import 'department_history.dart';
 
-Widget departmentLayout(context) {
+Widget departmentLayout(BuildContext? context) {
   return SizedBox(
     height: AppLayout.getHeight(289),
     child: Card(
@@ -34,7 +35,7 @@ Widget departmentLayout(context) {
                 height: 25,
                 width: 25),
             customSpacerHeight(height: 12),
-            _departmentHistoryInfo(),
+            _departmentHistoryInfo(context),
             customSpacerHeight(height: 12),
             _workingShiftLayout(context),
           ],
@@ -44,11 +45,10 @@ Widget departmentLayout(context) {
   );
 }
 
-_departmentHistoryInfo() {
+_departmentHistoryInfo(context) {
   return InkWell(
     onTap: () {
-      customButtonSheet(
-          height: .6, context: Get.context!, child: const DepartmentHistory());
+      customAntButtonSheet(context: context, child: const DepartmentHistory());
     },
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,8 +194,7 @@ _workShiftDetailsLayout() {
           //same time value return true, not need to click then
 
           if (allTimesSame == false) {
-            customButtonSheet(
-                height: .6,
+            customAntButtonSheet(
                 context: Get.context!,
                 child: _generateWorkShift(workSchedules!));
           }

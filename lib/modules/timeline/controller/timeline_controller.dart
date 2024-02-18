@@ -85,6 +85,8 @@ class TimelineController extends GetxController with StateMixin {
         if (Get.find<TimeCounterController>().timer.isActive &&
             Get.find<TimeCounterController>().animationTimer.isActive) {
           Get.find<TimeCounterController>().stop();
+          Get.find<TimeCounterController>()
+              .isRunningHorizontalLine(false);
         }
       }
       return true;

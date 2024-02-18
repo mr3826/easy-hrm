@@ -15,6 +15,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../controller/password_controller.dart';
 import '../widget/change_email_widget.dart';
 
@@ -66,11 +67,11 @@ class ChangeEmailScreen extends StatelessWidget {
                               } else {
                                 if (context.mounted) {
                                   editMailPasswordController.clear();
-                                  customButtonMiddleSheet(
+                                  customAntButtonSheet(
                                       context: context,
-
                                       child: ChangEmailFieldLayout(),
-                                      height: MediaQuery.of(context).size.height);
+
+                                  );
                                 }
                               }
                             }

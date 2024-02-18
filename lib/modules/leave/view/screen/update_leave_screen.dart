@@ -116,11 +116,9 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customTitleText(
                           text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
-
                       UpdateLeaveDropdown(
                           dropdownValue:
                               leaveRecords?.leaveType?.leaveId ?? ""),
-
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
                       customSpacerHeight(height: 20),
@@ -165,7 +163,6 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       AddAttachmentFile(
                         leaveRecords: leaveRecords,
                       ),
-
                       customSpacerHeight(height: 20),
                       Obx(() => Get.find<UpDateLeaveController>()
                               .isUpdateLeaveLoading
@@ -192,7 +189,8 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                                         .isNotEmpty) {
                                       _updateLeaveMethod();
                                     } else {
-                                      Get.find<DateTimeController>().isErrorOccurred(true);
+                                      Get.find<DateTimeController>()
+                                          .isErrorOccurred(true);
                                     }
                                   } else {
                                     _updateLeaveMethod();
@@ -277,7 +275,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                               .copyWith(color: AppColor.normalTextColor),
                         ),
                         Text(
-                        AppString.text_balance_no_of_days.tr,
+                          AppString.text_balance_no_of_days.tr,
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.hintColor,
                               fontSize: Dimensions.fontSizeDefault),
@@ -300,11 +298,20 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
         leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,
         endDate: Get.find<DateTimePickerController>().outDateTime.value,
+
         ///dev
-        size: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].size.toString():"",
-        name: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].name.toString():"",
-        key: leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].key.toString():"",
-        id:leaveRecords?.files !=null && leaveRecords!.files!.isNotEmpty?leaveRecords!.files![0].id.toString():"",
+        size: leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty
+            ? leaveRecords!.files![0].size.toString()
+            : "",
+        name: leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty
+            ? leaveRecords!.files![0].name.toString()
+            : "",
+        key: leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty
+            ? leaveRecords!.files![0].key.toString()
+            : "",
+        id: leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty
+            ? leaveRecords!.files![0].id.toString()
+            : "",
       );
     } else {
       showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);
