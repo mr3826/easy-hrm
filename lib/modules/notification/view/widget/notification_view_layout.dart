@@ -181,6 +181,7 @@ class NotificationViewLayout extends StatelessWidget {
         return _addedAsApproverNotification(
           changerName: changerName,
           index: index,
+          isForLeaveApprover: false,
           contextInfoText:
               _getContextInfoText(contextName: notificationContext),
           notificationDuration: _getNotificationDuration(
@@ -257,6 +258,7 @@ class NotificationViewLayout extends StatelessWidget {
         return _addedAsApproverNotification(
           changerName: changerName,
           index: index,
+          isForLeaveApprover: true,
           contextInfoText:
               _getContextInfoText(contextName: notificationContext),
           notificationDuration: _getNotificationDuration(
@@ -822,6 +824,7 @@ class NotificationViewLayout extends StatelessWidget {
 
   _addedAsApproverNotification(
       {required String changerName,
+      required bool isForLeaveApprover,
       required String contextInfoText,
       required String approverContext,
       required String notificationDuration,
@@ -837,7 +840,9 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.announment_notification,
+              image: isForLeaveApprover == true
+                  ? Images.leave_notification
+                  : Images.time_log_notification,
               color: AppColor.primaryColor),
           customSpacerWidth(width: 20),
           SizedBox(
