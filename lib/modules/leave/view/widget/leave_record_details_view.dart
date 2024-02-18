@@ -217,6 +217,7 @@ class LeaveRecordDetails extends StatelessWidget {
             Get.put(UpDateLeaveController());
             customAntButtonSheet(
                 context: context,
+                height: 700,
                 child: UpdateLeave(leaveRecords: leaveRecords));
           },
           btnColor: AppColor.primaryColor),
