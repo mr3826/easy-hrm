@@ -16,15 +16,16 @@ class TimerAnimation extends GetView<TimeCounterController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Stack(
+          alignment: Alignment.center,
           children: [
             controller.isRunning.isTrue ? _animatedContainer() : Container(),
             controller.isTotalCount.value == false
                 ? _totalCountContainer()
                 : _normalContainer(),
             Positioned(
-                bottom: 0,
-                left: 50,
-                right: 50,
+                bottom: -140,
+                left: -140,
+                right: -140,
                 child: _horizontalLineAnimation()),
           ],
         ));
@@ -105,7 +106,8 @@ class TimerAnimation extends GetView<TimeCounterController> {
     return Obx(
       () => (Get.find<TimeCounterController>().isRunning.isTrue &&
               Get.find<TimeCounterController>().isRunningHorizontalLine.isTrue)
-          ? Lottie.asset(Images.timer_animation)
+          ? Lottie.asset(Images.timer_animation,
+              height: 300, width: 300, fit: BoxFit.fitHeight)
           : Padding(
               padding: const EdgeInsets.only(
                 bottom: 70.0,
