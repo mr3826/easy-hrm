@@ -16,7 +16,10 @@ import '../../../home/view/screen/main_screen.dart';
 class LanguageLayout extends StatelessWidget {
   LanguageLayout({super.key});
 
-  final currentIndex = int.parse(GetStorage().read("languageIndex") !=null?GetStorage().read("languageIndex").toString():"0").obs;
+  final currentIndex = int.parse(GetStorage().read("languageIndex") != null
+          ? GetStorage().read("languageIndex").toString()
+          : "0")
+      .obs;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +38,16 @@ class LanguageLayout extends StatelessWidget {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           currentIndex.value = index;
-                          GetStorage().write("languageIndex",index);
-                          _changeLanguage(index: _getStringAccordingToIndex(index));
-                          Get.to(() => const MainScreen(
-                            routeIndex: 0,
-                          ));
+                          await GetStorage().write("languageIndex", index);
+                          _changeLanguage(
+                              index: _getStringAccordingToIndex(index));
+
+                          ///might need to change int offAll
+                          ///when also api data will change.
+                          Get.back();
+                          Get.back();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,8 +95,7 @@ _changeLanguage({required String index}) {
     Get.find<LanguageController>().changeLanguage("en", "US");
   } else if (index.toLowerCase() == Language.norwegian.name) {
     Get.find<LanguageController>().changeLanguage('no', 'NO');
-  } else {
-  }
+  } else {}
 }
 
 String _getStringAccordingToIndex(index) {
