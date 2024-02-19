@@ -207,6 +207,7 @@ Map<String, String> eng = {
   AppString.text_forgot_password: "Forgot password?",
   AppString.text_sign_in: "Sign In",
   AppString.text_cancel: "Cancel",
+  AppString.text_notication: "Notification",
   AppString.text_canceled: "Canceled",
   AppString.text_back: "Back",
   AppString.no_event_found_text: "No events for today!",

@@ -231,6 +231,7 @@ class AppString {
   static String text_please_valid_file = "Please selected valid document";
   static String text_please_valid_photo = "Please selected valid profile image";
   static String text_notications = "Notifications";
+  static String text_notication = "Notification";
   static String text_forgot_password = "Forgot password?";
   static String text_sign_in = "Sign In";
   static String text_cancel = "Cancel";

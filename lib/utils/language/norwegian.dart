@@ -237,6 +237,7 @@ Map<String, String> nn = {
   AppString.text_tab_to_view_timelog_summary:
       "Trykk for å se tidsloggoppsummering",
   AppString.forgotPassword: "Glemt passord?",
+  AppString.text_notication: "Melding",
   AppString.the_first_name_field_is_required: "Fornavnfeltet er påkrevd.",
   AppString.the_last_name_field_is_required: "Etternavnsfeltet er påkrevd.",
   AppString.the_password_field_is_required: "Passordfeltet er påkrevd.",
