@@ -42,11 +42,11 @@ class _MainScreenState extends State<MainScreen> {
         body: PersistentTabView(
           context,
           controller: controller,
-          screens: const [
-            TimelineScreen(),
-            LeaveScreen(),
-            Dashboard(),
-            NotificationScreen(),
+          screens:  [
+            const TimelineScreen(),
+            const LeaveScreen(),
+            const Dashboard(),
+            const NotificationScreen(),
             ProfileScreen(),
           ],
           items: iconList,

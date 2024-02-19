@@ -18,10 +18,14 @@ Widget  floatingButton({required Color bgBtnColor,required String btnText,requir
         width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: [
+            customSpacerWidth(width: 30),
              Icon(icon??Icons.add,color: AppColor.cardColor,size: 17,),
             customSpacerWidth(width: 4),
-            Center(child: Text(btnText,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor,fontWeight: FontWeight.w700,fontSize: Dimensions.radiusMid-1),)),
+            Expanded(child: Text(btnText,style: AppStyle.mid_large_text.copyWith(color: AppColor.cardColor,fontWeight: FontWeight.w700,fontSize: Dimensions.radiusMid-1,overflow: TextOverflow.ellipsis),)),
+            customSpacerWidth(width: 4),
+
           ],
         ),
       ),

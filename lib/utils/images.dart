@@ -56,6 +56,7 @@ class Images {
   static String LEAVE_REJECTED = "assets/images/leave_rejected.svg";
   static String LEAVE_APPROVED = "assets/images/leave_btn_appbar.svg";
   static String PLACEHOLDER = "assets/images/placeholder.png";
+  static String NOEWAYFLAG = "assets/images/Norwegian.png";
 
   static String EMPLOYEE_STATUS = "assets/images/employee_status.svg";
   static String FLAG = "assets/images/flag.svg";

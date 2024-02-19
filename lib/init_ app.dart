@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'common/controller/date_time_controller.dart';
+import 'common/controller/language_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/profile/controller/log_out_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
@@ -21,7 +22,7 @@ Future<void> initApp() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
-
+  Get.put(LanguageController());
   Get.put(ForgotPasswordController());
   Get.put(FileUploadController());
   Get.put(PickedFileFormStorage());
@@ -33,7 +34,4 @@ Future<void> initApp() async {
   Get.put(UpdateProfileController());
   Get.put(DateTimeController());
   Get.put(SplashController());
-
-
-
 }
