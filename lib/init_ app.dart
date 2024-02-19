@@ -1,3 +1,4 @@
+import 'package:payrun_mobile/common/controller/connectivity_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ Future<void> initApp() async {
       statusBarIconBrightness: Brightness.dark));
   Get.put(LanguageController());
   Get.put(ForgotPasswordController());
+  Get.put(ConnectivityController());
   Get.put(FileUploadController());
   Get.put(PickedFileFormStorage());
   Get.put(DateController());

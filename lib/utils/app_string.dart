@@ -15,6 +15,10 @@ class AppString {
   // Apps string here
 
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
+  static String text_retry = 'Retry';
+  static String no_internet_title_text = "No internet!!";
+  static String no_internet_subtitle_text =
+      "Make sure your Wi-Fi or cellular data is turned on and then try again";
   static String dateDifferenceIssueMessage = "In time must be before out time";
   static String text_stitch_org = "Switch Organization";
   static String text_first_and_last_field_is_requured =
@@ -211,6 +215,7 @@ class AppString {
   static String text_email = "Email";
   static String text_full_day = "Full day";
   static String text_days = "days";
+  static String text_day = "day";
   static String text_child_of_deparmtnet = "Child of";
   static String text_deparmtnet = "Department";
   static String text_history = "History";

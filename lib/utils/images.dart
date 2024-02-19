@@ -4,6 +4,7 @@ class Images {
   Images._();
 
   static String app_logo = "assets/images/app_logo.svg";
+  static String network_error = "assets/images/network_error.svg";
   static String splash_logo = "assets/images/splash_logo.svg";
   static String employee_on = "assets/images/employee_on.svg";
   static String leave_on = "assets/images/leave _on.svg";
