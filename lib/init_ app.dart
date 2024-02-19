@@ -1,3 +1,4 @@
+import 'package:payrun_mobile/common/controller/connectivity_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'modules/leave/controller/file_upload_controller.dart';
 import 'modules/leave/controller/picked_file_form_storage.dart';
 import 'modules/starting/controller/splash_controller.dart';
 
-
 Future<void> initApp() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +24,7 @@ Future<void> initApp() async {
       statusBarIconBrightness: Brightness.dark));
 
   Get.put(ForgotPasswordController());
+  Get.put(ConnectivityController());
   Get.put(FileUploadController());
   Get.put(PickedFileFormStorage());
   Get.put(DateController());
@@ -34,6 +35,4 @@ Future<void> initApp() async {
   Get.put(UpdateProfileController());
   Get.put(DateTimeController());
   Get.put(SplashController());
-
 }
-
