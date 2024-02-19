@@ -32,7 +32,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     Get.put(LeaveRecordsController());
     return controller.obx(
         (state) => Scaffold(
-            appBar: customAppbar(title: AppString.text_leave_records),
+            appBar: customAppbar(title: AppString.text_leave_records.tr),
             body: RefreshIndicator(
               backgroundColor: AppColor.cardColor,
               color: AppColor.primaryColor,

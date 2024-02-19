@@ -42,13 +42,7 @@ class _MainScreenState extends State<MainScreen> {
         body: PersistentTabView(
           context,
           controller: controller,
-          screens:  [
-            const TimelineScreen(),
-            const LeaveScreen(),
-            const Dashboard(),
-            const NotificationScreen(),
-            ProfileScreen(),
-          ],
+          screens: _screenListLayout(),
           items: iconList,
           backgroundColor: AppColor.backgroundColor,
           confineInSafeArea: true,
@@ -70,5 +64,15 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(TimelineController());
     Get.put(DashboardController());
     Get.put(NotificationController());
+  }
+
+  _screenListLayout() {
+    return [
+      const TimelineScreen(),
+      const LeaveScreen(),
+      const Dashboard(),
+      const NotificationScreen(),
+      ProfileScreen(),
+    ];
   }
 }
