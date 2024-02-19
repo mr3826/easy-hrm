@@ -1,8 +1,8 @@
 import '../app_string.dart';
 
 Map<String, String> eng = {
-
-  ///leave and timlog approver,departmentHeaDText,text_day,text_retry,no_internet_title_text,no_internet_subtitle_text
+  ///leave and timlog approver,departmentHeaDText,text_day,text_retry,no_internet_title_text,no_internet_subtitle_text,text_notication ;
+  AppString.text_notication: "Notification",
   AppString.timelogApprover: 'Time log approver',
   AppString.no_internet_title_text: "No internet!!",
   AppString.no_internet_subtitle_text:
