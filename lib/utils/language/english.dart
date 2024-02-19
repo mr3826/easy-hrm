@@ -1,9 +1,16 @@
 import '../app_string.dart';
 
 Map<String, String> eng = {
+  ///leave and timlog approver,departmentHeaDText,text_day,text_retry,no_internet_title_text,no_internet_subtitle_text
 
-
-  ///leave and timlog approver,departmentHeaDText
+  AppString.timelogApprover: 'Time log approver',
+  AppString.no_internet_title_text: "No internet!!",
+  AppString.no_internet_subtitle_text:
+      "Make sure your Wi-Fi or cellular data is turned on and then try again",
+  AppString.text_retry: 'Retry',
+  AppString.leaveApprover: 'Time log approver',
+  AppString.departmentHeaDText: 'Department head',
+  AppString.text_day: "day",
   AppString.leaveAddedSuccessMessage: "Leave Added Successfully",
   AppString.dateDifferenceIssueMessage: "In time must be before out time",
   AppString.text_stitch_org: "Switch Organization",

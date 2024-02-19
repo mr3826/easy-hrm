@@ -63,7 +63,7 @@ class AppPages {
     GetPage(
       name: _Paths.MAIN_SCREEN,
       transition: Transition.size,
-      page: () => MainScreen(),
+      page: () => const MainScreen(),
     ),
     GetPage(
       name: _Paths.LEAVE_SCREEN,
