@@ -11,6 +11,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/controller/language_controller.dart';
 import '../../../../enum.dart';
+import '../../../home/view/screen/main_screen.dart';
 
 class LanguageLayout extends StatelessWidget {
   LanguageLayout({super.key});
@@ -38,6 +39,9 @@ class LanguageLayout extends StatelessWidget {
                           currentIndex.value = index;
                           GetStorage().write("languageIndex",index);
                           _changeLanguage(index: _getStringAccordingToIndex(index));
+                          Get.to(() => const MainScreen(
+                            routeIndex: 0,
+                          ));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
