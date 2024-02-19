@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../utils/app_color.dart';
@@ -38,11 +40,13 @@ Future<bool> _onWillPop() async {
 List<PersistentBottomNavBarItem> _navBarsItems() {
   return [
     _navbarIcon(
-        activeIcon: Images.clock_nav_svg,
-        unActiveIcon: Images.clock_outline_nav),
+        activeIcon: Images.timelineIconNav,
+        text: AppString.text_time_line.tr,
+        imgUrl: Images.clock_nav),
     _navbarIcon(
-        activeIcon: Images.airplane_nav,
-        unActiveIcon: Images.airplane_outline_nav),
+        activeIcon: Images.leaveIconNav,
+        text: AppString.text_leave.tr,
+        imgUrl: Images.leaveIconNavOutLine),
     PersistentBottomNavBarItem(
       icon: const Icon(
         Icons.home_filled,
@@ -57,28 +61,50 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       ),
     ),
     _navbarIcon(
-        activeIcon: Images.notification_nav,
-        unActiveIcon: Images.notification_out_nav),
+        activeIcon: Images.notificationIconNav,
+        text: AppString.text_notication.tr,
+        imgUrl: Images.notificationIconNavOutLine),
     _navbarIcon(
-        activeIcon: Images.profile_nav, unActiveIcon: Images.profile_out_nav),
+        activeIcon: Images.profileIconNav,
+        text: AppString.text_profile.tr,
+        imgUrl: Images.profileIconNavOutLine),
   ];
 }
 
 PersistentBottomNavBarItem _navbarIcon(
-    {required activeIcon, required unActiveIcon}) {
+    {required activeIcon, required String text, imgUrl}) {
   return PersistentBottomNavBarItem(
     icon: SizedBox(
       height: AppLayout.getHeight(25),
-      child: SvgPicture.asset(
-        activeIcon,
-        fit: BoxFit.cover,
+      child: Column(
+        children: [
+          customSvgImage(imageUrl: activeIcon, height: 25, width: 25),
+          customSpacerHeight(height: 2),
+          Text(
+            text,
+            style: AppStyle.mid_large_text
+                .copyWith(fontSize: 10, color: AppColor.primaryColor),
+          )
+        ],
       ),
     ),
     inactiveIcon: SizedBox(
       height: AppLayout.getHeight(25),
-      child: SvgPicture.asset(
-        unActiveIcon,
-        fit: BoxFit.cover,
+      child: Column(
+        children: [
+          // Image.asset(imgUrl),
+          customSvgImage(
+              imageUrl: imgUrl,
+              color: AppColor.hintColor,
+              height: 25,
+              width: 25),
+          customSpacerHeight(height: 2),
+          Text(
+            text,
+            style: AppStyle.mid_large_text
+                .copyWith(fontSize: 10, color: AppColor.hintColor),
+          )
+        ],
       ),
     ),
   );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
@@ -26,11 +27,11 @@ import '../widget/action_layout_widget.dart';
 import '../widget/chnage_email_notify_layout.dart';
 import '../widget/expanded_text_layout.dart';
 import '../widget/language_widget.dart';
-import '../widget/organisation_widget.dart';
+import '../widget/organization_widget.dart';
 import '../widget/profile_appbar.dart';
 
 class ProfileScreen extends GetView<UserProfileController> {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -289,7 +290,7 @@ class ProfileScreen extends GetView<UserProfileController> {
         padding: marginLayout.copyWith(left: 8, right: 8),
         child: Row(
           children: [
-            SizedBox(height: 20, child: Image.asset(Images.FLAG_PNG)),
+            SizedBox(height: 20, child: Image.asset(_getLanguageFlag())),
             customSpacerWidth(width: 8),
             Row(
               children: [
@@ -300,9 +301,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                       color: AppColor.hintColor),
                 ),
                 Text(
-                  controller.userDetails?.getOrganizationUserDetails
-                          ?.organization?.organizationSetting?.language ??
-                      "",
+                  _getLanguageName(),
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
                       fontSize: Dimensions.fontSizeDefault + 1),
@@ -643,5 +642,43 @@ class ProfileScreen extends GetView<UserProfileController> {
     await controller.getEmploymentInfo();
     await controller.getUserLogHistory();
     await controller.getOrganizationInfo();
+  }
+
+  String _getLanguageName() {
+    if (GetStorage().read("languageCode") != null) {
+      switch (GetStorage().read("languageCode")) {
+        case "en":
+          {
+            return "English";
+          }
+        case "no":
+          {
+           return "Norwegian";
+          }
+        default:
+        return  "English";
+      }
+    }
+    return  "English";
+  }
+  List languageFlagIndex = [Images.FLAG_PNG, Images.NOEWAYFLAG];
+
+
+  String _getLanguageFlag() {
+    if (GetStorage().read("languageCode") != null) {
+      switch (GetStorage().read("languageCode")) {
+        case "en":
+          {
+            return Images.FLAG_PNG;
+          }
+        case "no":
+          {
+            return Images.NOEWAYFLAG;
+          }
+        default:
+          return Images.FLAG_PNG;
+      }
+    }
+    return Images.FLAG_PNG;
   }
 }

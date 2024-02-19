@@ -18,6 +18,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/widget/custom_drawer.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../utils/utils.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
@@ -216,13 +217,30 @@ class LeaveRecordDetails extends StatelessWidget {
             }
             Get.put(UpDateLeaveController());
 
-            customAntButtonSheet(
+            _customButtonSheet(
                 context: context,
-                height: 700,
                 child: UpdateLeave(leaveRecords: leaveRecords));
           },
           btnColor: AppColor.primaryColor),
     );
+  }
+
+  void _customButtonSheet({context, child}) {
+    return showCustomAtmBtnSheet(
+        height: Get.height * .8,
+        context: context,
+        child: Material(
+          color: AppColor.noColor,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(Dimensions.radiusMid),
+                  topLeft: Radius.circular(Dimensions.radiusMid)),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        ));
   }
 
   _approvedLayout(context) {
