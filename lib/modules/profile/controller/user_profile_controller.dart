@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:payrun_mobile/common/domain/token_model.dart';
-import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -362,47 +361,9 @@ class UserProfileController extends GetxController with StateMixin {
     }
   }
 
-  Future<void> login(
-      {required String email,
-      required String password,
-      required String orgId,
-      required String organizationName}) async {
-    isOrganizationChangeLoading(true);
-
-    print(
-        "ORGANIZATION_ID:: ${GetStorage().read(AppString.ORGANIZATION_ID) == orgId}");
-    try {
-      Response response = await NetworkClient().postRequest(
-          Api.LOGIN, {"email": email, "password": password, "orgId": orgId});
-      if (response.hasError) {
-        logErrorMessage(logName: "login", response: response);
-
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ?? "");
-      } else {
-        logSuccessMessage(logName: "login", response: response);
-        GetStorage().write(AppString.ORGANIZATION_ID, orgId);
-        print(
-            "Is itToken Matched:: ${GetStorage().read(AppString.ID_TOKEN) == SignInResponse.fromJson(response.body).data?.idToken}");
-        GetStorage().write(AppString.ID_TOKEN,
-            SignInResponse.fromJson(response.body).data?.idToken ?? "");
-        GetStorage().write(AppString.ACCESS_TOKEN,
-            SignInResponse.fromJson(response.body).data?.accessToken ?? "");
-        GetStorage().write(AppString.REFRESH_TOKEN,
-            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
-        _saveData(email, password, organizationName);
-        Future.delayed(const Duration(milliseconds: 800),
-            () => Get.offAllNamed(Routes.MAIN_SCREEN));
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    isOrganizationChangeLoading(false);
-  }
-
   void _saveData(String email, String pass, String organizationName) {
     LastInput myInput =
-        LastInput(email: email, password: pass, orgName: organizationName);
+        LastInput(email: email);
     Map<String, dynamic> jsonModel = myInput.toJson();
     String jsonObject = jsonEncode(jsonModel);
     GetStorage().write(AppString.LAST_INPUT, jsonObject);

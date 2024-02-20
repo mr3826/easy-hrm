@@ -1,14 +1,15 @@
 class SignInResponse {
   String? message;
   Data? data;
+  String? ordId;
 
-  SignInResponse({this.message, this.data});
+  SignInResponse({this.message, this.data, this.ordId});
 
   SignInResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    ordId = json['organization_id'];
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-
 }
 
 class Data {
@@ -25,5 +26,4 @@ class Data {
     expiresIn = json['expiresIn'];
     refreshToken = json['refreshToken'];
   }
-
 }
