@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/add_to_task.dart';
@@ -12,6 +14,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_card_style.dart';
+import '../../../../utils/images.dart';
 import '../../controller/timeline_controller.dart';
 import '../../controller/timer_controller.dart';
 import '../widget/timer_animation.dart';
@@ -25,6 +28,8 @@ class TimerScreen extends StatelessWidget {
       appBar: customAppbar(title: AppString.text_timer.tr),
       backgroundColor: AppColor.secondaryColor,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _dateText(
               date: DateFormat('E, d MMMM - yyyy').format(DateTime.now())),
@@ -38,9 +43,12 @@ class TimerScreen extends StatelessWidget {
               }
             },
             child: SizedBox(
-                width: AppLayout.getWidth(400),
-                height: AppLayout.getWidth(500),
+                width: double.infinity,
+                height: AppLayout.getWidth(400),
                 child: const TimerAnimation()),
+          ),
+          const Spacer(
+            flex: 2,
           ),
           Obx(
             () => _saveBtn(
@@ -66,7 +74,10 @@ class TimerScreen extends StatelessWidget {
                 }
               },
             ),
-          )
+          ),
+          const Spacer(
+            flex: 2,
+          ),
         ],
       ),
     );

@@ -16,16 +16,18 @@ class TimerAnimation extends GetView<TimeCounterController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Stack(
+          alignment: Alignment.center,
           children: [
             controller.isRunning.isTrue ? _animatedContainer() : Container(),
             controller.isTotalCount.value == false
                 ? _totalCountContainer()
                 : _normalContainer(),
-            Positioned(
-                bottom: 0,
-                left: 50,
-                right: 50,
-                child: _horizontalLineAnimation()),
+            Obx(() => (Get.find<TimeCounterController>().isRunning.isTrue &&
+                    Get.find<TimeCounterController>()
+                        .isRunningHorizontalLine
+                        .isTrue)
+                ? _horizontalLineAnimation()
+                : _nullHorizontalLineLayout()),
           ],
         ));
   }
@@ -102,30 +104,34 @@ class TimerAnimation extends GetView<TimeCounterController> {
   }
 
   _horizontalLineAnimation() {
-    return Obx(
-      () => (Get.find<TimeCounterController>().isRunning.isTrue &&
-              Get.find<TimeCounterController>().isRunningHorizontalLine.isTrue)
-          ? Lottie.asset(Images.timer_animation)
-          : Padding(
-              padding: const EdgeInsets.only(
-                bottom: 70.0,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: List.generate(
-                    4,
-                    (index) => Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Icon(
-                            Icons.circle,
-                            color: AppColor.cardColor.withOpacity(0.2),
-                            size: 12,
-                          ),
-                        )),
-              ),
-            ),
+    return Positioned(
+        bottom: -140,
+        left: -140,
+        right: -140,
+        child: Lottie.asset(Images.timer_animation,
+            height: 300, width: 300, fit: BoxFit.fitHeight));
+  }
+
+  _nullHorizontalLineLayout() {
+    return Positioned(
+      bottom: -0,
+      left: -50,
+      right: -50,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: List.generate(
+            4,
+            (index) => Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Icon(
+                    Icons.circle,
+                    color: AppColor.cardColor.withOpacity(0.2),
+                    size: 20,
+                  ),
+                )),
+      ),
     );
   }
 }

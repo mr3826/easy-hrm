@@ -61,7 +61,8 @@ class ChangePasswordScreen extends StatelessWidget {
                     hintText: AppString.text_min_8_character.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return AppString.the_confirm_password_field_is_required.tr;
+                        return AppString
+                            .the_confirm_password_field_is_required.tr;
                       } else {
                         return null;
                       }

@@ -123,11 +123,13 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                         .applyLeave();
                                   } else {
                                     showWarningMessage(
-                                        message: AppString.text_no_available_leave.tr);
+                                        message: AppString
+                                            .text_no_available_leave.tr);
                                   }
                                 } else {
                                   showWarningMessage(
-                                      message: AppString.text_provid_a_valid_input.tr);
+                                      message: AppString
+                                          .text_provid_a_valid_input.tr);
                                 }
                               },
                               buttonText: AppString.text_apply.tr,

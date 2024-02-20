@@ -4,6 +4,7 @@ class Images {
   Images._();
 
   static String app_logo = "assets/images/app_logo.svg";
+  static String network_error = "assets/images/network_error.svg";
   static String splash_logo = "assets/images/splash_logo.svg";
   static String employee_on = "assets/images/employee_on.svg";
   static String leave_on = "assets/images/leave _on.svg";
@@ -22,6 +23,15 @@ class Images {
   static String leaveImage6 = "assets/images/Custom Icons-6.svg";
   static String leaveImage7 = "assets/images/Custom Icons-7.svg";
   static String leaveImage8 = "assets/images/Custom Icons-8.svg";
+
+  static String leaveIconNavOutLine = "assets/images/leave_Icon_nav.svg";
+  static String profileIconNavOutLine =
+      "assets/images/notification_outline.svg";
+  static String notificationIconNavOutLine = "assets/images/notification.svg";
+  static String timelineIconNav = "assets/images/timline_icon.svg";
+  static String leaveIconNav = "assets/images/leave_icon.svg";
+  static String notificationIconNav = "assets/images/notification_icon.svg";
+  static String profileIconNav = "assets/images/profile_icon.svg";
 
   static String forgot = "assets/images/forgot_src.svg";
   static String otp = "assets/images/otp_src.svg";
@@ -56,6 +66,8 @@ class Images {
   static String LEAVE_REJECTED = "assets/images/leave_rejected.svg";
   static String LEAVE_APPROVED = "assets/images/leave_btn_appbar.svg";
   static String PLACEHOLDER = "assets/images/placeholder.png";
+  static String NOEWAYFLAG = "assets/images/Norwegian.png";
+  static String CLOCK_ICON = "assets/images/clock.png";
 
   static String EMPLOYEE_STATUS = "assets/images/employee_status.svg";
   static String FLAG = "assets/images/flag.svg";
@@ -64,5 +76,6 @@ class Images {
   static String KEY_ICON = "assets/images/key.png";
   static String ORG = "assets/images/org.png";
   static String timer_animation = "assets/json/timer.json";
-  static String timer_stop_line_animation = "assets/json/timer_stop_horizontal_line.json";
+  static String timer_stop_line_animation =
+      "assets/json/timer_stop_horizontal_line.json";
 }
