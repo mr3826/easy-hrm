@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 
 import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
@@ -11,7 +12,6 @@ import '../../utils/app_style.dart';
 import '../../utils/images.dart';
 import '../widget/custom_spacer.dart';
 
-
 class ConnectivityController extends GetxController {
   final Connectivity _connectivity = Connectivity();
   final isDialogIsOpened = false.obs;
@@ -19,7 +19,7 @@ class ConnectivityController extends GetxController {
   @override
   void onInit() {
     _connectivity.onConnectivityChanged.listen(
-            (connectivityResult) => _updateConnectivity(connectivityResult));
+        (connectivityResult) => _updateConnectivity(connectivityResult));
     super.onInit();
   }
 
@@ -29,20 +29,20 @@ class ConnectivityController extends GetxController {
       isDialogIsOpened(true);
     } else {
       if (isDialogIsOpened.isTrue) {
-        Get.offAllNamed(Routes.MAIN_SCREEN);
+        Get.find<SplashController>().chooseScreen();
       }
       isDialogIsOpened(false);
     }
   }
 }
 
-
 class NetworkErrorPage extends StatelessWidget {
   const NetworkErrorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: WillPopScope(
+    return Scaffold(
+        body: WillPopScope(
       child: Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(20)),
@@ -73,7 +73,7 @@ class NetworkErrorPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8)),
               padding: EdgeInsets.symmetric(vertical: AppLayout.getHeight(8)),
               child:
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Icon(
                   Icons.refresh,
                   color: Colors.white,
