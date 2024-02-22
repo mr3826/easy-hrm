@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -209,7 +208,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
           "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
     }
     return Text(
-      "$leaveDate | ${leaveRecord.duration}",
+      "$leaveDate | ${leaveRecord.duration != null && leaveRecord.duration.runtimeType != String ? leaveRecord.duration > 1 ? "${leaveRecord.duration} ${AppString.text_days.tr}" : "${leaveRecord.duration} ${AppString.text_day.tr}" : ""}",
       style: AppStyle.mid_large_text.copyWith(
           color: AppColor.secondaryColor.withOpacity(0.7),
           fontSize: Dimensions.fontSizeDefault - 2,
