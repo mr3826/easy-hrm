@@ -16,6 +16,7 @@ import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import '../../../common/domain/error_model.dart';
 import '../../../common/domain/last_input_model.dart';
+import '../../../common/widget/custom_text_field.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_string.dart';
@@ -32,6 +33,12 @@ class UserProfileController extends GetxController with StateMixin {
     getUserLogHistory();
     getOrganizationInfo();
     super.onInit();
+  }
+
+  RxBool isValue = true.obs;
+
+  changeVal() {
+    return isValue.value = !isValue.value;
   }
 
   UserDetails? userDetails;
@@ -201,10 +208,12 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
+    print("orgIdZ:$orgId");
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
       TokenModel tokenModel = TokenModel.fromJson(jsonMap);
+      print(tokenModel.idToken == GetStorage().read(AppString.ID_TOKEN));
       if (_checkTokenExpiration(accessToken: tokenModel.accessToken ?? "")
               .isNegative ||
           _checkTokenExpiration(accessToken: tokenModel.accessToken ?? "") <
@@ -219,6 +228,10 @@ class UserProfileController extends GetxController with StateMixin {
           }
         });
       } else {
+        GetStorage().write(AppString.ORGANIZATION_ID, orgId);
+        GetStorage().write(AppString.ID_TOKEN, tokenModel.idToken);
+        GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
+        GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
         Future.delayed(const Duration(milliseconds: 400),
             () => Get.offAllNamed(Routes.MAIN_SCREEN));
       }
@@ -231,31 +244,62 @@ class UserProfileController extends GetxController with StateMixin {
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(12)),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(AppString.text_password.tr),
-                  customSpacerHeight(height: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColor.hintColor),
-                    ),
-                    child: TextField(
+              child: Obx(
+                () => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(AppString.text_password.tr),
+                    customSpacerHeight(height: 10),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(
+                    //       horizontal: 16, vertical: 10),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(12),
+                    //     border: Border.all(color: AppColor.hintColor),
+                    //   ),
+                    //   child: TextField(
+                    //     obscureText: true,
+                    //     controller: passwordInputController,
+                    //     decoration: InputDecoration.collapsed(
+                    //         hintText: AppString.text_password.tr),
+                    //   ),
+                    // ),
+                    CustomPassInputField(
+                      hint: AppString.text_password.tr,
                       controller: passwordInputController,
-                      decoration: InputDecoration.collapsed(
-                          hintText: AppString.text_password.tr),
+                      prefixIcon: Icons.lock_open_outlined,
+                      obsValue: isValue.value,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return AppString
+                              .the_password_field_is_required.tr;
+                        } else if (value.length < 6) {
+                          return AppString.incorrect_user_or_password.tr;
+                        } else {
+                          return null;
+                        }
+                      },
+                      weight: IconButton(
+                        onPressed: () => changeVal(),
+                        icon: isValue.isTrue
+                            ? const Icon(
+                                Icons.visibility_off_outlined,
+                                color: AppColor.hintColor,
+                              )
+                            : const Icon(
+                                Icons.remove_red_eye_outlined,
+                                color: AppColor.hintColor,
+                              ),
+                      ),
                     ),
-                  ),
-                  customSpacerHeight(height: 10),
-                  Obx(
-                    () => isNewOrganizationChangeLoading.isTrue
-                        ? const CupertinoActivityIndicator(
-                            color: Colors.blueAccent,
-                            radius: 14,
+                    customSpacerHeight(height: 10),
+                    isNewOrganizationChangeLoading.isTrue
+                        ? const Center(
+                            child: CupertinoActivityIndicator(
+                              color: Colors.blueAccent,
+                              radius: 14,
+                            ),
                           )
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -290,6 +334,7 @@ class UserProfileController extends GetxController with StateMixin {
                                                       .message ??
                                                   "");
                                         } else {
+                                          passwordInputController.clear();
                                           Map<String, dynamic> jsonModel =
                                               TokenModel(
                                             accessToken:
@@ -353,8 +398,8 @@ class UserProfileController extends GetxController with StateMixin {
                               customSpacerWidth(width: 16),
                             ],
                           ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ));
@@ -362,8 +407,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   void _saveData(String email, String pass, String organizationName) {
-    LastInput myInput =
-        LastInput(email: email);
+    LastInput myInput = LastInput(email: email);
     Map<String, dynamic> jsonModel = myInput.toJson();
     String jsonObject = jsonEncode(jsonModel);
     GetStorage().write(AppString.LAST_INPUT, jsonObject);
