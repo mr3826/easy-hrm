@@ -61,10 +61,6 @@ class SignInScreen extends GetView<SignInController> {
                           ///App logo
                           _logoLayout(context),
                           customSpacerHeight(height: 70),
-
-                          ///Organization domain
-                          Obx(() => _organizationNameLayout()),
-                          customSpacerHeight(height: 8),
                           Obx(() => _organizationNameErrorLayout()),
                           customSpacerHeight(height: 20),
 
@@ -154,57 +150,6 @@ class SignInScreen extends GetView<SignInController> {
     );
   }
 
-  _organizationNameLayout() {
-    return Focus(
-      onFocusChange: (value) {
-        if (value == false) {
-          controller.getOrganizationDomain();
-        }
-      },
-      child: TextFormField(
-        controller: orgNameController,
-        style: AppStyle.mid_large_text.copyWith(
-            fontWeight: FontWeight.w400,
-            color: AppColor.normalTextColor,
-            fontSize: Dimensions.fontSizeDefault),
-        autofocus: false,
-        decoration: InputDecoration(
-          hintText: AppString.text_organization_name.tr,
-          hintStyle: TextStyle(
-              color: AppColor.hintColor,
-              fontFamily: "Poppins",
-              fontSize: Dimensions.fontSizeDefault + 1),
-          prefixIcon: const Icon(
-            Icons.home_work_outlined,
-            color: AppColor.hintColor,
-          ),
-          suffixIcon: SizedBox(
-              height: 2,
-              width: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: controller.isLoading.value
-                    ? const Center(
-                        child: CupertinoActivityIndicator(
-                        animating: true,
-                      ))
-                    : Container(),
-              )),
-          border: OutlineInputBorder(
-            borderSide:
-                const BorderSide(width: 0.0, color: AppColor.primaryColor),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
-          ),
-          focusColor: AppColor.primaryColor,
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.disableColor)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColor.disableColor),
-              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-        ),
-      ),
-    );
-  }
 
   _logInBtnLayout(BuildContext context) {
     return CustomAppButton(
@@ -222,14 +167,8 @@ class SignInScreen extends GetView<SignInController> {
       onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-          if (GetStorage().read(AppString.ORGANIZATION_ID) != null) {
-            await controller.login(
-                email: emailController.text,
-                password: passwordController.text,
-                orgId: GetStorage().read(AppString.ORGANIZATION_ID));
-          } else {
-            showErrorMessage(message: AppString.organizationNotFoundMessage.tr);
-          }
+          await controller.login(
+              email: emailController.text, password: passwordController.text);
         }
       },
       buttonColor: AppColor.primaryColor,
