@@ -43,6 +43,7 @@ customDialog(
             customSpacerHeight(height: 12),
             Text(
               titleText,
+              textAlign: TextAlign.center,
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor, fontWeight: FontWeight.w600),
             ),
@@ -50,6 +51,7 @@ customDialog(
             Center(
                 child: Text(
               subText,
+              textAlign: TextAlign.center,
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   fontSize: drcFontSize ?? Dimensions.fontSizeDefault),
@@ -75,4 +77,3 @@ customDialog(
     ),
   );
 }
-
