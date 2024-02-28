@@ -42,7 +42,7 @@ class TimelineController extends GetxController with StateMixin {
   String timeLogDuration = "";
   String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
-  late Timer _apiCallAfter2MinsTimer;
+  Timer _apiCallAfter2MinsTimer=Timer(Duration.zero, () { });
   RxString projectColor = ''.obs;
   final searchInputData = TextEditingController().obs;
 
@@ -462,6 +462,8 @@ class TimelineController extends GetxController with StateMixin {
           .addAll(timelogList ?? []);
     }
 
+
+
     isTimelineCalendarByDateLoading(false);
   }
 
@@ -533,7 +535,7 @@ class TimelineController extends GetxController with StateMixin {
 
   void updateDataAfterTwoMinutes() {
     _apiCallAfter2MinsTimer =
-        Timer.periodic(const Duration(minutes: 2), (timer) async {
+        Timer.periodic(const Duration(seconds: 30), (timer) async {
       if (calendarTimeline.getCalenderTimelinesForApp != null) {
         if (timelogList!.isNotEmpty) {
           for (var value in timelogList!) {
