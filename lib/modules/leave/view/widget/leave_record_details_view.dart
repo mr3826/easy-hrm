@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,12 +51,7 @@ class LeaveRecordDetails extends StatelessWidget {
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: AppString.text_duration.tr,
-              dynamicText: leaveRecords?.duration != null &&
-                      leaveRecords?.duration.runtimeType != String
-                  ? leaveRecords?.duration > 1
-                      ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
-                      : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}"
-                  : ""),
+              dynamicText: _getDurationTime()),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
           _infoLayout(
               text: AppString.text_date_of_application.tr,
@@ -289,5 +285,21 @@ class LeaveRecordDetails extends StatelessWidget {
                 fontSize: Dimensions.fontSizeDefault + 1,
                 color: AppColor.cardColor),
           );
+  }
+
+  String _getDurationTime() {
+    if (leaveRecords?.duration != null &&
+        leaveRecords?.duration.runtimeType != String) {
+      return leaveRecords?.duration > 1
+          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
+          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
+    } else if (leaveRecords?.duration != null &&
+        leaveRecords?.duration.runtimeType == String) {
+      return double.parse(leaveRecords?.duration) > 1
+          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
+          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
+    } else {
+      return "";
+    }
   }
 }

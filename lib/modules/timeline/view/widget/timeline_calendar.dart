@@ -257,8 +257,8 @@ class TimeLineCalendar extends StatelessWidget {
                                   .toString()
                                   .substring(1, endDate.toString().length - 1)
                                   .toString(),
-                              duration: double.parse(numberOfDays.substring(
-                                  1, numberOfDays.length - 1)),
+                              duration: numberOfDays.substring(
+                                  1, numberOfDays.length - 1),
                               description: description.toString().substring(
                                   1, description.toString().length - 1),
                               leaveType: LeaveType(
