@@ -1,5 +1,8 @@
 import '../../leave/model/leave_record_response.dart';
 
+
+
+
 class CalendarTimeline {
   GetCalenderTimelinesForApp? getCalenderTimelinesForApp;
 
@@ -11,6 +14,16 @@ class CalendarTimeline {
             json['getCalenderTimelinesForApp'])
         : null;
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    if (getCalenderTimelinesForApp != null) {
+      data['getCalenderTimelinesForApp'] =
+          getCalenderTimelinesForApp!.toJson();
+    }
+    return data;
+  }
+
 }
 
 class GetCalenderTimelinesForApp {
@@ -32,6 +45,15 @@ class GetCalenderTimelinesForApp {
         timelines!.add(Timelines.fromJson(v));
       });
     }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    if (this.timelines != null) {
+      data['timelines'] = this.timelines!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
@@ -66,6 +88,22 @@ class Timelines {
     project =
         json['project'] != null ? Project.fromJson(json['project']) : null;
   }
+
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['description'] = this.description;
+    data['end_date'] = this.endDate;
+    data['start_date'] = this.startDate;
+    data['status'] = this.status;
+    data['task'] = this.task;
+    data['total_minutes'] = this.totalMinutes;
+    if (this.project != null) {
+      data['project'] = this.project!.toJson();
+    }
+    return data;
+  }
 }
 
 class Task {
@@ -76,6 +114,13 @@ class Task {
   Task.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
   }
 }
 
@@ -90,5 +135,13 @@ class Project {
     id = json['id'];
     name = json['name'];
     color = json['color'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['color'] = this.color;
+    return data;
   }
 }

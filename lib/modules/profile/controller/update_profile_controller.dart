@@ -61,7 +61,6 @@ class UpdateProfileController extends GetxController {
         currentPasswordController.clear();
         newPasswordController.clear();
         confirmPasswordController.clear();
-
         Get.offAllNamed(Routes.MAIN_SCREEN);
       }
     } catch (e) {
