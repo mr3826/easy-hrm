@@ -12,6 +12,7 @@ import '../../../utils/utils.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/leave_type.dart';
 import 'file_upload_controller.dart';
+import 'leave_screen_controller.dart';
 
 class UpDateLeaveController extends GetxController with StateMixin {
   @override
@@ -41,18 +42,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
       required String name,
       required String id,
       required String? leaveTypeId}) async {
-    log("""
-    required String leaveId::$leaveId,
-      required String startDate::${DateTime.parse(startDate).toUtc().toString()},
-      required String? endDate::${DateTime.parse(endDate).toUtc().toString()}
-      leaveType id:: $leaveTypeId
-      "file ::: ${Get.find<FileUploadController>().storageForUpload.filePath}
-            "name": $name,
-             "key": $key,
-             "size": $size,
-             "file key ::: ${Get.find<FileUploadController>().storageForUpload.filePath.isNotEmpty}
-                         
-    """);
 
     isUpdateLeaveLoading(true);
     final response = await NetworkClient()
@@ -89,7 +78,9 @@ class UpDateLeaveController extends GetxController with StateMixin {
       isUpdateLeaveLoading(false);
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
       isFileUploadedSuccessfully(false);
-      Get.offAll(() => const MainScreen(routeIndex: 1));
+      Get.back(canPop: false);
+      Get.back(canPop: false);
+      updateData();
     }
     isUpdateLeaveLoading(false);
   }
