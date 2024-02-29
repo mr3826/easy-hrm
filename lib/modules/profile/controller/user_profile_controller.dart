@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
@@ -165,6 +167,11 @@ class UserProfileController extends GetxController with StateMixin {
         logSuccessMessage(
             logName: "submitVerificationCode", response: response);
         changeEmailController.clear();
+        if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
+          for (var value in Get.find<TimelineController>().timelogList!) {
+            CalendarControllerProvider.of(Get.context!).controller.remove(value);
+          }
+        }
         Get.offAllNamed(Routes.MAIN_SCREEN);
       }
     } catch (e) {
@@ -221,6 +228,13 @@ class UserProfileController extends GetxController with StateMixin {
         _getNewToken(refreshToken: tokenModel.refreshToken ?? "", orgId: orgId)
             .then((value) {
           if (value == true) {
+
+            if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
+              for (var value in Get.find<TimelineController>().timelogList!) {
+                CalendarControllerProvider.of(Get.context!).controller.remove(value);
+              }
+            }
+
             Future.delayed(const Duration(milliseconds: 400),
                 () => Get.offAllNamed(Routes.MAIN_SCREEN));
           } else {
@@ -232,6 +246,12 @@ class UserProfileController extends GetxController with StateMixin {
         GetStorage().write(AppString.ID_TOKEN, tokenModel.idToken);
         GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
         GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
+
+        if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
+          for (var value in Get.find<TimelineController>().timelogList!) {
+            CalendarControllerProvider.of(Get.context!).controller.remove(value);
+          }
+        }
         Future.delayed(const Duration(milliseconds: 400),
             () => Get.offAllNamed(Routes.MAIN_SCREEN));
       }
@@ -251,20 +271,6 @@ class UserProfileController extends GetxController with StateMixin {
                   children: [
                     Text(AppString.text_password.tr),
                     customSpacerHeight(height: 10),
-                    // Container(
-                    //   padding: const EdgeInsets.symmetric(
-                    //       horizontal: 16, vertical: 10),
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(12),
-                    //     border: Border.all(color: AppColor.hintColor),
-                    //   ),
-                    //   child: TextField(
-                    //     obscureText: true,
-                    //     controller: passwordInputController,
-                    //     decoration: InputDecoration.collapsed(
-                    //         hintText: AppString.text_password.tr),
-                    //   ),
-                    // ),
                     CustomPassInputField(
                       hint: AppString.text_password.tr,
                       controller: passwordInputController,
@@ -383,6 +389,11 @@ class UserProfileController extends GetxController with StateMixin {
                                                       .data
                                                       ?.refreshToken ??
                                                   "");
+                                          if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
+                                            for (var value in Get.find<TimelineController>().timelogList!) {
+                                              CalendarControllerProvider.of(Get.context!).controller.remove(value);
+                                            }
+                                          }
                                           Future.delayed(
                                               const Duration(milliseconds: 400),
                                               () => Get.offAllNamed(
@@ -406,12 +417,6 @@ class UserProfileController extends GetxController with StateMixin {
     }
   }
 
-  void _saveData(String email, String pass, String organizationName) {
-    LastInput myInput = LastInput(email: email);
-    Map<String, dynamic> jsonModel = myInput.toJson();
-    String jsonObject = jsonEncode(jsonModel);
-    GetStorage().write(AppString.LAST_INPUT, jsonObject);
-  }
 
   int _checkTokenExpiration({required String accessToken}) {
     DateTime now = DateTime.now();

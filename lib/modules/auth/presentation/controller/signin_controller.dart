@@ -39,29 +39,6 @@ class SignInController extends GetxController with StateMixin {
     }
   }
 
-  void getOrganizationDomain() async {
-    isLoading(true);
-    try {
-      Response response = await NetworkClient().getRequest(
-          "${Api.COMPANY_DOMAIN}?sub_domain=${orgNameController.text}");
-      if (response.status.hasError) {
-        logErrorMessage(logName: "getOrganizationDomain", response: response);
-        organizationAvailabilityMessage.value =
-            ErrorModel.fromJson(response.body).message ?? "Some Error occur!";
-      } else {
-        logSuccessMessage(logName: "getOrganizationDomain", response: response);
-        organizationAvailabilityMessage("");
-        OrganizationInfo organizationInfo =
-            OrganizationInfo.fromJson(response.body);
-        print(OrganizationInfo.fromJson(response.body).data?.id);
-        GetStorage()
-            .write(AppString.ORGANIZATION_ID, organizationInfo.data!.id);
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    isLoading(false);
-  }
 
   Future<void> login({required String email, required String password}) async {
     isSignInLoading(true);
