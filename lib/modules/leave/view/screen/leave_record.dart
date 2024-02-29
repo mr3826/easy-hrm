@@ -25,10 +25,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.isRegistered<LeaveRecordsController>()) {
-      Get.delete<LeaveRecordsController>();
-    }
-    Get.put(LeaveRecordsController());
     return controller.obx(
         (state) => Scaffold(
             appBar: customAppbar(title: AppString.text_leave_records.tr),

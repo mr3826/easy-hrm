@@ -48,7 +48,6 @@ class CustomTimelineCalendar extends StatelessWidget {
 }
 
 Widget _dateCalendarLayout() {
-  var controller = Get.find<DateController>();
   return Positioned(
     top: 0,
     left: 0,
@@ -60,10 +59,10 @@ Widget _dateCalendarLayout() {
           showDialog(
             context: Get.context!,
             builder: (context) {
-              return  const Dialog(
+              return const Dialog(
                   child: SingleDatePicker(
-                    isCalledFormTimeLog: true,
-                  ));
+                isCalledFormTimeLog: true,
+              ));
             },
           );
         },
@@ -77,10 +76,15 @@ Widget _dateCalendarLayout() {
                 children: [
                   GestureDetector(
                       onTap: () async {
-                        controller.decrementDate();
+                        Get.find<DateTimeController>().requestedDate.value =
+                            DateFormat("yyyy-MM-dd").format(DateTime.parse(
+                                    Get.find<DateTimeController>()
+                                        .requestedDate
+                                        .value)
+                                .subtract(const Duration(days: 1)));
 
-                        DateTime date =
-                            DateTime.parse(controller.formattedDateTime);
+                        DateTime date = DateTime.parse(
+                            Get.find<DateTimeController>().requestedDate.value);
                         Get.find<TimelineController>().getTimelineSummaryByDate(
                             startDate:
                                 "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
@@ -114,10 +118,15 @@ Widget _dateCalendarLayout() {
                   ),
                   GestureDetector(
                       onTap: () async {
-                        controller.incrementMonth();
+                        Get.find<DateTimeController>().requestedDate.value =
+                            DateFormat("yyyy-MM-dd").format(DateTime.parse(
+                                    Get.find<DateTimeController>()
+                                        .requestedDate
+                                        .value)
+                                .add(const Duration(days: 1)));
 
-                        DateTime date =
-                            DateTime.parse(controller.formattedDateTime);
+                        DateTime date = DateTime.parse(
+                            Get.find<DateTimeController>().requestedDate.value);
 
                         Get.find<TimelineController>().getTimelineSummaryByDate(
                             startDate:
@@ -140,7 +149,10 @@ Widget _dateCalendarLayout() {
               ),
               Center(
                   child: Text(
-                controller.getOnlyDay().toString(),
+                DateFormat("EEEE")
+                    .format(DateTime.parse(
+                        Get.find<DateTimeController>().requestedDate.value))
+                    .toString(),
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.hintColor,
                     fontSize: Dimensions.fontSizeDefault - 1),

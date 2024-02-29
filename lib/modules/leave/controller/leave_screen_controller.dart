@@ -4,11 +4,16 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
+import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_summary_dashboard.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import '../../../common/controller/date_time_controller.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/leave_details_by_date.dart';
 import '../model/workshief_response_by_date.dart';
@@ -68,9 +73,9 @@ class LeaveScreenController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
-      Get.offAll(() => const MainScreen(
-            routeIndex: 1,
-          ));
+      updateData();
+      Get.back(canPop: false);
+      Get.back(canPop: false);
     }
 
     cancelLeaveLoader(false);
@@ -87,9 +92,16 @@ class LeaveScreenController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       showSuccessMessage(message: AppString.leaveRemovedSuccessMessage.tr);
-      Get.offAll(() => const MainScreen(
-            routeIndex: 1,
-          ));
+
+      Get.find<TimelineController>().getCalendarTimelineDataByDate(
+          startDate:
+              "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+          endDate:
+              "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+
+      updateData();
+      Get.back(canPop: false);
+      Get.back(canPop: false);
     }
 
     cancelLeaveLoader(false);
@@ -121,6 +133,7 @@ class LeaveScreenController extends GetxController with StateMixin {
               .map((e) => e.dayOfWeek!)
               .toList() ??
           [];
+
       ///table calendar dont have 0 weekday key
       ///so if its 0 then convert it into 7
       if (holidays.contains(0)) {
@@ -140,4 +153,27 @@ class LeaveScreenController extends GetxController with StateMixin {
     await getWorkShift();
     super.onInit();
   }
+}
+
+void updateData() {
+  Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
+  Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+  Get.find<LeaveRecordsController>().getLeaveRecordsData();
+  Get.find<DashboardController>().getUpComingInfoForDashboard();
+  Get.find<TimelineController>().getTimelineSummaryByMonth(
+      startDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
+      endDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
+
+  Get.find<TimelineController>().getCalendarTimelineDataByDate(
+      startDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+      endDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+  Get.find<TimelineController>().getTimelineSummaryByDate(
+      startDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+      endDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 }

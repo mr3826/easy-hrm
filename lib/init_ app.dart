@@ -14,6 +14,7 @@ import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
 import 'firebase_options.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
+import 'modules/leave/controller/leave_record_controller.dart';
 import 'modules/profile/controller/log_out_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
 import 'modules/leave/controller/calendar_date_controller.dart';
@@ -54,6 +55,7 @@ Future<void> initApp() async {
   Get.put(LogoutController());
   Get.put(SelectedTaskController());
   Get.put(UpdateProfileController());
+  Get.put(LeaveRecordsController());
   Get.put(DateTimeController());
   Get.put(SplashController());
 }
