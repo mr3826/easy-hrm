@@ -1,4 +1,4 @@
-package com.gainhq.payrun_mobile;
+package payrun_gainhq.com;
 
 import io.flutter.embedding.android.FlutterActivity;
 
