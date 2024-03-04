@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "579164016126",
-    "project_id": "mobileapp-payrun",
-    "storage_bucket": "mobileapp-payrun.appspot.com"
+    "project_number": "248504339555",
+    "project_id": "mobile-app-payrun",
+    "storage_bucket": "mobile-app-payrun.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:579164016126:android:294a2140cd7a874b6a04af",
+        "mobilesdk_app_id": "1:248504339555:android:260a9b030d000f5064fc56",
         "android_client_info": {
-          "package_name": "payrun_gainhq.com"
+          "package_name": "com.gainhq.payrun"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDOPbZidbLG9ujjSVeEeVGUYB94-kh9YKg"
+          "current_key": "AIzaSyC4lt_20eCq7xboL1DmhptRomem1-17TOo"
         }
       ],
       "services": {
