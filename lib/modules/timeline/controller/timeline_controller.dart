@@ -532,7 +532,7 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   void updateDataAfterTwoMinutes() {
-    updateDataTime = Timer.periodic(const Duration(seconds: 40), (timer) {
+    updateDataTime = Timer.periodic(const Duration(minutes: 2), (timer) {
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
           CalendarControllerProvider.of(Get.context!).controller.remove(value);
