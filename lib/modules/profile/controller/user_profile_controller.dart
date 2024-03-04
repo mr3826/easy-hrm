@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,14 +9,20 @@ import 'package:payrun_mobile/common/domain/token_model.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
+import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
+import '../../../common/controller/date_time_controller.dart';
 import '../../../common/domain/error_model.dart';
-import '../../../common/domain/last_input_model.dart';
 import '../../../common/widget/custom_text_field.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/app_color.dart';
@@ -167,12 +172,9 @@ class UserProfileController extends GetxController with StateMixin {
         logSuccessMessage(
             logName: "submitVerificationCode", response: response);
         changeEmailController.clear();
-        if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
-          for (var value in Get.find<TimelineController>().timelogList!) {
-            CalendarControllerProvider.of(Get.context!).controller.remove(value);
-          }
-        }
-        Get.offAllNamed(Routes.MAIN_SCREEN);
+        Get.back(canPop: false);
+        Get.back(canPop: false);
+        switchOrganisationDataChange();
       }
     } catch (e) {
       log(e.toString());
@@ -215,12 +217,10 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
-    print("orgIdZ:$orgId");
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
       TokenModel tokenModel = TokenModel.fromJson(jsonMap);
-      print(tokenModel.idToken == GetStorage().read(AppString.ID_TOKEN));
       if (_checkTokenExpiration(accessToken: tokenModel.accessToken ?? "")
               .isNegative ||
           _checkTokenExpiration(accessToken: tokenModel.accessToken ?? "") <
@@ -228,15 +228,9 @@ class UserProfileController extends GetxController with StateMixin {
         _getNewToken(refreshToken: tokenModel.refreshToken ?? "", orgId: orgId)
             .then((value) {
           if (value == true) {
-
-            if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
-              for (var value in Get.find<TimelineController>().timelogList!) {
-                CalendarControllerProvider.of(Get.context!).controller.remove(value);
-              }
-            }
-
-            Future.delayed(const Duration(milliseconds: 400),
-                () => Get.offAllNamed(Routes.MAIN_SCREEN));
+            Get.back(canPop: false);
+            Get.back(canPop: false);
+            switchOrganisationDataChange();
           } else {
             showErrorMessage(message: AppString.error_text);
           }
@@ -246,14 +240,9 @@ class UserProfileController extends GetxController with StateMixin {
         GetStorage().write(AppString.ID_TOKEN, tokenModel.idToken);
         GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
         GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
-
-        if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
-          for (var value in Get.find<TimelineController>().timelogList!) {
-            CalendarControllerProvider.of(Get.context!).controller.remove(value);
-          }
-        }
-        Future.delayed(const Duration(milliseconds: 400),
-            () => Get.offAllNamed(Routes.MAIN_SCREEN));
+        Get.back(canPop: false);
+        Get.back(canPop: false);
+        switchOrganisationDataChange();
       }
       isOrganizationChangeLoading(false);
     } else {
@@ -278,8 +267,7 @@ class UserProfileController extends GetxController with StateMixin {
                       obsValue: isValue.value,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return AppString
-                              .the_password_field_is_required.tr;
+                          return AppString.the_password_field_is_required.tr;
                         } else if (value.length < 6) {
                           return AppString.incorrect_user_or_password.tr;
                         } else {
@@ -389,15 +377,9 @@ class UserProfileController extends GetxController with StateMixin {
                                                       .data
                                                       ?.refreshToken ??
                                                   "");
-                                          if (Get.find<TimelineController>().timelogList!.isNotEmpty) {
-                                            for (var value in Get.find<TimelineController>().timelogList!) {
-                                              CalendarControllerProvider.of(Get.context!).controller.remove(value);
-                                            }
-                                          }
-                                          Future.delayed(
-                                              const Duration(milliseconds: 400),
-                                              () => Get.offAllNamed(
-                                                  Routes.MAIN_SCREEN));
+                                          Get.back(canPop: false);
+                                          Get.back(canPop: false);
+                                          switchOrganisationDataChange();
                                         }
                                       }
                                     } catch (e) {
@@ -416,7 +398,6 @@ class UserProfileController extends GetxController with StateMixin {
           ));
     }
   }
-
 
   int _checkTokenExpiration({required String accessToken}) {
     DateTime now = DateTime.now();
@@ -476,4 +457,38 @@ class ChangeMailResponse {
   ChangeMailResponse.fromJson(Map<String, dynamic> json) {
     valid = json['valid'];
   }
+}
+
+switchOrganisationDataChange() {
+  Get.find<UserProfileController>().getUserProfile();
+  Get.find<UserProfileController>().getEmploymentInfo();
+  Get.find<UserProfileController>().getUserLogHistory();
+  Get.find<UserProfileController>().getOrganizationInfo();
+  Get.find<TimelineController>().getTimelineSummaryByMonth(
+      startDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
+      endDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
+
+  Get.find<TimelineController>().getCalendarTimelineDataByDate(
+      startDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+      endDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+  Get.find<TimelineController>().getTimelineSummaryByDate(
+      startDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+      endDate:
+          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+
+  Get.find<TimelineSummaryController>().getTimelineByMonth();
+  Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+  Get.find<NotificationController>().getNewNotification();
+  Get.find<NotificationController>().getSeenNotification();
+  Get.find<LeaveRecordsController>().getLeaveRecordsData();
+  Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
+  Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+  Get.find<DashboardController>().getProfileInfoForDashboard();
+  Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
+  Get.find<DashboardController>().getUpComingInfoForDashboard();
 }
