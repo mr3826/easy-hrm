@@ -116,6 +116,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                   fit: BoxFit.scaleDown,
                   child: _employmentStatus(),
                 ),
+
               ],
             ),
           ),
