@@ -31,9 +31,14 @@ class CustomStatusButton extends StatelessWidget {
           AppLayout.getWidth(14),
           AppLayout.getHeight(4)),
       child: Center(
-        child: Text(text ?? "",
-            style: AppStyle.normal_text_grey.copyWith(
-                color: textColor, fontSize: Dimensions.fontSizeDefault,overflow: TextOverflow.ellipsis)),
+        child: Wrap(
+          children: [
+            Text('jsfdgi sh fdghsiudh fghsud fgsd' ?? "",
+                maxLines: 1,
+                style: AppStyle.normal_text_grey.copyWith(
+                    color: textColor, fontSize: Dimensions.fontSizeDefault,overflow: TextOverflow.ellipsis)),
+          ],
+        ),
       ),
     );
   }
