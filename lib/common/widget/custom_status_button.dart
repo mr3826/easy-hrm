@@ -18,26 +18,25 @@ class CustomStatusButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: AppLayout.getHeight(32),
-      decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(Dimensions.radiusMid),
-          )),
-      padding: EdgeInsets.fromLTRB(
-          AppLayout.getWidth(14),
-          AppLayout.getHeight(3),
-          AppLayout.getWidth(14),
-          AppLayout.getHeight(4)),
-      child: Center(
-        child: Wrap(
-          children: [
-            Text('jsfdgi sh fdghsiudh fghsud fgsd' ?? "",
-                maxLines: 1,
-                style: AppStyle.normal_text_grey.copyWith(
-                    color: textColor, fontSize: Dimensions.fontSizeDefault,overflow: TextOverflow.ellipsis)),
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Container(
+        height: AppLayout.getHeight(32),
+        decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(Dimensions.radiusMid),
+            )),
+        padding: EdgeInsets.fromLTRB(
+            AppLayout.getWidth(14),
+            AppLayout.getHeight(3),
+            AppLayout.getWidth(14),
+            AppLayout.getHeight(4)),
+        child: Center(
+          child: Text(text ?? "",
+              maxLines: 1,
+              style: AppStyle.normal_text_grey.copyWith(
+                  color: textColor, fontSize: Dimensions.fontSizeDefault,overflow: TextOverflow.ellipsis)),
         ),
       ),
     );

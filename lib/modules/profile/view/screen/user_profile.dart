@@ -93,60 +93,38 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _userImageLayout(),
+        customSpacerWidth(width: 20),
         Expanded(
-          child: _userImageLayout(),
-        ),
+          child: SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
+              children: [
+                ///User name and department
+                _userNameAndDptLayout(),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: _employmentContractStatus(),
+                ),
+                customSpacerWidth(width: 12),
 
-        Expanded(
-          flex: 3,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-                style: AppStyle.mid_large_text
-                    .copyWith(color: AppColor.normalTextColor),
-              ),
-              Text(
-                controller.userDetails?.getOrganizationUserDetails?.department
-                    ?.name ??
-                    "",
-                style: AppStyle.normal_text_grey,
-              ),
+                ///Status
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: _employmentStatus(),
+                ),
 
-              customSpacerHeight(height: 12),
-
-
-
-              Row(
-                children: [
-                  Expanded(child:  _employmentContractStatus(),),
-                  customSpacerWidth(width: 8),
-                  Expanded(child:  _employmentStatus(),)
-                ],
-              )
-
-
-
-
-
-
-              // Row(
-              //   children: [
-              //
-              //     _employmentContractStatus(),
-              //     customSpacerWidth(width: 8),
-              //     _employmentStatus(),
-              //
-              //   ],
-              // )
-            ],
+                ///Status
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: _employmentStatus(),
+                ),
+              ],
+            ),
           ),
         ),
-
-
         customSpacerWidth(width: 18),
-
       ],
     );
   }
@@ -710,5 +688,25 @@ class ProfileScreen extends GetView<UserProfileController> {
       }
     }
     return Images.FLAG_PNG;
+  }
+
+  _userNameAndDptLayout() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+          style:
+              AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+        ),
+        Text(
+          controller
+                  .userDetails?.getOrganizationUserDetails?.department?.name ??
+              "",
+          style: AppStyle.normal_text_grey,
+        ),
+        customSpacerHeight(height: 6)
+      ],
+    );
   }
 }
