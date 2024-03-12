@@ -103,17 +103,13 @@ class ProfileScreen extends GetView<UserProfileController> {
               children: [
                 ///User name and department
                 _userNameAndDptLayout(),
+
+                ///Status
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: _employmentContractStatus(),
                 ),
                 customSpacerWidth(width: 12),
-
-                ///Status
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: _employmentStatus(),
-                ),
 
                 ///Status
                 FittedBox(
