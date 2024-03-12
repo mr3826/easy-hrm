@@ -20,7 +20,6 @@ import '../../model/leave_records.dart';
 class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;
   final GetLeaveRecords? leaveRecords;
-
   const AddAttachmentFile(
       {this.isFromApplyLeave = false, super.key, this.leaveRecords});
 
@@ -30,6 +29,7 @@ class AddAttachmentFile extends StatelessWidget {
       Get.delete<ApplyLeaveController>();
     }
     Get.put(ApplyLeaveController());
+
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -38,12 +38,21 @@ class AddAttachmentFile extends StatelessWidget {
                     ? Get.find<ApplyLeaveController>().isErrorOccurred.value
                     : Get.find<UpDateLeaveController>().isErrorOccurred.value,
                 child: GestureDetector(onTap: () {
-                  Get.find<FileUploadController>().storageForUpload.pickFile();
+                  Get.find<FileUploadController>()
+                      .storageForUpload
+                      .pickFile(isApplyLeave: isFromApplyLeave);
                 }, child: Obx(() {
-                  return _documentLayout();
+                  return isFromApplyLeave == true
+                      ? _documentLayout()
+                      : _updateDocumentLayout();
                 }))),
             customSpacerHeight(height: 8),
-            _pathNameText(leaveRecords?.leaveType?.fileKey ?? '')
+            _pathNameText(leaveRecords?.files != null &&
+                    leaveRecords!.files!.isNotEmpty &&
+                    leaveRecords?.files?.first.key != null &&
+                    leaveRecords!.files!.first.key!.isNotEmpty
+                ? leaveRecords?.files![0].key.toString() ?? ""
+                : ""),
           ],
         ));
   }
@@ -52,7 +61,6 @@ class AddAttachmentFile extends StatelessWidget {
     if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
-
       return Get.find<FileUploadController>()
               .storageForUpload
               .filePath
@@ -65,19 +73,68 @@ class AddAttachmentFile extends StatelessWidget {
         Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
-        return leaveRecords?.leaveType?.fileKey == null ||
-                isFromApplyLeave == true
-            ? _emptyBox()
-            : leaveRecords!.leaveType!.fileKey!.endsWith(".pdf")
-                ? _replaceFileLayout()
-                : CustomNetworkImage(
-                    imgUrlKey: leaveRecords?.leaveType?.fileKey ?? "",
-                    isDocumentLayout: true,
-                    errorText: "",
-                  );
+        return (leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty)
+            ? leaveRecords?.files![0].key == null ||
+                    leaveRecords?.files![0].key == "null"
+                ? _emptyBox()
+                : leaveRecords!.files![0].key!.endsWith(".pdf")
+                    ? _replaceFileLayout()
+                    : CustomNetworkImage(
+                        imgUrlKey: leaveRecords?.files?[0].key ?? "",
+                        isDocumentLayout: true,
+                        errorText: "",
+                      )
+            : _emptyBox();
       } else {
         /// broken image
         if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+          return _brokenImageViewLayout();
+        } else {
+          return const Center(
+              child: CupertinoActivityIndicator(
+            color: AppColor.primaryColor,
+          ));
+        }
+      }
+    } else {
+      return const Center(
+          child: CupertinoActivityIndicator(
+        color: AppColor.primaryColor,
+      ));
+    }
+  }
+
+  Widget _updateDocumentLayout() {
+    if (Get.find<UpDateLeaveController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
+      /// file image
+      return Get.find<FileUploadController>()
+              .storageForUpload
+              .filePath
+              .endsWith(".pdf")
+          ? _replaceFileLayout()
+          : _selectedImageViewLayout();
+    } else if (Get.find<UpDateLeaveController>()
+            .isFileUploadedSuccessfully
+            .isFalse &&
+        Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
+      if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
+        /// initial stage
+        return (leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty)
+            ? leaveRecords?.files![0].key == null ||
+                    leaveRecords?.files![0].key == "null"
+                ? _emptyBox()
+                : leaveRecords!.files![0].key!.endsWith(".pdf")
+                    ? _replaceFileLayout()
+                    : CustomNetworkImage(
+                        imgUrlKey: leaveRecords?.files?[0].key ?? "",
+                        isDocumentLayout: true,
+                        errorText: "",
+                      )
+            : _emptyBox();
+      } else {
+        /// broken image
+        if (Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
           return _brokenImageViewLayout();
         } else {
           return const Center(

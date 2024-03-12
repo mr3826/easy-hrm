@@ -6,7 +6,6 @@ import 'package:payrun_mobile/modules/notification/controller/notification_contr
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
 import '../../../../common/widget/custom_icon_shape_style.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../../utils/app_style.dart';
@@ -131,6 +130,10 @@ class NotificationViewLayout extends StatelessWidget {
     required bool isDepartmentHead,
     required String jobTitleInfo,
   }) {
+    print("""
+    timeLineTimeInfo: $timeLineTimeInfo
+    leaveTimeInfo:: $leaveTimeInfo
+    """);
     switch (notificationContext) {
       /// timeline
       case "reject_a_timeline":
@@ -178,11 +181,12 @@ class NotificationViewLayout extends StatelessWidget {
         return _addedAsApproverNotification(
           changerName: changerName,
           index: index,
+          isForLeaveApprover: false,
           contextInfoText:
               _getContextInfoText(contextName: notificationContext),
           notificationDuration: _getNotificationDuration(
               notificationCreatedDate: notificationCreatedDate),
-          approverContext: "Timelog approver",
+          approverContext: AppString.timelogApprover.tr,
         );
 
       /// leave
@@ -229,6 +233,7 @@ class NotificationViewLayout extends StatelessWidget {
                 notificationCreatedDate: notificationCreatedDate),
             index: index);
       case "added_leave":
+        print("added_leave:: $leaveTimeInfo");
         return _leaveNotification(
             changerName: changerName,
             iconColor: AppColor.successColor,
@@ -253,11 +258,12 @@ class NotificationViewLayout extends StatelessWidget {
         return _addedAsApproverNotification(
           changerName: changerName,
           index: index,
+          isForLeaveApprover: true,
           contextInfoText:
               _getContextInfoText(contextName: notificationContext),
           notificationDuration: _getNotificationDuration(
               notificationCreatedDate: notificationCreatedDate),
-          approverContext: "Leave approver",
+          approverContext: AppString.leaveApprover.tr,
         );
 
       ///department
@@ -282,7 +288,7 @@ class NotificationViewLayout extends StatelessWidget {
                 departmentInfo: departmentInfo,
                 notificationDuration: _getNotificationDuration(
                     notificationCreatedDate: notificationCreatedDate),
-                departmentRoleInfo: "Department Head",
+                departmentRoleInfo: AppString.departmentHeaDText.tr,
                 index: index);
 
       case "removed_from_department":
@@ -338,48 +344,48 @@ class NotificationViewLayout extends StatelessWidget {
     switch (contextName) {
       ///timeline
       case "reject_a_timeline":
-        return "has reject your time log on ";
+        return AppString.rejectedATimelogText.tr;
       case "pending_a_timeline":
-        return "has marked your time log as pending on ";
+        return AppString.pendingATimelogText.tr;
       case "added_new_timeline":
-        return "has added your time log on ";
+        return AppString.addedATimelogText.tr;
       case "approved_a_timeline":
-        return "has approved your time log on ";
+        return AppString.approveATimelogText.tr;
 
       ///timeline
       ///leave
       case "pending_a_leave":
-        return "has marked your leave as pending on ";
+        return AppString.pendingALeaveText.tr;
       case "approved_a_leave":
-        return "has approved a leave on ";
+        return AppString.approvedALeaveText.tr;
       case "rejected_a_leave":
-        return "has rejected a leave on ";
+        return AppString.rejectALeaveText.tr;
       case "cancelled_a_leave":
-        return "has cancelled a leave on ";
+        return AppString.cancelALeaveText.tr;
       case "added_leave":
-        return "has added a leave on ";
+        return AppString.addedALeaveText.tr;
       case "updated_leave":
-        return "has updated a leave on ";
+        return AppString.updateALeaveText.tr;
 
       ///leave
       ///department
 
       case "added_to_department":
         return isDepartHead != null && isDepartHead == true
-            ? "has added you as a "
-            : "has added you on ";
+            ? AppString.addedDepartmentHead.tr
+            : AppString.addedDepartment.tr;
 
       case "removed_from_department":
-        return "has removed you from ";
+        return AppString.removeDepartment.tr;
 
       case "added_to_hiring_team":
-        return "has added you as a ";
+        return AppString.addedDepartmentHead.tr;
 
       case "new_user_joined":
-        return "A new user has joined";
+        return AppString.newUserJoined.tr;
 
       default:
-        return 'has added you as a ';
+        return AppString.addedDepartmentHead.tr;
     }
   }
 
@@ -576,7 +582,7 @@ class NotificationViewLayout extends StatelessWidget {
                             fontSize: Dimensions.fontSizeDefault,
                           )),
                       TextSpan(
-                        text: "Hiring Manager",
+                        text: AppString.textHiringManager.tr,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: Dimensions.fontSizeDefault,
@@ -643,14 +649,14 @@ class NotificationViewLayout extends StatelessWidget {
                             fontSize: Dimensions.fontSizeDefault,
                           )),
                       TextSpan(
-                        text: "Hiring team",
+                        text: AppString.textHiringTeam.tr,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: Dimensions.fontSizeDefault,
                             color: AppColor.secondaryColor),
                       ),
                       TextSpan(
-                          text: " on ",
+                          text: " ${AppString.textOn.tr} ",
                           style: TextStyle(
                             color: AppColor.normalTextColor,
                             fontSize: Dimensions.fontSizeDefault,
@@ -818,6 +824,7 @@ class NotificationViewLayout extends StatelessWidget {
 
   _addedAsApproverNotification(
       {required String changerName,
+      required bool isForLeaveApprover,
       required String contextInfoText,
       required String approverContext,
       required String notificationDuration,
@@ -833,7 +840,9 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.announment_notification,
+              image: isForLeaveApprover == true
+                  ? Images.leave_notification
+                  : Images.time_log_notification,
               color: AppColor.primaryColor),
           customSpacerWidth(width: 20),
           SizedBox(
@@ -951,7 +960,7 @@ class NotificationViewLayout extends StatelessWidget {
         return "$diffHr ${diffHr > 1 ? "hrs" : "hr"} $diffMin ${diffMin > 1 ? "mins" : "min"}";
       }
     } else if (duration.inDays == 1) {
-      return "Yesterday";
+      return AppString.text_yesterday.tr;
     } else {
       return DateFormat("d MMM y")
           .format(DateTime.parse(notificationCreatedDate));
@@ -960,6 +969,6 @@ class NotificationViewLayout extends StatelessWidget {
 
   _getCreationDate({required String creationDate}) {
     if (creationDate.isEmpty) return "";
-    return DateFormat("d MMM y").format(DateTime.parse("2024-01-21T16:40:00"));
+    return DateFormat("d MMM y").format(DateTime.parse(creationDate));
   }
 }

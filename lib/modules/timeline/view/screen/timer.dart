@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/add_to_task.dart';
@@ -12,6 +14,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_card_style.dart';
+import '../../../../utils/images.dart';
 import '../../controller/timeline_controller.dart';
 import '../../controller/timer_controller.dart';
 import '../widget/timer_animation.dart';
@@ -25,6 +28,8 @@ class TimerScreen extends StatelessWidget {
       appBar: customAppbar(title: AppString.text_timer.tr),
       backgroundColor: AppColor.secondaryColor,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _dateText(
               date: DateFormat('E, d MMMM - yyyy').format(DateTime.now())),
@@ -33,29 +38,45 @@ class TimerScreen extends StatelessWidget {
               if (Get.find<TimeCounterController>().isRunning.isFalse) {
                 await Get.find<TimelineController>()
                     .startOrEndTimer(timerType: StartOrEndTimer.start.name);
+
+                Get.find<TimeCounterController>().isRunningHorizontalLine(true);
               }
             },
             child: SizedBox(
-                height: AppLayout.getHeight(400),
-                width: AppLayout.getWidth(400),
+                width: double.infinity,
+                height: AppLayout.getWidth(400),
                 child: const TimerAnimation()),
           ),
-          _saveBtn(
-            onAction: () async {
-              if (Get.find<TimeCounterController>().isRunning.isTrue) {
-                await Get.find<TimelineController>()
-                    .startOrEndTimer(timerType: StartOrEndTimer.end.name)
-                    .then((value) {
-                  if (value == true) {
-                    customButtonSheet(
-                        height: .6,
-                        context: context,
-                        isDismissible: false,
-                        child: const AddToTaskScreen());
-                  }
-                });
-              }
-            },
+          const Spacer(
+            flex: 2,
+          ),
+          Obx(
+            () => _saveBtn(
+              onAction: () async {
+                if (Get.find<TimeCounterController>().isRunning.isTrue) {
+                  await Get.find<TimelineController>()
+                      .startOrEndTimer(timerType: StartOrEndTimer.end.name)
+                      .then((value) {
+                    if (value == true) {
+                      if (Get.find<TimelineController>()
+                              .projectDropDownResponse
+                              ?.getProjectsDropdown ==
+                          null) {
+                        Get.find<TimelineController>().getProjectDropdown();
+                      }
+                      customButtonSheet(
+                          height: .6,
+                          context: context,
+                          isDismissible: false,
+                          child: const AddToTaskScreen());
+                    }
+                  });
+                }
+              },
+            ),
+          ),
+          const Spacer(
+            flex: 2,
           ),
         ],
       ),
@@ -87,13 +108,17 @@ class TimerScreen extends StatelessWidget {
             shape: roundedRectangleBorder.copyWith(
                 borderRadius:
                     BorderRadius.circular(Dimensions.radiusExtraLarge)),
-            color: AppColor.cardColor.withOpacity(0.3),
+            color: Get.find<TimeCounterController>().isRunning.isTrue
+                ? AppColor.cardColor.withOpacity(0.3)
+                : AppColor.cardColor.withOpacity(0.1),
             elevation: 0,
             child: Center(
                 child: Text(
               AppString.text_done_of_save.tr,
               style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.cardColor,
+                  color: Get.find<TimeCounterController>().isRunning.isTrue
+                      ? AppColor.cardColor
+                      : AppColor.cardColor.withOpacity(0.6),
                   fontSize: Dimensions.fontSizeMid - 2),
             ))),
       ),

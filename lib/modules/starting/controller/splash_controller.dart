@@ -1,34 +1,43 @@
 import 'dart:developer';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
+import '../../../common/controller/connectivity_controller.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
 
+
 class SplashController extends GetxController {
   @override
-  void onReady() {
-    if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
-      if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
-        _getNewToken().then((value) => value == true
-            ? Future.delayed(
-                const Duration(milliseconds: 2500), () => chooseScreen())
-            : Future.delayed(const Duration(milliseconds: 2500),
-                () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
+  void onReady() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.none) {
+      Get.to(const NetworkErrorPage());
+      Get.find<ConnectivityController>().isDialogIsOpened(true);
+    } else {
+      if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
+        if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
+          _getNewToken().then((value) => value == true
+              ? Future.delayed(
+                  const Duration(milliseconds: 2500), () => chooseScreen())
+              : Future.delayed(const Duration(milliseconds: 2500),
+                  () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
+        } else {
+          Future.delayed(
+              const Duration(milliseconds: 2500), () => chooseScreen());
+        }
       } else {
         Future.delayed(
             const Duration(milliseconds: 2500), () => chooseScreen());
       }
-    } else {
-      Future.delayed(const Duration(milliseconds: 2500), () => chooseScreen());
+      super.onReady();
     }
-    super.onReady();
   }
 
   Future chooseScreen() async {

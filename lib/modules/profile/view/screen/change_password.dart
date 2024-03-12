@@ -8,7 +8,6 @@ import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
 import '../../../auth/presentation/view/otp_screen.dart';
 import '../widget/edit_profile_widget.dart';
 
@@ -38,7 +37,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     hintText: AppString.text_min_8_character.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return AppString.the_password_field_is_required;
+                        return AppString.the_password_field_is_required.tr;
                       } else {
                         return null;
                       }
@@ -50,7 +49,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     hintText: AppString.text_min_8_character.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return AppString.the_new_password_field_is_required;
+                        return AppString.the_new_password_field_is_required.tr;
                       } else {
                         return null;
                       }
@@ -62,7 +61,8 @@ class ChangePasswordScreen extends StatelessWidget {
                     hintText: AppString.text_min_8_character.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return AppString.the_confirm_password_field_is_required;
+                        return AppString
+                            .the_confirm_password_field_is_required.tr;
                       } else {
                         return null;
                       }

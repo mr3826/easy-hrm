@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -7,7 +6,6 @@ import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-
 import '../common/domain/error_model.dart';
 import '../common/widget/error_message.dart';
 import '../modules/auth/domain/signin_res.dart';

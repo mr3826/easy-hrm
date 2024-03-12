@@ -5,13 +5,12 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
-
 import '../../enum.dart';
 import '../../utils/images.dart';
 
 Future customButtonSheet(
     {context,
-    double? height = 0.9,
+    double height = 0.9,
     required Widget child,
     int duration = 500,
     bool? isDismissible,
@@ -21,14 +20,13 @@ Future customButtonSheet(
     reverseDuration: Duration(milliseconds: reverseDuration),
     vsync: Navigator.of(context),
   );
-
   return showModalBottomSheet(
     context: context,
     transitionAnimationController: controller,
     isScrollControlled: true,
+    enableDrag: isDismissible ?? true,
     backgroundColor: AppColor.cardColor,
     isDismissible: isDismissible ?? true,
-    enableDrag: isDismissible ?? true,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(
@@ -39,7 +37,7 @@ Future customButtonSheet(
       context,
     ) {
       return FractionallySizedBox(
-        heightFactor: AppLayout.getHeight(height!),
+        heightFactor: AppLayout.getHeight(height),
         child: child,
       );
     },

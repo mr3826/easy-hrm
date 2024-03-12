@@ -18,7 +18,6 @@ import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return controller.obx(
@@ -27,9 +26,24 @@ class TimelineScreen extends GetView<TimelineController> {
               body: RefreshIndicator(
                 backgroundColor: Colors.white,
                 onRefresh: _refreshScreen,
-                child: CustomScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  slivers: [sliverAppBar, sliverToBoxAdapter],
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: CustomScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            slivers: [
+                              sliverAppBar,
+                              sliverToBoxAdapter,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               floatingActionButton: Obx(() => _timerBtnLayout(context)),
@@ -37,7 +51,7 @@ class TimelineScreen extends GetView<TimelineController> {
         onLoading: const LoadingIndicator());
   }
 
-  //component
+  ///component
   _timerBtnLayout(context) {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
@@ -84,31 +98,22 @@ class TimelineScreen extends GetView<TimelineController> {
   }
 
   Future<void> _refreshScreen() async {
-    await controller.getProjectDropdown();
-
-    //monthly summary
-    //by default its current month
-
-    DateTime requestedDate =
-        DateTime.parse(Get.find<DateTimeController>().requestedDate.value);
-
     await controller.getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
 
     await controller.getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
-
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
     await controller.getTimelineSummaryByDate(
         startDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   }
 }
 
@@ -172,9 +177,6 @@ _buttonRadiusLayout() {
 
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(
-    child: RefreshIndicator(
-        onRefresh: _refreshScreen, child: CustomTimelineCalendar()),
+    child: CustomTimelineCalendar(),
   );
 }
-
-Future<void> _refreshScreen() async {}

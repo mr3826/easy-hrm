@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
@@ -15,7 +14,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
+import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../common/widget/warning_message.dart';
 import '../controller/forgot_password_controller.dart';
 
@@ -66,45 +65,47 @@ class _OTPScreenState extends State<OTPScreen> {
         child: Container(
           padding: marginLayout,
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                customSpacerHeight(height: 50),
-                _imageLayout(),
-                customSpacerHeight(height: 50),
-                _codeTitleText(),
-                customSpacerHeight(height: 6),
-                Center(
-                    child: Text(
-                  "We have sent a Verification code to your email address.Enter this code bellow to verify your account.",
-                  textAlign: TextAlign.center,
-                  style: style,
-                )),
-                customSpacerHeight(height: 30),
-                OtpTextField(
-                  numberOfFields: 6,
-                  borderColor: AppColor.primaryColor,
-                  //set to true to show as box or false to show as dash
-                  showFieldAsBox: true,
-                  //runs when a code is typed in
-                  margin: const EdgeInsets.all(4),
-                  fieldWidth: AppLayout.getWidth(45),
-                  onSubmit: (String verificationCode) {
-                    log(verificationCode);
-                    OTPCode = verificationCode;
-                    setState(() {
-                      isOTPProvided = true;
-                    });
-                  }, // end onSubmit
+            child: Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+
+                    ///Otp image
+                    imageLayout(url: Images.otp),
+                    customSpacerHeight(height: 50),
+
+                    ///Title Text
+                    _codeTitleText(),
+                    customSpacerHeight(height: 6),
+
+                    ///Description Text
+                    _descriptionText(),
+                    customSpacerHeight(height: 30),
+
+                    ///Otp layout
+                    _otpLayout(),
+                    customSpacerHeight(height: 15),
+
+                    ///Reset otp button
+                    _resetBtnLayout(),
+                    customSpacerHeight(height: 18),
+
+                    ///Confirm button
+                    _confirmBtnLayout(),
+                    customSpacerHeight(height: 22),
+
+                    ///Back login button
+                    _backToLoginLayout(),
+                    const Spacer(
+                      flex: 2,
+                    ),
+                  ],
                 ),
-                customSpacerHeight(height: 36),
-                _resetBtnLayout(),
-                customSpacerHeight(height: 12),
-                _confirmBtnLayout(),
-                customSpacerHeight(height: 22),
-                _backToLoginLayout(),
-              ],
+              ),
             ),
           ),
         ),
@@ -118,7 +119,7 @@ class _OTPScreenState extends State<OTPScreen> {
         AppString.text_do_not_receive_otp.tr,
         style: style,
       ),
-      customSpacerWidth(width: 8),
+      customSpacerWidth(width: 4),
       timerActive == true
           ? Text("$seconds s")
           : InkWell(
@@ -129,7 +130,10 @@ class _OTPScreenState extends State<OTPScreen> {
                 startTimer();
               },
               child: Text(AppString.text_resend,
-                  style: TextStyle(color: Colors.blue.shade900, fontSize: 18)),
+                  style: TextStyle(
+                    color: AppColor.secondaryColor,
+                    fontSize: Dimensions.fontSizeDefault,
+                  )),
             ),
     ]);
   }
@@ -140,10 +144,19 @@ class _OTPScreenState extends State<OTPScreen> {
       AppString.text_enter_code.tr,
       style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeLarge + 2,
+          fontSize: Dimensions.fontSizeMid - 2,
           color: AppColor.normalTextColor,
           fontFamily: "Poppins"),
     ));
+  }
+
+  _descriptionText() {
+    return Text(
+      AppString.text_we_have_a_verification_etc.tr,
+      textAlign: TextAlign.center,
+      style: style.copyWith(
+          fontSize: Dimensions.fontSizeDefault - 2, color: AppColor.hintColor),
+    );
   }
 
   _confirmBtnLayout() {
@@ -182,17 +195,55 @@ class _OTPScreenState extends State<OTPScreen> {
             child: Text(
           AppString.text_back_to_login.tr,
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor,
-              fontSize: Dimensions.fontSizeDefault + 2),
+              color: AppColor.secondaryColor,
+              fontSize: Dimensions.fontSizeDefault),
         )));
   }
 
-  _imageLayout() {
-    return Center(
-      child: SizedBox(
-          height: AppLayout.getHeight(200),
-          width: AppLayout.getWidth(200),
-          child: SvgPicture.asset(Images.otp, fit: BoxFit.cover)),
+  _otpLayout() {
+    return PinCodeTextField(
+      appContext: context,
+      length: 6,
+      onChanged: (verificationCode) {
+        // Handle OTP changes
+        log("value :: $verificationCode");
+        OTPCode = verificationCode;
+      },
+      onCompleted: (verificationCode) {
+        setState(() {
+          isOTPProvided = true;
+        });
+      },
+      backgroundColor: Colors.white,
+      keyboardType: TextInputType.number,
+      cursorColor: AppColor.primaryColor,
+      animationType: AnimationType.fade,
+      onSubmitted: (verificationCode) {
+        log(verificationCode);
+        OTPCode = verificationCode;
+        setState(() {
+          isOTPProvided = true;
+        });
+      },
+      pinTheme: _pinThemStyle(),
+    );
+  }
+
+  _pinThemStyle() {
+    return PinTheme(
+      shape: PinCodeFieldShape.box,
+      inactiveColor: AppColor.disableColor.withOpacity(0.7),
+      selectedColor: AppColor.primaryColor,
+      activeColor: Colors.black,
+      borderRadius: BorderRadius.circular(Dimensions.radiusDefault - 4),
+      disabledColor: AppColor.disableColor,
+      borderWidth: 0.5,
+      activeBorderWidth: 0.5,
+      disabledBorderWidth: 0.5,
+      selectedFillColor: AppColor.primaryColor,
+      fieldHeight: 50,
+      fieldWidth: Get.size.width / 7.5,
+      activeFillColor: Colors.white,
     );
   }
 }

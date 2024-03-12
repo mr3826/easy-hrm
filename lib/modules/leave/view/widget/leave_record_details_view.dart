@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,8 +19,10 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/widget/custom_drawer.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../utils/utils.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
   dynamic status;
@@ -48,12 +51,7 @@ class LeaveRecordDetails extends StatelessWidget {
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: AppString.text_duration.tr,
-              dynamicText: leaveRecords?.duration != null &&
-                      leaveRecords?.duration.runtimeType != String
-                  ? leaveRecords?.duration > 1
-                      ? "${leaveRecords?.duration.toString()} days"
-                      : "${leaveRecords?.duration.toString()} day"
-                  : ""),
+              dynamicText: _getDurationTime()),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
           _infoLayout(
               text: AppString.text_date_of_application.tr,
@@ -214,13 +212,31 @@ class LeaveRecordDetails extends StatelessWidget {
               Get.delete<UpDateLeaveController>();
             }
             Get.put(UpDateLeaveController());
-            customButtonSheet(
+
+            _customButtonSheet(
                 context: context,
-                height: .8,
                 child: UpdateLeave(leaveRecords: leaveRecords));
           },
           btnColor: AppColor.primaryColor),
     );
+  }
+
+  void _customButtonSheet({context, child}) {
+    return showCustomAtmBtnSheet(
+        height: Get.height * .8,
+        context: context,
+        child: Material(
+          color: AppColor.noColor,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(Dimensions.radiusMid),
+                  topLeft: Radius.circular(Dimensions.radiusMid)),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        ));
   }
 
   _approvedLayout(context) {
@@ -261,13 +277,29 @@ class LeaveRecordDetails extends StatelessWidget {
   _cancelLeaveProgress() {
     return Get.find<LeaveScreenController>().cancelLeaveLoader.value
         ? const CupertinoActivityIndicator(
-      color: AppColor.cardColor,
-    )
+            color: AppColor.cardColor,
+          )
         : Text(
-      AppString.confirmText.tr,
-      style: AppStyle.normal_text_grey.copyWith(
-          fontSize: Dimensions.fontSizeDefault + 1,
-          color: AppColor.cardColor),
-    );
+            AppString.confirmText.tr,
+            style: AppStyle.normal_text_grey.copyWith(
+                fontSize: Dimensions.fontSizeDefault + 1,
+                color: AppColor.cardColor),
+          );
+  }
+
+  String _getDurationTime() {
+    if (leaveRecords?.duration != null &&
+        leaveRecords?.duration.runtimeType != String) {
+      return leaveRecords?.duration > 1
+          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
+          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
+    } else if (leaveRecords?.duration != null &&
+        leaveRecords?.duration.runtimeType == String) {
+      return double.parse(leaveRecords?.duration) > 1
+          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
+          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
+    } else {
+      return "";
+    }
   }
 }

@@ -80,7 +80,7 @@ class EditProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.of(context).size.width/2,
               child: Text.rich(
                 TextSpan(
                   children: [
@@ -159,7 +159,7 @@ class EditProfileScreen extends StatelessWidget {
                       .updateUserProfile(variables!);
                 } else {
                   showWarningMessage(
-                      message: "First and last name field is required!");
+                      message: AppString.text_first_and_last_field_is_requured.tr);
                 }
 
                 Get.find<PikedProfileImgController>()

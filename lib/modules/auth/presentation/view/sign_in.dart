@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -57,18 +55,26 @@ class SignInScreen extends GetView<SignInController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           customSpacerHeight(height: 50),
+
+                          ///App logo
                           _logoLayout(context),
                           customSpacerHeight(height: 70),
-                          Obx(() => _organizationNameLayout()),
-                          customSpacerHeight(height: 8),
                           Obx(() => _organizationNameErrorLayout()),
                           customSpacerHeight(height: 20),
+
+                          ///Email address
                           _emailAddressLayout(),
                           customSpacerHeight(height: 20),
+
+                          ///User password
                           Obx(() => _userPasswordField()),
                           customSpacerHeight(height: 12),
+
+                          ///Forgot password
                           _forgotPassword(),
                           customSpacerHeight(height: 34),
+
+                          ///Login button
                           Obx(() => _logInBtnLayout(context)),
                         ],
                       ),
@@ -89,9 +95,9 @@ class SignInScreen extends GetView<SignInController> {
       obsValue: controller.isValue.value,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_password_field_is_required;
+          return AppString.the_password_field_is_required.tr;
         } else if (value.length < 6) {
-          return AppString.incorrect_user_or_password;
+          return AppString.incorrect_user_or_password.tr;
         } else {
           return null;
         }
@@ -132,65 +138,13 @@ class SignInScreen extends GetView<SignInController> {
       controller: emailController,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_email_field_is_required;
+          return AppString.the_email_field_is_required.tr;
         } else if (value.isEmpty || !RegExp(emailExp()).hasMatch(value)) {
-          return AppString.please_insert_a_valid_email_address;
+          return AppString.please_insert_a_valid_email_address.tr;
         } else {
           return null;
         }
       },
-    );
-  }
-
-  _organizationNameLayout() {
-    return Focus(
-      onFocusChange: (value) {
-        if (value == false) {
-          controller.getOrganizationDomain();
-        }
-      },
-      child: TextFormField(
-        controller: orgNameController,
-        style: AppStyle.mid_large_text.copyWith(
-            fontWeight: FontWeight.w400,
-            color: AppColor.normalTextColor,
-            fontSize: Dimensions.fontSizeDefault),
-        autofocus: false,
-        decoration: InputDecoration(
-          hintText: AppString.text_organization_name.tr,
-          hintStyle: TextStyle(
-              color: AppColor.hintColor,
-              fontFamily: "Poppins",
-              fontSize: Dimensions.fontSizeDefault + 1),
-          prefixIcon: const Icon(
-            Icons.home_work_outlined,
-            color: AppColor.hintColor,
-          ),
-          suffixIcon: SizedBox(
-              height: 2,
-              width: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: controller.isLoading.value
-                    ? const Center(
-                        child: CupertinoActivityIndicator(
-                        animating: true,
-                      ))
-                    : Container(),
-              )),
-          border: OutlineInputBorder(
-            borderSide:
-                const BorderSide(width: 0.0, color: AppColor.primaryColor),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
-          ),
-          focusColor: AppColor.primaryColor,
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.disableColor)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColor.disableColor),
-              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-        ),
-      ),
     );
   }
 
@@ -210,14 +164,8 @@ class SignInScreen extends GetView<SignInController> {
       onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-          if (GetStorage().read(AppString.ORGANIZATION_ID) != null) {
-            await controller.login(
-                email: emailController.text,
-                password: passwordController.text,
-                orgId: GetStorage().read(AppString.ORGANIZATION_ID));
-          } else {
-            showErrorMessage(message: AppString.organizationNotFoundMessage.tr);
-          }
+          await controller.login(
+              email: emailController.text, password: passwordController.text);
         }
       },
       buttonColor: AppColor.primaryColor,

@@ -16,6 +16,7 @@ class TimeCounterController extends GetxController {
   var starTimeDashboard = '00:00:00'.obs;
   var totalTime = ''.obs;
   var isRunning = false.obs;
+  var isRunningHorizontalLine = false.obs;
   var isTotalCount = true.obs;
   Timer _timer=Timer(Duration.zero, () {});
   Timer _aniTimer=Timer(Duration.zero, () {});
@@ -94,6 +95,8 @@ class TimeCounterController extends GetxController {
         Duration duration = DateTime.now().difference(timestamp);
         _seconds = duration.inSeconds;
         start();
+        Get.find<TimeCounterController>()
+            .isRunningHorizontalLine(true);
       }
     }
     isLoading(false);

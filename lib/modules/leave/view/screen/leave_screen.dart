@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -23,8 +22,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    print("ordId: ${GetStorage().read(AppString.ORGANIZATION_ID)}");
-    print("idToken: ${GetStorage().read(AppString.ID_TOKEN)}");
     return controller.obx(
         (state) => Scaffold(
               body: RefreshIndicator(
@@ -54,7 +51,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
           Get.delete<ApplyLeaveController>();
         }
         Get.put(ApplyLeaveController());
-          _customButtonSheet(context: context, child: const ApplyLeaveScreen());
+        _customButtonSheet(context: context, child: const ApplyLeaveScreen());
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 35.0, bottom: 18),
@@ -89,10 +86,6 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   }
 
   void _customButtonSheet({context, child}) {
-    //For screen size
-    // double screenHeight =
-    //     MediaQuery.of(context).size.height == 616.0 ? 550 : 700;
-
     return showCustomAtmBtnSheet(
         height: Get.height * .8,
         context: context,
@@ -150,7 +143,7 @@ SliverAppBar get sliverAppBar {
 }
 
 _leaveText() {
-  return  Text(
+  return Text(
     AppString.text_leave.tr,
     style: AppStyle.mid_large_text.copyWith(fontSize: 20),
   );

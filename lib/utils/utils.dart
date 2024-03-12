@@ -95,7 +95,6 @@ TextEditingController get editBioController => _editBioController;
 
 TextEditingController get currentPasswordController => _currentPassController;
 
-List<Widget> Function() get buildScreens => _buildScreens;
 
 List get selectedDayIndex => _selectedDay;
 
@@ -232,15 +231,7 @@ String _getWeekday(int weekday) {
   }
 }
 
-List<Widget> _buildScreens() {
-  return [
-    // const TimelineScreen(),
-    // const LeaveScreen(),
-    // Dashboard(),
-    // const NotificationScreen(),
-    // const ProfileScreen(),
-  ];
-}
+
 
 void logErrorMessage({required String logName, Response? response}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
@@ -270,3 +261,5 @@ List _selectedBeforeDayAndAfterDay = [
 ];
 
 List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
+
+

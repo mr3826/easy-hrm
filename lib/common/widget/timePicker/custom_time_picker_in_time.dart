@@ -10,6 +10,7 @@ import '../../../modules/leave/controller/leave_screen_controller.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
+import '../../controller/date_time_controller.dart';
 
 class CustomTimePickerInTime extends StatelessWidget {
   final String? inDate;
@@ -165,14 +166,18 @@ class _InDatePickerState extends State<InDatePicker> {
         Container(
           color: Colors.white,
           child: TableCalendar(
-            calendarStyle: const CalendarStyle(
-                defaultTextStyle: TextStyle(fontSize: 16),
-                weekendTextStyle: TextStyle(fontSize: 16),
-                selectedDecoration: BoxDecoration(
+            calendarStyle: CalendarStyle(
+                defaultTextStyle: const TextStyle(fontSize: 16),
+                weekendDecoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColor.hintColor.withOpacity(.1)),
+                weekendTextStyle: TextStyle(
+                    fontSize: 14, color: AppColor.hintColor.withOpacity(.5)),
+                selectedDecoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.blueAccent),
-                todayDecoration: BoxDecoration(
+                todayDecoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.transparent),
-                todayTextStyle: TextStyle(
+                todayTextStyle: const TextStyle(
                     fontSize: 18,
                     color: Colors.blueAccent,
                     fontWeight: FontWeight.bold)),
@@ -185,9 +190,10 @@ class _InDatePickerState extends State<InDatePicker> {
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeDefault + 1),
             ),
-            firstDay: DateTime.utc(2010, 01, 01),
-            lastDay: DateTime.utc(2030, 12, 31),
+            firstDay: DateTime.utc(DateTime.now().year - 2, 01, 01),
+            lastDay: DateTime.utc(DateTime.now().year + 2, 12, 31),
             selectedDayPredicate: (day) => isSameDay(day, today),
+            weekendDays: Get.find<LeaveScreenController>().holidays,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 today = selectedDay;
@@ -212,18 +218,28 @@ class _InDatePickerState extends State<InDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-                if (widget.isFromIndividualLeave != null &&
-                    widget.isFromIndividualLeave == true) {
-                  Get.find<LeaveScreenController>().date.value =
-                      DateFormat('yyyy-MM-dd').format(today);
-                  Get.find<DateTimePickerController>().getInDateTime();
-                  Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-                } else {
-                  Get.find<DateTimePickerController>().inDate.value =
-                      DateFormat('yyyy-MM-dd').format(today);
-                  Get.find<DateTimePickerController>().getInDateTime();
+                if (!Get.find<LeaveScreenController>()
+                    .holidays
+                    .contains(today.weekday)) {
+                  if (widget.isFromIndividualLeave != null &&
+                      widget.isFromIndividualLeave == true) {
+                    Get.find<LeaveScreenController>().date.value =
+                        DateFormat('yyyy-MM-dd').format(today);
+
+                    if (!Get.isRegistered<DateTimePickerController>()) {
+                      Get.put(DateTimePickerController());
+                    }
+
+                    Get.find<DateTimePickerController>().getInDateTime();
+                    Get.find<LeaveScreenController>().getLeaveDetailsByDate();
+                  } else {
+                    Get.find<DateTimePickerController>().inDate.value =
+                        DateFormat('yyyy-MM-dd').format(today);
+                    Get.find<DateTimePickerController>().getInDateTime();
+                    setIndexForPrevTdayOrTomListTimelog(today);
+                  }
+                  Navigator.pop(context);
                 }
-                Navigator.pop(context);
               },
             ),
           ],
@@ -293,5 +309,38 @@ class InTimePicker extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+void setIndexForPrevTdayOrTomListTimelog(DateTime selectedDate) {
+  // Get the current date
+  DateTime currentDate = DateTime.now();
+
+  // Get yesterday's date
+  DateTime yesterdayDate = currentDate.subtract(const Duration(days: 1));
+  // Get tomorrow's date
+  DateTime tomorrowDate = currentDate.add(const Duration(days: 1));
+
+  // Check if the given date is yesterday
+  bool isYesterday = selectedDate.year == yesterdayDate.year &&
+      selectedDate.month == yesterdayDate.month &&
+      selectedDate.day == yesterdayDate.day;
+
+  bool isTomorrow = selectedDate.year == tomorrowDate.year &&
+      selectedDate.month == tomorrowDate.month &&
+      selectedDate.day == tomorrowDate.day;
+
+  bool isToday = selectedDate.year == currentDate.year &&
+      selectedDate.month == currentDate.month &&
+      selectedDate.day == currentDate.day;
+
+  if (isToday) {
+    Get.find<DateTimeController>().currentIndex.value = 1;
+  } else if (isYesterday) {
+    Get.find<DateTimeController>().currentIndex.value = 0;
+  } else if (isTomorrow) {
+    Get.find<DateTimeController>().currentIndex.value = 2;
+  } else {
+    Get.find<DateTimeController>().currentIndex.value = 4;
   }
 }

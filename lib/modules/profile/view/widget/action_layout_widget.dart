@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -13,7 +11,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../common/widget/custom_drawer.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../controller/user_profile_controller.dart';
 import '../screen/change_password.dart';
 
@@ -77,7 +75,7 @@ Widget actionLayout(
       InkWell(
           onTap: () {
             customAntButtonSheet(
-                context: context, child: ChangePasswordScreen());
+                height: 600, context: context, child: ChangePasswordScreen());
           },
           child: _fieldLayout(
               hintText: AppString.text_change_password.tr,
@@ -129,22 +127,4 @@ Widget _fieldLayout({required hintText, required onAction, required url}) {
       ],
     ),
   );
-}
-
-void customAntButtonSheet({context, child}) {
-  return showCustomAtmBtnSheet(
-      height: 618,
-      context: context,
-      child: Material(
-        color: AppColor.noColor,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid),
-                topLeft: Radius.circular(Dimensions.radiusMid)),
-            color: AppColor.cardColor,
-          ),
-          child: child,
-        ),
-      ));
 }

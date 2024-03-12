@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -14,10 +15,9 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
 import 'department_history.dart';
 
-Widget departmentLayout(context) {
+Widget departmentLayout(BuildContext? context) {
   return SizedBox(
     height: AppLayout.getHeight(289),
     child: Card(
@@ -35,7 +35,7 @@ Widget departmentLayout(context) {
                 height: 25,
                 width: 25),
             customSpacerHeight(height: 12),
-            _departmentHistoryInfo(),
+            _departmentHistoryInfo(context),
             customSpacerHeight(height: 12),
             _workingShiftLayout(context),
           ],
@@ -45,11 +45,10 @@ Widget departmentLayout(context) {
   );
 }
 
-_departmentHistoryInfo() {
+_departmentHistoryInfo(context) {
   return InkWell(
     onTap: () {
-      customButtonSheet(
-          height: .6, context: Get.context!, child: const DepartmentHistory());
+      customAntButtonSheet(context: context, child: const DepartmentHistory());
     },
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +132,7 @@ _workingShiftLayout(context) {
             _workShiftDetailsLayout(),
             customSpacerHeight(height: 8),
             Text(
-              "Working day",
+              AppString.text_working_day.tr,
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor.withOpacity(0.7),
                   fontSize: Dimensions.fontSizeDefault + 1),
@@ -195,8 +194,7 @@ _workShiftDetailsLayout() {
           //same time value return true, not need to click then
 
           if (allTimesSame == false) {
-            customButtonSheet(
-                height: .6,
+            customAntButtonSheet(
                 context: Get.context!,
                 child: _generateWorkShift(workSchedules!));
           }
@@ -244,7 +242,7 @@ _generateWorkShift(List<WorkSchedules> workSchedules) {
         shrinkWrap: true,
         separatorBuilder: (context, index) => customSpacerHeight(height: 10),
         itemBuilder: (context, index) => Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
                 color:
                     index.isEven ? Colors.grey.shade200 : Colors.grey.shade300,
@@ -254,11 +252,11 @@ _generateWorkShift(List<WorkSchedules> workSchedules) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                    "Start: ${amPmFormatTimeFromString(workSchedules?[index].startTime ?? "")}"),
+                    "Start: ${amPmFormatTimeFromString(workSchedules[index].startTime ?? "")}"),
                 Text(
-                    "End: ${amPmFormatTimeFromString(workSchedules?[index].endTime ?? "")}"),
+                    "End: ${amPmFormatTimeFromString(workSchedules[index].endTime ?? "")}"),
                 Text(
-                    "Total: ${getTimeDifference(workSchedules?[index].startTime ?? "", workSchedules?[index].endTime ?? "")}"),
+                    "Total: ${getTimeDifference(workSchedules[index].startTime ?? "", workSchedules[index].endTime ?? "")}"),
               ],
             )),
         itemCount: workSchedules.length,

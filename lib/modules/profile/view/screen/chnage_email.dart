@@ -13,7 +13,9 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../utils/app_layout.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../controller/password_controller.dart';
 import '../widget/change_email_widget.dart';
 
@@ -65,10 +67,11 @@ class ChangeEmailScreen extends StatelessWidget {
                               } else {
                                 if (context.mounted) {
                                   editMailPasswordController.clear();
-                                  customButtonSheet(
+                                  customAntButtonSheet(
                                       context: context,
                                       child: ChangEmailFieldLayout(),
-                                      height: .7);
+
+                                  );
                                 }
                               }
                             }
@@ -93,9 +96,9 @@ class ChangeEmailScreen extends StatelessWidget {
       obsValue: Get.find<PasswordController>().isValue.value,
       validator: (value) {
         if (value!.isEmpty) {
-          return AppString.the_password_field_is_required;
+          return AppString.the_password_field_is_required.tr;
         } else if (value.length < 6) {
-          return AppString.incorrect_user_or_password;
+          return AppString.incorrect_user_or_password.tr;
         } else {
           return null;
         }
@@ -105,8 +108,8 @@ class ChangeEmailScreen extends StatelessWidget {
         child: IconButton(
           onPressed: () => Get.find<PasswordController>().changeVal(),
           icon: Get.find<PasswordController>().isValue.isTrue
-              ? _showHideText("Show")
-              : _showHideText("Hide"),
+              ? _showHideText(AppString.text_show.tr)
+              : _showHideText(AppString.text_hide.tr),
         ),
       ),
     );
@@ -128,3 +131,5 @@ class ChangeEmailScreen extends StatelessWidget {
 class SelectedOtpVerifyController extends GetxController {
   RxBool isSelected = false.obs;
 }
+
+

@@ -1,3 +1,4 @@
+import '../../../common/domain/files_model.dart';
 import 'leave_record_response.dart';
 
 class LeaveRecords {
@@ -24,6 +25,9 @@ class GetLeaveRecords {
   LeaveType? leaveType;
   dynamic duration;
   String? status;
+  //Files ?files;
+  List<Files>?files;
+
 
   GetLeaveRecords(
       {this.endDate,
@@ -31,8 +35,10 @@ class GetLeaveRecords {
       this.id,
       this.createdAt,
       this.leaveType,
+      this.files,
       this.duration,
-      this.status, this.description});
+      this.status,
+      this.description});
 
   GetLeaveRecords.fromJson(Map<String, dynamic> json) {
     endDate = json['end_date'];
@@ -47,5 +53,3 @@ class GetLeaveRecords {
     description = json['description'];
   }
 }
-
-

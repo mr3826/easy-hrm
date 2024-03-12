@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -11,52 +10,71 @@ import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dar
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
 import '../../../../utils/utils.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
 
-  String OTPCode = Get.arguments[0];
-  String emailAddress = Get.arguments[1];
+  final String OTPCode = Get.arguments[0];
+  final String emailAddress = Get.arguments[1];
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: marginLayout,
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                customSpacerHeight(height: 50),
-                _imageLayout(),
-                customSpacerHeight(height: 50),
-                _codeTitleText(),
-                customSpacerHeight(height: 6),
-                Center(
-                    child: Text(
-                  AppString.text_setup_your_code_etc.tr,
-                  style: style,
-                )),
-                customSpacerHeight(height: 40),
-                _newPasswordLayout(),
-                customSpacerHeight(height: 20),
-                _confirmPasswordLayout(),
-                customSpacerHeight(height: 36),
-                customSpacerHeight(height: 12),
-                _submitBtnLayout(),
-                customSpacerHeight(height: 22),
-                _backToLoginLayout(),
-              ],
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        body: SafeArea(
+          child: Container(
+            padding: marginLayout,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+
+                      ///Reset password image
+                      imageLayout(url: Images.reset_password),
+                      customSpacerHeight(height: 50),
+
+                      ///Title Text
+                      _codeTitleText(),
+                      customSpacerHeight(height: 6),
+
+                      ///Description text
+                      _descriptionText(),
+                      customSpacerHeight(height: 30),
+
+                      ///New password text field
+                      _newPasswordLayout(),
+                      customSpacerHeight(height: 20),
+
+                      ///Confirm password text field
+                      _confirmPasswordLayout(),
+                      customSpacerHeight(height: 25),
+
+                      ///Submit button
+                      _submitBtnLayout(),
+                      customSpacerHeight(height: 22),
+
+                      ///Back login button
+                      _backToLoginLayout(),
+                      const Spacer(
+                        flex: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -70,10 +88,19 @@ class ResetPasswordScreen extends StatelessWidget {
       AppString.text_reset_password.tr,
       style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeLarge,
+          fontSize: Dimensions.fontSizeMid - 2,
           color: AppColor.normalTextColor,
           fontFamily: "Poppins"),
     ));
+  }
+
+  _descriptionText() {
+    return Text(
+      AppString.text_setup_your_code_etc.tr,
+      textAlign: TextAlign.center,
+      style: style.copyWith(
+          fontSize: Dimensions.fontSizeDefault - 2, color: AppColor.hintColor),
+    );
   }
 
   _submitBtnLayout() {
@@ -84,21 +111,22 @@ class ResetPasswordScreen extends StatelessWidget {
               AppString.text_submit.tr,
               overflow: TextOverflow.ellipsis,
               style: AppStyle.normal_text.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 18
-              ),
+                  fontWeight: FontWeight.w600,
+                  fontSize: Dimensions.fontSizeMid),
             ),
       onPressed: () async {
-        if (newPasswordController.text == confirmPasswordController.text) {
-          await Get.find<ForgotPasswordController>()
-              .resetPassword(confirmationCode: OTPCode,emailAddress: emailAddress);
-        }else{
-          showWarningMessage(message: AppString.password_not_matched);
+        if (_formKey.currentState!.validate()) {
+          if (newPasswordController.text == confirmPasswordController.text) {
+            await Get.find<ForgotPasswordController>().resetPassword(
+                confirmationCode: OTPCode, emailAddress: emailAddress);
+          } else {
+            showWarningMessage(message: AppString.password_not_matched);
+          }
         }
       },
       buttonColor: AppColor.primaryColor,
       isButtonExpanded: false,
-      btnTextSize: Dimensions.fontSizeMid + 2,
+      btnTextSize: Dimensions.fontSizeMid - 2,
     );
   }
 
@@ -109,18 +137,9 @@ class ResetPasswordScreen extends StatelessWidget {
             child: Text(
           AppString.text_back_to_login.tr,
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor,
-              fontSize: Dimensions.fontSizeDefault + 2),
+              color: AppColor.secondaryColor,
+              fontSize: Dimensions.fontSizeDefault),
         )));
-  }
-
-  _imageLayout() {
-    return Center(
-      child: SizedBox(
-          height: AppLayout.getHeight(200),
-          width: AppLayout.getWidth(200),
-          child: SvgPicture.asset(Images.reset_password, fit: BoxFit.cover)),
-    );
   }
 
   _newPasswordLayout() {
@@ -129,15 +148,29 @@ class ResetPasswordScreen extends StatelessWidget {
       hint: AppString.text_new_password.tr,
       prefixIcon: Icons.lock_open,
       controller: newPasswordController,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return AppString.the_new_password_field_is_required.tr;
+        } else {
+          return null;
+        }
+      },
     );
   }
 
   _confirmPasswordLayout() {
     return CustomInputField(
       isObscureText: true,
-      hint: AppString.text_confirm_password,
+      hint: AppString.text_confirm_password.tr,
       prefixIcon: Icons.lock_open,
       controller: confirmPasswordController,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return AppString.the_confirm_password_field_is_required.tr;
+        } else {
+          return null;
+        }
+      },
     );
   }
 }

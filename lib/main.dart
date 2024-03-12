@@ -1,6 +1,8 @@
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:payrun_mobile/init_%20app.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/utils/language/internationalization.dart';
 import 'package:payrun_mobile/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: appTheme,
+        translations: Internationalization(),
         locale: GetStorage().read("languageCode") != null
             ? Locale(GetStorage().read("languageCode"),
                 GetStorage().read("countryCode"))
@@ -32,4 +35,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

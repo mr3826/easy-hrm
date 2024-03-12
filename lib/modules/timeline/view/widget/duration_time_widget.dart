@@ -12,7 +12,6 @@ import '../../../../enum.dart';
 import '../../../../utils/app_string.dart';
 
 Widget durationTimeLayout({String? status}) {
-  print("Status:: $status");
   return SizedBox(
     width: double.infinity,
     child: Padding(
@@ -20,7 +19,7 @@ Widget durationTimeLayout({String? status}) {
       child: Column(
         children: [
           Obx(() => Text(
-                DateFormat('EEE, dd MMM yyyy').format(DateTime.parse(
+                DateFormat('EEE, dd MMM - yyyy').format(DateTime.parse(
                     Get.find<DateTimePickerController>().inDateTime.value)),
                 style: AppStyle.mid_large_text.copyWith(
                     fontSize: Dimensions.fontSizeDefault,
@@ -30,7 +29,7 @@ Widget durationTimeLayout({String? status}) {
               )),
           customSpacerHeight(height: 18),
           Text(
-            "Duration",
+            AppString.text_duration.tr,
             style: AppStyle.mid_large_text.copyWith(
                 fontSize: Dimensions.fontSizeDefault,
                 color: status != null ? Colors.white : AppColor.hintColor),

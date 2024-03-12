@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/modules/leave/controller/update_leave_controller.dart';
 import '../../../../common/widget/error_message.dart';
 import '../../../../common/widget/success_message.dart';
 import '../../../../common/widget/warning_message.dart';
@@ -18,7 +20,7 @@ class PickedFileFormStorage {
   final isLoading = false.obs;
 
   //picked file form storage here
-  Future<void> pickFile() async {
+  Future<void> pickFile({bool? isApplyLeave=false}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
@@ -33,9 +35,15 @@ class PickedFileFormStorage {
         filePath.value = result.files.single.path!;
         int size = await file.length();
         fileSize.value = size.toString();
-        print('File size: ${fileSize.value} bytes');
+        log('File size::: ${fileSize.value} bytes');
 
+        isApplyLeave==true?
         Get.find<ApplyLeaveController>().getUploadPolicy(
+            fileName: Get.find<FileUploadController>()
+                .storageForUpload
+                .filePath
+                .value):
+        Get.find<UpDateLeaveController>().getUploadPolicy(
             fileName: Get.find<FileUploadController>()
                 .storageForUpload
                 .filePath

@@ -5,37 +5,32 @@ import 'package:payrun_mobile/common/domain/upload_policy.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/utils.dart';
-import '../../dashboard/controller/dashbpard_controller.dart';
-import '../model/workshief_response_by_date.dart';
 import 'file_upload_controller.dart';
-import 'leave_screen_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
   @override
   void onInit() async {
     super.onInit();
     await getLeaveType();
-    await getWorkShift();
   }
 
   LeaveTypeDropdown? leaveTypeDropdown;
 
   final isLoading = false.obs;
   final isAssignLeaveLoaderLoading = false.obs;
-  final isUploadPolicyLoading = false.obs;
-  String? startTime;
-  String? endTime;
   String leaveId = '';
   RxBool isNoteRequired = false.obs;
   RxBool isDocumentRequired = false.obs;
   RxString numberOfLeaves = ''.obs;
   RxBool isErrorOccurred = false.obs;
+  final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
@@ -52,39 +47,12 @@ class ApplyLeaveController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  getWorkShift() async {
-    print(
-        "GetStorage().read(AppString.ORGANIZATION_USER_ID)::: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: workShiftQuery, variables: {
-      "queryData": {
-        "employee_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
-      }
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      WorkShiftResponse workShiftResponse =
-          WorkShiftResponse.fromJson(response.data!);
-      GetWorkScheduleForAssignLeave? value = workShiftResponse
-          .getWorkScheduleForAssignLeave
-          ?.firstWhere((element) => element.isHoliday == false);
-
-      print(value?.startTime);
-      startTime = value?.startTime;
-      endTime = value?.endTime;
-
-      print("workShiftTime?.startTime:: $startTime");
-    }
-    change(null, status: RxStatus.success());
-  }
-
   applyLeave({filePath}) async {
     print(
-        "jey:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
+        "applyLeave filePath:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
 
+    print(
+        "size :::: ${Get.find<FileUploadController>().storageForUpload.fileSize.value.toString()}");
     isAssignLeaveLoaderLoading(true);
 
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
@@ -137,13 +105,14 @@ class ApplyLeaveController extends GetxController with StateMixin {
       numberOfLeaves.value = '';
       isErrorOccurred.value = false;
       Get.find<FileUploadController>().storageForUpload.fileSize.value = "";
-      showSuccessMessage(message: AppString.leaveAddedSuccessMessage);
+      Get.find<FileUploadController>().storageForUpload.filePath.value = "";
+      Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
       leaveNoteController.clear();
-      Get.off(() => const MainScreen(routeIndex: 1));
-      await Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
-      await Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-      await Get.find<DashboardController>()
-          .getMonthlyTimelineInfoForDashboard();
+      isAssignLeaveLoaderLoading(false);
+      showSuccessMessage(message: AppString.leaveAddedSuccessMessage.tr);
+      isFileUploadedSuccessfully(false);
+      Get.back(canPop: false);
+      updateData();
     }
 
     isAssignLeaveLoaderLoading(false);

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -12,10 +11,11 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
+import '../../../../common/domain/files_model.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../enum.dart';
 import '../../../../utils/utils.dart';
+import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../model/leave_record_response.dart';
 import '../widget/leave_record_details_view.dart';
 import '../widget/status_btn_widget.dart';
@@ -25,14 +25,12 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.isRegistered<LeaveRecordsController>()) {
-      Get.delete<LeaveRecordsController>();
-    }
-    Get.put(LeaveRecordsController());
     return controller.obx(
         (state) => Scaffold(
-            appBar: customAppbar(title: AppString.text_leave_records),
+            appBar: customAppbar(title: AppString.text_leave_records.tr),
             body: RefreshIndicator(
+              backgroundColor: AppColor.cardColor,
+              color: AppColor.primaryColor,
               onRefresh: _refreshScreen,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -71,6 +69,30 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                   .leaveRecordList?[monthIndex].data?[index].numberOfDays,
               createdAt: controller
                   .leaveRecordList?[monthIndex].data?[index].createdAt,
+              files: [
+                (controller.leaveRecordList?[monthIndex].data?[index].files !=
+                            null &&
+                        controller.leaveRecordList![monthIndex].data![index]
+                            .files!.isNotEmpty)
+                    ? Files(
+                        createdAt: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].createdAt ??
+                            "",
+                        size: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].size ??
+                            "",
+                        name: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].name ??
+                            "",
+                        id: controller.leaveRecordList?[monthIndex].data?[index]
+                                .files?[0].id ??
+                            "",
+                        key: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].key ??
+                            "",
+                      )
+                    : Files()
+              ],
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
                     .leaveRecordList?[monthIndex]
@@ -120,13 +142,13 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   _infoLayoutView(
       {required BuildContext context, required GetLeaveRecords leaveRecord}) {
     return GestureDetector(
-      onTap: () => customButtonSheet(
-          context: context,
-          child: LeaveRecordDetails(
-            status: leaveRecord.status ?? "",
-            leaveRecords: leaveRecord,
-          ),
-          height: 0.5),
+      onTap: () => customAntButtonSheet(
+        context: context,
+        child: LeaveRecordDetails(
+          status: leaveRecord.status ?? "",
+          leaveRecords: leaveRecord,
+        ),
+      ),
       child: SizedBox(
         child: Card(
           elevation: 0,
@@ -182,7 +204,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
           "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
     }
     return Text(
-      "$leaveDate | ${leaveRecord.duration}",
+      "$leaveDate | ${leaveRecord.duration != null && leaveRecord.duration.runtimeType != String ? leaveRecord.duration > 1 ? "${leaveRecord.duration} ${AppString.text_days.tr}" : "${leaveRecord.duration} ${AppString.text_day.tr}" : ""}",
       style: AppStyle.mid_large_text.copyWith(
           color: AppColor.secondaryColor.withOpacity(0.7),
           fontSize: Dimensions.fontSizeDefault - 2,

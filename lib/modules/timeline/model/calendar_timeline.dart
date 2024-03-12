@@ -1,5 +1,8 @@
 import '../../leave/model/leave_record_response.dart';
 
+
+
+
 class CalendarTimeline {
   GetCalenderTimelinesForApp? getCalenderTimelinesForApp;
 
@@ -11,6 +14,16 @@ class CalendarTimeline {
             json['getCalenderTimelinesForApp'])
         : null;
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    if (getCalenderTimelinesForApp != null) {
+      data['getCalenderTimelinesForApp'] =
+          getCalenderTimelinesForApp!.toJson();
+    }
+    return data;
+  }
+
 }
 
 class GetCalenderTimelinesForApp {
@@ -33,6 +46,15 @@ class GetCalenderTimelinesForApp {
       });
     }
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    if (this.timelines != null) {
+      data['timelines'] = this.timelines!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
 class Timelines {
@@ -47,13 +69,13 @@ class Timelines {
 
   Timelines(
       {this.id,
-        this.description,
-        this.endDate,
-        this.startDate,
-        this.status,
-        this.task,
-        this.totalMinutes,
-        this.project});
+      this.description,
+      this.endDate,
+      this.startDate,
+      this.status,
+      this.task,
+      this.totalMinutes,
+      this.project});
 
   Timelines.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -64,14 +86,29 @@ class Timelines {
     task = json['task'] != null ? Task.fromJson(json['task']) : null;
     totalMinutes = json['total_minutes'];
     project =
-    json['project'] != null ? Project.fromJson(json['project']) : null;
+        json['project'] != null ? Project.fromJson(json['project']) : null;
+  }
+
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['description'] = this.description;
+    data['end_date'] = this.endDate;
+    data['start_date'] = this.startDate;
+    data['status'] = this.status;
+    data['task'] = this.task;
+    data['total_minutes'] = this.totalMinutes;
+    if (this.project != null) {
+      data['project'] = this.project!.toJson();
+    }
+    return data;
   }
 }
 
 class Task {
   String? name;
   String? id;
-
   Task({this.name, this.id});
 
   Task.fromJson(Map<String, dynamic> json) {
@@ -79,6 +116,12 @@ class Task {
     id = json['id'];
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
+  }
 }
 
 class Project {
@@ -92,5 +135,13 @@ class Project {
     id = json['id'];
     name = json['name'];
     color = json['color'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['color'] = this.color;
+    return data;
   }
 }

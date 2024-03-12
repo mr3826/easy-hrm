@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,14 +9,15 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/domain/files_model.dart';
 import '../../../../common/widget/custom_dotted_border.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
-import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../model/leave_record_response.dart';
 import 'leave_record_details_view.dart';
 
@@ -110,7 +108,7 @@ class IndividualEventView extends StatelessWidget {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                customButtonSheet(
+                customAntButtonSheet(
                   context: context,
                   child: LeaveRecordDetails(
                     status: Get.find<LeaveScreenController>()
@@ -120,6 +118,49 @@ class IndividualEventView extends StatelessWidget {
                             ?.toLowerCase() ??
                         "",
                     leaveRecords: GetLeaveRecords(
+                      files: [(Get.find<LeaveScreenController>()
+                          .leaveDetailsByDate
+                          ?.getLeaveRequests?[index]
+                          .files !=
+                          null &&
+                          Get.find<LeaveScreenController>()
+                              .leaveDetailsByDate!
+                              .getLeaveRequests![index]
+                              .files!
+                              .isNotEmpty)
+                          ? Files(
+                        createdAt: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .createdAt ??
+                            "",
+                        size: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .size ??
+                            "",
+                        name: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .name ??
+                            "",
+                        id: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .id ??
+                            "",
+                        key: Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .files?[0]
+                            .key ??
+                            "",
+                      )
+                          : Files()],
                       leaveType: LeaveType(
                         type: Get.find<LeaveScreenController>()
                             .leaveDetailsByDate
@@ -190,7 +231,7 @@ class IndividualEventView extends StatelessWidget {
                           .id,
                     ),
                   ),
-                  height: 0.6,
+
                 );
               },
               child: Padding(
@@ -311,7 +352,7 @@ Widget horizontalCalendarLayout() {
                     DateFormat("dd MMM yyyy").format(DateTime.now()) ==
                             DateFormat("dd MMM yyyy").format(DateTime.parse(
                                 Get.find<LeaveScreenController>().date.value))
-                        ? "Today"
+                        ? AppString.text_today.tr
                         : DateFormat("dd MMM yyyy").format(DateTime.parse(
                             Get.find<LeaveScreenController>().date.value)),
                     style: AppStyle.mid_large_text.copyWith(

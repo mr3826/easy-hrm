@@ -12,7 +12,6 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
 import '../../../../utils/utils.dart';
 
 class EmploymentLayout extends StatelessWidget {
@@ -53,14 +52,14 @@ class EmploymentLayout extends StatelessWidget {
                             .startDate ??
                         ""),
                 durationText:
-                    "Form last ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index].startDate ?? "")}",
+                    "${AppString.text_form_last.tr} ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index].startDate ?? "")}",
                 employeeCurrentStatus: Get.find<UserProfileController>()
                             .employeeWorkHistory
                             ?.getOrganizationUserHistory
                             ?.employmentHistories?[index]
                             .endDate ==
                         null
-                    ? "present"
+                    ? AppString.textPresent.tr
                     : dateMonthYearFormatFromDatetime(
                         Get.find<UserProfileController>()
                                 .employeeWorkHistory

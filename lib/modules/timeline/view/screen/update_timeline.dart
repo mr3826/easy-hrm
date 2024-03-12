@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/new_entry_text_field_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
-import '../../../leave/view/widget/timmer_text_field_dob.dart';
 
 class UpdateTimeLineLog extends StatelessWidget {
   final String? status;
@@ -58,20 +56,9 @@ class UpdateTimeLineLog extends StatelessWidget {
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
+    setIndexForPrevTdayOrTomListTimelog(DateTime.parse(startDateTime));
   }
 
-  _statusColor({required String status}) {
-    switch (status) {
-      case "approved":
-        return AppColor.primaryColor;
-      case "pending":
-        return AppColor.pendingColor;
-      case "reject":
-        return AppColor.errorColorLight;
-      default:
-        return AppColor.bgColorWithTimeline;
-    }
-  }
 }
 
 AppBar timeLogAppbar(BuildContext context) {

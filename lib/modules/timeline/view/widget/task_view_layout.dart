@@ -96,11 +96,6 @@ class TaskViewLayout extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        print(Get.find<TimelineController>()
-                            .projectDropDownResponse
-                            ?.getProjectsDropdown?[index]
-                            .projectId);
-
                         /// when it select project
                         /// then it became task name that shown in ui
                         /// pass its name to task name
@@ -116,6 +111,12 @@ class TaskViewLayout extends StatelessWidget {
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .projectId ??
+                                "";
+                        Get.find<TimelineController>().projectColor.value =
+                            Get.find<TimelineController>()
+                                    .projectDropDownResponse
+                                    ?.getProjectsDropdown?[index]
+                                    .color ??
                                 "";
 
                         Get.find<TimelineController>().taskId.value = "";
@@ -169,6 +170,7 @@ class TaskViewLayout extends StatelessWidget {
         Get.find<TimelineController>().taskName.value = task.name ?? "";
         Get.find<TimelineController>().taskId.value = task.taskId ?? "";
         Get.find<TimelineController>().projectId.value = "";
+        Get.find<TimelineController>().projectColor.value ="";
         Navigator.pop(context);
       },
       child: Column(
@@ -199,26 +201,23 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
         style: subTextFieldTitleStyle,
         autofocus: true,
         onChanged: (value) {
-          setState(() {
-
-          });
+          setState(() {});
           Get.find<TimelineController>().getProjectDropdown();
         },
         decoration: InputDecoration(
           hintText: AppString.text_select_option.tr,
           suffixIcon: GestureDetector(
             onTap: () {
-              setState(() {
-              });
+              setState(() {});
               taskSearchController.clear();
               Get.find<TimelineController>().getProjectDropdown();
             },
             child: taskSearchController.text.isNotEmpty
                 ? const Icon(
-              Icons.close,
-              size: 30,
-              color: AppColor.hintColor,
-            )
+                    Icons.close,
+                    size: 30,
+                    color: AppColor.hintColor,
+                  )
                 : const Icon(CupertinoIcons.search),
           ),
           hintStyle: TextStyle(
@@ -227,7 +226,7 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
               fontSize: Dimensions.fontSizeDefault + 1),
           border: OutlineInputBorder(
             borderSide:
-            const BorderSide(width: 0.0, color: AppColor.primaryColor),
+                const BorderSide(width: 0.0, color: AppColor.primaryColor),
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
           ),
           focusColor: AppColor.primaryColor,
@@ -244,7 +243,6 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
     );
   }
 }
-
 
 class HexColor extends Color {
   static int _getColor(String hex) {

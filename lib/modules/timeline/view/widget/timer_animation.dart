@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../utils/images.dart';
 import '../../controller/timer_controller.dart';
 
 class TimerAnimation extends GetView<TimeCounterController> {
@@ -13,11 +16,18 @@ class TimerAnimation extends GetView<TimeCounterController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Stack(
+          alignment: Alignment.center,
           children: [
             controller.isRunning.isTrue ? _animatedContainer() : Container(),
             controller.isTotalCount.value == false
                 ? _totalCountContainer()
-                : _normalContainer()
+                : _normalContainer(),
+            Obx(() => (Get.find<TimeCounterController>().isRunning.isTrue &&
+                    Get.find<TimeCounterController>()
+                        .isRunningHorizontalLine
+                        .isTrue)
+                ? _horizontalLineAnimation()
+                : _nullHorizontalLineLayout()),
           ],
         ));
   }
@@ -89,6 +99,38 @@ class TimerAnimation extends GetView<TimeCounterController> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  _horizontalLineAnimation() {
+    return Positioned(
+        bottom: -140,
+        left: -140,
+        right: -140,
+        child: Lottie.asset(Images.timer_animation,
+            height: 300, width: 300, fit: BoxFit.fitHeight));
+  }
+
+  _nullHorizontalLineLayout() {
+    return Positioned(
+      bottom: -0,
+      left: -50,
+      right: -50,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: List.generate(
+            4,
+            (index) => Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Icon(
+                    Icons.circle,
+                    color: AppColor.cardColor.withOpacity(0.2),
+                    size: 20,
+                  ),
+                )),
       ),
     );
   }

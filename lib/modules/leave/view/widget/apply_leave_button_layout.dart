@@ -9,6 +9,7 @@ import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_ti
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
+import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/add_attachemnt_file_widget.dart';
 import 'package:payrun_mobile/modules/leave/view/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -22,6 +23,7 @@ import 'apply_leave_dropdown.dart';
 
 class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
   ApplyLeaveButtonLayout({super.key});
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -46,20 +48,20 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customTitleText(
                           text: AppString.text_from.tr, isRequired: true),
                       customSpacerHeight(height: 8),
-                      Get.find<ApplyLeaveController>().startTime != null
+                      Get.find<LeaveScreenController>().startTime != null
                           ? CustomTimePickerInTime(
                               inTime:
-                                  "2024-01-01 ${Get.find<ApplyLeaveController>().startTime}",
+                                  "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
                       customSpacerHeight(height: 20),
                       customTitleText(
                           text: AppString.text_to.tr, isRequired: true),
                       customSpacerHeight(height: 8),
-                      Get.find<ApplyLeaveController>().endTime != null
+                      Get.find<LeaveScreenController>().endTime != null
                           ? CustomTimePickerOutTime(
                               outTime:
-                                  "2024-01-01 ${Get.find<ApplyLeaveController>().endTime}",
+                                  "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
                             )
                           : const CustomTimePickerOutTime(),
                       customSpacerHeight(height: 12),
@@ -110,10 +112,24 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                                     Get.find<ApplyLeaveController>()
                                         .leaveId
                                         .isNotEmpty) {
-                                  Get.find<ApplyLeaveController>().applyLeave();
+                                  if (Get.find<ApplyLeaveController>()
+                                          .numberOfLeaves
+                                          .isNotEmpty &&
+                                      Get.find<ApplyLeaveController>()
+                                              .numberOfLeaves
+                                              .value !=
+                                          "0") {
+                                    Get.find<ApplyLeaveController>()
+                                        .applyLeave();
+                                  } else {
+                                    showWarningMessage(
+                                        message: AppString
+                                            .text_no_available_leave.tr);
+                                  }
                                 } else {
                                   showWarningMessage(
-                                      message: "Provide a Valid Input");
+                                      message: AppString
+                                          .text_provid_a_valid_input.tr);
                                 }
                               },
                               buttonText: AppString.text_apply.tr,
@@ -158,7 +174,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
 
   _pathFormatText() {
     return Text(
-      AppString.text_jpeg_jpg_png_etc,
+      AppString.text_jpeg_jpg_png_etc.tr,
       style: AppStyle.normal_text_black
           .copyWith(color: AppColor.hintColor.withOpacity(0.7)),
     );
@@ -185,7 +201,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                               .copyWith(color: AppColor.normalTextColor),
                         ),
                         Text(
-                          "Balance (No.of days)",
+                          AppString.text_balance_no_of_days.tr,
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.hintColor,
                               fontSize: Dimensions.fontSizeDefault),

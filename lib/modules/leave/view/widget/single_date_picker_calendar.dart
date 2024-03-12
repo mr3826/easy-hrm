@@ -1,14 +1,8 @@
-import 'dart:ffi';
-
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
-import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/calendar_date_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -35,22 +29,15 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppLayout.getHeight(460),
       decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade200,
-              offset: const Offset(0, 3),
-            )
-          ]),
-      margin: EdgeInsets.symmetric(
-          horizontal: AppLayout.getWidth(Dimensions.paddingLarge)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TableCalendar(
               calendarStyle: CalendarStyle(
@@ -79,20 +66,11 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                     today = selectedDay;
                   },
                 );
-                //was before timeline update
-                // Get.find<DateTimeController>().requestedDate.value =
-                //     DateFormat('yyyy-MM-dd').format(selectedDay);
-                //new entry button change
                 Get.find<DateTimeController>().currentIndex.value = 5;
               },
             ),
-            Divider(
-              color: AppColor.hintColor.withOpacity(0.5),
-            ),
-            const Spacer(),
+            _divider(),
             _buttonLayout(onAction: () {
-              print("isCalledFormTimeLog::${widget.isCalledFormTimeLog}");
-
               if (widget.isCalledFormTimeLog == false) {
                 Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Get.find<DateController>().currentDate.value = today;
@@ -153,6 +131,13 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
             )),
         customSpacerWidth(width: 40),
       ],
+    );
+  }
+
+  _divider() {
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Divider(color: Colors.grey),
     );
   }
 }
