@@ -45,6 +45,9 @@ class NotificationController extends GetxController with StateMixin {
       }
     });
 
+
+    print("Notification ::: ${response}");
+
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -92,9 +95,8 @@ class NotificationController extends GetxController with StateMixin {
       notificationResponse = NotificationResponse.fromJson(response.data!);
       newNotification
           ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
-      print("no: lenth:: ${newNotification!.length}");
-      newNotificationIdList?.addAll(
-          newNotification?.map((e) => e.notification?.id ?? "").toList() ?? []);
+      print("newNotification length:: ${newNotification!.length}");
+      newNotificationIdList?.addAll(newNotification?.map((e) => e.notification?.id ?? "").toList() ?? []);
       if (notificationResponse != null &&
           notificationResponse!
                   .getNotificationActivities!.metaData!.totalRows! >
@@ -118,6 +120,7 @@ class NotificationController extends GetxController with StateMixin {
       "optionData": {"limit": notificationLimit, "offset": 0}
     });
 
+
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -137,6 +140,9 @@ class NotificationController extends GetxController with StateMixin {
         seenNotificationOffset.value = 0;
         isMoreSeenNotificationAvailable(false);
       }
+
+      print("seenNotification length::: ${seenNotification!.length}");
+      print("seenNotification length 2::: $seenNotificationLength");
     }
 
     change(null, status: RxStatus.success());

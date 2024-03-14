@@ -32,7 +32,6 @@ class Images {
   static String leaveIconNav = "assets/images/leave_icon.svg";
   static String notificationIconNav = "assets/images/notification_icon.svg";
   static String profileIconNav = "assets/images/profile_icon.svg";
-  static String notificationEmpty = "assets/images/notification_empty.svg";
   static String emptyNotification = "assets/images/empty_notification.png";
 
   static String forgot = "assets/images/forgot_src.svg";
