@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/modules/leave/view/widget/widget.dart';
 import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_icon_shape_style.dart';
@@ -21,102 +25,114 @@ class NotificationViewLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Expanded(
-          child: SizedBox(
-            child:
-                index == 0 ? _newNotificationView() : _seenNotificationView(),
-          ),
-        ));
+            child: SizedBox(
+          child: index == 0 ? _newNotificationView() : _seenNotificationView(),
+        )));
   }
 
   _newNotificationView() {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-              shrinkWrap: true,
-              controller: Get.find<NotificationController>()
-                  .newNotificationScrollController,
-              itemCount: _controller.newNotification?.length ?? 0,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              itemBuilder: (context, index) {
-                final notification =
-                    _controller.newNotification?[index].notification;
-                return Column(
-                  children: [
-                    _getNotificationByContext(
-                        notificationCreatedDate: notification?.createdAt ?? "",
-                        index: index,
-                        timeLineTimeInfo:
-                            notification?.timeline?.startDate ?? "",
-                        changerName:
-                            "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
-                        notificationContext: notification?.context ?? "",
-                        leaveTimeInfo: notification?.leave?.startDate ?? '',
-                        departmentInfo: notification?.department?.name ?? "",
-                        isDepartmentHead:
-                            (notification?.department?.managerId ==
-                                notification?.affectee?.id),
-                        jobTitleInfo: notification?.job?.title ?? ""),
-                    if (index == _controller.newNotification!.length - 1)
-                      customSpacerHeight(height: 100)
-                  ],
-                );
-              }),
-        ),
-        customSpacerHeight(height: 20),
-        Get.find<NotificationController>().isMoreNewNotificationLoading.isTrue
-            ? const Center(
-                child: CupertinoActivityIndicator(
-                    radius: 18, color: Colors.blueAccent))
-            : Container()
-      ],
-    );
+    return _controller.newNotification != null &&
+            _controller.newNotification!.isNotEmpty
+        ? Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: Get.find<NotificationController>()
+                        .newNotificationScrollController,
+                    itemCount: _controller.newNotification?.length ?? 0,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    itemBuilder: (context, index) {
+                      final notification =
+                          _controller.newNotification?[index].notification;
+                      return Column(
+                        children: [
+                          _getNotificationByContext(
+                              notificationCreatedDate:
+                                  notification?.createdAt ?? "",
+                              index: index,
+                              timeLineTimeInfo:
+                                  notification?.timeline?.startDate ?? "",
+                              changerName:
+                                  "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
+                              notificationContext: notification?.context ?? "",
+                              leaveTimeInfo:
+                                  notification?.leave?.startDate ?? '',
+                              departmentInfo:
+                                  notification?.department?.name ?? "",
+                              isDepartmentHead:
+                                  (notification?.department?.managerId ==
+                                      notification?.affectee?.id),
+                              jobTitleInfo: notification?.job?.title ?? ""),
+                          if (index == _controller.newNotification!.length - 1)
+                            customSpacerHeight(height: 100)
+                        ],
+                      );
+                    }),
+              ),
+              customSpacerHeight(height: 20),
+              Get.find<NotificationController>()
+                      .isMoreNewNotificationLoading
+                      .isTrue
+                  ? const Center(
+                      child: CupertinoActivityIndicator(
+                          radius: 18, color: Colors.blueAccent))
+                  : Container()
+            ],
+          )
+        : _emptyNotificationLayout();
   }
 
   _seenNotificationView() {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-              shrinkWrap: true,
-              controller: _controller.seenNotificationScrollController,
-              itemCount: _controller.seenNotification?.length ?? 0,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              itemBuilder: (context, index) {
-                final notification =
-                    _controller.seenNotification?[index].notification;
-                return Column(
-                  children: [
-                    _getNotificationByContext(
-                        notificationCreatedDate: notification?.createdAt ?? "",
-                        index: index,
-                        timeLineTimeInfo:
-                            notification?.timeline?.startDate ?? "",
-                        changerName:
-                            "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
-                        notificationContext: notification?.context ?? "",
-                        leaveTimeInfo: notification?.leave?.startDate ?? '',
-                        departmentInfo: notification?.department?.name ?? "",
-                        isDepartmentHead:
-                            (notification?.department?.managerId ==
-                                notification?.affectee?.id),
-                        jobTitleInfo: notification?.job?.title ?? ""),
-                    if (index == _controller.seenNotification!.length - 1)
-                      customSpacerHeight(height: 100)
-                  ],
-                );
-              }),
-        ),
-        customSpacerHeight(height: 20),
-        _controller.isMoreSeenNotificationLoading.isTrue
-            ? const Center(
-                child: CupertinoActivityIndicator(
-                    radius: 18, color: Colors.blueAccent))
-            : Container()
-      ],
-    );
+    return _controller.seenNotification != null &&
+            _controller.seenNotification!.isNotEmpty
+        ? Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: _controller.seenNotificationScrollController,
+                    itemCount: _controller.seenNotification?.length ?? 0,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    itemBuilder: (context, index) {
+                      final notification =
+                          _controller.seenNotification?[index].notification;
+                      return Column(
+                        children: [
+                          _getNotificationByContext(
+                              notificationCreatedDate:
+                                  notification?.createdAt ?? "",
+                              index: index,
+                              timeLineTimeInfo:
+                                  notification?.timeline?.startDate ?? "",
+                              changerName:
+                                  "${notification?.changer?.profile?.firstName ?? ""} ${notification?.changer?.profile?.lastName ?? ""}",
+                              notificationContext: notification?.context ?? "",
+                              leaveTimeInfo:
+                                  notification?.leave?.startDate ?? '',
+                              departmentInfo:
+                                  notification?.department?.name ?? "",
+                              isDepartmentHead:
+                                  (notification?.department?.managerId ==
+                                      notification?.affectee?.id),
+                              jobTitleInfo: notification?.job?.title ?? ""),
+                          if (index == _controller.seenNotification!.length - 1)
+                            customSpacerHeight(height: 100)
+                        ],
+                      );
+                    }),
+              ),
+              customSpacerHeight(height: 20),
+              _controller.isMoreSeenNotificationLoading.isTrue
+                  ? const Center(
+                      child: CupertinoActivityIndicator(
+                          radius: 18, color: Colors.blueAccent))
+                  : Container()
+            ],
+          )
+        : _emptyNotificationLayout();
   }
 
   _getNotificationByContext({
@@ -970,5 +986,24 @@ class NotificationViewLayout extends StatelessWidget {
   _getCreationDate({required String creationDate}) {
     if (creationDate.isEmpty) return "";
     return DateFormat("d MMM y").format(DateTime.parse(creationDate));
+  }
+
+  _emptyNotificationLayout() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+            width: AppLayout.getWidth(200),
+            child: Image.asset(Images.emptyNotification)),
+        Text(
+          AppString.text_you_have_seen_all_notification.tr,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.hintColor,
+              fontSize: Dimensions.fontSizeDefault - 2),
+        ),
+        customSpacerHeight(height: 100),
+      ],
+    ));
   }
 }

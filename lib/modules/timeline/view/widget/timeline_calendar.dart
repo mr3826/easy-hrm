@@ -46,7 +46,7 @@ class TimeLineCalendar extends StatelessWidget {
               headerStyle: _headerStyle(),
               eventArranger: const SideEventArranger(),
               scrollPhysics: const NeverScrollableScrollPhysics(),
-              liveTimeIndicatorSettings: HourIndicatorSettings.none(),
+              liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
               pageViewPhysics: const NeverScrollableScrollPhysics(),
               halfHourIndicatorSettings: const HourIndicatorSettings(
                 dashWidth: 1.4,
@@ -63,7 +63,7 @@ class TimeLineCalendar extends StatelessWidget {
                 return formattedTime;
               },
               onEventTap: (events, date) {
-                Iterable<String> eventData = events.map((e) => e.description);
+                Iterable<String> eventData = events.map((e) => e.description.toString());
 
                 String timeLId = eventData
                     .map((e) =>
@@ -291,7 +291,7 @@ class TimeLineCalendar extends StatelessWidget {
               eventTileBuilder: (date, events, status, start, end) {
                 ///for building calendar uo
 
-                Iterable<String> eventData = events.map((e) => e.description);
+                Iterable<String> eventData = events.map((e) => e.description.toString());
 
                 /// have to sub string
                 /// otherwise it returns with (value) pattern

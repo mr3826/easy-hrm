@@ -77,7 +77,6 @@ _totalLeave() {
       staticText: AppString.text_total.tr);
 }
 
-
 _tabToViewLeaveRecord() {
   return GestureDetector(
     onTap: () => Get.toNamed(Routes.LEAVE_RECORD_SCREEN),
@@ -104,12 +103,12 @@ _tabToViewLeaveRecord() {
   );
 }
 
-AppBar  appBar({required text}) {
+AppBar appBar({required text}) {
   return AppBar(
     backgroundColor: Colors.transparent,
     elevation: 0,
     title: Text(
-    "$text",
+      "$text",
       style: AppStyle.mid_large_text.copyWith(fontSize: 20),
     ),
   );
@@ -141,4 +140,15 @@ _divider() {
     height: AppLayout.getHeight(25),
     color: AppColor.cardColor,
   );
+}
+
+noDataFoundLayout() {
+  return SizedBox(
+      height: MediaQuery.of(Get.context!).size.height / 1.3,
+      child: Center(
+          child: Text(
+        AppString.text_no_data_found.tr,
+        style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
+      )));
 }
