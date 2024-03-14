@@ -31,17 +31,18 @@ class NotificationViewLayout extends StatelessWidget {
   }
 
   _newNotificationView() {
-    return _controller.newNotification != null &&
-            _controller.newNotification!.isNotEmpty
-        ? Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: (_controller.newNotification != null &&
+              _controller.newNotification!.isNotEmpty)
+          ? Column(
+              children: [
+                ListView.builder(
                     shrinkWrap: true,
                     controller: Get.find<NotificationController>()
                         .newNotificationScrollController,
                     itemCount: _controller.newNotification?.length ?? 0,
-                    physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     itemBuilder: (context, index) {
                       final notification =
@@ -70,31 +71,32 @@ class NotificationViewLayout extends StatelessWidget {
                         ],
                       );
                     }),
-              ),
-              customSpacerHeight(height: 20),
-              Get.find<NotificationController>()
-                      .isMoreNewNotificationLoading
-                      .isTrue
-                  ? const Center(
-                      child: CupertinoActivityIndicator(
-                          radius: 18, color: Colors.blueAccent))
-                  : Container()
-            ],
-          )
-        : _emptyNotificationLayout();
+                customSpacerHeight(height: 20),
+                Get.find<NotificationController>()
+                        .isMoreNewNotificationLoading
+                        .isTrue
+                    ? const Center(
+                        child: CupertinoActivityIndicator(
+                            radius: 18, color: Colors.blueAccent))
+                    : Container()
+              ],
+            )
+          : _emptyNotificationLayout(),
+    );
   }
 
   _seenNotificationView() {
-    return _controller.seenNotification != null &&
-            _controller.seenNotification!.isNotEmpty
-        ? Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: (_controller.seenNotification != null &&
+              _controller.seenNotification!.isNotEmpty)
+          ? Column(
+              children: [
+                ListView.builder(
                     shrinkWrap: true,
                     controller: _controller.seenNotificationScrollController,
                     itemCount: _controller.seenNotification?.length ?? 0,
-                    physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     itemBuilder: (context, index) {
                       final notification =
@@ -123,16 +125,16 @@ class NotificationViewLayout extends StatelessWidget {
                         ],
                       );
                     }),
-              ),
-              customSpacerHeight(height: 20),
-              _controller.isMoreSeenNotificationLoading.isTrue
-                  ? const Center(
-                      child: CupertinoActivityIndicator(
-                          radius: 18, color: Colors.blueAccent))
-                  : Container()
-            ],
-          )
-        : _emptyNotificationLayout();
+                customSpacerHeight(height: 20),
+                _controller.isMoreSeenNotificationLoading.isTrue
+                    ? const Center(
+                        child: CupertinoActivityIndicator(
+                            radius: 18, color: Colors.blueAccent))
+                    : Container()
+              ],
+            )
+          : _emptyNotificationLayout(),
+    );
   }
 
   _getNotificationByContext({
@@ -987,9 +989,12 @@ class NotificationViewLayout extends StatelessWidget {
     if (creationDate.isEmpty) return "";
     return DateFormat("d MMM y").format(DateTime.parse(creationDate));
   }
+}
 
-  _emptyNotificationLayout() {
-    return Center(
+_emptyNotificationLayout() {
+  return SizedBox(
+    height: MediaQuery.of(Get.context!).size.height / 1.8,
+    child: Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -1002,8 +1007,7 @@ class NotificationViewLayout extends StatelessWidget {
               color: AppColor.hintColor,
               fontSize: Dimensions.fontSizeDefault - 2),
         ),
-        customSpacerHeight(height: 100),
       ],
-    ));
-  }
+    )),
+  );
 }
