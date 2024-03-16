@@ -6,12 +6,14 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
+import '../../../leave/controller/leave_record_controller.dart';
 import '../../../leave/view/screen/leave_screen.dart';
 import '../../../notification/controller/notification_controller.dart';
 import '../../../notification/view/screen/notification.dart';
 import '../../../profile/controller/user_profile_controller.dart';
 import '../../../profile/view/screen/user_profile.dart';
 import '../../../timeline/controller/timeline_controller.dart';
+import '../../../timeline/controller/timelog_summary_controller.dart';
 import '../../../timeline/view/screen/timeline.dart';
 
 class MainScreen extends StatefulWidget {
@@ -64,6 +66,8 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(TimelineController());
     Get.put(DashboardController());
     Get.put(NotificationController());
+    Get.put(TimelineSummaryController());
+    Get.put(LeaveRecordsController());
   }
 
   _screenListLayout() {
