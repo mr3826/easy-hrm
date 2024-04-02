@@ -2,15 +2,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/dashboard/model/timeline_summary_dashboard.dart';
 import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
-
 import 'package:payrun_mobile/network/network_client.dart';
-
 import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/app_string.dart';
 import '../model/profile_summary_for_dashboard.dart';
 
 class DashboardController extends GetxController with StateMixin {
+
   @override
   void onInit() async {
     print("on init called");

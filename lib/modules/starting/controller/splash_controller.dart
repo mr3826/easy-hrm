@@ -10,7 +10,7 @@ import '../../../common/controller/connectivity_controller.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
-
+import '../../auth/presentation/controller/signin_controller.dart';
 
 class SplashController extends GetxController {
   @override
@@ -36,6 +36,7 @@ class SplashController extends GetxController {
         Future.delayed(
             const Duration(milliseconds: 2500), () => chooseScreen());
       }
+
       super.onReady();
     }
   }
@@ -46,12 +47,7 @@ class SplashController extends GetxController {
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
     } else {
-      if (GetStorage().read(AppString.LOGGED_IN) == true &&
-          GetStorage().read(AppString.LOGGED_IN) != null) {
-        Get.offAndToNamed(Routes.MAIN_SCREEN);
-      } else {
-        Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
-      }
+      checkIfSubscription();
     }
   }
 
@@ -92,6 +88,20 @@ class SplashController extends GetxController {
     } catch (e) {
       log(e.toString());
       return false;
+    }
+  }
+}
+
+void checkIfSubscription() {
+  var data = Get.find<SignInController>().orgSubscriptionInfoModel;
+  if (data.getOrgSubscriptionInfo?.status == "paused") {
+    Get.offNamed(Routes.SUBSCRIPTION_SCREEN);
+  } else {
+    if (GetStorage().read(AppString.LOGGED_IN) == true &&
+        GetStorage().read(AppString.LOGGED_IN) != null) {
+      Get.offAndToNamed(Routes.MAIN_SCREEN);
+    } else {
+      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
     }
   }
 }

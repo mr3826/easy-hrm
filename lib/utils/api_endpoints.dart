@@ -284,6 +284,13 @@ query GetProfileSummaryForDashboard {
   }
 }
 ''';
+const getOrgSubscriptionInfoQuery = '''
+query GetOrgSubscriptionInfo {
+  getOrgSubscriptionInfo {
+    status
+  }
+}
+''';
 
 const timelineSummaryInfoDashboardQuery = '''
 query GetMonthlyTimelog {
