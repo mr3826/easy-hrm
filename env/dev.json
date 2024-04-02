@@ -1,7 +1,6 @@
 {
   "PUBLIC_URL": "https://api.dev.payrun.app",
   "CDN_DOMAIN": "payrun-dev-private.imgix.net",
-  "CDN_KEY": "7HDMbhxY9NuS3cK4",
-  "PUBLIC_IMAGE_URL_DOMAIN": "https://dev-payrun-files.s3.amazonaws.com"
+  "CDN_KEY": "7HDMbhxY9NuS3cK4"
 }
 

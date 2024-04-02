@@ -7,7 +7,6 @@ class Api {
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
   static const String PUBLIC_IMAGE_URL_DOMAIN =
       String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
-
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
   static const LOGOUT = "/auth/logout";

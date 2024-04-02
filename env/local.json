@@ -1,6 +1,5 @@
 {
   "PUBLIC_URL": "https://api.local.payrun.app",
   "CDN_DOMAIN": "payrun-local.imgix.net",
-  "CDN_KEY": "AbuprUHFbUncYjep",
-  "PUBLIC_IMAGE_URL_DOMAIN": "https://local-payrun-files.s3.amazonaws.com"
+  "CDN_KEY": "AbuprUHFbUncYjep"
 }
