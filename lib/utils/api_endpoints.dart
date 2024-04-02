@@ -528,6 +528,10 @@ query GetNotificationActivities($queryData: NotificationActivitiesQueryInputType
     }
     metaData {
       totalRows
+      notificationCounts {
+        seen_count
+        unseen_count
+      }
     }
   }
 }

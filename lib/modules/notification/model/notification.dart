@@ -149,10 +149,26 @@ class Job {
 
 class MetaData {
   int? totalRows;
+  NotificationCounts? notificationCounts;
 
-  MetaData({this.totalRows});
+  MetaData({this.totalRows,this.notificationCounts});
 
   MetaData.fromJson(Map<String, dynamic> json) {
     totalRows = json['totalRows'];
+    notificationCounts =
+    json['notificationCounts'] != null ? NotificationCounts.fromJson(json['notificationCounts']) : null;
+
+  }
+}
+
+class NotificationCounts {
+  int? seenCount;
+  int? unSeenCount;
+
+  NotificationCounts(this.seenCount, this.unSeenCount);
+
+  NotificationCounts.fromJson(Map<String, dynamic> json){
+    seenCount = json['seen_count'];
+    unSeenCount = json['unseen_count'];
   }
 }
