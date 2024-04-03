@@ -12,6 +12,7 @@ import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/images.dart';
+import '../../../auth/presentation/controller/signin_controller.dart';
 
 List<PersistentBottomNavBarItem> get iconList => _navBarsItems();
 Future<bool> get appExitChecker => _onWillPop();
@@ -73,39 +74,47 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
 
 PersistentBottomNavBarItem _navbarIcon(
     {required activeIcon, required String text, imgUrl}) {
+  SignInController isValue = Get.find<SignInController>();
+
   return PersistentBottomNavBarItem(
-    icon: SizedBox(
-      height: AppLayout.getHeight(25),
-      child: Column(
-        children: [
-          customSvgImage(imageUrl: activeIcon, height: 25, width: 25),
-          customSpacerHeight(height: 2),
-          Text(
-            text,
-            style: AppStyle.mid_large_text
-                .copyWith(fontSize: 10, color: AppColor.primaryColor),
-          )
-        ],
-      ),
+    icon: Obx(() => isValue.isSubscription.isTrue
+        ? _inActiveIcon(text, imgUrl)
+        : _activeIcon(text, activeIcon)),
+    inactiveIcon: _inActiveIcon(text, imgUrl),
+  );
+}
+
+_inActiveIcon(text, imgUrl) {
+  return SizedBox(
+    height: AppLayout.getHeight(25),
+    child: Column(
+      children: [
+        customSvgImage(
+            imageUrl: imgUrl, color: AppColor.hintColor, height: 25, width: 25),
+        customSpacerHeight(height: 2),
+        Text(
+          text,
+          style: AppStyle.mid_large_text
+              .copyWith(fontSize: 10, color: AppColor.hintColor),
+        )
+      ],
     ),
-    inactiveIcon: SizedBox(
-      height: AppLayout.getHeight(25),
-      child: Column(
-        children: [
-          // Image.asset(imgUrl),
-          customSvgImage(
-              imageUrl: imgUrl,
-              color: AppColor.hintColor,
-              height: 25,
-              width: 25),
-          customSpacerHeight(height: 2),
-          Text(
-            text,
-            style: AppStyle.mid_large_text
-                .copyWith(fontSize: 10, color: AppColor.hintColor),
-          )
-        ],
-      ),
+  );
+}
+
+_activeIcon(text, activeIcon) {
+  return SizedBox(
+    height: AppLayout.getHeight(25),
+    child: Column(
+      children: [
+        customSvgImage(imageUrl: activeIcon, height: 25, width: 25),
+        customSpacerHeight(height: 2),
+        Text(
+          text,
+          style: AppStyle.mid_large_text
+              .copyWith(fontSize: 10, color: AppColor.primaryColor),
+        )
+      ],
     ),
   );
 }

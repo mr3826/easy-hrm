@@ -47,7 +47,8 @@ class SplashController extends GetxController {
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
     } else {
-      checkIfSubscription();
+      //checkIfSubscription();
+      Get.offAndToNamed(Routes.MAIN_SCREEN);
     }
   }
 
@@ -92,10 +93,11 @@ class SplashController extends GetxController {
   }
 }
 
-void checkIfSubscription() {
+void checkIfSubscription() async{
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
   if (data.getOrgSubscriptionInfo?.status == "paused") {
-    Get.offNamed(Routes.SUBSCRIPTION_SCREEN);
+    Get.offNamed(Routes.MAIN_SCREEN
+    );
   } else {
     if (GetStorage().read(AppString.LOGGED_IN) == true &&
         GetStorage().read(AppString.LOGGED_IN) != null) {

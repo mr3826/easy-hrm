@@ -179,7 +179,7 @@ class AppString {
 
   static String text_logged = "Logged";
   static const String text_yes = "Yes";
-  static String text_log_out = "Logout";
+  static String text_log_out = "Log out";
   static String text_language = "Language: ";
   static String text_details = "Details";
   static String text_description = "Description";

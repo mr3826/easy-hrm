@@ -18,11 +18,11 @@ import '../../domain/org_subscription_Info_model.dart';
 class SignInController extends GetxController with StateMixin {
   RxString organizationAvailabilityMessage = "".obs;
   final isLoading = false.obs;
+  final isSubscription = false.obs;
   final isSignInLoading = false.obs;
   final isSubscriptionLoading = false.obs;
   RxBool isValue = true.obs;
-  OrgSubscriptionInfoModel orgSubscriptionInfoModel =
-      OrgSubscriptionInfoModel();
+  OrgSubscriptionInfoModel orgSubscriptionInfoModel = OrgSubscriptionInfoModel();
 
   changeVal() {
     return isValue.value = !isValue.value;
@@ -67,8 +67,7 @@ class SignInController extends GetxController with StateMixin {
         ).toJson();
         String jsonObject = jsonEncode(jsonModel);
 
-        GetStorage().write(
-            SignInResponse.fromJson(response.body).ordId ?? "", jsonObject);
+        GetStorage().write(SignInResponse.fromJson(response.body).ordId ?? "", jsonObject);
 
         /// save token info for Api response
         GetStorage().write(AppString.ID_TOKEN,
@@ -97,8 +96,12 @@ class SignInController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      orgSubscriptionInfoModel =
-          OrgSubscriptionInfoModel.fromJson(response.data!);
+      orgSubscriptionInfoModel = OrgSubscriptionInfoModel.fromJson(response.data!);
+
+
+      orgSubscriptionInfoModel.getOrgSubscriptionInfo?.status == "paused"?isSubscription(true):isSubscription(false);
+
+
       isSubscriptionLoading(false);
     }
     isSubscriptionLoading(false);

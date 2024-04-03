@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
@@ -5,6 +6,7 @@ import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.d
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import '../../../auth/presentation/controller/signin_controller.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
 import '../../../leave/controller/leave_record_controller.dart';
 import '../../../leave/view/screen/leave_screen.dart';
@@ -12,6 +14,7 @@ import '../../../notification/controller/notification_controller.dart';
 import '../../../notification/view/screen/notification.dart';
 import '../../../profile/controller/user_profile_controller.dart';
 import '../../../profile/view/screen/user_profile.dart';
+import '../../../subscription/view/subscription_screen.dart';
 import '../../../timeline/controller/timeline_controller.dart';
 import '../../../timeline/controller/timelog_summary_controller.dart';
 import '../../../timeline/view/screen/timeline.dart';
@@ -27,13 +30,14 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late PersistentTabController controller;
 
-  var currentIndex = 0;
   @override
   void initState() {
-    controller = PersistentTabController(initialIndex: widget.routeIndex ?? 2);
+    controller = PersistentTabController(
+      initialIndex: widget.routeIndex ?? 2,
+    );
     super.initState();
   }
-
+  SignInController isValue = Get.find<SignInController>();
   @override
   Widget build(BuildContext context) {
     /// initialController controller
@@ -41,10 +45,10 @@ class _MainScreenState extends State<MainScreen> {
     return WillPopScope(
       onWillPop: () => appExitChecker,
       child: Scaffold(
-        body: PersistentTabView(
+        body: Obx(() => PersistentTabView(      // ex error is alwasys false //// Api response equal that's hide
           context,
           controller: controller,
-          screens: _screenListLayout(),
+          screens:isValue.isSubscription.isTrue?_ifNeedSubscription(): _screenListLayout(),
           items: iconList,
           backgroundColor: AppColor.backgroundColor,
           confineInSafeArea: true,
@@ -55,7 +59,11 @@ class _MainScreenState extends State<MainScreen> {
           navBarStyle: NavBarStyle.style15,
           navBarHeight: 60,
           hideNavigationBarWhenKeyboardShows: true,
-        ),
+          onItemSelected: (value) {
+            print(controller.index == value);
+          },
+        )),
+
       ),
     );
   }
@@ -74,9 +82,20 @@ class _MainScreenState extends State<MainScreen> {
     return [
       const TimelineScreen(),
       const LeaveScreen(),
-      const Dashboard(),
+      //const Dashboard(),
+       SubscriptionScreen(),
       const NotificationScreen(),
       ProfileScreen(),
+    ];
+  }
+
+  _ifNeedSubscription(){
+    return [
+      SubscriptionScreen(),
+      SubscriptionScreen(),
+      SubscriptionScreen(),
+      SubscriptionScreen(),
+      SubscriptionScreen(),
     ];
   }
 }

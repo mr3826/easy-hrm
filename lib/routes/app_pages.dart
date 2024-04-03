@@ -65,7 +65,7 @@ class AppPages {
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,
-      page: () => const SubscriptionScreen(),
+      page: () =>  SubscriptionScreen(),
     ),
 
     GetPage(
