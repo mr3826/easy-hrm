@@ -5,20 +5,27 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
-import 'package:payrun_mobile/modules/auth/domain/organization_info.dart';
 import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/token_model.dart';
-import '../../../../routes/app_pages.dart';
+import '../../../../network/exception_helper.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../../utils/utils.dart';
+import '../../../starting/controller/splash_controller.dart';
+import '../../domain/org_subscription_Info_model.dart';
 
 class SignInController extends GetxController with StateMixin {
   RxString organizationAvailabilityMessage = "".obs;
   final isLoading = false.obs;
+  final isSubscriptionExpired = false.obs;
   final isSignInLoading = false.obs;
+  final isSubscriptionLoading = false.obs;
+  final isSubscriptionNotUseTimeTracking = false.obs;
+
   RxBool isValue = true.obs;
+  OrgSubscriptionInfoModel orgSubscriptionInfoModel =
+      OrgSubscriptionInfoModel();
 
   changeVal() {
     return isValue.value = !isValue.value;
@@ -27,6 +34,7 @@ class SignInController extends GetxController with StateMixin {
   @override
   void onInit() {
     setLastInputData();
+    getOrgSubscriptionInfo();
     super.onInit();
   }
 
@@ -38,7 +46,6 @@ class SignInController extends GetxController with StateMixin {
       emailController.text = lastInput.email ?? "";
     }
   }
-
 
   Future<void> login({required String email, required String password}) async {
     isSignInLoading(true);
@@ -77,12 +84,37 @@ class SignInController extends GetxController with StateMixin {
         GetStorage().write(AppString.ORGANIZATION_ID,
             SignInResponse.fromJson(response.body).ordId ?? "");
         _saveData();
-        Get.toNamed(Routes.MAIN_SCREEN);
+        checkIfSubscription();
       }
     } catch (e) {
       log(e.toString());
     }
     isSignInLoading(false);
+  }
+
+  getOrgSubscriptionInfo() async {
+    try {
+      isSubscriptionLoading(true);
+      final response = await NetworkClient()
+          .getGraphQuery(queryString: getOrgSubscriptionInfoQuery);
+      log("getOrgSubscriptionInfo ::::: ${response.data!}");
+      if (response.hasException) {
+        ExceptionHelper.errorHandler(exception: response.exception!);
+      } else {
+        orgSubscriptionInfoModel =
+            OrgSubscriptionInfoModel.fromJson(response.data!);
+        checkIfSubscription();
+
+        isSubscriptionLoading(false);
+      }
+    } catch (ex) {
+      print("getOrgSubscriptionInfo ::::: $ex");
+      isSubscriptionLoading(false);
+      isSubscriptionExpired(false);
+      isSubscriptionNotUseTimeTracking(false);
+    }
+
+    //try case called checkIfSubscription
   }
 
   void _saveData() {

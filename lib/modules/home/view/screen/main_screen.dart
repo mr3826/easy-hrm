@@ -5,6 +5,8 @@ import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.d
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:update_notification/screens/update_notification.dart';
+import '../../../auth/presentation/controller/signin_controller.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
 import '../../../leave/controller/leave_record_controller.dart';
 import '../../../leave/view/screen/leave_screen.dart';
@@ -12,6 +14,7 @@ import '../../../notification/controller/notification_controller.dart';
 import '../../../notification/view/screen/notification.dart';
 import '../../../profile/controller/user_profile_controller.dart';
 import '../../../profile/view/screen/user_profile.dart';
+import '../../../subscription/view/subscription_screen.dart';
 import '../../../timeline/controller/timeline_controller.dart';
 import '../../../timeline/controller/timelog_summary_controller.dart';
 import '../../../timeline/view/screen/timeline.dart';
@@ -27,24 +30,30 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late PersistentTabController controller;
 
-  var currentIndex = 0;
   @override
   void initState() {
-    controller = PersistentTabController(initialIndex: widget.routeIndex ?? 2);
+    controller = PersistentTabController(
+      initialIndex: widget.routeIndex ?? 2,
+    );
+    UpdateNotification(
+        androidAppId: 'com.gainhq.payrun',
+        minimumVersion: '1.0.0+1');
     super.initState();
   }
-
+  SignInController isValue = Get.find<SignInController>();
   @override
   Widget build(BuildContext context) {
+
     /// initialController controller
     _initialController();
+
     return WillPopScope(
       onWillPop: () => appExitChecker,
       child: Scaffold(
-        body: PersistentTabView(
+        body:  PersistentTabView(
           context,
           controller: controller,
-          screens: _screenListLayout(),
+          screens: isValue.isSubscriptionExpired.isTrue?_ifNeedSubscription():_screenListLayout(),
           items: iconList,
           backgroundColor: AppColor.backgroundColor,
           confineInSafeArea: true,
@@ -55,19 +64,23 @@ class _MainScreenState extends State<MainScreen> {
           navBarStyle: NavBarStyle.style15,
           navBarHeight: 60,
           hideNavigationBarWhenKeyboardShows: true,
-        ),
-      ),
+          onItemSelected: (value) {
+            print(controller.index == value);
+          },
+        )),
+
+
     );
   }
 
-  void _initialController() {
-    Get.put(LeaveScreenController());
-    Get.put(UserProfileController());
-    Get.put(TimelineController());
+  void _initialController() async{
     Get.put(DashboardController());
+    Get.put(TimelineController());
     Get.put(NotificationController());
     Get.put(TimelineSummaryController());
+    Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
+    Get.put(UserProfileController());
   }
 
   _screenListLayout() {
@@ -77,6 +90,16 @@ class _MainScreenState extends State<MainScreen> {
       const Dashboard(),
       const NotificationScreen(),
       ProfileScreen(),
+    ];
+  }
+
+  _ifNeedSubscription(){
+    return [
+      SubscriptionScreen(),
+      SubscriptionScreen(),
+      SubscriptionScreen(),
+      SubscriptionScreen(),
+      SubscriptionScreen(),
     ];
   }
 }

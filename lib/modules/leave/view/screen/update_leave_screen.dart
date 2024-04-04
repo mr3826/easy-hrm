@@ -84,8 +84,6 @@ class UpdateLeave extends StatelessWidget {
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
-    ;
-
     leaveNoteController.text = leaveRecords?.description ?? "";
     Get.find<UpDateLeaveController>().isNoteRequired.value =
         leaveRecords?.leaveType?.isAddNoteRequired ?? false;

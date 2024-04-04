@@ -39,7 +39,8 @@ class Dashboard extends GetView<DashboardController> {
                                   .copyWith(color: AppColor.normalTextColor),
                             )
                           : Container(),
-                      const UpcomingLeaveLayout()
+                      const UpcomingLeaveLayout(),
+
                     ],
                   ),
                 ),

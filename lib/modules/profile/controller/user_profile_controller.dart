@@ -82,7 +82,6 @@ class UserProfileController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
-
       log("getEmploymentInfo:::${EmployeeWorkHistory.fromJson(response.data!).getOrganizationUserHistory?.deptHistories?.length}");
     }
 
