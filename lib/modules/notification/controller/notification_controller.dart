@@ -38,22 +38,19 @@ class NotificationController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": false,"is_mobile_notification": true},
+      "queryData": {"is_seen": false, "is_mobile_notification": true},
       "optionData": {
         "limit": notificationLimit,
         "offset": newNotificationOffset.value
       }
     });
 
-
-    print("Notification ::: ${response}");
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       notificationResponse = NotificationResponse.fromJson(response.data!);
       newNotificationLength = notificationResponse
-              ?.getNotificationActivities?.metaData?.totalRows ??
+              ?.getNotificationActivities?.metaData?.notificationCounts?.unSeenCount ??
           0;
       newNotification?.value =
           notificationResponse?.getNotificationActivities?.data ?? [];
@@ -62,7 +59,7 @@ class NotificationController extends GetxController with StateMixin {
           newNotification?.map((e) => e.notification?.id ?? "").toList();
       if (notificationResponse != null &&
           notificationResponse!
-                  .getNotificationActivities!.metaData!.totalRows! >
+                  .getNotificationActivities!.metaData!.notificationCounts!.unSeenCount! >
               newNotification!.length) {
         isMoreNewNotificationAvailable(true);
         newNotificationOffset.value =
@@ -82,7 +79,7 @@ class NotificationController extends GetxController with StateMixin {
         "newNotificationLimit: $notificationLimit newNotificationOffset:: $newNotificationOffset");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": false,"is_mobile_notification": true},
+      "queryData": {"is_seen": false, "is_mobile_notification": true},
       "optionData": {
         "limit": notificationLimit,
         "offset": newNotificationOffset.value
@@ -95,11 +92,10 @@ class NotificationController extends GetxController with StateMixin {
       notificationResponse = NotificationResponse.fromJson(response.data!);
       newNotification
           ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
-      print("newNotification length:: ${newNotification!.length}");
       newNotificationIdList?.addAll(newNotification?.map((e) => e.notification?.id ?? "").toList() ?? []);
       if (notificationResponse != null &&
           notificationResponse!
-                  .getNotificationActivities!.metaData!.totalRows! >
+                  .getNotificationActivities!.metaData!.notificationCounts!.unSeenCount! >
               newNotification!.length) {
         isMoreNewNotificationAvailable(true);
         newNotificationOffset.value =
@@ -116,7 +112,7 @@ class NotificationController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": true,"is_mobile_notification": true},
+      "queryData": {"is_seen": true, "is_mobile_notification": true},
       "optionData": {"limit": notificationLimit, "offset": 0}
     });
 
@@ -127,11 +123,11 @@ class NotificationController extends GetxController with StateMixin {
       notificationResponse = NotificationResponse.fromJson(response.data!);
       seenNotification = notificationResponse?.getNotificationActivities?.data;
       seenNotificationLength = notificationResponse
-              ?.getNotificationActivities?.metaData?.totalRows ??
+              ?.getNotificationActivities?.metaData?.notificationCounts?.seenCount ??
           0;
       if (notificationResponse != null &&
           notificationResponse!
-                  .getNotificationActivities!.metaData!.totalRows! >
+                  .getNotificationActivities!.metaData!.notificationCounts!.seenCount! >
               seenNotification!.length) {
         isMoreSeenNotificationAvailable(true);
         seenNotificationOffset.value =
@@ -140,9 +136,6 @@ class NotificationController extends GetxController with StateMixin {
         seenNotificationOffset.value = 0;
         isMoreSeenNotificationAvailable(false);
       }
-
-      print("seenNotification length::: ${seenNotification!.length}");
-      print("seenNotification length 2::: $seenNotificationLength");
     }
 
     change(null, status: RxStatus.success());
@@ -150,9 +143,7 @@ class NotificationController extends GetxController with StateMixin {
 
   void getMoreSeenNotification() async {
     isMoreSeenNotificationLoading(true);
-    print(
-        "newNotificationLimit: $notificationLimit newNotificationOffset:: $newNotificationOffset");
-    final response = await NetworkClient()
+     final response = await NetworkClient()
         .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
       "queryData": {"is_seen": true, "is_mobile_notification": true},
       "optionData": {
@@ -169,7 +160,7 @@ class NotificationController extends GetxController with StateMixin {
           ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
       if (notificationResponse != null &&
           notificationResponse!
-                  .getNotificationActivities!.metaData!.totalRows! >
+                  .getNotificationActivities!.metaData!.notificationCounts!.seenCount! >
               seenNotification!.length) {
         isMoreSeenNotificationAvailable(true);
         seenNotificationOffset.value =
