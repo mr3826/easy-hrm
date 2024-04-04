@@ -118,7 +118,7 @@ class ResetPasswordScreen extends StatelessWidget {
         if (_formKey.currentState!.validate()) {
           if (newPasswordController.text == confirmPasswordController.text) {
             await Get.find<ForgotPasswordController>().resetPassword(
-                confirmationCode: OTPCode, emailAddress: emailAddress);
+                confirmationCode: OTPCode);
           } else {
             showWarningMessage(message: AppString.password_not_matched);
           }
