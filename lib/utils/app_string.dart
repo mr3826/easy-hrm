@@ -16,6 +16,8 @@ class AppString {
 
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
   static String text_retry = 'Retry';
+  static String text_no_data_found = 'No data found';
+  static String text_you_have_seen_all_notification = 'You have seen all notification';
   static String no_internet_title_text = "No internet!!";
   static String no_internet_subtitle_text =
       "Make sure your Wi-Fi or cellular data is turned on and then try again";

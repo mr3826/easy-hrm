@@ -44,8 +44,8 @@ class TimelineController extends GetxController with StateMixin {
   Color timeLogColor = AppColor.primaryColor;
   RxString projectColor = ''.obs;
   final searchInputData = TextEditingController().obs;
-
-  Rx<CalendarTimeline> calendarTimeline = CalendarTimeline().obs;
+  late Timer updateDataTime;
+  CalendarTimeline calendarTimeline=CalendarTimeline();
 
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
 
@@ -382,8 +382,10 @@ class TimelineController extends GetxController with StateMixin {
     if (!Get.isRegistered<DateTimeController>()) {
       Get.put(DateTimeController());
     }
+
+    updateDataTime = Timer(Duration.zero, () {});
+    updateDataAfterTwoMinutes();
     _refreshTimeline();
-    // updateDataAfterTwoMinutes();
     super.onInit();
   }
 
@@ -426,11 +428,11 @@ class TimelineController extends GetxController with StateMixin {
 
       timelogList?.clear();
 
-      calendarTimeline.value =
+      calendarTimeline =
           CalendarTimeline.fromJson(responseForCalendar.data!);
 
-      timelogList = calendarTimeline.value.getCalenderTimelinesForApp?.timelines
-          ?.map((e) {
+      timelogList =
+          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",
@@ -461,7 +463,7 @@ class TimelineController extends GetxController with StateMixin {
             description: objData);
       }).toList();
       timelogList?.addAll(
-          calendarTimeline.value.getCalenderTimelinesForApp?.leaves?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
                 //todo
                 /// add files info
                 ModelForDescription modelForDescription = ModelForDescription(
@@ -517,27 +519,28 @@ class TimelineController extends GetxController with StateMixin {
       CalendarControllerProvider.of(Get.context!)
           .controller
           .addAll(timelogList ?? []);
+
+      if (updateDataTime.isActive) {
+        print("updateDataTime.isActive ${updateDataTime.isActive}");
+        updateDataTime.cancel();
+        print("updateDataTime.isActive ${updateDataTime.isActive}");
+      }
+      updateDataAfterTwoMinutes();
     }
 
     isTimelineCalendarByDateLoading(false);
   }
 
   void updateDataAfterTwoMinutes() {
-    Timer.periodic(const Duration(seconds: 40), (timer) async {
+    updateDataTime = Timer.periodic(const Duration(minutes: 2), (timer) {
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
           CalendarControllerProvider.of(Get.context!).controller.remove(value);
         }
       }
 
-      timelogList?.clear();
-
-      CalendarControllerProvider.of(Get.context!)
-          .controller
-          .addAll(timelogList ?? []);
-
-      timelogList = calendarTimeline.value.getCalenderTimelinesForApp?.timelines
-          ?.map((e) {
+      timelogList =
+          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",
@@ -568,7 +571,7 @@ class TimelineController extends GetxController with StateMixin {
             description: objData);
       }).toList();
       timelogList?.addAll(
-          calendarTimeline.value.getCalenderTimelinesForApp?.leaves?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
                 //todo
                 /// add files info
                 ModelForDescription modelForDescription = ModelForDescription(

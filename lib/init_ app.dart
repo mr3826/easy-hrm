@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
 import 'firebase_options.dart';
@@ -54,8 +55,7 @@ Future<void> initApp() async {
   Get.put(PasswordController());
   Get.put(LogoutController());
   Get.put(SelectedTaskController());
-  Get.put(UpdateProfileController());
-  Get.put(LeaveRecordsController());
   Get.put(DateTimeController());
   Get.put(SplashController());
+  Get.put(UpdateProfileController());
 }

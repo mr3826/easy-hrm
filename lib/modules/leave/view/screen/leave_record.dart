@@ -19,6 +19,7 @@ import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../model/leave_record_response.dart';
 import '../widget/leave_record_details_view.dart';
 import '../widget/status_btn_widget.dart';
+import '../widget/widget.dart';
 
 class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   const LeaveRecordScreen({super.key});
@@ -34,7 +35,10 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               onRefresh: _refreshScreen,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: ListView.builder(
+                child: controller.leaveRecordList!=null&& controller.leaveRecordList!.isNotEmpty
+                    
+                    
+                    ? ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: controller.leaveRecordList?.length ?? 0,
@@ -43,7 +47,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                         date: controller.leaveRecordList?[index].date),
                     _leaveRecordViewLayout(index)
                   ]),
-                ),
+                ):noDataFoundLayout(),
               ),
             )),
         onLoading: const LoadingIndicator());
@@ -231,4 +235,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   Future<void> _refreshScreen() async {
     controller.getLeaveRecordsData();
   }
+
+
 }

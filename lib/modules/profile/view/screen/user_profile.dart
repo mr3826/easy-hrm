@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -92,31 +94,34 @@ class ProfileScreen extends GetView<UserProfileController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _userImageLayout(),
-        customSpacerWidth(width: 18),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-              style: AppStyle.mid_large_text
-                  .copyWith(color: AppColor.normalTextColor),
-            ),
-            Text(
-              controller.userDetails?.getOrganizationUserDetails?.department
-                      ?.name ??
-                  "",
-              style: AppStyle.normal_text_grey,
-            ),
-            customSpacerHeight(height: 8),
-            Row(
+        customSpacerWidth(width: 20),
+        Expanded(
+          child: SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
               children: [
-                _employmentContractStatus(),
-                customSpacerWidth(width: 8),
-                _employmentStatus(),
+                ///User name and department
+                _userNameAndDptLayout(),
+
+                ///Status
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: _employmentContractStatus(),
+                ),
+                customSpacerWidth(width: 12),
+
+                ///Status
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: _employmentStatus(),
+                ),
+
               ],
-            )
-          ],
+            ),
+          ),
         ),
+        customSpacerWidth(width: 18),
       ],
     );
   }
@@ -653,16 +658,16 @@ class ProfileScreen extends GetView<UserProfileController> {
           }
         case "no":
           {
-           return "Norwegian";
+            return "Norwegian";
           }
         default:
-        return  "English";
+          return "English";
       }
     }
-    return  "English";
+    return "English";
   }
-  List languageFlagIndex = [Images.FLAG_PNG, Images.NOEWAYFLAG];
 
+  List languageFlagIndex = [Images.FLAG_PNG, Images.NOEWAYFLAG];
 
   String _getLanguageFlag() {
     if (GetStorage().read("languageCode") != null) {
@@ -680,5 +685,25 @@ class ProfileScreen extends GetView<UserProfileController> {
       }
     }
     return Images.FLAG_PNG;
+  }
+
+  _userNameAndDptLayout() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+          style:
+              AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+        ),
+        Text(
+          controller
+                  .userDetails?.getOrganizationUserDetails?.department?.name ??
+              "",
+          style: AppStyle.normal_text_grey,
+        ),
+        customSpacerHeight(height: 6)
+      ],
+    );
   }
 }

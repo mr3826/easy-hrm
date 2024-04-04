@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD2kZ9hKO40iaEbBVHNTi4cWHsrdKlNGhM',
-    appId: '1:690132440827:android:bf4e4acafffcefef41425e',
-    messagingSenderId: '690132440827',
-    projectId: 'payrun-mobile-app',
-    storageBucket: 'payrun-mobile-app.appspot.com',
+    apiKey: 'AIzaSyC4lt_20eCq7xboL1DmhptRomem1-17TOo',
+    appId: '1:248504339555:android:260a9b030d000f5064fc56',
+    messagingSenderId: '248504339555',
+    projectId: 'mobile-app-payrun',
+    storageBucket: 'mobile-app-payrun.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDNd0-Nm7Z-TPdmvN6ERIfgG2SWMUBF8rw',
-    appId: '1:690132440827:ios:aa567c485136278241425e',
-    messagingSenderId: '690132440827',
-    projectId: 'payrun-mobile-app',
-    storageBucket: 'payrun-mobile-app.appspot.com',
+    apiKey: 'AIzaSyD9eDXC-W3UBb-DzNX_uOMshuxsP4N_cec',
+    appId: '1:248504339555:ios:8f1ac6d18a03a16d64fc56',
+    messagingSenderId: '248504339555',
+    projectId: 'mobile-app-payrun',
+    storageBucket: 'mobile-app-payrun.appspot.com',
     iosBundleId: 'com.example.payrunMobile',
   );
 }

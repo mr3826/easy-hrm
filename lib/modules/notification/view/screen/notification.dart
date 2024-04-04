@@ -19,6 +19,7 @@ class NotificationScreen extends GetView<NotificationController> {
       appBar: notificationAppbar(),
       body: controller.obx((state) => NotificationTabBar(),
           onLoading: const LoadingIndicator()),
+
       floatingActionButton: Obx(() => controller
                   .notificationTabBarIndex.value ==
               0
