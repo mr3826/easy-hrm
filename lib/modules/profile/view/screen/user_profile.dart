@@ -101,21 +101,10 @@ class ProfileScreen extends GetView<UserProfileController> {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.start,
               children: [
+
                 ///User name and department
                 _userNameAndDptLayout(),
 
-                ///Status
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: _employmentContractStatus(),
-                ),
-                customSpacerWidth(width: 12),
-
-                ///Status
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: _employmentStatus(),
-                ),
 
               ],
             ),
@@ -702,7 +691,25 @@ class ProfileScreen extends GetView<UserProfileController> {
               "",
           style: AppStyle.normal_text_grey,
         ),
-        customSpacerHeight(height: 6)
+        customSpacerHeight(height: 6),
+
+        ///Status
+        Wrap(
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: _employmentContractStatus(),
+            ),
+            customSpacerWidth(width: 12),
+            ///Status
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: _employmentStatus(),
+            ),
+          ],
+        ),
+
+
       ],
     );
   }
