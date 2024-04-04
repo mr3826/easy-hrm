@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDNd0-Nm7Z-TPdmvN6ERIfgG2SWMUBF8rw</string>
+	<string>AIzaSyD9eDXC-W3UBb-DzNX_uOMshuxsP4N_cec</string>
 	<key>GCM_SENDER_ID</key>
-	<string>690132440827</string>
+	<string>248504339555</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.payrunMobile</string>
+	<string>com.gainhq.payrun</string>
 	<key>PROJECT_ID</key>
-	<string>payrun-mobile-app</string>
+	<string>mobile-app-payrun</string>
 	<key>STORAGE_BUCKET</key>
-	<string>payrun-mobile-app.appspot.com</string>
+	<string>mobile-app-payrun.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:690132440827:ios:aa567c485136278241425e</string>
+	<string>1:248504339555:ios:5e37f6670cd2715464fc56</string>
 </dict>
 </plist>
