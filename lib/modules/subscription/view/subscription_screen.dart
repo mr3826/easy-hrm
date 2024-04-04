@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
-import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
 import '../../../common/widget/custom_dialog.dart';
 import '../../../common/widget/custom_network_image.dart';
 import '../../../common/widget/custom_spacer.dart';
@@ -71,7 +68,6 @@ class SubscriptionScreen extends StatelessWidget {
 
   _userImageLayout() {
     var controller = Get.find<DashboardController>();
-
     return CustomNetworkImage(
       height: 22,
       errorText: (controller.profileSummaryForDashboard
@@ -92,6 +88,7 @@ class SubscriptionScreen extends StatelessWidget {
       borderColor: Colors.transparent,
     );
   }
+
 
   _infoContactLayout() {
     return Expanded(
@@ -191,4 +188,7 @@ class SubscriptionScreen extends StatelessWidget {
         drcFontSize: Dimensions.fontSizeDefault,
         childForSaveBtn: Obx(() => _logoutTextLayout()));
   }
+
+
+
 }
