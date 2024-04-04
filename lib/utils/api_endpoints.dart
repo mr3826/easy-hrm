@@ -286,8 +286,23 @@ query GetProfileSummaryForDashboard {
 const getOrgSubscriptionInfoQuery = '''
 query GetOrgSubscriptionInfo {
   getOrgSubscriptionInfo {
+    plan {
+      active
+      nickname
+    }
+    subscribed_plan {
+      name
+      is_free  
     status
-  }
+    plan_features {
+        id
+        feature {
+          id
+          identifier
+          name
+          sub_feature_name
+        }
+      }}}
 }
 ''';
 

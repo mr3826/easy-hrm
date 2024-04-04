@@ -13,6 +13,9 @@ customDialog(
     drcFontSize,
     required titleText,
     required subText,
+      horizontalPadding=20.0,
+      verticalPadding=20.0,
+      btnPadding=20.0,
     required saveBtnAction,
     required btnText,
     Widget? childForSaveBtn,
@@ -28,7 +31,7 @@ customDialog(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        padding:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +68,7 @@ customDialog(
                   color: AppColor.hintColor,
                   fontSize: Dimensions.fontSizeDefault - 3),
             )),
-            customSpacerHeight(height: 20),
+            customSpacerHeight(height: btnPadding),
             btnWidget??  CustomDoubleAppButton(
               buttonText: btnText,
               onAction: saveBtnAction,

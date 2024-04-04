@@ -72,17 +72,22 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
   ];
 }
 
+
+
 PersistentBottomNavBarItem _navbarIcon(
     {required activeIcon, required String text, imgUrl}) {
   SignInController isValue = Get.find<SignInController>();
 
   return PersistentBottomNavBarItem(
-    icon: Obx(() => isValue.isSubscription.isTrue
+    icon: Obx(() => isValue.isSubscriptionExpired.isTrue
         ? _inActiveIcon(text, imgUrl)
         : _activeIcon(text, activeIcon)),
     inactiveIcon: _inActiveIcon(text, imgUrl),
   );
 }
+
+
+
 
 _inActiveIcon(text, imgUrl) {
   return SizedBox(

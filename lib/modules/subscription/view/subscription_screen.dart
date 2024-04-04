@@ -18,13 +18,14 @@ import '../../../utils/dimensions.dart';
 import '../../dashboard/controller/dashbpard_controller.dart';
 import '../../profile/controller/log_out_controller.dart';
 import '../../profile/controller/user_profile_controller.dart';
+
 class SubscriptionScreen extends StatelessWidget {
-   SubscriptionScreen({super.key});
+  SubscriptionScreen({super.key});
   final controller = Get.find<DashboardController>();
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       body: Padding(
         padding: marginLayout,
@@ -32,13 +33,13 @@ class SubscriptionScreen extends StatelessWidget {
           children: [
             customSpacerHeight(height: 46),
             _userInfoAppbarLayout(),
-             _infoContactLayout()
-
+            _infoContactLayout()
           ],
         ),
       ),
     );
   }
+
   _userInfoAppbarLayout() {
     var controller = Get.find<DashboardController>();
     return Row(
@@ -55,8 +56,8 @@ class SubscriptionScreen extends StatelessWidget {
                   fontSize: Dimensions.fontSizeDefault),
             ),
             Text(
-              controller.profileSummaryForDashboard?.getProfileSummaryForDashboard
-                  ?.profile?.firstName ??
+              controller.profileSummaryForDashboard
+                      ?.getProfileSummaryForDashboard?.profile?.firstName ??
                   "",
               style: AppStyle.normal_text_grey.copyWith(
                   color: AppColor.normalTextColor,
@@ -74,15 +75,19 @@ class SubscriptionScreen extends StatelessWidget {
     return CustomNetworkImage(
       height: 22,
       errorText: (controller.profileSummaryForDashboard
-          ?.getProfileSummaryForDashboard?.profile?.firstName !=
-          null &&
-          controller.profileSummaryForDashboard!
-              .getProfileSummaryForDashboard!.profile!.firstName!.isNotEmpty)
+                      ?.getProfileSummaryForDashboard?.profile?.firstName !=
+                  null &&
+              controller
+                  .profileSummaryForDashboard!
+                  .getProfileSummaryForDashboard!
+                  .profile!
+                  .firstName!
+                  .isNotEmpty)
           ? "${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.firstName?[0].toUpperCase() ?? ""}"
-          "${(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName != null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.profile!.lastName!.isNotEmpty) ? Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName![0].toUpperCase() ?? "" : ""}"
+              "${(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName != null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.profile!.lastName!.isNotEmpty) ? Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName![0].toUpperCase() ?? "" : ""}"
           : "",
       imgUrlKey: controller.profileSummaryForDashboard
-          ?.getProfileSummaryForDashboard?.profile?.image ??
+              ?.getProfileSummaryForDashboard?.profile?.image ??
           "",
       borderColor: Colors.transparent,
     );
@@ -95,22 +100,21 @@ class SubscriptionScreen extends StatelessWidget {
         children: [
           SvgPicture.asset(
             Images.subscription,
-      
           ),
           customSpacerHeight(height: 24),
-      
+
           Text(
-           "Subscription expired",
+            "Subscription expired",
             style: AppStyle.normal_text_grey.copyWith(
                 color: AppColor.normalTextColor,
-                fontSize: Dimensions.fontSizeMid-1),
+                fontSize: Dimensions.fontSizeMid - 1),
           ),
           customSpacerHeight(height: 4),
           _descriptionLayout(),
+
           ///Logout button
           _logoutBtnLayout(),
           customSpacerHeight(height: 100),
-
         ],
       ),
     );
@@ -118,41 +122,46 @@ class SubscriptionScreen extends StatelessWidget {
 
   _logoutBtnLayout() {
     return GestureDetector(
-      onTap: (){
-
-
-
+      onTap: () {
         _logoutAlert();
-
-     //   _alertForSubscriptionRequired();
-
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 0.0,bottom: 8,left: 24,right: 24),
+        padding:
+            const EdgeInsets.only(top: 0.0, bottom: 8, left: 24, right: 24),
         child: SizedBox(
           height: 50,
           width: double.infinity,
           child: Card(
-              elevation:0,
+              elevation: 0,
               color: AppColor.cardColor,
-              shape: roundedRectangleBorder.copyWith(side: const BorderSide(width: 1.2,color: AppColor.hintColor),borderRadius: BorderRadius.circular(40)),
-              child: Center(child: Text(AppString.text_log_out.tr,style: AppStyle.small_text_black.copyWith(color: AppColor.normalTextColor.withOpacity(0.6),fontSize: Dimensions.fontSizeMid-4),))),
+              shape: roundedRectangleBorder.copyWith(
+                  side: const BorderSide(width: 1.2, color: AppColor.hintColor),
+                  borderRadius: BorderRadius.circular(40)),
+              child: Center(
+                  child: Text(
+                AppString.text_log_out.tr,
+                style: AppStyle.small_text_black.copyWith(
+                    color: AppColor.normalTextColor.withOpacity(0.6),
+                    fontSize: Dimensions.fontSizeMid - 4),
+              ))),
         ),
       ),
     );
   }
-   _logoutTextLayout() {
-     return Get.find<LogoutController>().isLogoutLoading.value
-         ? const CupertinoActivityIndicator(
-       color: AppColor.cardColor,
-     )
-         : Text(
-       AppString.text_log_out.tr,
-       style: AppStyle.normal_text_grey.copyWith(
-           fontSize: Dimensions.fontSizeDefault + 1,
-           color: AppColor.cardColor),
-     );
-   }
+
+  _logoutTextLayout() {
+    return Get.find<LogoutController>().isLogoutLoading.value
+        ? const CupertinoActivityIndicator(
+            color: AppColor.cardColor,
+          )
+        : Text(
+            AppString.text_log_out.tr,
+            style: AppStyle.normal_text_grey.copyWith(
+                fontSize: Dimensions.fontSizeDefault + 1,
+                color: AppColor.cardColor),
+          );
+  }
+
   _descriptionLayout() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -161,44 +170,13 @@ class SubscriptionScreen extends StatelessWidget {
         textAlign: TextAlign.center,
         style: AppStyle.normal_text.copyWith(
             color: AppColor.normalTextColor.withOpacity(0.5),
-            fontSize: Dimensions.fontSizeDefault-1),
+            fontSize: Dimensions.fontSizeDefault - 1),
       ),
     );
   }
 
-   _alertForSubscriptionRequired() {
-    return  customDialog(
-        context: Get.context!,
-        saveBtnAction: () {
-          Get.find<LogoutController>().logout();
-        },
-        icon: Icons.logout,
-        iconWidget: customSvgImage(imageUrl: Images.alert,height: 56,width: 56),
-        titleText: AppString.text_are_you_sure.tr,
-        subText: "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information ",
-        iconBgColor: AppColor.errorColorLight,
-        btnBgColor: AppColor.errorColorLight,
-        btnText: AppString.text_log_out.tr,
-        drcText: "",
-        drcFontSize: Dimensions.fontSizeDefault,
-        btnWidget: GestureDetector(
-          onTap: ()=>Get.back(),
-          child: SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: Card(
-                elevation:0,
-                color: AppColor.cardColor,
-                shape: roundedRectangleBorder.copyWith(side: const BorderSide(width: 1.2,color: AppColor.hintColor),borderRadius: BorderRadius.circular(40)),
-                child: Center(child: Text(AppString.text_close.tr,style: AppStyle.small_text_black.copyWith(color: AppColor.normalTextColor.withOpacity(0.6),fontSize: Dimensions.fontSizeMid-4),))),
-          ),
-        )
-
-    );
-  }
-
-   _logoutAlert() {
-    return    customDialog(
+  _logoutAlert() {
+    return customDialog(
         context: Get.context!,
         saveBtnAction: () {
           Get.find<LogoutController>().logout();
@@ -213,5 +191,4 @@ class SubscriptionScreen extends StatelessWidget {
         drcFontSize: Dimensions.fontSizeDefault,
         childForSaveBtn: Obx(() => _logoutTextLayout()));
   }
-
 }

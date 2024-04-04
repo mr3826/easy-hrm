@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:payrun_mobile/modules/auth/domain/org_subscription_Info_model.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -47,8 +48,8 @@ class SplashController extends GetxController {
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
     } else {
-      //checkIfSubscription();
-      Get.offAndToNamed(Routes.MAIN_SCREEN);
+      checkIfSubscription();
+      // Get.offAndToNamed(Routes.MAIN_SCREEN);
     }
   }
 
@@ -93,11 +94,22 @@ class SplashController extends GetxController {
   }
 }
 
-void checkIfSubscription() async{
+void checkIfSubscription() {
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
-  if (data.getOrgSubscriptionInfo?.status == "paused") {
-    Get.offNamed(Routes.MAIN_SCREEN
-    );
+
+  Iterable<PlanFeatures>? identifierData = Get.find<SignInController>()
+      .orgSubscriptionInfoModel
+      .getOrgSubscriptionInfo
+      ?.subscribedPlan
+      ?.planFeatures
+      ?.where((e) => e.feature?.identifier == "time_tracking");
+
+  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status == "paused") {
+    Get.offNamed(Routes.MAIN_SCREEN);
+    Get.find<SignInController>().isSubscriptionExpired(true);
+  } else if (identifierData != null) {
+    Get.offNamed(Routes.MAIN_SCREEN);
+    Get.find<SignInController>().isSubscriptionNotUseTimeTracking(true);
   } else {
     if (GetStorage().read(AppString.LOGGED_IN) == true &&
         GetStorage().read(AppString.LOGGED_IN) != null) {

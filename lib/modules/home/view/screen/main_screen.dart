@@ -45,10 +45,10 @@ class _MainScreenState extends State<MainScreen> {
     return WillPopScope(
       onWillPop: () => appExitChecker,
       child: Scaffold(
-        body: Obx(() => PersistentTabView(      // ex error is alwasys false //// Api response equal that's hide
+        body:  PersistentTabView(
           context,
           controller: controller,
-          screens:isValue.isSubscription.isTrue?_ifNeedSubscription(): _screenListLayout(),
+          screens: isValue.isSubscriptionExpired.isTrue?_ifNeedSubscription():_screenListLayout(),
           items: iconList,
           backgroundColor: AppColor.backgroundColor,
           confineInSafeArea: true,
@@ -64,26 +64,25 @@ class _MainScreenState extends State<MainScreen> {
           },
         )),
 
-      ),
+
     );
   }
 
-  void _initialController() {
-    Get.put(LeaveScreenController());
-    Get.put(UserProfileController());
-    Get.put(TimelineController());
+  void _initialController() async{
     Get.put(DashboardController());
+    Get.put(TimelineController());
     Get.put(NotificationController());
     Get.put(TimelineSummaryController());
+    Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
+    Get.put(UserProfileController());
   }
 
   _screenListLayout() {
     return [
       const TimelineScreen(),
       const LeaveScreen(),
-      //const Dashboard(),
-       SubscriptionScreen(),
+      const Dashboard(),
       const NotificationScreen(),
       ProfileScreen(),
     ];

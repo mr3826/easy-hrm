@@ -59,6 +59,4 @@ Future<void> initApp() async {
   Get.put(SplashController());
   Get.put(UpdateProfileController());
   Get.put(SignInController());
-  Get.put(DashboardController());
-  Get.put(UserProfileController());
 }
