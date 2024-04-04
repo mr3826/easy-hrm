@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,7 +8,6 @@ import '../../../common/domain/upload_policy.dart';
 import '../../../network/network_client.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
-import '../../home/view/screen/main_screen.dart';
 import '../model/leave_type.dart';
 import 'file_upload_controller.dart';
 import 'leave_screen_controller.dart';

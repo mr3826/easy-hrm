@@ -9,6 +9,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import '../../../common/widget/custom_dialog.dart';
 import '../../../common/widget/custom_network_image.dart';
 import '../../../common/widget/custom_spacer.dart';
+import '../../../common/widget/loading_indicator.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
@@ -16,24 +17,25 @@ import '../../dashboard/controller/dashbpard_controller.dart';
 import '../../profile/controller/log_out_controller.dart';
 import '../../profile/controller/user_profile_controller.dart';
 
-class SubscriptionScreen extends StatelessWidget {
-  SubscriptionScreen({super.key});
-  final controller = Get.find<DashboardController>();
+class SubscriptionScreen extends GetView<DashboardController> {
+ const SubscriptionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
-      body: Padding(
-        padding: marginLayout,
-        child: Column(
-          children: [
-            customSpacerHeight(height: 46),
-            _userInfoAppbarLayout(),
-            _infoContactLayout()
-          ],
-        ),
-      ),
+      body: controller.obx(
+          (state) => Padding(
+                padding: marginLayout,
+                child: Column(
+                  children: [
+                    customSpacerHeight(height: 46),
+                    _userInfoAppbarLayout(),
+                    _infoContactLayout()
+                  ],
+                ),
+              ),
+          onLoading:const LoadingIndicator()),
     );
   }
 
@@ -88,7 +90,6 @@ class SubscriptionScreen extends StatelessWidget {
       borderColor: Colors.transparent,
     );
   }
-
 
   _infoContactLayout() {
     return Expanded(
@@ -188,7 +189,4 @@ class SubscriptionScreen extends StatelessWidget {
         drcFontSize: Dimensions.fontSizeDefault,
         childForSaveBtn: Obx(() => _logoutTextLayout()));
   }
-
-
-
 }

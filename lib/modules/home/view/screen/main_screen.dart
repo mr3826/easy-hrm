@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
@@ -6,6 +5,7 @@ import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.d
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:update_notification/screens/update_notification.dart';
 import '../../../auth/presentation/controller/signin_controller.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
 import '../../../leave/controller/leave_record_controller.dart';
@@ -35,13 +35,18 @@ class _MainScreenState extends State<MainScreen> {
     controller = PersistentTabController(
       initialIndex: widget.routeIndex ?? 2,
     );
+    UpdateNotification(
+        androidAppId: 'com.gainhq.payrun',
+        minimumVersion: '1.0.0+1');
     super.initState();
   }
   SignInController isValue = Get.find<SignInController>();
   @override
   Widget build(BuildContext context) {
+
     /// initialController controller
     _initialController();
+
     return WillPopScope(
       onWillPop: () => appExitChecker,
       child: Scaffold(
