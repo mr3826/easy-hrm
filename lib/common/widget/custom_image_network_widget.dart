@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:imgix_core_dart/url_builder.dart';
-import '../../modules/dashboard/controller/dashbpard_controller.dart';
-import '../../modules/profile/controller/user_profile_controller.dart';
 import '../../utils/api_endpoints.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_string.dart';

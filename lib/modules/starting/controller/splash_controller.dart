@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../common/controller/connectivity_controller.dart';
-import '../../../common/domain/token_model.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';

@@ -40,6 +40,7 @@ class _MainScreenState extends State<MainScreen> {
       onWillPop: () => appExitChecker,
       child: Scaffold(
         body: PersistentTabView(
+
           context,
           controller: controller,
           screens: _screenListLayout(),
