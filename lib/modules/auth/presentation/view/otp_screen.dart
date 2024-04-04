@@ -175,7 +175,6 @@ class _OTPScreenState extends State<OTPScreen> {
       onPressed: () async {
         if (OTPCode.isNotEmpty && OTPCode.length == 6) {
           Get.find<OtpController>().verifyOtp(confirmationCode: OTPCode);
-
         } else {
           showWarningMessage(message: AppString.validOtpText.tr);
         }
