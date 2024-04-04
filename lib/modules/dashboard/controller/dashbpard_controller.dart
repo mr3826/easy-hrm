@@ -1,10 +1,10 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/dashboard/model/timeline_summary_dashboard.dart';
 import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
-
 import 'package:payrun_mobile/network/network_client.dart';
-
 import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/app_string.dart';
@@ -13,18 +13,12 @@ import '../model/profile_summary_for_dashboard.dart';
 class DashboardController extends GetxController with StateMixin {
   @override
   void onInit() async {
-    print("on init called");
-    await getProfileInfoForDashboard();
-    await getMonthlyTimelineInfoForDashboard();
-    await getUpComingInfoForDashboard();
     super.onInit();
+    getProfileInfoForDashboard();
+    getMonthlyTimelineInfoForDashboard();
+    getUpComingInfoForDashboard();
   }
 
-  @override
-  void onReady() {
-    print("on ready called");
-    super.onReady();
-  }
 
   ProfileSummaryForDashboard? profileSummaryForDashboard;
   TimelineSummaryDashboard? timelineSummaryDashboard;
@@ -32,12 +26,13 @@ class DashboardController extends GetxController with StateMixin {
 
   getProfileInfoForDashboard() async {
     change(null, status: RxStatus.loading());
-    checkTokenExpiration();
     final response = await NetworkClient()
         .getGraphQuery(queryString: profileInfoForDashboardQuery);
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
+      log("getProfileInfoForDashboard ::::: ${response.hasException}",
+          error: 0);
     } else {
       print(ProfileSummaryForDashboard.fromJson(response.data!)
           .getProfileSummaryForDashboard
@@ -61,6 +56,8 @@ class DashboardController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
+      log("getMonthlyTimelineInfoForDashboard ::::: ${response.hasException}",
+          error: 1);
     } else {
       timelineSummaryDashboard =
           TimelineSummaryDashboard.fromJson(response.data!);
@@ -76,6 +73,8 @@ class DashboardController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
+      log("getUpComingInfoForDashboard ::::: ${response.hasException}",
+          error: 2);
     } else {
       upcommingLeaveDashboard =
           UpcommingLeaveDashboard.fromJson(response.data!);

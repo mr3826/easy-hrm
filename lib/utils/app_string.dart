@@ -179,7 +179,7 @@ class AppString {
 
   static String text_logged = "Logged";
   static const String text_yes = "Yes";
-  static String text_log_out = "Logout";
+  static String text_log_out = "Log out";
   static String text_language = "Language: ";
   static String text_details = "Details";
   static String text_description = "Description";
@@ -230,6 +230,8 @@ class AppString {
   static String text_view_less = "View less";
 
   static const String text_are_you_sure = "Are you sure?";
+  static const String text_feature_unavailbe = "Feature unavailable";
+  static const String text_this_functionality_might_etc = "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information ";
   static const String changeOrganizationWarningMessage =
       "Are you sure want change your organization";
   static const String text_are_you_sure_want_to_exit_from_app =

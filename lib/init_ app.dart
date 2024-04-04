@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:payrun_mobile/common/controller/connectivity_controller.dart';
@@ -10,17 +9,18 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
-import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
 import 'firebase_options.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
-import 'modules/leave/controller/leave_record_controller.dart';
+import 'modules/auth/presentation/controller/signin_controller.dart';
+import 'modules/dashboard/controller/dashbpard_controller.dart';
 import 'modules/profile/controller/log_out_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
 import 'modules/leave/controller/calendar_date_controller.dart';
 import 'modules/leave/controller/file_upload_controller.dart';
 import 'modules/leave/controller/picked_file_form_storage.dart';
+import 'modules/profile/controller/user_profile_controller.dart';
 import 'modules/starting/controller/splash_controller.dart';
 
 Future<void> initApp() async {
@@ -58,4 +58,5 @@ Future<void> initApp() async {
   Get.put(DateTimeController());
   Get.put(SplashController());
   Get.put(UpdateProfileController());
+  Get.put(SignInController());
 }

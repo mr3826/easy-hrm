@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:payrun_mobile/modules/auth/domain/org_subscription_Info_model.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -10,7 +11,7 @@ import '../../../common/controller/connectivity_controller.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
-
+import '../../auth/presentation/controller/signin_controller.dart';
 
 class SplashController extends GetxController {
   @override
@@ -36,6 +37,7 @@ class SplashController extends GetxController {
         Future.delayed(
             const Duration(milliseconds: 2500), () => chooseScreen());
       }
+
       super.onReady();
     }
   }
@@ -46,12 +48,8 @@ class SplashController extends GetxController {
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
     } else {
-      if (GetStorage().read(AppString.LOGGED_IN) == true &&
-          GetStorage().read(AppString.LOGGED_IN) != null) {
-        Get.offAndToNamed(Routes.MAIN_SCREEN);
-      } else {
-        Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
-      }
+      checkIfSubscription();
+      // Get.offAndToNamed(Routes.MAIN_SCREEN);
     }
   }
 
@@ -92,6 +90,32 @@ class SplashController extends GetxController {
     } catch (e) {
       log(e.toString());
       return false;
+    }
+  }
+}
+
+void checkIfSubscription() {
+  var data = Get.find<SignInController>().orgSubscriptionInfoModel;
+
+  Iterable<PlanFeatures>? identifierData = Get.find<SignInController>()
+      .orgSubscriptionInfoModel
+      .getOrgSubscriptionInfo
+      ?.subscribedPlan
+      ?.planFeatures
+      ?.where((e) => e.feature?.identifier == "time_tracking");
+
+  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status == "paused") {
+    Get.offNamed(Routes.MAIN_SCREEN);
+    Get.find<SignInController>().isSubscriptionExpired(true);
+  } else if (identifierData != null) {
+    Get.offNamed(Routes.MAIN_SCREEN);
+    Get.find<SignInController>().isSubscriptionNotUseTimeTracking(true);
+  } else {
+    if (GetStorage().read(AppString.LOGGED_IN) == true &&
+        GetStorage().read(AppString.LOGGED_IN) != null) {
+      Get.offAndToNamed(Routes.MAIN_SCREEN);
+    } else {
+      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
     }
   }
 }

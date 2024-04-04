@@ -9,13 +9,18 @@ import '../../utils/app_color.dart';
 customDialog(
     {required context,
     required icon,
+      Widget? iconWidget,
     drcFontSize,
     required titleText,
     required subText,
+      horizontalPadding=20.0,
+      verticalPadding=20.0,
+      btnPadding=20.0,
     required saveBtnAction,
     required btnText,
     Widget? childForSaveBtn,
-    drcText,
+   String? drcText,
+      Widget ?btnWidget,
     required iconBgColor,
     required btnBgColor}) {
   showDialog<String>(
@@ -26,12 +31,12 @@ customDialog(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        padding:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
+            iconWidget?? CircleAvatar(
               backgroundColor: iconBgColor.withOpacity(0.2),
               radius: 32,
               child: Icon(
@@ -58,13 +63,13 @@ customDialog(
             )),
             Center(
                 child: Text(
-              drcText,
+              drcText!,
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   fontSize: Dimensions.fontSizeDefault - 3),
             )),
-            customSpacerHeight(height: 20),
-            CustomDoubleAppButton(
+            customSpacerHeight(height: btnPadding),
+            btnWidget??  CustomDoubleAppButton(
               buttonText: btnText,
               onAction: saveBtnAction,
               cancelAction: () => Get.back(),

@@ -108,7 +108,6 @@ class LeaveScreenController extends GetxController with StateMixin {
   }
 
   getWorkShift() async {
-    change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: workShiftQuery, variables: {
       "queryData": {
@@ -141,7 +140,6 @@ class LeaveScreenController extends GetxController with StateMixin {
         holidays.add(7);
       }
     }
-    change(null, status: RxStatus.success());
   }
 
   @override

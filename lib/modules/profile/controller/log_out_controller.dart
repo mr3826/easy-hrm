@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io' show Platform, exit;
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';

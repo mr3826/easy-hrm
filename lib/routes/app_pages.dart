@@ -11,6 +11,7 @@ import 'package:payrun_mobile/modules/notification/view/screen/notification.dart
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
+import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../modules/leave/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -55,11 +56,18 @@ class AppPages {
       transition: Transition.size,
       page: () => ResetPasswordScreen(),
     ),
+
     GetPage(
       name: _Paths.PASSWORD_UPDATE_SCRREN,
       transition: Transition.size,
       page: () => const PasswordUpdateScreen(),
     ),
+    GetPage(
+      name: _Paths.SUBSCRIPTION_SCREEN,
+      transition: Transition.size,
+      page: () =>  SubscriptionScreen(),
+    ),
+
     GetPage(
       name: _Paths.MAIN_SCREEN,
       transition: Transition.size,

@@ -23,6 +23,8 @@ class Images {
   static String leaveImage6 = "assets/images/Custom Icons-6.svg";
   static String leaveImage7 = "assets/images/Custom Icons-7.svg";
   static String leaveImage8 = "assets/images/Custom Icons-8.svg";
+  static String subscription = "assets/images/subscription.svg";
+  static String alert = "assets/images/alert.svg";
 
   static String leaveIconNavOutLine = "assets/images/leave_Icon_nav.svg";
   static String profileIconNavOutLine =

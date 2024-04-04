@@ -14,12 +14,18 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/app_style.dart';
+import '../../../auth/presentation/controller/signin_controller.dart';
+import '../../../dashboard/view/widget/entry_time_widget.dart';
 import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    if (Get.isRegistered()) {
+      Get.delete<TimelineController>();
+    }
+    Get.put(TimelineController());
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,
@@ -73,7 +79,14 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerStringBtn() {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
-        onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
+        onAction: (){
+          if(Get.find<SignInController>().isSubscriptionNotUseTimeTracking.isTrue){
+            alertForSubscriptionRequired();
+          }else{
+            Get.put(TimeCounterController()).timerStatus();
+            Get.toNamed(Routes.TIMER_SCREEN);
+          }
+        },
         btnText: AppString.text_stat_timer.tr);
   }
 
