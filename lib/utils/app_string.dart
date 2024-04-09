@@ -28,6 +28,8 @@ class AppString {
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText = "Work Shift";
+  static const String invalidVerificationCode =
+      "Invalid verification code provided";
   static String text_provid_a_valid_input = "Provide a Valid Input";
   static String text_no_available_leave = "No available leave";
   static String text_balance_no_of_days = "Balance (No.of days)";

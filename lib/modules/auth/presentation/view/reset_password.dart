@@ -20,7 +20,6 @@ class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
 
   final String OTPCode = Get.arguments[0];
-  final String emailAddress = Get.arguments[1];
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -118,7 +117,7 @@ class ResetPasswordScreen extends StatelessWidget {
         if (_formKey.currentState!.validate()) {
           if (newPasswordController.text == confirmPasswordController.text) {
             await Get.find<ForgotPasswordController>().resetPassword(
-                confirmationCode: OTPCode, emailAddress: emailAddress);
+                confirmationCode: OTPCode);
           } else {
             showWarningMessage(message: AppString.password_not_matched);
           }

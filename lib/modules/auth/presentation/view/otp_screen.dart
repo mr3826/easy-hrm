@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -17,6 +16,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../common/widget/warning_message.dart';
 import '../controller/forgot_password_controller.dart';
+import '../controller/otp_controller.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -161,7 +161,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   _confirmBtnLayout() {
     return CustomAppButton(
-      buttonText: Get.find<ForgotPasswordController>().isLoading.isTrue
+      buttonText: Get.find<OtpController>().isLoading.isTrue
           ? const CupertinoActivityIndicator(
               color: Colors.white,
             )
@@ -174,8 +174,7 @@ class _OTPScreenState extends State<OTPScreen> {
             ),
       onPressed: () async {
         if (OTPCode.isNotEmpty && OTPCode.length == 6) {
-          Get.toNamed(Routes.RESET_PASSWORD,
-              arguments: [OTPCode, emailAddress]);
+          Get.find<OtpController>().verifyOtp(confirmationCode: OTPCode);
         } else {
           showWarningMessage(message: AppString.validOtpText.tr);
         }

@@ -26,7 +26,6 @@ class ForgotPasswordController extends GetxController {
                 AppString.error_text);
       } else {
         Get.toNamed(Routes.OTP, arguments: [restPasswordController.text]);
-        restPasswordController.clear();
         showSuccessMessage(
             message: SuccessModel.fromJson(response.body!).message);
         logSuccessMessage(logName: "forgotPassword");
@@ -59,12 +58,12 @@ class ForgotPasswordController extends GetxController {
   }
 
   Future<void> resetPassword(
-      {required String confirmationCode, required String emailAddress}) async {
+      {required String confirmationCode,}) async {
     isLoading(true);
     try {
       Response response =
           await NetworkClient().postRequest(Api.RESET_PASSWORD, {
-        "email": emailAddress,
+        "email": restPasswordController.text,
         "confirmationCode": confirmationCode,
         "password": confirmPasswordController.text,
       });
@@ -77,6 +76,7 @@ class ForgotPasswordController extends GetxController {
       } else {
         logSuccessMessage(logName: "resetPassword");
         confirmPasswordController.clear();
+        restPasswordController.clear();
         showSuccessMessage(
             message: SuccessModel.fromJson(response.body).message);
         Get.toNamed(Routes.PASSWORD_UPDATE_SCRREN);

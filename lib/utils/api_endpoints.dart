@@ -20,6 +20,7 @@ class Api {
   static const CHANGE_PASSWORD = "/auth/change-password";
 }
 
+
 //leave module
 const getLeaveSummaryForDashboardQuery = """
 query Query {
