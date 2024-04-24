@@ -57,7 +57,7 @@ class NotificationController extends GetxController with StateMixin {
       print("no: lenth:: ${newNotification!.length}");
       newNotificationIdList =
           newNotification?.map((e) => e.notification?.id ?? "").toList();
-      if (notificationResponse != null &&
+      if (notificationResponse?.getNotificationActivities?.metaData?.notificationCounts?.unSeenCount != null &&
           notificationResponse!
                   .getNotificationActivities!.metaData!.notificationCounts!.unSeenCount! >
               newNotification!.length) {
@@ -125,7 +125,7 @@ class NotificationController extends GetxController with StateMixin {
       seenNotificationLength = notificationResponse
               ?.getNotificationActivities?.metaData?.notificationCounts?.seenCount ??
           0;
-      if (notificationResponse != null &&
+      if (notificationResponse?.getNotificationActivities?.metaData?.notificationCounts?.seenCount != null &&
           notificationResponse!
                   .getNotificationActivities!.metaData!.notificationCounts!.seenCount! >
               seenNotification!.length) {
