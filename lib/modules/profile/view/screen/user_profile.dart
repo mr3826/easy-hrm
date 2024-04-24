@@ -518,6 +518,7 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   _userImageLayout({double? height}) {
+    print("img :::: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
     return CustomNetworkImage(
         errorText: (Get.find<UserProfileController>()
                             .userDetails

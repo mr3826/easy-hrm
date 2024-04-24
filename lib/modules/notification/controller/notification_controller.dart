@@ -49,6 +49,7 @@ class NotificationController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       notificationResponse = NotificationResponse.fromJson(response.data!);
+
       newNotificationLength = notificationResponse
               ?.getNotificationActivities?.metaData?.notificationCounts?.unSeenCount ??
           0;

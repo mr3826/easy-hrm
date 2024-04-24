@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
-
-import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_layout.dart';
 import '../../utils/app_string.dart';
@@ -42,6 +40,7 @@ class NetworkErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // ignore: deprecated_member_use
         body: WillPopScope(
       child: Container(
         color: Colors.white,
