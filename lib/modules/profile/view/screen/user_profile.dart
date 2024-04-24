@@ -63,9 +63,17 @@ class ProfileScreen extends GetView<UserProfileController> {
                         _actionBtnLayout(context),
                         customSpacerHeight(height: 25),
                         _descriptionTextLayout(),
-                        customSpacerHeight(height: 15),
-                        const Divider(
-                            thickness: .6, color: AppColor.disableColor),
+                        if (controller
+                                    .employeeWorkHistory
+                                    ?.getOrganizationUserHistory
+                                    ?.employmentHistories !=
+                                null &&
+                            controller
+                                .employeeWorkHistory!
+                                .getOrganizationUserHistory!
+                                .employmentHistories!
+                                .isNotEmpty)
+                          _horizontalDivider(),
                         ChangeEmailNotifyLayout(),
                         customSpacerHeight(height: 15),
                         _phoneNumberText(),
@@ -723,6 +731,15 @@ class ProfileScreen extends GetView<UserProfileController> {
               ),
             ],
           ),
+      ],
+    );
+  }
+
+  _horizontalDivider() {
+    return Column(
+      children: [
+        customSpacerHeight(height: 15),
+        const Divider(thickness: .6, color: AppColor.disableColor),
       ],
     );
   }
