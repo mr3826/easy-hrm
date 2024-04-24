@@ -74,9 +74,19 @@ class ProfileScreen extends GetView<UserProfileController> {
                         customSpacerHeight(height: 15),
                         _addressText(),
                         customSpacerHeight(height: 15),
-                        departmentLayout(context),
+                        if (Get.find<UserProfileController>()
+                            .employeeWorkHistory!
+                            .getOrganizationUserHistory!
+                            .deptHistories!
+                            .isNotEmpty)
+                          departmentLayout(context),
                         customSpacerHeight(height: 5),
-                        employeeStatusLayout(context: context),
+                        if (Get.find<UserProfileController>()
+                            .employeeWorkHistory!
+                            .getOrganizationUserHistory!
+                            .designationHistories!
+                            .isNotEmpty)
+                          employeeStatusLayout(context: context),
                         customSpacerHeight(height: 50),
                       ],
                     ),
@@ -99,11 +109,8 @@ class ProfileScreen extends GetView<UserProfileController> {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.start,
               children: [
-
                 ///User name and department
                 _userNameAndDptLayout(),
-
-
               ],
             ),
           ),
@@ -516,7 +523,8 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   _userImageLayout({double? height}) {
-    print("img :::: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+    print(
+        "img :::: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
     return CustomNetworkImage(
         errorText: (Get.find<UserProfileController>()
                             .userDetails
@@ -693,22 +701,28 @@ class ProfileScreen extends GetView<UserProfileController> {
         customSpacerHeight(height: 6),
 
         ///Status
-        Wrap(
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: _employmentContractStatus(),
-            ),
-            customSpacerWidth(width: 12),
-            ///Status
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: _employmentStatus(),
-            ),
-          ],
-        ),
+        ///
 
+        if (controller.employeeWorkHistory?.getOrganizationUserHistory
+                    ?.employmentHistories !=
+                null &&
+            controller.employeeWorkHistory!.getOrganizationUserHistory!
+                .employmentHistories!.isNotEmpty)
+          Wrap(
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _employmentContractStatus(),
+              ),
+              customSpacerWidth(width: 12),
 
+              ///Status
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _employmentStatus(),
+              ),
+            ],
+          ),
       ],
     );
   }
