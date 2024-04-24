@@ -10,6 +10,7 @@ void showCustomDrawer({required BuildContext context, required child}) {
     pageBuilder: (_, __, ___) {
       return Container(
         margin: const EdgeInsets.only(left: 100),
+        width: MediaQuery.of(context).size.width,
         child: Center(
           child: child,
         ),
