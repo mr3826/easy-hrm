@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/widget/widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -99,7 +100,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     customSpacerHeight(height: 22),
 
                     ///Back login button
-                    _backToLoginLayout(),
+                    backToLoginLayout(),
                     const Spacer(
                       flex: 2,
                     ),
@@ -187,17 +188,7 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
-  _backToLoginLayout() {
-    return GestureDetector(
-        onTap: () => Get.toNamed(Routes.SIGN_IN_SCREEN),
-        child: Center(
-            child: Text(
-          AppString.text_back_to_login.tr,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.secondaryColor,
-              fontSize: Dimensions.fontSizeDefault),
-        )));
-  }
+
 
   _otpLayout() {
     return PinCodeTextField(

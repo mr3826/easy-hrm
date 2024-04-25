@@ -13,7 +13,7 @@ Map<String, String> eng = {
   AppString.text_day: "day",
   AppString.leaveAddedSuccessMessage: "Leave Added Successfully",
   AppString.dateDifferenceIssueMessage: "In time must be before out time",
-  AppString.text_stitch_org: "Switch Organization",
+  AppString.text_stitch_org: "Switch organizations",
   AppString.text_first_and_last_field_is_requured:
       "First and last name field is required!",
   AppString.organizationNotFoundMessage:
@@ -25,12 +25,12 @@ Map<String, String> eng = {
   AppString.text_track_your_time: "Track your time",
   AppString.text_manage_your_leave: "Manage your leave",
   AppString.text_leave_management_etc:
-      "Leave management is one of the key features of Payrun. You can customize your leave anytime. You can take multiple days' leave as well as hourly leave.",
+      "Leave management is one of the key features of Payrun. You can customise your leave anytime. You can take multiple days\' leave as well as hourly leave.",
   AppString.text_with_the_help_etc:
       "With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.",
   AppString.text_password: "Password",
   AppString.text_there_is_not_etc:
-      "There is no need for several apps for different organization. You can manage all of your organization from a single app!",
+      "There is no need for several apps for different organizations. You can manage all of your organizations from a single app!",
   AppString.text_timer: "Timer",
   AppString.textPresent: "Present",
   AppString.text_from: "From",
@@ -43,7 +43,7 @@ Map<String, String> eng = {
   AppString.text_back_to_login: "Back to login",
   AppString.text_done_of_save: "Done and Save",
   AppString.text_we_have_a_verification_etc:
-      "We have sent a Verification code to your email address. Enter this code bellow to verify your account.",
+      "We have sent a verification code to your email address. Enter this code bellow to verify your account.",
   AppString.text_dont_not_worry:
       "Don’t worry! It happens. Please enter the email address associated with your account",
   AppString.text_enter_code: "Enter your code",
@@ -214,7 +214,7 @@ Map<String, String> eng = {
   AppString.text_please_valid_photo: "Please selected valid profile image",
   AppString.text_notications: "Notifications",
   AppString.text_forgot_password: "Forgot password?",
-  AppString.text_sign_in: "Sign In",
+  AppString.text_sign_in: "Sign in",
   AppString.text_cancel: "Cancel",
   AppString.text_notication: "Notification",
   AppString.text_canceled: "Canceled",

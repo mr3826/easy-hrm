@@ -8,13 +8,16 @@ import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/widget/widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../common/widget/custom_password_text_field.dart';
 import '../../../../utils/utils.dart';
+import '../controller/signin_controller.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
@@ -54,11 +57,11 @@ class ResetPasswordScreen extends StatelessWidget {
                       customSpacerHeight(height: 30),
 
                       ///New password text field
-                      _newPasswordLayout(),
+                       _newPasswordLayout(),
                       customSpacerHeight(height: 20),
 
                       ///Confirm password text field
-                      _confirmPasswordLayout(),
+                     _confirmPasswordLayout(),
                       customSpacerHeight(height: 25),
 
                       ///Submit button
@@ -66,7 +69,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       customSpacerHeight(height: 22),
 
                       ///Back login button
-                      _backToLoginLayout(),
+                      backToLoginLayout(),
                       const Spacer(
                         flex: 2,
                       ),
@@ -116,8 +119,8 @@ class ResetPasswordScreen extends StatelessWidget {
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
           if (newPasswordController.text == confirmPasswordController.text) {
-            await Get.find<ForgotPasswordController>().resetPassword(
-                confirmationCode: OTPCode);
+            await Get.find<ForgotPasswordController>()
+                .resetPassword(confirmationCode: OTPCode);
           } else {
             showWarningMessage(message: AppString.password_not_matched);
           }
@@ -129,24 +132,11 @@ class ResetPasswordScreen extends StatelessWidget {
     );
   }
 
-  _backToLoginLayout() {
-    return GestureDetector(
-        onTap: () => Get.toNamed(Routes.SIGN_IN_SCREEN),
-        child: Center(
-            child: Text(
-          AppString.text_back_to_login.tr,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.secondaryColor,
-              fontSize: Dimensions.fontSizeDefault),
-        )));
-  }
-
   _newPasswordLayout() {
-    return CustomInputField(
-      isObscureText: true,
-      hint: AppString.text_new_password.tr,
-      prefixIcon: Icons.lock_open,
+    return CustomPasswordInputField(
       controller: newPasswordController,
+      hitText:  AppString.text_new_password.tr,
+      prefixIcon: Image.asset(Images.LOCK_ICON),
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_new_password_field_is_required.tr;
@@ -154,15 +144,17 @@ class ResetPasswordScreen extends StatelessWidget {
           return null;
         }
       },
+      hintStyle: TextStyle(
+          color: AppColor.normalTextColor.withOpacity(0.4),
+          fontFamily: "Poppins",
+          fontSize: Dimensions.fontSizeDefault + 1),
     );
   }
-
   _confirmPasswordLayout() {
-    return CustomInputField(
-      isObscureText: true,
-      hint: AppString.text_confirm_password.tr,
-      prefixIcon: Icons.lock_open,
+    return CustomPasswordInputField(
       controller: confirmPasswordController,
+      hitText:  AppString.text_confirm_password.tr,
+      prefixIcon: Image.asset(Images.LOCK_ICON),
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_confirm_password_field_is_required.tr;
@@ -170,6 +162,11 @@ class ResetPasswordScreen extends StatelessWidget {
           return null;
         }
       },
+      hintStyle: TextStyle(
+          color: AppColor.normalTextColor.withOpacity(0.4),
+          fontFamily: "Poppins",
+          fontSize: Dimensions.fontSizeDefault + 1),
     );
   }
+
 }

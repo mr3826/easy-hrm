@@ -22,7 +22,7 @@ class AppString {
   static String no_internet_subtitle_text =
       "Make sure your Wi-Fi or cellular data is turned on and then try again";
   static String dateDifferenceIssueMessage = "In time must be before out time";
-  static String text_stitch_org = "Switch Organization";
+  static String text_stitch_org = "Switch organizations";
   static String text_first_and_last_field_is_requured =
       "First and last name field is required!";
   static String organizationNotFoundMessage =
@@ -36,12 +36,12 @@ class AppString {
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
   static String text_leave_management_etc =
-      'Leave management is one of the key features of Payrun. You can customize your leave anytime. You can take multiple days\' leave as well as hourly leave.';
+      'Leave management is one of the key features of Payrun. You can customise your leave anytime. You can take multiple days\' leave as well as hourly leave.';
   static String text_with_the_help_etc =
       'With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.';
   static String text_password = 'Password';
   static String text_there_is_not_etc =
-      'There is no need for several apps for different organization. You can manage all of your organization from a single app! ';
+      'There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
   static String text_from = 'From';
@@ -54,7 +54,7 @@ class AppString {
   static String text_back_to_login = 'Back to login';
   static String text_done_of_save = 'Done and Save';
   static String text_we_have_a_verification_etc =
-      'We have sent a Verification code to your email address. Enter this code bellow to verify your account.';
+      'We have sent a verification code to your email address. Enter this code bellow to verify your account.';
   static String text_dont_not_worry =
       'Don’t worry! It happens. Please enter the email address associated with your account';
   static String text_enter_code = 'Enter your code';
@@ -245,7 +245,7 @@ class AppString {
   static String text_notications = "Notifications";
   static String text_notication = "Notification";
   static String text_forgot_password = "Forgot password?";
-  static String text_sign_in = "Sign In";
+  static String text_sign_in = "Sign in";
   static String text_cancel = "Cancel";
   static String text_canceled = "Canceled";
   static String text_back = "Back";
