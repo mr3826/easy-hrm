@@ -569,6 +569,7 @@ class ProfileScreen extends GetView<UserProfileController> {
   _organisationLogoLayout() {
     return CustomNetworkImage(
       height: AppLayout.getHeight(25),
+      fileDir: "cover_images",
       errorText: (Get.find<UserProfileController>()
                       .userDetails
                       ?.getOrganizationUserDetails

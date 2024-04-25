@@ -210,7 +210,6 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response =
         await NetworkClient().getGraphQuery(queryString: organizationInfoQuery);
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
