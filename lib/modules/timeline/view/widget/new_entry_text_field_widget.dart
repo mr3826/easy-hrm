@@ -43,6 +43,7 @@ class TimeLogEntryTextField extends StatelessWidget {
       children: [
         durationTimeLayout(status: status),
         Container(
+          height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(

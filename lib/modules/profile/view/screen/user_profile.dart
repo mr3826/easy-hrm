@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -44,6 +41,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                     context: context,
                     child: Container(
                       color: Colors.white,
+                      width: double.infinity,
                       child: endDrawer(context),
                     ));
               }),
@@ -65,9 +63,17 @@ class ProfileScreen extends GetView<UserProfileController> {
                         _actionBtnLayout(context),
                         customSpacerHeight(height: 25),
                         _descriptionTextLayout(),
-                        customSpacerHeight(height: 15),
-                        const Divider(
-                            thickness: .6, color: AppColor.disableColor),
+                        if (controller
+                                    .employeeWorkHistory
+                                    ?.getOrganizationUserHistory
+                                    ?.employmentHistories !=
+                                null &&
+                            controller
+                                .employeeWorkHistory!
+                                .getOrganizationUserHistory!
+                                .employmentHistories!
+                                .isNotEmpty)
+                          _horizontalDivider(),
                         ChangeEmailNotifyLayout(),
                         customSpacerHeight(height: 15),
                         _phoneNumberText(),
@@ -76,9 +82,19 @@ class ProfileScreen extends GetView<UserProfileController> {
                         customSpacerHeight(height: 15),
                         _addressText(),
                         customSpacerHeight(height: 15),
-                        departmentLayout(context),
+                        if (Get.find<UserProfileController>()
+                            .employeeWorkHistory!
+                            .getOrganizationUserHistory!
+                            .deptHistories!
+                            .isNotEmpty)
+                          departmentLayout(context),
                         customSpacerHeight(height: 5),
-                        employeeStatusLayout(context: context),
+                        if (Get.find<UserProfileController>()
+                            .employeeWorkHistory!
+                            .getOrganizationUserHistory!
+                            .designationHistories!
+                            .isNotEmpty)
+                          employeeStatusLayout(context: context),
                         customSpacerHeight(height: 50),
                       ],
                     ),
@@ -101,11 +117,8 @@ class ProfileScreen extends GetView<UserProfileController> {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.start,
               children: [
-
                 ///User name and department
                 _userNameAndDptLayout(),
-
-
               ],
             ),
           ),
@@ -518,6 +531,8 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   _userImageLayout({double? height}) {
+    print(
+        "img :::: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
     return CustomNetworkImage(
         errorText: (Get.find<UserProfileController>()
                             .userDetails
@@ -694,22 +709,37 @@ class ProfileScreen extends GetView<UserProfileController> {
         customSpacerHeight(height: 6),
 
         ///Status
-        Wrap(
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: _employmentContractStatus(),
-            ),
-            customSpacerWidth(width: 12),
-            ///Status
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: _employmentStatus(),
-            ),
-          ],
-        ),
+        ///
 
+        if (controller.employeeWorkHistory?.getOrganizationUserHistory
+                    ?.employmentHistories !=
+                null &&
+            controller.employeeWorkHistory!.getOrganizationUserHistory!
+                .employmentHistories!.isNotEmpty)
+          Wrap(
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _employmentContractStatus(),
+              ),
+              customSpacerWidth(width: 12),
 
+              ///Status
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _employmentStatus(),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  _horizontalDivider() {
+    return Column(
+      children: [
+        customSpacerHeight(height: 15),
+        const Divider(thickness: .6, color: AppColor.disableColor),
       ],
     );
   }

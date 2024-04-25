@@ -36,44 +36,43 @@ class _MainScreenState extends State<MainScreen> {
       initialIndex: widget.routeIndex ?? 2,
     );
     UpdateNotification(
-        androidAppId: 'com.gainhq.payrun',
-        minimumVersion: '1.0.0+1');
+        androidAppId: 'com.gainhq.payrun', minimumVersion: '1.0.0+1');
     super.initState();
   }
+
   SignInController isValue = Get.find<SignInController>();
   @override
   Widget build(BuildContext context) {
-
     /// initialController controller
     _initialController();
 
     return WillPopScope(
       onWillPop: () => appExitChecker,
       child: Scaffold(
-        body:  PersistentTabView(
-          context,
-          controller: controller,
-          screens: isValue.isSubscriptionExpired.isTrue?_ifNeedSubscription():_screenListLayout(),
-          items: iconList,
-          backgroundColor: AppColor.backgroundColor,
-          confineInSafeArea: true,
-          decoration: NavBarDecoration(
-            borderRadius: BorderRadius.circular(1.0),
-            colorBehindNavBar: Colors.white,
-          ),
-          navBarStyle: NavBarStyle.style15,
-          navBarHeight: 60,
-          hideNavigationBarWhenKeyboardShows: true,
-          onItemSelected: (value) {
-            print(controller.index == value);
-          },
-        )),
-
-
+          body: PersistentTabView(
+        context,
+        controller: controller,
+        screens: isValue.isSubscriptionExpired.isTrue
+            ? _ifNeedSubscription()
+            : _screenListLayout(),
+        items: iconList,
+        backgroundColor: AppColor.backgroundColor,
+        confineInSafeArea: true,
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(1.0),
+          colorBehindNavBar: Colors.white,
+        ),
+        navBarStyle: NavBarStyle.style15,
+        navBarHeight: 60,
+        hideNavigationBarWhenKeyboardShows: true,
+        onItemSelected: (value) {
+          print(controller.index == value);
+        },
+      )),
     );
   }
 
-  void _initialController() async{
+  void _initialController() async {
     Get.put(DashboardController());
     Get.put(TimelineController());
     Get.put(NotificationController());
@@ -93,7 +92,7 @@ class _MainScreenState extends State<MainScreen> {
     ];
   }
 
-  _ifNeedSubscription(){
+  _ifNeedSubscription() {
     return [
       SubscriptionScreen(),
       SubscriptionScreen(),
