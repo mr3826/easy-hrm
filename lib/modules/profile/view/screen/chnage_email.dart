@@ -45,7 +45,7 @@ class ChangeEmailScreen extends StatelessWidget {
                   customTitleText(
                       text: AppString.text_password.tr, isRequired: true),
                   customSpacerHeight(height: 12),
-                  Obx(() => _userPasswordField()),
+                 _userPasswordField(),
                   customSpacerHeight(height: 30),
                   Obx(() => Get.find<UserProfileController>().isLoading.isTrue
                       ? const Center(
@@ -95,16 +95,8 @@ class ChangeEmailScreen extends StatelessWidget {
     return CustomPasswordInputField(
       controller: editMailPasswordController,
       hitText:  AppString.text_min_8_character.tr,
-      prefixIcon: Image.asset(Images.LOCK_ICON),
-      suffixWidget: Padding(
-        padding: const EdgeInsets.only(right: 10.0),
-        child: IconButton(
-          onPressed: () => Get.find<PasswordController>().changeVal(),
-          icon: Get.find<PasswordController>().isValue.isTrue
-              ? _showHideText(AppString.text_show.tr)
-              : _showHideText(AppString.text_hide.tr),
-        ),
-      ),
+      suffixHideText: AppString.text_hide.tr,
+      suffixShowText:AppString.text_show.tr ,
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_password_field_is_required.tr;
@@ -118,20 +110,6 @@ class ChangeEmailScreen extends StatelessWidget {
           color: AppColor.normalTextColor.withOpacity(0.4),
           fontFamily: "Poppins",
           fontSize: Dimensions.fontSizeDefault + 1),
-    );
-  }
-
-
-
-  _showHideText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6.0),
-      child: Text(
-        text,
-        style: AppStyle.mid_large_text.copyWith(
-            fontSize: Dimensions.fontSizeExtraDefault - 1,
-            color: AppColor.secondaryColor),
-      ),
     );
   }
 }

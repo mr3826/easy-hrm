@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 
+import '../../utils/app_string.dart';
+import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
 
 class CustomPasswordInputField extends StatefulWidget {
@@ -10,6 +13,8 @@ class CustomPasswordInputField extends StatefulWidget {
   final Widget? suffixWidget;
   final IconData? suffixVisibleIcon;
   final IconData? suffixHideIcon;
+  final String? suffixHideText;
+  final String? suffixShowText;
   final double? corneRadius;
   final Widget? prefixIcon;
   final InputDecoration? inputDecoration;
@@ -22,6 +27,8 @@ class CustomPasswordInputField extends StatefulWidget {
         this.corneRadius,
         this.hintStyle,
         this.prefixIcon,
+        this.suffixHideText,
+        this.suffixShowText,
         this.suffixHideIcon,
         this.inputDecoration,
         this.suffixVisibleIcon,
@@ -86,25 +93,38 @@ class _GSCustomInputFieldState extends State<CustomPasswordInputField> {
       hintText: widget.hitText ?? "Enter input here",
       border: OutlineInputBorder(
           borderSide: const BorderSide(color: AppColor.disableColor),
-          borderRadius: BorderRadius.circular(widget.corneRadius??Dimensions.radiusDefault)
+          borderRadius: BorderRadius.circular(widget.corneRadius??12)
       ),
       focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: AppColor.disableColor),
-          borderRadius: BorderRadius.circular(widget.corneRadius??Dimensions.radiusDefault)
+          borderRadius: BorderRadius.circular(widget.corneRadius??12)
       ),
       suffixIcon: widget.suffixWidget ?? (_showPasswordIconLayout()),
       prefixIcon: widget.prefixIcon,
       hintStyle: widget.hintStyle ?? const TextStyle(color: Colors.grey),
       enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: AppColor.disableColor),
-          borderRadius: BorderRadius.circular(widget.corneRadius??Dimensions.radiusDefault)
+          borderRadius: BorderRadius.circular(widget.corneRadius??12)
 
       ),
     );
   }
 
   _showPasswordIconLayout() {
-    return IconButton(
+    return widget.suffixHideText !=null?
+
+    TextButton(
+      child: obscureText  ? _showHideText(widget.suffixShowText.toString())
+        : _showHideText(widget.suffixHideText.toString()),
+
+      onPressed: () {
+        setState(() {
+          obscureText = !obscureText;
+        });
+      },
+    ):
+
+      IconButton(
       icon: Icon(
         obscureText
             ? widget.suffixHideIcon ?? CupertinoIcons.eye_slash
@@ -116,6 +136,18 @@ class _GSCustomInputFieldState extends State<CustomPasswordInputField> {
           obscureText = !obscureText;
         });
       },
+    );
+  }
+
+  _showHideText(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 6.0),
+      child: Text(
+        text,
+        style: AppStyle.mid_large_text.copyWith(
+            fontSize: Dimensions.fontSizeExtraDefault - 1,
+            color: AppColor.secondaryColor),
+      ),
     );
   }
 }

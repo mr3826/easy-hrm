@@ -263,10 +263,6 @@ class UserProfileController extends GetxController with StateMixin {
                   children: [
                     Text(AppString.text_password.tr),
                     customSpacerHeight(height: 10),
-
-
-
-
                     _orgPassword(),
                     customSpacerHeight(height: 10),
                     isNewOrganizationChangeLoading.isTrue
@@ -430,7 +426,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   _orgPassword() {
-    return  CustomPasswordInputField(
+    return CustomPasswordInputField(
       controller: passwordInputController,
       hitText: AppString.text_password.tr,
       prefixIcon: Image.asset(Images.LOCK_ICON),
