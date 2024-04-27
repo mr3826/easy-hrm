@@ -178,6 +178,7 @@ class UserProfileController extends GetxController with StateMixin {
         Get.back(canPop: false);
         Get.back(canPop: false);
         switchOrganisationDataChange();
+        Get.offNamed(Routes.SIGN_IN_SCREEN); ///todo
       }
     } catch (e) {
       log(e.toString());

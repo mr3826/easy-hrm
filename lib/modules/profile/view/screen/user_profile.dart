@@ -82,14 +82,20 @@ class ProfileScreen extends GetView<UserProfileController> {
                         customSpacerHeight(height: 15),
                         _addressText(),
                         customSpacerHeight(height: 15),
-                        if (Get.find<UserProfileController>()
+                        if (
+                  Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories!=null &&
+                        Get.find<UserProfileController>()
                             .employeeWorkHistory!
                             .getOrganizationUserHistory!
                             .deptHistories!
-                            .isNotEmpty)
+                            .isNotEmpty
+
+                        )
                           departmentLayout(context),
                         customSpacerHeight(height: 5),
-                        if (Get.find<UserProfileController>()
+                        if (
+                        Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories!=null&&
+                        Get.find<UserProfileController>()
                             .employeeWorkHistory!
                             .getOrganizationUserHistory!
                             .designationHistories!
@@ -531,8 +537,6 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   _userImageLayout({double? height}) {
-    print(
-        "img :::: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
     return CustomNetworkImage(
         errorText: (Get.find<UserProfileController>()
                             .userDetails

@@ -94,7 +94,7 @@ class AppString {
   static String text_file_upload_file = 'File upload file';
   static String text_file_upload_update_successfully =
       'File upload update successfully';
-  static String yourOrganizationText = 'Your Organization';
+  static String yourOrganizationText = 'Your organization';
 
   static String text_event = 'Events';
   static String text_upcoming_leave = 'Upcoming leave';
@@ -122,7 +122,8 @@ class AppString {
   static String text_action = 'Actions';
   static String text_account = 'account';
   static String text_you_have = 'You have';
-  static String text_org_linked_with_your = 'organisations linked with your';
+  static String text_org_linked_with_your = 'organisation linked with your';
+  static String text_organisations_linked_with_your = 'organisations linked with your';
   static String textDay = 'day';
   static String textDays = 'days';
   static String rejectedATimelogText = 'has reject your time log on ';
@@ -155,7 +156,7 @@ class AppString {
 
   static String text_verify_your_email_address = 'Verify your email address';
   static String text_we_have_sent_a_verification_etc =
-      "We have sent a Verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
+      "We have sent a verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
   static String text_do_not_receive_email = "Don't receive email? ";
   static String text_do_not_receive_otp = "Don't receive code? ";
   static String text_resend = "Resend";
@@ -168,7 +169,7 @@ class AppString {
   static String text_verify = 'Verify';
   static String text_swich_organisation = 'Switch organization';
   static String text_total = "Total";
-  static String text_schedule = "Schedule";
+  static String text_schedule = "Scheduled";
   static String text_set_start_time = "Set start time";
 
   static String text_start = "Start:";
@@ -262,7 +263,7 @@ class AppString {
   static const String text_apply = "Apply";
   static const String text_remove_leave = "Remove leave";
 
-  static const String cancelLeaveText = "Cancel Leave";
+  static const String cancelLeaveText = "Cancel leave";
 
   static const String cancelLeaveNotificationText =
       "Sure you want to cancel this leave request? If you cancel this leave request,you can apply a new request again.";

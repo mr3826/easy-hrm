@@ -82,7 +82,7 @@ Map<String, String> eng = {
   AppString.text_file_upload_file: "File upload file",
   AppString.text_file_upload_update_successfully:
       "File upload update successfully",
-  AppString.yourOrganizationText: "Your Organization",
+  AppString.yourOrganizationText: "Your organization",
   AppString.text_event: "Events",
   AppString.text_upcoming_leave: "Upcoming leave",
   AppString.text_add: "Add",
@@ -106,8 +106,9 @@ Map<String, String> eng = {
   AppString.text_action: "Actions",
   AppString.text_account: "account",
   AppString.text_you_have: "You have",
-  AppString.text_org_linked_with_your: "organisations linked with your",
-  AppString.textDay: "day",
+  AppString.text_org_linked_with_your: "organisation linked with your",
+  AppString.text_organisations_linked_with_your: "organisations linked with your",
+AppString.textDay: "day",
   AppString.textDays: "days",
   AppString.rejectedATimelogText: "has reject your time log on ",
   AppString.pendingATimelogText: "has marked your time log as pending on ",
@@ -133,7 +134,7 @@ Map<String, String> eng = {
   AppString.text_min_8_character: "Min. 8 characters",
   AppString.text_verify_your_email_address: "Verify your email address",
   AppString.text_we_have_sent_a_verification_etc:
-      "We have sent a Verification code to your email address new@gmail.com. Enter this code bellow to verify your account",
+      "We have sent a verification code to your email address new@gmail.com. Enter this code bellow to verify your account",
   AppString.text_do_not_receive_email: "Don't receive email? ",
   AppString.text_do_not_receive_otp: "Don't receive code? ",
   AppString.text_resend: "Resend",
@@ -146,7 +147,7 @@ Map<String, String> eng = {
   AppString.text_verify: "Verify",
   AppString.text_swich_organisation: "Switch organization",
   AppString.text_total: "Total",
-  AppString.text_schedule: "Schedule",
+  AppString.text_schedule: "Scheduled",
   AppString.text_set_start_time: "Set start time",
   AppString.text_start: "Start:",
   AppString.text_status: "Status",
@@ -231,7 +232,7 @@ Map<String, String> eng = {
   AppString.text_apply_leve: "Apply leave",
   AppString.text_apply: "Apply",
   AppString.text_remove_leave: "Remove leave",
-  AppString.cancelLeaveText: "Cancel Leave",
+  AppString.cancelLeaveText: "Cancel leave",
   AppString.cancelLeaveNotificationText:
       "Sure you want to cancel this leave request? If you cancel this leave request, you can apply a new request again.",
   AppString.text_sure_you_want_to_deleted_this_log:

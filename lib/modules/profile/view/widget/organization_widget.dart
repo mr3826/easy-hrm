@@ -97,7 +97,7 @@ class OrganisationView extends StatelessWidget {
                                             ?.data?[index]
                                             .designation
                                             ?.name ??
-                                        "",
+                                        "No added yet",
                                     style: AppStyle.normal_text_grey.copyWith(
                                         color: AppColor.hintColor,
                                         fontSize:
