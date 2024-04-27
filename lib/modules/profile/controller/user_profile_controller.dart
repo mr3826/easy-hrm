@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -129,9 +130,9 @@ class UserProfileController extends GetxController with StateMixin {
     isLoading(false);
     return validation;
   }
+
   Future<bool> changeMail({required String newEmail}) async {
     bool validation = false;
-    print("changeMail called");
 
     isLoading(true);
     try {
@@ -159,10 +160,8 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   submitVerificationCode({required String verificationCode}) async {
-
     isVerificationApiLoading(true);
     print("submitVerificationCode called");
-    print("submitVerificationCode code ::: $verificationCode");
     try {
       final response =
           await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
@@ -181,8 +180,16 @@ class UserProfileController extends GetxController with StateMixin {
         changeEmailController.clear();
         Get.back(canPop: false);
         Get.back(canPop: false);
-        switchOrganisationDataChange();
-        Get.offNamed(Routes.SIGN_IN_SCREEN); ///todo
+        //  switchOrganisationDataChange();
+        if (Platform.isAndroid) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        } else if (Platform.isIOS) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        }
       }
     } catch (e) {
       log(e.toString());
