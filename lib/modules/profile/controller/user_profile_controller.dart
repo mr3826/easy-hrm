@@ -129,9 +129,10 @@ class UserProfileController extends GetxController with StateMixin {
     isLoading(false);
     return validation;
   }
-
   Future<bool> changeMail({required String newEmail}) async {
     bool validation = false;
+    print("changeMail called");
+
     isLoading(true);
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
@@ -158,7 +159,10 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   submitVerificationCode({required String verificationCode}) async {
+
     isVerificationApiLoading(true);
+    print("submitVerificationCode called");
+    print("submitVerificationCode code ::: $verificationCode");
     try {
       final response =
           await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {

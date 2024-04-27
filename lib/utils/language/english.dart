@@ -143,7 +143,7 @@ AppString.textDay: "day",
   AppString.text_verify_email: "Verify email",
   AppString.text_revert_change: "Revert changes",
   AppString.text_email_change_request_is_in_pendding_etc:
-      "Email change request is in pending.Need verification.",
+      "Email change request is in pending. Need verification.",
   AppString.text_verify: "Verify",
   AppString.text_swich_organisation: "Switch organization",
   AppString.text_total: "Total",

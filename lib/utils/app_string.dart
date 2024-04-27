@@ -165,7 +165,7 @@ class AppString {
   static String text_verify_email = "Verify email";
   static String text_revert_change = "Revert changes";
   static String text_email_change_request_is_in_pendding_etc =
-      "Email change request is in pending.Need verification.";
+      "Email change request is in pending. Need verification.";
   static String text_verify = 'Verify';
   static String text_swich_organisation = 'Switch organization';
   static String text_total = "Total";
