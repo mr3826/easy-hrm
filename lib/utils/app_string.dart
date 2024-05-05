@@ -41,7 +41,7 @@ class AppString {
       'With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.';
   static String text_password = 'Password';
   static String text_there_is_not_etc =
-      'There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ';
+      'There is no need for several apps for different organisations. You can manage all of your organisations from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
   static String text_from = 'From';

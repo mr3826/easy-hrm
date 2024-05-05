@@ -30,7 +30,7 @@ Map<String, String> eng = {
       "With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.",
   AppString.text_password: "Password",
   AppString.text_there_is_not_etc:
-      "There is no need for several apps for different organizations. You can manage all of your organizations from a single app!",
+      "There is no need for several apps for different organisations. You can manage all of your organisations from a single app!",
   AppString.text_timer: "Timer",
   AppString.textPresent: "Present",
   AppString.text_from: "From",
