@@ -99,7 +99,8 @@ class SignInController extends GetxController with StateMixin {
       isSubscriptionLoading(true);
       final response = await NetworkClient()
           .getGraphQuery(queryString: getOrgSubscriptionInfoQuery);
-      log("getOrgSubscriptionInfo ::::: ${response.data!}");
+      print("getOrgSubscriptionInfo ::::: ${response.data!}");
+
       if (response.hasException) {
         ExceptionHelper.errorHandler(exception: response.exception!);
       } else {
@@ -109,10 +110,7 @@ class SignInController extends GetxController with StateMixin {
         isSubscriptionLoading(false);
       }
     } catch (ex) {
-      print("getOrgSubscriptionInfo ::::: $ex");
-      isSubscriptionLoading(false);
-      isSubscriptionExpired(false);
-      isSubscriptionNotUseTimeTracking(false);
+      print("getOrgSubscriptionInfo  ::::: $ex");
     }
   }
 
