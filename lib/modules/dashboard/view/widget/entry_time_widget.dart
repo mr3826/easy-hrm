@@ -95,14 +95,12 @@ _startingTime(context) {
 }
 
 void _checkIfSubscription() {
-
   if(Get.find<SignInController>().isSubscriptionNotUseTimeTracking.isTrue){
     alertForSubscriptionRequired();
   }else{
     Get.put(TimeCounterController()).timerStatus();
     Get.toNamed(Routes.TIMER_SCREEN);
   }
-
 
 
 }

@@ -43,6 +43,8 @@ class TimelineSummaryController extends GetxController with StateMixin {
       }
     });
 
+
+    print("getTimelineByMonth :::::::::; $response");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {

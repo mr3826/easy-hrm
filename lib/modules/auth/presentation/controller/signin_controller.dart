@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/token_model.dart';
 import '../../../../network/exception_helper.dart';
@@ -34,7 +35,6 @@ class SignInController extends GetxController with StateMixin {
   @override
   void onInit() {
     setLastInputData();
-    getOrgSubscriptionInfo();
     super.onInit();
   }
 
@@ -84,7 +84,9 @@ class SignInController extends GetxController with StateMixin {
         GetStorage().write(AppString.ORGANIZATION_ID,
             SignInResponse.fromJson(response.body).ordId ?? "");
         _saveData();
-        checkIfSubscription();
+        getOrgSubscriptionInfo();
+        Get.offNamed(Routes.MAIN_SCREEN);
+
       }
     } catch (e) {
       log(e.toString());
@@ -104,7 +106,6 @@ class SignInController extends GetxController with StateMixin {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
         checkIfSubscription();
-
         isSubscriptionLoading(false);
       }
     } catch (ex) {
@@ -113,8 +114,6 @@ class SignInController extends GetxController with StateMixin {
       isSubscriptionExpired(false);
       isSubscriptionNotUseTimeTracking(false);
     }
-
-    //try case called checkIfSubscription
   }
 
   void _saveData() {

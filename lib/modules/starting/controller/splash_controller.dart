@@ -25,13 +25,17 @@ class SplashController extends GetxController {
       if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
         if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
           _getNewToken().then((value) => value == true
-              ? Future.delayed(
-                  const Duration(milliseconds: 2500), () => chooseScreen())
+              ? Future.delayed(const Duration(milliseconds: 2500), () {
+                  chooseScreen();
+                  Get.find<SignInController>().getOrgSubscriptionInfo();
+          })
               : Future.delayed(const Duration(milliseconds: 2500),
                   () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
         } else {
-          Future.delayed(
-              const Duration(milliseconds: 2500), () => chooseScreen());
+          Future.delayed(const Duration(milliseconds: 2500), () {
+            chooseScreen();
+            Get.find<SignInController>().getOrgSubscriptionInfo();
+          });
         }
       } else {
         Future.delayed(
@@ -47,9 +51,11 @@ class SplashController extends GetxController {
     if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
+    } else if (box.read(AppString.ACCESS_TOKEN) == true ||
+        box.read(AppString.ACCESS_TOKEN) == null) {
+      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
     } else {
-      checkIfSubscription();
-      // Get.offAndToNamed(Routes.MAIN_SCREEN);
+      Get.offAndToNamed(Routes.MAIN_SCREEN);
     }
   }
 
@@ -97,25 +103,21 @@ class SplashController extends GetxController {
 void checkIfSubscription() {
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
 
-  Iterable<PlanFeatures>? identifierData = Get.find<SignInController>()
+  PlanFeatures? identifierData = Get.find<SignInController>()
       .orgSubscriptionInfoModel
       .getOrgSubscriptionInfo
       ?.subscribedPlan
       ?.planFeatures
-      ?.where((e) => e.feature?.identifier == "time_tracking");
+      ?.firstWhere((e) =>
+          e.feature?.identifier == "time_tracking" && e.isEnabled == true);
 
-  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status == "paused") {
+  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status == "paused" ||
+      data.getOrgSubscriptionInfo?.subscribedPlan?.status == "canceled") {
+    /// for expire subscription
     Get.offNamed(Routes.MAIN_SCREEN);
     Get.find<SignInController>().isSubscriptionExpired(true);
-  } else if (identifierData != null) {
-    Get.offNamed(Routes.MAIN_SCREEN);
+  } else if (identifierData?.isEnabled == false) {
+    /// for identifierData is equal to false
     Get.find<SignInController>().isSubscriptionNotUseTimeTracking(true);
-  } else {
-    if (GetStorage().read(AppString.LOGGED_IN) == true &&
-        GetStorage().read(AppString.LOGGED_IN) != null) {
-      Get.offAndToNamed(Routes.MAIN_SCREEN);
-    } else {
-      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
-    }
   }
 }

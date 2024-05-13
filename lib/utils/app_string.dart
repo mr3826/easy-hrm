@@ -41,7 +41,7 @@ class AppString {
       'With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.';
   static String text_password = 'Password';
   static String text_there_is_not_etc =
-      'There is no need for several apps for different organisations. You can manage all of your organisations from a single app! ';
+      'There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
   static String text_from = 'From';
@@ -122,8 +122,8 @@ class AppString {
   static String text_action = 'Actions';
   static String text_account = 'account';
   static String text_you_have = 'You have';
-  static String text_org_linked_with_your = 'organisation linked with your';
-  static String text_organisations_linked_with_your = 'organisations linked with your';
+  static String text_org_linked_with_your = 'organization linked with your';
+  static String text_organisations_linked_with_your = 'organizations linked with your';
   static String textDay = 'day';
   static String textDays = 'days';
   static String rejectedATimelogText = 'has reject your time log on ';
@@ -148,9 +148,9 @@ class AppString {
   static String leaveApprover = 'Time log approver';
   static String departmentHeaDText = 'Department head';
 
-  static String text_current_password = 'Current Password';
-  static String text_new_password = 'New Password';
-  static String text_confirm_password = 'Confirm Password';
+  static String text_current_password = 'Current password';
+  static String text_new_password = 'New password';
+  static String text_confirm_password = 'Confirm password';
   static String text_confirm_your_password = 'Confirm your password';
   static String text_min_8_character = 'Min. 8 characters';
 
