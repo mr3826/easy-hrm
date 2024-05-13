@@ -185,7 +185,7 @@ Widget _descriptionText({required text}) {
   return Text(
     text,
     style: TextStyle(
-        color: AppColor.normalTextColor.withOpacity(0.5),
+        color: AppColor.hintColor,
         fontFamily: "Poppins",
         fontSize: Dimensions.fontSizeDefault,
         fontWeight: FontWeight.w300),

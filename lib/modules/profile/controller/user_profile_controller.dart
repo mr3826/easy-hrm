@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,10 +24,13 @@ import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import '../../../common/controller/date_time_controller.dart';
 import '../../../common/domain/error_model.dart';
+import '../../../common/widget/custom_password_text_field.dart';
 import '../../../common/widget/custom_text_field.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_string.dart';
+import '../../../utils/dimensions.dart';
+import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
 import '../model/organization_info.dart';
@@ -63,6 +67,7 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response =
         await NetworkClient().getGraphQuery(queryString: getUserProfileQuery);
+    print("User profile :::: $response");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -128,6 +133,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   Future<bool> changeMail({required String newEmail}) async {
     bool validation = false;
+
     isLoading(true);
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
@@ -155,6 +161,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   submitVerificationCode({required String verificationCode}) async {
     isVerificationApiLoading(true);
+    print("submitVerificationCode called");
     try {
       final response =
           await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
@@ -173,7 +180,16 @@ class UserProfileController extends GetxController with StateMixin {
         changeEmailController.clear();
         Get.back(canPop: false);
         Get.back(canPop: false);
-        switchOrganisationDataChange();
+        //  switchOrganisationDataChange();
+        if (Platform.isAndroid) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        } else if (Platform.isIOS) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        }
       }
     } catch (e) {
       log(e.toString());
@@ -206,7 +222,6 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response =
         await NetworkClient().getGraphQuery(queryString: organizationInfoQuery);
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -259,33 +274,7 @@ class UserProfileController extends GetxController with StateMixin {
                   children: [
                     Text(AppString.text_password.tr),
                     customSpacerHeight(height: 10),
-                    CustomPassInputField(
-                      hint: AppString.text_password.tr,
-                      controller: passwordInputController,
-                      prefixIcon: Icons.lock_open_outlined,
-                      obsValue: isValue.value,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return AppString.the_password_field_is_required.tr;
-                        } else if (value.length < 6) {
-                          return AppString.incorrect_user_or_password.tr;
-                        } else {
-                          return null;
-                        }
-                      },
-                      weight: IconButton(
-                        onPressed: () => changeVal(),
-                        icon: isValue.isTrue
-                            ? const Icon(
-                                Icons.visibility_off_outlined,
-                                color: AppColor.hintColor,
-                              )
-                            : const Icon(
-                                Icons.remove_red_eye_outlined,
-                                color: AppColor.hintColor,
-                              ),
-                      ),
-                    ),
+                    _orgPassword(),
                     customSpacerHeight(height: 10),
                     isNewOrganizationChangeLoading.isTrue
                         ? const Center(
@@ -445,6 +434,27 @@ class UserProfileController extends GetxController with StateMixin {
       log(e.toString());
       return false;
     }
+  }
+
+  _orgPassword() {
+    return CustomPasswordInputField(
+      controller: passwordInputController,
+      hitText: AppString.text_password.tr,
+      prefixIcon: Image.asset(Images.LOCK_ICON),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return AppString.the_password_field_is_required.tr;
+        } else if (value.length < 6) {
+          return AppString.incorrect_user_or_password.tr;
+        } else {
+          return null;
+        }
+      },
+      hintStyle: TextStyle(
+          color: AppColor.normalTextColor.withOpacity(0.4),
+          fontFamily: "Poppins",
+          fontSize: Dimensions.fontSizeDefault + 1),
+    );
   }
 }
 

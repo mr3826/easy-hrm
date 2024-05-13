@@ -59,4 +59,5 @@ Future<void> initApp() async {
   Get.put(UpdateProfileController());
   Get.put(SignInController());
   Get.put(OtpController());
+
 }

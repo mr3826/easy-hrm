@@ -9,21 +9,26 @@ import '../../utils/app_color.dart';
 import '../../utils/app_string.dart';
 import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
-import '../../utils/images.dart';
 import 'custom_card_style.dart';
 import 'custom_spacer.dart';
 
-String urlBuilder(imgUrlKey) {
+String urlBuilder({imgUrlKey, String? fileDir}) {
+
   final client = URLBuilder(
     domain: Api.CDN_DOMAIN,
     shouldUseHttpsByDefault: true,
     defaultSignKey: Api.CDN_KEY,
   );
   final url = client.createURLString(
-    '/files/${GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey',
-    params: {'w': '500', 'h': '500'},
+    '${fileDir ?? "files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey',
   );
+
   print({"url imgix:: $url"});
+  print("Api.CDN_DOMAIN :::::: ${Api.CDN_DOMAIN}");
+  print("Api.CDN_KEY :::::: ${Api.CDN_KEY}");
+  print("ORGANIZATION_ID :::::: ${GetStorage().read(AppString.ORGANIZATION_ID)}");
+  print("fileDir :::::: $fileDir");
+
   return url;
 }
 
@@ -72,7 +77,8 @@ _errorText(errorText) {
 Widget rectangleImageLayout({url}) {
   return CachedNetworkImage(
     imageUrl: url,
-    placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
+    placeholder: (context, url) =>
+        const Center(child: CupertinoActivityIndicator()),
     errorWidget: (context, url, error) => _emptyBox(),
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(

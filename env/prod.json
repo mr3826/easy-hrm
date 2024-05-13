@@ -1,6 +1,6 @@
 {
   "PUBLIC_URL": "https://api.payrun.app",
-  "CDN_DOMAIN": "payrun.imgix.net",
+  "CDN_DOMAIN": "payrun-private.imgix.net",
   "CDN_KEY": "AbuprUHFbUncYjep"
 }
 

@@ -12,6 +12,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../common/widget/custom_password_text_field.dart';
 import '../../../../utils/utils.dart';
 import '../../../starting/view/onboarding_screen.dart';
 import '../controller/signin_controller.dart';
@@ -67,7 +68,7 @@ class SignInScreen extends GetView<SignInController> {
                           customSpacerHeight(height: 20),
 
                           ///User password
-                          Obx(() => _userPasswordField()),
+                           _userPasswordField(),
                           customSpacerHeight(height: 12),
 
                           ///Forgot password
@@ -88,11 +89,10 @@ class SignInScreen extends GetView<SignInController> {
   }
 
   _userPasswordField() {
-    return CustomPassInputField(
-      hint: AppString.text_password.tr,
+    return CustomPasswordInputField(
       controller: passwordController,
-      prefixIcon: Icons.lock_open_outlined,
-      obsValue: controller.isValue.value,
+      hitText:  AppString.text_password.tr,
+      prefixIcon: Image.asset(Images.LOCK_ICON),
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_password_field_is_required.tr;
@@ -102,20 +102,15 @@ class SignInScreen extends GetView<SignInController> {
           return null;
         }
       },
-      weight: IconButton(
-        onPressed: () => controller.changeVal(),
-        icon: controller.isValue.isTrue
-            ? const Icon(
-                Icons.visibility_off_outlined,
-                color: AppColor.hintColor,
-              )
-            : const Icon(
-                Icons.remove_red_eye_outlined,
-                color: AppColor.hintColor,
-              ),
-      ),
+      hintStyle: TextStyle(
+          color: AppColor.normalTextColor.withOpacity(0.4),
+          fontFamily: "Poppins",
+          fontSize: Dimensions.fontSizeDefault + 1),
     );
   }
+
+
+
 
   _forgotPassword() {
     return GestureDetector(
@@ -134,7 +129,7 @@ class SignInScreen extends GetView<SignInController> {
   _emailAddressLayout() {
     return CustomInputField(
       hint: AppString.text_email.tr,
-      prefixIcon: Icons.email_outlined,
+      prefixWidget: Image.asset(Images.EMAIL_ICON),
       controller: emailController,
       validator: (value) {
         if (value!.isEmpty) {

@@ -51,13 +51,8 @@ class TimelineController extends GetxController with StateMixin {
 
   final isTimelogEntryOrRemoveLoading = false.obs;
 
-  RxList<CalendarEventData<String>> eventsOfTask =
-      <CalendarEventData<String>>[].obs;
 
-  RxList<CalendarEventData<String>> eventOfLeave =
-      <CalendarEventData<String>>[].obs;
 
-  List<Appointment> meetings = <Appointment>[];
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
@@ -409,6 +404,7 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   getCalendarTimelineDataByDate(
+
       {required String? startDate, String? endDate}) async {
     isTimelineCalendarByDateLoading(true);
 
@@ -428,11 +424,12 @@ class TimelineController extends GetxController with StateMixin {
 
       timelogList?.clear();
 
-      calendarTimeline =
-          CalendarTimeline.fromJson(responseForCalendar.data!);
+      calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
       timelogList =
           calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+
+
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",

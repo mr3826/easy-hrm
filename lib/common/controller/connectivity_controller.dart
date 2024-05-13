@@ -1,10 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
-
-import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_layout.dart';
 import '../../utils/app_string.dart';
@@ -36,12 +35,26 @@ class ConnectivityController extends GetxController {
   }
 }
 
-class NetworkErrorPage extends StatelessWidget {
+class NetworkErrorPage extends StatefulWidget {
   const NetworkErrorPage({Key? key}) : super(key: key);
+
+  @override
+  State<NetworkErrorPage> createState() => _NetworkErrorPageState();
+}
+
+class _NetworkErrorPageState extends State<NetworkErrorPage> {
+  bool isLoading = false;
+
+  isLoadingCalled() {
+    setState(() {
+      isLoading = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // ignore: deprecated_member_use
         body: WillPopScope(
       child: Container(
         color: Colors.white,
@@ -66,22 +79,32 @@ class NetworkErrorPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             customSpacerHeight(height: 40),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: AppColor.primaryColor,
-                  borderRadius: BorderRadius.circular(8)),
-              padding: EdgeInsets.symmetric(vertical: AppLayout.getHeight(8)),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(
-                  Icons.refresh,
-                  color: Colors.white,
-                  size: AppLayout.getWidth(16),
-                ),
-                customSpacerWidth(width: 4),
-                Text(AppString.text_retry, style: AppStyle.normal_text),
-              ]),
+            GestureDetector(
+              onTap: () {
+                isLoadingCalled();
+                Future.delayed(const Duration(seconds: 4), () {
+                  setState(() {
+                    isLoading = false;
+                  });
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: AppColor.primaryColor,
+                    borderRadius: BorderRadius.circular(8)),
+                padding: EdgeInsets.symmetric(vertical: AppLayout.getHeight(8)),
+                child:  isLoading == false?
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                    size: AppLayout.getWidth(16),
+                  ),
+                  customSpacerWidth(width: 4),
+                  Text(AppString.text_retry, style: AppStyle.normal_text),
+                ]):const CupertinoActivityIndicator(color: Colors.white,),
+              ),
             )
           ],
         ),
