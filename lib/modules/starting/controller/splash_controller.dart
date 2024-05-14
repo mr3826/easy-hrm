@@ -47,7 +47,6 @@ class SplashController extends GetxController {
   }
 
   chooseScreen() async {
-
     final box = GetStorage();
 
     if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
@@ -104,21 +103,18 @@ class SplashController extends GetxController {
 void checkIfSubscription() {
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
 
-  Iterable<PlanFeatures>? identifierData = Get.find<SignInController>()
-      .orgSubscriptionInfoModel
-      .getOrgSubscriptionInfo
-      ?.subscribedPlan
-      ?.planFeatures
-      ?.where((e) =>
-          e.feature?.identifier == "time_tracking" && e.isEnabled == true);
-
-  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status == "active") {
-    if (identifierData == null) {
-      Get.find<SignInController>().isSubscriptionNotUseTimeTracking(true);
-    }
-  } else {
+  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status != "active") {
     Get.find<SignInController>().isSubscriptionExpired(true);
   }
 
+  data.getOrgSubscriptionInfo?.subscribedPlan?.planFeatures?.forEach((element) {
+    if (element.feature?.identifier == "time_tracking") {
+      if (element.isEnabled == true) {
+        Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(true);
+      } else {
+        Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(false);
+      }
+    }
+  });
   Get.offNamed(Routes.MAIN_SCREEN);
 }

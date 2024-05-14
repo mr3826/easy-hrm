@@ -5,13 +5,13 @@ class OrgSubscriptionInfoModel {
 
   OrgSubscriptionInfoModel.fromJson(Map<String, dynamic> json) {
     getOrgSubscriptionInfo = json['getOrgSubscriptionInfo'] != null
-        ? GetOrgSubscriptionInfo.fromJson(json['getOrgSubscriptionInfo'])
+        ? new GetOrgSubscriptionInfo.fromJson(json['getOrgSubscriptionInfo'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (getOrgSubscriptionInfo != null) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.getOrgSubscriptionInfo != null) {
       data['getOrgSubscriptionInfo'] = this.getOrgSubscriptionInfo!.toJson();
     }
     return data;

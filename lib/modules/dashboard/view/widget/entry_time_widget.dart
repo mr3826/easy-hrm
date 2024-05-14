@@ -95,7 +95,7 @@ _startingTime(context) {
 }
 
 void _checkIfSubscription() {
-  if(Get.find<SignInController>().isSubscriptionNotUseTimeTracking.isTrue){
+  if(Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow.isFalse){
     alertForSubscriptionRequired();
   }else{
     Get.put(TimeCounterController()).timerStatus();

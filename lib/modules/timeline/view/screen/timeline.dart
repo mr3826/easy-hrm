@@ -81,8 +81,8 @@ class TimelineScreen extends GetView<TimelineController> {
         bgBtnColor: AppColor.secondaryColor,
         onAction: () {
           if (Get.find<SignInController>()
-              .isSubscriptionNotUseTimeTracking
-              .isTrue) {
+              .isSubscriptionTimeTrackingIsAllow
+              .isFalse) {
             alertForSubscriptionRequired();
           } else {
             Get.put(TimeCounterController()).timerStatus();
