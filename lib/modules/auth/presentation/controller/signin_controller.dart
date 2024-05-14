@@ -21,7 +21,6 @@ class SignInController extends GetxController with StateMixin {
   final isLoading = false.obs;
   final isSubscriptionExpired = false.obs;
   final isSignInLoading = false.obs;
-  final isSubscriptionLoading = false.obs;
   final isSubscriptionNotUseTimeTracking = false.obs;
 
   RxBool isValue = true.obs;
@@ -96,10 +95,11 @@ class SignInController extends GetxController with StateMixin {
 
   getOrgSubscriptionInfo() async {
     try {
-      isSubscriptionLoading(true);
       final response = await NetworkClient()
           .getGraphQuery(queryString: getOrgSubscriptionInfoQuery);
-      print("getOrgSubscriptionInfo ::::: ${response.data!}");
+      print("getOrgSubscriptionInfo ::::: $response");
+      print("getOrgSubscriptionInfo ::::: stop");
+
 
       if (response.hasException) {
         ExceptionHelper.errorHandler(exception: response.exception!);
@@ -107,7 +107,6 @@ class SignInController extends GetxController with StateMixin {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
         checkIfSubscription();
-        isSubscriptionLoading(false);
       }
     } catch (ex) {
       print("getOrgSubscriptionInfo  ::::: $ex");

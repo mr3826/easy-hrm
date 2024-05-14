@@ -103,6 +103,8 @@ Map<String, dynamic>? _addVariables() {
   //         ?.id ??
   //     "";
 
+
+
   inputData["image"] = Get.find<UpdateProfileController>()
           .uploadPolicyResponse
           .getUploadPolicy

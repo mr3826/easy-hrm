@@ -113,7 +113,7 @@ void checkIfSubscription() {
           e.feature?.identifier == "time_tracking" && e.isEnabled == true);
 
   if (data.getOrgSubscriptionInfo?.subscribedPlan?.status == "active") {
-    if (identifierData != null) {
+    if (identifierData == null) {
       Get.find<SignInController>().isSubscriptionNotUseTimeTracking(true);
     }
   } else {
