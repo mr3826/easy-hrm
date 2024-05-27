@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -96,7 +97,7 @@ class OrganisationView extends StatelessWidget {
                                             ?.data?[index]
                                             .designation
                                             ?.name ??
-                                        "",
+                                        "No added yet",
                                     style: AppStyle.normal_text_grey.copyWith(
                                         color: AppColor.hintColor,
                                         fontSize:
@@ -132,6 +133,7 @@ class OrganisationView extends StatelessWidget {
 
   _organisationLogoLayout(int index) {
     return CustomNetworkImage(
+      fileDir: "cover_images",
       height: 22,
       errorText: (Get.find<UserProfileController>()
                       .userDetails

@@ -296,6 +296,7 @@ query GetOrgSubscriptionInfo {
     status
     plan_features {
         id
+        is_enabled
         feature {
           id
           identifier

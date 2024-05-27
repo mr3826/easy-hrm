@@ -97,12 +97,14 @@ class SubscribedPlan {
 
 class PlanFeatures {
   String? id;
+  bool? isEnabled;
   Feature? feature;
 
-  PlanFeatures({this.id, this.feature});
+  PlanFeatures({this.id, this.isEnabled, this.feature});
 
   PlanFeatures.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    isEnabled = json['is_enabled'];
     feature =
     json['feature'] != null ? new Feature.fromJson(json['feature']) : null;
   }
@@ -110,6 +112,7 @@ class PlanFeatures {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['is_enabled'] = this.isEnabled;
     if (this.feature != null) {
       data['feature'] = this.feature!.toJson();
     }

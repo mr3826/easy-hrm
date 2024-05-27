@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/token_model.dart';
 import '../../../../network/exception_helper.dart';
@@ -20,8 +21,7 @@ class SignInController extends GetxController with StateMixin {
   final isLoading = false.obs;
   final isSubscriptionExpired = false.obs;
   final isSignInLoading = false.obs;
-  final isSubscriptionLoading = false.obs;
-  final isSubscriptionNotUseTimeTracking = false.obs;
+  final isSubscriptionTimeTrackingIsAllow = true.obs;
 
   RxBool isValue = true.obs;
   OrgSubscriptionInfoModel orgSubscriptionInfoModel =
@@ -34,7 +34,6 @@ class SignInController extends GetxController with StateMixin {
   @override
   void onInit() {
     setLastInputData();
-    getOrgSubscriptionInfo();
     super.onInit();
   }
 
@@ -84,7 +83,9 @@ class SignInController extends GetxController with StateMixin {
         GetStorage().write(AppString.ORGANIZATION_ID,
             SignInResponse.fromJson(response.body).ordId ?? "");
         _saveData();
-        checkIfSubscription();
+        getOrgSubscriptionInfo();
+        Get.offNamed(Routes.MAIN_SCREEN);
+
       }
     } catch (e) {
       log(e.toString());
@@ -94,27 +95,19 @@ class SignInController extends GetxController with StateMixin {
 
   getOrgSubscriptionInfo() async {
     try {
-      isSubscriptionLoading(true);
       final response = await NetworkClient()
           .getGraphQuery(queryString: getOrgSubscriptionInfoQuery);
-      log("getOrgSubscriptionInfo ::::: ${response.data!}");
+      print("getOrgSubscriptionInfo ::::: $response");
       if (response.hasException) {
         ExceptionHelper.errorHandler(exception: response.exception!);
       } else {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
         checkIfSubscription();
-
-        isSubscriptionLoading(false);
       }
     } catch (ex) {
-      print("getOrgSubscriptionInfo ::::: $ex");
-      isSubscriptionLoading(false);
-      isSubscriptionExpired(false);
-      isSubscriptionNotUseTimeTracking(false);
+      print("getOrgSubscriptionInfo  ::::: $ex");
     }
-
-    //try case called checkIfSubscription
   }
 
   void _saveData() {

@@ -94,13 +94,16 @@ Map<String, dynamic>? _addVariables() {
           ?.id ??
       "";
 
-  inputData["employment_status_id"] = Get.find<UserProfileController>()
-          .employeeWorkHistory
-          ?.getOrganizationUserHistory
-          ?.employmentHistories?[0]
-          .employmentStatus
-          ?.id ??
-      "";
+  // inputData["employment_status_id"] =
+  //     Get.find<UserProfileController>()
+  //         .employeeWorkHistory
+  //         ?.getOrganizationUserHistory
+  //         ?.employmentHistories?[0]
+  //         .employmentStatus
+  //         ?.id ??
+  //     "";
+
+
 
   inputData["image"] = Get.find<UpdateProfileController>()
           .uploadPolicyResponse

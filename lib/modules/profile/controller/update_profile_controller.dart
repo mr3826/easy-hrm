@@ -23,9 +23,15 @@ class UpdateProfileController extends GetxController {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   void updateUserProfile(Map<String, dynamic> variables) async {
+
+
+    variables.forEach((key, value) { print("key:: $key value:: $value");});
+
     isLoading(true);
     final response = await NetworkClient()
         .mutationGraphData(updateUserProfileMutation, {"inputData": variables});
+
+
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);

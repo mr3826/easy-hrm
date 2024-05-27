@@ -22,7 +22,7 @@ class AppString {
   static String no_internet_subtitle_text =
       "Make sure your Wi-Fi or cellular data is turned on and then try again";
   static String dateDifferenceIssueMessage = "In time must be before out time";
-  static String text_stitch_org = "Switch Organization";
+  static String text_stitch_org = "Switch organizations";
   static String text_first_and_last_field_is_requured =
       "First and last name field is required!";
   static String organizationNotFoundMessage =
@@ -36,12 +36,12 @@ class AppString {
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
   static String text_leave_management_etc =
-      'Leave management is one of the key features of Payrun. You can customize your leave anytime. You can take multiple days\' leave as well as hourly leave.';
+      'Leave management is one of the key features of Payrun. You can customise your leave anytime. You can take multiple days\' leave as well as hourly leave.';
   static String text_with_the_help_etc =
       'With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.';
   static String text_password = 'Password';
   static String text_there_is_not_etc =
-      'There is no need for several apps for different organization. You can manage all of your organization from a single app! ';
+      'There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
   static String text_from = 'From';
@@ -54,7 +54,7 @@ class AppString {
   static String text_back_to_login = 'Back to login';
   static String text_done_of_save = 'Done and Save';
   static String text_we_have_a_verification_etc =
-      'We have sent a Verification code to your email address. Enter this code bellow to verify your account.';
+      'We have sent a verification code to your email address. Enter this code bellow to verify your account.';
   static String text_dont_not_worry =
       'Don’t worry! It happens. Please enter the email address associated with your account';
   static String text_enter_code = 'Enter your code';
@@ -94,7 +94,7 @@ class AppString {
   static String text_file_upload_file = 'File upload file';
   static String text_file_upload_update_successfully =
       'File upload update successfully';
-  static String yourOrganizationText = 'Your Organization';
+  static String yourOrganizationText = 'Your organization';
 
   static String text_event = 'Events';
   static String text_upcoming_leave = 'Upcoming leave';
@@ -122,7 +122,8 @@ class AppString {
   static String text_action = 'Actions';
   static String text_account = 'account';
   static String text_you_have = 'You have';
-  static String text_org_linked_with_your = 'organisations linked with your';
+  static String text_org_linked_with_your = 'organization linked with your';
+  static String text_organisations_linked_with_your = 'organizations linked with your';
   static String textDay = 'day';
   static String textDays = 'days';
   static String rejectedATimelogText = 'has reject your time log on ';
@@ -147,15 +148,15 @@ class AppString {
   static String leaveApprover = 'Time log approver';
   static String departmentHeaDText = 'Department head';
 
-  static String text_current_password = 'Current Password';
-  static String text_new_password = 'New Password';
-  static String text_confirm_password = 'Confirm Password';
+  static String text_current_password = 'Current password';
+  static String text_new_password = 'New password';
+  static String text_confirm_password = 'Confirm password';
   static String text_confirm_your_password = 'Confirm your password';
   static String text_min_8_character = 'Min. 8 characters';
 
   static String text_verify_your_email_address = 'Verify your email address';
   static String text_we_have_sent_a_verification_etc =
-      "We have sent a Verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
+      "We have sent a verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
   static String text_do_not_receive_email = "Don't receive email? ";
   static String text_do_not_receive_otp = "Don't receive code? ";
   static String text_resend = "Resend";
@@ -164,11 +165,11 @@ class AppString {
   static String text_verify_email = "Verify email";
   static String text_revert_change = "Revert changes";
   static String text_email_change_request_is_in_pendding_etc =
-      "Email change request is in pending.Need verification.";
+      "Email change request is in pending. Need verification.";
   static String text_verify = 'Verify';
   static String text_swich_organisation = 'Switch organization';
   static String text_total = "Total";
-  static String text_schedule = "Schedule";
+  static String text_schedule = "Scheduled";
   static String text_set_start_time = "Set start time";
 
   static String text_start = "Start:";
@@ -233,7 +234,7 @@ class AppString {
 
   static const String text_are_you_sure = "Are you sure?";
   static const String text_feature_unavailbe = "Feature unavailable";
-  static const String text_this_functionality_might_etc = "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information ";
+  static const String text_this_functionality_might_etc = "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information.";
   static const String changeOrganizationWarningMessage =
       "Are you sure want change your organization";
   static const String text_are_you_sure_want_to_exit_from_app =
@@ -245,7 +246,7 @@ class AppString {
   static String text_notications = "Notifications";
   static String text_notication = "Notification";
   static String text_forgot_password = "Forgot password?";
-  static String text_sign_in = "Sign In";
+  static String text_sign_in = "Sign in";
   static String text_cancel = "Cancel";
   static String text_canceled = "Canceled";
   static String text_back = "Back";
@@ -262,7 +263,7 @@ class AppString {
   static const String text_apply = "Apply";
   static const String text_remove_leave = "Remove leave";
 
-  static const String cancelLeaveText = "Cancel Leave";
+  static const String cancelLeaveText = "Cancel leave";
 
   static const String cancelLeaveNotificationText =
       "Sure you want to cancel this leave request? If you cancel this leave request,you can apply a new request again.";

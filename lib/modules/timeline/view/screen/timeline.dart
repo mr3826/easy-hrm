@@ -79,10 +79,12 @@ class TimelineScreen extends GetView<TimelineController> {
   _timerStringBtn() {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
-        onAction: (){
-          if(Get.find<SignInController>().isSubscriptionNotUseTimeTracking.isTrue){
+        onAction: () {
+          if (Get.find<SignInController>()
+              .isSubscriptionTimeTrackingIsAllow
+              .isFalse) {
             alertForSubscriptionRequired();
-          }else{
+          } else {
             Get.put(TimeCounterController()).timerStatus();
             Get.toNamed(Routes.TIMER_SCREEN);
           }

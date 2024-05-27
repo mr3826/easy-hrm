@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'custom_image_network_widget.dart';
 
 class CustomNetworkImage extends StatelessWidget {
@@ -11,6 +10,7 @@ class CustomNetworkImage extends StatelessWidget {
   final Color? borderColor;
   final bool? isDocumentLayout;
   final String errorText;
+  final String? fileDir;
 
   const CustomNetworkImage({
     super.key,
@@ -20,11 +20,12 @@ class CustomNetworkImage extends StatelessWidget {
     this.logoUrl,
     required this.errorText,
     this.isDocumentLayout = false,
+    this.fileDir
   });
 
   @override
   Widget build(BuildContext context) {
-    String url = urlBuilder(imgUrlKey);
+    String url = urlBuilder(imgUrlKey: imgUrlKey,fileDir: fileDir);
     log("image url key ::: $imgUrlKey");
     var radius = height;
     return isDocumentLayout != true

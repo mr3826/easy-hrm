@@ -71,6 +71,8 @@ class Images {
   static String PLACEHOLDER = "assets/images/placeholder.png";
   static String NOEWAYFLAG = "assets/images/Norwegian.png";
   static String CLOCK_ICON = "assets/images/clock.png";
+  static String LOCK_ICON = "assets/images/lock_icon.png";
+  static String EMAIL_ICON = "assets/images/email_icon.png";
 
   static String EMPLOYEE_STATUS = "assets/images/employee_status.svg";
   static String FLAG = "assets/images/flag.svg";

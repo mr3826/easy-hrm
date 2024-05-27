@@ -275,6 +275,17 @@ _workingDaySchedule(context) {
       ?.where((element) => element.startTime != null)
       .map((e) => e.day?.substring(0, 3).capitalizeFirst)
       .toList();
+  List<String?>? isHoliday = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.department
+      ?.workShift
+      ?.workSchedules
+      ?.where((element) =>
+  element.isHoliday != null)
+      .map((e) => e.isHoliday.toString())
+      .toList();
+
 
   return SizedBox(
     height: AppLayout.getHeight(76),
@@ -298,6 +309,10 @@ _workingDaySchedule(context) {
                     fontSize: Dimensions.fontSizeDefault,
                     overflow: TextOverflow.ellipsis),
               ),
+              isHoliday?[index]=="true"? const Icon(
+                Icons.close,
+                color: AppColor.errorColor,
+              ):
               const Icon(
                 Icons.done,
                 color: AppColor.successColor,

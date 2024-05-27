@@ -25,13 +25,17 @@ class SplashController extends GetxController {
       if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
         if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
           _getNewToken().then((value) => value == true
-              ? Future.delayed(
-                  const Duration(milliseconds: 2500), () => chooseScreen())
+              ? Future.delayed(const Duration(milliseconds: 2500), () async {
+                  await Get.find<SignInController>().getOrgSubscriptionInfo();
+                  chooseScreen();
+                })
               : Future.delayed(const Duration(milliseconds: 2500),
                   () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
         } else {
-          Future.delayed(
-              const Duration(milliseconds: 2500), () => chooseScreen());
+          Future.delayed(const Duration(milliseconds: 2500), () async {
+            await Get.find<SignInController>().getOrgSubscriptionInfo();
+            chooseScreen();
+          });
         }
       } else {
         Future.delayed(
@@ -42,14 +46,16 @@ class SplashController extends GetxController {
     }
   }
 
-  Future chooseScreen() async {
+  chooseScreen() async {
     final box = GetStorage();
+
     if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
+    } else if (box.read(AppString.ACCESS_TOKEN) == null) {
+      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
     } else {
-      checkIfSubscription();
-      // Get.offAndToNamed(Routes.MAIN_SCREEN);
+      Get.offAndToNamed(Routes.MAIN_SCREEN);
     }
   }
 
@@ -97,25 +103,18 @@ class SplashController extends GetxController {
 void checkIfSubscription() {
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
 
-  Iterable<PlanFeatures>? identifierData = Get.find<SignInController>()
-      .orgSubscriptionInfoModel
-      .getOrgSubscriptionInfo
-      ?.subscribedPlan
-      ?.planFeatures
-      ?.where((e) => e.feature?.identifier == "time_tracking");
-
-  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status == "paused") {
-    Get.offNamed(Routes.MAIN_SCREEN);
+  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status != "active") {
     Get.find<SignInController>().isSubscriptionExpired(true);
-  } else if (identifierData != null) {
-    Get.offNamed(Routes.MAIN_SCREEN);
-    Get.find<SignInController>().isSubscriptionNotUseTimeTracking(true);
-  } else {
-    if (GetStorage().read(AppString.LOGGED_IN) == true &&
-        GetStorage().read(AppString.LOGGED_IN) != null) {
-      Get.offAndToNamed(Routes.MAIN_SCREEN);
-    } else {
-      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
-    }
   }
+
+  data.getOrgSubscriptionInfo?.subscribedPlan?.planFeatures?.forEach((element) {
+    if (element.feature?.identifier == "time_tracking") {
+      if (element.isEnabled == true) {
+        Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(true);
+      } else {
+        Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(false);
+      }
+    }
+  });
+  Get.offNamed(Routes.MAIN_SCREEN);
 }

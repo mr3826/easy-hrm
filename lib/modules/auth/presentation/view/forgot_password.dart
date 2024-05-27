@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/modules/auth/presentation/controller/forgot_password_controller.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/widget/widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -51,14 +52,14 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
 
                       ///Email address text field
                       _emailAddressLayout(),
-                      customSpacerHeight(height: 40),
+                      customSpacerHeight(height: 20),
 
                       ///Send code button
                       _sendCodeBtnLayout(),
-                      customSpacerHeight(height: 40),
+                      customSpacerHeight(height: 20),
 
                       ///Back to login button
-                      _backToLoginLayout(),
+                      backToLoginLayout(),
                       const Spacer(
                         flex: 2,
                       ),
@@ -76,7 +77,7 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
   _emailAddressLayout() {
     return CustomInputField(
       hint: AppString.text_email.tr,
-      prefixIcon: Icons.email_outlined,
+      prefixWidget: Image.asset(Images.EMAIL_ICON),
       controller: restPasswordController,
       validator: (value) {
         if (value!.isEmpty) {
@@ -98,7 +99,8 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
                   AppString.text_send_code.tr,
                   overflow: TextOverflow.ellipsis,
                   style: AppStyle.normal_text.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
+                    fontSize: Dimensions.fontSizeMid
                   ),
                 ),
           onPressed: () async {
@@ -112,17 +114,6 @@ class ForgotScreen extends GetView<ForgotPasswordController> {
         ));
   }
 
-  _backToLoginLayout() {
-    return GestureDetector(
-        onTap: () => Get.toNamed(Routes.SIGN_IN_SCREEN),
-        child: Center(
-            child: Text(
-          AppString.text_back_to_login.tr,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor,
-              fontSize: Dimensions.fontSizeDefault + 2),
-        )));
-  }
 
   _forgotTitleText() {
     return Center(

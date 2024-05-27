@@ -13,7 +13,9 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../common/widget/custom_password_text_field.dart';
 import '../../../../utils/app_layout.dart';
+import '../../../../utils/images.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../controller/password_controller.dart';
@@ -43,7 +45,7 @@ class ChangeEmailScreen extends StatelessWidget {
                   customTitleText(
                       text: AppString.text_password.tr, isRequired: true),
                   customSpacerHeight(height: 12),
-                  Obx(() => _userPasswordField()),
+                 _userPasswordField(),
                   customSpacerHeight(height: 30),
                   Obx(() => Get.find<UserProfileController>().isLoading.isTrue
                       ? const Center(
@@ -90,10 +92,11 @@ class ChangeEmailScreen extends StatelessWidget {
   }
 
   _userPasswordField() {
-    return CustomPassInputField(
-      hint: AppString.text_min_8_character.tr,
+    return CustomPasswordInputField(
       controller: editMailPasswordController,
-      obsValue: Get.find<PasswordController>().isValue.value,
+      hitText:  AppString.text_min_8_character.tr,
+      suffixHideText: AppString.text_hide.tr,
+      suffixShowText:AppString.text_show.tr ,
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_password_field_is_required.tr;
@@ -103,27 +106,10 @@ class ChangeEmailScreen extends StatelessWidget {
           return null;
         }
       },
-      weight: Padding(
-        padding: const EdgeInsets.only(right: 10.0),
-        child: IconButton(
-          onPressed: () => Get.find<PasswordController>().changeVal(),
-          icon: Get.find<PasswordController>().isValue.isTrue
-              ? _showHideText(AppString.text_show.tr)
-              : _showHideText(AppString.text_hide.tr),
-        ),
-      ),
-    );
-  }
-
-  _showHideText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6.0),
-      child: Text(
-        text,
-        style: AppStyle.mid_large_text.copyWith(
-            fontSize: Dimensions.fontSizeExtraDefault - 1,
-            color: AppColor.secondaryColor),
-      ),
+      hintStyle: TextStyle(
+          color: AppColor.normalTextColor.withOpacity(0.4),
+          fontFamily: "Poppins",
+          fontSize: Dimensions.fontSizeDefault + 1),
     );
   }
 }
