@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(GetStorage().read("languageCode"));
     return CalendarControllerProvider(
       controller: EventController(),
       child: GetMaterialApp(
