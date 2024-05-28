@@ -578,8 +578,8 @@ class ProfileScreen extends GetView<UserProfileController> {
                 "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
             : "",
         height: height ?? 32,
-        imgUrlKey:
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+        profileImageKey:
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}", imgUrlKey: '',);
   }
 
   _organisationLogoLayout() {

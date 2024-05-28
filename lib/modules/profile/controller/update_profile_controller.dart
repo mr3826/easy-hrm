@@ -76,16 +76,15 @@ class UpdateProfileController extends GetxController {
   }
 
   getUploadPolicy({fileName}) async {
-    print(
-        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
+
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
-        "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
+        "sub_folder_name": "${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user",
         "filename":
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });

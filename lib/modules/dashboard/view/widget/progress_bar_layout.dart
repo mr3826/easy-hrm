@@ -279,10 +279,11 @@ _userImageLayout() {
         ? "${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.firstName?[0].toUpperCase() ?? ""}"
             "${(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName != null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.profile!.lastName!.isNotEmpty) ? Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName![0].toUpperCase() ?? "" : ""}"
         : "",
-    imgUrlKey: controller.profileSummaryForDashboard
+    profileImageKey: controller.profileSummaryForDashboard
             ?.getProfileSummaryForDashboard?.profile?.image ??
         "",
-    borderColor: Colors.transparent,
+
+    borderColor: Colors.transparent, imgUrlKey: '',
   );
 }
 
