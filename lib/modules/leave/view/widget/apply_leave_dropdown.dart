@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_type_drop_down.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
@@ -40,11 +41,10 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
           underline: const SizedBox.shrink(),
           isExpanded: true,
           items: Get.find<ApplyLeaveController>()
-              .leaveTypeDropdown!
-              .getLeaveTypesDropdown!
+              .leaveTypeDropdownModel?.getAvailableLeaveTypes!
               .map((e) {
             return DropdownMenuItem(
-              value: e.id,
+              value: e.leaveTypeId,
               child: SizedBox(
                 width: double.infinity,
                 child: Row(
@@ -81,22 +81,25 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
             setState(() {
               dropDownValue = valueType as String;
             });
-            GetLeaveTypesDropdown? getLeaveTypesDropdown =
+            GetAvailableLeaveTypes? getLeaveTypesDropdown =
                 Get.find<ApplyLeaveController>()
-                    .leaveTypeDropdown
-                    ?.getLeaveTypesDropdown
-                    ?.firstWhere((element) => element.id == valueType);
+                    .leaveTypeDropdownModel
+                    ?.getAvailableLeaveTypes
+                    ?.firstWhere((element) => element.leaveTypeId == valueType);
 
-            //set data according to leave type
-            Get.find<ApplyLeaveController>().numberOfLeaves.value =
-                getLeaveDaysAccordingToLeave(
-                        getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
-                    "";
+            //  //set data according to leave type
+          //   Get.find<ApplyLeaveController>().numberOfLeaves.value =
+                 //getLeaveDaysAccordingToLeave(getLeaveTypesDropdown: getLeaveTypesDropdown) ?? "";
+
+            Get.find<ApplyLeaveController>().numberOfLeaves.value = getLeaveTypesDropdown?.availableLeave??"0"  ;
+            Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value = getLeaveTypesDropdown?.calculateAllowanceBy??""  ;
+
+
             Get.find<ApplyLeaveController>().leaveId = valueType!;
             Get.find<ApplyLeaveController>().isDocumentRequired.value =
-                getLeaveTypesDropdown.attachDocumentRequired ?? false;
+                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
             Get.find<ApplyLeaveController>().isNoteRequired.value =
-                getLeaveTypesDropdown.addNoteRequired ?? false;
+                getLeaveTypesDropdown?.addNoteRequired ?? false;
           }),
     );
   }

@@ -11,16 +11,19 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/utils.dart';
+import '../model/leave_type_drop_down.dart';
 import 'file_upload_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
   @override
   void onInit() async {
     super.onInit();
-    await getLeaveType();
+ //   await getLeaveType();
+    await getLeaveTypeDropdown();
   }
 
   LeaveTypeDropdown? leaveTypeDropdown;
+  LeaveTypeDropdownModel? leaveTypeDropdownModel;
 
   final isLoading = false.obs;
   final isAssignLeaveLoaderLoading = false.obs;
@@ -28,6 +31,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   RxBool isNoteRequired = false.obs;
   RxBool isDocumentRequired = false.obs;
   RxString numberOfLeaves = ''.obs;
+  RxString calculateAllowanceOfLeave = ''.obs;
   RxBool isErrorOccurred = false.obs;
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
@@ -45,6 +49,32 @@ class ApplyLeaveController extends GetxController with StateMixin {
     }
     change(null, status: RxStatus.success());
   }
+
+
+  getLeaveTypeDropdown() async {
+    change(null, status: RxStatus.loading());
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery,variables: {
+        "queryData": {
+          "org_user_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
+          "leave_type_id": null
+        }
+    });
+
+    print("getLeaveTypeDropdown :::: ${response.data}");
+
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(exception: response.exception!);
+    } else {
+      leaveTypeDropdownModel = LeaveTypeDropdownModel.fromJson(response.data!);
+      print("getLeaveTypeDropdown_length:::: ${leaveTypeDropdownModel?.getAvailableLeaveTypes?.length}");
+
+    }
+    change(null, status: RxStatus.success());
+  }
+
+
+
 
   applyLeave({filePath}) async {
     print(

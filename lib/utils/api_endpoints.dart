@@ -158,6 +158,21 @@ query GetLeaveTypesDropdown {
 }
 ''';
 
+const leaveTypeDropdownUpdateQuery = r'''
+query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
+  getAvailableLeaveTypes(queryData: $queryData) {
+    add_note_required
+    attach_document_required
+    availableLeave
+    calculate_allowance_by
+    is_default
+    is_enable
+    leave_type_id
+    name
+    type
+  }
+}
+''';
 // profile module
 
 const getUserProfileQuery = '''
