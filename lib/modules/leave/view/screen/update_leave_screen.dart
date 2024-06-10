@@ -361,7 +361,7 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
           underline: const SizedBox.shrink(),
           isExpanded: true,
           items: Get.find<UpDateLeaveController>()
-              .leaveTypeDropdownModel
+              .leaveTypeDropdown
               ?.getAvailableLeaveTypes!
               .map((e) {
             return DropdownMenuItem(
@@ -404,7 +404,7 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
             });
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
                 Get.find<UpDateLeaveController>()
-                    .leaveTypeDropdownModel
+                    .leaveTypeDropdown
                     ?.getAvailableLeaveTypes
                     ?.firstWhere((element) => element.leaveTypeId == value);
 

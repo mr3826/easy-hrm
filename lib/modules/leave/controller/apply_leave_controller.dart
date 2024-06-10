@@ -20,7 +20,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     await getLeaveTypeDropdown();
   }
 
-  LeaveTypeDropdown? leaveTypeDropdownModel;
+  LeaveTypeDropdown? leaveTypeDropdown;
 
   final isLoading = false.obs;
   final isAssignLeaveLoaderLoading = false.obs;
@@ -47,7 +47,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      leaveTypeDropdownModel = LeaveTypeDropdown.fromJson(response.data!);
+      leaveTypeDropdown = LeaveTypeDropdown.fromJson(response.data!);
     }
     change(null, status: RxStatus.success());
   }

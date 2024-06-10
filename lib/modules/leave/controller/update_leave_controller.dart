@@ -31,7 +31,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
-  LeaveTypeDropdown? leaveTypeDropdownModel;
+  LeaveTypeDropdown? leaveTypeDropdown;
 
   void updateLeave(
       {required String leaveId,
@@ -146,7 +146,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      leaveTypeDropdownModel = LeaveTypeDropdown.fromJson(response.data!);
+      leaveTypeDropdown = LeaveTypeDropdown.fromJson(response.data!);
     }
     change(null, status: RxStatus.success());
   }

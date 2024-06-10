@@ -40,7 +40,7 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
           underline: const SizedBox.shrink(),
           isExpanded: true,
           items: Get.find<ApplyLeaveController>()
-              .leaveTypeDropdownModel?.getAvailableLeaveTypes!
+              .leaveTypeDropdown?.getAvailableLeaveTypes!
               .map((e) {
             return DropdownMenuItem(
               value: e.leaveTypeId,
@@ -82,7 +82,7 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
             });
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
                 Get.find<ApplyLeaveController>()
-                    .leaveTypeDropdownModel
+                    .leaveTypeDropdown
                     ?.getAvailableLeaveTypes
                     ?.firstWhere((element) => element.leaveTypeId == valueType);
             Get.find<ApplyLeaveController>().numberOfLeaves.value = getLeaveTypesDropdown?.availableLeave??"0"  ;
