@@ -85,16 +85,8 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
                     .leaveTypeDropdownModel
                     ?.getAvailableLeaveTypes
                     ?.firstWhere((element) => element.leaveTypeId == valueType);
-
-            //  //set data according to leave type
-          //   Get.find<ApplyLeaveController>().numberOfLeaves.value =
-                 //getLeaveDaysAccordingToLeave(getLeaveTypesDropdown: getLeaveTypesDropdown) ?? "";
-
             Get.find<ApplyLeaveController>().numberOfLeaves.value = getLeaveTypesDropdown?.availableLeave??"0"  ;
             Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value = getLeaveTypesDropdown?.calculateAllowanceBy??""  ;
-
-
-
             Get.find<ApplyLeaveController>().leaveId = valueType!;
             Get.find<ApplyLeaveController>().isDocumentRequired.value =
                 getLeaveTypesDropdown?.attachDocumentRequired ?? false;

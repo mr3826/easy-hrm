@@ -214,17 +214,16 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
             : Container());
   }
 
+
   String _getCalculateLeave() {
-    if (Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value ==
-        "no_of_application") {
-      return "Balance (No.of application)";
-    } else if (Get.find<ApplyLeaveController>()
-            .calculateAllowanceOfLeave
-            .value ==
-        "undefined") {
-      return "Balance (Undefined)";
-    } else {
-      return "Balance (No.of days)";
+    final calculateAllowanceOfLeave = Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value;
+    switch (calculateAllowanceOfLeave) {
+      case "no_of_application":
+        return "Balance (No.of application)";
+      case "undefined":
+        return "Balance (Undefined)";
+      default:
+        return "Balance (No.of days)";
     }
   }
 }
