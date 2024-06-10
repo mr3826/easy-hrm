@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controll
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/leave/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
+import 'package:payrun_mobile/modules/leave/model/leave_type_drop_down.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_card_style.dart';
@@ -25,7 +26,6 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/apply_leave_controller.dart';
 import '../../controller/file_upload_controller.dart';
-import '../../model/leave_type.dart';
 import '../widget/apply_leave_dropdown.dart';
 
 class UpdateLeave extends StatelessWidget {
@@ -273,7 +273,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                               .copyWith(color: AppColor.normalTextColor),
                         ),
                         Text(
-                          AppString.text_balance_no_of_days.tr,
+                          _getCalculateLeave(),
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.hintColor,
                               fontSize: Dimensions.fontSizeDefault),
@@ -284,6 +284,20 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                 ),
               )
             : Container());
+  }
+
+  String _getCalculateLeave() {
+    if (Get.find<UpDateLeaveController>().calculateAllowanceOfLeave.value ==
+        "no_of_application") {
+      return "Balance (No.of application)";
+    } else if (Get.find<ApplyLeaveController>()
+            .calculateAllowanceOfLeave
+            .value ==
+        "undefined") {
+      return "Balance (Undefined)";
+    } else {
+      return "Balance (No.of days)";
+    }
   }
 
   void _updateLeaveMethod() {
@@ -348,11 +362,11 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
           underline: const SizedBox.shrink(),
           isExpanded: true,
           items: Get.find<UpDateLeaveController>()
-              .leaveTypeDropdown!
-              .getLeaveTypesDropdown!
+              .leaveTypeDropdownModel
+              ?.getAvailableLeaveTypes!
               .map((e) {
             return DropdownMenuItem(
-              value: e.id,
+              value: e.leaveTypeId,
               child: SizedBox(
                 width: double.infinity,
                 child: Row(
@@ -389,22 +403,28 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
             setState(() {
               dropDownValue = value as String;
             });
-            GetLeaveTypesDropdown? getLeaveTypesDropdown =
+            GetAvailableLeaveTypes? getLeaveTypesDropdown =
                 Get.find<UpDateLeaveController>()
-                    .leaveTypeDropdown
-                    ?.getLeaveTypesDropdown
-                    ?.firstWhere((element) => element.id == value);
+                    .leaveTypeDropdownModel
+                    ?.getAvailableLeaveTypes
+                    ?.firstWhere((element) => element.leaveTypeId == value);
 
-            //set data according to leave type
+            // set data according to leave type
+            //  Get.find<UpDateLeaveController>().numberOfLeaves.value =
+            //      getLeaveDaysAccordingToLeave(
+            //              getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
+            //          "";
+
             Get.find<UpDateLeaveController>().numberOfLeaves.value =
-                getLeaveDaysAccordingToLeave(
-                        getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
-                    "";
+                getLeaveTypesDropdown?.availableLeave ?? "0";
+            Get.find<UpDateLeaveController>().calculateAllowanceOfLeave.value =
+                getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
+
             Get.find<UpDateLeaveController>().leaveTypeId = value ?? "";
             Get.find<UpDateLeaveController>().isDocumentRequired.value =
-                getLeaveTypesDropdown.attachDocumentRequired ?? false;
+                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
             Get.find<UpDateLeaveController>().isNoteRequired.value =
-                getLeaveTypesDropdown.addNoteRequired ?? false;
+                getLeaveTypesDropdown?.addNoteRequired ?? false;
           }),
     );
   }

@@ -95,11 +95,14 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
             Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value = getLeaveTypesDropdown?.calculateAllowanceBy??""  ;
 
 
+
             Get.find<ApplyLeaveController>().leaveId = valueType!;
             Get.find<ApplyLeaveController>().isDocumentRequired.value =
                 getLeaveTypesDropdown?.attachDocumentRequired ?? false;
             Get.find<ApplyLeaveController>().isNoteRequired.value =
                 getLeaveTypesDropdown?.addNoteRequired ?? false;
+
+
           }),
     );
   }
