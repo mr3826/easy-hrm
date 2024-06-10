@@ -53,6 +53,7 @@ class TimeLineCalendar extends StatelessWidget {
                 lineStyle: LineStyle.dashed,
                 offset: 35,
               ),
+
               hourIndicatorSettings: HourIndicatorSettings(
                   lineStyle: LineStyle.solid,
                   offset: 12,
