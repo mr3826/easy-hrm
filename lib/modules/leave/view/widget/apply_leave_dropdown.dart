@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_type_drop_down.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
@@ -10,6 +9,7 @@ import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/images.dart';
 import '../../controller/apply_leave_controller.dart';
+import '../../model/leave_type.dart';
 
 class ApplyLeaveDropDown extends StatefulWidget {
   const ApplyLeaveDropDown({super.key});

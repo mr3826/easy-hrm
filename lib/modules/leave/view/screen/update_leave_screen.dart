@@ -7,7 +7,6 @@ import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controll
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/leave/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_records.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_type_drop_down.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_card_style.dart';
@@ -26,6 +25,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/apply_leave_controller.dart';
 import '../../controller/file_upload_controller.dart';
+import '../../model/leave_type.dart';
 import '../widget/apply_leave_dropdown.dart';
 
 class UpdateLeave extends StatelessWidget {
@@ -407,12 +407,6 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
                     .leaveTypeDropdownModel
                     ?.getAvailableLeaveTypes
                     ?.firstWhere((element) => element.leaveTypeId == value);
-
-            // set data according to leave type
-            //  Get.find<UpDateLeaveController>().numberOfLeaves.value =
-            //      getLeaveDaysAccordingToLeave(
-            //              getLeaveTypesDropdown: getLeaveTypesDropdown!) ??
-            //          "";
 
             Get.find<UpDateLeaveController>().numberOfLeaves.value =
                 getLeaveTypesDropdown?.availableLeave ?? "0";

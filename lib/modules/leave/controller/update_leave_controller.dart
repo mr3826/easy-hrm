@@ -8,7 +8,7 @@ import '../../../common/domain/upload_policy.dart';
 import '../../../network/network_client.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
-import '../model/leave_type_drop_down.dart';
+import '../model/leave_type.dart';
 import 'file_upload_controller.dart';
 import 'leave_screen_controller.dart';
 
@@ -31,7 +31,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
-  LeaveTypeDropdownModel? leaveTypeDropdownModel;
+  LeaveTypeDropdown? leaveTypeDropdownModel;
 
   void updateLeave(
       {required String leaveId,
@@ -142,15 +142,11 @@ class UpDateLeaveController extends GetxController with StateMixin {
         "leave_type_id": null
       }
     });
-
     print("getLeaveTypeDropdown :::: ${response.data}");
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      leaveTypeDropdownModel = LeaveTypeDropdownModel.fromJson(response.data!);
-      print(
-          "getLeaveTypeDropdown_length:::: ${leaveTypeDropdownModel?.getAvailableLeaveTypes?.length}");
+      leaveTypeDropdownModel = LeaveTypeDropdown.fromJson(response.data!);
     }
     change(null, status: RxStatus.success());
   }

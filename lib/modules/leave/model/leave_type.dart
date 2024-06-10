@@ -1,9 +1,9 @@
-class LeaveTypeDropdownModel {
+class LeaveTypeDropdown {
   List<GetAvailableLeaveTypes>? getAvailableLeaveTypes;
 
-  LeaveTypeDropdownModel({this.getAvailableLeaveTypes});
+  LeaveTypeDropdown({this.getAvailableLeaveTypes});
 
-  LeaveTypeDropdownModel.fromJson(Map<String, dynamic> json) {
+  LeaveTypeDropdown.fromJson(Map<String, dynamic> json) {
     if (json['getAvailableLeaveTypes'] != null) {
       getAvailableLeaveTypes = <GetAvailableLeaveTypes>[];
       json['getAvailableLeaveTypes'].forEach((v) {

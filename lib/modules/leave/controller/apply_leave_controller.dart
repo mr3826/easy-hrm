@@ -10,7 +10,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/utils.dart';
-import '../model/leave_type_drop_down.dart';
+import '../model/leave_type.dart';
 import 'file_upload_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
@@ -20,7 +20,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     await getLeaveTypeDropdown();
   }
 
-  LeaveTypeDropdownModel? leaveTypeDropdownModel;
+  LeaveTypeDropdown? leaveTypeDropdownModel;
 
   final isLoading = false.obs;
   final isAssignLeaveLoaderLoading = false.obs;
@@ -43,15 +43,11 @@ class ApplyLeaveController extends GetxController with StateMixin {
         "leave_type_id": null
       }
     });
-
     print("getLeaveTypeDropdown :::: ${response.data}");
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
-      leaveTypeDropdownModel = LeaveTypeDropdownModel.fromJson(response.data!);
-      print(
-          "getLeaveTypeDropdown_length:::: ${leaveTypeDropdownModel?.getAvailableLeaveTypes?.length}");
+      leaveTypeDropdownModel = LeaveTypeDropdown.fromJson(response.data!);
     }
     change(null, status: RxStatus.success());
   }
