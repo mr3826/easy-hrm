@@ -5,7 +5,6 @@ import 'package:payrun_mobile/common/domain/upload_policy.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -18,11 +17,9 @@ class ApplyLeaveController extends GetxController with StateMixin {
   @override
   void onInit() async {
     super.onInit();
- //   await getLeaveType();
     await getLeaveTypeDropdown();
   }
 
-  LeaveTypeDropdown? leaveTypeDropdown;
   LeaveTypeDropdownModel? leaveTypeDropdownModel;
 
   final isLoading = false.obs;
@@ -37,28 +34,14 @@ class ApplyLeaveController extends GetxController with StateMixin {
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
-  getLeaveType() async {
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: leaveTypeDropdownQuery);
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      leaveTypeDropdown = LeaveTypeDropdown.fromJson(response.data!);
-    }
-    change(null, status: RxStatus.success());
-  }
-
-
   getLeaveTypeDropdown() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
-        .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery,variables: {
-        "queryData": {
-          "org_user_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
-          "leave_type_id": null
-        }
+        .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery, variables: {
+      "queryData": {
+        "org_user_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
+        "leave_type_id": null
+      }
     });
 
     print("getLeaveTypeDropdown :::: ${response.data}");
@@ -67,14 +50,11 @@ class ApplyLeaveController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       leaveTypeDropdownModel = LeaveTypeDropdownModel.fromJson(response.data!);
-      print("getLeaveTypeDropdown_length:::: ${leaveTypeDropdownModel?.getAvailableLeaveTypes?.length}");
-
+      print(
+          "getLeaveTypeDropdown_length:::: ${leaveTypeDropdownModel?.getAvailableLeaveTypes?.length}");
     }
     change(null, status: RxStatus.success());
   }
-
-
-
 
   applyLeave({filePath}) async {
     print(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
 import 'package:payrun_mobile/modules/leave/model/leave_type_drop_down.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_layout.dart';
@@ -131,22 +130,3 @@ getIconAccordingToLeaveType(String? type) {
   }
 }
 
-String? getLeaveDaysAccordingToLeave(
-    {required GetLeaveTypesDropdown getLeaveTypesDropdown}) {
-  if (getLeaveTypesDropdown.isEarned == true) {
-    return (getLeaveTypesDropdown.leaveStatuses?.first.earnedDays ?? 0)
-        .toString();
-  } else {
-    if (getLeaveTypesDropdown.calculateAllowanceBy == "no_of_application") {
-      return (getLeaveTypesDropdown
-                  .leaveStatuses?.first.availableNumberOfApplications ??
-              0)
-          .toString();
-    } else {
-      return (getLeaveTypesDropdown
-                  .leaveStatuses?.first.availableNumberOfDays ??
-              0)
-          .toString();
-    }
-  }
-}

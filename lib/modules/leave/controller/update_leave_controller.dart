@@ -8,7 +8,6 @@ import '../../../common/domain/upload_policy.dart';
 import '../../../network/network_client.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/utils.dart';
-import '../model/leave_type.dart';
 import '../model/leave_type_drop_down.dart';
 import 'file_upload_controller.dart';
 import 'leave_screen_controller.dart';
@@ -16,7 +15,6 @@ import 'leave_screen_controller.dart';
 class UpDateLeaveController extends GetxController with StateMixin {
   @override
   void onInit() async {
-   // await getLeaveType();
     await getLeaveTypeDropdown();
     super.onInit();
   }
@@ -30,14 +28,20 @@ class UpDateLeaveController extends GetxController with StateMixin {
 
   RxBool isUpdateLeaveLoading = false.obs;
   RxBool isErrorOccurred = false.obs;
-  LeaveTypeDropdown? leaveTypeDropdown;
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
   LeaveTypeDropdownModel? leaveTypeDropdownModel;
 
-  void updateLeave({required String leaveId, required String startDate, required String endDate, required String key, required String size, required String name, required String id, required String? leaveTypeId}) async {
-
+  void updateLeave(
+      {required String leaveId,
+      required String startDate,
+      required String endDate,
+      required String key,
+      required String size,
+      required String name,
+      required String id,
+      required String? leaveTypeId}) async {
     isUpdateLeaveLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: cancelLeaveQuery, variables: {
@@ -104,7 +108,10 @@ class UpDateLeaveController extends GetxController with StateMixin {
     isUploadPolicyLoading(false);
   }
 
-  uploadFile({required String fileName, List<PolicyData>? list, required String url}) async {
+  uploadFile(
+      {required String fileName,
+      List<PolicyData>? list,
+      required String url}) async {
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 
@@ -125,25 +132,11 @@ class UpDateLeaveController extends GetxController with StateMixin {
     isUploadPolicyLoading(false);
   }
 
-  getLeaveType() async {
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: leaveTypeDropdownQuery);
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      leaveTypeDropdown = LeaveTypeDropdown.fromJson(response.data!);
-    }
-    change(null, status: RxStatus.success());
-  }
-
-
   getLeaveTypeDropdown() async {
     change(null, status: RxStatus.loading());
 
     final response = await NetworkClient()
-        .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery,variables: {
+        .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery, variables: {
       "queryData": {
         "org_user_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
         "leave_type_id": null
@@ -156,17 +149,12 @@ class UpDateLeaveController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       leaveTypeDropdownModel = LeaveTypeDropdownModel.fromJson(response.data!);
-      print("getLeaveTypeDropdown_length:::: ${leaveTypeDropdownModel?.getAvailableLeaveTypes?.length}");
-
+      print(
+          "getLeaveTypeDropdown_length:::: ${leaveTypeDropdownModel?.getAvailableLeaveTypes?.length}");
     }
     change(null, status: RxStatus.success());
-
   }
-
-
 }
-
-
 
 _getFileInfo(
     {required String key,
