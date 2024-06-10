@@ -139,8 +139,6 @@ mutation RemoveRejectedLeaves($inputData: DeleteLeaveInputData) {
 }
 ''';
 
-
-
 const leaveTypeDropdownUpdateQuery = r'''
 query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
   getAvailableLeaveTypes(queryData: $queryData) {
