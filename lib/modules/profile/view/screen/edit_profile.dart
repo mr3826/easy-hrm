@@ -80,7 +80,7 @@ class EditProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width/2,
+              width: MediaQuery.of(context).size.width / 2,
               child: Text.rich(
                 TextSpan(
                   children: [
@@ -159,7 +159,8 @@ class EditProfileScreen extends StatelessWidget {
                       .updateUserProfile(variables!);
                 } else {
                   showWarningMessage(
-                      message: AppString.text_first_and_last_field_is_requured.tr);
+                      message:
+                          AppString.text_first_and_last_field_is_requured.tr);
                 }
 
                 Get.find<PikedProfileImgController>()
@@ -285,45 +286,47 @@ Widget _imageLayout() {
 }
 
 Widget _brokenImageViewLayout() {
-  return CircleAvatar(
+  return const CircleAvatar(
     radius: 39,
-    backgroundColor: AppColor.primaryColor,
-    backgroundImage: AssetImage(Images.PLACEHOLDER),
+    backgroundColor: AppColor.cardColor,
+    child: CupertinoActivityIndicator(color: AppColor.primaryColor),
   );
 }
 
 _placeholderImage() {
   return CustomNetworkImage(
-      errorText: (Get.find<UserProfileController>()
-                          .userDetails
-                          ?.getOrganizationUserDetails
-                          ?.profile
-                          ?.firstName !=
-                      null &&
-                  Get.find<UserProfileController>()
-                      .userDetails!
-                      .getOrganizationUserDetails!
-                      .profile!
-                      .firstName!
-                      .isNotEmpty) &&
-              (Get.find<UserProfileController>()
-                          .userDetails
-                          ?.getOrganizationUserDetails
-                          ?.profile
-                          ?.lastName !=
-                      null &&
-                  Get.find<UserProfileController>()
-                      .userDetails!
-                      .getOrganizationUserDetails!
-                      .profile!
-                      .lastName!
-                      .isNotEmpty)
-          ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
-              "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
-          : "",
-      height: 42,
-      imgUrlKey:
-          "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+    errorText: (Get.find<UserProfileController>()
+                        .userDetails
+                        ?.getOrganizationUserDetails
+                        ?.profile
+                        ?.firstName !=
+                    null &&
+                Get.find<UserProfileController>()
+                    .userDetails!
+                    .getOrganizationUserDetails!
+                    .profile!
+                    .firstName!
+                    .isNotEmpty) &&
+            (Get.find<UserProfileController>()
+                        .userDetails
+                        ?.getOrganizationUserDetails
+                        ?.profile
+                        ?.lastName !=
+                    null &&
+                Get.find<UserProfileController>()
+                    .userDetails!
+                    .getOrganizationUserDetails!
+                    .profile!
+                    .lastName!
+                    .isNotEmpty)
+        ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
+        : "",
+    height: 42,
+    profileImageKey:
+        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
+    imgUrlKey: '',
+  );
 }
 
 Widget _selectedImageViewLayout() {

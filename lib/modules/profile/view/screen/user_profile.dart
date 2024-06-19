@@ -82,24 +82,28 @@ class ProfileScreen extends GetView<UserProfileController> {
                         customSpacerHeight(height: 15),
                         _addressText(),
                         customSpacerHeight(height: 15),
-                        if (
-                  Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories!=null &&
-                        Get.find<UserProfileController>()
-                            .employeeWorkHistory!
-                            .getOrganizationUserHistory!
-                            .deptHistories!
-                            .isNotEmpty
-
-                        )
+                        if (Get.find<UserProfileController>()
+                                    .employeeWorkHistory
+                                    ?.getOrganizationUserHistory
+                                    ?.deptHistories !=
+                                null &&
+                            Get.find<UserProfileController>()
+                                .employeeWorkHistory!
+                                .getOrganizationUserHistory!
+                                .deptHistories!
+                                .isNotEmpty)
                           departmentLayout(context),
                         customSpacerHeight(height: 5),
-                        if (
-                        Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories!=null&&
-                        Get.find<UserProfileController>()
-                            .employeeWorkHistory!
-                            .getOrganizationUserHistory!
-                            .designationHistories!
-                            .isNotEmpty)
+                        if (Get.find<UserProfileController>()
+                                    .employeeWorkHistory
+                                    ?.getOrganizationUserHistory
+                                    ?.designationHistories !=
+                                null &&
+                            Get.find<UserProfileController>()
+                                .employeeWorkHistory!
+                                .getOrganizationUserHistory!
+                                .designationHistories!
+                                .isNotEmpty)
                           employeeStatusLayout(context: context),
                         customSpacerHeight(height: 50),
                       ],
@@ -294,6 +298,9 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
+
+
+
   _languageLayout(context) {
     return InkWell(
       onTap: () {
@@ -332,6 +339,8 @@ class ProfileScreen extends GetView<UserProfileController> {
       ),
     );
   }
+
+
 
   _organisationLayout(context) {
     return Padding(
@@ -403,6 +412,9 @@ class ProfileScreen extends GetView<UserProfileController> {
       ),
     );
   }
+
+
+
 
   _profileInfoDrawerLayout() {
     return Padding(
@@ -566,8 +578,8 @@ class ProfileScreen extends GetView<UserProfileController> {
                 "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
             : "",
         height: height ?? 32,
-        imgUrlKey:
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+        profileImageKey:
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}", imgUrlKey: '',);
   }
 
   _organisationLogoLayout() {
@@ -696,31 +708,30 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Images.FLAG_PNG;
   }
 
-  _userNameAndDptLayout() {
+  Widget _userNameAndDptLayout() {
+    final user = controller.userDetails?.getOrganizationUserDetails?.profile;
+    final department =
+        controller.userDetails?.getOrganizationUserDetails?.department?.name ??
+            "";
+    final employmentHistories = controller
+        .employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+          "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
           style:
               AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
         ),
         Text(
-          controller
-                  .userDetails?.getOrganizationUserDetails?.department?.name ??
-              "",
+          department,
           style: AppStyle.normal_text_grey,
         ),
         customSpacerHeight(height: 6),
 
-        ///Status
-        ///
-
-        if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                    ?.employmentHistories !=
-                null &&
-            controller.employeeWorkHistory!.getOrganizationUserHistory!
-                .employmentHistories!.isNotEmpty)
+        /// Status
+        if (employmentHistories != null && employmentHistories.isNotEmpty)
           Wrap(
             children: [
               FittedBox(
@@ -729,7 +740,7 @@ class ProfileScreen extends GetView<UserProfileController> {
               ),
               customSpacerWidth(width: 12),
 
-              ///Status
+              /// Status
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: _employmentStatus(),

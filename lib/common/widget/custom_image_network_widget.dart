@@ -12,22 +12,16 @@ import '../../utils/dimensions.dart';
 import 'custom_card_style.dart';
 import 'custom_spacer.dart';
 
-String urlBuilder({imgUrlKey, String? fileDir}) {
-
+String urlBuilder({imgUrlKey, String? fileDir, String? profileImageKey}) {
   final client = URLBuilder(
     domain: Api.CDN_DOMAIN,
     shouldUseHttpsByDefault: true,
     defaultSignKey: Api.CDN_KEY,
   );
   final url = client.createURLString(
-    '${fileDir ?? "files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey',
+    profileImageKey ??
+        '${fileDir ?? "files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey',
   );
-
-  print({"url imgix:: $url"});
-  print("Api.CDN_DOMAIN :::::: ${Api.CDN_DOMAIN}");
-  print("Api.CDN_KEY :::::: ${Api.CDN_KEY}");
-  print("ORGANIZATION_ID :::::: ${GetStorage().read(AppString.ORGANIZATION_ID)}");
-  print("fileDir :::::: $fileDir");
 
   return url;
 }

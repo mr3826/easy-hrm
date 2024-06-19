@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:payrun_mobile/modules/auth/domain/org_subscription_Info_model.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -100,13 +99,14 @@ class SplashController extends GetxController {
   }
 }
 
+
+
 void checkIfSubscription() {
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
 
   if (data.getOrgSubscriptionInfo?.subscribedPlan?.status != "active") {
     Get.find<SignInController>().isSubscriptionExpired(true);
   }
-
   data.getOrgSubscriptionInfo?.subscribedPlan?.planFeatures?.forEach((element) {
     if (element.feature?.identifier == "time_tracking") {
       if (element.isEnabled == true) {

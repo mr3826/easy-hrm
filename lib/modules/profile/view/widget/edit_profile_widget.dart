@@ -33,6 +33,7 @@ class TextFiledLayout extends StatelessWidget {
             buttonText: AppString.text_save.tr,
             onAction: () {
               final variables = _addVariables();
+              variables?.forEach((key, value) {print("key $key value:: $value");});
               if (formKey.currentState!.validate()) {
                 Get.find<UpdateProfileController>()
                     .updateUserProfile(variables!);
@@ -105,15 +106,15 @@ Map<String, dynamic>? _addVariables() {
 
 
 
-  inputData["image"] = Get.find<UpdateProfileController>()
-          .uploadPolicyResponse
-          .getUploadPolicy
-          ?.policyData
-          ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-          .value
-          ?.split("/")
-          .last ??
-      "";
+  inputData["image"] = "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>()
+      .uploadPolicyResponse
+      .getUploadPolicy
+      ?.policyData
+      ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+      .value
+      ?.split("/")
+      .last ??
+      ""}";
 
   return inputData;
 }
