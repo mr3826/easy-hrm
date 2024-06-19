@@ -5,19 +5,19 @@ import 'package:payrun_mobile/common/domain/upload_policy.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_type.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/utils.dart';
+import '../model/leave_type.dart';
 import 'file_upload_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
   @override
   void onInit() async {
     super.onInit();
-    await getLeaveType();
+    await getLeaveTypeDropdown();
   }
 
   LeaveTypeDropdown? leaveTypeDropdown;
@@ -28,16 +28,22 @@ class ApplyLeaveController extends GetxController with StateMixin {
   RxBool isNoteRequired = false.obs;
   RxBool isDocumentRequired = false.obs;
   RxString numberOfLeaves = ''.obs;
+  RxString calculateAllowanceOfLeave = ''.obs;
   RxBool isErrorOccurred = false.obs;
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
-  getLeaveType() async {
+  getLeaveTypeDropdown() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
-        .getGraphQuery(queryString: leaveTypeDropdownQuery);
-
+        .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery, variables: {
+      "queryData": {
+        "org_user_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
+        "leave_type_id": null
+      }
+    });
+    print("getLeaveTypeDropdown :::: ${response.data}");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {

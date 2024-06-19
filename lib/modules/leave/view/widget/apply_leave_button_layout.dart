@@ -201,7 +201,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                               .copyWith(color: AppColor.normalTextColor),
                         ),
                         Text(
-                          AppString.text_balance_no_of_days.tr,
+                          _getCalculateLeave(),
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.hintColor,
                               fontSize: Dimensions.fontSizeDefault),
@@ -212,5 +212,18 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                 ),
               )
             : Container());
+  }
+
+
+  String _getCalculateLeave() {
+    final calculateAllowanceOfLeave = Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value;
+    switch (calculateAllowanceOfLeave) {
+      case "no_of_application":
+        return "Balance (No.of application)";
+      case "undefined":
+        return "Balance (Undefined)";
+      default:
+        return "Balance (No.of days)";
+    }
   }
 }

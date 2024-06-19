@@ -36,8 +36,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: controller.leaveRecordList!=null&& controller.leaveRecordList!.isNotEmpty
-                    
-                    
                     ? ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

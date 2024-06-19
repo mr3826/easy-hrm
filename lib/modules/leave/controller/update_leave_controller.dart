@@ -15,7 +15,7 @@ import 'leave_screen_controller.dart';
 class UpDateLeaveController extends GetxController with StateMixin {
   @override
   void onInit() async {
-    await getLeaveType();
+    await getLeaveTypeDropdown();
     super.onInit();
   }
 
@@ -24,12 +24,14 @@ class UpDateLeaveController extends GetxController with StateMixin {
   RxBool isNoteRequired = false.obs;
   RxBool isDocumentRequired = false.obs;
   RxString numberOfLeaves = ''.obs;
+  RxString calculateAllowanceOfLeave = ''.obs;
+
   RxBool isUpdateLeaveLoading = false.obs;
   RxBool isErrorOccurred = false.obs;
-  LeaveTypeDropdown? leaveTypeDropdown;
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
+  LeaveTypeDropdown? leaveTypeDropdown;
 
   void updateLeave(
       {required String leaveId,
@@ -40,7 +42,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
       required String name,
       required String id,
       required String? leaveTypeId}) async {
-
     isUpdateLeaveLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: cancelLeaveQuery, variables: {
@@ -131,11 +132,17 @@ class UpDateLeaveController extends GetxController with StateMixin {
     isUploadPolicyLoading(false);
   }
 
-  getLeaveType() async {
+  getLeaveTypeDropdown() async {
     change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: leaveTypeDropdownQuery);
 
+    final response = await NetworkClient()
+        .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery, variables: {
+      "queryData": {
+        "org_user_id": GetStorage().read(AppString.ORGANIZATION_USER_ID),
+        "leave_type_id": null
+      }
+    });
+    print("getLeaveTypeDropdown :::: ${response.data}");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {

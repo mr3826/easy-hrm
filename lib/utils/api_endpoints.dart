@@ -139,25 +139,21 @@ mutation RemoveRejectedLeaves($inputData: DeleteLeaveInputData) {
 }
 ''';
 
-const leaveTypeDropdownQuery = '''
-query GetLeaveTypesDropdown {
-  getLeaveTypesDropdown {
-    id
+const leaveTypeDropdownUpdateQuery = r'''
+query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
+  getAvailableLeaveTypes(queryData: $queryData) {
+    add_note_required
+    attach_document_required
+    availableLeave
+    calculate_allowance_by
+    is_default
+    is_enable
+    leave_type_id
     name
     type
-    attach_document_required
-    add_note_required
-    leave_statuses {
-      available_number_of_days
-      available_number_of_applications
-      earned_days
-    }
-    calculate_allowance_by
-    is_earned
   }
 }
 ''';
-
 // profile module
 
 const getUserProfileQuery = '''

@@ -101,7 +101,6 @@ Widget _dateCalendarLayout() {
                         color: AppColor.normalTextColor,
                         size: 20,
                       )),
-                  //  DateFormat('dd MMM yyyy').format()
 
                   Text(
                     Get.find<DateTimeController>().requestedDate.value ==
