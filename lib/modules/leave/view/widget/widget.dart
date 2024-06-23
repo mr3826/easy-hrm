@@ -147,7 +147,7 @@ noDataFoundLayout() {
       height: MediaQuery.of(Get.context!).size.height / 1.3,
       child: Center(
           child: Text(
-        AppString.text_no_data_found.tr,
+        AppString.textWeDidNotEtc.tr,
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
       )));

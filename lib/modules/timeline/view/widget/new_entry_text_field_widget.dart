@@ -21,10 +21,12 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../common/widget/custom_dialog.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../leave/view/widget/custom_title_text_widget.dart';
 import '../../../leave/view/widget/single_date_picker_calendar.dart';
+import '../../../leave/view/widget/status_btn_widget.dart';
 import '../../../leave/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
 import 'duration_time_widget.dart';
@@ -75,20 +77,33 @@ class TimeLogEntryTextField extends StatelessWidget {
               Obx(() => status != null && status == "reject"
                   ? CustomAppButton(
                       isButtonExpanded: false,
-                      buttonText: Get.find<TimelineController>()
-                              .isTimelogEntryOrRemoveLoading
-                              .isTrue
-                          ? const Center(
-                              child: CupertinoActivityIndicator(
-                                  color: Colors.blueAccent, radius: 16),
-                            )
-                          : Text(AppString.text_remove.tr,
+                      buttonText:  Text(AppString.text_remove.tr,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 16)),
                       onPressed: () {
-                        Get.find<TimelineController>().removeTimeEntry(
-                            timeLogId:
-                                Get.find<TimelineController>().timeLineID);
+
+                        customDialog(
+                            context: context,
+                            saveBtnAction: () async {
+                              Get.find<TimelineController>().removeTimeEntry(
+                                  timeLogId:
+                                  Get.find<TimelineController>().timeLineID).then((value){
+                                if (value == true) {
+                                  Navigator.pop(context);
+                                }
+                              });
+
+                            },
+                            icon: CupertinoIcons.delete,
+                            titleText: AppString.text_remove_timelog.tr,
+                            subText: AppString.text_sure_you_want_to_delete_timelog.tr,
+                            iconBgColor: AppColor.errorColorLight,
+                            btnBgColor: AppColor.errorColorLight,
+                            btnText: "",
+                            drcText: "",
+                            drcFontSize: Dimensions.fontSizeDefault,
+                            childForSaveBtn: Obx(() => removeTextLayout()));
+
                       },
                       buttonColor: AppColor.errorColorLight)
                   : Get.find<TimelineController>()
