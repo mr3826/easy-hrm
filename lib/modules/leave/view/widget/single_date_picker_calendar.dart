@@ -93,7 +93,7 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                 //add selected date info
                 Get.find<TimelineSummaryController>().selectedMonthStartDate.value ="${DateTime(date.year, date.month, date.day, 0, 0, 0)}";
                 Get.find<TimelineSummaryController>().selectedMonthEndDate.value = "${DateTime(date.year, date.month, date.day, 23, 59, 59)}";
-                Get.find<TimelineSummaryController>().getTimelogSummaryByMonth();
+                Get.find<TimelineSummaryController>().getTimelineByMonth();
 
 
               } else {

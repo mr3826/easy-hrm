@@ -175,6 +175,6 @@ void _getSummaryLogApiCalled() {
       "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}";
   Get.find<TimelineSummaryController>().selectedMonthEndDate.value =
       "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}";
-
-  Get.find<TimelineSummaryController>().getTimelogSummaryByMonth();
+  Get.find<TimelineSummaryController>().getTimelineByMonth();
+  Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
 }

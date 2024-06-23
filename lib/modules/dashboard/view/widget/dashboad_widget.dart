@@ -1,8 +1,8 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../../enum.dart';
-import '../../../../leave/view/widget/status_btn_widget.dart';
 import '../../../../utils/app_color.dart';
+import '../../../leave/view/widget/status_btn_widget.dart';
 
 Widget getStatusButton(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {

@@ -1,32 +1,3 @@
-// class TimelineSummaryByDate {
-//   GetTimelogSummaryForApp? getTimelogSummaryForApp;
-//
-//   TimelineSummaryByDate({this.getTimelogSummaryForApp});
-//
-//   TimelineSummaryByDate.fromJson(Map<String, dynamic> json) {
-//     getTimelogSummaryForApp = json['getSummaryForTimelines'] != null
-//         ? GetTimelogSummaryForApp.fromJson(json['getSummaryForTimelines'])
-//         : null;
-//   }
-// }
-//
-// class GetTimelogSummaryForApp {
-//   String? totalSchedule;
-//   String? totalLogged;
-//   String? paidLeave;
-//   String? balanced;
-//
-//   GetTimelogSummaryForApp(
-//       {this.totalSchedule, this.totalLogged, this.paidLeave, this.balanced});
-//
-//   GetTimelogSummaryForApp.fromJson(Map<String, dynamic> json) {
-//     totalSchedule = json['total_scheduled_seconds'];
-//     totalLogged = json['logged_total_seconds'];
-//     paidLeave = json['total_leaves_seconds'];
-//     balanced = json['balance'];
-//   }
-// }
-
 class TimelineSummaryByMonth {
   GetTimelogSummaryForApp? getTimelogSummaryForApp;
 
