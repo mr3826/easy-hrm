@@ -170,12 +170,11 @@ _workShiftDetailsLayout() {
     return schedule.startTime == workSchedules[0].startTime &&
         schedule.endTime == workSchedules[0].endTime;
   });
-
   return Row(
     children: [
       Text(
         allTimesSame == true
-            ? "${amPmFormatTimeFromString(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department?.workShift?.workSchedules?[0].startTime ?? "")} - ${amPmFormatTimeFromString(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department?.workShift?.workSchedules?[0].endTime ?? "")}"
+            ? "${amPmFormatTimeFromString(workSchedules?[0].startTime ?? "")} - ${amPmFormatTimeFromString(workSchedules?[0].endTime ?? "")}"
             : AppString.text_variable_time.tr,
         style: allTimesSame == true
             ? AppStyle.mid_large_text.copyWith(
@@ -201,23 +200,8 @@ _workShiftDetailsLayout() {
         },
         child: Text(
           allTimesSame == true
-              ? getTimeDifference(
-                  Get.find<UserProfileController>()
-                          .userDetails
-                          ?.getOrganizationUserDetails
-                          ?.department
-                          ?.workShift
-                          ?.workSchedules?[0]
-                          .startTime ??
-                      "",
-                  Get.find<UserProfileController>()
-                          .userDetails
-                          ?.getOrganizationUserDetails
-                          ?.department
-                          ?.workShift
-                          ?.workSchedules?[0]
-                          .endTime ??
-                      "")
+              ? getTimeDifference(workSchedules?[0].startTime ?? "",
+                  workSchedules?[0].endTime ?? "")
               : AppString.text_see_details,
           style: allTimesSame == true
               ? AppStyle.mid_large_text.copyWith(
@@ -266,33 +250,18 @@ _generateWorkShift(List<WorkSchedules> workSchedules) {
 }
 
 _workingDaySchedule(context) {
-  List<String?>? day = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.department
-      ?.workShift
-      ?.workSchedules
-      ?.where((element) => element.startTime != null)
-      .map((e) => e.day?.substring(0, 3).capitalizeFirst)
-      .toList();
-  List<String?>? isHoliday = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.department
-      ?.workShift
-      ?.workSchedules
-      ?.where((element) =>
-  element.isHoliday != null)
-      .map((e) => e.isHoliday.toString())
-      .toList();
-
-
   return SizedBox(
     height: AppLayout.getHeight(76),
     width: MediaQuery.of(context).size.width / 1.5,
     child: ListView.builder(
       shrinkWrap: true,
-      itemCount: day?.length,
+      itemCount: Get.find<UserProfileController>()
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.department
+          ?.workShift
+          ?.workSchedules
+          ?.length,
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
@@ -303,20 +272,35 @@ _workingDaySchedule(context) {
             children: [
               customSpacerWidth(width: 8),
               Text(
-                day?[index] ?? "",
+                getDayAbbreviation(Get.find<UserProfileController>()
+                        .userDetails
+                        ?.getOrganizationUserDetails
+                        ?.department
+                        ?.workShift
+                        ?.workSchedules?[index]
+                        .day ??
+                    ""),
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontSize: Dimensions.fontSizeDefault,
                     overflow: TextOverflow.ellipsis),
               ),
-              isHoliday?[index]=="true"? const Icon(
-                Icons.close,
-                color: AppColor.errorColor,
-              ):
-              const Icon(
-                Icons.done,
-                color: AppColor.successColor,
-              ),
+              Get.find<UserProfileController>()
+                          .userDetails
+                          ?.getOrganizationUserDetails
+                          ?.department
+                          ?.workShift
+                          ?.workSchedules?[index]
+                          .isHoliday ==
+                      true
+                  ? const Icon(
+                      Icons.close,
+                      color: AppColor.errorColor,
+                    )
+                  : const Icon(
+                      Icons.done,
+                      color: AppColor.successColor,
+                    ),
             ],
           ),
         );
@@ -353,10 +337,6 @@ String _getParentDepartmentName() {
 _divider() {
   return Padding(
     padding: marginLayout.copyWith(left: 8, right: 8),
-    child: Container(
-      width: 1,
-      height: 12,
-      color: AppColor.hintColor,
-    ),
+    child: Container(width: 1, height: 12, color: AppColor.hintColor),
   );
 }

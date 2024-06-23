@@ -31,7 +31,6 @@ class TimelineSummaryController extends GetxController with StateMixin {
   late RxString selectedMonthEndDate;
 
   getTimelineByMonth() async {
-    print("start_date : ${selectedMonthStartDate.value} end data ${selectedMonthEndDate.value}");
     isMonthlySummaryDataLoading(true);
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {

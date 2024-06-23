@@ -35,6 +35,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   getLeaveTypeDropdown() async {
+    print("org_id ::: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: leaveTypeDropdownUpdateQuery, variables: {

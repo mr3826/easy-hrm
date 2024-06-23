@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -27,7 +28,9 @@ class DesignationLayout extends StatelessWidget {
         Expanded(
             child: ListView.builder(
           physics: const BouncingScrollPhysics(),
-          itemCount: Get.find<UserProfileController>()
+              padding: EdgeInsets.zero,
+
+              itemCount: Get.find<UserProfileController>()
                   .employeeWorkHistory
                   ?.getOrganizationUserHistory
                   ?.designationHistories
@@ -82,11 +85,17 @@ class DesignationLayout extends StatelessWidget {
     );
   }
 
-  _employeeStatusInfoLayout(
-      {required developerStatus,
-      required date,
-      required durationText,
-      required employeeCurrentStatus}) {
+  _employeeStatusInfoLayout({
+    required String developerStatus,
+    required String date,
+    required String durationText,
+    required String employeeCurrentStatus,
+  }) {
+    final baseTextStyle = AppStyle.mid_large_text.copyWith(
+      fontSize: Dimensions.fontSizeDefault - 2,
+      overflow: TextOverflow.ellipsis,
+    );
+
     return Stack(
       children: [
         Padding(
@@ -97,55 +106,66 @@ class DesignationLayout extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 4.0),
                 child: customSvgImage(
-                    imageUrl: Images.EMPLOYEE_STATUS,
-                    color: AppColor.normalTextColor,
-                    height: 18,
-                    width: 18),
+                  imageUrl: Images.EMPLOYEE_STATUS,
+                  color: AppColor.normalTextColor,
+                  height: 18,
+                  width: 18,
+                ),
               ),
               customSpacerWidth(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "$developerStatus",
-                    style: AppStyle.normal_text_grey.copyWith(
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      developerStatus,
+                      style: AppStyle.normal_text_grey.copyWith(
                         color: AppColor.normalTextColor,
-                        fontSize: Dimensions.fontSizeMid - 2),
-                  ),
-                  customSpacerHeight(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        "$date - ",
-                        style: AppStyle.mid_large_text.copyWith(
-                            color: AppColor.hintColor,
-                            fontSize: Dimensions.fontSizeDefault - 2),
+                        fontSize: Dimensions.fontSizeMid - 2,
                       ),
-                      Text(
-                        "$employeeCurrentStatus",
-                        style: AppStyle.mid_large_text.copyWith(
-                            color: AppColor.primaryColor,
-                            fontSize: Dimensions.fontSizeDefault - 2,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                      _divider(),
-                      Text(
-                        "$durationText",
-                        style: AppStyle.mid_large_text.copyWith(
-                            color: AppColor.hintColor,
-                            fontSize: Dimensions.fontSizeDefault - 2),
-                      ),
-                    ],
-                  )
-                ],
-              )
+                    ),
+                    customSpacerHeight(height: 4),
+                    Row(
+                      children: [
+                        FittedBox(
+                          child: Text(
+                            "$date - ",
+                            style: baseTextStyle.copyWith(
+                              color: AppColor.hintColor,
+                            ),
+                          ),
+                        ),
+                        FittedBox(
+                          child: Text(
+                            employeeCurrentStatus,
+                            style: baseTextStyle.copyWith(
+                              color: AppColor.primaryColor,
+                            ),
+                          ),
+                        ),
+                        _divider(),
+                        Expanded(
+                          child: Text(
+                            durationText,
+                            style: baseTextStyle.copyWith(
+                              color: AppColor.hintColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-        _dottedLayout()
+        _dottedLayout(),
       ],
     );
   }
+
+
 
   _dottedLayout() {
     return Positioned(
