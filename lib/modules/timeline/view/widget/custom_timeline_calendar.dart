@@ -9,6 +9,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../utils/utils.dart';
 import 'timeline_calendar.dart';
 import '../../controller/timeline_controller.dart';
 import 'timelog_summary_working_gol_layout.dart';
@@ -170,25 +171,25 @@ Widget _summaryLayout() {
         color: AppColor.cardColor,
         width: MediaQuery.of(Get.context!).size.width,
         child: workingScheduleLayout(
-            schedule: Get.find<TimelineController>()
+            schedule: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.totalSchedule ??
-                "",
-            balanceTime: Get.find<TimelineController>()
-                    .timelineSummaryByDate
-                    ?.getTimelogSummaryForApp
-                    ?.balanced ??
-                "",
-            loggedTime: Get.find<TimelineController>()
-                    .timelineSummaryByDate
-                    ?.getTimelogSummaryForApp
-                    ?.totalLogged ??
-                "",
-            paidLeave: Get.find<TimelineController>()
-                    .timelineSummaryByDate
-                    ?.getTimelogSummaryForApp
-                    ?.paidLeave ??
+                    ?.totalScheduledSeconds ??
                 ""),
+            balanceTime:getConvertSecondsToHours( Get.find<TimelineController>()
+                    .timelineSummaryByDate
+                    ?.getTimelogSummaryForApp
+                    ?.balance ??
+                ""),
+            loggedTime:getConvertSecondsToHours( Get.find<TimelineController>()
+                    .timelineSummaryByDate
+                    ?.getTimelogSummaryForApp
+                    ?.loggedTotalSeconds ??
+                ""),
+            paidLeave:getConvertSecondsToHours( Get.find<TimelineController>()
+                    .timelineSummaryByDate
+                    ?.getTimelogSummaryForApp
+                    ?.totalLeavesSeconds ??
+                "")),
       ));
 }

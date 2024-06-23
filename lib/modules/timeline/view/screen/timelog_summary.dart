@@ -9,6 +9,8 @@ import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_worki
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 
+import '../../../../utils/utils.dart';
+
 class TimeLogSummary extends StatelessWidget {
   const TimeLogSummary({super.key});
 
@@ -27,42 +29,46 @@ class TimeLogSummary extends StatelessWidget {
             children: [
               const SummaryTimeLogCalendar(),
               Obx(() => Get.find<TimelineSummaryController>()
-                  .isMonthlySummaryDataLoading
-                  .isTrue
+                      .isMonthlySummaryDataLoading
+                      .isTrue
                   ? Center(
-                child: Padding(
-                    padding: EdgeInsets.only(top: Get.height * .35),
-                    child: const CupertinoActivityIndicator(
-                      color: Colors.blueAccent,
-                      radius: 18,
-                    )),
-              )
+                      child: Padding(
+                          padding: EdgeInsets.only(top: Get.height * .35),
+                          child: const CupertinoActivityIndicator(
+                            color: Colors.blueAccent,
+                            radius: 18,
+                          )),
+                    )
                   : Column(
-                children: [
-                  workingScheduleLayout(
-                      schedule: Get.find<TimelineSummaryController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp
-                          ?.totalSchedule ??
-                          "",
-                      balanceTime: Get.find<TimelineSummaryController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp
-                          ?.balanced ??
-                          "",
-                      loggedTime: Get.find<TimelineSummaryController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp
-                          ?.totalLogged ??
-                          "",
-                      paidLeave: Get.find<TimelineSummaryController>()
-                          .timelineSummaryByMonth
-                          ?.getTimelogSummaryForApp
-                          ?.paidLeave ??
-                          ""),
-                  const IndividualTimeLayout(),
-                ],
-              )),
+                      children: [
+                        workingScheduleLayout(
+                            schedule: getConvertSecondsToRoundedHours(
+                                Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.totalScheduledSeconds ??
+                                    ""),
+                            balanceTime: getConvertSecondsToRoundedHours(
+                                Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.balance ??
+                                    ""),
+                            loggedTime: getConvertSecondsToRoundedHours(
+                                Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.loggedTotalSeconds ??
+                                    ""),
+                            paidLeave: getConvertSecondsToRoundedHours(
+                                Get.find<TimelineSummaryController>()
+                                        .timelineSummaryByMonth
+                                        ?.getTimelogSummaryForApp
+                                        ?.totalLeavesSeconds ??
+                                    "")),
+                        const IndividualTimeLayout(),
+                      ],
+                    )),
             ],
           ),
         ),
@@ -75,5 +81,3 @@ class TimeLogSummary extends StatelessWidget {
     await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
   }
 }
-
-

@@ -308,8 +308,8 @@ class TimelineController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
-        "start_time": startDate,
-        "end_time": endDate,
+        "start_date": startDate,
+        "end_date": endDate,
       }
     });
     if (response.hasException) {
@@ -328,9 +328,8 @@ class TimelineController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
-        "start_time": "$startDate",
-        "end_time": "$endDate",
-        "is_calender_summary": true
+        "start_date": "$startDate",
+        "end_date": "$endDate",
       }
     });
     log("getTimelineSummaryByDate ==> $response");
@@ -338,7 +337,7 @@ class TimelineController extends GetxController with StateMixin {
       log("getTimelineByDate:: ${response.exception.toString()}");
     } else {
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
-      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
+      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balance}");
     }
     isTimelineSummaryByDateLoading(false);
   }
