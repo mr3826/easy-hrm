@@ -41,7 +41,6 @@ class TimeLineCalendar extends StatelessWidget {
               timeLineOffset: 0,
               showHalfHours: true,
               showLiveTimeLineInAllDays: false,
-              backgroundColor: AppColor.cardColor,
               heightPerMinute: 2,
               headerStyle: _headerStyle(),
               eventArranger: const SideEventArranger(),
