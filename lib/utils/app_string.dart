@@ -44,6 +44,7 @@ class AppString {
       'There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
+  static String textWeDidNotEtc = 'We did not find anything to show here!';
   static String text_from = 'From';
   static String text_form_last = 'Form last';
   static String textManager = 'Manager';

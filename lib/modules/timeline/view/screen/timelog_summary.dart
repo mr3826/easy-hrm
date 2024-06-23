@@ -8,7 +8,7 @@ import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_calen
 import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-
+import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../utils/utils.dart';
 
 class TimeLogSummary extends StatelessWidget {
@@ -66,7 +66,7 @@ class TimeLogSummary extends StatelessWidget {
                                         ?.getTimelogSummaryForApp
                                         ?.totalLeavesSeconds ??
                                     "")),
-                        const IndividualTimeLayout(),
+                        _timelogDetails()
                       ],
                     )),
             ],
@@ -79,5 +79,23 @@ class TimeLogSummary extends StatelessWidget {
   Future<void> _refreshScreen() async {
     await Get.find<TimelineSummaryController>().getTimelineByMonth();
     await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+  }
+
+  _timelogDetails() {
+    final timelogDetails = Get.find<TimelineSummaryController>().timelogDetailsByMonth;
+
+    if (timelogDetails?.getDailyTimeEntries?.data?.isEmpty ?? true) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 14.0),
+        child: Center(
+          child: Text(
+            AppString.textWeDidNotEtc.tr,
+            style: AppStyle.small_text_grey,
+          ),
+        ),
+      );
+    } else {
+      return const IndividualTimeLayout();
+    }
   }
 }

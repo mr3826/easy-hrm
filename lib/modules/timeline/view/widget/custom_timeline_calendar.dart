@@ -102,7 +102,6 @@ Widget _dateCalendarLayout() {
                         color: AppColor.normalTextColor,
                         size: 20,
                       )),
-
                   Text(
                     Get.find<DateTimeController>().requestedDate.value ==
                             DateFormat('yyyy-MM-dd').format(DateTime.now())
@@ -176,17 +175,17 @@ Widget _summaryLayout() {
                     ?.getTimelogSummaryForApp
                     ?.totalScheduledSeconds ??
                 ""),
-            balanceTime:getConvertSecondsToHours( Get.find<TimelineController>()
+            balanceTime: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
                     ?.balance ??
                 ""),
-            loggedTime:getConvertSecondsToHours( Get.find<TimelineController>()
+            loggedTime: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
                     ?.loggedTotalSeconds ??
                 ""),
-            paidLeave:getConvertSecondsToHours( Get.find<TimelineController>()
+            paidLeave: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
                     ?.totalLeavesSeconds ??
