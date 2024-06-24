@@ -1,9 +1,6 @@
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timelog_details_by_month.dart';
-
 import '../../../network/exception_helper.dart';
 import '../../../network/network_client.dart';
 import '../../../utils/api_endpoints.dart';
@@ -22,10 +19,10 @@ class TimelineSummaryController extends GetxController with StateMixin {
     super.onInit();
   }
 
+
   RxBool isMonthlySummaryDataLoading = false.obs;
   RxString selectedSummaryDate = "".obs;
   RxInt selectedYearIndex = 10.obs;
-
   TimelineSummaryByMonth? timelineSummaryByMonth;
   TimelogDetailsByMonth? timelogDetailsByMonth;
 
@@ -35,28 +32,28 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelineByMonth() async {
     isMonthlySummaryDataLoading(true);
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+    final response = await NetworkClient().getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
-        "start_time": selectedMonthStartDate.value,
-        "end_time": selectedMonthEndDate.value,
+        "start_date": selectedMonthStartDate.value,
+        "end_date": selectedMonthEndDate.value,
       }
     });
-
-
-    print("getTimelineByMonth :::::::::; $response");
+    print("getTimelineByMonth :::  $response");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       print(response.data);
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
-      print(timelineSummaryByMonth?.getTimelogSummaryForApp?.totalSchedule);
+      print(timelineSummaryByMonth
+          ?.getTimelogSummaryForApp?.totalScheduledSeconds);
     }
     isMonthlySummaryDataLoading(false);
   }
 
   getTimelogDetailsByMonth() async {
     isMonthlySummaryDataLoading(true);
+    print(
+        "getTimelogDetailsByMonth ::: start_data ${selectedMonthStartDate.value} end date ${selectedMonthEndDate.value}");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelogDetailsByMonthQuery, variables: {
       "queryData": {
@@ -72,4 +69,11 @@ class TimelineSummaryController extends GetxController with StateMixin {
     }
     isMonthlySummaryDataLoading(false);
   }
+
+
+
+
+
+
+
 }

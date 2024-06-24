@@ -12,6 +12,7 @@ import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../timeline/controller/timeline_controller.dart';
+import '../../../timeline/controller/timelog_summary_controller.dart';
 
 class SingleDatePicker extends StatefulWidget {
   final bool isCalledFormTimeLog;
@@ -89,15 +90,19 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                     endDate:
                         "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
+                 //add selected date info
                 Get.find<TimelineController>().getTimelineSummaryByDate(
                     startDate:
-                        "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                     endDate:
-                        "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
               } else {
                 Get.find<DateTimeController>().requestedDate.value =
                     DateFormat('yyyy-MM-dd').format(today);
               }
+
+
 
               Navigator.pop(context);
             }),
@@ -107,6 +112,7 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
       ),
     );
   }
+
 
   _buttonLayout({required onAction}) {
     return Row(

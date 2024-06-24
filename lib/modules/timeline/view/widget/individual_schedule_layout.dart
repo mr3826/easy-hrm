@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +12,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../utils/utils.dart';
 
 class IndividualTimeLayout extends StatelessWidget {
   const IndividualTimeLayout({super.key});
@@ -26,7 +25,8 @@ class IndividualTimeLayout extends StatelessWidget {
       shrinkWrap: true,
       itemCount: Get.find<TimelineSummaryController>()
           .timelogDetailsByMonth
-          ?.getTimelogsForApp
+          ?.getDailyTimeEntries
+          ?.data
           ?.length,
       itemBuilder: (context, index) {
         return InkWell(
@@ -35,23 +35,25 @@ class IndividualTimeLayout extends StatelessWidget {
               /// change showing date by updating request date value
               DateTime requestedDate = DateTime.parse(
                   Get.find<TimelineSummaryController>()
-                      .timelogDetailsByMonth
-                      ?.getTimelogsForApp?[index]
-                      .date ??
+                          .timelogDetailsByMonth
+                          ?.getDailyTimeEntries
+                          ?.data?[index]
+                          .entryDay ??
                       DateTime.now().toString());
+
               Get.find<DateTimeController>().requestedDate.value =
                   DateFormat('yyyy-MM-dd').format(requestedDate);
               Get.back(canPop: false);
               await Get.find<TimelineController>().getCalendarTimelineDataByDate(
                   startDate:
-                  "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                   endDate:
-                  "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
               await Get.find<TimelineController>().getTimelineSummaryByDate(
                   startDate:
-                  "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                   endDate:
-                  "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
             },
             child: _infoTextLayout(index));
       },
@@ -70,7 +72,7 @@ class IndividualTimeLayout extends StatelessWidget {
         color: itemColor,
         child: Padding(
           padding:
-          marginLayout.copyWith(top: 10, bottom: 10, left: 10, right: 10),
+              marginLayout.copyWith(top: 10, bottom: 10, left: 10, right: 10),
           child: Row(
             children: [
               Column(
@@ -78,23 +80,25 @@ class IndividualTimeLayout extends StatelessWidget {
                 children: [
                   Text(
                       DateTime.tryParse(Get.find<TimelineSummaryController>()
-                          .timelogDetailsByMonth
-                          ?.getTimelogsForApp?[index]
-                          .date ??
-                          "")
-                          ?.day
-                          .toString()
-                          .padLeft(2) ??
+                                      .timelogDetailsByMonth
+                                      ?.getDailyTimeEntries
+                                      ?.data?[index]
+                                      .entryDay ??
+                                  "")
+                              ?.day
+                              .toString()
+                              .padLeft(2) ??
                           "",
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeMid)),
                   Text(
-                    Get.find<TimelineSummaryController>()
-                        .timelogDetailsByMonth
-                        ?.getTimelogsForApp?[index]
-                        .day ??
-                        "",
+                    getDayName(Get.find<TimelineSummaryController>()
+                            .timelogDetailsByMonth
+                            ?.getDailyTimeEntries
+                            ?.data?[index]
+                            .entryDay ??
+                        ""),
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.hintColor,
                         fontSize: Dimensions.fontSizeDefault - 1),
@@ -108,11 +112,13 @@ class IndividualTimeLayout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      Get.find<TimelineSummaryController>()
-                          .timelogDetailsByMonth
-                          ?.getTimelogsForApp?[index]
-                          .schedule ??
-                          "",
+                      getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                                  .timelogDetailsByMonth
+                                  ?.getDailyTimeEntries
+                                  ?.data?[index]
+                                  .totalScheduledSeconds ??
+                              ""),
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeDefault)),
@@ -129,11 +135,13 @@ class IndividualTimeLayout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      Get.find<TimelineSummaryController>()
-                          .timelogDetailsByMonth
-                          ?.getTimelogsForApp?[index]
-                          .logged ??
-                          "",
+                      getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                                  .timelogDetailsByMonth
+                                  ?.getDailyTimeEntries
+                                  ?.data?[index]
+                                  .loggedTotalSeconds ??
+                              ""),
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeDefault)),
@@ -150,11 +158,13 @@ class IndividualTimeLayout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      Get.find<TimelineSummaryController>()
-                          .timelogDetailsByMonth
-                          ?.getTimelogsForApp?[index]
-                          .leave ??
-                          "",
+                      getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                                  .timelogDetailsByMonth
+                                  ?.getDailyTimeEntries
+                                  ?.data?[index]
+                                  .totalLeavesSeconds ??
+                              ""),
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeDefault)),
@@ -171,11 +181,13 @@ class IndividualTimeLayout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      Get.find<TimelineSummaryController>()
-                          .timelogDetailsByMonth
-                          ?.getTimelogsForApp?[index]
-                          .balance ??
-                          "",
+                      getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                                  .timelogDetailsByMonth
+                                  ?.getDailyTimeEntries
+                                  ?.data?[index]
+                                  .balance ??
+                              ""),
                       style: AppStyle.small_text_grey.copyWith(
                           color: AppColor.normalTextColor,
                           fontSize: Dimensions.fontSizeDefault)),
@@ -223,5 +235,3 @@ class IndividualTimeLayout extends StatelessWidget {
     }
   }
 }
-
-

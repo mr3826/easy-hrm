@@ -33,6 +33,7 @@ import '../../../utils/dimensions.dart';
 import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
+import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
 import '../model/user_profile.dart';
 
@@ -68,11 +69,7 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().getGraphQuery(queryString: getUserProfileQuery);
 
-
-
-
     print("User profile :::: ${response.data}");
-
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -475,15 +472,17 @@ class ChangeMailResponse {
 }
 
 switchOrganisationDataChange() {
+  Get.find<TimeCounterController>().timerStatus();
+
   Get.find<UserProfileController>().getUserProfile();
   Get.find<UserProfileController>().getEmploymentInfo();
   Get.find<UserProfileController>().getUserLogHistory();
   Get.find<UserProfileController>().getOrganizationInfo();
   Get.find<TimelineController>().getTimelineSummaryByMonth(
       startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
+          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
       endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
+          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
   Get.find<TimelineController>().getCalendarTimelineDataByDate(
       startDate:

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -27,52 +29,53 @@ class EmploymentLayout extends StatelessWidget {
             subtext: AppString.text_history.tr),
         Expanded(
             child: ListView.builder(
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          itemCount: Get.find<UserProfileController>()
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const BouncingScrollPhysics(),
+              itemCount: Get.find<UserProfileController>()
                   .employeeWorkHistory
                   ?.getOrganizationUserHistory
                   ?.employmentHistories
                   ?.length ??
-              0,
-          itemBuilder: (context, index) {
-            return _employeeStatusInfoLayout(
-                developerStatus: Get.find<UserProfileController>()
+                  0,
+              itemBuilder: (context, index) {
+                return _employeeStatusInfoLayout(
+                    developerStatus: Get.find<UserProfileController>()
                         .employeeWorkHistory
                         ?.getOrganizationUserHistory
                         ?.employmentHistories?[index]
                         .employmentStatus
                         ?.name ??
-                    '',
-                date: dateMonthYearFormatFromDatetime(
-                    Get.find<UserProfileController>()
+                        '',
+                    date: dateMonthYearFormatFromDatetime(
+                        Get.find<UserProfileController>()
                             .employeeWorkHistory
                             ?.getOrganizationUserHistory
                             ?.employmentHistories?[index]
                             .startDate ??
-                        ""),
-                durationText:
+                            ""),
+                    durationText:
                     "${AppString.text_form_last.tr} ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index].startDate ?? "")}",
-                employeeCurrentStatus: Get.find<UserProfileController>()
+                    employeeCurrentStatus: Get.find<UserProfileController>()
+                        .employeeWorkHistory
+                        ?.getOrganizationUserHistory
+                        ?.employmentHistories?[index]
+                        .endDate ==
+                        null
+                        ? AppString.textPresent.tr
+                        : dateMonthYearFormatFromDatetime(
+                        Get.find<UserProfileController>()
                             .employeeWorkHistory
                             ?.getOrganizationUserHistory
                             ?.employmentHistories?[index]
-                            .endDate ==
-                        null
-                    ? AppString.textPresent.tr
-                    : dateMonthYearFormatFromDatetime(
-                        Get.find<UserProfileController>()
-                                .employeeWorkHistory
-                                ?.getOrganizationUserHistory
-                                ?.employmentHistories?[index]
-                                .endDate ??
+                            .endDate ??
                             ""),
-                statusColor: HexColor(Get.find<UserProfileController>()
-                    .employeeWorkHistory
-                    ?.getOrganizationUserHistory
-                    ?.employmentHistories?[index].employmentStatus?.color??"#8F99AD"));
-          },
-        ))
+                    statusColor: HexColor(Get.find<UserProfileController>()
+                        .employeeWorkHistory
+                        ?.getOrganizationUserHistory
+                        ?.employmentHistories?[index].employmentStatus?.color??"#8F99AD"));
+              },
+            ))
       ],
     );
   }
@@ -88,12 +91,18 @@ class EmploymentLayout extends StatelessWidget {
     );
   }
 
-  _employeeStatusInfoLayout(
-      {required developerStatus,
-      required date,
-      required durationText,
-      required statusColor,
-      required employeeCurrentStatus}) {
+  _employeeStatusInfoLayout({
+    required String developerStatus,
+    required String date,
+    required String durationText,
+    required Color statusColor,
+    required String employeeCurrentStatus,
+  }) {
+    final baseTextStyle = AppStyle.mid_large_text.copyWith(
+      fontSize: Dimensions.fontSizeDefault - 2,
+      overflow: TextOverflow.ellipsis,
+    );
+
     return Stack(
       children: [
         Padding(
@@ -104,65 +113,71 @@ class EmploymentLayout extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 4.0),
                 child: customSvgImage(
-                    imageUrl: Images.FLAG,
-                    color: AppColor.normalTextColor,
-                    height: 18,
-                    width: 18),
+                  imageUrl: Images.FLAG,
+                  color: AppColor.normalTextColor,
+                  height: 18,
+                  width: 18,
+                ),
               ),
               customSpacerWidth(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "$developerStatus",
-                        style: AppStyle.normal_text_grey.copyWith(
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          developerStatus,
+                          style: AppStyle.normal_text_grey.copyWith(
                             color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeMid - 2),
-                      ),
-                      customSpacerWidth(width: 8),
-                      Icon(
-                        Icons.circle,
-                        color: statusColor,
-                        size: 12,
-                      )
-                    ],
-                  ),
-                  customSpacerHeight(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        "$date - ",
-                        style: AppStyle.mid_large_text.copyWith(
+                            fontSize: Dimensions.fontSizeMid - 2,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        customSpacerWidth(width: 8),
+                        Icon(
+                          Icons.circle,
+                          color: statusColor,
+                          size: 12,
+                        ),
+                      ],
+                    ),
+                    customSpacerHeight(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          "$date - ",
+                          style: baseTextStyle.copyWith(
                             color: AppColor.hintColor,
-                            fontSize: Dimensions.fontSizeDefault - 2),
-                      ),
-                      Text(
-                        "$employeeCurrentStatus",
-                        style: AppStyle.mid_large_text.copyWith(
+                          ),
+                        ),
+                        Text(
+                          employeeCurrentStatus,
+                          style: baseTextStyle.copyWith(
                             color: AppColor.primaryColor,
-                            fontSize: Dimensions.fontSizeDefault - 2,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                      _divider(),
-                      Text(
-                        "$durationText",
-                        style: AppStyle.mid_large_text.copyWith(
-                            color: AppColor.hintColor,
-                            fontSize: Dimensions.fontSizeDefault - 2),
-                      ),
-                    ],
-                  )
-                ],
-              )
+                          ),
+                        ),
+                        _divider(),
+                        Flexible(
+                          child: Text(
+                            durationText,
+                            style: baseTextStyle.copyWith(
+                              color: AppColor.hintColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-        _dottedLayout()
+        _dottedLayout(),
       ],
     );
   }
+
 
   _dottedLayout() {
     return Positioned(

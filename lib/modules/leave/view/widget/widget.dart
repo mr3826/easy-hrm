@@ -11,6 +11,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../utils/utils.dart';
+
 Widget leaveLayout() {
   return SizedBox(
     height: AppLayout.getHeight(120),
@@ -49,31 +51,33 @@ Widget leaveLayout() {
 
 _takenLeave() {
   return _countLayout(
-      dynamicText: Get.find<LeaveScreenController>()
+      dynamicText: formatToTwoDecimalPlaces( Get.find<LeaveScreenController>()
               .leaveSummaryForDashboard
               ?.getLeaveSummaryForDashboard
               ?.takenLeave ??
-          "",
+          ""),
       staticText: AppString.text_token.tr);
 }
 
 _balanceLeave() {
   return _countLayout(
-      dynamicText: Get.find<LeaveScreenController>()
+      dynamicText: formatToTwoDecimalPlaces( Get.find<LeaveScreenController>()
               .leaveSummaryForDashboard
               ?.getLeaveSummaryForDashboard
               ?.balanceLeave ??
-          "",
+          ""),
       staticText: AppString.text_token.tr);
 }
 
 _totalLeave() {
   return _countLayout(
-      dynamicText: Get.find<LeaveScreenController>()
+      dynamicText: formatToTwoDecimalPlaces(
+
+      Get.find<LeaveScreenController>()
               .leaveSummaryForDashboard
               ?.getLeaveSummaryForDashboard
               ?.totalLeaveDay ??
-          "",
+          ""),
       staticText: AppString.text_total.tr);
 }
 
@@ -147,7 +151,7 @@ noDataFoundLayout() {
       height: MediaQuery.of(Get.context!).size.height / 1.3,
       child: Center(
           child: Text(
-        AppString.text_no_data_found.tr,
+        AppString.textWeDidNotEtc.tr,
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
       )));

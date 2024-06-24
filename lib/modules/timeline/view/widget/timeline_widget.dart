@@ -11,6 +11,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../utils/utils.dart';
+
 Widget timelineLayout() {
   return SizedBox(
     height: AppLayout.getHeight(130),
@@ -30,41 +32,41 @@ Widget timelineLayout() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
-                      dynamicText: Get.find<TimelineController>()
+                      dynamicText:getConvertSecondsToRoundedHours( Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
-                              ?.totalSchedule ??
-                          "",
+                              ?.totalScheduledSeconds ??
+                          ""),
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: Get.find<TimelineController>()
+                      dynamicText: getConvertSecondsToRoundedHours(Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
-                              ?.totalLogged ??
-                          "",
+                              ?.loggedTotalSeconds ??
+                          ""),
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: Get.find<TimelineController>()
+                      dynamicText:getConvertSecondsToRoundedHours( Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
-                              ?.paidLeave ??
-                          "",
+                              ?.totalLeavesSeconds ??
+                          ""),
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: Get.find<TimelineController>()
+                      dynamicText:getConvertSecondsToRoundedHours( Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
-                              ?.balanced ??
-                          "",
+                              ?.balance ??
+                          ""),
                       staticText: AppString.text_balance.tr),
                 ],
               ),

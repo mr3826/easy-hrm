@@ -437,25 +437,26 @@ query CheckStartOrStopTimeline {
 ''';
 
 const getTimelineSummaryByDateQuery = r'''
-query GetTimelogSummaryForApp($queryData: TimelogQueryInputType!) {
-  getTimelogSummaryForApp(queryData: $queryData) {
-    total_schedule
-    total_logged
-    paid_leave
-    balanced
+query GetSummaryForTimelines($queryData: SummaryForTimelinesQueryData) {
+  getSummaryForTimelines(queryData: $queryData) {
+    total_scheduled_seconds
+    logged_total_seconds
+    total_leaves_seconds
+    balance
   }
 }
 ''';
 
 const getTimelogDetailsByMonthQuery = r'''
-query GetTimelogsForApp($queryData: TimelineEntriesQueryData) {
-  getTimelogsForApp(queryData: $queryData) {
-    balance
-    date
-    leave
-    logged
-    schedule
-    day
+query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: OptionDataType) {
+  getDailyTimeEntries(queryData: $queryData, optionData: $optionData) {
+    data {
+      entry_day
+      total_scheduled_seconds
+      logged_total_seconds
+      total_leaves_seconds
+      balance
+    }
   }
 }
 ''';

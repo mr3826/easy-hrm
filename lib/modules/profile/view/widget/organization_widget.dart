@@ -1,13 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/images.dart';
@@ -97,7 +93,7 @@ class OrganisationView extends StatelessWidget {
                                             ?.data?[index]
                                             .designation
                                             ?.name ??
-                                        "No added yet",
+                                        "Not added yet",
                                     style: AppStyle.normal_text_grey.copyWith(
                                         color: AppColor.hintColor,
                                         fontSize:
