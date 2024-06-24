@@ -90,11 +90,12 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                     endDate:
                         "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
-                //add selected date info
-                Get.find<TimelineSummaryController>().selectedMonthStartDate.value ="${DateTime(date.year, date.month, date.day, 0, 0, 0)}";
-                Get.find<TimelineSummaryController>().selectedMonthEndDate.value = "${DateTime(date.year, date.month, date.day, 23, 59, 59)}";
-                Get.find<TimelineSummaryController>().getTimelineByMonth();
-
+                 //add selected date info
+                Get.find<TimelineController>().getTimelineSummaryByDate(
+                    startDate:
+                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                    endDate:
+                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
               } else {
                 Get.find<DateTimeController>().requestedDate.value =

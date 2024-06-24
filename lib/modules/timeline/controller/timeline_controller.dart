@@ -304,6 +304,8 @@ class TimelineController extends GetxController with StateMixin {
 
   getTimelineSummaryByMonth(
       {required String? startDate, required String? endDate}) async {
+
+    print("getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
@@ -386,9 +388,9 @@ class TimelineController extends GetxController with StateMixin {
   _refreshTimeline() async {
     await getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     await getCalendarTimelineDataByDate(
         startDate:

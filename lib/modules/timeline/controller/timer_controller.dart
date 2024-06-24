@@ -18,8 +18,8 @@ class TimeCounterController extends GetxController {
   var isRunning = false.obs;
   var isRunningHorizontalLine = false.obs;
   var isTotalCount = true.obs;
-  Timer _timer=Timer(Duration.zero, () {});
-  Timer _aniTimer=Timer(Duration.zero, () {});
+  Timer _timer = Timer(Duration.zero, () {});
+  Timer _aniTimer = Timer(Duration.zero, () {});
   int _seconds = 0;
   final isLoading = false.obs;
   RxBool isContainerGrowing = true.obs;
@@ -95,8 +95,9 @@ class TimeCounterController extends GetxController {
         Duration duration = DateTime.now().difference(timestamp);
         _seconds = duration.inSeconds;
         start();
-        Get.find<TimeCounterController>()
-            .isRunningHorizontalLine(true);
+        Get.find<TimeCounterController>().isRunningHorizontalLine(true);
+      } else {
+        stop();
       }
     }
     isLoading(false);

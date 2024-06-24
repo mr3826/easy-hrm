@@ -175,9 +175,12 @@ String formatToTwoDecimalPlaces(String? data) {
   if (number == null) {
     return '0.00';
   }
-  return number.toStringAsFixed(2);
+  String formatted = number.toStringAsFixed(2);
+  if (formatted.endsWith('.00')) {
+    return formatted.split('.')[0];
+  }
+  return formatted;
 }
-
 
 String getConvertSecondsToRoundedHours(String secondsStr) {
   if (secondsStr.isEmpty || secondsStr == "null") {

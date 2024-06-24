@@ -472,15 +472,17 @@ class ChangeMailResponse {
 }
 
 switchOrganisationDataChange() {
+  Get.find<TimeCounterController>().timerStatus();
+
   Get.find<UserProfileController>().getUserProfile();
   Get.find<UserProfileController>().getEmploymentInfo();
   Get.find<UserProfileController>().getUserLogHistory();
   Get.find<UserProfileController>().getOrganizationInfo();
   Get.find<TimelineController>().getTimelineSummaryByMonth(
       startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
+          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
       endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
+          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
   Get.find<TimelineController>().getCalendarTimelineDataByDate(
       startDate:
@@ -503,15 +505,4 @@ switchOrganisationDataChange() {
   Get.find<DashboardController>().getProfileInfoForDashboard();
   Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
   Get.find<DashboardController>().getUpComingInfoForDashboard();
-
-  _timelineApiCalled();
-}
-
-void _timelineApiCalled() {
-  Get.find<TimelineController>().getCalendarTimelineDataByDate(
-      startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-      endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
-  Get.find<TimeCounterController>().timerStatus();
 }

@@ -14,15 +14,15 @@ class TimelineSummaryController extends GetxController with StateMixin {
     selectedMonthEndDate =
         "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}"
             .obs;
-   await getTimelineByMonth();
+    await getTimelineByMonth();
     await getTimelogDetailsByMonth();
     super.onInit();
   }
 
+
   RxBool isMonthlySummaryDataLoading = false.obs;
   RxString selectedSummaryDate = "".obs;
   RxInt selectedYearIndex = 10.obs;
-
   TimelineSummaryByMonth? timelineSummaryByMonth;
   TimelogDetailsByMonth? timelogDetailsByMonth;
 
@@ -32,26 +32,28 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelineByMonth() async {
     isMonthlySummaryDataLoading(true);
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+    final response = await NetworkClient().getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_date": selectedMonthStartDate.value,
         "end_date": selectedMonthEndDate.value,
       }
     });
-    print("getTimelineByMonth_summary $response");
+    print("getTimelineByMonth :::  $response");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       print(response.data);
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
-      print(timelineSummaryByMonth?.getTimelogSummaryForApp?.totalScheduledSeconds);
+      print(timelineSummaryByMonth
+          ?.getTimelogSummaryForApp?.totalScheduledSeconds);
     }
     isMonthlySummaryDataLoading(false);
   }
 
   getTimelogDetailsByMonth() async {
     isMonthlySummaryDataLoading(true);
+    print(
+        "getTimelogDetailsByMonth ::: start_data ${selectedMonthStartDate.value} end date ${selectedMonthEndDate.value}");
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelogDetailsByMonthQuery, variables: {
       "queryData": {
@@ -67,4 +69,11 @@ class TimelineSummaryController extends GetxController with StateMixin {
     }
     isMonthlySummaryDataLoading(false);
   }
+
+
+
+
+
+
+
 }
