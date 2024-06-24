@@ -167,6 +167,18 @@ String getConvertSecondsToHours(String secondsStr) {
   return "$hours.${minutes}h";
 }
 
+String formatToTwoDecimalPlaces(String? data) {
+  if (data == null || data.isEmpty) {
+    return '0.00';
+  }
+  double? number = double.tryParse(data);
+  if (number == null) {
+    return '0.00';
+  }
+  return number.toStringAsFixed(2);
+}
+
+
 String getConvertSecondsToRoundedHours(String secondsStr) {
   if (secondsStr.isEmpty || secondsStr == "null") {
     return "0h";

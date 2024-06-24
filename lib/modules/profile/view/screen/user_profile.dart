@@ -22,6 +22,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_drawer.dart';
+import '../../../../utils/utils.dart';
 import '../widget/action_layout_widget.dart';
 import '../widget/chnage_email_notify_layout.dart';
 import '../widget/expanded_text_layout.dart';
@@ -147,9 +148,9 @@ class ProfileScreen extends GetView<UserProfileController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _infoTextLayout(
-            dynamicText: controller.userLogHistory
+            dynamicText: formatToTwoDecimalPlaces(controller.userLogHistory
                     ?.geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
-                "",
+                ""),
             staticText: AppString.text_leave_balance.tr),
         _divider(),
         _infoTextLayout(
@@ -462,7 +463,6 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   _phoneNumberText() {
-
     return userInfoSectionLayout(
       staticText: AppString.text_phone.tr,
       dynamicText: controller.userDetails?.getOrganizationUserDetails?.profile
