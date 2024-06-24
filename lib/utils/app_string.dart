@@ -35,6 +35,7 @@ class AppString {
   static String text_balance_no_of_days = "Balance (No.of days)";
   static String text_track_your_time = 'Track your time';
   static String text_manage_your_leave = 'Manage your leave';
+  static String text_available = 'Available';
   static String text_leave_management_etc =
       'Leave management is one of the key features of Payrun. You can customise your leave anytime. You can take multiple days\' leave as well as hourly leave.';
   static String text_with_the_help_etc =
