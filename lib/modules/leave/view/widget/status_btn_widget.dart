@@ -12,6 +12,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../common/widget/custom_dialog.dart';
 import '../../../../utils/utils.dart';
 import '../../../timeline/view/screen/update_timeline.dart';
 
@@ -97,79 +98,90 @@ Widget buttonLayout(
 }
 
 _rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
-  return Obx(
-    () => Padding(
-      padding: marginLayout,
-      child: Get.find<TimelineController>().isTimelogEntryOrRemoveLoading.isTrue
-          ? const CupertinoActivityIndicator(
-              color: Colors.blueAccent,
-              radius: 16,
-            )
-          : CustomDoubleAppButton(
-              cancelAction: () async {
-                await Get.find<TimelineController>()
-                    .removeTimeEntry(timeLogId: taskInfo.timeLineId)
-                    .then((value) {
-                  if (value == true) {
-                    Navigator.pop(context);
-                  }
-                });
-              },
-              buttonText: AppString.text_details.tr,
-              cancelText: AppString.text_remove.tr,
-              onAction: () {
-                _updateDataFromApiResponse(taskInfo: taskInfo);
-                Get.to(() {
-                  return UpdateTimeLineLog(
-                    projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                        ? HexColor(taskInfo.projectColor)
-                        : AppColor.primaryColor,
-                    endDateTime: taskInfo.endTime,
-                    startDateTime: taskInfo.startTime,
-                    status: taskInfo.status ?? "",
-                  );
-                });
-              },
-              btnColor: AppColor.primaryColor),
-    ),
+  return Padding(
+    padding: marginLayout,
+    child: CustomDoubleAppButton(
+        cancelAction: () async {
+          removeTask(context: context, taskInfo: taskInfo);
+        },
+        buttonText: AppString.text_details.tr,
+        cancelText: AppString.text_remove.tr,
+        onAction: () {
+          _updateDataFromApiResponse(taskInfo: taskInfo);
+          Get.to(() {
+            return UpdateTimeLineLog(
+              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                  ? HexColor(taskInfo.projectColor)
+                  : AppColor.primaryColor,
+              endDateTime: taskInfo.endTime,
+              startDateTime: taskInfo.startTime,
+              status: taskInfo.status ?? "",
+            );
+          });
+        },
+        btnColor: AppColor.primaryColor),
   );
 }
 
 _pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
-  return Obx(
-    () => Padding(
-      padding: marginLayout,
-      child: Get.find<TimelineController>().isTimelogEntryOrRemoveLoading.isTrue
-          ? const CupertinoActivityIndicator(
-              color: Colors.blueAccent,
-              radius: 16,
-            )
-          : CustomDoubleAppButton(
-              cancelAction: () async {
-                await Get.find<TimelineController>()
-                    .removeTimeEntry(timeLogId: taskInfo.timeLineId)
-                    .then((value) {
-                  if (value == true) {
-                    Navigator.pop(context);
-                  }
-                });
-              },
-              buttonText: AppString.text_details.tr,
-              cancelText: AppString.text_remove.tr,
-              onAction: () {
-                _updateDataFromApiResponse(taskInfo: taskInfo);
-                Get.to(() => UpdateTimeLineLog(
-                      projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                          ? HexColor(taskInfo.projectColor)
-                          : AppColor.primaryColor,
-                      endDateTime: taskInfo.endTime,
-                      startDateTime: taskInfo.startTime,
-                      status: taskInfo.status ?? "",
-                    ));
-              },
-              btnColor: AppColor.primaryColor),
-    ),
+  return Padding(
+    padding: marginLayout,
+    child: CustomDoubleAppButton(
+        cancelAction: () async {
+          removeTask(context: context, taskInfo: taskInfo);
+        },
+        buttonText: AppString.text_details.tr,
+        cancelText: AppString.text_remove.tr,
+        onAction: () {
+          _updateDataFromApiResponse(taskInfo: taskInfo);
+          Get.to(() => UpdateTimeLineLog(
+                projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                    ? HexColor(taskInfo.projectColor)
+                    : AppColor.primaryColor,
+                endDateTime: taskInfo.endTime,
+                startDateTime: taskInfo.startTime,
+                status: taskInfo.status ?? "",
+              ));
+        },
+        btnColor: AppColor.primaryColor),
   );
+}
+
+void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
+  customDialog(
+      context: context,
+      saveBtnAction: () async {
+        await Get.find<TimelineController>()
+            .removeTimeEntry(timeLogId: taskInfo.timeLineId)
+            .then((value) {
+          if (value == true) {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }
+        });
+      },
+      icon: CupertinoIcons.delete,
+      titleText: AppString.text_remove_timelog.tr,
+      subText: AppString.text_sure_you_want_to_delete_timelog.tr,
+      iconBgColor: AppColor.errorColorLight,
+      btnBgColor: AppColor.errorColorLight,
+      btnText: "",
+      drcText: "",
+      drcFontSize: Dimensions.fontSizeDefault,
+      childForSaveBtn: Obx(() => removeTextLayout()));
+}
+
+removeTextLayout() {
+  return Get.find<TimelineController>().isTimelogEntryOrRemoveLoading.value
+      ? const CupertinoActivityIndicator(
+          color: AppColor.cardColor,
+        )
+      : Text(
+          AppString.text_remove.tr,
+          style: AppStyle.normal_text_grey.copyWith(
+              fontSize: Dimensions.fontSizeDefault + 1,
+              color: AppColor.cardColor),
+        );
 }
 
 _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
@@ -204,7 +216,8 @@ void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
   Get.find<TimelineController>().timeLineID = taskInfo.timeLineId ?? "";
   Get.find<TimelineController>().taskId.value = taskInfo.taskId ?? "";
   Get.find<TimelineController>().projectId.value = taskInfo.projectId ?? "";
-  Get.find<TimelineController>().projectColor.value = taskInfo.projectColor ?? "";
+  Get.find<TimelineController>().projectColor.value =
+      taskInfo.projectColor ?? "";
   Get.find<TimelineController>().taskName.value =
       taskInfo.taskOrProjectName ?? "";
   descriptionController.text = taskInfo.description ?? "";

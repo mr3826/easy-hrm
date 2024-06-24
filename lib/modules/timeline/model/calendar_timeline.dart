@@ -1,8 +1,5 @@
 import '../../leave/model/leave_record_response.dart';
 
-
-
-
 class CalendarTimeline {
   GetCalenderTimelinesForApp? getCalenderTimelinesForApp;
 
@@ -16,14 +13,12 @@ class CalendarTimeline {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (getCalenderTimelinesForApp != null) {
-      data['getCalenderTimelinesForApp'] =
-          getCalenderTimelinesForApp!.toJson();
+      data['getCalenderTimelinesForApp'] = getCalenderTimelinesForApp!.toJson();
     }
     return data;
   }
-
 }
 
 class GetCalenderTimelinesForApp {
@@ -88,7 +83,6 @@ class Timelines {
     project =
         json['project'] != null ? Project.fromJson(json['project']) : null;
   }
-
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

@@ -16,7 +16,6 @@ class AppString {
 
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
   static String text_retry = 'Retry';
-  static String text_no_data_found = 'No data found';
   static String text_you_have_seen_all_notification = 'You have seen all notification';
   static String no_internet_title_text = "No internet!!";
   static String no_internet_subtitle_text =
@@ -28,9 +27,11 @@ class AppString {
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText = "Work Shift";
+  static String text_sure_you_want_to_delete_timelog = "Sure  you want to delete this time log?If you delete this timelog you can’t recover it again.";
   static const String invalidVerificationCode =
       "Invalid verification code provided";
   static String text_provid_a_valid_input = "Provide a Valid Input";
+  static String text_remove_timelog = "Remove timelog";
   static String text_no_available_leave = "No available leave";
   static String text_balance_no_of_days = "Balance (No.of days)";
   static String text_track_your_time = 'Track your time';
@@ -45,6 +46,7 @@ class AppString {
       'There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ';
   static String text_timer = 'Timer';
   static String textPresent = 'Present';
+  static String textWeDidNotEtc = 'We did not find anything to show here!';
   static String text_from = 'From';
   static String text_form_last = 'Form last';
   static String textManager = 'Manager';

@@ -22,6 +22,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_drawer.dart';
+import '../../../../utils/utils.dart';
 import '../widget/action_layout_widget.dart';
 import '../widget/chnage_email_notify_layout.dart';
 import '../widget/expanded_text_layout.dart';
@@ -147,9 +148,9 @@ class ProfileScreen extends GetView<UserProfileController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _infoTextLayout(
-            dynamicText: controller.userLogHistory
+            dynamicText: formatToTwoDecimalPlaces(controller.userLogHistory
                     ?.geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
-                "",
+                ""),
             staticText: AppString.text_leave_balance.tr),
         _divider(),
         _infoTextLayout(
@@ -298,9 +299,6 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-
-
-
   _languageLayout(context) {
     return InkWell(
       onTap: () {
@@ -340,8 +338,6 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-
-
   _organisationLayout(context) {
     return Padding(
       padding: marginLayout,
@@ -367,7 +363,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                   Text(
                     controller.userDetails?.getOrganizationUserDetails
                             ?.organization?.orgName ??
-                        "No added yet",
+                        "Not added yet",
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.normalTextColor,
                         fontWeight: FontWeight.w900,
@@ -413,9 +409,6 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-
-
-
   _profileInfoDrawerLayout() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
@@ -433,7 +426,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? "No added yet"}",
+                      "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? "Not added yet"}",
                       style: AppStyle.mid_large_text
                           .copyWith(color: AppColor.normalTextColor),
                     ),
@@ -454,7 +447,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                                 ?.designationHistories?[0]
                                 .designation
                                 ?.name ??
-                            "No added yet",
+                            "Not added yet",
                         style: AppStyle.normal_text_grey
                             .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
                       ),
@@ -550,36 +543,38 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _userImageLayout({double? height}) {
     return CustomNetworkImage(
-        errorText: (Get.find<UserProfileController>()
-                            .userDetails
-                            ?.getOrganizationUserDetails
-                            ?.profile
-                            ?.firstName !=
-                        null &&
-                    Get.find<UserProfileController>()
-                        .userDetails!
-                        .getOrganizationUserDetails!
-                        .profile!
-                        .firstName!
-                        .isNotEmpty) &&
-                (Get.find<UserProfileController>()
-                            .userDetails
-                            ?.getOrganizationUserDetails
-                            ?.profile
-                            ?.lastName !=
-                        null &&
-                    Get.find<UserProfileController>()
-                        .userDetails!
-                        .getOrganizationUserDetails!
-                        .profile!
-                        .lastName!
-                        .isNotEmpty)
-            ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
-                "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
-            : "",
-        height: height ?? 32,
-        profileImageKey:
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}", imgUrlKey: '',);
+      errorText: (Get.find<UserProfileController>()
+                          .userDetails
+                          ?.getOrganizationUserDetails
+                          ?.profile
+                          ?.firstName !=
+                      null &&
+                  Get.find<UserProfileController>()
+                      .userDetails!
+                      .getOrganizationUserDetails!
+                      .profile!
+                      .firstName!
+                      .isNotEmpty) &&
+              (Get.find<UserProfileController>()
+                          .userDetails
+                          ?.getOrganizationUserDetails
+                          ?.profile
+                          ?.lastName !=
+                      null &&
+                  Get.find<UserProfileController>()
+                      .userDetails!
+                      .getOrganizationUserDetails!
+                      .profile!
+                      .lastName!
+                      .isNotEmpty)
+          ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
+              "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
+          : "",
+      height: height ?? 32,
+      profileImageKey:
+          "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
+      imgUrlKey: '',
+    );
   }
 
   _organisationLogoLayout() {
@@ -720,7 +715,7 @@ class ProfileScreen extends GetView<UserProfileController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
+          "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
           style:
               AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
         ),

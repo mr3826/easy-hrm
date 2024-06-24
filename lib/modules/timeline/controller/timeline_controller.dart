@@ -18,7 +18,6 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../common/domain/last_input_model.dart';
 import '../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../network/exception_helper.dart';
@@ -88,16 +87,6 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   saveTimeEntry() async {
-    print('''
-     "description": ${descriptionController.text},
-         "end_date":
-            "${DateTime.parse(startOrEndTimerResponse?.startOrStopTimer?.endDate ?? DateTime.now().toString()).toUtc()}",
-        "start_date":"${DateTime.parse(startOrEndTimerResponse?.startOrStopTimer?.startDate ?? DateTime.now().toString()).toUtc()}",
-        "status": "pending",
-        "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
-        "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
-        "timeline_id": ${startOrEndTimerResponse?.startOrStopTimer?.id ?? ""}
-    ''');
 
     isTimelogEntryOrRemoveLoading(true);
     final response =
@@ -138,16 +127,6 @@ class TimelineController extends GetxController with StateMixin {
   ///with utc
   createManualEntry() async {
     isManualEntryLoading(true);
-
-    print('''
-     "description": ${descriptionController.text},
-        "end_date": ${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString()},
-        "start_date":
-            ${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString()},
-        "status": "pending",
-        "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
-        "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
-    ''');
 
     Duration timeDifference = DateTime.parse(
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
@@ -198,17 +177,6 @@ class TimelineController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
         .difference(DateTime.parse(
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-    print('''
-     "description": ${descriptionController.text},
-                 "end_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
-          "start_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-        "status": "pending",
-        "task_id": ${taskId.value.isNotEmpty ? taskId.value : null},
-        "project_id": ${projectId.value.isNotEmpty ? projectId.value : null},
-        "timeline_id": $timeLineID
-    ''');
 
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
@@ -304,12 +272,14 @@ class TimelineController extends GetxController with StateMixin {
 
   getTimelineSummaryByMonth(
       {required String? startDate, required String? endDate}) async {
+
+    print("getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
-        "start_time": startDate,
-        "end_time": endDate,
+        "start_date": startDate,
+        "end_date": endDate,
       }
     });
     if (response.hasException) {
@@ -328,9 +298,8 @@ class TimelineController extends GetxController with StateMixin {
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
-        "start_time": "$startDate",
-        "end_time": "$endDate",
-        "is_calender_summary": true
+        "start_date": "$startDate",
+        "end_date": "$endDate",
       }
     });
     log("getTimelineSummaryByDate ==> $response");
@@ -338,7 +307,7 @@ class TimelineController extends GetxController with StateMixin {
       log("getTimelineByDate:: ${response.exception.toString()}");
     } else {
       timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
-      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balanced}");
+      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balance}");
     }
     isTimelineSummaryByDateLoading(false);
   }
@@ -387,9 +356,9 @@ class TimelineController extends GetxController with StateMixin {
   _refreshTimeline() async {
     await getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     await getCalendarTimelineDataByDate(
         startDate:

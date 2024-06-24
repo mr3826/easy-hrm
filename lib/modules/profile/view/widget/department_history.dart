@@ -33,7 +33,8 @@ class DepartmentHistory extends StatelessWidget {
               ?.getOrganizationUserHistory
               ?.deptHistories
               ?.length,
-          physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.zero,
+              physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             return _departmentSectionInfoLayout(
               imageUrl: Get.find<UserProfileController>()

@@ -66,8 +66,7 @@ class TimelineScreen extends GetView<TimelineController> {
       child: Row(
         children: [
           controller.isRunning.value
-              ? _timerStringOpenBtn(
-                  time: controller.starTimeDashboard.toString())
+              ? _timerStringOpenBtn(time: controller.starTimeDashboard.toString())
               : _timerStringBtn(),
           customSpacerWidth(width: 18),
           _addTimeEntryBtn(),
@@ -115,9 +114,9 @@ class TimelineScreen extends GetView<TimelineController> {
   Future<void> _refreshScreen() async {
     await controller.getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, 1, 0, 0, 0)}",
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month + 1, 0, 23, 59, 59)}");
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     await controller.getCalendarTimelineDataByDate(
         startDate:

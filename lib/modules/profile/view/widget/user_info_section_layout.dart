@@ -25,7 +25,7 @@ Widget userInfoSectionLayout({
       ),
       customSpacerHeight(height: 2),
       Text(
-        "$dynamicText",
+        dynamicText.isEmpty || dynamicText ==null?"Not added yet":dynamicText,
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.hintColor,
             fontSize: Dimensions.fontSizeDefault - 1),

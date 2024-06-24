@@ -11,6 +11,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
+import '../../../../utils/utils.dart';
+
 Widget leaveLayout() {
   return SizedBox(
     height: AppLayout.getHeight(120),
@@ -64,7 +66,7 @@ _balanceLeave() {
               ?.getLeaveSummaryForDashboard
               ?.balanceLeave ??
           "",
-      staticText: AppString.text_available.tr);
+      staticText: AppString.text_token.tr);
 }
 
 _totalLeave() {
@@ -147,7 +149,7 @@ noDataFoundLayout() {
       height: MediaQuery.of(Get.context!).size.height / 1.3,
       child: Center(
           child: Text(
-        AppString.text_no_data_found.tr,
+        AppString.textWeDidNotEtc.tr,
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
       )));

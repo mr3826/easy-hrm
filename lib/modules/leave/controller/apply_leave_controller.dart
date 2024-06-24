@@ -53,13 +53,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   applyLeave({filePath}) async {
-    print(
-        "applyLeave filePath:: ${uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last}");
-
-    print(
-        "size :::: ${Get.find<FileUploadController>().storageForUpload.fileSize.value.toString()}");
     isAssignLeaveLoaderLoading(true);
-
     final response = await NetworkClient().mutationGraphData(assignLeaveQuery, {
       "inputData": {
         "description": leaveNoteController.text,
@@ -124,10 +118,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
   }
 
   getUploadPolicy({fileName}) async {
-    print(
-        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}");
     isUploadPolicyLoading(true);
-
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
