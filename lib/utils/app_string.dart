@@ -123,6 +123,7 @@ class AppString {
   static String text_profile = 'Profile';
   static String text_action = 'Actions';
   static String text_account = 'account';
+  static String text_available = 'Available';
   static String text_you_have = 'You have';
   static String text_org_linked_with_your = 'organization linked with your';
   static String text_organisations_linked_with_your = 'organizations linked with your';

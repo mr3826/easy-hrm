@@ -66,7 +66,7 @@ _balanceLeave() {
               ?.getLeaveSummaryForDashboard
               ?.balanceLeave ??
           ""),
-      staticText: AppString.text_token.tr);
+      staticText: AppString.text_available.tr);
 }
 
 _totalLeave() {
