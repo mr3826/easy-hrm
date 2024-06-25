@@ -66,7 +66,8 @@ class TimelineScreen extends GetView<TimelineController> {
       child: Row(
         children: [
           controller.isRunning.value
-              ? _timerStringOpenBtn(time: controller.starTimeDashboard.toString())
+              ? _timerStringOpenBtn(
+                  time: controller.starTimeDashboard.toString())
               : _timerStringBtn(),
           customSpacerWidth(width: 18),
           _addTimeEntryBtn(),
@@ -114,9 +115,9 @@ class TimelineScreen extends GetView<TimelineController> {
   Future<void> _refreshScreen() async {
     await controller.getTimelineSummaryByMonth(
         startDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     await controller.getCalendarTimelineDataByDate(
         startDate:
@@ -133,7 +134,7 @@ class TimelineScreen extends GetView<TimelineController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(230),
+    expandedHeight: AppLayout.getHeight(210),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,
@@ -150,7 +151,7 @@ SliverAppBar get sliverAppBar {
                 children: [
                   customSpacerHeight(height: 45),
                   _timelineText(),
-                  customSpacerHeight(height: 8),
+                  customSpacerHeight(height: 12),
                   timelineLayout(),
                   customSpacerHeight(height: 6),
                 ],
@@ -177,8 +178,8 @@ _buttonRadiusLayout() {
         decoration: BoxDecoration(
             color: AppColor.cardColor,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid),
-                topLeft: Radius.circular(Dimensions.radiusMid))),
+                topRight: Radius.circular(Dimensions.radiusMid + 5),
+                topLeft: Radius.circular(Dimensions.radiusMid + 5))),
         width: double.maxFinite,
         padding: const EdgeInsets.only(top: 0, bottom: 0),
         child: const Center(
