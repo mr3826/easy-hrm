@@ -15,7 +15,7 @@ import '../../../../utils/utils.dart';
 
 Widget timelineLayout() {
   return SizedBox(
-    height: AppLayout.getHeight(130),
+    height: AppLayout.getHeight(118),
     width: double.infinity,
     child: Padding(
       padding: EdgeInsets.only(left: AppLayout.getHeight(0)),
@@ -32,7 +32,7 @@ Widget timelineLayout() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
-                      dynamicText:getConvertSecondsToRoundedHours( Get.find<TimelineController>()
+                      dynamicText:getConvertSecondsToHours( Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
                               ?.totalScheduledSeconds ??
@@ -42,7 +42,7 @@ Widget timelineLayout() {
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: getConvertSecondsToRoundedHours(Get.find<TimelineController>()
+                      dynamicText: getConvertSecondsToHours(Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
                               ?.loggedTotalSeconds ??
@@ -52,7 +52,7 @@ Widget timelineLayout() {
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText:getConvertSecondsToRoundedHours( Get.find<TimelineController>()
+                      dynamicText:getConvertSecondsToHours( Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
                               ?.totalLeavesSeconds ??
@@ -62,7 +62,7 @@ Widget timelineLayout() {
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText:getConvertSecondsToRoundedHours( Get.find<TimelineController>()
+                      dynamicText:getConvertSecondsToHours( Get.find<TimelineController>()
                               .timelineSummaryByMonth
                               ?.getTimelogSummaryForApp
                               ?.balance ??
@@ -114,13 +114,13 @@ _countLayout({required String dynamicText, required String staticText}) {
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor,
             fontWeight: FontWeight.bold,
-            fontSize: Dimensions.fontSizeMid - 2),
+            fontSize: Dimensions.fontSizeDefault+1),
       ),
       Text(
         staticText,
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor.withOpacity(0.9),
-            fontSize: Dimensions.fontSizeDefault - 1),
+            fontSize: Dimensions.fontSizeDefault - 3),
       ),
     ],
   );

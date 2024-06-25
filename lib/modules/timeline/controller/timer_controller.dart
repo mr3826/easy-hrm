@@ -97,7 +97,7 @@ class TimeCounterController extends GetxController {
         start();
         Get.find<TimeCounterController>().isRunningHorizontalLine(true);
       } else {
-        stop();
+        reset();
       }
     }
     isLoading(false);

@@ -149,9 +149,9 @@ String getConvertSecondsToHours(String secondsStr) {
 
   double seconds;
   try {
-    double value = double.parse(secondsStr);
+    double cleanSecond = double.parse(secondsStr.replaceAll("-", ""));
     // Ensure only two decimal places
-    String formattedValue = value.toStringAsFixed(2);
+    String formattedValue = cleanSecond.toStringAsFixed(2);
     seconds = double.parse(formattedValue);
   } catch (e) {
     return "0m"; // Return "0m" if parsing fails
@@ -161,10 +161,10 @@ String getConvertSecondsToHours(String secondsStr) {
   int hours = totalMinutes ~/ 60;
   int minutes = totalMinutes % 60;
 
-  if (hours == 0) return "${minutes}m";
-  if (minutes == 0) return "${hours}h";
+  if (hours == 0) return "${secondsStr.startsWith("-") ? "-" : ""}${minutes}m";
+  if (minutes == 0) return "${secondsStr.startsWith("-") ? "-" : ""}${hours}h";
 
-  return "$hours.${minutes}h";
+  return "${secondsStr.startsWith("-") ? "-" : ""}$hours.${minutes}h";
 }
 
 String formatToTwoDecimalPlaces(String? data) {
@@ -180,40 +180,6 @@ String formatToTwoDecimalPlaces(String? data) {
     return formatted.split('.')[0];
   }
   return formatted;
-}
-
-String getConvertSecondsToRoundedHours(String secondsStr) {
-  if (secondsStr.isEmpty || secondsStr == "null") {
-    return "0h";
-  }
-
-  // Parse the input string to a double
-  double seconds;
-  try {
-    double value = double.parse(secondsStr);
-    // Ensure only two decimal places
-    String formattedValue = value.toStringAsFixed(2);
-    seconds = double.parse(formattedValue);
-  } catch (e) {
-    return "0h"; // Return "0h" if parsing fails
-  }
-
-  // Calculate the total hours
-  double totalHours = seconds / 3600;
-
-  // Determine if the total hours have a decimal part
-  bool hasDecimal = totalHours % 1 != 0;
-
-  // If there is a decimal part, round down and add "h+"
-  if (hasDecimal) {
-    String data = "$totalHours";
-    if (data.startsWith("-")) return "${totalHours.truncate()}h";
-    return "${totalHours.truncate()}h+";
-  }
-  // If there is no decimal part, display as an integer followed by "h"
-  else {
-    return "${totalHours.toInt()}h";
-  }
 }
 
 String getDayName(String date) {

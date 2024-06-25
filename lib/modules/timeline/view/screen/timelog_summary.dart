@@ -42,25 +42,25 @@ class TimeLogSummary extends StatelessWidget {
                   : Column(
                       children: [
                         workingScheduleLayout(
-                            schedule: getConvertSecondsToRoundedHours(
+                            schedule: getConvertSecondsToHours(
                                 Get.find<TimelineSummaryController>()
                                         .timelineSummaryByMonth
                                         ?.getTimelogSummaryForApp
                                         ?.totalScheduledSeconds ??
                                     ""),
-                            balanceTime: getConvertSecondsToRoundedHours(
+                            balanceTime: getConvertSecondsToHours(
                                 Get.find<TimelineSummaryController>()
                                         .timelineSummaryByMonth
                                         ?.getTimelogSummaryForApp
                                         ?.balance ??
                                     ""),
-                            loggedTime: getConvertSecondsToRoundedHours(
+                            loggedTime: getConvertSecondsToHours(
                                 Get.find<TimelineSummaryController>()
                                         .timelineSummaryByMonth
                                         ?.getTimelogSummaryForApp
                                         ?.loggedTotalSeconds ??
                                     ""),
-                            paidLeave: getConvertSecondsToRoundedHours(
+                            paidLeave: getConvertSecondsToHours(
                                 Get.find<TimelineSummaryController>()
                                         .timelineSummaryByMonth
                                         ?.getTimelogSummaryForApp

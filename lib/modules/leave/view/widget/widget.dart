@@ -51,31 +51,33 @@ Widget leaveLayout() {
 
 _takenLeave() {
   return _countLayout(
-      dynamicText: Get.find<LeaveScreenController>()
+      dynamicText: formatToTwoDecimalPlaces( Get.find<LeaveScreenController>()
               .leaveSummaryForDashboard
               ?.getLeaveSummaryForDashboard
               ?.takenLeave ??
-          "",
+          ""),
       staticText: AppString.text_token.tr);
 }
 
 _balanceLeave() {
   return _countLayout(
-      dynamicText: Get.find<LeaveScreenController>()
+      dynamicText: formatToTwoDecimalPlaces( Get.find<LeaveScreenController>()
               .leaveSummaryForDashboard
               ?.getLeaveSummaryForDashboard
               ?.balanceLeave ??
-          "",
-      staticText: AppString.text_token.tr);
+          ""),
+      staticText: AppString.text_available.tr);
 }
 
 _totalLeave() {
   return _countLayout(
-      dynamicText: Get.find<LeaveScreenController>()
+      dynamicText: formatToTwoDecimalPlaces(
+
+      Get.find<LeaveScreenController>()
               .leaveSummaryForDashboard
               ?.getLeaveSummaryForDashboard
               ?.totalLeaveDay ??
-          "",
+          ""),
       staticText: AppString.text_total.tr);
 }
 
