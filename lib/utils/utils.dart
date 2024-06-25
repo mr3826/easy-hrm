@@ -161,17 +161,11 @@ String getConvertSecondsToHours(String secondsStr) {
   int hours = totalMinutes ~/ 60;
   int minutes = totalMinutes % 60;
 
+  if (hours == 0) return "${secondsStr.startsWith("-") ? "-" : ""}${minutes}m";
+  if (minutes == 0) return "${secondsStr.startsWith("-") ? "-" : ""}${hours}h";
 
-  if (hours == 0) return "${secondsStr.startsWith("-")?"-":""}${minutes}m";
-  if (minutes == 0) return "${secondsStr.startsWith("-")?"-":""}${hours}h";
-
-  return "${secondsStr.startsWith("-")?"-":""}$hours.${minutes}h";
+  return "${secondsStr.startsWith("-") ? "-" : ""}$hours.${minutes}h";
 }
-
-
-
-
-
 
 String formatToTwoDecimalPlaces(String? data) {
   if (data == null || data.isEmpty) {
@@ -186,39 +180,6 @@ String formatToTwoDecimalPlaces(String? data) {
     return formatted.split('.')[0];
   }
   return formatted;
-}
-
-String getConvertSecondsToRoundedHours(String secondsStr) {
-  if (secondsStr.isEmpty || secondsStr == "null") {
-    return "0h";
-  }
-
-  // Parse the input string to a double
-  double seconds;
-  try {
-    double cleanSecond = double.parse(secondsStr.replaceAll("-", ""));
-
-    // Ensure only two decimal places
-    String formattedValue = cleanSecond.toStringAsFixed(2);
-    seconds = double.parse(formattedValue);
-  } catch (e) {
-    return "0h"; // Return "0h" if parsing fails
-  }
-
-  // Calculate the total hours
-  double totalHours = seconds / 3600;
-
-  // Determine if the total hours have a decimal part
-  bool hasDecimal = totalHours % 1 != 0;
-
-  // If there is a decimal part, round down and add "h+"
-  if (hasDecimal) {
-    return "${secondsStr.startsWith("-")?"-":""}${totalHours.truncate()}h+";
-  }
-  // If there is no decimal part, display as an integer followed by "h"
-  else {
-    return "${secondsStr.startsWith("-")?"-":""}${totalHours.toInt()}h";
-  }
 }
 
 String getDayName(String date) {
