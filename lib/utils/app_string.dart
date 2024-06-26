@@ -59,7 +59,7 @@ class AppString {
   static String text_we_have_a_verification_etc =
       'We have sent a verification code to your email address. Enter this code bellow to verify your account.';
   static String text_dont_not_worry =
-      'Don’t worry! It happens. Please enter the email address associated with your account';
+      'Don’t worry! It happens. Please enter the email address associated with your account.';
   static String text_enter_code = 'Enter your code';
   static String inputTimeInvalidMessage = "End time must be after start time";
   static String text_setup_your_code_etc =

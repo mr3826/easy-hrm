@@ -45,7 +45,7 @@ Map<String, String> eng = {
   AppString.text_we_have_a_verification_etc:
       "We have sent a verification code to your email address. Enter this code bellow to verify your account.",
   AppString.text_dont_not_worry:
-      "Don’t worry! It happens. Please enter the email address associated with your account",
+      "Don’t worry! It happens. Please enter the email address associated with your account.",
   AppString.text_enter_code: "Enter your code",
   AppString.inputTimeInvalidMessage: "End time must be after start time",
   AppString.text_setup_your_code_etc:

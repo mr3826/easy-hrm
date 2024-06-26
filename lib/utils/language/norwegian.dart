@@ -35,7 +35,7 @@ Map<String, String> nn = {
   AppString.text_we_have_a_verification_etc:
       "Vi har sendt en verifiseringskode til e-postadressen din. Skriv inn denne koden nedenfor for å bekrefte kontoen din.",
   AppString.text_dont_not_worry:
-      "Ikke bekymre deg! Det skjer. Vennligst skriv inn e-postadressen knyttet til kontoen din",
+      "Ikke bekymre deg! Det skjer. Vennligst skriv inn e-postadressen knyttet til kontoen din.",
   AppString.text_enter_code: "Skriv inn koden din",
   AppString.inputTimeInvalidMessage: "Sluttid må være etter starttid",
   AppString.text_setup_your_code_etc:
