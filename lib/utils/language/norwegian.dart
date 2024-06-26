@@ -37,6 +37,7 @@ Map<String, String> nn = {
   AppString.text_dont_not_worry:
       "Ikke bekymre deg! Det skjer. Vennligst skriv inn e-postadressen knyttet til kontoen din.",
   AppString.text_enter_code: "Skriv inn koden din",
+  AppString.text_enter_new_email_address: "Skriv inn din nye e-postadresse",
   AppString.inputTimeInvalidMessage: "Sluttid må være etter starttid",
   AppString.text_setup_your_code_etc:
       "Sett opp ditt nye passord nå. Minimum 8 bokstaver eller sifre",
@@ -124,7 +125,7 @@ Map<String, String> nn = {
   AppString.text_min_8_character: "Min. 8 tegn",
   AppString.text_verify_your_email_address: "Bekreft e-postadressen din",
   AppString.text_we_have_sent_a_verification_etc:
-      "Vi har sendt en verifiseringskode til e-postadressen din new@gmail.com. Skriv inn denne koden nedenfor for å bekrefte kontoen din",
+      "Vi har sendt en verifiseringskode til e-postadressen din new@gmail.com. Skriv inn denne koden nedenfor for å bekrefte kontoen din.",
   AppString.text_do_not_receive_email: "Mottar du ikke e-post? ",
   AppString.text_do_not_receive_otp: "Mottar du ikke kode? ",
   AppString.text_resend: "Send på nytt",

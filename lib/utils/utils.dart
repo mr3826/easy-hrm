@@ -133,14 +133,16 @@ String findWeekdayFormDateString(String dateString) {
 
 String amPmFormatTimeFromString(String dateString) {
   if (dateString.isEmpty) return "";
+
   // Parse the time string into a DateTime object
   DateTime time = DateFormat("HH:mm:ss").parse(dateString);
 
-  // Format the DateTime object into AM/PM format
-  String formattedTime = DateFormat("h:mm a").format(time);
+  // Format the DateTime object into AM/PM format with lowercase "am" and "pm"
+  String formattedTime = DateFormat("h:mm a").format(time).toLowerCase();
 
   return formattedTime;
 }
+
 
 String getConvertSecondsToHours(String secondsStr) {
   if (secondsStr.isEmpty || secondsStr == "null") {
@@ -214,6 +216,12 @@ String getTimeDifference(String startTimeString, String endTimeString) {
 
   // Calculate the duration between the two times
   Duration duration = endTime.difference(startTime);
+   "${duration.inHours} h : ${duration.inMinutes % 60} m";
+
+
+   if(duration.inMinutes % 60==0)return "${duration.inHours}h";
+   if(duration.inHours % 60==0)return "${duration.inMinutes % 60}m";
+
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
 

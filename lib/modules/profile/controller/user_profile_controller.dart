@@ -62,6 +62,13 @@ class UserProfileController extends GetxController with StateMixin {
   final isNewOrganizationChangeLoading = false.obs;
   final isVerificationApiLoading = false.obs;
 
+  var isOtpString = ''.obs;
+
+
+  bool get isButtonEnabledForOTP {
+    return isOtpString.isNotEmpty;
+  }
+
   final passwordInputController = TextEditingController();
 
   getUserProfile() async {
@@ -143,13 +150,10 @@ class UserProfileController extends GetxController with StateMixin {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
-      print("Change email ::: ${response.body}");
 
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
-                "Some Error occur!");
+        showErrorMessage(message: ErrorModel.fromJson(response.body).message ?? "Some Error occur!");
       } else {
         logSuccessMessage(logName: "changeMail", response: response);
         // SuccessModel value = SuccessModel.fromJson(response.body);
@@ -174,9 +178,7 @@ class UserProfileController extends GetxController with StateMixin {
 
       if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
-                "Some Error occur!");
+        showErrorMessage(message: ErrorModel.fromJson(response.body).message ?? "Some Error occur!");
       } else {
         logSuccessMessage(
             logName: "submitVerificationCode", response: response);

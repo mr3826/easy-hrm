@@ -37,6 +37,7 @@ class Images {
   static String emptyNotification = "assets/images/empty_notification.png";
 
   static String forgot = "assets/images/forgot_src.svg";
+  static String home = "assets/images/home.svg";
   static String otp = "assets/images/otp_src.svg";
   static String reset_password = "assets/images/reset pas_src.svg";
   static String airplane_nav = "assets/images/airplane_nav.svg";

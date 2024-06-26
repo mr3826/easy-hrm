@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -49,17 +50,10 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
         text: AppString.text_leave.tr,
         imgUrl: Images.leaveIconNavOutLine),
     PersistentBottomNavBarItem(
-      icon: const Icon(
-        Icons.home_filled,
-        size: 30,
-        color: AppColor.cardColor,
-      ),
+      icon: customSvgImage(imageUrl: Images.home,height: 25,width: 25),
+
       activeColorPrimary: AppColor.primaryColor,
-      inactiveIcon: const Icon(
-        Icons.home_filled,
-        size: 30,
-        color: AppColor.cardColor,
-      ),
+      inactiveIcon: customSvgImage(imageUrl: Images.home,height: 25,width: 25),
     ),
     _navbarIcon(
         activeIcon: Images.notificationIconNav,

@@ -88,13 +88,18 @@ Future otpVerificationLayout(context) {
                   ? const Center(
                       child: CupertinoActivityIndicator(
                           color: Colors.blueAccent, radius: 12))
-                  : _verifyBtnLayout(verifyAction: () {
-                      selectedValue.isSelected(true);
-                      Navigator.pop(context);
-                    }, closeAction: () {
-                      selectedValue.isSelected(true);
-                      Navigator.pop(context);
-                    }),
+                  : _verifyBtnLayout(
+                      verifyAction: Get.find<UserProfileController>()
+                              .isButtonEnabledForOTP
+                          ? () {
+                              selectedValue.isSelected(true);
+                              Navigator.pop(context);
+                            }
+                          : null,
+                      closeAction: () {
+                        selectedValue.isSelected(true);
+                        Navigator.pop(context);
+                      }),
             ),
             customSpacerHeight(height: 16)
           ],
@@ -144,12 +149,16 @@ _verifyBtnLayout({verifyAction, closeAction}) {
                 shape: roundedRectangleBorder.copyWith(
                     borderRadius: BorderRadius.circular(
                         Dimensions.radiusExtraLarge)), //close
-                color: AppColor.primaryColor,
+                color: Get.find<UserProfileController>().isButtonEnabledForOTP
+                    ? AppColor.primaryColor
+                    : AppColor.normalTextColor.withOpacity(0.1),
+
                 child: Center(
                     child: Text(
                   AppString.text_verify.tr,
                   style: AppStyle.small_text_black.copyWith(
-                      color: AppColor.cardColor,
+                      color:Get.find<UserProfileController>()
+                          .isButtonEnabledForOTP? AppColor.cardColor:AppColor.normalTextColor.withOpacity(0.4),
                       fontSize: Dimensions.fontSizeDefault),
                 )),
               ),
@@ -174,10 +183,14 @@ class OtpLayout extends StatelessWidget {
         onChanged: (value) {
           // Handle OTP changes
           log("Otp :: $value");
+          Get.find<UserProfileController>().isOtpString.value =
+              value;
         },
         onCompleted: (verificationCode) {
           Get.find<UserProfileController>()
               .submitVerificationCode(verificationCode: verificationCode);
+          Get.find<UserProfileController>().isOtpString.value =
+              verificationCode;
         },
         backgroundColor: Colors.white,
         keyboardType: TextInputType.number,
@@ -186,6 +199,8 @@ class OtpLayout extends StatelessWidget {
         onSubmitted: (verificationCode) {
           Get.find<UserProfileController>()
               .submitVerificationCode(verificationCode: verificationCode);
+          Get.find<UserProfileController>().isOtpString.value =
+              verificationCode;
         },
         pinTheme: PinTheme(
           shape: PinCodeFieldShape.box,

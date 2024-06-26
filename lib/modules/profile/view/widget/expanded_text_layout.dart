@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -33,41 +35,63 @@ class _ExpandedTextState extends State<ExpandedText> {
 
   @override
   Widget build(BuildContext context) {
-    return secondHalf == ""
-        ? RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: widget.text,
-            style: disTextStyle,
-          ),
-        ],
-      ),
-    )
-        : RichText(
-      text: TextSpan(
-        children: [
-          // half text layout here
-          _halfText(),
-          TextSpan(
-            text: isExpanded ? " ${AppString.text_view_less.tr}" : " ...${AppString.text_view_more}",
-            style: AppStyle.mid_large_text.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeDefault),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        secondHalf == ""
+            ? RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: widget.text,
+                      style: disTextStyle,
+                    ),
+                  ],
+                ),
+              )
+            : RichText(
+                text: TextSpan(
+                  children: [
+                    // half text layout here
+                    _halfText(),
+                    TextSpan(
+                      text: isExpanded ? " " : " .....",
+                      style: AppStyle.mid_large_text.copyWith(
+                          color: AppColor.normalTextColor.withOpacity(0.5),
+                          fontSize: Dimensions.fontSizeDefault),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          setState(() {
+                            isExpanded = !isExpanded;
+                          });
 
-                //_readMoreText();
-              },
-          ),
-        ],
-      ),
+                          //_readMoreText();
+                        },
+                    ),
+                  ],
+                ),
+              ),
+        customSpacerHeight(height: 8),
+        InkWell(
+            onTap: () {
+              setState(() {
+                isExpanded = !isExpanded;
+              });
+            },
+            child: Text(
+              isExpanded
+                  ? " ${AppString.text_view_less.tr}"
+                  : AppString.text_view_more,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.secondaryColor,
+                  fontSize: Dimensions.fontSizeDefault),
+            ))
+      ],
     );
   }
 
   _halfText() {
-    return  TextSpan(
+    return TextSpan(
       text: isExpanded ? widget.text : firstHalf,
       style: disTextStyle,
     );
@@ -92,6 +116,6 @@ TextStyle get viewCardSubTextStyle {
 }
 
 TextStyle get disTextStyle {
-  return AppStyle.mid_large_text.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeDefault);
-
+  return AppStyle.mid_large_text.copyWith(
+      color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault);
 }

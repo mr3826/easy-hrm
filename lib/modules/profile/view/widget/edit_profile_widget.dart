@@ -41,6 +41,7 @@ class TextFiledLayout extends StatelessWidget {
             },
             cancelAction: () {
               _clearInputField();
+              print("clcik");
               Get.find<PikedProfileImgController>()
                   .storageForUpload
                   .filePath
@@ -198,7 +199,7 @@ userTextFieldLayout(
               hintText: hintText,
             )
           : CustomInputField(
-              hint: hintText ?? titleText,
+              hint: hintText,
               controller: controller,
               validator: validator,
             ),
