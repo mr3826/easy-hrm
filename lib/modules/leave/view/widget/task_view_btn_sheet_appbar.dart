@@ -9,6 +9,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget projectViewBtnSheetAppbar({required  DateTime date, required String duration, required Color bgColor}) {
+  print("date1 :: $date");
   return Padding(
     padding: const EdgeInsets.all(2.0),
     child: Container(
@@ -29,8 +30,7 @@ Widget projectViewBtnSheetAppbar({required  DateTime date, required String durat
           _divider(),
           customSpacerHeight(height: 15),
           Center(
-              child: Text(
-                DateFormat('EEEE, dd-MM-yyyy').format(date),
+              child: Text(_getDate(date),
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.cardColor.withOpacity(0.9),
                 fontSize: Dimensions.fontSizeDefault),
@@ -55,6 +55,11 @@ Widget projectViewBtnSheetAppbar({required  DateTime date, required String durat
       ),
     ),
   );
+}
+
+String _getDate(date) {
+  if(date==null)return "";
+  return DateFormat('E, d MMMM - y', 'en_US').format(date);
 }
 
 _divider() {

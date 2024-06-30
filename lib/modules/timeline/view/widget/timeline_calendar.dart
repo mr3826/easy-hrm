@@ -30,7 +30,8 @@ class TimeLineCalendar extends StatelessWidget {
         : Padding(
             padding: EdgeInsets.only(
                 top: 0.0,
-                bottom: AppLayout.getHeight(400),
+                bottom:
+                    _swapTimelineCalendarPaddingBtnAccordingScreenSize(), //400
                 left: 14,
                 right: 14),
             child: DayView(
@@ -38,7 +39,7 @@ class TimeLineCalendar extends StatelessWidget {
               minDay: DateTime(2021),
               maxDay: DateTime(2030),
               initialDay: DateTime.parse("2024-01-24"),
-              timeLineOffset: 0,
+              timeLineOffset: 4,
               showHalfHours: true,
               showLiveTimeLineInAllDays: false,
               heightPerMinute: 2,
@@ -47,21 +48,21 @@ class TimeLineCalendar extends StatelessWidget {
               scrollPhysics: const NeverScrollableScrollPhysics(),
               liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
               pageViewPhysics: const NeverScrollableScrollPhysics(),
-              halfHourIndicatorSettings: const HourIndicatorSettings(
-                dashWidth: 1.4,
-                lineStyle: LineStyle.dashed,
-                offset: 35,
-              ),
-
+              halfHourIndicatorSettings: HourIndicatorSettings(
+                  dashWidth: 3,
+                  offset: 20,
+                  lineStyle: LineStyle.dashed,
+                  color: AppColor.hintColor.withOpacity(0.6)),
               hourIndicatorSettings: HourIndicatorSettings(
                   lineStyle: LineStyle.solid,
-                  offset: 12,
                   height: .5,
+                  offset: 5,
                   color: AppColor.hintColor.withOpacity(0.6)),
               timeStringBuilder: (date, {secondaryDate}) {
                 String formattedTime = DateFormat.Hm().format(date);
                 return formattedTime;
               },
+              timeLineWidth: 52,
               onEventTap: (events, date) {
                 Iterable<String> eventData = events.map((e) => e.description!);
 
@@ -286,12 +287,17 @@ class TimeLineCalendar extends StatelessWidget {
                                       : false,
                                   type: type.substring(1, type.length - 1)),
                             ),
-                          ));
+                          ),
+
+                );
               },
               eventTileBuilder: (date, events, status, start, end) {
                 ///for building calendar uo
 
-                Iterable<String> eventData = events.map((e) => e.description!);
+                List<String> eventData =
+                    events.map((e) => e.description!).toList();
+
+                print("event length :: ${eventData.length}");
 
                 /// have to sub string
                 /// otherwise it returns with (value) pattern
@@ -334,18 +340,25 @@ class TimeLineCalendar extends StatelessWidget {
                         .projectColor)
                     .toString();
 
-                return TaskSolidLayout(
-                  isForLeave: leaveId.substring(1, leaveId.length - 1) == 'null'
-                      ? false
-                      : true,
-                  status: status.substring(1, status.length - 1),
-                  startDateTime: startDate.substring(1, startDate.length - 1),
-                  endDateTime: endDate.substring(1, endDate.length - 1),
-                  taskName: taskName.substring(1, taskName.length - 1),
-                  duration: duration.substring(1, duration.length - 1),
-                  projectName: projectName.substring(1, projectName.length - 1),
-                  projectColors:
-                      projectColor.substring(1, projectColor.length - 1),
+                return Padding(
+                  padding: events.isNotEmpty && events.length > 1
+                      ? EdgeInsets.only(left: 8.0)
+                      : EdgeInsets.only(left: 0.0),
+                  child: TaskSolidLayout(
+                    isForLeave:
+                        leaveId.substring(1, leaveId.length - 1) == 'null'
+                            ? false
+                            : true,
+                    status: status.substring(1, status.length - 1),
+                    startDateTime: startDate.substring(1, startDate.length - 1),
+                    endDateTime: endDate.substring(1, endDate.length - 1),
+                    taskName: taskName.substring(1, taskName.length - 1),
+                    duration: duration.substring(1, duration.length - 1),
+                    projectName:
+                        projectName.substring(1, projectName.length - 1),
+                    projectColors:
+                        projectColor.substring(1, projectColor.length - 1),
+                  ),
                 );
               },
             ),
@@ -396,5 +409,14 @@ double _modelHeightAccordingScreenSize() {
     return 480;
   } else {
     return 500;
+  }
+}
+
+double _swapTimelineCalendarPaddingBtnAccordingScreenSize() {
+  double value = MediaQuery.of(Get.context!).size.width;
+  if (value <= 360.0) {
+    return 300;
+  } else {
+    return 400;
   }
 }

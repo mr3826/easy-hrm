@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
@@ -12,6 +13,7 @@ import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/view/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -69,70 +71,73 @@ class EditProfileScreen extends StatelessWidget {
     Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
   }
 
-  _profileSectionLayout(context) {
+  _profileSectionLayout(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(() => _profileImageLayout()),
         customSpacerWidth(width: 18),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              child: Text.rich(
-                TextSpan(
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 30,
+                width: double.infinity,
+                child: Text(
+                  AppString.text_update_your_profile.tr,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: 16,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  maxLines: 1,
+                ),
+              ),
+              Text(
+                AppString.text_upload_a_photo_undar_2mb.tr,
+                style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault - 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                maxLines: 1,
+              ),
+              customSpacerHeight(height: 6),
+              SizedBox(
+                height: 40,
+                child: Row(
                   children: [
-                    TextSpan(
-                      text: "${AppString.text_update_your_profile.tr} ",
-                      style: AppStyle.mid_large_text.copyWith(
-                          color: AppColor.normalTextColor,
-                          overflow: TextOverflow.ellipsis),
-                    ),
-                    TextSpan(
-                      text: AppString.text_upload_a_photo_undar_2mb.tr,
-                      style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.hintColor,
-                        fontSize: Dimensions.fontSizeDefault - 1,
-                      ),
-                    ),
+                    Expanded(child:
+                    _uploadBtnLayout()),
+                    customSpacerWidth(width: 12),
+                    Expanded(child: _removeBtnLayout(context)),
                   ],
                 ),
               ),
-            ),
-            customSpacerHeight(height: 6),
-            Row(
-              children: [
-                _uploadBtnLayout(),
-                customSpacerWidth(width: 12),
-                _removeBtnLayout(context)
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
   }
+
 
   _uploadBtnLayout() {
     return GestureDetector(
       onTap: () {
         Get.find<PikedProfileImgController>().storageForUpload.pickFile();
       },
-      child: SizedBox(
-        height: AppLayout.getHeight(36),
-        width: AppLayout.getWidth(100),
-        child: Card(
-          elevation: 0,
-          color: AppColor.secondaryColor,
-          shape: roundedRectangleBorder.copyWith(
-              borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
-          child: Center(
-            child: Text(
-              AppString.text_upload.tr,
-              style: AppStyle.mid_large_text
-                  .copyWith(fontSize: Dimensions.fontSizeDefault),
-            ),
+      child: Card(
+        elevation: 0,
+        color: AppColor.secondaryColor,
+        shape: roundedRectangleBorder.copyWith(
+            borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
+        child: Center(
+          child: Text(
+            AppString.text_upload.tr,
+            style: AppStyle.mid_large_text
+                .copyWith(fontSize: Dimensions.fontSizeDefault),
           ),
         ),
       ),
@@ -180,8 +185,10 @@ class EditProfileScreen extends StatelessWidget {
         },
         child: Text(
           AppString.text_remove_photo.tr,
+          maxLines: 1,
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.pendingColor,
+              overflow: TextOverflow.ellipsis,
               fontSize: Dimensions.fontSizeDefault),
         ));
   }

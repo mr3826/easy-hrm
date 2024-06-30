@@ -27,7 +27,7 @@ class AppString {
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText = "Work Shift";
-  static String text_sure_you_want_to_delete_timelog = "Sure  you want to delete this time log?If you delete this timelog you can’t recover it again.";
+  static String text_sure_you_want_to_delete_timelog = "Sure  you want to delete this time log? If you delete this timelog you can’t recover it again.";
   static const String invalidVerificationCode =
       "Invalid verification code provided";
   static String text_provid_a_valid_input = "Provide a Valid Input";

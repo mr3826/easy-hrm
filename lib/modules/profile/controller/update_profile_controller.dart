@@ -66,7 +66,15 @@ class UpdateProfileController extends GetxController {
         currentPasswordController.clear();
         newPasswordController.clear();
         confirmPasswordController.clear();
-        Get.offAllNamed(Routes.MAIN_SCREEN);
+        if (Platform.isAndroid) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        } else if (Platform.isIOS) {
+          GetStorage().remove(AppString.ACCESS_TOKEN);
+          GetStorage().remove(AppString.LOGGED_IN);
+          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+        }
       }
     } catch (e) {
       log(e.toString());

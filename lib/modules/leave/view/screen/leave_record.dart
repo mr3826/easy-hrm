@@ -60,9 +60,8 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        Color itemColor = index % 2 == 0
-            ? AppColor.leaveRecordCardColor
-            : Colors.transparent;
+        Color itemColor =
+            index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
         return _infoLayoutView(
           context: context,
           cardBgColor: itemColor,
@@ -138,7 +137,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               date,
               style: AppStyle.normal_text_black.copyWith(
                   color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault-1),
+                  fontSize: Dimensions.fontSizeDefault - 1),
             ),
           ),
           horizontalDashLayout(),
@@ -188,11 +187,9 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                     ],
                   ),
                   customSpacerHeight(height: 5),
-
                 ],
               ),
               _showStatusButton(leaveRecord.status ?? ""),
-
             ],
           ),
         ),
@@ -213,12 +210,27 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       leaveDate =
           "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
     }
-    return Text(
-      "$leaveDate | ${leaveRecord.duration != null && leaveRecord.duration.runtimeType != String ? leaveRecord.duration > 1 ? "${leaveRecord.duration} ${AppString.text_days.tr}" : "${leaveRecord.duration} ${AppString.text_day.tr}" : ""}",
-      style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.secondaryColor.withOpacity(0.7),
-          fontSize: Dimensions.fontSizeDefault - 2,
-          fontWeight: FontWeight.w600),
+    return Row(
+      children: [
+        Text(
+          "$leaveDate ",
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.secondaryColor.withOpacity(0.7),
+              fontSize: Dimensions.fontSizeDefault - 2,
+              fontWeight: FontWeight.w600),
+        ),
+        const Text(
+          " | ",
+          style: TextStyle(color: AppColor.hintColor),
+        ),
+        Text(
+          " ${leaveRecord.duration != null && leaveRecord.duration.runtimeType != String ? leaveRecord.duration > 1 ? "${leaveRecord.duration} ${AppString.text_days.tr}" : "${leaveRecord.duration} ${AppString.text_day.tr}" : ""}",
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.normalTextColor.withOpacity(0.7),
+              fontSize: Dimensions.fontSizeDefault - 3,
+              fontWeight: FontWeight.w500),
+        )
+      ],
     );
   }
 

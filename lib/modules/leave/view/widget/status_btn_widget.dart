@@ -160,14 +160,14 @@ void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
           }
         });
       },
-      icon: CupertinoIcons.delete,
+      icon: Icons.delete_outline_outlined,
       titleText: AppString.text_remove_timelog.tr,
       subText: AppString.text_sure_you_want_to_delete_timelog.tr,
       iconBgColor: AppColor.errorColorLight,
       btnBgColor: AppColor.errorColorLight,
       btnText: "",
       drcText: "",
-      drcFontSize: Dimensions.fontSizeDefault,
+      drcFontSize: Dimensions.fontSizeDefault - 1,
       childForSaveBtn: Obx(() => removeTextLayout()));
 }
 

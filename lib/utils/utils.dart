@@ -108,7 +108,7 @@ String dateMonthFormatFromDatetime(String dateString) {
   // Parse the string to DateTime
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
-  String formattedDate = DateFormat('dd, MMM').format(dateTime);
+  String formattedDate = DateFormat('dd MMM').format(dateTime);
   return formattedDate;
 }
 
@@ -142,7 +142,6 @@ String amPmFormatTimeFromString(String dateString) {
 
   return formattedTime;
 }
-
 
 String getConvertSecondsToHours(String secondsStr) {
   if (secondsStr.isEmpty || secondsStr == "null") {
@@ -216,11 +215,10 @@ String getTimeDifference(String startTimeString, String endTimeString) {
 
   // Calculate the duration between the two times
   Duration duration = endTime.difference(startTime);
-   "${duration.inHours} h : ${duration.inMinutes % 60} m";
+  "${duration.inHours} h : ${duration.inMinutes % 60} m";
 
-
-   if(duration.inMinutes % 60==0)return "${duration.inHours}h";
-   if(duration.inHours % 60==0)return "${duration.inMinutes % 60}m";
+  if (duration.inMinutes % 60 == 0) return "${duration.inHours}h";
+  if (duration.inHours % 60 == 0) return "${duration.inMinutes % 60}m";
 
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
@@ -250,9 +248,23 @@ String workingTimeSinceFormString(String dateString) {
   }
 }
 
+String getFirstTwoLetterFromWord(String input) {
+  if (input.isEmpty) {
+    return "";
+  }
+  // Split the input into words
+  List<String> words = input.split(" ");
 
+  // Extract the first letter of the first word
+  String firstLetter = words.isNotEmpty ? words.first[0] : '';
 
+  // Extract the first letter of the last word
+  String lastLetter = words.length > 1 ? words.last[0] : '';
 
+  // Concatenate the results
+  String output = '$firstLetter$lastLetter';
+  return output;
+}
 
 String formatLeaveDate(String inputDate) {
   // Check for empty input
@@ -281,7 +293,6 @@ String formatLeaveDate(String inputDate) {
   return outputDate;
 }
 
-
 String abbreviateDayOfWeek(String fullDayName) {
   // Mapping of full day names to their abbreviations
   Map<String, String> dayAbbreviations = {
@@ -297,11 +308,6 @@ String abbreviateDayOfWeek(String fullDayName) {
   // Return the abbreviation if it exists in the map, otherwise return the input
   return dayAbbreviations[fullDayName] ?? fullDayName;
 }
-
-
-
-
-
 
 String getDayAbbreviation(String day) {
   return dayAbbreviations[day] ?? day;
