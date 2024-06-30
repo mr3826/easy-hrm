@@ -41,7 +41,6 @@ class TextFiledLayout extends StatelessWidget {
             },
             cancelAction: () {
               _clearInputField();
-              print("clcik");
               Get.find<PikedProfileImgController>()
                   .storageForUpload
                   .filePath

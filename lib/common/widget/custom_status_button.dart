@@ -21,21 +21,22 @@ class CustomStatusButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Container(
-        height: AppLayout.getHeight(32),
+        height: AppLayout.getHeight(28),
         decoration: BoxDecoration(
             color: bgColor,
             borderRadius: BorderRadius.all(
-              Radius.circular(Dimensions.radiusMid),
+              Radius.circular(Dimensions.radiusExtraLarge),
             )),
         padding: EdgeInsets.fromLTRB(
-            AppLayout.getWidth(14),
-            AppLayout.getHeight(3),
-            AppLayout.getWidth(14),
-            AppLayout.getHeight(4)),
+            AppLayout.getWidth(17),
+            AppLayout.getHeight(0),
+            AppLayout.getWidth(17),
+            AppLayout.getHeight(0)),
         child: Center(
           child: Text(text ?? "",
               maxLines: 1,
-              style: AppStyle.normal_text_grey.copyWith(
+              style: AppStyle.normal_text_black.copyWith(
+                fontWeight: FontWeight.w500,
                   color: textColor, fontSize: Dimensions.fontSizeDefault,overflow: TextOverflow.ellipsis)),
         ),
       ),

@@ -259,7 +259,7 @@ class ProfileScreen extends GetView<UserProfileController> {
             },
             icon: Icons.logout,
             titleText: AppString.text_are_you_sure.tr,
-            subText: AppString.text_if_you_do_this_etc.tr,
+            subText: "${AppString.text_if_you_do_this_etc.tr}.",
             iconBgColor: AppColor.errorColorLight,
             btnBgColor: AppColor.errorColorLight,
             btnText: AppString.text_log_out.tr,

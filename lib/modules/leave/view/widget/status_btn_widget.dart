@@ -35,7 +35,7 @@ Widget rejectedStatusBtn() {
 Widget pendingStatusBtn() {
   return CustomStatusButton(
     textColor: AppColor.pendingColor,
-    bgColor: AppColor.pendingColor.withOpacity(0.2),
+    bgColor: AppColor.pendingColor.withOpacity(0.1),
     text: AppString.text_pendding.tr,
   );
 }

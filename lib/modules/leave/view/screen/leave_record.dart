@@ -35,17 +35,19 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               onRefresh: _refreshScreen,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: controller.leaveRecordList!=null&& controller.leaveRecordList!.isNotEmpty
+                child: controller.leaveRecordList != null &&
+                        controller.leaveRecordList!.isNotEmpty
                     ? ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.leaveRecordList?.length ?? 0,
-                  itemBuilder: (context, index) => Column(children: [
-                    _dateTextLayout(
-                        date: controller.leaveRecordList?[index].date),
-                    _leaveRecordViewLayout(index)
-                  ]),
-                ):noDataFoundLayout(),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.leaveRecordList?.length ?? 0,
+                        itemBuilder: (context, index) => Column(children: [
+                          _dateTextLayout(
+                              date: controller.leaveRecordList?[index].date),
+                          _leaveRecordViewLayout(index)
+                        ]),
+                      )
+                    : noDataFoundLayout(),
               ),
             )),
         onLoading: const LoadingIndicator());
@@ -58,8 +60,12 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
+        Color itemColor = index % 2 == 0
+            ? AppColor.leaveRecordCardColor
+            : Colors.transparent;
         return _infoLayoutView(
           context: context,
+          cardBgColor: itemColor,
           leaveRecord: GetLeaveRecords(
               startDate: controller
                   .leaveRecordList?[monthIndex].data?[index].startDate,
@@ -132,7 +138,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               date,
               style: AppStyle.normal_text_black.copyWith(
                   color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault),
+                  fontSize: Dimensions.fontSizeDefault-1),
             ),
           ),
           horizontalDashLayout(),
@@ -142,7 +148,9 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   }
 
   _infoLayoutView(
-      {required BuildContext context, required GetLeaveRecords leaveRecord}) {
+      {required BuildContext context,
+      required GetLeaveRecords leaveRecord,
+      Color? cardBgColor}) {
     return GestureDetector(
       onTap: () => customAntButtonSheet(
         context: context,
@@ -151,41 +159,41 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
           leaveRecords: leaveRecord,
         ),
       ),
-      child: SizedBox(
-        child: Card(
-          elevation: 0,
-          shape: roundedRectangleBorder.copyWith(
-              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-          color: AppColor.primaryColor.withOpacity(0.05),
-          child: Padding(
-            padding:
-                marginLayout.copyWith(top: 20, bottom: 20, left: 10, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      leaveRecord.leaveType?.type ?? "",
-                      style: AppStyle.mid_large_text.copyWith(
-                          color: AppColor.normalTextColor,
-                          fontSize: Dimensions.fontSizeDefault + 1,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    customSpacerHeight(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _showDateDurationText(leaveRecord),
-                        customSpacerWidth(width: 8),
-                      ],
-                    ),
-                  ],
-                ),
-                _showStatusButton(leaveRecord.status ?? ""),
-              ],
-            ),
+      child: Card(
+        elevation: 0,
+        shape: roundedRectangleBorder.copyWith(
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+        color: cardBgColor,
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    leaveRecord.leaveType?.type ?? "",
+                    style: AppStyle.mid_large_text.copyWith(
+                        color: AppColor.normalTextColor,
+                        fontSize: Dimensions.fontSizeDefault + 1,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  customSpacerHeight(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _showDateDurationText(leaveRecord),
+                      customSpacerWidth(width: 8),
+                    ],
+                  ),
+                  customSpacerHeight(height: 5),
+
+                ],
+              ),
+              _showStatusButton(leaveRecord.status ?? ""),
+
+            ],
           ),
         ),
       ),
@@ -233,6 +241,4 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
   Future<void> _refreshScreen() async {
     controller.getLeaveRecordsData();
   }
-
-
 }

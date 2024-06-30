@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'dart:io';
 
@@ -15,6 +14,7 @@ import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
+import '../../dashboard/controller/dashbpard_controller.dart';
 
 class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
@@ -23,15 +23,13 @@ class UpdateProfileController extends GetxController {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   void updateUserProfile(Map<String, dynamic> variables) async {
-
-
-    variables.forEach((key, value) { print("key:: $key value:: $value");});
+    variables.forEach((key, value) {
+      print("key:: $key value:: $value");
+    });
 
     isLoading(true);
     final response = await NetworkClient()
         .mutationGraphData(updateUserProfileMutation, {"inputData": variables});
-
-
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -40,6 +38,7 @@ class UpdateProfileController extends GetxController {
       Get.back();
       showSuccessMessage(
           message: AppString.profile_update_successfully_text.tr);
+      Get.find<DashboardController>().getProfileInfoForDashboard();
     }
 
     isLoading(false);
@@ -76,15 +75,15 @@ class UpdateProfileController extends GetxController {
   }
 
   getUploadPolicy({fileName}) async {
-
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()
         .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
-        "sub_folder_name": "${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user",
+        "sub_folder_name":
+            "${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user",
         "filename":
-        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });

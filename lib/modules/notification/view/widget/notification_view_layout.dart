@@ -1002,7 +1002,7 @@ _emptyNotificationLayout() {
             width: AppLayout.getWidth(200),
             child: Image.asset(Images.emptyNotification)),
         Text(
-          AppString.text_you_have_seen_all_notification.tr,
+          "${AppString.text_you_have_seen_all_notification.tr}.",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor,
               fontSize: Dimensions.fontSizeDefault - 2),
