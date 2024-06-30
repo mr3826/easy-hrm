@@ -10,17 +10,19 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 class CustomDoubleAppButton extends StatelessWidget {
   final String? buttonText;
   final String? cancelText;
-
   final Color btnColor;
+  final Color? cancelBtnColor;
+  final Color? cancelTextColor;
   final Function onAction;
   final Function cancelAction;
-
   final Widget? saveBtn;
 
   const CustomDoubleAppButton(
       {super.key,
       this.buttonText,
       this.cancelText,
+      this.cancelBtnColor,
+      this.cancelTextColor,
       required this.onAction,
       required this.cancelAction,
       this.btnColor = AppColor.primaryColor,
@@ -34,9 +36,9 @@ class CustomDoubleAppButton extends StatelessWidget {
           child: GestureDetector(
             onTap: () => cancelAction(),
             child: Container(
-              height: AppLayout.getHeight(48),
+              height: AppLayout.getHeight(45),
               decoration: BoxDecoration(
-                color: AppColor.backgroundColor,
+                color: cancelBtnColor??AppColor.backgroundColor,
                 border: Border.all(
                     width: 1, color: AppColor.hintColor.withOpacity(0.5)),
                 borderRadius:
@@ -46,7 +48,7 @@ class CustomDoubleAppButton extends StatelessWidget {
                   child: Text(
                 cancelText ?? AppString.text_close.tr,
                 style: AppStyle.normal_text.copyWith(
-                    color: AppColor.hintColor.withOpacity(0.8),
+                    color:cancelTextColor?? AppColor.hintColor.withOpacity(0.8),
                     fontSize: Dimensions.fontSizeMid - 3,
                     fontWeight: FontWeight.w700),
               )),
@@ -58,7 +60,7 @@ class CustomDoubleAppButton extends StatelessWidget {
           child: GestureDetector(
             onTap: () => onAction(),
             child: Container(
-              height: AppLayout.getHeight(48),
+              height: AppLayout.getHeight(45),
               decoration: BoxDecoration(
                 color: btnColor,
                 borderRadius:

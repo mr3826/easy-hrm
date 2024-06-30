@@ -250,6 +250,59 @@ String workingTimeSinceFormString(String dateString) {
   }
 }
 
+
+
+
+
+String formatLeaveDate(String inputDate) {
+  // Check for empty input
+  if (inputDate.isEmpty) return "";
+
+  // Define the input format
+  DateFormat inputFormat = DateFormat('d MMM yyyy');
+
+  // Initialize the output date string
+  String outputDate = "";
+
+  try {
+    // Parse the input date string
+    DateTime dateTime = inputFormat.parse(inputDate);
+
+    // Define the output format
+    DateFormat outputFormat = DateFormat('d MMMM - yyyy');
+
+    // Format the parsed date to the desired output format
+    outputDate = outputFormat.format(dateTime);
+  } catch (e) {
+    // Handle parsing error if input date format is incorrect
+    print('Error parsing date: $e');
+  }
+
+  return outputDate;
+}
+
+
+String abbreviateDayOfWeek(String fullDayName) {
+  // Mapping of full day names to their abbreviations
+  Map<String, String> dayAbbreviations = {
+    'Monday': 'Mon',
+    'Tuesday': 'Tue',
+    'Wednesday': 'Wed',
+    'Thursday': 'Thu',
+    'Friday': 'Fri',
+    'Saturday': 'Sat',
+    'Sunday': 'Sun'
+  };
+
+  // Return the abbreviation if it exists in the map, otherwise return the input
+  return dayAbbreviations[fullDayName] ?? fullDayName;
+}
+
+
+
+
+
+
 String getDayAbbreviation(String day) {
   return dayAbbreviations[day] ?? day;
 }

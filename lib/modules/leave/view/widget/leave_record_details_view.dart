@@ -2,12 +2,14 @@ import 'dart:core';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
@@ -19,6 +21,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../utils/utils.dart';
@@ -44,13 +47,14 @@ class LeaveRecordDetails extends StatelessWidget {
               text: leaveDate,
               subtext: leaveWeekday,
               isLeave: true,
-              status: status),
+              status: status,
+              duration: _getDurationTime()),
           customSpacerHeight(height: 12),
           _infoLayout(
               text: AppString.text_type_dot.tr,
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
-              text: AppString.text_duration.tr,
+              text: "${AppString.text_duration.tr}:",
               dynamicText: _getDurationTime()),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
           _infoLayout(
@@ -185,22 +189,27 @@ class LeaveRecordDetails extends StatelessWidget {
     return Padding(
       padding: marginLayout,
       child: CustomDoubleAppButton(
-          cancelText: AppString.cancelLeaveText.tr,
+          cancelText: AppString.text_cancel.tr,
+          cancelTextColor: AppColor.cardColor,
           cancelAction: () {
             customDialog(
-                context: context,
-                saveBtnAction: () {
-                  Get.find<LeaveScreenController>()
-                      .cancelLeave(leaveId: leaveRecords?.id ?? "");
-                },
-                childForSaveBtn: Obx(() => _cancelLeaveProgress()),
-                drcText: "",
-                icon: Icons.document_scanner_rounded,
-                titleText: AppString.cancelLeaveText.tr,
-                subText: AppString.cancelLeaveNotificationText.tr,
-                iconBgColor: AppColor.cardColor,
-                btnBgColor: AppColor.errorColorLight,
-                btnText: AppString.confirmText.tr);
+              context: context,
+              saveBtnAction: () {
+                Get.find<LeaveScreenController>()
+                    .cancelLeave(leaveId: leaveRecords?.id ?? "");
+              },
+              childForSaveBtn: Obx(() => _cancelLeaveProgress()),
+              drcText: "",
+              iconWidget: customSvgImage(
+                imageUrl: Images.cancel_leave,
+                height: 60,width: 60
+              ),
+              titleText: AppString.cancelLeaveText.tr,
+              subText: AppString.cancelLeaveNotificationText.tr,
+              iconBgColor: AppColor.cardColor,
+              btnBgColor: AppColor.hintColor,
+              btnText: AppString.confirmText.tr,
+            );
           },
           buttonText: AppString.text_edit.tr,
           onAction: () {
@@ -217,6 +226,7 @@ class LeaveRecordDetails extends StatelessWidget {
                 context: context,
                 child: UpdateLeave(leaveRecords: leaveRecords));
           },
+          cancelBtnColor: AppColor.hintColor,
           btnColor: AppColor.primaryColor),
     );
   }

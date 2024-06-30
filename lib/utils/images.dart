@@ -48,6 +48,7 @@ class Images {
   static String calendar_out_nav = "assets/images/calendar_out_nav.svg";
   static String profile_nav = "assets/images/profile_nav.svg";
   static String profile_out_nav = "assets/images/profile_out_nav.svg";
+  static String cancel_leave = "assets/images/cancel_leave_icon.svg";
   static String calendar_nav = "assets/images/calendar_nav.svg";
   static String calendar_outline_lav = "assets/images/calander_outline_lev.svg";
   static String calendar_lav = "assets/images/calander_lev.svg";

@@ -1,12 +1,15 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import '../../enum.dart';
 import '../../utils/images.dart';
+import '../../utils/utils.dart';
 
 Future customButtonSheet(
     {context,
@@ -45,9 +48,13 @@ Future customButtonSheet(
 }
 
 Widget customButtonSheetAppbar(
-    {required text, subtext, bool isLeave = false, String? status}) {
+    {required text,
+    subtext,
+    bool isLeave = false,
+    String? status,
+    String? duration}) {
   return isLeave != false
-      ? _leaveBtnAppbarLayout(text, subtext, status ?? "")
+      ? _leaveBtnAppbarLayout(text, subtext, status ?? "", duration)
       : Container(
           color: AppColor.primaryColor.withOpacity(0.05),
           height: 100,
@@ -76,7 +83,7 @@ Widget customButtonSheetAppbar(
         );
 }
 
-_leaveBtnAppbarLayout(String text, String subtext, String status) {
+_leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
   return Stack(
     children: [
       transformDashLayout(status),
@@ -87,22 +94,32 @@ _leaveBtnAppbarLayout(String text, String subtext, String status) {
           right: 30,
           child: Column(
             children: [
+              if (subtext.isNotEmpty)
+                Center(
+                    child: Text(
+                  "${abbreviateDayOfWeek(subtext)}, ${formatLeaveDate(text)}",
+                  style: AppStyle.normal_text_black
+                      .copyWith(color: AppColor.normalTextColor),
+                )),
+              if (subtext.isEmpty)
+                Center(
+                    child: Text(
+                  formatLeaveDate(text),
+                  style: AppStyle.normal_text_black
+                      .copyWith(color: AppColor.normalTextColor),
+                )),
+              customSpacerHeight(height: 12),
+              Text(
+                AppString.text_duration.tr,
+                style: AppStyle.normal_text_black.copyWith(fontSize: 12),
+              ),
               Center(
                   child: Text(
-                text ?? "",
+                 _getDuration(duration),
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontWeight: FontWeight.w700),
               )),
-              if (subtext.isNotEmpty) customSpacerHeight(height: 5),
-              if (subtext.isNotEmpty)
-                Center(
-                    child: Text(
-                  subtext ?? "",
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault + 2),
-                )),
             ],
           )),
       Positioned(
@@ -123,9 +140,17 @@ _leaveBtnAppbarLayout(String text, String subtext, String status) {
   );
 }
 
+String _getDuration(duration) {
+  if(duration=="1 day"){
+    return "Full day";
+  }else{
+    return duration;
+  }
+}
+
 transformDashLayout(status) {
   return SizedBox(
-    height: 115,
+    height: 135,
     width: double.infinity,
     child: SvgPicture.asset(
       _getStatusButton(status),
