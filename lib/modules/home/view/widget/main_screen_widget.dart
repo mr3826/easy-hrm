@@ -30,7 +30,7 @@ Future<bool> _onWillPop() async {
     },
     icon: Icons.logout,
     titleText: AppString.text_are_you_sure.tr,
-    subText: AppString.text_are_you_sure_want_to_exit_from_app.tr,
+    subText: "${AppString.text_are_you_sure_want_to_exit_from_app.tr}.",
     iconBgColor: AppColor.secondaryColor,
     btnBgColor: AppColor.secondaryColor,
     btnText: AppString.text_yes.tr,

@@ -36,6 +36,7 @@ class UpdateProfileController extends GetxController {
     } else {
       Get.find<UserProfileController>().getUserProfile();
       Get.back();
+      Get.back();
       showSuccessMessage(
           message: AppString.profile_update_successfully_text.tr);
       Get.find<DashboardController>().getProfileInfoForDashboard();

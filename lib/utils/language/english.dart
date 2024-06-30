@@ -108,8 +108,9 @@ Map<String, String> eng = {
   AppString.text_account: "account",
   AppString.text_you_have: "You have",
   AppString.text_org_linked_with_your: "organization linked with your",
-  AppString.text_organisations_linked_with_your: "organizations linked with your",
-AppString.textDay: "day",
+  AppString.text_organisations_linked_with_your:
+      "organizations linked with your",
+  AppString.textDay: "day",
   AppString.textDays: "days",
   AppString.rejectedATimelogText: "has reject your time log on ",
   AppString.pendingATimelogText: "has marked your time log as pending on ",
