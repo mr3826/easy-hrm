@@ -48,6 +48,8 @@ class CustomInputField extends StatelessWidget {
       validator: validator,
       autofocus: false,
       obscureText: isObscureText == null ? false : true,
+
+
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
@@ -66,11 +68,17 @@ class CustomInputField extends StatelessWidget {
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
         ),
         focusColor: AppColor.primaryColor,
+
         focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: AppColor.disableColor)),
+
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColor.disableColor),
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+
+
+
+
       ),
     );
   }

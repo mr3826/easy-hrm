@@ -259,7 +259,7 @@ class ProfileScreen extends GetView<UserProfileController> {
             },
             icon: Icons.logout,
             titleText: AppString.text_are_you_sure.tr,
-            subText: AppString.text_if_you_do_this_etc.tr,
+            subText: "${AppString.text_if_you_do_this_etc.tr}.",
             iconBgColor: AppColor.errorColorLight,
             btnBgColor: AppColor.errorColorLight,
             btnText: AppString.text_log_out.tr,
@@ -581,26 +581,11 @@ class ProfileScreen extends GetView<UserProfileController> {
     return CustomNetworkImage(
       height: AppLayout.getHeight(25),
       fileDir: "cover_images",
-      errorText: (Get.find<UserProfileController>()
-                      .userDetails
-                      ?.getOrganizationUserDetails
-                      ?.organization!
-                      .orgName !=
-                  null &&
-              Get.find<UserProfileController>()
-                  .userDetails!
-                  .getOrganizationUserDetails!
-                  .organization!
-                  .orgName!
-                  .isNotEmpty)
-          ? Get.find<UserProfileController>()
-                  .userDetails
-                  ?.getOrganizationUserDetails
-                  ?.organization!
-                  .orgName![0]
-                  .toUpperCase() ??
-              ""
-          : "",
+      errorText:getFirstTwoLetterFromWord(Get.find<UserProfileController>()
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.organization!
+          .orgName??""),
       imgUrlKey:
           "${controller.userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}",
       borderColor: Colors.transparent,

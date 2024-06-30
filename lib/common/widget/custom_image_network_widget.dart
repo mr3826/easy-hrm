@@ -65,7 +65,7 @@ Widget circleImageLayout(
 _errorText(errorText) {
   return Text("$errorText",
       style: AppStyle.normal_text_grey.copyWith(
-          fontSize: Dimensions.fontSizeMid + 4, color: AppColor.primaryColor));
+          fontSize: Dimensions.fontSizeMid, color: AppColor.primaryColor));
 }
 
 Widget rectangleImageLayout({url}) {

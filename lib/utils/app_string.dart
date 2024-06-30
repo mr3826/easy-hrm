@@ -27,7 +27,7 @@ class AppString {
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText = "Work Shift";
-  static String text_sure_you_want_to_delete_timelog = "Sure  you want to delete this time log?If you delete this timelog you can’t recover it again.";
+  static String text_sure_you_want_to_delete_timelog = "Sure  you want to delete this time log? If you delete this timelog you can’t recover it again.";
   static const String invalidVerificationCode =
       "Invalid verification code provided";
   static String text_provid_a_valid_input = "Provide a Valid Input";
@@ -59,8 +59,9 @@ class AppString {
   static String text_we_have_a_verification_etc =
       'We have sent a verification code to your email address. Enter this code bellow to verify your account.';
   static String text_dont_not_worry =
-      'Don’t worry! It happens. Please enter the email address associated with your account';
+      'Don’t worry! It happens. Please enter the email address associated with your account.';
   static String text_enter_code = 'Enter your code';
+  static String text_enter_new_email_address = 'Enter your new email address';
   static String inputTimeInvalidMessage = "End time must be after start time";
   static String text_setup_your_code_etc =
       'Setup your new password now. Minimum 8 letter or digits';
@@ -68,7 +69,7 @@ class AppString {
   static String text_replace_file = 'Replace File';
   static String text_submit = 'Submit';
   static String text_continue = 'Continue';
-  static String text_close = 'Close';
+  static String text_close = 'Cancel';
   static String text_bio = 'Bio';
   static String text_welcome = 'Welcome';
   static String text_progress = 'Progress';
@@ -159,7 +160,7 @@ class AppString {
 
   static String text_verify_your_email_address = 'Verify your email address';
   static String text_we_have_sent_a_verification_etc =
-      "We have sent a verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account";
+      "We have sent a verification code to your email address ${"new@gmail.com"}. Enter this code bellow to verify your account.";
   static String text_do_not_receive_email = "Don't receive email? ";
   static String text_do_not_receive_otp = "Don't receive code? ";
   static String text_resend = "Resend";
@@ -247,7 +248,7 @@ class AppString {
   static String text_please_valid_file = "Please selected valid document";
   static String text_please_valid_photo = "Please selected valid profile image";
   static String text_notications = "Notifications";
-  static String text_notication = "Notification";
+  static String text_notication = "Notifications";
   static String text_forgot_password = "Forgot password?";
   static String text_sign_in = "Sign in";
   static String text_cancel = "Cancel";

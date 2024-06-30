@@ -108,7 +108,7 @@ String dateMonthFormatFromDatetime(String dateString) {
   // Parse the string to DateTime
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
-  String formattedDate = DateFormat('dd, MMM').format(dateTime);
+  String formattedDate = DateFormat('dd MMM').format(dateTime);
   return formattedDate;
 }
 
@@ -133,11 +133,12 @@ String findWeekdayFormDateString(String dateString) {
 
 String amPmFormatTimeFromString(String dateString) {
   if (dateString.isEmpty) return "";
+
   // Parse the time string into a DateTime object
   DateTime time = DateFormat("HH:mm:ss").parse(dateString);
 
-  // Format the DateTime object into AM/PM format
-  String formattedTime = DateFormat("h:mm a").format(time);
+  // Format the DateTime object into AM/PM format with lowercase "am" and "pm"
+  String formattedTime = DateFormat("h:mm a").format(time).toLowerCase();
 
   return formattedTime;
 }
@@ -214,6 +215,11 @@ String getTimeDifference(String startTimeString, String endTimeString) {
 
   // Calculate the duration between the two times
   Duration duration = endTime.difference(startTime);
+  "${duration.inHours} h : ${duration.inMinutes % 60} m";
+
+  if (duration.inMinutes % 60 == 0) return "${duration.inHours}h";
+  if (duration.inHours % 60 == 0) return "${duration.inMinutes % 60}m";
+
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
 
@@ -240,6 +246,67 @@ String workingTimeSinceFormString(String dateString) {
   } else {
     return "$years years $months months $days days";
   }
+}
+
+String getFirstTwoLetterFromWord(String input) {
+  if (input.isEmpty) {
+    return "";
+  }
+  // Split the input into words
+  List<String> words = input.split(" ");
+
+  // Extract the first letter of the first word
+  String firstLetter = words.isNotEmpty ? words.first[0] : '';
+
+  // Extract the first letter of the last word
+  String lastLetter = words.length > 1 ? words.last[0] : '';
+
+  // Concatenate the results
+  String output = '$firstLetter$lastLetter';
+  return output;
+}
+
+String formatLeaveDate(String inputDate) {
+  // Check for empty input
+  if (inputDate.isEmpty) return "";
+
+  // Define the input format
+  DateFormat inputFormat = DateFormat('d MMM yyyy');
+
+  // Initialize the output date string
+  String outputDate = "";
+
+  try {
+    // Parse the input date string
+    DateTime dateTime = inputFormat.parse(inputDate);
+
+    // Define the output format
+    DateFormat outputFormat = DateFormat('d MMMM - yyyy');
+
+    // Format the parsed date to the desired output format
+    outputDate = outputFormat.format(dateTime);
+  } catch (e) {
+    // Handle parsing error if input date format is incorrect
+    print('Error parsing date: $e');
+  }
+
+  return outputDate;
+}
+
+String abbreviateDayOfWeek(String fullDayName) {
+  // Mapping of full day names to their abbreviations
+  Map<String, String> dayAbbreviations = {
+    'Monday': 'Mon',
+    'Tuesday': 'Tue',
+    'Wednesday': 'Wed',
+    'Thursday': 'Thu',
+    'Friday': 'Fri',
+    'Saturday': 'Sat',
+    'Sunday': 'Sun'
+  };
+
+  // Return the abbreviation if it exists in the map, otherwise return the input
+  return dayAbbreviations[fullDayName] ?? fullDayName;
 }
 
 String getDayAbbreviation(String day) {

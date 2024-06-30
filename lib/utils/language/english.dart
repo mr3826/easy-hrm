@@ -2,7 +2,7 @@ import '../app_string.dart';
 
 Map<String, String> eng = {
   ///leave and timlog approver,departmentHeaDText,text_day,text_retry,no_internet_title_text,no_internet_subtitle_text,text_notication ;
-  AppString.text_notication: "Notification",
+  AppString.text_notication: "Notifications",
   AppString.timelogApprover: 'Time log approver',
   AppString.no_internet_title_text: "No internet!!",
   AppString.no_internet_subtitle_text:
@@ -45,15 +45,16 @@ Map<String, String> eng = {
   AppString.text_we_have_a_verification_etc:
       "We have sent a verification code to your email address. Enter this code bellow to verify your account.",
   AppString.text_dont_not_worry:
-      "Don’t worry! It happens. Please enter the email address associated with your account",
+      "Don’t worry! It happens. Please enter the email address associated with your account.",
   AppString.text_enter_code: "Enter your code",
+  AppString.text_enter_new_email_address: "Enter your new email address",
   AppString.inputTimeInvalidMessage: "End time must be after start time",
   AppString.text_setup_your_code_etc:
       "Setup your new password now. Minimum 8 letter or digits",
   AppString.text_replace_file: "Replace File",
   AppString.text_submit: "Submit",
   AppString.text_continue: "Continue",
-  AppString.text_close: "Close",
+  AppString.text_close: "Cancel",
   AppString.text_bio: "Bio",
   AppString.text_welcome: "Welcome",
   AppString.text_progress: "Progress",
@@ -107,8 +108,9 @@ Map<String, String> eng = {
   AppString.text_account: "account",
   AppString.text_you_have: "You have",
   AppString.text_org_linked_with_your: "organization linked with your",
-  AppString.text_organisations_linked_with_your: "organizations linked with your",
-AppString.textDay: "day",
+  AppString.text_organisations_linked_with_your:
+      "organizations linked with your",
+  AppString.textDay: "day",
   AppString.textDays: "days",
   AppString.rejectedATimelogText: "has reject your time log on ",
   AppString.pendingATimelogText: "has marked your time log as pending on ",
@@ -134,7 +136,7 @@ AppString.textDay: "day",
   AppString.text_min_8_character: "Min. 8 characters",
   AppString.text_verify_your_email_address: "Verify your email address",
   AppString.text_we_have_sent_a_verification_etc:
-      "We have sent a verification code to your email address new@gmail.com. Enter this code bellow to verify your account",
+      "We have sent a verification code to your email address new@gmail.com. Enter this code bellow to verify your account.",
   AppString.text_do_not_receive_email: "Don't receive email? ",
   AppString.text_do_not_receive_otp: "Don't receive code? ",
   AppString.text_resend: "Resend",
@@ -217,7 +219,7 @@ AppString.textDay: "day",
   AppString.text_forgot_password: "Forgot password?",
   AppString.text_sign_in: "Sign in",
   AppString.text_cancel: "Cancel",
-  AppString.text_notication: "Notification",
+  AppString.text_notication: "Notifications",
   AppString.text_canceled: "Canceled",
   AppString.text_back: "Back",
   AppString.no_event_found_text: "No events for today!",

@@ -10,7 +10,6 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/modules/profile/view/widget/email_verification_otp.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
 import 'edit_profile_widget.dart';
 
 class ChangEmailFieldLayout extends StatelessWidget {
@@ -35,12 +34,7 @@ class ChangEmailFieldLayout extends StatelessWidget {
                   userTextFieldLayout(
                     titleText: AppString.text_email.tr,
                     controller: changeEmailController,
-                    hintText: Get.find<UserProfileController>()
-                            .userDetails
-                            ?.getOrganizationUserDetails
-                            ?.user
-                            ?.email ??
-                        "",
+                    hintText: AppString.text_enter_new_email_address.tr,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return AppString.the_email_field_is_required.tr;
@@ -75,6 +69,8 @@ class ChangEmailFieldLayout extends StatelessWidget {
                           },
                           cancelAction: () {
                             Navigator.pop(context);
+                            Navigator.pop(context);
+                            changeEmailController.clear();
                           })),
                 ],
               ),

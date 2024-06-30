@@ -74,7 +74,7 @@ class _NetworkErrorPageState extends State<NetworkErrorPage> {
             ),
             customSpacerHeight(height: 20),
             Text(
-              AppString.no_internet_subtitle_text,
+              "${AppString.no_internet_subtitle_text}.",
               style: AppStyle.normal_text_black,
               textAlign: TextAlign.center,
             ),

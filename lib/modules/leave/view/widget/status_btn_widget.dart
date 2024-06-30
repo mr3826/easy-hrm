@@ -35,7 +35,7 @@ Widget rejectedStatusBtn() {
 Widget pendingStatusBtn() {
   return CustomStatusButton(
     textColor: AppColor.pendingColor,
-    bgColor: AppColor.pendingColor.withOpacity(0.2),
+    bgColor: AppColor.pendingColor.withOpacity(0.1),
     text: AppString.text_pendding.tr,
   );
 }
@@ -160,14 +160,14 @@ void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
           }
         });
       },
-      icon: CupertinoIcons.delete,
+      icon: Icons.delete_outline_outlined,
       titleText: AppString.text_remove_timelog.tr,
       subText: AppString.text_sure_you_want_to_delete_timelog.tr,
       iconBgColor: AppColor.errorColorLight,
       btnBgColor: AppColor.errorColorLight,
       btnText: "",
       drcText: "",
-      drcFontSize: Dimensions.fontSizeDefault,
+      drcFontSize: Dimensions.fontSizeDefault - 1,
       childForSaveBtn: Obx(() => removeTextLayout()));
 }
 

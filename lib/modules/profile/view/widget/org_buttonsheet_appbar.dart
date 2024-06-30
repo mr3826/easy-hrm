@@ -30,7 +30,7 @@ Widget orgButtonSheetAppbar({required int orgLength}) {
         )),
         Center(
             child: Text(
-          AppString.text_account.tr,
+          "${AppString.text_account.tr}.",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         )),

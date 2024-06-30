@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
@@ -134,7 +135,7 @@ _employmentInfo() {
               ),
             ),
             Text(
-              "${AppString.text_from.tr} - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+              "${AppString.text_from.tr} - ${_getDateTime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   overflow: TextOverflow.ellipsis,
@@ -178,7 +179,7 @@ _designationInfo() {
               ),
             ),
             Text(
-              "${AppString.text_from.tr} - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[0].startDate ?? "")}",
+              "${AppString.text_from.tr} - ${_getDateTime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[0].startDate ?? "")}",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   overflow: TextOverflow.ellipsis,
@@ -187,4 +188,10 @@ _designationInfo() {
           ],
         )
       : Container();
+}
+
+_getDateTime(dateString){
+  if (dateString.isEmpty) return "";
+  DateTime dateTime = DateTime.parse(dateString);
+  return DateFormat('dd, MMM yyyy').format(dateTime);
 }

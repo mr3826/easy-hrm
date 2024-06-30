@@ -198,7 +198,7 @@ userTextFieldLayout(
               hintText: hintText,
             )
           : CustomInputField(
-              hint: hintText ?? titleText,
+              hint: hintText,
               controller: controller,
               validator: validator,
             ),

@@ -12,6 +12,7 @@ import '../../../../utils/app_color.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
+import '../../../../utils/utils.dart';
 import 'org_buttonsheet_appbar.dart';
 
 class OrganisationView extends StatelessWidget {
@@ -128,29 +129,18 @@ class OrganisationView extends StatelessWidget {
   }
 
   _organisationLogoLayout(int index) {
+    print("image_org_logo::: ${ Get.find<UserProfileController>()
+        .organizationInfo
+        ?.getUserOrganizations
+        ?.data?[index].organization?.organizationSetting?.logoKey??""}");
     return CustomNetworkImage(
       fileDir: "cover_images",
       height: 22,
-      errorText: (Get.find<UserProfileController>()
-                      .userDetails
-                      ?.getOrganizationUserDetails
-                      ?.organization!
-                      .orgName !=
-                  null &&
-              Get.find<UserProfileController>()
-                  .userDetails!
-                  .getOrganizationUserDetails!
-                  .organization!
-                  .orgName!
-                  .isNotEmpty)
-          ? Get.find<UserProfileController>()
-                  .userDetails
-                  ?.getOrganizationUserDetails
-                  ?.organization!
-                  .orgName![0]
-                  .toUpperCase() ??
-              ""
-          : "",
+      errorText: getFirstTwoLetterFromWord(Get.find<UserProfileController>()
+          .organizationInfo
+          ?.getUserOrganizations
+          ?.data?[index].organization?.name??""),
+
       imgUrlKey: Get.find<UserProfileController>()
               .organizationInfo
               ?.getUserOrganizations

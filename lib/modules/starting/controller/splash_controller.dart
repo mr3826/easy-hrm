@@ -47,7 +47,6 @@ class SplashController extends GetxController {
 
   chooseScreen() async {
     final box = GetStorage();
-
     if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);

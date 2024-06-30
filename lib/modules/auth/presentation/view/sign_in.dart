@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/widget/common_widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -68,7 +69,7 @@ class SignInScreen extends GetView<SignInController> {
                           customSpacerHeight(height: 20),
 
                           ///User password
-                           _userPasswordField(),
+                          _userPasswordField(),
                           customSpacerHeight(height: 12),
 
                           ///Forgot password
@@ -91,7 +92,7 @@ class SignInScreen extends GetView<SignInController> {
   _userPasswordField() {
     return CustomPasswordInputField(
       controller: passwordController,
-      hitText:  AppString.text_password.tr,
+      hitText: AppString.text_password.tr,
       prefixIcon: Image.asset(Images.LOCK_ICON),
       validator: (value) {
         if (value!.isEmpty) {
@@ -109,12 +110,12 @@ class SignInScreen extends GetView<SignInController> {
     );
   }
 
-
-
-
   _forgotPassword() {
     return GestureDetector(
-      onTap: () => Get.toNamed(Routes.FIRGIR_PASSWORD_SCREEN),
+      onTap: () {
+        Get.toNamed(Routes.FIRGIR_PASSWORD_SCREEN);
+        clearInputField();
+      },
       child: Align(
           alignment: Alignment.topRight,
           child: Text(
@@ -125,11 +126,10 @@ class SignInScreen extends GetView<SignInController> {
           )),
     );
   }
-
   _emailAddressLayout() {
     return CustomInputField(
       hint: AppString.text_email.tr,
-      prefixWidget: Image.asset(Images.EMAIL_ICON),
+      prefixWidget: SizedBox(width: 47, child: Image.asset(Images.EMAIL_ICON)),
       controller: emailController,
       validator: (value) {
         if (value!.isEmpty) {

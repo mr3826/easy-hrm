@@ -22,6 +22,7 @@ class AppColor {
   static const Color pureOrange = Color(0xffFFAB00);
   static const Color bgColorWithPrimary = Color(0xffEDECFE);
   static const Color bgColorWithTimeline = Color(0xffFBFAFF);
+  static const Color leaveRecordCardColor = Color(0xffFBFAFF);
 
   static const Color iconBoxColor = Color(0xffFF6347);
 
