@@ -84,6 +84,11 @@ Widget customButtonSheetAppbar(
 }
 
 _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
+
+
+
+
+
   return Stack(
     children: [
       transformDashLayout(status),
@@ -97,7 +102,8 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
               if (subtext.isNotEmpty)
                 Center(
                     child: Text(
-                  "${abbreviateDayOfWeek(subtext)}, ${formatLeaveDate(text)}",
+                // "${abbreviateDayOfWeek(subtext)}, ${formatLeaveDate(text)}",
+                      subtext,
                   style: AppStyle.normal_text_black
                       .copyWith(color: AppColor.normalTextColor),
                 )),

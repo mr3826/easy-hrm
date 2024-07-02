@@ -34,7 +34,6 @@ class ApplyLeaveController extends GetxController with StateMixin {
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
-
   ///For Apply leave button enable
   var isSelectLeaveType = ''.obs;
 
@@ -42,8 +41,6 @@ class ApplyLeaveController extends GetxController with StateMixin {
   bool get isButtonEnabledForApplyLeave {
     return isSelectLeaveType.isNotEmpty;
   }
-
-
 
   getLeaveTypeDropdown() async {
     change(null, status: RxStatus.loading());

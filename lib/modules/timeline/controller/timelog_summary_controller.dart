@@ -38,14 +38,11 @@ class TimelineSummaryController extends GetxController with StateMixin {
         "end_date": selectedMonthEndDate.value,
       }
     });
-    print("getTimelineByMonth :::  $response");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       print(response.data);
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
-      print(timelineSummaryByMonth
-          ?.getTimelogSummaryForApp?.totalScheduledSeconds);
     }
     isMonthlySummaryDataLoading(false);
   }

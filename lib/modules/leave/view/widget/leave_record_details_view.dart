@@ -44,8 +44,8 @@ class LeaveRecordDetails extends StatelessWidget {
       child: Column(
         children: [
           customButtonSheetAppbar(
-              text: leaveDate,
-              subtext: leaveWeekday,
+              text: "",
+              subtext: _getDate(),
               isLeave: true,
               status: status,
               duration: _getDurationTime()),
@@ -311,5 +311,17 @@ class LeaveRecordDetails extends StatelessWidget {
     } else {
       return "";
     }
+  }
+
+  _getDate() {
+    isSameDate(startDate: leaveRecords?.startDate??"",endDate: leaveRecords?.endDate??"");
+    print("custom_${    isSameDate(startDate: leaveRecords?.startDate??"",endDate: leaveRecords?.endDate??"")}");
+        if(isSameDate(startDate: leaveRecords?.startDate??"",endDate: leaveRecords?.endDate??"")){
+
+         return dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.startDate??"");
+
+        }else{
+          return "${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.startDate??"")} - ${ dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.endDate??"")}";
+        }
   }
 }

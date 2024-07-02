@@ -33,6 +33,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
                 .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
             0,
         itemBuilder: (context, index) {
+
           return SizedBox(
             width: double.infinity,
             child: Padding(
