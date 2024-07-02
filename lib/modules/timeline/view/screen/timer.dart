@@ -51,23 +51,42 @@ class TimerScreen extends StatelessWidget {
             () => _saveBtn(
               onAction: () async {
                 if (Get.find<TimeCounterController>().isRunning.isTrue) {
+
+
                   await Get.find<TimelineController>()
                       .startOrEndTimer(timerType: StartOrEndTimer.end.name)
                       .then((value) {
-                    if (value == true) {
-                      if (Get.find<TimelineController>()
-                              .projectDropDownResponse
-                              ?.getProjectsDropdown ==
-                          null) {
-                        Get.find<TimelineController>().getProjectDropdown();
-                      }
-                      customButtonSheet(
-                          height: .6,
-                          context: context,
-                          isDismissible: false,
-                          child: const AddToTaskScreen());
-                    }
+
+
+                    // if (value == true) {
+                    //   if (Get.find<TimelineController>()
+                    //           .projectDropDownResponse
+                    //           ?.getProjectsDropdown ==
+                    //       null) {
+                    //     Get.find<TimelineController>().getProjectDropdown();
+                    //   }
+                    //
+                    //
+                    //
+                    //   customButtonSheet(
+                    //       height: .6,
+                    //       context: context,
+                    //       isDismissible: false,
+                    //       child: const AddToTaskScreen());
+                    // }
+
+                    Get.find<TimelineController>().getProjectDropdown();
+                    customButtonSheet(
+                        height: .6,
+                        context: context,
+                        isDismissible: false,
+                        child: const AddToTaskScreen());
+
                   });
+
+
+
+
                 }
               },
             ),

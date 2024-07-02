@@ -46,7 +46,7 @@ class CustomDoubleAppButton extends StatelessWidget {
               ),
               child: Center(
                   child: Text(
-                cancelText ?? AppString.text_close.tr,
+                cancelText ?? AppString.text_cancel.tr,
                 style: AppStyle.normal_text.copyWith(
                     color:cancelTextColor?? AppColor.hintColor.withOpacity(0.8),
                     fontSize: Dimensions.fontSizeMid - 3,

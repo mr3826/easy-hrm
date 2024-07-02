@@ -16,7 +16,8 @@ class AppString {
 
   static String leaveAddedSuccessMessage = 'Leave Added Successfully';
   static String text_retry = 'Retry';
-  static String text_you_have_seen_all_notification = 'You have seen all notification';
+  static String text_you_have_seen_all_notification =
+      'You have seen all notification';
   static String no_internet_title_text = "No internet!!";
   static String no_internet_subtitle_text =
       "Make sure your Wi-Fi or cellular data is turned on and then try again";
@@ -27,7 +28,8 @@ class AppString {
   static String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
   static String workShiftText = "Work Shift";
-  static String text_sure_you_want_to_delete_timelog = "Sure  you want to delete this time log? If you delete this timelog you can’t recover it again.";
+  static String text_sure_you_want_to_delete_timelog =
+      "Sure you want to delete this time log? If you delete this timelog you can’t recover it again.";
   static const String invalidVerificationCode =
       "Invalid verification code provided";
   static String text_provid_a_valid_input = "Provide a Valid Input";
@@ -69,7 +71,10 @@ class AppString {
   static String text_replace_file = 'Replace File';
   static String text_submit = 'Submit';
   static String text_continue = 'Continue';
-  static String text_close = 'Cancel';
+  static String text_confirm = 'Confirm';
+
+  static String text_close = 'Close';
+
   static String text_bio = 'Bio';
   static String text_welcome = 'Welcome';
   static String text_progress = 'Progress';
@@ -127,7 +132,8 @@ class AppString {
   static String text_account = 'account';
   static String text_you_have = 'You have';
   static String text_org_linked_with_your = 'organization linked with your';
-  static String text_organisations_linked_with_your = 'organizations linked with your';
+  static String text_organisations_linked_with_your =
+      'organizations linked with your';
   static String textDay = 'day';
   static String textDays = 'days';
   static String rejectedATimelogText = 'has reject your time log on ';
@@ -238,7 +244,8 @@ class AppString {
 
   static const String text_are_you_sure = "Are you sure?";
   static const String text_feature_unavailbe = "Feature unavailable";
-  static const String text_this_functionality_might_etc = "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information.";
+  static const String text_this_functionality_might_etc =
+      "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information.";
   static const String changeOrganizationWarningMessage =
       "Are you sure want change your organization";
   static const String text_are_you_sure_want_to_exit_from_app =

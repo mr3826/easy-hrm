@@ -54,7 +54,7 @@ Map<String, String> eng = {
   AppString.text_replace_file: "Replace File",
   AppString.text_submit: "Submit",
   AppString.text_continue: "Continue",
-  AppString.text_close: "Cancel",
+  AppString.text_close: "Close",
   AppString.text_bio: "Bio",
   AppString.text_welcome: "Welcome",
   AppString.text_progress: "Progress",

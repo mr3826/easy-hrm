@@ -19,7 +19,6 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 Future otpVerificationLayout(context) {
   final selectedValue = Get.put(SelectedOtpVerifyController());
-
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => Dialog(
@@ -67,17 +66,20 @@ Future otpVerificationLayout(context) {
                       color: AppColor.normalTextColor,
                       fontSize: Dimensions.fontSizeDefault),
                 ),
-                GestureDetector(
-                    onTap: () {
-                      Get.find<UserProfileController>()
-                          .resendOtp(emailAddress: changeEmailController.text);
-                    },
-                    child: Text(
-                      AppString.text_resend.tr,
-                      style: AppStyle.normal_text_grey.copyWith(
-                          color: AppColor.primaryColor,
-                          fontSize: Dimensions.fontSizeDefault),
-                    )),
+               Obx(() =>  GestureDetector(
+                   onTap: () {
+                     Get.find<UserProfileController>()
+                         .resendOtp(emailAddress: changeEmailController.text);
+                   },
+                   child:  Get.find<UserProfileController>(). timerActive.value == true
+                       ? Text("${Get.find<UserProfileController>().seconds.value} s"):
+                   Text(
+                     AppString.text_resend.tr,
+                     style: AppStyle.normal_text_grey.copyWith(
+                         color: AppColor.primaryColor,
+                         fontSize: Dimensions.fontSizeDefault),
+                   )),)
+
               ],
             ),
             customSpacerHeight(height: 16),
@@ -102,12 +104,21 @@ Future otpVerificationLayout(context) {
                       }),
             ),
             customSpacerHeight(height: 16)
+
+
+
+
+
           ],
         ),
       ),
     ),
   );
 }
+
+
+
+
 
 _verifyBtnLayout({verifyAction, closeAction}) {
   return Padding(
@@ -152,7 +163,6 @@ _verifyBtnLayout({verifyAction, closeAction}) {
                 color: Get.find<UserProfileController>().isButtonEnabledForOTP
                     ? AppColor.primaryColor
                     : AppColor.normalTextColor.withOpacity(0.1),
-
                 child: Center(
                     child: Text(
                   AppString.text_verify.tr,

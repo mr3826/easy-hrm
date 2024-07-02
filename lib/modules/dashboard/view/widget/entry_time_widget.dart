@@ -129,7 +129,7 @@ alertForSubscriptionRequired() {
               elevation:0,
               color: AppColor.cardColor,
               shape: roundedRectangleBorder.copyWith(side:  BorderSide(width: 1.2,color: AppColor.hintColor.withOpacity(0.5)),borderRadius: BorderRadius.circular(40)),
-              child: Center(child: Text(AppString.text_close.tr,style: AppStyle.small_text_black.copyWith(color: AppColor.normalTextColor.withOpacity(0.6),fontSize: Dimensions.fontSizeMid-4),))),
+              child: Center(child: Text(AppString.text_cancel.tr,style: AppStyle.small_text_black.copyWith(color: AppColor.normalTextColor.withOpacity(0.6),fontSize: Dimensions.fontSizeMid-4),))),
         ),
       )
 

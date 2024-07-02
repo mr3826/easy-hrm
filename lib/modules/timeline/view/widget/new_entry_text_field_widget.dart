@@ -77,33 +77,33 @@ class TimeLogEntryTextField extends StatelessWidget {
               Obx(() => status != null && status == "reject"
                   ? CustomAppButton(
                       isButtonExpanded: false,
-                      buttonText:  Text(AppString.text_remove.tr,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16)),
+                      buttonText: Text(AppString.text_remove.tr,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16)),
                       onPressed: () {
-
                         customDialog(
                             context: context,
                             saveBtnAction: () async {
-                              Get.find<TimelineController>().removeTimeEntry(
-                                  timeLogId:
-                                  Get.find<TimelineController>().timeLineID).then((value){
+                              Get.find<TimelineController>()
+                                  .removeTimeEntry(
+                                      timeLogId: Get.find<TimelineController>()
+                                          .timeLineID)
+                                  .then((value) {
                                 if (value == true) {
                                   Navigator.pop(context);
                                 }
                               });
-
                             },
                             icon: CupertinoIcons.delete,
                             titleText: AppString.text_remove_timelog.tr,
-                            subText: AppString.text_sure_you_want_to_delete_timelog.tr,
+                            subText: AppString
+                                .text_sure_you_want_to_delete_timelog.tr,
                             iconBgColor: AppColor.errorColorLight,
                             btnBgColor: AppColor.errorColorLight,
                             btnText: "",
                             drcText: "",
                             drcFontSize: Dimensions.fontSizeDefault,
                             childForSaveBtn: Obx(() => removeTextLayout()));
-
                       },
                       buttonColor: AppColor.errorColorLight)
                   : Get.find<TimelineController>()
@@ -361,7 +361,7 @@ class InTimePicker extends StatelessWidget {
             GestureDetector(
               child: SizedBox(
                 width: 50,
-                child: Text(AppString.text_close.tr),
+                child: Text(AppString.text_cancel.tr),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -426,7 +426,7 @@ class OutTimePicker extends StatelessWidget {
             GestureDetector(
               child: SizedBox(
                 width: 50,
-                child: Text(AppString.text_close.tr),
+                child: Text(AppString.text_cancel.tr),
               ),
               onTap: () {
                 Navigator.pop(context);

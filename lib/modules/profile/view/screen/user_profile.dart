@@ -581,11 +581,12 @@ class ProfileScreen extends GetView<UserProfileController> {
     return CustomNetworkImage(
       height: AppLayout.getHeight(25),
       fileDir: "cover_images",
-      errorText:getFirstTwoLetterFromWord(Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.organization!
-          .orgName??""),
+      errorText: getFirstTwoLetterFromWord(Get.find<UserProfileController>()
+              .userDetails
+              ?.getOrganizationUserDetails
+              ?.organization!
+              .orgName ??
+          ""),
       imgUrlKey:
           "${controller.userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}",
       borderColor: Colors.transparent,

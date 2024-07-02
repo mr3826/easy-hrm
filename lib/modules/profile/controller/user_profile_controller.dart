@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -25,7 +26,6 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import '../../../common/controller/date_time_controller.dart';
 import '../../../common/domain/error_model.dart';
 import '../../../common/widget/custom_password_text_field.dart';
-import '../../../common/widget/custom_text_field.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_string.dart';
@@ -44,7 +44,25 @@ class UserProfileController extends GetxController with StateMixin {
     getEmploymentInfo();
     getUserLogHistory();
     getOrganizationInfo();
+    startTimer();
     super.onInit();
+  }
+
+  RxInt seconds = 59.obs;
+  RxBool timerActive = false.obs;
+  RxBool isOTPProvided = false.obs;
+  String OTPCode = "";
+
+  void startTimer() {
+    timerActive.value = true;
+    Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (seconds.value == 0) {
+        timer.cancel();
+        timerActive.value = false;
+      } else {
+        seconds.value--;
+      }
+    });
   }
 
   RxBool isValue = true.obs;
@@ -63,7 +81,6 @@ class UserProfileController extends GetxController with StateMixin {
   final isVerificationApiLoading = false.obs;
 
   var isOtpString = ''.obs;
-
 
   bool get isButtonEnabledForOTP {
     return isOtpString.isNotEmpty;
@@ -153,7 +170,9 @@ class UserProfileController extends GetxController with StateMixin {
 
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
-        showErrorMessage(message: ErrorModel.fromJson(response.body).message ?? "Some Error occur!");
+        showErrorMessage(
+            message: ErrorModel.fromJson(response.body).message ??
+                "Some Error occur!");
       } else {
         logSuccessMessage(logName: "changeMail", response: response);
         // SuccessModel value = SuccessModel.fromJson(response.body);
@@ -178,7 +197,9 @@ class UserProfileController extends GetxController with StateMixin {
 
       if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);
-        showErrorMessage(message: ErrorModel.fromJson(response.body).message ?? "Some Error occur!");
+        showErrorMessage(
+            message: ErrorModel.fromJson(response.body).message ??
+                "Some Error occur!");
       } else {
         logSuccessMessage(
             logName: "submitVerificationCode", response: response);
@@ -216,6 +237,8 @@ class UserProfileController extends GetxController with StateMixin {
                 "Some Error occur!");
       } else {
         logSuccessMessage(logName: "resendOtp", response: response);
+        seconds.value = 59;
+        startTimer();
         showSuccessMessage(message: AppString.resend_otp_text.tr);
       }
     } catch (e) {
