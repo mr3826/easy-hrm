@@ -79,6 +79,7 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
           onChanged: (valueType) {
             setState(() {
               dropDownValue = valueType as String;
+              Get.find<ApplyLeaveController>().isSelectLeaveType.value=valueType;
             });
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
                 Get.find<ApplyLeaveController>()
