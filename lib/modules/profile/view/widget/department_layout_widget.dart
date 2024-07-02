@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -80,7 +81,7 @@ _departmentHistoryInfo(context) {
                     .isNotEmpty)
               Expanded(
                 child: Text(
-                  "${AppString.text_from.tr} - ${dateMonthYearFormatFromDatetime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+                  "${AppString.text_from.tr} - ${_getDateTimeFormat(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.hintColor,
                       fontSize: Dimensions.fontSizeDefault - 1,
@@ -92,6 +93,13 @@ _departmentHistoryInfo(context) {
       ],
     ),
   );
+}
+
+_getDateTimeFormat(dateString){
+  if(dateString.isEmpty) return"";
+  DateTime dateTime = DateTime.parse(dateString);
+  // Format the DateTime to "dd, MMM"
+  return DateFormat('dd MMM, yyyy').format(dateTime);
 }
 
 _parentDepartmentInfo({required String parentDepartmentName}) {

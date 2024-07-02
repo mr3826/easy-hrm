@@ -115,7 +115,6 @@ String dateMonthFormatFromDatetime(String dateString) {
 String dateMonthYearFormatFromDatetime(String dateString) {
   if (dateString.isEmpty) return "";
   // Parse the string to DateTime
-  print(dateString);
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
   String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
