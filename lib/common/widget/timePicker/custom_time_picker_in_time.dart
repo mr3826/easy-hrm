@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controll
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../modules/leave/controller/leave_screen_controller.dart';
+import '../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
@@ -218,6 +221,10 @@ class _InDatePickerState extends State<InDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
+                ///For active timelog details button
+                Get.find<TimelineController>().isSelectDate.value= Get.find<DateTimePickerController>().inDate.value;
+
+                ///others
                 if (!Get.find<LeaveScreenController>()
                     .holidays
                     .contains(today.weekday)) {
@@ -233,8 +240,20 @@ class _InDatePickerState extends State<InDatePicker> {
                     Get.find<DateTimePickerController>().getInDateTime();
                     Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                   } else {
+
+
+                    if(Get.find<DateTimePickerController>().inDate.value != DateFormat('yyyy-MM-dd').format(today)){
+                      Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
+                    }
+
+
                     Get.find<DateTimePickerController>().inDate.value =
                         DateFormat('yyyy-MM-dd').format(today);
+
+
+
+
+
                     Get.find<DateTimePickerController>().getInDateTime();
                     setIndexForPrevTdayOrTomListTimelog(today);
                   }

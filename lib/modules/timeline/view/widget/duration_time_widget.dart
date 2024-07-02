@@ -103,7 +103,8 @@ _statusButtonLayout({required String status}) {
     children: [
       customSpacerHeight(height: 16),
       SizedBox(
-        width: 150,
+        width: 140,
+        height: 40,
         child: _showStatusButton(status),
       ),
     ],
@@ -112,7 +113,7 @@ _statusButtonLayout({required String status}) {
 
 _getColor(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
-    return AppColor.primaryColor;
+    return AppColor.successColor;
   } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
     return AppColor.pendingColor;
   } else if (leaveStatus.toLowerCase() == "reject") {

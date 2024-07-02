@@ -100,6 +100,15 @@ class TaskViewLayout extends StatelessWidget {
                         /// then it became task name that shown in ui
                         /// pass its name to task name
 
+                        if (Get.find<TimelineController>().projectId.value !=
+                            Get.find<TimelineController>()
+                                .projectDropDownResponse
+                                ?.getProjectsDropdown?[index]
+                                .projectId) {
+                          Get.find<TimelineController>()
+                              .isValueChangeForTimeLogUpdate(true);
+                        }
+
                         Get.find<TimelineController>().taskName.value =
                             Get.find<TimelineController>()
                                     .projectDropDownResponse
@@ -166,11 +175,15 @@ class TaskViewLayout extends StatelessWidget {
   Widget _taskLayout(Tasks task, context) {
     return InkWell(
       onTap: () {
+        if (Get.find<TimelineController>().taskId.value != task.taskId) {
+          Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
+        }
+
         taskSearchController.text = task.name ?? "";
         Get.find<TimelineController>().taskName.value = task.name ?? "";
         Get.find<TimelineController>().taskId.value = task.taskId ?? "";
         Get.find<TimelineController>().projectId.value = "";
-        Get.find<TimelineController>().projectColor.value ="";
+        Get.find<TimelineController>().projectColor.value = "";
         Navigator.pop(context);
       },
       child: Column(

@@ -119,13 +119,24 @@ class TimeLogEntryTextField extends StatelessWidget {
                           buttonText: isFromUpdateTimelogEntry == true
                               ? AppString.text_save.tr
                               : AppString.text_add.tr,
-                          onAction: () {
-                            isFromUpdateTimelogEntry == true
-                                ? Get.find<TimelineController>()
-                                    .updateTimelineLogDetails()
-                                : Get.find<TimelineController>()
-                                    .createManualEntry();
-                          },
+                          btnColor: Get.find<TimelineController>()
+                                      .isValueChangeForTimeLogUpdate
+                                      .value ==
+                                  true
+                              ? AppColor.primaryColor
+                              : AppColor.primaryColor.withOpacity(0.5),
+                          onAction: Get.find<TimelineController>()
+                                      .isValueChangeForTimeLogUpdate
+                                      .value ==
+                                  true
+                              ? () {
+                                  isFromUpdateTimelogEntry == true
+                                      ? Get.find<TimelineController>()
+                                          .updateTimelineLogDetails()
+                                      : Get.find<TimelineController>()
+                                          .createManualEntry();
+                                }
+                              : () {},
                           cancelAction: () {
                             Navigator.pop(context);
                           })),
@@ -372,10 +383,24 @@ class InTimePicker extends StatelessWidget {
               child: SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
               onTap: () {
                 if (time.length < 15) {
+                  if (Get.find<DateTimePickerController>().inTime.value !=
+                      DateFormat('HH:mm').format(
+                          DateTime.parse("2024-01-01 0${time.toString()}"))) {
+                    Get.find<TimelineController>()
+                        .isValueChangeForTimeLogUpdate(true);
+                  }
+
                   Get.find<DateTimePickerController>().inTime.value =
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 0${time.toString()}"));
                 } else {
+                  if (Get.find<DateTimePickerController>().inTime.value !=
+                      DateFormat('HH:mm').format(
+                          DateTime.parse("2024-01-01 ${time.toString()}"))) {
+                    Get.find<TimelineController>()
+                        .isValueChangeForTimeLogUpdate(true);
+                  }
+
                   Get.find<DateTimePickerController>().inTime.value =
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 ${time.toString()}"));
@@ -439,10 +464,24 @@ class OutTimePicker extends StatelessWidget {
                 if (time.isNotEmpty) {
                   // set time in 00:00:00 format
                   if (time.length < 15) {
+                    if (Get.find<DateTimePickerController>().outTime.value !=
+                        DateFormat('HH:mm').format(
+                            DateTime.parse("2024-01-01 0${time.toString()}"))) {
+                      Get.find<TimelineController>()
+                          .isValueChangeForTimeLogUpdate(true);
+                    }
+
                     Get.find<DateTimePickerController>().outTime.value =
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 0${time.toString()}"));
                   } else {
+                    if (Get.find<DateTimePickerController>().outTime.value !=
+                        DateFormat('HH:mm').format(
+                            DateTime.parse("2024-01-01 ${time.toString()}"))) {
+                      Get.find<TimelineController>()
+                          .isValueChangeForTimeLogUpdate(true);
+                    }
+
                     Get.find<DateTimePickerController>().outTime.value =
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 ${time.toString()}"));

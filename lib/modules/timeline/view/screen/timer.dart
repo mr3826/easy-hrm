@@ -52,29 +52,9 @@ class TimerScreen extends StatelessWidget {
               onAction: () async {
                 if (Get.find<TimeCounterController>().isRunning.isTrue) {
 
-
                   await Get.find<TimelineController>()
                       .startOrEndTimer(timerType: StartOrEndTimer.end.name)
                       .then((value) {
-
-
-                    // if (value == true) {
-                    //   if (Get.find<TimelineController>()
-                    //           .projectDropDownResponse
-                    //           ?.getProjectsDropdown ==
-                    //       null) {
-                    //     Get.find<TimelineController>().getProjectDropdown();
-                    //   }
-                    //
-                    //
-                    //
-                    //   customButtonSheet(
-                    //       height: .6,
-                    //       context: context,
-                    //       isDismissible: false,
-                    //       child: const AddToTaskScreen());
-                    // }
-
                     Get.find<TimelineController>().getProjectDropdown();
                     customButtonSheet(
                         height: .6,
@@ -83,10 +63,6 @@ class TimerScreen extends StatelessWidget {
                         child: const AddToTaskScreen());
 
                   });
-
-
-
-
                 }
               },
             ),

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -56,6 +57,12 @@ class TimelineController extends GetxController with StateMixin {
   ProjectDropDownResponse? projectDropDownResponse;
   TimelineSummaryByDate? timelineSummaryByDate;
   TimelineSummaryByMonth? timelineSummaryByMonth;
+
+  var isSelectDate = ''.obs;
+
+  /// Method to check if the button should be enabled
+  RxBool isValueChangeForTimeLogUpdate=false.obs;
+
 
   Future<bool> startOrEndTimer({required String timerType}) async {
     final response =
