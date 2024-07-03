@@ -104,11 +104,6 @@ Future otpVerificationLayout(context) {
                       }),
             ),
             customSpacerHeight(height: 16)
-
-
-
-
-
           ],
         ),
       ),

@@ -121,7 +121,7 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
               ),
               Center(
                   child: Text(
-                 _getDuration(duration),
+                 getDuration(duration),
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontWeight: FontWeight.w700),
@@ -146,7 +146,7 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
   );
 }
 
-String _getDuration(duration) {
+String getDuration(duration) {
   if(duration=="1 day"){
     return "Full day";
   }else{

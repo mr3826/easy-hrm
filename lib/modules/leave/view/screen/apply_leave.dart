@@ -22,7 +22,7 @@ class ApplyLeaveScreen extends StatelessWidget {
                         .day
                 ? DateFormat('d MMMM').format(DateTime.parse(
                     Get.find<DateTimePickerController>().inDate.value))
-                : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
+                : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
             subtext: DateTime.parse(
                             Get.find<DateTimePickerController>().inDate.value)
                         .day ==

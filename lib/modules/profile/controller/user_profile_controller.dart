@@ -230,6 +230,8 @@ class UserProfileController extends GetxController with StateMixin {
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
 
+      print("resendOtp ::${response.body}");
+
       if (response.status.hasError) {
         logErrorMessage(logName: "resendOtp", response: response);
         showErrorMessage(

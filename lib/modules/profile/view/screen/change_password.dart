@@ -15,7 +15,6 @@ class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -93,6 +92,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             }
                           },
                           cancelAction: () {
+                            Navigator.pop(context);
                             Navigator.pop(context);
                           })),
                   customSpacerHeight(height: 300),

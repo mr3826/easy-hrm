@@ -130,7 +130,7 @@ String dateMonthFormatFromDatetimeForLeaveDetails(String dateString) {
   String formattedDate = DateFormat('dd MMM').format(dateTime);
   String weekDays=findWeekdayFormDateString(dateString);
 
-  return "$weekDays, $formattedDate";
+  return "${abbreviateDayOfWeek(weekDays)}, $formattedDate";
 }
 
 String findWeekdayFormDateString(String dateString) {
