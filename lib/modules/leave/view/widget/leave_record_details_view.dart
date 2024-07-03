@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
@@ -44,8 +45,8 @@ class LeaveRecordDetails extends StatelessWidget {
       child: Column(
         children: [
           customButtonSheetAppbar(
-              text: leaveDate,
-              subtext: leaveWeekday,
+              text: "",
+              subtext: _getDate(),
               isLeave: true,
               status: status,
               duration: _getDurationTime()),
@@ -201,9 +202,7 @@ class LeaveRecordDetails extends StatelessWidget {
               childForSaveBtn: Obx(() => _cancelLeaveProgress()),
               drcText: "",
               iconWidget: customSvgImage(
-                imageUrl: Images.cancel_leave,
-                height: 60,width: 60
-              ),
+                  imageUrl: Images.cancel_leave, height: 60, width: 60),
               titleText: AppString.cancelLeaveText.tr,
               subText: AppString.cancelLeaveNotificationText.tr,
               iconBgColor: AppColor.cardColor,
@@ -252,34 +251,32 @@ class LeaveRecordDetails extends StatelessWidget {
   _approvedLayout(context) {
     return Padding(
       padding: marginLayout,
-      child: CustomDoubleAppButton(
-        cancelAction: () {
-          Navigator.pop(context);
-        },
-        saveBtn: Text(
-          AppString.cancelLeaveText.tr,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.cardColor,
-              fontSize: Dimensions.fontSizeDefault + 2),
-        ),
-        onAction: () {
+      child: CustomAppButton(
+        buttonColor: AppColor.hintColor,
+        onPressed: () {
           customDialog(
-              context: context,
-              saveBtnAction: () {
-                Get.find<LeaveScreenController>()
-                    .cancelLeave(leaveId: leaveRecords?.id ?? "");
-              },
-              childForSaveBtn: Obx(() => _cancelLeaveProgress()),
-              drcText: "",
-              icon: Icons.document_scanner_rounded,
-              titleText: AppString.cancelLeaveText.tr,
-              subText: AppString.cancelLeaveNotificationText.tr,
-              iconBgColor: AppColor.cardColor,
-              btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.confirmText.tr);
+            context: context,
+            saveBtnAction: () {
+              Get.find<LeaveScreenController>()
+                  .cancelLeave(leaveId: leaveRecords?.id ?? "");
+            },
+            childForSaveBtn: Obx(() => _cancelLeaveProgress()),
+            drcText: "",
+            iconWidget: customSvgImage(
+                imageUrl: Images.cancel_leave, height: 60, width: 60),
+            titleText: AppString.cancelLeaveText.tr,
+            subText: AppString.cancelLeaveNotificationText.tr,
+            iconBgColor: AppColor.cardColor,
+            btnBgColor: AppColor.hintColor,
+            btnText: AppString.confirmText.tr,
+          );
         },
-        cancelText: AppString.text_back.tr,
-        btnColor: AppColor.errorColorLight,
+        buttonText: Text(
+          AppString.text_cancel.tr,
+          style: AppStyle.small_text_black.copyWith(
+              color: AppColor.cardColor, fontSize: Dimensions.fontSizeMid - 3),
+        ),
+        borderRadius: 60,
       ),
     );
   }
@@ -310,6 +307,21 @@ class LeaveRecordDetails extends StatelessWidget {
           : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
     } else {
       return "";
+    }
+  }
+
+  _getDate() {
+    isSameDate(
+        startDate: leaveRecords?.startDate ?? "",
+        endDate: leaveRecords?.endDate ?? "");
+    DateTime dateTime = DateTime.parse(leaveRecords?.startDate ?? "");
+
+    if (isSameDate(
+        startDate: leaveRecords?.startDate ?? "",
+        endDate: leaveRecords?.endDate ?? "")) {
+      return "${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.startDate ?? "")} - ${DateFormat('yyyy').format(dateTime)}";
+    } else {
+      return "${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.startDate ?? "")} - ${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.endDate ?? "")}";
     }
   }
 }

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -21,6 +22,7 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../common/domain/last_input_model.dart';
 import '../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../network/exception_helper.dart';
+import '../../dashboard/controller/dashbpard_controller.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/calendar_timeline.dart';
 
@@ -44,20 +46,23 @@ class TimelineController extends GetxController with StateMixin {
   RxString projectColor = ''.obs;
   final searchInputData = TextEditingController().obs;
   late Timer updateDataTime;
-  CalendarTimeline calendarTimeline=CalendarTimeline();
+  CalendarTimeline calendarTimeline = CalendarTimeline();
 
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
 
   final isTimelogEntryOrRemoveLoading = false.obs;
-
-
-
 
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
   TimelineSummaryByDate? timelineSummaryByDate;
   TimelineSummaryByMonth? timelineSummaryByMonth;
+
+  var isSelectDate = ''.obs;
+
+  /// Method to check if the button should be enabled
+  RxBool isValueChangeForTimeLogUpdate=false.obs;
+
 
   Future<bool> startOrEndTimer({required String timerType}) async {
     final response =
@@ -87,7 +92,6 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   saveTimeEntry() async {
-
     isTimelogEntryOrRemoveLoading(true);
     final response =
         await NetworkClient().mutationGraphData(saveTimerQueryData, {
@@ -115,7 +119,10 @@ class TimelineController extends GetxController with StateMixin {
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
+      Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
+      Get.find<DashboardController>().getProfileInfoForDashboard();
       _refreshTimeline();
+
       Get.to(() => const MainScreen(
             routeIndex: 0,
           ));
@@ -272,8 +279,8 @@ class TimelineController extends GetxController with StateMixin {
 
   getTimelineSummaryByMonth(
       {required String? startDate, required String? endDate}) async {
-
-    print("getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
+    print(
+        "getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
@@ -356,9 +363,9 @@ class TimelineController extends GetxController with StateMixin {
   _refreshTimeline() async {
     await getTimelineSummaryByMonth(
         startDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     await getCalendarTimelineDataByDate(
         startDate:
@@ -373,7 +380,6 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   getCalendarTimelineDataByDate(
-
       {required String? startDate, String? endDate}) async {
     isTimelineCalendarByDateLoading(true);
 
@@ -397,8 +403,6 @@ class TimelineController extends GetxController with StateMixin {
 
       timelogList =
           calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
-
-
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",

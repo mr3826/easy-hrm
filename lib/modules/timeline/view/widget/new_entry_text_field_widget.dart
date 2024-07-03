@@ -77,33 +77,33 @@ class TimeLogEntryTextField extends StatelessWidget {
               Obx(() => status != null && status == "reject"
                   ? CustomAppButton(
                       isButtonExpanded: false,
-                      buttonText:  Text(AppString.text_remove.tr,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16)),
+                      buttonText: Text(AppString.text_remove.tr,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16)),
                       onPressed: () {
-
                         customDialog(
                             context: context,
                             saveBtnAction: () async {
-                              Get.find<TimelineController>().removeTimeEntry(
-                                  timeLogId:
-                                  Get.find<TimelineController>().timeLineID).then((value){
+                              Get.find<TimelineController>()
+                                  .removeTimeEntry(
+                                      timeLogId: Get.find<TimelineController>()
+                                          .timeLineID)
+                                  .then((value) {
                                 if (value == true) {
                                   Navigator.pop(context);
                                 }
                               });
-
                             },
                             icon: CupertinoIcons.delete,
                             titleText: AppString.text_remove_timelog.tr,
-                            subText: AppString.text_sure_you_want_to_delete_timelog.tr,
+                            subText: AppString
+                                .text_sure_you_want_to_delete_timelog.tr,
                             iconBgColor: AppColor.errorColorLight,
                             btnBgColor: AppColor.errorColorLight,
                             btnText: "",
                             drcText: "",
                             drcFontSize: Dimensions.fontSizeDefault,
                             childForSaveBtn: Obx(() => removeTextLayout()));
-
                       },
                       buttonColor: AppColor.errorColorLight)
                   : Get.find<TimelineController>()
@@ -119,13 +119,24 @@ class TimeLogEntryTextField extends StatelessWidget {
                           buttonText: isFromUpdateTimelogEntry == true
                               ? AppString.text_save.tr
                               : AppString.text_add.tr,
-                          onAction: () {
-                            isFromUpdateTimelogEntry == true
-                                ? Get.find<TimelineController>()
-                                    .updateTimelineLogDetails()
-                                : Get.find<TimelineController>()
-                                    .createManualEntry();
-                          },
+                          btnColor: Get.find<TimelineController>()
+                                      .isValueChangeForTimeLogUpdate
+                                      .value ==
+                                  true
+                              ? AppColor.primaryColor
+                              : AppColor.primaryColor.withOpacity(0.5),
+                          onAction: Get.find<TimelineController>()
+                                      .isValueChangeForTimeLogUpdate
+                                      .value ==
+                                  true
+                              ? () {
+                                  isFromUpdateTimelogEntry == true
+                                      ? Get.find<TimelineController>()
+                                          .updateTimelineLogDetails()
+                                      : Get.find<TimelineController>()
+                                          .createManualEntry();
+                                }
+                              : () {},
                           cancelAction: () {
                             Navigator.pop(context);
                           })),
@@ -361,7 +372,7 @@ class InTimePicker extends StatelessWidget {
             GestureDetector(
               child: SizedBox(
                 width: 50,
-                child: Text(AppString.text_close.tr),
+                child: Text(AppString.text_cancel.tr),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -372,10 +383,24 @@ class InTimePicker extends StatelessWidget {
               child: SizedBox(width: 50, child: Text(AppString.text_ok.tr)),
               onTap: () {
                 if (time.length < 15) {
+                  if (Get.find<DateTimePickerController>().inTime.value !=
+                      DateFormat('HH:mm').format(
+                          DateTime.parse("2024-01-01 0${time.toString()}"))) {
+                    Get.find<TimelineController>()
+                        .isValueChangeForTimeLogUpdate(true);
+                  }
+
                   Get.find<DateTimePickerController>().inTime.value =
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 0${time.toString()}"));
                 } else {
+                  if (Get.find<DateTimePickerController>().inTime.value !=
+                      DateFormat('HH:mm').format(
+                          DateTime.parse("2024-01-01 ${time.toString()}"))) {
+                    Get.find<TimelineController>()
+                        .isValueChangeForTimeLogUpdate(true);
+                  }
+
                   Get.find<DateTimePickerController>().inTime.value =
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 ${time.toString()}"));
@@ -426,7 +451,7 @@ class OutTimePicker extends StatelessWidget {
             GestureDetector(
               child: SizedBox(
                 width: 50,
-                child: Text(AppString.text_close.tr),
+                child: Text(AppString.text_cancel.tr),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -439,10 +464,24 @@ class OutTimePicker extends StatelessWidget {
                 if (time.isNotEmpty) {
                   // set time in 00:00:00 format
                   if (time.length < 15) {
+                    if (Get.find<DateTimePickerController>().outTime.value !=
+                        DateFormat('HH:mm').format(
+                            DateTime.parse("2024-01-01 0${time.toString()}"))) {
+                      Get.find<TimelineController>()
+                          .isValueChangeForTimeLogUpdate(true);
+                    }
+
                     Get.find<DateTimePickerController>().outTime.value =
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 0${time.toString()}"));
                   } else {
+                    if (Get.find<DateTimePickerController>().outTime.value !=
+                        DateFormat('HH:mm').format(
+                            DateTime.parse("2024-01-01 ${time.toString()}"))) {
+                      Get.find<TimelineController>()
+                          .isValueChangeForTimeLogUpdate(true);
+                    }
+
                     Get.find<DateTimePickerController>().outTime.value =
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 ${time.toString()}"));

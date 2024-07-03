@@ -115,11 +115,22 @@ String dateMonthFormatFromDatetime(String dateString) {
 String dateMonthYearFormatFromDatetime(String dateString) {
   if (dateString.isEmpty) return "";
   // Parse the string to DateTime
-  print(dateString);
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
   String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
   return formattedDate;
+}
+
+
+String dateMonthFormatFromDatetimeForLeaveDetails(String dateString) {
+  if (dateString.isEmpty) return "";
+  // Parse the string to DateTime
+  DateTime dateTime = DateTime.parse(dateString);
+  // Format the DateTime to "dd, MMM"
+  String formattedDate = DateFormat('dd MMM').format(dateTime);
+  String weekDays=findWeekdayFormDateString(dateString);
+
+  return "${abbreviateDayOfWeek(weekDays)}, $formattedDate";
 }
 
 String findWeekdayFormDateString(String dateString) {
@@ -142,6 +153,15 @@ String amPmFormatTimeFromString(String dateString) {
 
   return formattedTime;
 }
+
+
+bool isSameDate({required String startDate ,required String endDate}) {
+  if (startDate.isEmpty||endDate.isEmpty) return false;
+
+ return startDate.substring(0, 10)==endDate.substring(0, 10);
+
+}
+
 
 String getConvertSecondsToHours(String secondsStr) {
   if (secondsStr.isEmpty || secondsStr == "null") {
@@ -292,6 +312,33 @@ String formatLeaveDate(String inputDate) {
 
   return outputDate;
 }
+
+
+String convertDateRange(String input) {
+  // Define date formats
+  final DateFormat inputFormat = DateFormat('dd MMM yyyy');
+  final DateFormat outputFormat = DateFormat('EEE, d MMM');
+
+  // Extract the dates from the input string
+  final List<String> parts = input.split(',');
+  final List<String> dateRange = parts[1].split(' - ');
+
+  // Parse the dates
+  final DateTime startDate = inputFormat.parse(dateRange[0]);
+  final DateTime endDate = inputFormat.parse(dateRange[1]);
+
+  // Format the dates to the desired output format
+  final String formattedStartDate = outputFormat.format(startDate);
+  final String formattedEndDate = outputFormat.format(endDate);
+
+  // Create the output string
+  final String output = '$formattedStartDate - $formattedEndDate';
+
+  return output;
+}
+
+
+
 
 String abbreviateDayOfWeek(String fullDayName) {
   // Mapping of full day names to their abbreviations

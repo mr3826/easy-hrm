@@ -220,5 +220,11 @@ void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
       taskInfo.projectColor ?? "";
   Get.find<TimelineController>().taskName.value =
       taskInfo.taskOrProjectName ?? "";
+
   descriptionController.text = taskInfo.description ?? "";
+
+  ///Initially we get data from serve and don't need to update any thing. so..
+  ///value=false
+  ///if data change then value became true
+  Get.find<TimelineController>().isValueChangeForTimeLogUpdate(false);
 }

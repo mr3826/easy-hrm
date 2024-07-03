@@ -33,7 +33,9 @@ class TextFiledLayout extends StatelessWidget {
             buttonText: AppString.text_save.tr,
             onAction: () {
               final variables = _addVariables();
-              variables?.forEach((key, value) {print("key $key value:: $value");});
+              variables?.forEach((key, value) {
+                print("key $key value:: $value");
+              });
               if (formKey.currentState!.validate()) {
                 Get.find<UpdateProfileController>()
                     .updateUserProfile(variables!);
@@ -45,6 +47,8 @@ class TextFiledLayout extends StatelessWidget {
                   .storageForUpload
                   .filePath
                   .value = "";
+
+              Get.back();
               Get.back();
             }),
         customSpacerHeight(height: AppLayout.getHeight(80)),
@@ -104,17 +108,8 @@ Map<String, dynamic>? _addVariables() {
   //         ?.id ??
   //     "";
 
-
-
-  inputData["image"] = "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>()
-      .uploadPolicyResponse
-      .getUploadPolicy
-      ?.policyData
-      ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-      .value
-      ?.split("/")
-      .last ??
-      ""}";
+  inputData["image"] =
+      "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
 
   return inputData;
 }
@@ -131,6 +126,7 @@ _userPersonalBio() {
 _userEmergencyPhoneNumber() {
   return userTextFieldLayout(
       isRequired: false,
+      textInputType: TextInputType.number,
       hintText: AppString.text_emergency_phone.tr,
       titleText: AppString.text_emergency_phone.tr,
       controller: editEmergencyPhoneController);
@@ -141,6 +137,7 @@ _userPhoneNumber() {
       isRequired: false,
       hintText: AppString.text_phone.tr,
       titleText: AppString.text_phone.tr,
+      textInputType: TextInputType.number,
       controller: editPhoneController);
 }
 
@@ -186,6 +183,7 @@ userTextFieldLayout(
     required String hintText,
     bool isNoteFieldVisible = false,
     bool isRequired = true,
+    final TextInputType? textInputType,
     validator}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,6 +198,7 @@ userTextFieldLayout(
           : CustomInputField(
               hint: hintText,
               controller: controller,
+              textInputType: textInputType,
               validator: validator,
             ),
       customSpacerHeight(height: 12),

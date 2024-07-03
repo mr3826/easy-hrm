@@ -107,32 +107,41 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                               ),
                             )
                           : CustomDoubleAppButton(
-                              onAction: () {
-                                if (_formKey.currentState!.validate() &&
-                                    Get.find<ApplyLeaveController>()
-                                        .leaveId
-                                        .isNotEmpty) {
-                                  if (Get.find<ApplyLeaveController>()
-                                          .numberOfLeaves
-                                          .isNotEmpty &&
-                                      Get.find<ApplyLeaveController>()
-                                              .numberOfLeaves
-                                              .value !=
-                                          "0") {
-                                    Get.find<ApplyLeaveController>()
-                                        .applyLeave();
-                                  } else {
-                                    showWarningMessage(
-                                        message: AppString
-                                            .text_no_available_leave.tr);
-                                  }
-                                } else {
-                                  showWarningMessage(
-                                      message: AppString
-                                          .text_provid_a_valid_input.tr);
-                                }
-                              },
+                              onAction: Get.find<ApplyLeaveController>()
+                                          .isButtonEnabledForApplyLeave ==
+                                      true
+                                  ? () {
+                                      if (_formKey.currentState!.validate() &&
+                                          Get.find<ApplyLeaveController>()
+                                              .leaveId
+                                              .isNotEmpty) {
+                                        if (Get.find<ApplyLeaveController>()
+                                                .numberOfLeaves
+                                                .isNotEmpty &&
+                                            Get.find<ApplyLeaveController>()
+                                                    .numberOfLeaves
+                                                    .value !=
+                                                "0") {
+                                          Get.find<ApplyLeaveController>()
+                                              .applyLeave();
+                                        } else {
+                                          showWarningMessage(
+                                              message: AppString
+                                                  .text_no_available_leave.tr);
+                                        }
+                                      } else {
+                                        showWarningMessage(
+                                            message: AppString
+                                                .text_provid_a_valid_input.tr);
+                                      }
+                                    }
+                                  : () {},
                               buttonText: AppString.text_apply.tr,
+                              btnColor: Get.find<ApplyLeaveController>()
+                                          .isButtonEnabledForApplyLeave ==
+                                      true
+                                  ? AppColor.primaryColor
+                                  : AppColor.primaryColor.withOpacity(0.5),
                               cancelAction: () {
                                 leaveNoteController.clear();
                                 Navigator.pop(context);
@@ -214,9 +223,9 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
             : Container());
   }
 
-
   String _getCalculateLeave() {
-    final calculateAllowanceOfLeave = Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value;
+    final calculateAllowanceOfLeave =
+        Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value;
     switch (calculateAllowanceOfLeave) {
       case "no_of_application":
         return "Balance (No.of application)";

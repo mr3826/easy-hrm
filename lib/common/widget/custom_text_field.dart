@@ -13,12 +13,14 @@ class CustomInputField extends StatelessWidget {
   final Widget? prefixWidget;
   final String? Function(String?)? validator;
   final bool? isObscureText;
+  final TextInputType? textInputType;
 
   const CustomInputField(
       {super.key,
       required this.hint,
       this.controller,
       this.weight,
+      this.textInputType,
       this.prefixWidget,
       this.validator,
       this.prefixIcon,
@@ -48,8 +50,7 @@ class CustomInputField extends StatelessWidget {
       validator: validator,
       autofocus: false,
       obscureText: isObscureText == null ? false : true,
-
-
+      keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
@@ -68,17 +69,11 @@ class CustomInputField extends StatelessWidget {
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
         ),
         focusColor: AppColor.primaryColor,
-
         focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: AppColor.disableColor)),
-
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColor.disableColor),
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-
-
-
-
       ),
     );
   }
@@ -89,6 +84,7 @@ class CustomInputField extends StatelessWidget {
       style: subTextFieldTitleStyle,
       validator: validator,
       autofocus: false,
+      keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(

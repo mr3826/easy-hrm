@@ -44,6 +44,7 @@ Map<String, String> nn = {
   AppString.text_replace_file: "Erstatt fil",
   AppString.text_submit: "Send inn",
   AppString.text_continue: "Fortsett",
+  AppString.text_confirm: "Bekrefte",
   AppString.text_close: "Lukk",
   AppString.text_bio: "Biografi",
   AppString.text_welcome: "Velkommen",

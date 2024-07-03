@@ -84,7 +84,8 @@ class _ExpandedTextState extends State<ExpandedText> {
                   : AppString.text_view_more,
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.secondaryColor,
-                  fontSize: Dimensions.fontSizeDefault),
+                  fontWeight: FontWeight.bold,
+                  fontSize: Dimensions.fontSizeDefault-1),
             ))
       ],
     );

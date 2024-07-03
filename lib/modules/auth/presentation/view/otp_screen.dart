@@ -133,6 +133,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   style: TextStyle(
                     color: AppColor.secondaryColor,
                     fontSize: Dimensions.fontSizeDefault,
+                    fontWeight: FontWeight.bold
                   )),
             ),
     ]);
@@ -169,7 +170,8 @@ class _OTPScreenState extends State<OTPScreen> {
               AppString.confirmText.tr,
               overflow: TextOverflow.ellipsis,
               style: AppStyle.normal_text.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
+                fontSize: Dimensions.fontSizeMid
               ),
             ),
       onPressed: () async {

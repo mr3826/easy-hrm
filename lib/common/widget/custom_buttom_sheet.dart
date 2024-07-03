@@ -84,6 +84,11 @@ Widget customButtonSheetAppbar(
 }
 
 _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
+
+
+
+
+
   return Stack(
     children: [
       transformDashLayout(status),
@@ -97,7 +102,8 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
               if (subtext.isNotEmpty)
                 Center(
                     child: Text(
-                  "${abbreviateDayOfWeek(subtext)}, ${formatLeaveDate(text)}",
+                // "${abbreviateDayOfWeek(subtext)}, ${formatLeaveDate(text)}",
+                      subtext,
                   style: AppStyle.normal_text_black
                       .copyWith(color: AppColor.normalTextColor),
                 )),
@@ -115,7 +121,7 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
               ),
               Center(
                   child: Text(
-                 _getDuration(duration),
+                 getDuration(duration),
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontWeight: FontWeight.w700),
@@ -140,7 +146,7 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
   );
 }
 
-String _getDuration(duration) {
+String getDuration(duration) {
   if(duration=="1 day"){
     return "Full day";
   }else{

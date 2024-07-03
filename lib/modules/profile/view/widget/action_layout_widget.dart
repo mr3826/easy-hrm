@@ -74,6 +74,9 @@ Widget actionLayout(
               url: Images.EDIT_ICON)),
       InkWell(
           onTap: () {
+            currentPasswordController.clear();
+            newPasswordController.clear();
+            confirmPasswordController.clear();
             customAntButtonSheet(
                 height: 600, context: context, child: ChangePasswordScreen());
           },

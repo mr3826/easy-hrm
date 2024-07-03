@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
@@ -13,9 +12,7 @@ import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
-import 'package:payrun_mobile/modules/profile/view/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -108,8 +105,7 @@ class EditProfileScreen extends StatelessWidget {
                 height: 40,
                 child: Row(
                   children: [
-                    Expanded(child:
-                    _uploadBtnLayout()),
+                    Expanded(child: _uploadBtnLayout()),
                     customSpacerWidth(width: 12),
                     Expanded(child: _removeBtnLayout(context)),
                   ],
@@ -121,7 +117,6 @@ class EditProfileScreen extends StatelessWidget {
       ],
     );
   }
-
 
   _uploadBtnLayout() {
     return GestureDetector(
@@ -147,6 +142,18 @@ class EditProfileScreen extends StatelessWidget {
   _removeBtnLayout(context) {
     return GestureDetector(
         onTap: () {
+          if (Get.find<PikedProfileImgController>()
+                  .storageForUpload
+                  .filePath
+                  .value
+                  .isEmpty ||
+              Get.find<UserProfileController>()
+                      .userDetails
+                      ?.getOrganizationUserDetails
+                      ?.profile
+                      ?.image ==
+                  null) return;
+
           customDialog(
               context: context,
               saveBtnAction: () {
@@ -243,15 +250,6 @@ Map<String, dynamic>? _addVariables() {
           ?.department
           ?.id ??
       "";
-
-  // inputData["employment_status_id"] = Get.find<UserProfileController>()
-  //         .employeeWorkHistory
-  //         ?.getOrganizationUserHistory
-  //         ?.employmentHistories?[0]
-  //         .employmentStatus
-  //         ?.id ??
-  //     "";
-
   inputData["image"] = "";
 
   return inputData;

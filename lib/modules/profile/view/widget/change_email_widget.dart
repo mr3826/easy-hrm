@@ -63,6 +63,8 @@ class ChangEmailFieldLayout extends StatelessWidget {
                               } else {
                                 if (context.mounted) {
                                   otpVerificationLayout(context);
+                                  Get.find<UserProfileController>().seconds.value = 59;
+                                  Get.find<UserProfileController>().startTimer();
                                 }
                               }
                             }

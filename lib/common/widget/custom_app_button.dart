@@ -9,10 +9,10 @@ class CustomAppButton extends StatelessWidget {
   final Function onPressed;
   final Color buttonColor;
   final Color? textColor;
+  final double? borderRadius;
   final bool? isButtonExpanded;
   final IconData? iconsData;
   final double? btnTextSize;
-
   const CustomAppButton({
     super.key,
     this.hasOutline = false,
@@ -23,6 +23,7 @@ class CustomAppButton extends StatelessWidget {
     this.borderColor = Colors.grey,
     this.isButtonExpanded = true,
     this.iconsData,
+    this.borderRadius,
     this.btnTextSize,
   });
 
@@ -32,7 +33,7 @@ class CustomAppButton extends StatelessWidget {
         ? Expanded(
             child: SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 46,
               child: TextButton.icon(
                   icon: iconsData == null
                       ? Container()
@@ -41,7 +42,7 @@ class CustomAppButton extends StatelessWidget {
                       backgroundColor: buttonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.circular(Dimensions.radiusMid)),
+                              BorderRadius.circular(borderRadius??Dimensions.radiusMid)),
                       side: BorderSide(width: 1, color: borderColor!)),
                   onPressed: () async {
                     onPressed();
@@ -51,8 +52,9 @@ class CustomAppButton extends StatelessWidget {
           )
         : SizedBox(
             width: double.infinity,
-            height: AppLayout.getHeight(50),
+            height: AppLayout.getHeight(46),
             child: TextButton.icon(
+
               icon: iconsData == null
                   ? Container()
                   : Icon(iconsData, color: textColor),
@@ -60,7 +62,7 @@ class CustomAppButton extends StatelessWidget {
                   backgroundColor: buttonColor,
                   shape: RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(Dimensions.radiusExtraLarge)),
+                          BorderRadius.circular(borderRadius??Dimensions.radiusExtraLarge)),
                   side: const BorderSide(width: 1, color: Colors.transparent)),
               onPressed: () async {
                 onPressed();

@@ -64,8 +64,8 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
             ),
             Obx(() => selectedVerifyValue.isSelected.value == true
                 ? PopupMenuButton(
-              color: Colors.white,
-                    position:PopupMenuPosition.under ,
+                    color: Colors.white,
+                    position: PopupMenuPosition.under,
                     onSelected: (value) {
                       Get.find<PopupMenuController>().selectedValue.value =
                           value;
@@ -77,7 +77,11 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
                           ? selectedVerifyValue.isSelected(false)
                           : Container();
                     },
-              icon: const Icon(Icons.more_horiz),
+                    icon: selectedVerifyValue.isSelected.value == true &&
+                            selectedValue.selectedValue.value ==
+                                AppString.text_verify_email.tr
+                        ? const Icon(Icons.more_horiz)
+                        : const SizedBox(),
                     shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(Dimensions.radiusDefault)),
