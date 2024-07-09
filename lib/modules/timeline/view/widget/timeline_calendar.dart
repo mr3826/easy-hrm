@@ -9,7 +9,6 @@ import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_vie
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../utils/app_style.dart';
@@ -43,10 +42,7 @@ class TimeLineCalendar extends StatelessWidget {
               showHalfHours: true,
               showLiveTimeLineInAllDays: false,
               heightPerMinute: 2,
-              headerStyle: _headerStyle(),
-              eventArranger: const SideEventArranger(),
               scrollPhysics: const NeverScrollableScrollPhysics(),
-              liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
               pageViewPhysics: const NeverScrollableScrollPhysics(),
               halfHourIndicatorSettings: HourIndicatorSettings(
                   dashWidth: 3,
@@ -365,24 +361,6 @@ class TimeLineCalendar extends StatelessWidget {
           ));
   }
 
-  _headerStyle() {
-    return HeaderStyle(
-        headerPadding: const EdgeInsets.all(0),
-        decoration: const BoxDecoration(color: Colors.transparent),
-        headerMargin: const EdgeInsets.only(bottom: 0),
-        headerTextStyle: AppStyle.normal_text_grey.copyWith(
-            color: AppColor.noColor, fontSize: Dimensions.fontSizeMid),
-        leftIcon: const Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 0,
-          color: AppColor.noColor,
-        ),
-        rightIcon: const Icon(
-          Icons.arrow_forward_ios,
-          size: 0,
-          color: AppColor.noColor,
-        ));
-  }
 }
 
 customAntButtonSheet({required BuildContext context, child, double? height}) {
