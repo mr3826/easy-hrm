@@ -32,41 +32,45 @@ Widget timelineLayout() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
-                      dynamicText:getConvertSecondsToHours( Get.find<TimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
-                              ?.totalScheduledSeconds ??
-                          ""),
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<TimelineController>()
+                                  .timelineSummaryByMonth
+                                  ?.getTimelogSummaryForApp
+                                  ?.totalScheduledSeconds ??
+                              ""),
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: getConvertSecondsToHours(Get.find<TimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
-                              ?.loggedTotalSeconds ??
-                          ""),
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<TimelineController>()
+                                  .timelineSummaryByMonth
+                                  ?.getTimelogSummaryForApp
+                                  ?.loggedTotalSeconds ??
+                              ""),
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText:getConvertSecondsToHours( Get.find<TimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
-                              ?.totalLeavesSeconds ??
-                          ""),
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<TimelineController>()
+                                  .timelineSummaryByMonth
+                                  ?.getTimelogSummaryForApp
+                                  ?.totalLeavesSeconds ??
+                              ""),
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText:getConvertSecondsToHours( Get.find<TimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
-                              ?.balance ??
-                          ""),
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<TimelineController>()
+                                  .timelineSummaryByMonth
+                                  ?.getTimelogSummaryForApp
+                                  ?.balance ??
+                              ""),
                       staticText: AppString.text_balance.tr),
                 ],
               ),
@@ -86,13 +90,16 @@ _tabToViewTimeLogSummery() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          AppString.text_tab_to_view_timelog_summary.tr,
-          style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.cardColor,
-            decoration: TextDecoration.underline,
-            decorationColor: AppColor.cardColor,
-            fontSize: Dimensions.fontSizeDefault,
+        Flexible(
+          child: Text(
+            AppString.text_tab_to_view_timelog_summary.tr,
+            style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.cardColor,
+              overflow: TextOverflow.ellipsis,
+              decorationColor: AppColor.cardColor,
+              decoration: TextDecoration.underline,
+              fontSize: Dimensions.fontSizeDefault,
+            ),
           ),
         ),
         customSpacerWidth(width: 10),
@@ -100,7 +107,7 @@ _tabToViewTimeLogSummery() {
           Icons.arrow_forward,
           color: AppColor.cardColor,
           size: 18,
-        )
+        ),
       ],
     ),
   );
@@ -114,7 +121,7 @@ _countLayout({required String dynamicText, required String staticText}) {
         style: AppStyle.normal_text_black.copyWith(
             color: AppColor.cardColor,
             fontWeight: FontWeight.bold,
-            fontSize: Dimensions.fontSizeDefault+1),
+            fontSize: Dimensions.fontSizeDefault + 1),
       ),
       Text(
         staticText,

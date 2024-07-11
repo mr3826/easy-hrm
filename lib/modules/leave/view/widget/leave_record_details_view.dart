@@ -251,6 +251,7 @@ class LeaveRecordDetails extends StatelessWidget {
   _approvedLayout(context) {
     return Padding(
       padding: marginLayout,
+
       child: CustomAppButton(
         buttonColor: AppColor.hintColor,
         onPressed: () {
@@ -277,6 +278,7 @@ class LeaveRecordDetails extends StatelessWidget {
               color: AppColor.cardColor, fontSize: Dimensions.fontSizeMid - 3),
         ),
         borderRadius: 60,
+        isButtonExpanded: false,
       ),
     );
   }
@@ -295,7 +297,6 @@ class LeaveRecordDetails extends StatelessWidget {
   }
 
   String _getDurationTime() {
-    print("duration ::: ${leaveRecords?.duration}");
     if (leaveRecords?.duration != null &&
         leaveRecords?.duration.runtimeType != String) {
       return leaveRecords?.duration > 1

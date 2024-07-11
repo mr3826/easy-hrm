@@ -259,6 +259,7 @@ class AppString {
   static String text_forgot_password = "Forgot password?";
   static String text_sign_in = "Sign in";
   static String text_cancel = "Cancel";
+  static String text_time_entry = "Add time entry";
   static String text_canceled = "Canceled";
   static String text_back = "Back";
   static String no_event_found_text = "No events for today!";

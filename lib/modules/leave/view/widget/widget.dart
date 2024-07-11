@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/modules/profile/view/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -87,13 +90,16 @@ _tabToViewLeaveRecord() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          AppString.text_tab_to_view_leave_record.tr,
-          style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.cardColor,
-            decorationColor: AppColor.cardColor,
-            decoration: TextDecoration.underline,
-            fontSize: Dimensions.fontSizeDefault,
+        Flexible(
+          child: Text(
+            AppString.text_tab_to_view_leave_record.tr,
+            style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.cardColor,
+              overflow: TextOverflow.ellipsis,
+              decorationColor: AppColor.cardColor,
+              decoration: TextDecoration.underline,
+              fontSize: Dimensions.fontSizeDefault,
+            ),
           ),
         ),
         customSpacerWidth(width: 10),
@@ -101,11 +107,12 @@ _tabToViewLeaveRecord() {
           Icons.arrow_forward,
           color: AppColor.cardColor,
           size: 18,
-        )
+        ),
       ],
     ),
   );
 }
+
 
 AppBar appBar({required text}) {
   return AppBar(
