@@ -205,7 +205,10 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          Get.find<ApplyLeaveController>().numberOfLeaves.value,
+                          formatToTwoDecimalPlaces(
+                              Get.find<ApplyLeaveController>()
+                                  .numberOfLeaves
+                                  .value),
                           style: AppStyle.mid_large_text
                               .copyWith(color: AppColor.normalTextColor),
                         ),

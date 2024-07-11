@@ -98,6 +98,7 @@ _hrs() {
   );
 }
 
+
 _mins() {
   List<String> minList =
       List.generate(60, (element) => element < 10 ? "0$element" : "$element");

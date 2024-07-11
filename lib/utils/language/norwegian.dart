@@ -99,7 +99,8 @@ Map<String, String> nn = {
   AppString.text_account: "konto",
   AppString.text_you_have: "Du har",
   AppString.text_org_linked_with_your: "organisasjon knyttet til din",
-  AppString.text_organisations_linked_with_your: "organisasjoner knyttet til din",
+  AppString.text_organisations_linked_with_your:
+      "organisasjoner knyttet til din",
   AppString.textDay: "dag",
   AppString.textDays: "dager",
   AppString.rejectedATimelogText: "har avvist tidsloggen din på",

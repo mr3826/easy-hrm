@@ -295,6 +295,7 @@ class LeaveRecordDetails extends StatelessWidget {
   }
 
   String _getDurationTime() {
+    print("duration ::: ${leaveRecords?.duration}");
     if (leaveRecords?.duration != null &&
         leaveRecords?.duration.runtimeType != String) {
       return leaveRecords?.duration > 1
