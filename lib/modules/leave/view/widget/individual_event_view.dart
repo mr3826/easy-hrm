@@ -93,7 +93,7 @@ class IndividualEventView extends StatelessWidget {
               .getLeaveRequests!
               .isEmpty
       ? Text(
-          AppString.no_event_found_text,
+          AppString.no_event_found_text.tr,
           style: AppStyle.mid_large_text.copyWith(
               fontSize: Dimensions.fontSizeDefault, color: AppColor.hintColor),
         )

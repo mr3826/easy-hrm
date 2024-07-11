@@ -153,7 +153,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   _descriptionText() {
     return Text(
-      AppString.text_we_have_a_verification_etc.tr,
+      AppString.text_we_have_sent_a_verification_etc.tr,
       textAlign: TextAlign.center,
       style: style.copyWith(
           fontSize: Dimensions.fontSizeDefault - 2, color: AppColor.hintColor),
