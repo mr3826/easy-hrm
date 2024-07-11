@@ -64,7 +64,8 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
             ),
             Obx(() => selectedVerifyValue.isSelected.value == true
                 ? PopupMenuButton(
-                    color: Colors.white,
+                    color: AppColor.cardColor,
+                    surfaceTintColor: AppColor.cardColor,
                     position: PopupMenuPosition.under,
                     onSelected: (value) {
                       Get.find<PopupMenuController>().selectedValue.value =
@@ -96,6 +97,7 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
                           )),
                       PopupMenuItem(
                           value: AppString.text_revert_change.tr,
+
                           child: Text(
                             AppString.text_revert_change.tr,
                             style: AppStyle.mid_large_text.copyWith(

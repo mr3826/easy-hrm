@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -13,12 +12,15 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../auth/presentation/view/otp_screen.dart';
 
 class DesignationLayout extends StatelessWidget {
   const DesignationLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userProfileController = Get.find<UserProfileController>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -26,75 +28,32 @@ class DesignationLayout extends StatelessWidget {
             text: AppString.text_designation.tr,
             subtext: AppString.text_history.tr),
         Expanded(
-            child: ListView.builder(
-          physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.zero,
-
-              itemCount: Get.find<UserProfileController>()
-                  .employeeWorkHistory
-                  ?.getOrganizationUserHistory
-                  ?.designationHistories
-                  ?.length ??
-              0,
-          itemBuilder: (context, index) {
-            return _employeeStatusInfoLayout(
-                developerStatus: Get.find<UserProfileController>()
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.designationHistories?[index]
-                        .designation
-                        ?.name ??
-                    "",
-                date: dateMonthYearFormatFromDatetime(
-                    Get.find<UserProfileController>()
-                            .employeeWorkHistory
-                            ?.getOrganizationUserHistory
-                            ?.designationHistories?[index]
-                            .startDate ??
-                        ""),
-                durationText:
-                    "${AppString.text_form_last.tr} ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index].startDate ?? "")}",
-                employeeCurrentStatus: Get.find<UserProfileController>()
-                            .employeeWorkHistory
-                            ?.getOrganizationUserHistory
-                            ?.designationHistories?[index]
-                            .endDate ==
-                        null
-                    ? AppString.textPresent.tr
-                    : dateMonthYearFormatFromDatetime(
-                        Get.find<UserProfileController>()
-                                .employeeWorkHistory
-                                ?.getOrganizationUserHistory
-                                ?.designationHistories?[index]
-                                .endDate ??
-                            ""));
-          },
-        ))
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.zero,
+            itemCount: userProfileController.employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?.length ?? 0,
+            itemBuilder: (context, index) {
+              final designationHistory = userProfileController.employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index];
+              return _employeeStatusInfoLayout(designationHistory);
+            },
+          ),
+        ),
       ],
     );
   }
 
-  _divider() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6.0, right: 6),
-      child: Container(
-        width: 1,
-        color: AppColor.hintColor,
-        height: 12,
-      ),
-    );
-  }
-
-  _employeeStatusInfoLayout({
-    required String developerStatus,
-    required String date,
-    required String durationText,
-    required String employeeCurrentStatus,
-  }) {
+  Widget _employeeStatusInfoLayout(designationHistory) {
     final baseTextStyle = AppStyle.mid_large_text.copyWith(
       fontSize: Dimensions.fontSizeDefault - 2,
       overflow: TextOverflow.ellipsis,
     );
+
+    final developerStatus = designationHistory?.designation?.name ?? "";
+    final date = _formatDate(designationHistory?.startDate);
+    final durationText = "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "")}";
+    final employeeCurrentStatus = designationHistory?.endDate == null
+        ? AppString.textPresent.tr
+        : dateMonthYearFormatFromDatetime(designationHistory?.endDate ?? "");
 
     return Stack(
       children: [
@@ -113,7 +72,7 @@ class DesignationLayout extends StatelessWidget {
                 ),
               ),
               customSpacerWidth(width: 12),
-              Flexible(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -125,31 +84,25 @@ class DesignationLayout extends StatelessWidget {
                       ),
                     ),
                     customSpacerHeight(height: 4),
-                    Row(
+                    Wrap(
                       children: [
-                        FittedBox(
-                          child: Text(
-                            "$date - ",
-                            style: baseTextStyle.copyWith(
-                              color: AppColor.hintColor,
-                            ),
+                        Text(
+                          "$date - ",
+                          style: baseTextStyle.copyWith(
+                            color: AppColor.hintColor,
                           ),
                         ),
-                        FittedBox(
-                          child: Text(
-                            employeeCurrentStatus,
-                            style: baseTextStyle.copyWith(
-                              color: AppColor.primaryColor,
-                            ),
+                        Text(
+                          employeeCurrentStatus,
+                          style: baseTextStyle.copyWith(
+                            color: AppColor.primaryColor,
                           ),
                         ),
                         _divider(),
-                        Expanded(
-                          child: Text(
-                            durationText,
-                            style: baseTextStyle.copyWith(
-                              color: AppColor.hintColor,
-                            ),
+                        Text(
+                          durationText,
+                          style: baseTextStyle.copyWith(
+                            color: AppColor.hintColor,
                           ),
                         ),
                       ],
@@ -165,10 +118,29 @@ class DesignationLayout extends StatelessWidget {
     );
   }
 
+  Widget _divider() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 6.0, right: 6),
+      child: Container(
+        width: 1,
+        color: AppColor.hintColor,
+        height: 16,
+      ),
+    );
+  }
 
-
-  _dottedLayout() {
+  Widget _dottedLayout() {
     return Positioned(
-        top: 55, left: 1, bottom: 0, child: dottedStyleLayout(height: 46));
+      top: 55,
+      left: 1,
+      bottom: 0,
+      child: dottedStyleLayout(height: 46),
+    );
+  }
+
+  String _formatDate(String? dateString) {
+    if (dateString == null) return "";
+    final dateTime = DateTime.parse(dateString);
+    return DateFormat('dd MMM, yyyy').format(dateTime);
   }
 }

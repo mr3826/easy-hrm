@@ -173,7 +173,7 @@ Map<String, String> eng = {
   AppString.text_ok: "Ok",
   AppString.text_select_option: "Selected option",
   AppString.text_select_on_option: "Select on option",
-  AppString.text_select_language: "Selected language",
+  AppString.text_select_language: "Select language",
   AppString.text_type_dot: "Type:",
   AppString.text_duration: "Duration",
   AppString.text_satus: "Status:",

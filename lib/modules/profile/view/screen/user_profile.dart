@@ -413,7 +413,10 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
-        color: AppColor.secondaryColor.withOpacity(0.04),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 1),
+          color: AppColor.normalTextColor.withOpacity(0.04),
+        ),
         child: Padding(
           padding:
               const EdgeInsets.only(top: 20.0, bottom: 20, left: 12, right: 12),

@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -14,7 +11,10 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../common/controller/convart_color_code_controller.dart';
 import '../../../../utils/utils.dart';
+import '../../../auth/presentation/view/otp_screen.dart';
+import 'department_layout_widget.dart';
 
 class EmploymentLayout extends StatelessWidget {
   const EmploymentLayout({super.key});
@@ -39,65 +39,44 @@ class EmploymentLayout extends StatelessWidget {
                   ?.length ??
                   0,
               itemBuilder: (context, index) {
-                return _employeeStatusInfoLayout(
-                    developerStatus: Get.find<UserProfileController>()
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.employmentHistories?[index]
-                        .employmentStatus
-                        ?.name ??
-                        '',
-                    date: dateMonthYearFormatFromDatetime(
-                        Get.find<UserProfileController>()
-                            .employeeWorkHistory
-                            ?.getOrganizationUserHistory
-                            ?.employmentHistories?[index]
-                            .startDate ??
-                            ""),
-                    durationText:
-                    "${AppString.text_form_last.tr} ${workingTimeSinceFormString(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index].startDate ?? "")}",
-                    employeeCurrentStatus: Get.find<UserProfileController>()
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.employmentHistories?[index]
-                        .endDate ==
-                        null
-                        ? AppString.textPresent.tr
-                        : dateMonthYearFormatFromDatetime(
-                        Get.find<UserProfileController>()
-                            .employeeWorkHistory
-                            ?.getOrganizationUserHistory
-                            ?.employmentHistories?[index]
-                            .endDate ??
-                            ""),
-                    statusColor: HexColor(Get.find<UserProfileController>()
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.employmentHistories?[index].employmentStatus?.color??"#8F99AD"));
+                var history = Get.find<UserProfileController>()
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.employmentHistories?[index];
+                return EmployeeStatusInfoLayout(
+                  developerStatus: history?.employmentStatus?.name ?? '',
+                  date: getDateTimeFormat(history?.startDate ?? ""),
+                  durationText:
+                  "${AppString.text_form_last.tr} ${workingTimeSinceFormString(history?.startDate ?? "")}",
+                  employeeCurrentStatus: history?.endDate == null
+                      ? AppString.textPresent.tr
+                      : dateMonthYearFormatFromDatetime(history?.endDate ?? ""),
+                  statusColor: HexColor(history?.employmentStatus?.color ?? "#8F99AD"),
+                );
               },
             ))
       ],
     );
   }
+}
 
-  _divider() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6.0, right: 6),
-      child: Container(
-        width: 1,
-        color: AppColor.hintColor,
-        height: 12,
-      ),
-    );
-  }
+class EmployeeStatusInfoLayout extends StatelessWidget {
+  final String developerStatus;
+  final String date;
+  final String durationText;
+  final Color statusColor;
+  final String employeeCurrentStatus;
 
-  _employeeStatusInfoLayout({
-    required String developerStatus,
-    required String date,
-    required String durationText,
-    required Color statusColor,
-    required String employeeCurrentStatus,
-  }) {
+  const EmployeeStatusInfoLayout({super.key,
+    required this.developerStatus,
+    required this.date,
+    required this.durationText,
+    required this.statusColor,
+    required this.employeeCurrentStatus,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final baseTextStyle = AppStyle.mid_large_text.copyWith(
       fontSize: Dimensions.fontSizeDefault - 2,
       overflow: TextOverflow.ellipsis,
@@ -122,6 +101,7 @@ class EmploymentLayout extends StatelessWidget {
               customSpacerWidth(width: 12),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -142,7 +122,7 @@ class EmploymentLayout extends StatelessWidget {
                       ],
                     ),
                     customSpacerHeight(height: 4),
-                    Row(
+                    Wrap(
                       children: [
                         Text(
                           "$date - ",
@@ -156,13 +136,11 @@ class EmploymentLayout extends StatelessWidget {
                             color: AppColor.primaryColor,
                           ),
                         ),
-                        _divider(),
-                        Flexible(
-                          child: Text(
-                            durationText,
-                            style: baseTextStyle.copyWith(
-                              color: AppColor.hintColor,
-                            ),
+                        const Divider(),
+                        Text(
+                          durationText,
+                          style: baseTextStyle.copyWith(
+                            color: AppColor.hintColor,
                           ),
                         ),
                       ],
@@ -173,14 +151,29 @@ class EmploymentLayout extends StatelessWidget {
             ],
           ),
         ),
-        _dottedLayout(),
+        Positioned(
+          top: 55,
+          left: 1,
+          bottom: 0,
+          child: dottedStyleLayout(height: 46),
+        ),
       ],
     );
   }
+}
 
+class Divider extends StatelessWidget {
+  const Divider({super.key});
 
-  _dottedLayout() {
-    return Positioned(
-        top: 55, left: 1, bottom: 0, child: dottedStyleLayout(height: 46));
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+      child: Container(
+        width: 1,
+        color: AppColor.hintColor,
+        height: 16,
+      ),
+    );
   }
 }

@@ -6,7 +6,6 @@ import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.da
 import 'package:payrun_mobile/modules/timeline/view/widget/new_entry_text_field_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-
 import '../../../../utils/utils.dart';
 
 class NewEntryScreen extends StatelessWidget {

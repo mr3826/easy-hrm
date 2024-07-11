@@ -206,7 +206,7 @@ class AppString {
   static String text_ok = "Ok";
   static String text_select_option = "Selected option";
   static String text_select_on_option = "Select on option";
-  static String text_select_language = "Selected language";
+  static String text_select_language = "Select language";
   static String text_type_dot = "Type:";
   static String text_duration = "Duration";
   static String text_satus = "Status:";
