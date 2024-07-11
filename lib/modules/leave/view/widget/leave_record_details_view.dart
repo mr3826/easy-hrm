@@ -251,7 +251,6 @@ class LeaveRecordDetails extends StatelessWidget {
   _approvedLayout(context) {
     return Padding(
       padding: marginLayout,
-
       child: CustomAppButton(
         buttonColor: AppColor.hintColor,
         onPressed: () {
@@ -295,18 +294,82 @@ class LeaveRecordDetails extends StatelessWidget {
                 color: AppColor.cardColor),
           );
   }
-
+  //
+  // String _getDurationTime() {
+  //   getLeaveRecodeDurationTimeFormat(
+  //       durationValue: double.parse(_getHourForDuration(
+  //           duration: leaveRecords?.duration.toString() ?? "")),
+  //       workShift: 9.0);
+  //
+  //   if (leaveRecords?.duration != null &&
+  //       leaveRecords?.duration.runtimeType != String) {
+  //     return leaveRecords?.duration > 1
+  //         ? "${_getDaysForDuration(duration: leaveRecords?.duration.toString() ?? "")} ${AppString.text_days.tr} ${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h"
+  //         : "${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h";
+  //   }
+  //
+  //
+  //
+  //
+  //
+  //   else if (leaveRecords?.duration != null &&
+  //       leaveRecords?.duration.runtimeType == String) {
+  //     return leaveRecords?.duration > 1
+  //         ? "${_getDaysForDuration(duration: leaveRecords?.duration.toString() ?? "")} ${AppString.text_days.tr} ${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h"
+  //         : "${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h";
+  //   } else {
+  //     return "";
+  //   }
+  // }
   String _getDurationTime() {
-    if (leaveRecords?.duration != null &&
-        leaveRecords?.duration.runtimeType != String) {
-      return leaveRecords?.duration > 1
-          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
-          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
-    } else if (leaveRecords?.duration != null &&
-        leaveRecords?.duration.runtimeType == String) {
-      return double.parse(leaveRecords?.duration) > 1
-          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
-          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
+    double value=0.0;
+    String days=_getDaysForDuration(duration: leaveRecords?.duration.toString()??"");
+    String durationInHour=_getLeaveRecodeDurationTimeFormat(workShift: 9.00,durationValue: double.parse(leaveRecords?.duration.toString()??"0.0"));
+    return "$days days $durationInHour";
+  }
+
+
+
+  String _getLeaveRecodeDurationTimeFormat({required double durationValue,required double workShift}){
+
+    double value = durationValue;
+    double dayToHour = workShift;
+
+    // Extract the decimal part
+    double totalHours = value * dayToHour;
+
+    // Calculate hours (integer part)
+    int hours = totalHours.toInt();
+
+    // Calculate remaining minutes
+    int minutes = ((totalHours - hours) * 60).toInt();
+
+    // Format the result
+    String formattedTime = '$hours h $minutes min';
+    return formattedTime;
+  }
+
+  _getHourForDuration({required String duration}) {
+    // Define a regex pattern to match the decimal part
+    RegExp regex = RegExp(r'\.(\d+)');
+    // Extract the decimal part using regex
+    Match? match = regex.firstMatch(duration);
+    if (match != null) {
+      return match.group(1)!;
+    } else {
+      return "";
+    }
+  }
+
+  _getDaysForDuration({required String duration}) {
+    // Define a regex pattern to match the integer part
+    RegExp regex = RegExp(r'^(\d+)');
+
+    // Extract the integer part using regex
+    Match? match = regex.firstMatch(duration);
+
+    if (match != null) {
+      return match.group(1)!;
     } else {
       return "";
     }

@@ -340,7 +340,6 @@ String convertDateRange(String input) {
 
 
 
-
 String abbreviateDayOfWeek(String fullDayName) {
   // Mapping of full day names to their abbreviations
   Map<String, String> dayAbbreviations = {
