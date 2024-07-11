@@ -31,9 +31,17 @@ class DesignationLayout extends StatelessWidget {
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.zero,
-            itemCount: userProfileController.employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?.length ?? 0,
+            itemCount: userProfileController
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.designationHistories
+                    ?.length ??
+                0,
             itemBuilder: (context, index) {
-              final designationHistory = userProfileController.employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index];
+              final designationHistory = userProfileController
+                  .employeeWorkHistory
+                  ?.getOrganizationUserHistory
+                  ?.designationHistories?[index];
               return _employeeStatusInfoLayout(designationHistory);
             },
           ),
@@ -50,7 +58,8 @@ class DesignationLayout extends StatelessWidget {
 
     final developerStatus = designationHistory?.designation?.name ?? "";
     final date = _formatDate(designationHistory?.startDate);
-    final durationText = "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "")}";
+    final durationText =
+        "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "")}";
     final employeeCurrentStatus = designationHistory?.endDate == null
         ? AppString.textPresent.tr
         : dateMonthYearFormatFromDatetime(designationHistory?.endDate ?? "");

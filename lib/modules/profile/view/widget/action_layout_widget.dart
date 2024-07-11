@@ -15,80 +15,75 @@ import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../controller/user_profile_controller.dart';
 import '../screen/change_password.dart';
 
-Widget actionLayout(
-    {required userName,
-    required departmentText,
-    required editAction,
-    changePassAction,
-    required context}) {
+Widget actionLayout({
+  required String userName,
+  required String departmentText,
+  required VoidCallback editAction,
+  VoidCallback? changePassAction,
+  required BuildContext context,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      customButtonSheetAppbar(text: "$userName", subtext: "$departmentText"),
+      customButtonSheetAppbar(text: userName, subtext: departmentText),
       customSpacerHeight(height: 20),
       InkWell(
-          onTap: () {
-            editFirstNameController.text = Get.find<UserProfileController>()
-                    .userDetails
-                    ?.getOrganizationUserDetails
-                    ?.profile
-                    ?.firstName ??
-                "";
-            editLastNameController.text = Get.find<UserProfileController>()
-                    .userDetails
-                    ?.getOrganizationUserDetails
-                    ?.profile
-                    ?.lastName ??
-                "";
-            editAddressController.text = Get.find<UserProfileController>()
-                    .userDetails
-                    ?.getOrganizationUserDetails
-                    ?.profile
-                    ?.address ??
-                "";
-            editPhoneController.text = Get.find<UserProfileController>()
-                    .userDetails
-                    ?.getOrganizationUserDetails
-                    ?.profile
-                    ?.personalNumber ??
-                "";
-            editEmergencyPhoneController.text =
-                Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.profile
-                        ?.emergencyNumber ??
-                    "";
-            editBioController.text = Get.find<UserProfileController>()
-                    .userDetails
-                    ?.getOrganizationUserDetails
-                    ?.profile
-                    ?.about ??
-                "";
-
-            Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
-          },
-          child: _fieldLayout(
-              hintText: AppString.text_edit_profile.tr,
-              onAction: editAction,
-              url: Images.EDIT_ICON)),
+        onTap: () => _editProfileRoute(),
+        child: _fieldLayout(
+          hintText: AppString.text_edit_profile.tr,
+          onAction: editAction,
+          url: Images.EDIT_ICON,
+        ),
+      ),
       InkWell(
-          onTap: () {
-            currentPasswordController.clear();
-            newPasswordController.clear();
-            confirmPasswordController.clear();
-            customAntButtonSheet(
-                height: 600, context: context, child: ChangePasswordScreen());
-          },
-          child: _fieldLayout(
-              hintText: AppString.text_change_password.tr,
-              onAction: changePassAction,
-              url: Images.KEY_ICON)),
+        onTap: () {
+          currentPasswordController.clear();
+          newPasswordController.clear();
+          confirmPasswordController.clear();
+          customAntButtonSheet(
+            height: 600,
+            context: context,
+            child: ChangePasswordScreen(),
+          );
+        },
+        child: _fieldLayout(
+          hintText: AppString.text_change_password.tr,
+          onAction: changePassAction,
+          url: Images.KEY_ICON,
+        ),
+      ),
     ],
   );
 }
 
-Widget _fieldLayout({required hintText, required onAction, required url}) {
+void _editProfileRoute() {
+  UserProfileController controller = Get.find<UserProfileController>();
+
+  final userDetails =
+      controller.userDetails?.getOrganizationUserDetails?.profile;
+
+  editFirstNameController.text = userDetails?.firstName ?? "";
+  editLastNameController.text = userDetails?.lastName ?? "";
+  editAddressController.text = userDetails?.address ?? "";
+  editPhoneController.text = userDetails?.personalNumber ?? "";
+  editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
+  editBioController.text = userDetails?.about ?? "";
+
+  controller.firstName.value = "";
+  controller.lastName.value = "";
+  controller.address.value = "";
+  controller.phone.value = "";
+  controller.emergencyNumber.value = "";
+  controller.description.value = "";
+
+  Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
+}
+
+Widget _fieldLayout({
+  required String hintText,
+  required VoidCallback? onAction,
+  required String url,
+}) {
   return Padding(
     padding: marginLayout,
     child: Column(
@@ -98,28 +93,17 @@ Widget _fieldLayout({required hintText, required onAction, required url}) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "$hintText",
+              hintText,
               style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.normalTextColor.withOpacity(0.7),
-                  fontSize: Dimensions.fontSizeDefault + 1),
-            ),
-            Text(
-              "",
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.normalTextColor.withOpacity(0.7),
-                  fontSize: Dimensions.fontSizeDefault + 1),
-            ),
-            Text(
-              "",
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.normalTextColor.withOpacity(0.7),
-                  fontSize: Dimensions.fontSizeDefault + 1),
+                color: AppColor.normalTextColor.withOpacity(0.7),
+                fontSize: Dimensions.fontSizeDefault + 1,
+              ),
             ),
             Image.asset(
               url,
               height: AppLayout.getHeight(50),
               width: AppLayout.getWidth(50),
-            )
+            ),
           ],
         ),
         customSpacerHeight(height: 12),

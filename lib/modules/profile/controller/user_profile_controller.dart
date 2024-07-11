@@ -71,6 +71,22 @@ class UserProfileController extends GetxController with StateMixin {
     return isValue.value = !isValue.value;
   }
 
+  var firstName = "".obs;
+  var lastName = "".obs;
+  var address = "".obs;
+  var phone = "".obs;
+  var emergencyNumber = "".obs;
+  var description = "".obs;
+
+  bool get isEnableEditButton {
+    return firstName.isNotEmpty ||
+        lastName.isNotEmpty ||
+        address.isNotEmpty ||
+        phone.isNotEmpty ||
+        emergencyNumber.isNotEmpty ||
+        description.isNotEmpty;
+  }
+
   UserDetails? userDetails;
   EmployeeWorkHistory? employeeWorkHistory;
   UserLogHistory? userLogHistory;

@@ -36,6 +36,7 @@ class EditProfileScreen extends StatelessWidget {
             onPressAction: () {
               _clearInputField();
               Get.back();
+              Get.back();
             }),
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
@@ -139,65 +140,64 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  _removeBtnLayout(context) {
+  _removeBtnLayout(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          if (Get.find<PikedProfileImgController>()
-                  .storageForUpload
-                  .filePath
-                  .value
-                  .isEmpty ||
-              Get.find<UserProfileController>()
-                      .userDetails
-                      ?.getOrganizationUserDetails
-                      ?.profile
-                      ?.image ==
-                  null) return;
+      onTap: () {
+        final pikedProfileImgController = Get.find<PikedProfileImgController>();
+        final userProfileController = Get.find<UserProfileController>();
 
+        // Ensure null checks are properly performed
+        final storageFilePath =
+            pikedProfileImgController.storageForUpload.filePath.value;
+        final userDetails = userProfileController.userDetails;
+        final profileImage =
+            userDetails?.getOrganizationUserDetails?.profile?.image;
+
+        if (storageFilePath.isNotEmpty ||
+            profileImage != null && profileImage.isNotEmpty) {
           customDialog(
-              context: context,
-              saveBtnAction: () {
-                Get.find<PikedProfileImgController>()
-                    .storageForUpload
-                    .filePath
-                    .value = "";
+            context: context,
+            saveBtnAction: () {
+              pikedProfileImgController.storageForUpload.filePath.value = "";
 
-                final variables = _addVariables();
+              final variables = _addVariables();
 
-                if (editFirstNameController.text.isNotEmpty &&
-                    editLastNameController.text.isNotEmpty) {
-                  Get.find<UpdateProfileController>()
-                      .updateUserProfile(variables!);
-                } else {
-                  showWarningMessage(
-                      message:
-                          AppString.text_first_and_last_field_is_requured.tr);
-                }
+              if (editFirstNameController.text.isNotEmpty &&
+                  editLastNameController.text.isNotEmpty) {
+                Get.find<UpdateProfileController>()
+                    .updateUserProfile(variables!);
+              } else {
+                showWarningMessage(
+                  message: AppString.text_first_and_last_field_is_requured.tr,
+                );
+              }
 
-                Get.find<PikedProfileImgController>()
-                        .storageForUpload
-                        .filePath
-                        .value
-                        .isEmpty
-                    ? Get.back()
-                    : Container();
-              },
-              icon: Icons.delete_outline_outlined,
-              titleText: AppString.text_remove_photo.tr,
-              subText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
-              iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr,
-              drcText: "");
-        },
-        child: Text(
-          AppString.text_remove_photo.tr,
-          maxLines: 1,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.pendingColor,
-              overflow: TextOverflow.ellipsis,
-              fontSize: Dimensions.fontSizeDefault),
-        ));
+              if (pikedProfileImgController
+                  .storageForUpload.filePath.value.isEmpty) {
+                Get.back();
+              }
+            },
+            icon: Icons.delete_outline_outlined,
+            titleText: AppString.text_remove_photo.tr,
+            subText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
+            iconBgColor: AppColor.errorColorLight,
+            btnBgColor: AppColor.errorColorLight,
+            btnText: AppString.text_remove.tr,
+            drcText: "",
+          );
+        }
+        ;
+      },
+      child: Text(
+        AppString.text_remove_photo.tr,
+        maxLines: 1,
+        style: AppStyle.mid_large_text.copyWith(
+          color: AppColor.pendingColor,
+          overflow: TextOverflow.ellipsis,
+          fontSize: Dimensions.fontSizeDefault,
+        ),
+      ),
+    );
   }
 
   _profileImageLayout() {

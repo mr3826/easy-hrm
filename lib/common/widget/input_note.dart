@@ -12,11 +12,13 @@ class InputNote extends StatelessWidget {
   final String hintText;
   final Color? hintColor;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onChanged;
 
   const InputNote(
       {super.key,
       required this.controller,
       this.hintColor,
+      this.onChanged,
       this.hintText = AppString.text_add_description,
       this.validator});
 
@@ -34,11 +36,12 @@ class InputNote extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       controller: controller,
       validator: validator,
-      onChanged: (value) {
-        ///For using update timelog details.
-        ///If requirement change than we need to refactor this method
-        Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
-      },
+      onChanged: onChanged ??
+          (value) {
+            ///For using update timelog details.
+            ///If requirement change than we need to refactor this method
+            Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
+          },
       decoration: InputDecoration(
           hintText: hintText,
           hintStyle: AppStyle.normal_text.copyWith(

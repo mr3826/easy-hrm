@@ -186,109 +186,112 @@ class TimeLineCalendar extends StatelessWidget {
                 /// otherwise it returns with (value) pattern
 
                 customAntButtonSheet(
-                    context: context,
-                    child: leaveId.substring(1, leaveId.length - 1) == "null"
-                        ? TaskView(
-                            taskName: taskName.substring(
-                                1, taskName.toString().length - 1),
-                            date: startDate
+                  context: context,
+                  child: leaveId.substring(1, leaveId.length - 1) == "null"
+                      ? TaskView(
+                          taskName: taskName.substring(
+                              1, taskName.toString().length - 1),
+                          date: startDate
+                              .toString()
+                              .substring(1, startDate.toString().length - 1),
+                          startTime: startDate
+                              .toString()
+                              .substring(1, startDate.toString().length - 1),
+                          endTime: endDate
+                              .toString()
+                              .substring(1, endDate.toString().length - 1),
+                          status: status
+                              .toString()
+                              .substring(1, status.toString().length - 1),
+                          totalDur: duration
+                              .toString()
+                              .substring(1, duration.toString().length - 1),
+                          description: description
+                              .toString()
+                              .substring(1, description.toString().length - 1),
+                          timeLineId: timeLId
+                              .toString()
+                              .substring(1, timeLId.toString().length - 1),
+                          taskId: taskId
+                              .toString()
+                              .substring(1, taskId.toString().length - 1),
+                          projectId: projectId
+                              .toString()
+                              .substring(1, projectId.toString().length - 1),
+                          projectName: projectName
+                              .toString()
+                              .substring(1, projectName.toString().length - 1),
+                          projectColor: projectColor
+                              .toString()
+                              .substring(1, projectColor.toString().length - 1),
+                        )
+                      : LeaveRecordDetails(
+                          status: status
+                              .toString()
+                              .substring(1, status.toString().length - 1),
+                          leaveRecords: GetLeaveRecords(
+                            ///For view file
+                            files: [
+                              Files(
+                                name: fileName.toString().substring(
+                                    1, fileName.toString().length - 1),
+                                size: fileSize.toString().substring(
+                                    1, fileSize.toString().length - 1),
+                                key: fileKey.toString().substring(
+                                    1, fileKey.toString().length - 1),
+                                id: fileId
+                                    .toString()
+                                    .substring(1, fileId.toString().length - 1),
+                              )
+                            ],
+                            id: leaveId
                                 .toString()
-                                .substring(1, startDate.toString().length - 1),
-                            startTime: startDate
-                                .toString()
-                                .substring(1, startDate.toString().length - 1),
-                            endTime: endDate
-                                .toString()
-                                .substring(1, endDate.toString().length - 1),
+                                .substring(1, leaveId.toString().length - 1),
                             status: status
                                 .toString()
                                 .substring(1, status.toString().length - 1),
-                            totalDur: duration
+                            createdAt: createdAt
                                 .toString()
-                                .substring(1, duration.toString().length - 1),
+                                .substring(1, createdAt.toString().length - 1)
+                                .toString(),
+                            startDate: startDate
+                                .toString()
+                                .substring(1, startDate.toString().length - 1)
+                                .toString(),
+                            endDate: endDate
+                                .toString()
+                                .substring(1, endDate.toString().length - 1)
+                                .toString(),
+                            duration: numberOfDays.substring(
+                                1, numberOfDays.length - 1),
                             description: description.toString().substring(
                                 1, description.toString().length - 1),
-                            timeLineId: timeLId
-                                .toString()
-                                .substring(1, timeLId.toString().length - 1),
-                            taskId: taskId
-                                .toString()
-                                .substring(1, taskId.toString().length - 1),
-                            projectId: projectId
-                                .toString()
-                                .substring(1, projectId.toString().length - 1),
-                            projectName: projectName.toString().substring(
-                                1, projectName.toString().length - 1),
-                            projectColor: projectColor.toString().substring(
-                                1, projectColor.toString().length - 1),
-                          )
-                        : LeaveRecordDetails(
-                            status: status
-                                .toString()
-                                .substring(1, status.toString().length - 1),
-                            leaveRecords: GetLeaveRecords(
-                              ///For view file
-                              files: [
-                                Files(
-                                  name: fileName.toString().substring(
-                                      1, fileName.toString().length - 1),
-                                  size: fileSize.toString().substring(
-                                      1, fileSize.toString().length - 1),
-                                  key: fileKey.toString().substring(
-                                      1, fileKey.toString().length - 1),
-                                  id: fileId.toString().substring(
-                                      1, fileId.toString().length - 1),
-                                )
-                              ],
-                              id: leaveId
-                                  .toString()
-                                  .substring(1, leaveId.toString().length - 1),
-                              status: status
-                                  .toString()
-                                  .substring(1, status.toString().length - 1),
-                              createdAt: createdAt
-                                  .toString()
-                                  .substring(1, createdAt.toString().length - 1)
-                                  .toString(),
-                              startDate: startDate
-                                  .toString()
-                                  .substring(1, startDate.toString().length - 1)
-                                  .toString(),
-                              endDate: endDate
-                                  .toString()
-                                  .substring(1, endDate.toString().length - 1)
-                                  .toString(),
-                              duration: numberOfDays.substring(
-                                  1, numberOfDays.length - 1),
-                              description: description.toString().substring(
-                                  1, description.toString().length - 1),
-                              leaveType: LeaveType(
-                                  leaveName: leaveName.substring(
-                                      1, leaveName.length - 1),
-                                  leaveId: leaveTypeId.substring(
-                                      1, leaveTypeId.length - 1),
-                                  isAttachDocumentRequired:
-                                      isAttachDocumentRequired
-                                                  .substring(
-                                                      1,
-                                                      isAttachDocumentRequired
-                                                              .length -
-                                                          1)
-                                                  .toLowerCase() ==
-                                              "true"
-                                          ? true
-                                          : false,
-                                  isAddNoteRequired: isAddNoteRequired
-                                              .substring(1,
-                                                  isAddNoteRequired.length - 1)
-                                              .toLowerCase() ==
-                                          "true"
-                                      ? true
-                                      : false,
-                                  type: type.substring(1, type.length - 1)),
-                            ),
+                            leaveType: LeaveType(
+                                leaveName: leaveName.substring(
+                                    1, leaveName.length - 1),
+                                leaveId: leaveTypeId.substring(
+                                    1, leaveTypeId.length - 1),
+                                isAttachDocumentRequired:
+                                    isAttachDocumentRequired
+                                                .substring(
+                                                    1,
+                                                    isAttachDocumentRequired
+                                                            .length -
+                                                        1)
+                                                .toLowerCase() ==
+                                            "true"
+                                        ? true
+                                        : false,
+                                isAddNoteRequired: isAddNoteRequired
+                                            .substring(
+                                                1, isAddNoteRequired.length - 1)
+                                            .toLowerCase() ==
+                                        "true"
+                                    ? true
+                                    : false,
+                                type: type.substring(1, type.length - 1)),
                           ),
-
+                        ),
                 );
               },
               eventTileBuilder: (date, events, status, start, end) {

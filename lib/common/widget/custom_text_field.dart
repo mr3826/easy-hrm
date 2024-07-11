@@ -12,6 +12,7 @@ class CustomInputField extends StatelessWidget {
   final IconData? prefixIcon;
   final Widget? prefixWidget;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onChanged;
   final bool? isObscureText;
   final TextInputType? textInputType;
 
@@ -24,6 +25,7 @@ class CustomInputField extends StatelessWidget {
       this.prefixWidget,
       this.validator,
       this.prefixIcon,
+      this.onChanged,
       this.onAction,
       this.isObscureText});
 
@@ -46,6 +48,7 @@ class CustomInputField extends StatelessWidget {
   _textFieldLayout(context) {
     return TextFormField(
       controller: controller,
+      onChanged: onChanged,
       style: subTextFieldTitleStyle,
       validator: validator,
       autofocus: false,
@@ -83,6 +86,7 @@ class CustomInputField extends StatelessWidget {
       controller: controller,
       style: subTextFieldTitleStyle,
       validator: validator,
+      onChanged: onChanged,
       autofocus: false,
       keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
