@@ -182,6 +182,9 @@ _leaveInfoRow(int index, controller) {
         "${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].endDate ?? "2023-01-01T08:23:49.550Z")}";
   }
 
+  print(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
+      .numberOfDays );
+
   return Row(
     children: [
       Text(
@@ -191,19 +194,23 @@ _leaveInfoRow(int index, controller) {
             fontSize: Dimensions.fontSizeDefault),
       ),
       customSpacerWidth(width: 8),
-      Text(
-        controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
-                    .numberOfDays ==
-                null
-            ? ""
-            : controller.upcommingLeaveDashboard
-                        ?.getUpcomingLeavesForApp?[index].numberOfDays >
-                    1
-                ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} ${AppString.textDays.tr}"
-                : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} ${AppString.textDay.tr}",
-        style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
-      )
+      // Text(
+      //   controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
+      //               .numberOfDays ==
+      //           null
+      //       ? ""
+      //       : controller.upcommingLeaveDashboard
+      //                   ?.getUpcomingLeavesForApp?[index].numberOfDays >
+      //               1
+      //           ? "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} ${AppString.textDays.tr}"
+      //           : "| ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays} ${AppString.textDay.tr}",
+      //   style: AppStyle.mid_large_text.copyWith(
+      //       color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
+      // ),
+
+      Text(" | ${getDurationTime(duration: "${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays}")}",style: AppStyle.mid_large_text.copyWith(
+          color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),),
+
     ],
   );
 }

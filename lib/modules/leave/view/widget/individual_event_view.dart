@@ -270,15 +270,8 @@ class IndividualEventView extends StatelessWidget {
                                       .numberOfDays !=
                                   null
                               ? Text(
-                                  getDuration(
-                                    Get.find<LeaveScreenController>()
-                                                .leaveDetailsByDate
-                                                ?.getLeaveRequests?[index]
-                                                .numberOfDays >
-                                            1
-                                        ? "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays} days"
-                                        : "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays} day",
-                                  ),
+                            getDurationTime(duration: "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays}"),
+
                                   style: AppStyle.normal_text_black.copyWith(
                                       color: AppColor.hintColor,
                                       fontSize: Dimensions.fontSizeDefault - 1),

@@ -298,6 +298,8 @@ class AppString {
   static const String text_tab_to_view_timelog_summary =
       "Tab to view timelog summary";
 
+  
+
 // Auth String
 
   static const String forgotPassword = "Forgot password?";
