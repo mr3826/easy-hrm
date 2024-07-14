@@ -248,7 +248,8 @@ Map<String, String> nn = {
   AppString.updateALeaveText: "'har oppdatert en permisjon på '",
   AppString.validOtpText: "Vennligst oppgi en gyldig engangskode.",
   AppString.workShiftText: "Arbeidsskift",
-  AppString.yourOrganizationText: "Din organisasjon"
+  AppString.yourOrganizationText: "Din organisasjon",
+  AppString.text_time_entry: "Legg til tidsoppføring"
 
 
 };

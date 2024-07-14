@@ -261,5 +261,6 @@ class AppString {
   static const String workShiftText = "Work Shift";
   static const String yourOrganizationText = "Your organization";
   static const String text_we_have_sent_a_verification_etc = "text_we_have_sent_a_verification_etc";
+  static String text_time_entry = "Add time entry";
 
 }

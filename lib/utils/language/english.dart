@@ -249,7 +249,8 @@ Map<String, String> eng = {
     AppString.updateALeaveText: "has updated your leave on",
     AppString.validOtpText: "Please provide a valid OTP",
     AppString.workShiftText: "Work Shift",
-    AppString.yourOrganizationText: "Your organization"
+    AppString.yourOrganizationText: "Your organization",
+    AppString.text_time_entry: "Add time entry"
 
 
 };
