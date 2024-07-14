@@ -322,58 +322,64 @@ class LeaveRecordDetails extends StatelessWidget {
   //   }
   // }
   String _getDurationTime() {
-    double value=0.0;
     String days=_getDaysForDuration(duration: leaveRecords?.duration.toString()??"");
-    String durationInHour=_getLeaveRecodeDurationTimeFormat(workShift: 9.00,durationValue: double.parse(leaveRecords?.duration.toString()??"0.0"));
-    return "$days days $durationInHour";
+    String durationInHour=  _getLeaveRecodeDurationTimeFormat(workShift: "9.00",durationValue: leaveRecords?.duration.toString());
+    return "$days $durationInHour";
   }
 
 
 
-  String _getLeaveRecodeDurationTimeFormat({required double durationValue,required double workShift}){
+  String _getLeaveRecodeDurationTimeFormat({String? durationValue, required String workShift}) {
+    if (durationValue == null || durationValue == "null") return "";
 
-    double value = durationValue;
-    double dayToHour = workShift;
+    double value = double.parse(durationValue);
+    double dayToHour = double.parse(workShift);
 
-    // Extract the decimal part
+    // Calculate total hours
     double totalHours = value * dayToHour;
 
-    // Calculate hours (integer part)
+    // Calculate hours (integer part) and remaining minutes
     int hours = totalHours.toInt();
-
-    // Calculate remaining minutes
     int minutes = ((totalHours - hours) * 60).toInt();
 
-    // Format the result
-    String formattedTime = '$hours h $minutes min';
-    return formattedTime;
-  }
-
-  _getHourForDuration({required String duration}) {
-    // Define a regex pattern to match the decimal part
-    RegExp regex = RegExp(r'\.(\d+)');
-    // Extract the decimal part using regex
-    Match? match = regex.firstMatch(duration);
-    if (match != null) {
-      return match.group(1)!;
-    } else {
-      return "";
+    // Format the result based on hours and minutes
+    if (hours == 0) {
+      return "$minutes m";
+    } else if (minutes == 0) {
+      return "$hours h";
     }
+
+    return '$hours h $minutes m';
   }
 
-  _getDaysForDuration({required String duration}) {
+
+
+  String _getDaysForDuration({required String duration}) {
+    if (duration.isEmpty) return "";
+
     // Define a regex pattern to match the integer part
     RegExp regex = RegExp(r'^(\d+)');
-
     // Extract the integer part using regex
     Match? match = regex.firstMatch(duration);
 
     if (match != null) {
-      return match.group(1)!;
+      int value = int.parse(match.group(1)!);
+      if (value == 0) return "";
+      return "$value ${value > 1 ? "days" : "day"}";
     } else {
-      return "";
+      return "0 m";
     }
   }
+
+
+
+
+
+
+
+
+
+
 
   _getDate() {
     isSameDate(

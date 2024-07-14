@@ -33,16 +33,19 @@ class TextFiledLayout extends StatelessWidget {
         Obx(
           () => CustomDoubleAppButton(
               buttonText: AppString.text_save.tr,
-              onAction: () {
-                final variables = _addVariables();
-                variables?.forEach((key, value) {
-                  print("key $key value:: $value");
-                });
-                if (formKey.currentState!.validate()) {
-                  Get.find<UpdateProfileController>()
-                      .updateUserProfile(variables!);
-                }
-              },
+              onAction:
+                  Get.find<UserProfileController>().isEnableEditButton == false
+                      ? () {}
+                      : () {
+                          final variables = _addVariables();
+                          variables?.forEach((key, value) {
+                            print("key $key value:: $value");
+                          });
+                          if (formKey.currentState!.validate()) {
+                            Get.find<UpdateProfileController>()
+                                .updateUserProfile(variables!);
+                          }
+                        },
               btnColor:
                   Get.find<UserProfileController>().isEnableEditButton == true
                       ? AppColor.primaryColor
