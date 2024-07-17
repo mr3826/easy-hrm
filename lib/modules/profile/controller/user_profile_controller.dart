@@ -16,6 +16,7 @@ import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
+import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
@@ -84,7 +85,7 @@ class UserProfileController extends GetxController with StateMixin {
         address.isNotEmpty ||
         phone.isNotEmpty ||
         emergencyNumber.isNotEmpty ||
-        description.isNotEmpty;
+        description.isNotEmpty|| Get.find<PikedProfileImgController>().storageForUpload.filePath.value.isNotEmpty;
   }
 
   UserDetails? userDetails;

@@ -152,9 +152,10 @@ class EditProfileScreen extends StatelessWidget {
         final userDetails = userProfileController.userDetails;
         final profileImage =
             userDetails?.getOrganizationUserDetails?.profile?.image;
+        print("profileImage ::: $profileImage");
 
-        if (storageFilePath.isNotEmpty ||
-            profileImage != null && profileImage.isNotEmpty) {
+        if (storageFilePath.isNotEmpty == true || profileImage?.isNotEmpty == true) {
+
           customDialog(
             context: context,
             saveBtnAction: () {
@@ -186,7 +187,6 @@ class EditProfileScreen extends StatelessWidget {
             drcText: "",
           );
         }
-        ;
       },
       child: Text(
         AppString.text_remove_photo.tr,

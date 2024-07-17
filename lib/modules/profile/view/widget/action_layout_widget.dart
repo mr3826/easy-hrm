@@ -27,6 +27,7 @@ Widget actionLayout({
     children: [
       customButtonSheetAppbar(text: userName, subtext: departmentText),
       customSpacerHeight(height: 20),
+      ///Edit profile route and action added.
       InkWell(
         onTap: () => _editProfileRoute(),
         child: _fieldLayout(
@@ -57,10 +58,10 @@ Widget actionLayout({
 }
 
 void _editProfileRoute() {
-  UserProfileController controller = Get.find<UserProfileController>();
 
-  final userDetails =
-      controller.userDetails?.getOrganizationUserDetails?.profile;
+
+  UserProfileController controller = Get.find<UserProfileController>();
+  final userDetails = controller.userDetails?.getOrganizationUserDetails?.profile;
 
   editFirstNameController.text = userDetails?.firstName ?? "";
   editLastNameController.text = userDetails?.lastName ?? "";
@@ -69,6 +70,7 @@ void _editProfileRoute() {
   editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
   editBioController.text = userDetails?.about ?? "";
 
+ ///Clear controller
   controller.firstName.value = "";
   controller.lastName.value = "";
   controller.address.value = "";
@@ -77,7 +79,10 @@ void _editProfileRoute() {
   controller.description.value = "";
 
   Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
+
 }
+
+
 
 Widget _fieldLayout({
   required String hintText,
