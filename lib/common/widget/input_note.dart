@@ -9,15 +9,17 @@ import '../../utils/app_style.dart';
 
 class InputNote extends StatelessWidget {
   final TextEditingController controller;
-  final String? hintText;
+  final String hintText;
   final Color? hintColor;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onChanged;
 
-  InputNote(
+  const InputNote(
       {super.key,
       required this.controller,
       this.hintColor,
-      this.hintText,
+      this.onChanged,
+      this.hintText = AppString.text_add_description,
       this.validator});
 
   @override
@@ -34,11 +36,12 @@ class InputNote extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       controller: controller,
       validator: validator,
-      onChanged: (value) {
-        ///For using update timelog details.
-        ///If requirement change than we need to refactor this method
-        Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
-      },
+      onChanged: onChanged ??
+          (value) {
+            ///For using update timelog details.
+            ///If requirement change than we need to refactor this method
+            Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
+          },
       decoration: InputDecoration(
           hintText: hintText ?? AppString.text_add_description.tr,
           hintStyle: AppStyle.normal_text.copyWith(

@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
@@ -29,28 +30,37 @@ class TextFiledLayout extends StatelessWidget {
         _userEmergencyPhoneNumber(),
         _userPersonalBio(),
         customSpacerHeight(height: 20),
-        CustomDoubleAppButton(
-            buttonText: AppString.text_save.tr,
-            onAction: () {
-              final variables = _addVariables();
-              variables?.forEach((key, value) {
-                print("key $key value:: $value");
-              });
-              if (formKey.currentState!.validate()) {
-                Get.find<UpdateProfileController>()
-                    .updateUserProfile(variables!);
-              }
-            },
-            cancelAction: () {
-              _clearInputField();
-              Get.find<PikedProfileImgController>()
-                  .storageForUpload
-                  .filePath
-                  .value = "";
+        Obx(
+          () => CustomDoubleAppButton(
+              buttonText: AppString.text_save.tr,
+              onAction:
+                  Get.find<UserProfileController>().isEnableEditButton == false
+                      ? () {}
+                      : () {
+                          final variables = _addVariables();
+                          variables?.forEach((key, value) {
+                            print("key $key value:: $value");
+                          });
+                          if (formKey.currentState!.validate()) {
+                            Get.find<UpdateProfileController>()
+                                .updateUserProfile(variables!);
+                          }
+                        },
+              btnColor:
+                  Get.find<UserProfileController>().isEnableEditButton == true
+                      ? AppColor.primaryColor
+                      : AppColor.primaryColor.withOpacity(0.5),
+              cancelAction: () {
+                _clearInputField();
+                Get.find<PikedProfileImgController>()
+                    .storageForUpload
+                    .filePath
+                    .value = "";
 
-              Get.back();
-              Get.back();
-            }),
+                Get.back();
+                Get.back();
+              }),
+        ),
         customSpacerHeight(height: AppLayout.getHeight(80)),
       ],
     );
@@ -58,6 +68,13 @@ class TextFiledLayout extends StatelessWidget {
 }
 
 void _clearInputField() {
+  UserProfileController controller = Get.find<UserProfileController>();
+  controller.firstName.value = "";
+  controller.lastName.value = "";
+  controller.address.value = "";
+  controller.phone.value = "";
+  controller.emergencyNumber.value = "";
+  controller.description.value = "";
   editBioController.clear();
   editEmergencyPhoneController.clear();
   editPhoneController.clear();
@@ -98,16 +115,6 @@ Map<String, dynamic>? _addVariables() {
           ?.department
           ?.id ??
       "";
-
-  // inputData["employment_status_id"] =
-  //     Get.find<UserProfileController>()
-  //         .employeeWorkHistory
-  //         ?.getOrganizationUserHistory
-  //         ?.employmentHistories?[0]
-  //         .employmentStatus
-  //         ?.id ??
-  //     "";
-
   inputData["image"] =
       "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
 
@@ -119,6 +126,9 @@ _userPersonalBio() {
       hintText: AppString.text_bio.tr,
       titleText: AppString.text_bio.tr,
       isRequired: false,
+      onChanged: (String? value) {
+        Get.find<UserProfileController>().description.value = value!;
+      },
       controller: editBioController,
       isNoteFieldVisible: true);
 }
@@ -126,6 +136,9 @@ _userPersonalBio() {
 _userEmergencyPhoneNumber() {
   return userTextFieldLayout(
       isRequired: false,
+      onChanged: (String? value) {
+        Get.find<UserProfileController>().emergencyNumber.value = value!;
+      },
       textInputType: TextInputType.number,
       hintText: AppString.text_emergency_phone.tr,
       titleText: AppString.text_emergency_phone.tr,
@@ -137,6 +150,9 @@ _userPhoneNumber() {
       isRequired: false,
       hintText: AppString.text_phone.tr,
       titleText: AppString.text_phone.tr,
+      onChanged: (String? value) {
+        Get.find<UserProfileController>().phone.value = value!;
+      },
       textInputType: TextInputType.number,
       controller: editPhoneController);
 }
@@ -144,6 +160,9 @@ _userPhoneNumber() {
 _userAddress() {
   return userTextFieldLayout(
       isRequired: false,
+      onChanged: (String? value) {
+        Get.find<UserProfileController>().address.value = value!;
+      },
       titleText: AppString.text_address.tr,
       controller: editAddressController,
       hintText: AppString.text_address.tr);
@@ -153,6 +172,9 @@ _userLastName() {
   return userTextFieldLayout(
       hintText: AppString.text_last_name.tr,
       titleText: AppString.text_last_name.tr,
+      onChanged: (String? value) {
+        Get.find<UserProfileController>().lastName.value = value!;
+      },
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_last_name_field_is_required.tr;
@@ -167,6 +189,9 @@ _userFirstName() {
   return userTextFieldLayout(
       hintText: AppString.text_first_name.tr,
       titleText: AppString.text_first_name.tr,
+      onChanged: (String? value) {
+        Get.find<UserProfileController>().firstName.value = value!;
+      },
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_first_name_field_is_required.tr;
@@ -183,6 +208,7 @@ userTextFieldLayout(
     required String hintText,
     bool isNoteFieldVisible = false,
     bool isRequired = true,
+    final String? Function(String?)? onChanged,
     final TextInputType? textInputType,
     validator}) {
   return Column(
@@ -194,12 +220,14 @@ userTextFieldLayout(
           ? InputNote(
               controller: editBioController,
               hintText: hintText,
+              onChanged: onChanged,
             )
           : CustomInputField(
               hint: hintText,
               controller: controller,
               textInputType: textInputType,
               validator: validator,
+              onChanged: onChanged,
             ),
       customSpacerHeight(height: 12),
     ],

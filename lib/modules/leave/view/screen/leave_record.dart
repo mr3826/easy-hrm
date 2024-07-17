@@ -146,10 +146,11 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     );
   }
 
-  _infoLayoutView(
-      {required BuildContext context,
-      required GetLeaveRecords leaveRecord,
-      Color? cardBgColor}) {
+  _infoLayoutView({
+    required BuildContext context,
+    required GetLeaveRecords leaveRecord,
+    Color? cardBgColor,
+  }) {
     return GestureDetector(
       onTap: () => customAntButtonSheet(
         context: context,
@@ -161,33 +162,37 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       child: Card(
         elevation: 0,
         shape: roundedRectangleBorder.copyWith(
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        ),
         color: cardBgColor,
         child: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    leaveRecord.leaveType?.type ?? "",
-                    style: AppStyle.mid_large_text.copyWith(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      leaveRecord.leaveType?.type ?? "",
+                      style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.normalTextColor,
                         fontSize: Dimensions.fontSizeDefault + 1,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  customSpacerHeight(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _showDateDurationText(leaveRecord),
-                      customSpacerWidth(width: 8),
-                    ],
-                  ),
-                  customSpacerHeight(height: 5),
-                ],
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    customSpacerHeight(height: 6),
+                    Row(
+                      children: [
+                        Expanded(child: _showDateDurationText(leaveRecord)),
+                        customSpacerWidth(width: 8),
+                      ],
+                    ),
+                    customSpacerHeight(height: 5),
+                  ],
+                ),
               ),
               _showStatusButton(leaveRecord.status ?? ""),
             ],
@@ -212,24 +217,33 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     }
     return Row(
       children: [
-        Text(
-          "$leaveDate ",
-          style: AppStyle.mid_large_text.copyWith(
+        Flexible(
+          child: Text(
+            "$leaveDate ",
+            style: AppStyle.mid_large_text.copyWith(
               color: AppColor.secondaryColor.withOpacity(0.7),
               fontSize: Dimensions.fontSizeDefault - 2,
-              fontWeight: FontWeight.w600),
+              fontWeight: FontWeight.w600,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ),
-        const Text(
-          " | ",
-          style: TextStyle(color: AppColor.hintColor),
-        ),
-        Text(
-          " ${leaveRecord.duration != null && leaveRecord.duration.runtimeType != String ? leaveRecord.duration > 1 ? "${leaveRecord.duration} ${AppString.text_days.tr}" : "${leaveRecord.duration} ${AppString.text_day.tr}" : ""}",
-          style: AppStyle.mid_large_text.copyWith(
+        if (leaveRecord.startDate!.isNotEmpty)
+          const Text(
+            " | ",
+            style: TextStyle(color: AppColor.hintColor),
+          ),
+        Flexible(
+          child: Text(
+            getDurationTime(duration: leaveRecord.duration.toString() ?? ""),
+            style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor.withOpacity(0.7),
-              fontSize: Dimensions.fontSizeDefault - 3,
-              fontWeight: FontWeight.w500),
-        )
+              fontSize: Dimensions.fontSizeDefault-2,
+              overflow: TextOverflow.ellipsis,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ],
     );
   }

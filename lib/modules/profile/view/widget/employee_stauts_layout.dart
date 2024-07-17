@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
@@ -13,8 +12,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import 'package:payrun_mobile/utils/utils.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
+import 'department_layout_widget.dart';
 
 Widget employeeStatusLayout({BuildContext? context}) {
   return Row(
@@ -35,7 +34,6 @@ Widget employeeStatusLayout({BuildContext? context}) {
                 onTap: () => customAntButtonSheet(
                     child: const DesignationLayout(), context: context!),
                 child: SizedBox(
-                  height: 160,
                   child: Card(
                     elevation: 0,
                     color: AppColor.primaryColor.withOpacity(0.05),
@@ -77,7 +75,6 @@ Widget employeeStatusLayout({BuildContext? context}) {
           onTap: () => customAntButtonSheet(
               context: context!, child: const EmploymentLayout()),
           child: SizedBox(
-            height: 160,
             child: Card(
               elevation: 0,
               color: AppColor.primaryColor.withOpacity(0.05),
@@ -87,8 +84,7 @@ Widget employeeStatusLayout({BuildContext? context}) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    customSvgImage(
-                        imageUrl: Images.FLAG, height: 25, width: 25),
+                    customSvgImage(imageUrl: Images.FLAG, height: 25, width: 25),
                     customSpacerHeight(height: 12),
                     _employmentInfo(),
                     customSpacerHeight(height: 12),
@@ -114,8 +110,7 @@ _employmentInfo() {
               .getOrganizationUserHistory!
               .employmentHistories!
               .isNotEmpty
-      ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ? Wrap(
           children: [
             SizedBox(
               height: 60,
@@ -135,10 +130,9 @@ _employmentInfo() {
               ),
             ),
             Text(
-              "${AppString.text_from.tr} - ${_getDateTime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+              "${AppString.text_from.tr} - ${getDateTimeFormat(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
-                  overflow: TextOverflow.ellipsis,
                   fontSize: Dimensions.fontSizeDefault - 1),
             ),
           ],
@@ -157,8 +151,7 @@ _designationInfo() {
               .getOrganizationUserHistory!
               .designationHistories!
               .isNotEmpty
-      ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ? Wrap(
           children: [
             SizedBox(
               height: 60,
@@ -179,10 +172,9 @@ _designationInfo() {
               ),
             ),
             Text(
-              "${AppString.text_from.tr} - ${_getDateTime(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[0].startDate ?? "")}",
+              "${AppString.text_from.tr} - ${getDateTimeFormat(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[0].startDate ?? "")}",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
-                  overflow: TextOverflow.ellipsis,
                   fontSize: Dimensions.fontSizeDefault - 1),
             ),
           ],
@@ -190,8 +182,3 @@ _designationInfo() {
       : Container();
 }
 
-_getDateTime(dateString){
-  if (dateString.isEmpty) return "";
-  DateTime dateTime = DateTime.parse(dateString);
-  return DateFormat('dd, MMM yyyy').format(dateTime);
-}

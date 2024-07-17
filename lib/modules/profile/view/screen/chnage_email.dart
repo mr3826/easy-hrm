@@ -19,7 +19,7 @@ import '../widget/change_email_widget.dart';
 class ChangeEmailScreen extends StatelessWidget {
   ChangeEmailScreen({super.key});
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

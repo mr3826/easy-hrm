@@ -55,6 +55,7 @@ class _NetworkErrorPageState extends State<NetworkErrorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         // ignore: deprecated_member_use
+
         body: WillPopScope(
       child: Container(
         color: Colors.white,

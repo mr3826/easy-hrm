@@ -49,14 +49,14 @@ class LeaveRecordDetails extends StatelessWidget {
               subtext: _getDate(),
               isLeave: true,
               status: status,
-              duration: _getDurationTime()),
+              duration: getDurationTimeForDetails(duration: leaveRecords?.duration.toString()??"")),
           customSpacerHeight(height: 12),
           _infoLayout(
               text: AppString.text_type_dot.tr,
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: "${AppString.text_duration.tr}:",
-              dynamicText: _getDurationTime()),
+              dynamicText: getDurationTimeForDetails(duration: leaveRecords?.duration.toString()??"")),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
           _infoLayout(
               text: AppString.text_date_of_application.tr,
@@ -277,6 +277,7 @@ class LeaveRecordDetails extends StatelessWidget {
               color: AppColor.cardColor, fontSize: Dimensions.fontSizeMid - 3),
         ),
         borderRadius: 60,
+        isButtonExpanded: false,
       ),
     );
   }
@@ -293,23 +294,6 @@ class LeaveRecordDetails extends StatelessWidget {
                 color: AppColor.cardColor),
           );
   }
-
-  String _getDurationTime() {
-    if (leaveRecords?.duration != null &&
-        leaveRecords?.duration.runtimeType != String) {
-      return leaveRecords?.duration > 1
-          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
-          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
-    } else if (leaveRecords?.duration != null &&
-        leaveRecords?.duration.runtimeType == String) {
-      return double.parse(leaveRecords?.duration) > 1
-          ? "${leaveRecords?.duration.toString()} ${AppString.text_days.tr}"
-          : "${leaveRecords?.duration.toString()} ${AppString.text_day.tr}";
-    } else {
-      return "";
-    }
-  }
-
   _getDate() {
     isSameDate(
         startDate: leaveRecords?.startDate ?? "",
@@ -323,5 +307,66 @@ class LeaveRecordDetails extends StatelessWidget {
     } else {
       return "${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.startDate ?? "")} - ${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.endDate ?? "")}";
     }
+  }
+}
+String getDurationTime({required String duration , String ?workShift}) {
+  String days=_getDaysForDuration(duration: duration);
+  String durationInHour=  _getLeaveRecodeDurationTimeFormat(workShift: "9.00",durationValue: duration);
+  // return "$days ${durationInHour=="0 days 0 m"?"":durationInHour}";
+
+  if(days.isNotEmpty)return days;
+
+  return durationInHour;
+
+}
+
+String getDurationTimeForDetails({required String duration , String ?workShift}) {
+  String days=_getDaysForDuration(duration: duration);
+  String durationInHour=  _getLeaveRecodeDurationTimeFormat(workShift: "9.00",durationValue: duration);
+  return "$days $durationInHour";
+
+}
+
+
+
+String _getLeaveRecodeDurationTimeFormat({String? durationValue, required String workShift}) {
+  if (durationValue == null || durationValue == "null") return "";
+
+  double value = double.parse(durationValue);
+  double dayToHour = double.parse(workShift);
+
+  // Calculate total hours
+  double totalHours = value * dayToHour;
+
+  // Calculate hours (integer part) and remaining minutes
+  int hours = totalHours.toInt();
+  int minutes = ((totalHours - hours) * 60).toInt();
+
+  // Format the result based on hours and minutes
+  if (hours == 0) {
+    return "$minutes m";
+  } else if (minutes == 0) {
+    return "$hours h";
+  }
+
+  return '$hours h $minutes m';
+}
+
+
+
+String _getDaysForDuration({required String duration}) {
+  if (duration.isEmpty) return "";
+
+  // Define a regex pattern to match the integer part
+  RegExp regex = RegExp(r'^(\d+)');
+  // Extract the integer part using regex
+  Match? match = regex.firstMatch(duration);
+
+  if (match != null) {
+    int value = int.parse(match.group(1)!);
+    if (value == 0) return "";
+    return "$value ${value > 1 ? "days" : "day"}";
+  } else {
+    return "0 m";
   }
 }

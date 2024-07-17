@@ -54,11 +54,11 @@ class ResetPasswordScreen extends StatelessWidget {
                       customSpacerHeight(height: 30),
 
                       ///New password text field
-                       _newPasswordLayout(),
+                      _newPasswordLayout(),
                       customSpacerHeight(height: 20),
 
                       ///Confirm password text field
-                     _confirmPasswordLayout(),
+                      _confirmPasswordLayout(),
                       customSpacerHeight(height: 25),
 
                       ///Submit button
@@ -95,7 +95,7 @@ class ResetPasswordScreen extends StatelessWidget {
 
   _descriptionText() {
     return Text(
-      AppString.text_setup_your_code_etc.tr,
+      "${AppString.text_setup_your_code_etc.tr}.",
       textAlign: TextAlign.center,
       style: style.copyWith(
           fontSize: Dimensions.fontSizeDefault - 2, color: AppColor.hintColor),
@@ -132,7 +132,7 @@ class ResetPasswordScreen extends StatelessWidget {
   _newPasswordLayout() {
     return CustomPasswordInputField(
       controller: newPasswordController,
-      hitText:  AppString.text_new_password.tr,
+      hitText: AppString.text_new_password.tr,
       prefixIcon: Image.asset(Images.LOCK_ICON),
       validator: (value) {
         if (value!.isEmpty) {
@@ -147,10 +147,11 @@ class ResetPasswordScreen extends StatelessWidget {
           fontSize: Dimensions.fontSizeDefault + 1),
     );
   }
+
   _confirmPasswordLayout() {
     return CustomPasswordInputField(
       controller: confirmPasswordController,
-      hitText:  AppString.text_confirm_password.tr,
+      hitText: AppString.text_confirm_password.tr,
       prefixIcon: Image.asset(Images.LOCK_ICON),
       validator: (value) {
         if (value!.isEmpty) {
@@ -165,5 +166,4 @@ class ResetPasswordScreen extends StatelessWidget {
           fontSize: Dimensions.fontSizeDefault + 1),
     );
   }
-
 }

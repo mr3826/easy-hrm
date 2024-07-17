@@ -30,16 +30,37 @@ Widget entryAndStartTimeLayout(context) {
             Get.put(DateTimeController());
             Get.toNamed(Routes.NEW_ENTRY_SCREEN);
           },
-          child: customSvgImage(
-              imageUrl: Images.add_time_entry,
-              height: MediaQuery.of(context).size.height / 7,
-              width: MediaQuery.of(context).size.width / 2.5),
+          child: _addTimeEntry(context),
         ),
         customSpacerWidth(width: 22),
         controller.isRunning.value
             ? _startingTimeOpen(
                 time: "${controller.starTimeDashboard}", context: context)
             : _startingTime(context)
+      ],
+    ),
+  );
+}
+
+_addTimeEntry(context) {
+  return InkWell(
+    onTap: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
+    child: Stack(
+      children: [
+        customSvgImage(
+            imageUrl: Images.add_time_entry,
+            height: MediaQuery.of(context).size.height / 7,
+            width: MediaQuery.of(context).size.width / 2.5),
+        Positioned(
+            bottom: 0,
+            left: 36,
+            top: 77,
+            child: Text(
+              AppString.text_time_entry.tr,
+              style: AppStyle.normal_text_grey.copyWith(
+                  color: AppColor.cardColor,
+                  fontSize: Dimensions.fontSizeDefault - 2),
+            ))
       ],
     ),
   );
@@ -94,43 +115,49 @@ _startingTime(context) {
 }
 
 void _checkIfSubscription() {
-  if(Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow.isFalse){
+  if (Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow.isFalse) {
     alertForSubscriptionRequired();
-  }else{
+  } else {
     Get.put(TimeCounterController()).timerStatus();
     Get.toNamed(Routes.TIMER_SCREEN);
   }
-
-
 }
+
 alertForSubscriptionRequired() {
-  return  customDialog(
+  return customDialog(
       context: Get.context!,
       saveBtnAction: () {},
       icon: Icons.logout,
       horizontalPadding: 18.0,
       verticalPadding: 16.0,
       btnPadding: 0.0,
-      iconWidget: customSvgImage(imageUrl: Images.alert,height: 56,width: 56),
+      iconWidget: customSvgImage(imageUrl: Images.alert, height: 56, width: 56),
       titleText: AppString.text_feature_unavailbe.tr,
-      subText:AppString.text_this_functionality_might_etc.tr,
+      subText: AppString.text_this_functionality_might_etc.tr,
       iconBgColor: AppColor.errorColorLight,
       btnBgColor: AppColor.errorColorLight,
       btnText: AppString.text_log_out.tr,
       drcText: "",
-      drcFontSize: Dimensions.fontSizeDefault-2,
+      drcFontSize: Dimensions.fontSizeDefault - 2,
       btnWidget: GestureDetector(
-        onTap: ()=>Get.back(),
+        onTap: () => Get.back(),
         child: SizedBox(
           height: 50,
           width: double.infinity,
           child: Card(
-              elevation:0,
+              elevation: 0,
               color: AppColor.cardColor,
-              shape: roundedRectangleBorder.copyWith(side:  BorderSide(width: 1.2,color: AppColor.hintColor.withOpacity(0.5)),borderRadius: BorderRadius.circular(40)),
-              child: Center(child: Text(AppString.text_cancel.tr,style: AppStyle.small_text_black.copyWith(color: AppColor.normalTextColor.withOpacity(0.6),fontSize: Dimensions.fontSizeMid-4),))),
+              shape: roundedRectangleBorder.copyWith(
+                  side: BorderSide(
+                      width: 1.2, color: AppColor.hintColor.withOpacity(0.5)),
+                  borderRadius: BorderRadius.circular(40)),
+              child: Center(
+                  child: Text(
+                AppString.text_cancel.tr,
+                style: AppStyle.small_text_black.copyWith(
+                    color: AppColor.normalTextColor.withOpacity(0.6),
+                    fontSize: Dimensions.fontSizeMid - 4),
+              ))),
         ),
-      )
-
-  );
+      ));
 }

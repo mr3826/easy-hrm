@@ -81,7 +81,7 @@ _departmentHistoryInfo(context) {
                     .isNotEmpty)
               Expanded(
                 child: Text(
-                  "${AppString.text_from.tr} - ${_getDateTimeFormat(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+                  "${AppString.text_from.tr} - ${getDateTimeFormat(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.hintColor,
                       fontSize: Dimensions.fontSizeDefault - 1,
@@ -95,7 +95,7 @@ _departmentHistoryInfo(context) {
   );
 }
 
-_getDateTimeFormat(dateString){
+getDateTimeFormat(dateString){
   if(dateString.isEmpty) return"";
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"

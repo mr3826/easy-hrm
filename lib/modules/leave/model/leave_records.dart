@@ -25,7 +25,6 @@ class GetLeaveRecords {
   LeaveType? leaveType;
   dynamic duration;
   String? status;
-  //Files ?files;
   List<Files>?files;
 
 

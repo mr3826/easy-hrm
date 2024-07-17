@@ -272,6 +272,7 @@ String getFirstTwoLetterFromWord(String input) {
   if (input.isEmpty) {
     return "";
   }
+
   // Split the input into words
   List<String> words = input.split(" ");
 
@@ -282,9 +283,9 @@ String getFirstTwoLetterFromWord(String input) {
   String lastLetter = words.length > 1 ? words.last[0] : '';
 
   // Concatenate the results
-  String output = '$firstLetter$lastLetter';
-  return output;
+  return '$firstLetter$lastLetter';
 }
+
 
 String formatLeaveDate(String inputDate) {
   // Check for empty input
@@ -336,7 +337,6 @@ String convertDateRange(String input) {
 
   return output;
 }
-
 
 
 

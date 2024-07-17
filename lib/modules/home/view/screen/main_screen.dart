@@ -105,11 +105,11 @@ class _MainScreenState extends State<MainScreen> {
 
   _ifNeedSubscription() {
     return [
-      SubscriptionScreen(),
-      SubscriptionScreen(),
-      SubscriptionScreen(),
-      SubscriptionScreen(),
-      SubscriptionScreen(),
+      const SubscriptionScreen(),
+      const SubscriptionScreen(),
+      const SubscriptionScreen(),
+      const SubscriptionScreen(),
+      const SubscriptionScreen(),
     ];
   }
 }
