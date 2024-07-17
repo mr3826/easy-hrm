@@ -43,7 +43,7 @@ class InputNote extends StatelessWidget {
             Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
           },
       decoration: InputDecoration(
-          hintText: hintText,
+          hintText: hintText ?? AppString.text_add_description.tr,
           hintStyle: AppStyle.normal_text.copyWith(
               color: hintColor ?? AppColor.solidGray,
               fontWeight: FontWeight.w400),

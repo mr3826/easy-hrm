@@ -23,7 +23,6 @@ Widget entryAndStartTimeLayout(context) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-          //todo
           onTap: () {
             if (Get.isRegistered<DateTimeController>()) {
               Get.delete<DateTimeController>();
