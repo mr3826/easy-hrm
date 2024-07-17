@@ -294,44 +294,6 @@ class LeaveRecordDetails extends StatelessWidget {
                 color: AppColor.cardColor),
           );
   }
-  //
-  // String _getDurationTime() {
-  //   getLeaveRecodeDurationTimeFormat(
-  //       durationValue: double.parse(_getHourForDuration(
-  //           duration: leaveRecords?.duration.toString() ?? "")),
-  //       workShift: 9.0);
-  //
-  //   if (leaveRecords?.duration != null &&
-  //       leaveRecords?.duration.runtimeType != String) {
-  //     return leaveRecords?.duration > 1
-  //         ? "${_getDaysForDuration(duration: leaveRecords?.duration.toString() ?? "")} ${AppString.text_days.tr} ${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h"
-  //         : "${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h";
-  //   }
-  //
-  //
-  //
-  //
-  //
-  //   else if (leaveRecords?.duration != null &&
-  //       leaveRecords?.duration.runtimeType == String) {
-  //     return leaveRecords?.duration > 1
-  //         ? "${_getDaysForDuration(duration: leaveRecords?.duration.toString() ?? "")} ${AppString.text_days.tr} ${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h"
-  //         : "${getLeaveRecodeDurationTimeFormat(durationValue: double.parse(_getHourForDuration(duration: leaveRecords?.duration.toString() ?? "")), workShift: 9.0)} h";
-  //   } else {
-  //     return "";
-  //   }
-  // }
-
-
-
-
-
-
-
-
-
-
-
   _getDate() {
     isSameDate(
         startDate: leaveRecords?.startDate ?? "",
