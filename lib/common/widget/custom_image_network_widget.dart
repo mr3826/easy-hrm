@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:imgix_core_dart/url_builder.dart';
@@ -22,7 +23,6 @@ String urlBuilder({imgUrlKey, String? fileDir, String? profileImageKey}) {
     profileImageKey ??
         '${fileDir ?? "files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey',
   );
-
   return url;
 }
 
@@ -62,7 +62,7 @@ Widget circleImageLayout(
   );
 }
 
-_errorText(errorText) {
+Widget _errorText(errorText) {
   return Text("$errorText",
       style: AppStyle.normal_text_grey.copyWith(
           fontSize: Dimensions.fontSizeMid, color: AppColor.primaryColor));
