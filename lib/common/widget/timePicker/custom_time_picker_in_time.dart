@@ -9,6 +9,7 @@ import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controll
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../modules/leave/controller/leave_screen_controller.dart';
+import '../../../modules/leave/controller/update_leave_controller.dart';
 import '../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_style.dart';
@@ -222,7 +223,12 @@ class _InDatePickerState extends State<InDatePicker> {
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
                 ///For active timelog details button
-                Get.find<TimelineController>().isSelectDate.value= Get.find<DateTimePickerController>().inDate.value;
+                Get.find<TimelineController>().isSelectDate.value =
+                    Get.find<DateTimePickerController>().inDate.value;
+
+                ///For active update leave details button
+                Get.find<UpDateLeaveController>().isSelectDate.value =
+                    Get.find<DateTimePickerController>().inDate.value;
 
                 ///others
                 if (!Get.find<LeaveScreenController>()
@@ -240,19 +246,14 @@ class _InDatePickerState extends State<InDatePicker> {
                     Get.find<DateTimePickerController>().getInDateTime();
                     Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                   } else {
-
-
-                    if(Get.find<DateTimePickerController>().inDate.value != DateFormat('yyyy-MM-dd').format(today)){
-                      Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
+                    if (Get.find<DateTimePickerController>().inDate.value !=
+                        DateFormat('yyyy-MM-dd').format(today)) {
+                      Get.find<TimelineController>()
+                          .isValueChangeForTimeLogUpdate(true);
                     }
-
 
                     Get.find<DateTimePickerController>().inDate.value =
                         DateFormat('yyyy-MM-dd').format(today);
-
-
-
-
 
                     Get.find<DateTimePickerController>().getInDateTime();
                     setIndexForPrevTdayOrTomListTimelog(today);
@@ -320,6 +321,8 @@ class InTimePicker extends StatelessWidget {
                         time.toString();
                     Get.find<DateTimePickerController>().getInDateTime();
                   }
+                  Get.find<UpDateLeaveController>().isSelectDate.value =
+                      Get.find<DateTimePickerController>().inTime.value;
                 }
                 Navigator.pop(context);
               },

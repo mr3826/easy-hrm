@@ -179,7 +179,7 @@ class AppString {
   static const String text_schedule = "Scheduled";
   static const String text_see_details = "See Details";
   static const String text_seen = "Seen";
-  static const String text_select_language = "Selected language";
+  static const String text_select_language = "Select language";
   static const String text_select_on_option = "Select on option";
   static const String text_select_option = "Selected option";
   static const String text_select_starting_time = "Select time";

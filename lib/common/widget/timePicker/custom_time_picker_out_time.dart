@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controll
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../modules/leave/controller/leave_screen_controller.dart';
+import '../../../modules/leave/controller/update_leave_controller.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
@@ -215,12 +216,15 @@ class _OutDatePickerState extends State<OutDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
+
                 if (!Get.find<LeaveScreenController>()
                     .holidays
                     .contains(today.weekday)) {
                   Get.find<DateTimePickerController>().outDate.value =
                       DateFormat('yyyy-MM-dd').format(today);
                   Get.find<DateTimePickerController>().getOutDateTime();
+                  ///For active update leave details button
+                  Get.find<UpDateLeaveController>().isSelectDate.value= Get.find<DateTimePickerController>().outDate.value;
                   Navigator.pop(context);
                 }
               },
@@ -284,6 +288,8 @@ class OutTimePicker extends StatelessWidget {
                         time.toString();
                     Get.find<DateTimePickerController>().getOutDateTime();
                   }
+                  Get.find<UpDateLeaveController>().isSelectDate.value= Get.find<DateTimePickerController>().outTime.value;
+
                 }
                 Navigator.pop(context);
               },

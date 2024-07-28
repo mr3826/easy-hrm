@@ -168,7 +168,7 @@ Map<String, String> eng = {
     AppString.text_schedule: "Scheduled",
     AppString.text_see_details: "See Details",
     AppString.text_seen: "Seen",
-    AppString.text_select_language: "Selected language",
+    AppString.text_select_language: "Select language",
     AppString.text_select_on_option: "Select on option",
     AppString.text_select_option: "Selected option",
     AppString.text_select_starting_time: "Select time",
