@@ -27,10 +27,9 @@ class TimeLineCalendar extends StatelessWidget {
             .isTrue
         ? Container()
         : Padding(
-            padding: EdgeInsets.only(
-                top: 0.0,
-                bottom:
-                    _swapTimelineCalendarPaddingBtnAccordingScreenSize(), //400
+            padding: const EdgeInsets.only(
+                top: 8.0,
+             //  bottom: _swapTimelineCalendarPaddingBtnAccordingScreenSize(), //400
                 left: 14,
                 right: 14),
             child: DayView(
@@ -41,9 +40,14 @@ class TimeLineCalendar extends StatelessWidget {
               timeLineOffset: 4,
               showHalfHours: true,
               showLiveTimeLineInAllDays: false,
+              headerStyle:  const HeaderStyle( rightIconVisible: false,leftIconVisible: false,headerMargin: EdgeInsets.zero,headerPadding: EdgeInsets.zero,),
               heightPerMinute: 2,
-              scrollPhysics: const NeverScrollableScrollPhysics(),
+             scrollPhysics: const NeverScrollableScrollPhysics(),
               pageViewPhysics: const NeverScrollableScrollPhysics(),
+              safeAreaOption: const SafeAreaOption(right: false,left: false,top: false,bottom: true),
+              scrollOffset: 0,
+
+
               halfHourIndicatorSettings: HourIndicatorSettings(
                   dashWidth: 3,
                   offset: 20,
@@ -396,8 +400,11 @@ double _modelHeightAccordingScreenSize() {
 double _swapTimelineCalendarPaddingBtnAccordingScreenSize() {
   double value = MediaQuery.of(Get.context!).size.width;
   if (value <= 360.0) {
-    return 300;
+  //  return 300;
+    return 220;
   } else {
-    return 400;
+    // return 400;
+    return 220;
+
   }
 }

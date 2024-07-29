@@ -29,7 +29,21 @@ class LeaveScreen extends GetView<LeaveScreenController> {
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: [sliverAppBar, sliverToBoxAdapter],
+
+                  slivers: [
+                    sliverAppBar,
+
+                 //   sliverFillRemaining,
+
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        const IndividualEventView()
+                        // Add more content here if needed
+                      ]),
+                    ),
+
+
+                  ],
                 ),
               ),
               floatingActionButton: _applyLeaveBtn(context),
@@ -111,9 +125,10 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(250),
+    expandedHeight: AppLayout.getHeight(270),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
+
     pinned: true,
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
@@ -121,6 +136,7 @@ SliverAppBar get sliverAppBar {
         height: AppLayout.getHeight(100),
         child: Padding(
           padding: marginLayout,
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -142,6 +158,18 @@ SliverAppBar get sliverAppBar {
   );
 }
 
+SliverFillRemaining get sliverFillRemaining {
+  return  const SliverFillRemaining(
+
+       fillOverscroll: true,
+      child: Column(
+    children: [
+      IndividualEventView(),
+    ],
+  ));
+}
+
+
 _leaveText() {
   return Text(
     AppString.text_leave.tr,
@@ -153,21 +181,14 @@ _buttonRadiusLayout() {
   return PreferredSize(
     preferredSize: const Size.fromHeight(20),
     child: Container(
-        decoration: BoxDecoration(
-            color: AppColor.backgroundColor,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid + 10),
-                topLeft: Radius.circular(Dimensions.radiusMid + 10))),
-        width: double.maxFinite,
-        padding: const EdgeInsets.only(top: 5, bottom: 5),
-        child: const Center(
-            child: Text(
-          "",
-          style: TextStyle(fontSize: 23),
-        ))),
+      decoration: BoxDecoration(
+          color: AppColor.backgroundColor,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(Dimensions.radiusMid + 15),
+              topLeft: Radius.circular(Dimensions.radiusMid + 15))),
+      width: double.maxFinite,
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
+      child: horizontalCalendarLayout(),
+    ),
   );
-}
-
-SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(child: IndividualEventView());
 }

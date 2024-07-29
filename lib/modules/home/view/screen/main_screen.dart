@@ -11,6 +11,7 @@ import 'package:upgrader/upgrader.dart';
 import '../../../auth/presentation/controller/signin_controller.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
 import '../../../leave/controller/leave_record_controller.dart';
+import '../../../leave/controller/update_leave_controller.dart';
 import '../../../leave/view/screen/leave_screen.dart';
 import '../../../notification/controller/notification_controller.dart';
 import '../../../notification/view/screen/notification.dart';
@@ -91,6 +92,7 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
     Get.put(UserProfileController());
+    Get.put(UpDateLeaveController());
   }
 
   _screenListLayout() {

@@ -1,3 +1,197 @@
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:intl/intl.dart';
+// import 'package:payrun_mobile/common/controller/date_time_controller.dart';
+// import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+// import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
+// import 'package:payrun_mobile/utils/app_color.dart';
+// import 'package:payrun_mobile/utils/app_layout.dart';
+// import 'package:payrun_mobile/utils/app_style.dart';
+// import 'package:payrun_mobile/utils/dimensions.dart';
+// import '../../../../utils/utils.dart';
+// import 'timeline_calendar.dart';
+// import '../../controller/timeline_controller.dart';
+// import 'timelog_summary_working_gol_layout.dart';
+//
+// class CustomTimelineCalendar extends StatelessWidget {
+//   const CustomTimelineCalendar({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: MediaQuery.of(context).size.height,
+//       width: MediaQuery.of(context).size.width,
+//       child: Obx(() => Stack(
+//             children: [
+//               const TimeLineCalendar(),
+//               _summaryLayout(),
+//               _dateCalendarLayout(),
+//               Get.find<TimelineController>()
+//                           .isTimelineSummaryByDateLoading
+//                           .isTrue &&
+//                       Get.find<TimelineController>()
+//                           .isTimelineCalendarByDateLoading
+//                           .isTrue
+//                   ? const Positioned(
+//                       top: 120,
+//                       right: 120,
+//                       left: 120,
+//                       child: Center(
+//                           child: CupertinoActivityIndicator(
+//                               radius: 20, color: Colors.blueAccent)))
+//                   : const SizedBox.shrink()
+//             ],
+//           )),
+//     );
+//   }
+// }
+//
+// Widget _dateCalendarLayout() {
+//   return Positioned(
+//     top: 0,
+//     left: 0,
+//     right: 0,
+//     child: Card(
+//       elevation: 0,
+//       child: GestureDetector(
+//         onTap: () {
+//           showDialog(
+//             context: Get.context!,
+//             builder: (context) {
+//               return const Dialog(
+//                   child: SingleDatePicker(
+//                 isCalledFormTimeLog: true,
+//               ));
+//             },
+//           );
+//         },
+//         child: Padding(
+//           padding: marginLayout,
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   GestureDetector(
+//                       onTap: () async {
+//                         Get.find<DateTimeController>().requestedDate.value =
+//                             DateFormat("yyyy-MM-dd").format(DateTime.parse(
+//                                     Get.find<DateTimeController>()
+//                                         .requestedDate
+//                                         .value)
+//                                 .subtract(const Duration(days: 1)));
+//
+//                         DateTime date = DateTime.parse(
+//                             Get.find<DateTimeController>().requestedDate.value);
+//                         Get.find<TimelineController>().getTimelineSummaryByDate(
+//                             startDate:
+//                                 "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+//                             endDate:
+//                                 "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+//
+//                         Get.find<TimelineController>().getCalendarTimelineDataByDate(
+//                             startDate:
+//                                 "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+//                             endDate:
+//                                 "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+//                       },
+//                       child: const Icon(
+//                         Icons.arrow_back_ios,
+//                         color: AppColor.normalTextColor,
+//                         size: 20,
+//                       )),
+//                   Text(
+//                     Get.find<DateTimeController>().requestedDate.value ==
+//                             DateFormat('yyyy-MM-dd').format(DateTime.now())
+//                         ? "Today"
+//                         : DateFormat('dd MMM yyyy').format(DateTime.parse(
+//                             Get.find<DateTimeController>()
+//                                 .requestedDate
+//                                 .value)),
+//                     style: AppStyle.mid_large_text.copyWith(
+//                         color: AppColor.secondaryColor,
+//                         fontWeight: FontWeight.bold),
+//                   ),
+//                   GestureDetector(
+//                       onTap: () async {
+//                         Get.find<DateTimeController>().requestedDate.value =
+//                             DateFormat("yyyy-MM-dd").format(DateTime.parse(
+//                                     Get.find<DateTimeController>()
+//                                         .requestedDate
+//                                         .value)
+//                                 .add(const Duration(days: 1)));
+//
+//                         DateTime date = DateTime.parse(
+//                             Get.find<DateTimeController>().requestedDate.value);
+//
+//                         Get.find<TimelineController>().getTimelineSummaryByDate(
+//                             startDate:
+//                                 "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+//                             endDate:
+//                                 "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+//
+//                         Get.find<TimelineController>().getCalendarTimelineDataByDate(
+//                             startDate:
+//                                 "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+//                             endDate:
+//                                 "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+//                       },
+//                       child: const Icon(
+//                         Icons.arrow_forward_ios_sharp,
+//                         color: AppColor.normalTextColor,
+//                         size: 20,
+//                       )),
+//                 ],
+//               ),
+//               Center(
+//                   child: Text(
+//                 DateFormat("EEEE")
+//                     .format(DateTime.parse(
+//                         Get.find<DateTimeController>().requestedDate.value))
+//                     .toString(),
+//                 style: AppStyle.mid_large_text.copyWith(
+//                     color: AppColor.hintColor,
+//                     fontSize: Dimensions.fontSizeDefault - 1),
+//               ))
+//             ],
+//           ),
+//         ),
+//       ),
+//     ),
+//   );
+// }
+//
+// Widget _summaryLayout() {
+//   return Positioned(
+//       top: AppLayout.getHeight(40),
+//       child: Container(
+//         color: AppColor.cardColor,
+//         width: MediaQuery.of(Get.context!).size.width,
+//         child: workingScheduleLayout(
+//             schedule: getConvertSecondsToHours(Get.find<TimelineController>()
+//                     .timelineSummaryByDate
+//                     ?.getTimelogSummaryForApp
+//                     ?.totalScheduledSeconds ??
+//                 ""),
+//             balanceTime: getConvertSecondsToHours(Get.find<TimelineController>()
+//                     .timelineSummaryByDate
+//                     ?.getTimelogSummaryForApp
+//                     ?.balance ??
+//                 ""),
+//             loggedTime: getConvertSecondsToHours(Get.find<TimelineController>()
+//                     .timelineSummaryByDate
+//                     ?.getTimelogSummaryForApp
+//                     ?.loggedTotalSeconds ??
+//                 ""),
+//             paidLeave: getConvertSecondsToHours(Get.find<TimelineController>()
+//                     .timelineSummaryByDate
+//                     ?.getTimelogSummaryForApp
+//                     ?.totalLeavesSeconds ??
+//                 "")),
+//       ));
+// }
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,31 +217,31 @@ class CustomTimelineCalendar extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Obx(() => Stack(
-            children: [
-              const TimeLineCalendar(),
-              _summaryLayout(),
-              _dateCalendarLayout(),
+        children: [
+          const TimeLineCalendar(),
+          _summaryLayout(),
+         // _dateCalendarLayout(),
+          Get.find<TimelineController>()
+              .isTimelineSummaryByDateLoading
+              .isTrue &&
               Get.find<TimelineController>()
-                          .isTimelineSummaryByDateLoading
-                          .isTrue &&
-                      Get.find<TimelineController>()
-                          .isTimelineCalendarByDateLoading
-                          .isTrue
-                  ? const Positioned(
-                      top: 120,
-                      right: 120,
-                      left: 120,
-                      child: Center(
-                          child: CupertinoActivityIndicator(
-                              radius: 20, color: Colors.blueAccent)))
-                  : Container()
-            ],
-          )),
+                  .isTimelineCalendarByDateLoading
+                  .isTrue
+              ? const Positioned(
+              top: 120,
+              right: 120,
+              left: 120,
+              child: Center(
+                  child: CupertinoActivityIndicator(
+                      radius: 20, color: Colors.blueAccent)))
+              :  Container()
+        ],
+      )),
     );
   }
 }
 
-Widget _dateCalendarLayout() {
+Widget dateCalendarLayout() {
   return Positioned(
     top: 0,
     left: 0,
@@ -61,13 +255,13 @@ Widget _dateCalendarLayout() {
             builder: (context) {
               return const Dialog(
                   child: SingleDatePicker(
-                isCalledFormTimeLog: true,
-              ));
+                    isCalledFormTimeLog: true,
+                  ));
             },
           );
         },
         child: Padding(
-          padding: marginLayout,
+          padding: const EdgeInsets.only(top: 8,left: 14,right: 14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -78,24 +272,24 @@ Widget _dateCalendarLayout() {
                       onTap: () async {
                         Get.find<DateTimeController>().requestedDate.value =
                             DateFormat("yyyy-MM-dd").format(DateTime.parse(
-                                    Get.find<DateTimeController>()
-                                        .requestedDate
-                                        .value)
+                                Get.find<DateTimeController>()
+                                    .requestedDate
+                                    .value)
                                 .subtract(const Duration(days: 1)));
 
                         DateTime date = DateTime.parse(
                             Get.find<DateTimeController>().requestedDate.value);
                         Get.find<TimelineController>().getTimelineSummaryByDate(
                             startDate:
-                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                             endDate:
-                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                            "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
                         Get.find<TimelineController>().getCalendarTimelineDataByDate(
                             startDate:
-                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                             endDate:
-                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                            "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
                       },
                       child: const Icon(
                         Icons.arrow_back_ios,
@@ -104,12 +298,12 @@ Widget _dateCalendarLayout() {
                       )),
                   Text(
                     Get.find<DateTimeController>().requestedDate.value ==
-                            DateFormat('yyyy-MM-dd').format(DateTime.now())
+                        DateFormat('yyyy-MM-dd').format(DateTime.now())
                         ? "Today"
                         : DateFormat('dd MMM yyyy').format(DateTime.parse(
-                            Get.find<DateTimeController>()
-                                .requestedDate
-                                .value)),
+                        Get.find<DateTimeController>()
+                            .requestedDate
+                            .value)),
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.secondaryColor,
                         fontWeight: FontWeight.bold),
@@ -118,9 +312,9 @@ Widget _dateCalendarLayout() {
                       onTap: () async {
                         Get.find<DateTimeController>().requestedDate.value =
                             DateFormat("yyyy-MM-dd").format(DateTime.parse(
-                                    Get.find<DateTimeController>()
-                                        .requestedDate
-                                        .value)
+                                Get.find<DateTimeController>()
+                                    .requestedDate
+                                    .value)
                                 .add(const Duration(days: 1)));
 
                         DateTime date = DateTime.parse(
@@ -128,15 +322,15 @@ Widget _dateCalendarLayout() {
 
                         Get.find<TimelineController>().getTimelineSummaryByDate(
                             startDate:
-                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                             endDate:
-                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                            "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
                         Get.find<TimelineController>().getCalendarTimelineDataByDate(
                             startDate:
-                                "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                            "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                             endDate:
-                                "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+                            "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
                       },
                       child: const Icon(
                         Icons.arrow_forward_ios_sharp,
@@ -147,14 +341,14 @@ Widget _dateCalendarLayout() {
               ),
               Center(
                   child: Text(
-                DateFormat("EEEE")
-                    .format(DateTime.parse(
+                    DateFormat("EEEE")
+                        .format(DateTime.parse(
                         Get.find<DateTimeController>().requestedDate.value))
-                    .toString(),
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.hintColor,
-                    fontSize: Dimensions.fontSizeDefault - 1),
-              ))
+                        .toString(),
+                    style: AppStyle.mid_large_text.copyWith(
+                        color: AppColor.hintColor,
+                        fontSize: Dimensions.fontSizeDefault - 1),
+                  ))
             ],
           ),
         ),
@@ -165,30 +359,30 @@ Widget _dateCalendarLayout() {
 
 Widget _summaryLayout() {
   return Positioned(
-      top: AppLayout.getHeight(40),
+      top: AppLayout.getHeight(0),
       child: Container(
         color: AppColor.cardColor,
         width: MediaQuery.of(Get.context!).size.width,
         child: workingScheduleLayout(
             schedule: getConvertSecondsToHours(Get.find<TimelineController>()
-                    .timelineSummaryByDate
-                    ?.getTimelogSummaryForApp
-                    ?.totalScheduledSeconds ??
+                .timelineSummaryByDate
+                ?.getTimelogSummaryForApp
+                ?.totalScheduledSeconds ??
                 ""),
             balanceTime: getConvertSecondsToHours(Get.find<TimelineController>()
-                    .timelineSummaryByDate
-                    ?.getTimelogSummaryForApp
-                    ?.balance ??
+                .timelineSummaryByDate
+                ?.getTimelogSummaryForApp
+                ?.balance ??
                 ""),
             loggedTime: getConvertSecondsToHours(Get.find<TimelineController>()
-                    .timelineSummaryByDate
-                    ?.getTimelogSummaryForApp
-                    ?.loggedTotalSeconds ??
+                .timelineSummaryByDate
+                ?.getTimelogSummaryForApp
+                ?.loggedTotalSeconds ??
                 ""),
             paidLeave: getConvertSecondsToHours(Get.find<TimelineController>()
-                    .timelineSummaryByDate
-                    ?.getTimelogSummaryForApp
-                    ?.totalLeavesSeconds ??
+                .timelineSummaryByDate
+                ?.getTimelogSummaryForApp
+                ?.totalLeavesSeconds ??
                 "")),
       ));
 }
