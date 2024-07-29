@@ -11,7 +11,6 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../../../../utils/utils.dart';
 
 class IndividualTimeLayout extends StatelessWidget {
@@ -41,19 +40,27 @@ class IndividualTimeLayout extends StatelessWidget {
                           .entryDay ??
                       DateTime.now().toString());
 
-              Get.find<DateTimeController>().requestedDate.value =
-                  DateFormat('yyyy-MM-dd').format(requestedDate);
+              Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(requestedDate);
+
               Get.back(canPop: false);
+
               await Get.find<TimelineController>().getCalendarTimelineDataByDate(
                   startDate:
                       "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                   endDate:
                       "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+
+
+
               await Get.find<TimelineController>().getTimelineSummaryByDate(
                   startDate:
                       "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                   endDate:
                       "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+
+
+
+
             },
             child: _infoTextLayout(index));
       },

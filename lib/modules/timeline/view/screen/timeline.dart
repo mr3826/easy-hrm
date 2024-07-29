@@ -322,30 +322,28 @@ class TimelineScreen extends GetView<TimelineController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(270),
+    expandedHeight: AppLayout.getHeight(280),
     elevation: 0,
-    bottom: _buttonRadiusLayout(),
+   bottom: _buttonRadiusLayout(),
     pinned: true,
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
-      background: SizedBox(
-        child: Padding(
-          padding: marginLayout,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customSpacerHeight(height: 45),
-                  _timelineText(),
-                  customSpacerHeight(height: 12),
-                  timelineLayout(),
-                  customSpacerHeight(height: 6),
-                ],
-              ),
-            ],
-          ),
+      background: Padding(
+        padding: marginLayout,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customSpacerHeight(height: 45),
+                _timelineText(),
+                customSpacerHeight(height: 12),
+                timelineLayout(),
+                customSpacerHeight(height: 6),
+              ],
+            ),
+          ],
         ),
       ),
     ),

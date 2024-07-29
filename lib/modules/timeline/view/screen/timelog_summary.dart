@@ -27,7 +27,11 @@ class TimeLogSummary extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              const SummaryTimeLogCalendar(),
+               SummaryTimeLogCalendar(),
+
+
+
+
               Obx(() => Get.find<TimelineSummaryController>()
                       .isMonthlySummaryDataLoading
                       .isTrue

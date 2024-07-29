@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -6,6 +8,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/view/screen/apply_leave.dart';
+import 'package:payrun_mobile/modules/profile/view/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -29,20 +32,17 @@ class LeaveScreen extends GetView<LeaveScreenController> {
                 onRefresh: _refreshScreen,
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-
                   slivers: [
                     sliverAppBar,
 
-                 //   sliverFillRemaining,
+                    sliverFillRemaining,
 
-                    SliverList(
-                      delegate: SliverChildListDelegate([
-                        const IndividualEventView()
-                        // Add more content here if needed
-                      ]),
-                    ),
-
-
+                    // SliverList(
+                    //   delegate: SliverChildListDelegate([
+                    //     const IndividualEventView()
+                    //     // Add more content here if needed
+                    //   ]),
+                    // ),
                   ],
                 ),
               ),
@@ -125,10 +125,9 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(270),
+    expandedHeight: AppLayout.getHeight(260),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
-
     pinned: true,
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
@@ -136,7 +135,6 @@ SliverAppBar get sliverAppBar {
         height: AppLayout.getHeight(100),
         child: Padding(
           padding: marginLayout,
-
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -159,16 +157,9 @@ SliverAppBar get sliverAppBar {
 }
 
 SliverFillRemaining get sliverFillRemaining {
-  return  const SliverFillRemaining(
-
-       fillOverscroll: true,
-      child: Column(
-    children: [
-      IndividualEventView(),
-    ],
-  ));
+  return const SliverFillRemaining(
+      fillOverscroll: true, child: IndividualEventView());
 }
-
 
 _leaveText() {
   return Text(
