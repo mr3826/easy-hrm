@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -29,10 +28,8 @@ class IndividualEventView extends StatelessWidget {
     return Column(
       children: [
         customSpacerHeight(height: 5),
-        horizontalCalendarLayout(),
-        customSpacerHeight(height: 5),
-        customSpacerHeight(height: 8),
         _eventText(),
+        customSpacerHeight(height: 8),
         Obx(() => _eventViewLayout()),
         customSpacerHeight(height: 100),
       ],
@@ -106,6 +103,8 @@ class IndividualEventView extends StatelessWidget {
               ?.getLeaveRequests
               ?.length,
           itemBuilder: (context, index) {
+            Color itemBgColor =
+            index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
             return InkWell(
               onTap: () {
                 customAntButtonSheet(
@@ -242,7 +241,7 @@ class IndividualEventView extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   decoration: BoxDecoration(
-                      color: AppColor.primaryColor.withOpacity(.05),
+                      color: itemBgColor,
                       borderRadius: BorderRadius.circular(8)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -270,8 +269,9 @@ class IndividualEventView extends StatelessWidget {
                                       .numberOfDays !=
                                   null
                               ? Text(
-                            getDurationTime(duration: "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays}"),
-
+                                  getDurationTime(
+                                      duration:
+                                          "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays}"),
                                   style: AppStyle.normal_text_black.copyWith(
                                       color: AppColor.hintColor,
                                       fontSize: Dimensions.fontSizeDefault - 1),
@@ -295,94 +295,97 @@ class IndividualEventView extends StatelessWidget {
 }
 
 Widget horizontalCalendarLayout() {
-  return GestureDetector(
-    onTap: () {
-      showDialog<String>(
-        context: Get.context!,
-        builder: (BuildContext context) => Dialog(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                /// have to provide bool value due to have different method called in same component
-                InDatePicker(
-                  isFromIndividualLeave: true,
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-    child: Obx(() => Padding(
-          padding: marginLayout,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                      onTap: () async {
-                        Get.find<LeaveScreenController>().date.value =
-                            DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                                    Get.find<LeaveScreenController>()
-                                        .date
-                                        .value)
-                                .subtract(const Duration(days: 1)));
-                        await Get.find<LeaveScreenController>()
-                            .getLeaveDetailsByDate();
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: AppColor.normalTextColor,
-                        size: 20,
-                      )),
-                  Text(
-                    DateFormat("dd MMM yyyy").format(DateTime.now()) ==
-                            DateFormat("dd MMM yyyy").format(DateTime.parse(
-                                Get.find<LeaveScreenController>().date.value))
-                        ? AppString.text_today.tr
-                        : DateFormat("dd MMM yyyy").format(DateTime.parse(
-                            Get.find<LeaveScreenController>().date.value)),
-                    style: AppStyle.mid_large_text.copyWith(
-                        color: AppColor.normalTextColor,
-                        fontWeight: FontWeight.bold),
+  return Padding(
+    padding: const EdgeInsets.only(top: 20, left: 8, right: 8),
+    child: GestureDetector(
+      onTap: () {
+        showDialog<String>(
+          context: Get.context!,
+          builder: (BuildContext context) => Dialog(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: const Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  /// have to provide bool value due to have different method called in same component
+                  InDatePicker(
+                    isFromIndividualLeave: true,
                   ),
-                  GestureDetector(
-                      onTap: () async {
-                        Get.find<LeaveScreenController>().date.value =
-                            DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                                    Get.find<LeaveScreenController>()
-                                        .date
-                                        .value)
-                                .add(const Duration(days: 1)));
-                        await Get.find<LeaveScreenController>()
-                            .getLeaveDetailsByDate();
-                      },
-                      child: const Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        color: AppColor.normalTextColor,
-                        size: 20,
-                      )),
                 ],
               ),
-              Center(
-                  child: Text(
-                DateFormat('EEEE').format(DateTime.parse(
-                    Get.find<LeaveScreenController>().date.value)),
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.hintColor,
-                    fontSize: Dimensions.fontSizeDefault - 1),
-              ))
-            ],
+            ),
           ),
-        )),
+        );
+      },
+      child: Obx(() => Padding(
+            padding: marginLayout,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: () async {
+                          Get.find<LeaveScreenController>().date.value =
+                              DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                      Get.find<LeaveScreenController>()
+                                          .date
+                                          .value)
+                                  .subtract(const Duration(days: 1)));
+                          await Get.find<LeaveScreenController>()
+                              .getLeaveDetailsByDate();
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          color: AppColor.normalTextColor,
+                          size: 20,
+                        )),
+                    Text(
+                      DateFormat("dd MMM yyyy").format(DateTime.now()) ==
+                              DateFormat("dd MMM yyyy").format(DateTime.parse(
+                                  Get.find<LeaveScreenController>().date.value))
+                          ? AppString.text_today.tr
+                          : DateFormat("dd MMM yyyy").format(DateTime.parse(
+                              Get.find<LeaveScreenController>().date.value)),
+                      style: AppStyle.mid_large_text.copyWith(
+                          color: AppColor.normalTextColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    GestureDetector(
+                        onTap: () async {
+                          Get.find<LeaveScreenController>().date.value =
+                              DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                      Get.find<LeaveScreenController>()
+                                          .date
+                                          .value)
+                                  .add(const Duration(days: 1)));
+                          await Get.find<LeaveScreenController>()
+                              .getLeaveDetailsByDate();
+                        },
+                        child: const Icon(
+                          Icons.arrow_forward_ios_sharp,
+                          color: AppColor.normalTextColor,
+                          size: 20,
+                        )),
+                  ],
+                ),
+                Center(
+                    child: Text(
+                  DateFormat('EEEE').format(DateTime.parse(
+                      Get.find<LeaveScreenController>().date.value)),
+                  style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault - 1),
+                ))
+              ],
+            ),
+          )),
+    ),
   );
 }

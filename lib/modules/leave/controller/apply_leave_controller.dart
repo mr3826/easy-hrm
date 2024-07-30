@@ -42,6 +42,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     return isSelectLeaveType.isNotEmpty;
   }
 
+
   getLeaveTypeDropdown() async {
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()

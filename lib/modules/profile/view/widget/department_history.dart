@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
@@ -13,7 +14,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_network_image.dart';
-import '../../../../utils/utils.dart';
 
 class DepartmentHistory extends StatelessWidget {
   const DepartmentHistory({super.key});
@@ -33,10 +33,18 @@ class DepartmentHistory extends StatelessWidget {
               ?.getOrganizationUserHistory
               ?.deptHistories
               ?.length,
-              padding: EdgeInsets.zero,
-              physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.zero,
+          physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
+            int length = Get.find<UserProfileController>()
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.deptHistories
+                    ?.length ??
+                0;
+            bool isLastItem = index == length - 1;
             return _departmentSectionInfoLayout(
+              isLastIndex: isLastItem,
               imageUrl: Get.find<UserProfileController>()
                       .employeeWorkHistory
                       ?.getOrganizationUserHistory
@@ -79,6 +87,7 @@ class DepartmentHistory extends StatelessWidget {
     String? startDate,
     String? endDate,
     required int index,
+    required bool isLastIndex,
     required String managerName,
     required String imageUrl,
   }) {
@@ -94,8 +103,8 @@ class DepartmentHistory extends StatelessWidget {
                 customSvgImage(
                     imageUrl: Images.department_notification,
                     color: AppColor.normalTextColor,
-                    height: 24,
-                    width: 24),
+                    height: 18,
+                    width: 18),
                 customSpacerWidth(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,11 +141,13 @@ class DepartmentHistory extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-              top: 26,
-              left: 1,
-              bottom: 0,
-              child: dottedStyleLayout(height: 88)),
+          isLastIndex == true
+              ? const SizedBox()
+              : Positioned(
+                  top: 26,
+                  left: 1,
+                  bottom: 0,
+                  child: dottedStyleLayout(height: 89)),
         ],
       ),
     );
@@ -157,8 +168,9 @@ class DepartmentHistory extends StatelessWidget {
   }
 
   String? _getEmploymentDate(String? date) {
+    print(date);
     if (date != null) {
-      return dateMonthYearFormatFromDatetime(date);
+      return DateFormat('dd MMM, yyyy').format(DateTime.parse(date));
     } else {
       return null;
     }

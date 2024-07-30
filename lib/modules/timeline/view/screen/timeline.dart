@@ -32,24 +32,12 @@ class TimelineScreen extends GetView<TimelineController> {
               body: RefreshIndicator(
                 backgroundColor: Colors.white,
                 onRefresh: _refreshScreen,
-                child: SingleChildScrollView(
+                child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: CustomScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            slivers: [
-                              sliverAppBar,
-                              sliverToBoxAdapter,
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  slivers: [
+                    sliverAppBar,
+                     sliverList,
+                  ],
                 ),
               ),
               floatingActionButton: Obx(() => _timerBtnLayout(context)),
@@ -134,30 +122,28 @@ class TimelineScreen extends GetView<TimelineController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(210),
+    expandedHeight: AppLayout.getHeight(280),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
-      background: SizedBox(
-        child: Padding(
-          padding: marginLayout,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customSpacerHeight(height: 45),
-                  _timelineText(),
-                  customSpacerHeight(height: 12),
-                  timelineLayout(),
-                  customSpacerHeight(height: 6),
-                ],
-              ),
-            ],
-          ),
+      background: Padding(
+        padding: marginLayout,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customSpacerHeight(height: 45),
+                _timelineText(),
+                customSpacerHeight(height: 12),
+                timelineLayout(),
+                customSpacerHeight(height: 6),
+              ],
+            ),
+          ],
         ),
       ),
     ),
@@ -173,25 +159,27 @@ _timelineText() {
 
 _buttonRadiusLayout() {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(12),
+    preferredSize: const Size.fromHeight(26),
     child: Container(
-        decoration: BoxDecoration(
-            color: AppColor.cardColor,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid + 5),
-                topLeft: Radius.circular(Dimensions.radiusMid + 5))),
-        width: double.maxFinite,
-        padding: const EdgeInsets.only(top: 0, bottom: 0),
-        child: const Center(
-            child: Text(
-          "",
-          style: TextStyle(fontSize: 12),
-        ))),
+      decoration: BoxDecoration(
+          color: AppColor.backgroundColor,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(Dimensions.radiusMid + 15),
+              topLeft: Radius.circular(Dimensions.radiusMid + 15))),
+      width: double.maxFinite,
+      padding: const EdgeInsets.only(top: 12, bottom: 5),
+      child: Obx(
+        () => dateCalendarLayout(),
+      ),
+    ),
   );
 }
 
-SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(
-    child: CustomTimelineCalendar(),
+SliverList get sliverList {
+  return SliverList(
+    delegate: SliverChildListDelegate([
+      const CustomTimelineCalendar()
+      // Add more content here if needed
+    ]),
   );
 }

@@ -282,6 +282,7 @@ query GetProfileSummaryForDashboard {
 const getOrgSubscriptionInfoQuery = '''
 query GetOrgSubscriptionInfo {
   getOrgSubscriptionInfo {
+  status
     plan {
       active
       nickname

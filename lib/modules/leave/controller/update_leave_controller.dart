@@ -33,6 +33,20 @@ class UpDateLeaveController extends GetxController with StateMixin {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
   LeaveTypeDropdown? leaveTypeDropdown;
 
+  var isSelectLeaveType = ''.obs;
+  var noteValue = ''.obs;
+  var isSelectDate = ''.obs;
+
+
+  // Method to check if the button should be enabled
+  bool get isButtonEnabledForUpdateLeave {
+    return isSelectLeaveType.isNotEmpty || noteValue.isNotEmpty || Get.find<FileUploadController>()
+        .storageForUpload
+        .filePath.isNotEmpty || isSelectDate.isNotEmpty;
+  }
+
+
+
   void updateLeave(
       {required String leaveId,
       required String startDate,

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timelog_details_by_month.dart';
 import '../../../network/exception_helper.dart';
@@ -6,6 +7,8 @@ import '../../../network/network_client.dart';
 import '../../../utils/api_endpoints.dart';
 
 class TimelineSummaryController extends GetxController with StateMixin {
+  var selectedValue = "".obs;
+
   @override
   void onInit() async {
     selectedMonthStartDate =
@@ -16,6 +19,11 @@ class TimelineSummaryController extends GetxController with StateMixin {
             .obs;
     await getTimelineByMonth();
     await getTimelogDetailsByMonth();
+
+    ///For timelog summary calender
+    DateTime now = DateTime.now();
+    String currentMonth = DateFormat('MMMM').format(now);
+    selectedValue.value = '${now.year}-$currentMonth';
     super.onInit();
   }
 
