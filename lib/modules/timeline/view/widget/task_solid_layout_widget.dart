@@ -226,7 +226,7 @@ class TaskSolidLayout extends StatelessWidget {
       case "pending":
         return AppColor.pendingColor;
       case "approved":
-        return AppColor.primaryColor;
+        return AppColor.successColor;
       case "taken":
         return AppColor.takenColor;
       case "reject":
@@ -245,7 +245,7 @@ class TaskSolidLayout extends StatelessWidget {
       case "pending":
         return AppColor.pendingColor;
       case "approved":
-        return AppColor.primaryColor;
+        return AppColor.successColor;
       case "taken":
         return AppColor.noColor;
       case "reject":

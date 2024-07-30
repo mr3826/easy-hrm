@@ -115,6 +115,5 @@ void checkIfSubscription() {
       }
     });
   }
-
   Get.offNamed(Routes.MAIN_SCREEN);
 }

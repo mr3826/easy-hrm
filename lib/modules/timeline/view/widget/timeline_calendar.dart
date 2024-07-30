@@ -346,8 +346,8 @@ class TimeLineCalendar extends StatelessWidget {
 
                   return Padding(
                     padding: events.isNotEmpty && events.length > 1
-                        ? EdgeInsets.only(left: 8.0)
-                        : EdgeInsets.only(left: 0.0),
+                        ? const EdgeInsets.only(left: 8.0)
+                        : const EdgeInsets.only(left: 0.0),
                     child: TaskSolidLayout(
                       isForLeave:
                           leaveId.substring(1, leaveId.length - 1) == 'null'

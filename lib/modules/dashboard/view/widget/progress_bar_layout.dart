@@ -282,8 +282,8 @@ _userImageLayout() {
     profileImageKey: controller.profileSummaryForDashboard
             ?.getProfileSummaryForDashboard?.profile?.image ??
         "",
-
-    borderColor: Colors.transparent, imgUrlKey: '',
+    borderColor: Colors.transparent,
+    imgUrlKey: '',
   );
 }
 
