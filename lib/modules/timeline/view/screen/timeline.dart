@@ -1,200 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-// import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-// import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-// import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
-// import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
-// import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
-// import 'package:payrun_mobile/modules/timeline/view/widget/timeline_widget.dart';
-// import 'package:payrun_mobile/routes/app_pages.dart';
-// import 'package:payrun_mobile/utils/app_color.dart';
-// import 'package:payrun_mobile/utils/app_layout.dart';
-// import 'package:payrun_mobile/utils/app_string.dart';
-// import 'package:payrun_mobile/utils/dimensions.dart';
-// import '../../../../common/controller/date_time_controller.dart';
-// import '../../../../utils/app_style.dart';
-// import '../../../auth/presentation/controller/signin_controller.dart';
-// import '../../../dashboard/view/widget/entry_time_widget.dart';
-// import '../widget/custom_timeline_calendar.dart';
-//
-// class TimelineScreen extends GetView<TimelineController> {
-//   const TimelineScreen({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     if (Get.isRegistered()) {
-//       Get.delete<TimelineController>();
-//     }
-//     Get.put(TimelineController());
-//     return controller.obx(
-//         (state) => Scaffold(
-//               backgroundColor: AppColor.backgroundColor,
-//               body: RefreshIndicator(
-//                 backgroundColor: Colors.white,
-//                 onRefresh: _refreshScreen,
-//                 child: SingleChildScrollView(
-//                   physics: const AlwaysScrollableScrollPhysics(),
-//                   child: SizedBox(
-//                     height: MediaQuery.of(context).size.height,
-//                     child: Column(
-//                       children: [
-//                         Expanded(
-//                           child: CustomScrollView(
-//                             physics: const NeverScrollableScrollPhysics(),
-//                             slivers: [
-//                               sliverAppBar,
-//                               sliverToBoxAdapter,
-//                             ],
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               floatingActionButton: Obx(() => _timerBtnLayout(context)),
-//             ),
-//         onLoading: const LoadingIndicator());
-//   }
-//
-//   ///component
-//   _timerBtnLayout(context) {
-//     final TimeCounterController controller = Get.put(TimeCounterController());
-//
-//     return Padding(
-//       padding: const EdgeInsets.only(left: 35.0, bottom: 18),
-//       child: Row(
-//         children: [
-//           controller.isRunning.value
-//               ? _timerStringOpenBtn(
-//                   time: controller.starTimeDashboard.toString())
-//               : _timerStringBtn(),
-//           customSpacerWidth(width: 18),
-//           _addTimeEntryBtn(),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   _timerStringBtn() {
-//     return floatingButton(
-//         bgBtnColor: AppColor.secondaryColor,
-//         onAction: () {
-//           if (Get.find<SignInController>()
-//               .isSubscriptionTimeTrackingIsAllow
-//               .isFalse) {
-//             alertForSubscriptionRequired();
-//           } else {
-//             Get.put(TimeCounterController()).timerStatus();
-//             Get.toNamed(Routes.TIMER_SCREEN);
-//           }
-//         },
-//         btnText: AppString.text_stat_timer.tr);
-//   }
-//
-//   _addTimeEntryBtn() {
-//     return floatingButton(
-//         bgBtnColor: AppColor.primaryColor,
-//         onAction: () {
-//           if (Get.isRegistered<DateTimeController>()) {
-//             Get.delete<DateTimeController>();
-//           }
-//           Get.put(DateTimeController());
-//           Get.toNamed(Routes.NEW_ENTRY_SCREEN);
-//         },
-//         btnText: AppString.text_add_time_entry.tr);
-//   }
-//
-//   _timerStringOpenBtn({required time}) {
-//     return startTimerOpenBtn(
-//         bgBtnColor: AppColor.secondaryColor,
-//         onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
-//         btnText: "$time");
-//   }
-//
-//   Future<void> _refreshScreen() async {
-//     await controller.getTimelineSummaryByMonth(
-//         startDate:
-//             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-//         endDate:
-//             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
-//
-//     await controller.getCalendarTimelineDataByDate(
-//         startDate:
-//             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-//         endDate:
-//             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
-//     await controller.getTimelineSummaryByDate(
-//         startDate:
-//             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-//         endDate:
-//             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
-//   }
-// }
-//
-// SliverAppBar get sliverAppBar {
-//   return SliverAppBar(
-//     expandedHeight: AppLayout.getHeight(210),
-//     elevation: 0,
-//     bottom: _buttonRadiusLayout(),
-//     pinned: true,
-//     backgroundColor: AppColor.primaryColor,
-//     flexibleSpace: FlexibleSpaceBar(
-//       background: SizedBox(
-//         child: Padding(
-//           padding: marginLayout,
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   customSpacerHeight(height: 45),
-//                   _timelineText(),
-//                   customSpacerHeight(height: 12),
-//                   timelineLayout(),
-//                   customSpacerHeight(height: 6),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-//
-// _timelineText() {
-//   return Text(
-//     AppString.text_time_line.tr,
-//     style: AppStyle.mid_large_text.copyWith(fontSize: 20),
-//   );
-// }
-//
-// _buttonRadiusLayout() {
-//   return PreferredSize(
-//     preferredSize: const Size.fromHeight(12),
-//     child: Container(
-//         decoration: BoxDecoration(
-//             color: AppColor.cardColor,
-//             borderRadius: BorderRadius.only(
-//                 topRight: Radius.circular(Dimensions.radiusMid + 5),
-//                 topLeft: Radius.circular(Dimensions.radiusMid + 5))),
-//         width: double.maxFinite,
-//         padding: const EdgeInsets.only(top: 0, bottom: 0),
-//         child: const Center(
-//             child: Text(
-//           "",
-//           style: TextStyle(fontSize: 12),
-//         ))),
-//   );
-// }
-//
-// SliverToBoxAdapter get sliverToBoxAdapter {
-//   return const SliverToBoxAdapter(
-//     child: CustomTimelineCalendar(),
-//   );
-// }
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -224,24 +27,28 @@ class TimelineScreen extends GetView<TimelineController> {
     }
     Get.put(TimelineController());
     return controller.obx(
-            (state) => Scaffold(
-          backgroundColor: AppColor.backgroundColor,
-          body: RefreshIndicator(
-            backgroundColor: Colors.white,
-            onRefresh: _refreshScreen,
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                sliverAppBar,
-               // sliverToBoxAdapter,
-                const SliverFillRemaining(
-                  child:  CustomTimelineCalendar(),
-                )
-              ],
+        (state) => Scaffold(
+              backgroundColor: AppColor.backgroundColor,
+              body: RefreshIndicator(
+                backgroundColor: Colors.white,
+                onRefresh: _refreshScreen,
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    sliverAppBar,
+                    // sliverToBoxAdapter,
+
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        const CustomTimelineCalendar()
+                        // Add more content here if needed
+                      ]),
+                    ),
+                  ],
+                ),
+              ),
+              floatingActionButton: Obx(() => _timerBtnLayout(context)),
             ),
-          ),
-          floatingActionButton: Obx(() => _timerBtnLayout(context)),
-        ),
         onLoading: const LoadingIndicator());
   }
 
@@ -255,7 +62,7 @@ class TimelineScreen extends GetView<TimelineController> {
         children: [
           controller.isRunning.value
               ? _timerStringOpenBtn(
-              time: controller.starTimeDashboard.toString())
+                  time: controller.starTimeDashboard.toString())
               : _timerStringBtn(),
           customSpacerWidth(width: 18),
           _addTimeEntryBtn(),
@@ -303,20 +110,20 @@ class TimelineScreen extends GetView<TimelineController> {
   Future<void> _refreshScreen() async {
     await controller.getTimelineSummaryByMonth(
         startDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
     await controller.getCalendarTimelineDataByDate(
         startDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
     await controller.getTimelineSummaryByDate(
         startDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   }
 }
 
@@ -324,7 +131,7 @@ SliverAppBar get sliverAppBar {
   return SliverAppBar(
     expandedHeight: AppLayout.getHeight(280),
     elevation: 0,
-   bottom: _buttonRadiusLayout(),
+    bottom: _buttonRadiusLayout(),
     pinned: true,
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
@@ -368,24 +175,12 @@ _buttonRadiusLayout() {
               topLeft: Radius.circular(Dimensions.radiusMid + 15))),
       width: double.maxFinite,
       padding: const EdgeInsets.only(top: 12, bottom: 5),
-      child: Column(
-        children: [
-
-          Container(width: 50,height: 3,decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: AppColor.disableColor
-          ),
-
-          ),
-         Obx(() =>  dateCalendarLayout(),)
-
-
-        ],
+      child: Obx(
+        () => dateCalendarLayout(),
       ),
     ),
   );
 }
-
 
 SliverToBoxAdapter get sliverToBoxAdapter {
   return const SliverToBoxAdapter(

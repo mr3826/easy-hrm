@@ -42,29 +42,47 @@ Widget entryAndStartTimeLayout(context) {
   );
 }
 
-_addTimeEntry(context) {
+_addTimeEntry(BuildContext context) {
+  // Get the screen width and height
+  double screenWidth = MediaQuery.of(context).size.width;
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  // Calculate the scale factor based on screen size
+  //text size according to screen size
+  double getResponsiveTextSize(double baseSize) {
+    double scaleFactor = screenWidth / 400; // Use a baseline screen width (e.g., 400)
+    return baseSize * scaleFactor;
+  }
+
+  double height = screenHeight;
+  double width = screenWidth;
+
   return InkWell(
     onTap: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
     child: Stack(
       children: [
         customSvgImage(
-            imageUrl: Images.add_time_entry,
-            height: MediaQuery.of(context).size.height / 7,
-            width: MediaQuery.of(context).size.width / 2.5),
+          imageUrl: Images.add_time_entry,
+          height: height / 7,
+          width: width / 2.5,
+        ),
         Positioned(
-            bottom: 0,
-            left: 36,
-            top: 77,
-            child: Text(
-              AppString.text_time_entry.tr,
-              style: AppStyle.normal_text_grey.copyWith(
-                  color: AppColor.cardColor,
-                  fontSize: Dimensions.fontSizeDefault - 2),
-            ))
+          bottom: 0,
+          left: width < 400.0 || height < 400.0 ? 30 : 36,
+          top: width < 400.0 || height < 400.0 ? 58 : 80,
+          child: Text(
+            AppString.text_time_entry.tr,
+            style: AppStyle.normal_text_grey.copyWith(
+              color: AppColor.cardColor,
+              fontSize: getResponsiveTextSize(12),
+            ),
+          ),
+        ),
       ],
     ),
   );
 }
+
 
 _startingTimeOpen({required time, context}) {
   return InkWell(
