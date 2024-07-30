@@ -19,12 +19,14 @@ class OrgSubscriptionInfoModel {
 }
 
 class GetOrgSubscriptionInfo {
+  String? status;
   Plan? plan;
   SubscribedPlan? subscribedPlan;
 
-  GetOrgSubscriptionInfo({this.plan, this.subscribedPlan});
+  GetOrgSubscriptionInfo({this.status, this.plan, this.subscribedPlan});
 
   GetOrgSubscriptionInfo.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
     plan = json['plan'] != null ? new Plan.fromJson(json['plan']) : null;
     subscribedPlan = json['subscribed_plan'] != null
         ? new SubscribedPlan.fromJson(json['subscribed_plan'])
@@ -33,6 +35,7 @@ class GetOrgSubscriptionInfo {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
     if (this.plan != null) {
       data['plan'] = this.plan!.toJson();
     }

@@ -40,7 +40,6 @@ class TimeLineCalendar extends StatelessWidget {
                 initialDay: DateTime.parse("2024-01-24"),
                 timeLineOffset: 4,
                 showHalfHours: true,
-                showLiveTimeLineInAllDays: false,
                 headerStyle:  const HeaderStyle( rightIconVisible: false,leftIconVisible: false,headerMargin: EdgeInsets.zero,headerPadding: EdgeInsets.zero,),
                 heightPerMinute: 2,
                scrollPhysics: const NeverScrollableScrollPhysics(),
@@ -63,7 +62,8 @@ class TimeLineCalendar extends StatelessWidget {
                   String formattedTime = DateFormat.Hm().format(date);
                   return formattedTime;
                 },
-                timeLineWidth: 52,
+                timeLineWidth: 55,
+
                 onEventTap: (events, date) {
                   Iterable<String> eventData = events.map((e) => e.description!);
 

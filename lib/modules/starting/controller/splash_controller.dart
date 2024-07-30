@@ -99,21 +99,22 @@ class SplashController extends GetxController {
 }
 
 
-
 void checkIfSubscription() {
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
-
-  if (data.getOrgSubscriptionInfo?.subscribedPlan?.status != "active") {
+  if (data.getOrgSubscriptionInfo?.status =="paused" || data.getOrgSubscriptionInfo?.status =="canceled") {
     Get.find<SignInController>().isSubscriptionExpired(true);
-  }
-  data.getOrgSubscriptionInfo?.subscribedPlan?.planFeatures?.forEach((element) {
-    if (element.feature?.identifier == "time_tracking") {
-      if (element.isEnabled == true) {
-        Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(true);
-      } else {
-        Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(false);
+  } else {
+    data.getOrgSubscriptionInfo?.subscribedPlan?.planFeatures
+        ?.forEach((element) {
+      if (element.feature?.identifier == "time_tracking") {
+        if (element.isEnabled == true) {
+          Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(true);
+        } else {
+          Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow(false);
+        }
       }
-    }
-  });
+    });
+  }
+
   Get.offNamed(Routes.MAIN_SCREEN);
 }

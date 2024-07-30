@@ -35,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+
     controller = PersistentTabController(
       initialIndex: widget.routeIndex ?? 2,
     );
@@ -47,6 +48,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     /// initialController controller
     _initialController();
+
 
     print("isValue.isSubscriptionExpired :: ${isValue.isSubscriptionExpired}");
 
