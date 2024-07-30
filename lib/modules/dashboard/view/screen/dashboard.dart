@@ -41,6 +41,8 @@ class Dashboard extends GetView<DashboardController> {
                           : Container(),
                       const UpcomingLeaveLayout(),
 
+                      customSpacerHeight(height: 50),
+
                     ],
                   ),
                 ),
