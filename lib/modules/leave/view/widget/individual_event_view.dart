@@ -294,7 +294,7 @@ class IndividualEventView extends StatelessWidget {
 
 Widget horizontalCalendarLayout() {
   return Padding(
-    padding: const EdgeInsets.only(top: 20, left: 14, right: 14),
+    padding: const EdgeInsets.only(top: 20, left: 8, right: 8),
     child: GestureDetector(
       onTap: () {
         showDialog<String>(

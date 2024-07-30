@@ -117,7 +117,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(260),
+    expandedHeight: AppLayout.getHeight(277),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,

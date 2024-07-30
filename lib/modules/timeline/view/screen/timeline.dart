@@ -36,14 +36,7 @@ class TimelineScreen extends GetView<TimelineController> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     sliverAppBar,
-                    // sliverToBoxAdapter,
-
-                    SliverList(
-                      delegate: SliverChildListDelegate([
-                        const CustomTimelineCalendar()
-                        // Add more content here if needed
-                      ]),
-                    ),
+                     sliverList,
                   ],
                 ),
               ),
@@ -182,8 +175,11 @@ _buttonRadiusLayout() {
   );
 }
 
-SliverToBoxAdapter get sliverToBoxAdapter {
-  return const SliverToBoxAdapter(
-    child: CustomTimelineCalendar(),
+SliverList get sliverList {
+  return SliverList(
+    delegate: SliverChildListDelegate([
+      const CustomTimelineCalendar()
+      // Add more content here if needed
+    ]),
   );
 }

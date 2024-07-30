@@ -82,7 +82,7 @@ Widget dateCalendarLayout() {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 8, left: 14, right: 14),
+        padding: const EdgeInsets.only(top: 8, left: 25, right: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
