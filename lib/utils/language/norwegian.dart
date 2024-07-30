@@ -163,7 +163,6 @@ Map<String, String> nn = {
   AppString.text_revert_change: "Tilbakestill endringer",
   AppString.text_satus: "Status:",
   AppString.text_save: "Lagre",
-
   AppString.text_schedule: "Planlegg",
   AppString.text_see_details: "Se detaljer",
   AppString.text_seen: "Sett",

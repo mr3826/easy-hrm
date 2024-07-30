@@ -103,6 +103,8 @@ class IndividualEventView extends StatelessWidget {
               ?.getLeaveRequests
               ?.length,
           itemBuilder: (context, index) {
+            Color itemBgColor =
+            index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
             return InkWell(
               onTap: () {
                 customAntButtonSheet(
@@ -239,7 +241,7 @@ class IndividualEventView extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   decoration: BoxDecoration(
-                      color: AppColor.primaryColor.withOpacity(.05),
+                      color: itemBgColor,
                       borderRadius: BorderRadius.circular(8)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

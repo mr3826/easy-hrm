@@ -31,8 +31,8 @@ class UpcomingLeaveLayout extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ?? 0,
         itemBuilder: (context, index) {
-          Color itemColor =
-          index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
+          Color itemBgColor =
+          index % 2 == 0 ? AppColor.primaryColor.withOpacity(0.04) : Colors.transparent;
           return SizedBox(
             width: double.infinity,
             child: Padding(
@@ -116,7 +116,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
                 ),
                 child: Card(
                   elevation: 0,
-                  color: AppColor.primaryColor.withOpacity(0.06),
+                  color: itemBgColor,
                   shape: roundedRectangleBorder,
                   child: Padding(
                     padding: marginLayout.copyWith(
