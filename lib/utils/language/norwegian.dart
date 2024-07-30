@@ -167,7 +167,7 @@ Map<String, String> nn = {
   AppString.text_schedule: "Planlegg",
   AppString.text_see_details: "Se detaljer",
   AppString.text_seen: "Sett",
-  AppString.text_select_language: "Valgt språk",
+  AppString.text_select_language: "Velg språk",
   AppString.text_select_on_option: "Velg et alternativ.",
   AppString.text_select_option: "Valgt alternativ",
   AppString.text_select_starting_time: "Velg tid",
