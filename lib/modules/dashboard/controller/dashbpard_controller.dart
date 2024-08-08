@@ -33,9 +33,6 @@ class DashboardController extends GetxController with StateMixin {
       log("getProfileInfoForDashboard ::::: ${response.hasException}",
           error: 0);
     } else {
-      print(ProfileSummaryForDashboard.fromJson(response.data!)
-          .getProfileSummaryForDashboard
-          ?.orgUserId);
       profileSummaryForDashboard =
           ProfileSummaryForDashboard.fromJson(response.data!);
       GetStorage().write(

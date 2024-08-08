@@ -1,19 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/modules/leave/view/widget/widget.dart';
-import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../../common/widget/custom_icon_shape_style.dart';
-import '../../../../common/widget/custom_spacer.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
+
+import '../../../../../common/widget/custom_icon_shape_style.dart';
+import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../controller/notification_controller.dart';
 
 class NotificationViewLayout extends StatelessWidget {
   final int index;

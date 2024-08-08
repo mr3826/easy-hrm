@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -14,6 +15,8 @@ import '../utils/utils.dart';
 String _getRequestUrl(String apiEndPoint) => Api.PUBLIC_URL + apiEndPoint;
 
 class NetworkClient extends GetConnect {
+
+
   Future<Response> getRequest(String apiEndPoint) async {
     return await get(_getRequestUrl(apiEndPoint), headers: {
       "Content-Type": "application/json",
@@ -27,6 +30,7 @@ class NetworkClient extends GetConnect {
   Future<Response> postRequest(String apiEndPoint, dynamic body) async {
     Response response = await post(_getRequestUrl(apiEndPoint), body, headers: {
       "Content-Type": "application/json",
+      "User-Agent" : "getx-client",
       "Authorization": GetStorage().read(AppString.ID_TOKEN) ?? ""
     }).timeout(const Duration(seconds: 15));
     return response;

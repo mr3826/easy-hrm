@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
-import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../common/widget/custom_spacer.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
+import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../controller/notification_controller.dart';
 import 'notification_view_layout.dart';
 
 class NotificationTabBar extends StatelessWidget {

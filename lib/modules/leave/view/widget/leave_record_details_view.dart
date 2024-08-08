@@ -49,14 +49,16 @@ class LeaveRecordDetails extends StatelessWidget {
               subtext: _getDate(),
               isLeave: true,
               status: status,
-              duration: getDurationTimeForDetails(duration: leaveRecords?.duration.toString()??"")),
+              duration: getDurationTimeForDetails(
+                  duration: leaveRecords?.duration.toString() ?? "")),
           customSpacerHeight(height: 12),
           _infoLayout(
               text: AppString.text_type_dot.tr,
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: "${AppString.text_duration.tr}:",
-              dynamicText: getDurationTimeForDetails(duration: leaveRecords?.duration.toString()??"")),
+              dynamicText: getDurationTimeForDetails(
+                  duration: leaveRecords?.duration.toString() ?? "")),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
           _infoLayout(
               text: AppString.text_date_of_application.tr,
@@ -221,6 +223,8 @@ class LeaveRecordDetails extends StatelessWidget {
             }
             Get.put(UpDateLeaveController());
 
+            Get.find<UpDateLeaveController>().getLeaveTypeDropdown();
+
             _customButtonSheet(
                 context: context,
                 child: UpdateLeave(leaveRecords: leaveRecords));
@@ -294,6 +298,7 @@ class LeaveRecordDetails extends StatelessWidget {
                 color: AppColor.cardColor),
           );
   }
+
   _getDate() {
     isSameDate(
         startDate: leaveRecords?.startDate ?? "",
@@ -309,27 +314,28 @@ class LeaveRecordDetails extends StatelessWidget {
     }
   }
 }
-String getDurationTime({required String duration , String ?workShift}) {
-  String days=_getDaysForDuration(duration: duration);
-  String durationInHour=  _getLeaveRecodeDurationTimeFormat(workShift: "9.00",durationValue: duration);
+
+String getDurationTime({required String duration, String? workShift}) {
+  String days = _getDaysForDuration(duration: duration);
+  String durationInHour = _getLeaveRecodeDurationTimeFormat(
+      workShift: "9.00", durationValue: duration);
   // return "$days ${durationInHour=="0 days 0 m"?"":durationInHour}";
 
-  if(days.isNotEmpty)return days;
+  if (days.isNotEmpty) return days;
 
   return durationInHour;
-
 }
 
-String getDurationTimeForDetails({required String duration , String ?workShift}) {
-  String days=_getDaysForDuration(duration: duration);
-  String durationInHour=  _getLeaveRecodeDurationTimeFormat(workShift: "9.00",durationValue: duration);
+String getDurationTimeForDetails(
+    {required String duration, String? workShift}) {
+  String days = _getDaysForDuration(duration: duration);
+  String durationInHour = _getLeaveRecodeDurationTimeFormat(
+      workShift: "9.00", durationValue: duration);
   return "$days $durationInHour";
-
 }
 
-
-
-String _getLeaveRecodeDurationTimeFormat({String? durationValue, required String workShift}) {
+String _getLeaveRecodeDurationTimeFormat(
+    {String? durationValue, required String workShift}) {
   if (durationValue == null || durationValue == "null") return "";
 
   double value = double.parse(durationValue);
@@ -351,8 +357,6 @@ String _getLeaveRecodeDurationTimeFormat({String? durationValue, required String
 
   return '$hours h $minutes m';
 }
-
-
 
 String _getDaysForDuration({required String duration}) {
   if (duration.isEmpty) return "";

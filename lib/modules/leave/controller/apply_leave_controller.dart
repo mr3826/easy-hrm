@@ -14,11 +14,11 @@ import '../model/leave_type.dart';
 import 'file_upload_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
-  @override
-  void onInit() async {
-    super.onInit();
-    await getLeaveTypeDropdown();
-  }
+  // @override
+  // void onInit() async {
+  //   super.onInit();
+  //   await getLeaveTypeDropdown();
+  // }
 
   LeaveTypeDropdown? leaveTypeDropdown;
 

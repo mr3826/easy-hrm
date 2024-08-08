@@ -31,10 +31,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     sliverAppBar,
-
-                   sliverList,
-
-
+                    sliverList,
                   ],
                 ),
               ),
@@ -57,6 +54,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
           Get.delete<ApplyLeaveController>();
         }
         Get.put(ApplyLeaveController());
+        Get.find<ApplyLeaveController>().getLeaveTypeDropdown();
         _customButtonSheet(context: context, child: const ApplyLeaveScreen());
       },
       child: Padding(
@@ -149,7 +147,7 @@ SliverAppBar get sliverAppBar {
 }
 
 SliverList get sliverList {
-  return  SliverList(
+  return SliverList(
     delegate: SliverChildListDelegate([
       const IndividualEventView()
       // Add more content here if needed
