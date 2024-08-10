@@ -8,8 +8,6 @@ import '../../../../utils/api_endpoints.dart';
 import '../../domain/notification.dart';
 
 class NotificationController extends GetxController with StateMixin {
-  NotificationResponse? notificationResponse;
-
   RxList<Data>? newNotification = <Data>[].obs;
   List<Data>? seenNotification = <Data>[];
 
@@ -20,7 +18,7 @@ class NotificationController extends GetxController with StateMixin {
 
   final isNewNotificationHasData = false.obs;
   final isSeenNotificationHasData = false.obs;
-  int notificationLimit = 20;
+  int notificationLimit = 15;
   RxInt newNotificationOffset = 0.obs;
   RxInt seenNotificationOffset = 0.obs;
   final notificationTabBarIndex = 0.obs;
@@ -33,204 +31,12 @@ class NotificationController extends GetxController with StateMixin {
   late ScrollController newNotificationScrollController;
   late ScrollController seenNotificationScrollController;
 
-  Future<void> getNewNotification() async {
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": false, "is_mobile_notification": true},
-      "optionData": {
-        "limit": notificationLimit,
-        "offset": newNotificationOffset.value
-      }
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      notificationResponse = NotificationResponse.fromJson(response.data!);
-
-      newNotificationLength = notificationResponse?.getNotificationActivities
-              ?.metaData?.notificationCounts?.unSeenCount ??
-          0;
-      newNotification?.value =
-          notificationResponse?.getNotificationActivities?.data ?? [];
-      print("no: lenth:: ${newNotification!.length}");
-      newNotificationIdList =
-          newNotification?.map((e) => e.notification?.id ?? "").toList();
-      if (notificationResponse?.getNotificationActivities?.metaData
-                  ?.notificationCounts?.unSeenCount !=
-              null &&
-          notificationResponse!.getNotificationActivities!.metaData!
-                  .notificationCounts!.unSeenCount! >
-              newNotification!.length) {
-        isMoreNewNotificationAvailable(true);
-        newNotificationOffset.value =
-            newNotificationOffset.value + notificationLimit;
-      } else {
-        newNotificationOffset.value = 0;
-        isMoreNewNotificationAvailable(false);
-      }
-    }
-
-    change(null, status: RxStatus.success());
-  }
-
-  void getMoreNewNotification() async {
-    isMoreNewNotificationLoading(true);
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": false, "is_mobile_notification": true},
-      "optionData": {
-        "limit": notificationLimit,
-        "offset": newNotificationOffset.value
-      }
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      notificationResponse = NotificationResponse.fromJson(response.data!);
-      newNotification
-          ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
-      newNotificationIdList?.addAll(
-          newNotification?.map((e) => e.notification?.id ?? "").toList() ?? []);
-      if (notificationResponse != null &&
-          notificationResponse!.getNotificationActivities!.metaData!
-                  .notificationCounts!.unSeenCount! >
-              newNotification!.length) {
-        isMoreNewNotificationAvailable(true);
-        newNotificationOffset.value =
-            newNotificationOffset.value + notificationLimit;
-      } else {
-        newNotificationOffset.value = 0;
-        isMoreNewNotificationAvailable(false);
-      }
-    }
-    isMoreNewNotificationLoading(false);
-  }
-
-  getSeenNotification() async {
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": true, "is_mobile_notification": true},
-      "optionData": {"limit": notificationLimit, "offset": 0}
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      notificationResponse = NotificationResponse.fromJson(response.data!);
-      seenNotification = notificationResponse?.getNotificationActivities?.data;
-      seenNotificationLength = notificationResponse?.getNotificationActivities
-              ?.metaData?.notificationCounts?.seenCount ??
-          0;
-      if (notificationResponse?.getNotificationActivities?.metaData
-                  ?.notificationCounts?.seenCount !=
-              null &&
-          notificationResponse!.getNotificationActivities!.metaData!
-                  .notificationCounts!.seenCount! >
-              seenNotification!.length) {
-        isMoreSeenNotificationAvailable(true);
-        seenNotificationOffset.value =
-            seenNotificationOffset.value + notificationLimit;
-      } else {
-        seenNotificationOffset.value = 0;
-        isMoreSeenNotificationAvailable(false);
-      }
-    }
-
-    change(null, status: RxStatus.success());
-  }
-
-  void getMoreSeenNotification() async {
-    isMoreSeenNotificationLoading(true);
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
-      "queryData": {"is_seen": true, "is_mobile_notification": true},
-      "optionData": {
-        "limit": notificationLimit,
-        "offset": newNotificationOffset.value
-      }
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      notificationResponse = NotificationResponse.fromJson(response.data!);
-      seenNotification
-          ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
-      if (notificationResponse != null &&
-          notificationResponse!.getNotificationActivities!.metaData!
-                  .notificationCounts!.seenCount! >
-              seenNotification!.length) {
-        isMoreSeenNotificationAvailable(true);
-        seenNotificationOffset.value =
-            seenNotificationOffset.value + notificationLimit;
-      } else {
-        seenNotificationOffset.value = 0;
-        isMoreSeenNotificationAvailable(false);
-      }
-    }
-    isMoreSeenNotificationLoading(false);
-  }
-
-  markNotificationAsSeen() async {
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .getGraphQuery(queryString: markAsSeenNotificationQuery, variables: {
-      "inputData": {"notificationIds": newNotificationIdList}
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
-    } else {
-      newNotificationIdList?.clear();
-      await getNewNotification();
-      await getSeenNotification();
-    }
-
-    change(null, status: RxStatus.success());
-  }
-
-  @override
-  void onInit() {
-    newNotificationScrollController = ScrollController()
-      ..addListener(() {
-        if (newNotificationScrollController.position.pixels ==
-            newNotificationScrollController.position.maxScrollExtent) {
-          if (isMoreNewNotificationAvailable.isTrue &&
-              isMoreNewNotificationLoading.isFalse) {
-            getMoreNewNotification();
-          }
-        }
-      });
-    seenNotificationScrollController = ScrollController()
-      ..addListener(() {
-        if (seenNotificationScrollController.position.pixels ==
-            seenNotificationScrollController.position.maxScrollExtent) {
-          if (isMoreSeenNotificationAvailable.isTrue &&
-              isMoreSeenNotificationLoading.isFalse) {
-            getMoreSeenNotification();
-          }
-        }
-      });
-
-    // getNewNotification();
-    getAllNewNotifications();
-    getSeenNotification();
-    super.onInit();
-  }
-
-  final NotificationRemoteDataInterface _remoteDataInterface =
-      Get.find<NotificationRemoteDataInterface>();
-
-  getAllNewNotifications() async {
+  getNewNotifications() async {
+    newNotificationOffset.value = 0;
     change(null, status: RxStatus.loading());
 
-    notificationResponse = await _remoteDataInterface.getNewNotification(
-        notificationLimit: notificationLimit,
-        newNotificationOffset: newNotificationOffset.value);
+    NotificationResponse? notificationResponse = await _remoteDataSource
+        .getNewNotification(newNotificationOffset: newNotificationOffset.value);
 
     newNotificationLength = notificationResponse?.getNotificationActivities
             ?.metaData?.notificationCounts?.unSeenCount ??
@@ -256,4 +62,132 @@ class NotificationController extends GetxController with StateMixin {
 
     change(null, status: RxStatus.success());
   }
+
+  void getMoreNewNotification() async {
+    isMoreNewNotificationLoading(true);
+    NotificationResponse? notificationResponse = await _remoteDataSource
+        .getNewNotification(newNotificationOffset: newNotificationOffset.value);
+
+    newNotification
+        ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
+    newNotificationIdList?.addAll(
+        newNotification?.map((e) => e.notification?.id ?? "").toList() ?? []);
+    if (notificationResponse != null &&
+        notificationResponse!.getNotificationActivities!.metaData!
+                .notificationCounts!.unSeenCount! >
+            newNotification!.length) {
+      isMoreNewNotificationAvailable(true);
+      newNotificationOffset.value =
+          newNotificationOffset.value + notificationLimit;
+    } else {
+      newNotificationOffset.value = 0;
+      isMoreNewNotificationAvailable(false);
+    }
+    isMoreNewNotificationLoading(false);
+  }
+
+  getSeenNotification() async {
+    seenNotificationOffset.value = 0;
+    change(null, status: RxStatus.loading());
+    NotificationResponse? notificationResponse =
+        await _remoteDataSource.getSeenNotification(
+            seenNotificationOffset: seenNotificationOffset.value);
+
+    print(
+        "notificationResponse length: ${notificationResponse?.getNotificationActivities?.metaData}"
+        ""
+        "${notificationResponse!.getNotificationActivities!.metaData!.notificationCounts!.seenCount! > seenNotification!.length}"
+        "");
+
+    seenNotification = notificationResponse?.getNotificationActivities?.data;
+    seenNotificationLength = notificationResponse?.getNotificationActivities
+            ?.metaData?.notificationCounts?.seenCount ??
+        0;
+    if (notificationResponse?.getNotificationActivities?.metaData
+                ?.notificationCounts?.seenCount !=
+            null &&
+        notificationResponse!.getNotificationActivities!.metaData!
+                .notificationCounts!.seenCount! >
+            seenNotification!.length) {
+      isMoreSeenNotificationAvailable(true);
+      seenNotificationOffset.value =
+          seenNotificationOffset.value + notificationLimit;
+    } else {
+      seenNotificationOffset.value = 0;
+      isMoreSeenNotificationAvailable(false);
+    }
+
+    change(null, status: RxStatus.success());
+  }
+
+  void getMoreSeenNotification() async {
+    isMoreSeenNotificationLoading(true);
+    print("seenNotificationOffset.value: ${seenNotificationOffset.value}");
+    NotificationResponse? notificationResponse =
+        await _remoteDataSource.getSeenNotification(
+            seenNotificationOffset: seenNotificationOffset.value);
+
+    seenNotification
+        ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
+    if (notificationResponse != null &&
+        notificationResponse.getNotificationActivities!.metaData!
+                .notificationCounts!.seenCount! >
+            seenNotification!.length) {
+      isMoreSeenNotificationAvailable(true);
+      seenNotificationOffset.value =
+          seenNotificationOffset.value + notificationLimit;
+    } else {
+      seenNotificationOffset.value = 0;
+      isMoreSeenNotificationAvailable(false);
+    }
+    isMoreSeenNotificationLoading(false);
+  }
+
+  markNotificationAsSeen() async {
+    change(null, status: RxStatus.loading());
+    final bool response = await _remoteDataSource.markNotificationAsSeen(
+        newNotificationIdList: newNotificationIdList);
+    if (response == true) {
+      newNotificationIdList?.clear();
+      await getNewNotifications();
+      await getSeenNotification();
+    }
+    change(null, status: RxStatus.success());
+  }
+
+  @override
+  void onInit() {
+    newNotificationScrollController = ScrollController()
+      ..addListener(() {
+        if (newNotificationScrollController.position.pixels ==
+            newNotificationScrollController.position.maxScrollExtent) {
+          print("Method come here");
+          if (isMoreNewNotificationAvailable.isTrue &&
+              isMoreNewNotificationLoading.isFalse) {
+            getMoreNewNotification();
+          }
+        }
+      });
+    seenNotificationScrollController = ScrollController()
+      ..addListener(() {
+        print("Method come here ${seenNotificationScrollController.position.pixels ==
+            seenNotificationScrollController.position.maxScrollExtent}");
+        if (seenNotificationScrollController.position.pixels ==
+            seenNotificationScrollController.position.maxScrollExtent) {
+          if (isMoreSeenNotificationAvailable.isTrue &&
+              isMoreSeenNotificationLoading.isFalse) {
+            getMoreSeenNotification();
+          }
+        }
+        print("Method come here after");
+      });
+
+    // getNewNotification();
+    getNewNotifications();
+    getSeenNotification();
+    super.onInit();
+  }
+
+  final NotificationRemoteDataSource _remoteDataSource =
+      Get.find<NotificationRemoteDataSource>();
 }

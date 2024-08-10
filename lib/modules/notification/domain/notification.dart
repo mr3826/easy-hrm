@@ -159,6 +159,11 @@ class MetaData {
     json['notificationCounts'] != null ? NotificationCounts.fromJson(json['notificationCounts']) : null;
 
   }
+
+  @override
+  String toString() {
+    return 'MetaData{totalRows: $totalRows, notificationCounts: $notificationCounts}';
+  }
 }
 
 class NotificationCounts {
@@ -170,5 +175,10 @@ class NotificationCounts {
   NotificationCounts.fromJson(Map<String, dynamic> json){
     seenCount = json['seen_count'];
     unSeenCount = json['unseen_count'];
+  }
+
+  @override
+  String toString() {
+    return 'NotificationCounts{seenCount: $seenCount, unSeenCount: $unSeenCount}';
   }
 }

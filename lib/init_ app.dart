@@ -62,8 +62,6 @@ Future<void> initApp() async {
   Get.put(SignInController());
   Get.put(OtpController());
 
-
-  final NotificationRemoteDataSource notificationRemoteDataSource = NotificationRemoteDataSource(client);
-  Get.put<NotificationRemoteDataInterface>(notificationRemoteDataSource, permanent: true);
+  Get.put(NotificationRemoteDataSource(client), permanent: true);
 
 }

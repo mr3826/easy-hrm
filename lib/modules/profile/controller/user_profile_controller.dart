@@ -540,7 +540,7 @@ switchOrganisationDataChange() {
 
   Get.find<TimelineSummaryController>().getTimelineByMonth();
   Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
-  Get.find<NotificationController>().getNewNotification();
+  Get.find<NotificationController>().getNewNotifications();
   Get.find<NotificationController>().getSeenNotification();
   Get.find<LeaveRecordsController>().getLeaveRecordsData();
   Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
