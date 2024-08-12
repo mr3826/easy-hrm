@@ -30,6 +30,8 @@ class NotificationViewLayout extends StatelessWidget {
 
   _newNotificationView() {
     return SingleChildScrollView(
+      controller:
+          Get.find<NotificationController>().newNotificationScrollController,
       physics: const AlwaysScrollableScrollPhysics(),
       child: (_controller.newNotification != null &&
               _controller.newNotification!.isNotEmpty)
@@ -37,8 +39,6 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 ListView.builder(
                     shrinkWrap: true,
-                    controller: Get.find<NotificationController>()
-                        .newNotificationScrollController,
                     itemCount: _controller.newNotification?.length ?? 0,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -85,6 +85,7 @@ class NotificationViewLayout extends StatelessWidget {
 
   _seenNotificationView() {
     return SingleChildScrollView(
+      controller: _controller.seenNotificationScrollController,
       physics: const AlwaysScrollableScrollPhysics(),
       child: (_controller.seenNotification != null &&
               _controller.seenNotification!.isNotEmpty)
@@ -92,7 +93,6 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 ListView.builder(
                     shrinkWrap: true,
-                    controller: _controller.seenNotificationScrollController,
                     itemCount: _controller.seenNotification?.length ?? 0,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 10),

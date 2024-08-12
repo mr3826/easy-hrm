@@ -28,8 +28,9 @@ class UpdateProfileController extends GetxController {
     });
 
     isLoading(true);
-    final response = await NetworkClient()
-        .mutationGraphData(updateUserProfileMutation, {"inputData": variables});
+    final response = await NetworkClient().graphRequest(
+        queryString: updateUserProfileMutation,
+        variables: {"inputData": variables});
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -87,7 +88,7 @@ class UpdateProfileController extends GetxController {
     isUploadPolicyLoading(true);
 
     final response = await NetworkClient()
-        .getGraphQuery(queryString: getUploadPolicyQuery, variables: {
+        .graphRequest(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
         "sub_folder_name":
             "${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user",

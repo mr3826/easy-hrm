@@ -18,7 +18,7 @@ class NotificationController extends GetxController with StateMixin {
 
   final isNewNotificationHasData = false.obs;
   final isSeenNotificationHasData = false.obs;
-  int notificationLimit = 15;
+  int notificationLimit = 20;
   RxInt newNotificationOffset = 0.obs;
   RxInt seenNotificationOffset = 0.obs;
   final notificationTabBarIndex = 0.obs;
@@ -35,8 +35,10 @@ class NotificationController extends GetxController with StateMixin {
     newNotificationOffset.value = 0;
     change(null, status: RxStatus.loading());
 
-    NotificationResponse? notificationResponse = await _remoteDataSource
-        .getNewNotification(newNotificationOffset: newNotificationOffset.value);
+    NotificationResponse? notificationResponse =
+        await _remoteDataSource.getNewNotification(
+            notificationLimit: notificationLimit,
+            newNotificationOffset: newNotificationOffset.value);
 
     newNotificationLength = notificationResponse?.getNotificationActivities
             ?.metaData?.notificationCounts?.unSeenCount ??
@@ -65,8 +67,10 @@ class NotificationController extends GetxController with StateMixin {
 
   void getMoreNewNotification() async {
     isMoreNewNotificationLoading(true);
-    NotificationResponse? notificationResponse = await _remoteDataSource
-        .getNewNotification(newNotificationOffset: newNotificationOffset.value);
+    NotificationResponse? notificationResponse =
+        await _remoteDataSource.getNewNotification(
+            notificationLimit: notificationLimit,
+            newNotificationOffset: newNotificationOffset.value);
 
     newNotification
         ?.addAll(notificationResponse?.getNotificationActivities?.data ?? []);
@@ -91,13 +95,9 @@ class NotificationController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     NotificationResponse? notificationResponse =
         await _remoteDataSource.getSeenNotification(
+            notificationLimit: notificationLimit,
             seenNotificationOffset: seenNotificationOffset.value);
 
-    print(
-        "notificationResponse length: ${notificationResponse?.getNotificationActivities?.metaData}"
-        ""
-        "${notificationResponse!.getNotificationActivities!.metaData!.notificationCounts!.seenCount! > seenNotification!.length}"
-        "");
 
     seenNotification = notificationResponse?.getNotificationActivities?.data;
     seenNotificationLength = notificationResponse?.getNotificationActivities
@@ -122,9 +122,9 @@ class NotificationController extends GetxController with StateMixin {
 
   void getMoreSeenNotification() async {
     isMoreSeenNotificationLoading(true);
-    print("seenNotificationOffset.value: ${seenNotificationOffset.value}");
     NotificationResponse? notificationResponse =
         await _remoteDataSource.getSeenNotification(
+            notificationLimit: notificationLimit,
             seenNotificationOffset: seenNotificationOffset.value);
 
     seenNotification
@@ -170,8 +170,6 @@ class NotificationController extends GetxController with StateMixin {
       });
     seenNotificationScrollController = ScrollController()
       ..addListener(() {
-        print("Method come here ${seenNotificationScrollController.position.pixels ==
-            seenNotificationScrollController.position.maxScrollExtent}");
         if (seenNotificationScrollController.position.pixels ==
             seenNotificationScrollController.position.maxScrollExtent) {
           if (isMoreSeenNotificationAvailable.isTrue &&
@@ -179,7 +177,6 @@ class NotificationController extends GetxController with StateMixin {
             getMoreSeenNotification();
           }
         }
-        print("Method come here after");
       });
 
     // getNewNotification();

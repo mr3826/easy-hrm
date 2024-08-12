@@ -17,41 +17,54 @@ class NotificationScreen extends GetView<NotificationController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: notificationAppbar(),
-      body: controller.obx((state) => NotificationTabBar(),
-          onLoading: const LoadingIndicator()),
-
-      floatingActionButton: Obx(() => controller
-                  .notificationTabBarIndex.value ==
-              0
-          ? (controller.newNotification != null &&
-                  controller.newNotification!.isNotEmpty)
-              ? controller.obx((state) => markAllBtn, onLoading: Container())
-              : Container()
-          : Container()),
+      body: _buildBody(),
+      floatingActionButton: _buildFloatingActionButton(),
     );
   }
 
-  GestureDetector get markAllBtn {
+  Widget _buildBody() {
+    return controller.obx(
+          (state) => NotificationTabBar(),
+      onLoading: const LoadingIndicator(),
+    );
+  }
+
+  Widget _buildFloatingActionButton() {
+    return Obx(() {
+      if (controller.notificationTabBarIndex.value != 0) {
+        return const SizedBox.shrink(); // Equivalent to an empty container
+      }
+
+      if (controller.newNotification == null || controller.newNotification!.isEmpty) {
+        return const SizedBox.shrink(); // Equivalent to an empty container
+      }
+
+      return _markAllBtn;
+    });
+  }
+
+  Widget get _markAllBtn {
     return GestureDetector(
-      onTap: () {
-        controller.markNotificationAsSeen();
-      },
+      onTap: () => controller.markNotificationAsSeen(),
       child: Padding(
         padding: const EdgeInsets.only(left: 38.0, bottom: 22),
         child: Container(
           height: AppLayout.getHeight(46),
           width: double.infinity,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
-              color: AppColor.cardColor,
-              border: Border.all(color: AppColor.disableColor)),
+            borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
+            color: AppColor.cardColor,
+            border: Border.all(color: AppColor.disableColor),
+          ),
           child: Center(
-              child: Text(
-            AppString.text_mark_all_as_seen.tr,
-            style: AppStyle.mid_large_text.copyWith(
+            child: Text(
+              AppString.text_mark_all_as_seen.tr,
+              style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault + 1),
-          )),
+                fontSize: Dimensions.fontSizeDefault + 1,
+              ),
+            ),
+          ),
         ),
       ),
     );

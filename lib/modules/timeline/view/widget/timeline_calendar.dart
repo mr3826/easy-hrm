@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
-import 'package:payrun_mobile/modules/leave/model/leave_record_response.dart';
-import 'package:payrun_mobile/modules/leave/view/widget/leave_record_details_view.dart';
+import 'package:payrun_mobile/modules/leave/domain/leave_record_response.dart';
+import 'package:payrun_mobile/modules/leave/presentation/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -13,7 +13,7 @@ import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
-import '../../../leave/model/leave_records.dart';
+import '../../../leave/domain/leave_records.dart';
 import '../widget/task_view_widget.dart';
 
 class TimeLineCalendar extends StatelessWidget {

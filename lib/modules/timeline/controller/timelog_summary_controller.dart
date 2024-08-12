@@ -40,7 +40,7 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelineByMonth() async {
     isMonthlySummaryDataLoading(true);
-    final response = await NetworkClient().getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+    final response = await NetworkClient().graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_date": selectedMonthStartDate.value,
         "end_date": selectedMonthEndDate.value,
@@ -60,7 +60,7 @@ class TimelineSummaryController extends GetxController with StateMixin {
     print(
         "getTimelogDetailsByMonth ::: start_data ${selectedMonthStartDate.value} end date ${selectedMonthEndDate.value}");
     final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelogDetailsByMonthQuery, variables: {
+        .graphRequest(queryString: getTimelogDetailsByMonthQuery, variables: {
       "queryData": {
         "start_date": selectedMonthStartDate.value,
         "end_date": selectedMonthEndDate.value,

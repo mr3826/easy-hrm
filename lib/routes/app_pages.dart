@@ -6,13 +6,13 @@ import 'package:payrun_mobile/modules/auth/presentation/view/reset_password.dart
 import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
 import 'package:payrun_mobile/modules/dashboard/view/screen/dashboard.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
-import 'package:payrun_mobile/modules/leave/view/screen/leave_screen.dart';
+import 'package:payrun_mobile/modules/leave/presentation/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
-import '../modules/leave/view/screen/leave_record.dart';
+import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
 import '../modules/notification/presentation/view/screen/notification.dart';

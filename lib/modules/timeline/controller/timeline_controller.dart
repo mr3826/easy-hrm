@@ -61,12 +61,11 @@ class TimelineController extends GetxController with StateMixin {
   var isSelectDate = ''.obs;
 
   /// Method to check if the button should be enabled
-  RxBool isValueChangeForTimeLogUpdate=false.obs;
-
+  RxBool isValueChangeForTimeLogUpdate = false.obs;
 
   Future<bool> startOrEndTimer({required String timerType}) async {
-    final response =
-        await NetworkClient().mutationGraphData(startOrEndTimerQueryData, {
+    final response = await NetworkClient()
+        .graphRequest(queryString: startOrEndTimerQueryData, variables: {
       "inputData": {"timer_type": timerType}
     });
 
@@ -93,8 +92,8 @@ class TimelineController extends GetxController with StateMixin {
 
   saveTimeEntry() async {
     isTimelogEntryOrRemoveLoading(true);
-    final response =
-        await NetworkClient().mutationGraphData(saveTimerQueryData, {
+    final response = await NetworkClient()
+        .graphRequest(queryString: saveTimerQueryData, variables: {
       "inputData": {
         "description": descriptionController.text,
         "end_date":
@@ -141,8 +140,8 @@ class TimelineController extends GetxController with StateMixin {
             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
-      final response =
-          await NetworkClient().mutationGraphData(createNewEntryQuery, {
+      final response = await NetworkClient()
+          .graphRequest(queryString: createNewEntryQuery, variables: {
         "inputData": {
           "end_date": DateTime.parse(
                   "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
@@ -187,20 +186,21 @@ class TimelineController extends GetxController with StateMixin {
 
     if (!timeDifference.isNegative) {
       isTimeInvalid(false);
-      final response = await NetworkClient()
-          .mutationGraphData(updateTimelineLogDetailsQueryData, {
-        "inputData": {
-          "timeline_id": timeLineID,
-          "description": descriptionController.text,
-          "end_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
-          "start_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-          "status": "pending",
-          "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-          "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-        }
-      });
+      final response = await NetworkClient().graphRequest(
+          queryString: updateTimelineLogDetailsQueryData,
+          variables: {
+            "inputData": {
+              "timeline_id": timeLineID,
+              "description": descriptionController.text,
+              "end_date":
+                  "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
+              "start_date":
+                  "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
+              "status": "pending",
+              "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+              "project_id": projectId.value.isNotEmpty ? projectId.value : null,
+            }
+          });
 
       log(response.toString(), error: 0);
 
@@ -225,7 +225,7 @@ class TimelineController extends GetxController with StateMixin {
   getProjectDropdown() async {
     isLoading(true);
     final response = await NetworkClient()
-        .getGraphQuery(queryString: getProjectDropdownQuery, variables: {
+        .graphRequest(queryString: getProjectDropdownQuery, variables: {
       "queryData": {"searchText": taskSearchController.text},
       "optionData": {"limit": 200}
     });
@@ -252,8 +252,8 @@ class TimelineController extends GetxController with StateMixin {
 
   Future<bool> removeTimeEntry({String? timeLogId}) async {
     isTimelogEntryOrRemoveLoading(true);
-    final response =
-        await NetworkClient().mutationGraphData(removeTimerQueryData, {
+    final response = await NetworkClient()
+        .graphRequest(queryString: removeTimerQueryData, variables: {
       "inputData": {
         "timeline_id":
             timeLogId ?? startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
@@ -283,7 +283,7 @@ class TimelineController extends GetxController with StateMixin {
         "getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+        .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_date": startDate,
         "end_date": endDate,
@@ -303,7 +303,7 @@ class TimelineController extends GetxController with StateMixin {
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
 
     final response = await NetworkClient()
-        .getGraphQuery(queryString: getTimelineSummaryByDateQuery, variables: {
+        .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_date": "$startDate",
         "end_date": "$endDate",
@@ -384,7 +384,7 @@ class TimelineController extends GetxController with StateMixin {
     isTimelineCalendarByDateLoading(true);
 
     final responseForCalendar = await NetworkClient()
-        .getGraphQuery(queryString: getCalendarTimelineQuery, variables: {
+        .graphRequest(queryString: getCalendarTimelineQuery, variables: {
       "queryData": {"start_time": startDate, "end_time": endDate}
     });
 

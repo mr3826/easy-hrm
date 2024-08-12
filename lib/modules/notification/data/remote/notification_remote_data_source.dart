@@ -9,15 +9,12 @@ class NotificationRemoteDataSource {
   NotificationRemoteDataSource(this.networkClient);
 
   Future<NotificationResponse?> getNewNotification(
-      {required int newNotificationOffset}) async {
-    print("Method come here");
+      {required int notificationLimit,required int newNotificationOffset}) async {
     final response = await networkClient
-        .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
+        .graphRequest(queryString: getUnSeenNotificationQuery, variables: {
       "queryData": {"is_seen": false, "is_mobile_notification": true},
-      "optionData": {"limit": 15, "offset": newNotificationOffset}
+      "optionData": {"limit": notificationLimit, "offset": newNotificationOffset}
     });
-
-    print("Method res: ${response.data!}");
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
@@ -27,11 +24,11 @@ class NotificationRemoteDataSource {
   }
 
   Future<NotificationResponse?> getSeenNotification(
-      {required int seenNotificationOffset}) async {
+      {required int notificationLimit,required int seenNotificationOffset}) async {
     final response = await networkClient
-        .getGraphQuery(queryString: getUnSeenNotificationQuery, variables: {
+        .graphRequest(queryString: getUnSeenNotificationQuery, variables: {
       "queryData": {"is_seen": true, "is_mobile_notification": true},
-      "optionData": {"limit": 15, "offset": seenNotificationOffset}
+      "optionData": {"limit": notificationLimit, "offset": seenNotificationOffset}
     });
 
     if (response.hasException) {
@@ -44,7 +41,7 @@ class NotificationRemoteDataSource {
   Future<bool> markNotificationAsSeen(
       {required List<String?>? newNotificationIdList}) async {
     final response = await networkClient
-        .getGraphQuery(queryString: markAsSeenNotificationQuery, variables: {
+        .graphRequest(queryString: markAsSeenNotificationQuery, variables: {
       "inputData": {"notificationIds": newNotificationIdList}
     });
 

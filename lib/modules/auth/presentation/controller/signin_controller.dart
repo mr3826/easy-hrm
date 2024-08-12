@@ -100,7 +100,7 @@ class SignInController extends GetxController with StateMixin {
   getOrgSubscriptionInfo() async {
     try {
       final response = await NetworkClient()
-          .getGraphQuery(queryString: getOrgSubscriptionInfoQuery);
+          .graphRequest(queryString: getOrgSubscriptionInfoQuery);
       print("getOrgSubscriptionInfo ::::: $response");
       if (response.hasException) {
         ExceptionHelper.errorHandler(exception: response.exception!);
