@@ -86,7 +86,6 @@ class ProgressbarLayout extends GetView<DashboardController> {
     var screenSize = MediaQuery.of(context).size;
     // Set a threshold height for conditional check
     double thresholdHeight = 600.0;
-    log("i pad ::: ${screenSize.height}", error: 10);
     if (screenSize.height >= 1366) {
       return 700;
     } else if (screenSize.height > thresholdHeight) {
