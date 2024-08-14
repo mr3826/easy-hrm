@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/multipart/form_data.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import '../../../../common/domain/upload_policy.dart';
