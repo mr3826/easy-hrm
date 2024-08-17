@@ -6,7 +6,7 @@ import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../../auth/presentation/controller/signin_controller.dart';
 import '../../../dashboard/view/screen/dashboard.dart';
@@ -35,7 +35,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-
     controller = PersistentTabController(
       initialIndex: widget.routeIndex ?? 2,
     );
@@ -48,7 +47,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     /// initialController controller
     _initialController();
-
 
     print("isValue.isSubscriptionExpired :: ${isValue.isSubscriptionExpired}");
 
@@ -69,15 +67,15 @@ class _MainScreenState extends State<MainScreen> {
               ? _ifNeedSubscription()
               : _screenListLayout(),
           items: iconList,
+          confineToSafeArea: true,
           backgroundColor: AppColor.backgroundColor,
-          confineInSafeArea: true,
           decoration: NavBarDecoration(
             borderRadius: BorderRadius.circular(1.0),
             colorBehindNavBar: Colors.white,
           ),
           navBarStyle: NavBarStyle.style15,
           navBarHeight: 60,
-          hideNavigationBarWhenKeyboardShows: true,
+          hideNavigationBarWhenKeyboardAppears: true,
           onItemSelected: (value) {
             print(controller.index == value);
           },
