@@ -3,13 +3,13 @@ import '../app_string.dart';
 Map<String, String> eng = {
   ///leave and timlog approver,departmentHeaDText,text_day,text_retry,no_internet_title_text,no_internet_subtitle_text,text_notication ;
 
-    AppString.addedALeaveText: "has added your leave on",
-    AppString.addedATimelogText: "has added your time log on",
-    AppString.addedDepartment: "has added you on",
-    AppString.addedDepartmentHead: "has added you as a",
-    AppString.approveATimelogText: "has approved your time log on",
-    AppString.approvedALeaveText: "has approved your leave on",
-    AppString.cancelALeaveText: "has cancelled your leave on",
+    AppString.addedALeaveText: "has added your leave on ",
+    AppString.addedATimelogText: "has added your time log on ",
+    AppString.addedDepartment: "has added you on ",
+    AppString.addedDepartmentHead: "has added you as a ",
+    AppString.approveATimelogText: "has approved your time log on ",
+    AppString.approvedALeaveText: "has approved your leave on ",
+    AppString.cancelALeaveText: "has cancelled your leave on ",
     AppString.cancelLeaveNotificationText: "Sure you want to cancel this leave request? If you cancel this leave request, you can apply a new request again.",
     AppString.cancelLeaveText: "Cancel leave",
     AppString.changeOrganizationWarningMessage: "Are you sure want change your organization",

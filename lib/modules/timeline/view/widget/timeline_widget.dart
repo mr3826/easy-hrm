@@ -36,7 +36,7 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.totalScheduledSeconds ??
+                                  ?.totalScheduledSeconds.toString() ??
                               ""),
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
@@ -47,7 +47,7 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.loggedTotalSeconds ??
+                                  ?.loggedTotalSeconds.toString() ??
                               ""),
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
@@ -58,7 +58,7 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.totalLeavesSeconds ??
+                                  ?.totalLeavesSeconds.toString() ??
                               ""),
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
@@ -69,7 +69,7 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.balance ??
+                                  ?.balance.toString() ??
                               ""),
                       staticText: AppString.text_balance.tr),
                 ],

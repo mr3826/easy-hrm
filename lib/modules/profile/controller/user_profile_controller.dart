@@ -12,10 +12,8 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
-import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
-import 'package:payrun_mobile/modules/leave/controller/leave_record_controller.dart';
-import 'package:payrun_mobile/modules/leave/controller/leave_screen_controller.dart';
-import 'package:payrun_mobile/modules/notification/controller/notification_controller.dart';
+import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
+import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
@@ -34,6 +32,7 @@ import '../../../utils/dimensions.dart';
 import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
+import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
 import '../model/user_profile.dart';
@@ -85,7 +84,12 @@ class UserProfileController extends GetxController with StateMixin {
         address.isNotEmpty ||
         phone.isNotEmpty ||
         emergencyNumber.isNotEmpty ||
-        description.isNotEmpty|| Get.find<PikedProfileImgController>().storageForUpload.filePath.value.isNotEmpty;
+        description.isNotEmpty ||
+        Get.find<PikedProfileImgController>()
+            .storageForUpload
+            .filePath
+            .value
+            .isNotEmpty;
   }
 
   UserDetails? userDetails;
@@ -108,7 +112,7 @@ class UserProfileController extends GetxController with StateMixin {
   getUserProfile() async {
     change(null, status: RxStatus.loading());
     final response =
-        await NetworkClient().getGraphQuery(queryString: getUserProfileQuery);
+        await NetworkClient().graphRequest(queryString: getUserProfileQuery);
 
     print("User profile :::: ${response.data}");
 
@@ -123,7 +127,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   getEmploymentInfo() async {
     change(null, status: RxStatus.loading());
-    final response = await NetworkClient().getGraphQuery(
+    final response = await NetworkClient().graphRequest(
       queryString: getEmploymentInfoQuery,
     );
 
@@ -140,7 +144,7 @@ class UserProfileController extends GetxController with StateMixin {
   getUserLogHistory() async {
     change(null, status: RxStatus.loading());
     final response =
-        await NetworkClient().getGraphQuery(queryString: userLogHistoryQuery);
+        await NetworkClient().graphRequest(queryString: userLogHistoryQuery);
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -268,7 +272,7 @@ class UserProfileController extends GetxController with StateMixin {
   getOrganizationInfo() async {
     change(null, status: RxStatus.loading());
     final response =
-        await NetworkClient().getGraphQuery(queryString: organizationInfoQuery);
+        await NetworkClient().graphRequest(queryString: organizationInfoQuery);
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -412,9 +416,9 @@ class UserProfileController extends GetxController with StateMixin {
                                                       .data
                                                       ?.refreshToken ??
                                                   "");
-                                          Get.back(canPop: false);
-                                          Get.back(canPop: false);
                                           switchOrganisationDataChange();
+                                          Get.back(canPop: false);
+                                          Get.back(canPop: false);
                                         }
                                       }
                                     } catch (e) {
@@ -518,35 +522,41 @@ class ChangeMailResponse {
 switchOrganisationDataChange() {
   Get.find<TimeCounterController>().timerStatus();
 
-  Get.find<UserProfileController>().getUserProfile();
-  Get.find<UserProfileController>().getEmploymentInfo();
-  Get.find<UserProfileController>().getUserLogHistory();
-  Get.find<UserProfileController>().getOrganizationInfo();
-  Get.find<TimelineController>().getTimelineSummaryByMonth(
-      startDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-      endDate:
-          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+  Get.find<UserProfileController>()
+    ..getUserProfile()
+    ..getEmploymentInfo()
+    ..getUserLogHistory()
+    ..getOrganizationInfo();
 
-  Get.find<TimelineController>().getCalendarTimelineDataByDate(
-      startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-      endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
-  Get.find<TimelineController>().getTimelineSummaryByDate(
-      startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-      endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+  Get.find<TimelineController>()
+    ..getTimelineSummaryByMonth(
+        startDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
+    ..getCalendarTimelineDataByDate(
+        startDate:
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
+    ..getTimelineSummaryByDate(
+        startDate:
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 
-  Get.find<TimelineSummaryController>().getTimelineByMonth();
-  Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
-  Get.find<NotificationController>().getNewNotification();
-  Get.find<NotificationController>().getSeenNotification();
+  Get.find<TimelineSummaryController>()
+    ..getTimelineByMonth()
+    ..getTimelogDetailsByMonth();
+  Get.find<NotificationController>()
+    ..getNewNotifications()
+    ..getSeenNotification();
   Get.find<LeaveRecordsController>().getLeaveRecordsData();
-  Get.find<LeaveScreenController>().getLeaveSummaryForDashboard();
-  Get.find<LeaveScreenController>().getLeaveDetailsByDate();
-  Get.find<DashboardController>().getProfileInfoForDashboard();
-  Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
-  Get.find<DashboardController>().getUpComingInfoForDashboard();
+  Get.find<LeaveScreenController>()
+    ..getLeaveSummaryForDashboard()
+    ..getLeaveDetailsByDate();
+  Get.find<DashboardController>()
+    ..getProfileInfoForDashboard()
+    ..getMonthlyTimelineInfoForDashboard()
+    ..getUpComingInfoForDashboard();
 }

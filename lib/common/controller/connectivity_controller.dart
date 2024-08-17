@@ -24,7 +24,7 @@ class ConnectivityController extends GetxController {
 
   void _updateConnectivity(ConnectivityResult connectivityResult) {
     if (connectivityResult == ConnectivityResult.none) {
-      Get.to(const NetworkErrorPage());
+      Get.to(() => const NetworkErrorPage());
       isDialogIsOpened(true);
     } else {
       if (isDialogIsOpened.isTrue) {
@@ -95,16 +95,22 @@ class _NetworkErrorPageState extends State<NetworkErrorPage> {
                     color: AppColor.primaryColor,
                     borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.symmetric(vertical: AppLayout.getHeight(8)),
-                child:  isLoading == false?
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(
-                    Icons.refresh,
-                    color: Colors.white,
-                    size: AppLayout.getWidth(16),
-                  ),
-                  customSpacerWidth(width: 4),
-                  Text(AppString.text_retry, style: AppStyle.normal_text),
-                ]):const CupertinoActivityIndicator(color: Colors.white,),
+                child: isLoading == false
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            Icon(
+                              Icons.refresh,
+                              color: Colors.white,
+                              size: AppLayout.getWidth(16),
+                            ),
+                            customSpacerWidth(width: 4),
+                            Text(AppString.text_retry,
+                                style: AppStyle.normal_text),
+                          ])
+                    : const CupertinoActivityIndicator(
+                        color: Colors.white,
+                      ),
               ),
             )
           ],

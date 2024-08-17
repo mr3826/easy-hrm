@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
-import 'package:payrun_mobile/modules/leave/view/widget/single_date_picker_calendar.dart';
+import 'package:payrun_mobile/modules/leave/presentation/view/widget/single_date_picker_calendar.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -185,22 +185,22 @@ Widget _summaryLayout() {
             schedule: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.totalScheduledSeconds ??
+                    ?.totalScheduledSeconds.toString() ??
                 ""),
             balanceTime: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.balance ??
+                    ?.balance.toString() ??
                 ""),
             loggedTime: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.loggedTotalSeconds ??
+                    ?.loggedTotalSeconds.toString() ??
                 ""),
             paidLeave: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.totalLeavesSeconds ??
+                    ?.totalLeavesSeconds.toString()  ??
                 "")),
       ));
 }
