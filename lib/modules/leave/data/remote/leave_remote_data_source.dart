@@ -162,7 +162,6 @@ class LeaveRemoteDataSource {
         ExceptionHelper.errorHandler(exception: response.exception!);
         return null;
       }
-
       return LeaveTypeDropdown.fromJson(response.data!);
     } catch (e) {
       log('Error in getLeaveTypeDropdown: $e');

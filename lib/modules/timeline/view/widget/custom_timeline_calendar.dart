@@ -185,22 +185,22 @@ Widget _summaryLayout() {
             schedule: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.totalScheduledSeconds ??
+                    ?.totalScheduledSeconds.toString() ??
                 ""),
             balanceTime: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.balance ??
+                    ?.balance.toString() ??
                 ""),
             loggedTime: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.loggedTotalSeconds ??
+                    ?.loggedTotalSeconds.toString() ??
                 ""),
             paidLeave: getConvertSecondsToHours(Get.find<TimelineController>()
                     .timelineSummaryByDate
                     ?.getTimelogSummaryForApp
-                    ?.totalLeavesSeconds ??
+                    ?.totalLeavesSeconds.toString()  ??
                 "")),
       ));
 }
