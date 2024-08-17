@@ -67,12 +67,24 @@ class _MainScreenState extends State<MainScreen> {
               ? _ifNeedSubscription()
               : _screenListLayout(),
           items: iconList,
-          confineToSafeArea: true,
+          // confineToSafeArea: false,
           backgroundColor: AppColor.backgroundColor,
           decoration: NavBarDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3), // changes position of shadow
+              ),
+            ],
             borderRadius: BorderRadius.circular(1.0),
             colorBehindNavBar: Colors.white,
           ),
+
+          padding: const EdgeInsets.only(top: 8),
+
+          confineToSafeArea: true,
           navBarStyle: NavBarStyle.style15,
           navBarHeight: 60,
           hideNavigationBarWhenKeyboardAppears: true,
