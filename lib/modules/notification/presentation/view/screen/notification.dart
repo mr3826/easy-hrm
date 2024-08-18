@@ -24,7 +24,7 @@ class NotificationScreen extends GetView<NotificationController> {
 
   Widget _buildBody() {
     return controller.obx(
-          (state) => NotificationTabBar(),
+          (state) => const NotificationTabBar(),
       onLoading: const LoadingIndicator(),
     );
   }

@@ -34,13 +34,16 @@ class NotificationTabBar extends StatelessWidget {
   }
 
   Widget _buildTabBar(RxInt currentIndex, NotificationController controller) {
-    return SizedBox(
-      height: AppLayout.getHeight(66),
+    return Container(
+      height: AppLayout.getHeight(50),
+      decoration:  BoxDecoration(
+          border: BorderDirectional(bottom: BorderSide(color:  AppColor.hintColor.withOpacity(0.6),width: .6))
+      ),
       child: ListView.builder(
         itemCount: notificationTabBarIndex.length,
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.only(left: 8),
         itemBuilder: (context, index) {
           return Obx(() => _buildTabBarItem(index, currentIndex, controller));
         },

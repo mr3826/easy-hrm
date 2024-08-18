@@ -52,64 +52,51 @@ class ProfileScreen extends GetView<UserProfileController> {
                 child: RefreshIndicator(
                   backgroundColor: Colors.white,
                   onRefresh: _refreshScreen,
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        customSpacerHeight(height: 20),
-                        _userInfoLayout(),
-                        customSpacerHeight(height: 30),
-                        _monthlyStatusLayout(),
-                        customSpacerHeight(height: 30),
-                        _actionBtnLayout(context),
-                        customSpacerHeight(height: 25),
-                        _descriptionTextLayout(),
-                        if (controller
-                                    .employeeWorkHistory
-                                    ?.getOrganizationUserHistory
-                                    ?.employmentHistories !=
-                                null &&
-                            controller
-                                .employeeWorkHistory!
-                                .getOrganizationUserHistory!
-                                .employmentHistories!
-                                .isNotEmpty)
-                          _horizontalDivider(),
-                        ChangeEmailNotifyLayout(),
-                        customSpacerHeight(height: 15),
-                        _phoneNumberText(),
-                        customSpacerHeight(height: 15),
-                        _emergencyPhoneNumber(),
-                        customSpacerHeight(height: 15),
-                        _addressText(),
-                        customSpacerHeight(height: 15),
-                        if (Get.find<UserProfileController>()
-                                    .employeeWorkHistory
-                                    ?.getOrganizationUserHistory
-                                    ?.deptHistories !=
-                                null &&
-                            Get.find<UserProfileController>()
-                                .employeeWorkHistory!
-                                .getOrganizationUserHistory!
-                                .deptHistories!
-                                .isNotEmpty)
-                          departmentLayout(context),
-                        customSpacerHeight(height: 5),
-                        if (Get.find<UserProfileController>()
-                                    .employeeWorkHistory
-                                    ?.getOrganizationUserHistory
-                                    ?.designationHistories !=
-                                null &&
-                            Get.find<UserProfileController>()
-                                .employeeWorkHistory!
-                                .getOrganizationUserHistory!
-                                .designationHistories!
-                                .isNotEmpty)
-                          employeeStatusLayout(context: context),
-                        customSpacerHeight(height: 50),
-                      ],
-                    ),
+                  child: ListView(
+                    children: [
+                      customSpacerHeight(height: 6),
+                     _userInfoLayout(),
+                      customSpacerHeight(height: 30),
+                      _monthlyStatusLayout(),
+                      customSpacerHeight(height: 30),
+                      _actionBtnLayout(context),
+                      customSpacerHeight(height: 25),
+                      _descriptionTextLayout(),
+                      if (controller.userDetails?.getOrganizationUserDetails?.profile?.about !=null && controller.userDetails!.getOrganizationUserDetails!.profile!.about!.isNotEmpty)
+                        _horizontalDivider(),
+                      ChangeEmailNotifyLayout(),
+                      customSpacerHeight(height: 15),
+                      _phoneNumberText(),
+                      customSpacerHeight(height: 15),
+                      _emergencyPhoneNumber(),
+                      customSpacerHeight(height: 15),
+                      _addressText(),
+                      customSpacerHeight(height: 15),
+                      if (Get.find<UserProfileController>()
+                                  .employeeWorkHistory
+                                  ?.getOrganizationUserHistory
+                                  ?.deptHistories !=
+                              null &&
+                          Get.find<UserProfileController>()
+                              .employeeWorkHistory!
+                              .getOrganizationUserHistory!
+                              .deptHistories!
+                              .isNotEmpty)
+                        departmentLayout(context),
+                      customSpacerHeight(height: 5),
+                      if (Get.find<UserProfileController>()
+                                  .employeeWorkHistory
+                                  ?.getOrganizationUserHistory
+                                  ?.designationHistories !=
+                              null &&
+                          Get.find<UserProfileController>()
+                              .employeeWorkHistory!
+                              .getOrganizationUserHistory!
+                              .designationHistories!
+                              .isNotEmpty)
+                        employeeStatusLayout(context: context),
+                      customSpacerHeight(height: 50),
+                    ],
                   ),
                 ),
               ),
@@ -416,7 +403,7 @@ class ProfileScreen extends GetView<UserProfileController> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 1),
-          color: AppColor.normalTextColor.withOpacity(0.04),
+          color: AppColor.bgColorWithPrimary.withOpacity(0.6),
         ),
         child: Padding(
           padding:
