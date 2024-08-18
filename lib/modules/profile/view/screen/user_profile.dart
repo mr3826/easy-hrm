@@ -37,6 +37,7 @@ class ProfileScreen extends GetView<UserProfileController> {
   Widget build(BuildContext context) {
     return controller.obx(
         (state) => Scaffold(
+          backgroundColor: AppColor.backgroundColor,
               appBar: profileAppbar(onAction: () {
                 showCustomDrawer(
                     context: context,

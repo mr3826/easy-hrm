@@ -11,7 +11,6 @@ import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_wid
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../common/widget/custom_drawer.dart';
-import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../leave/domain/leave_records.dart';
 import '../widget/task_view_widget.dart';
@@ -46,8 +45,6 @@ class TimeLineCalendar extends StatelessWidget {
                 pageViewPhysics: const NeverScrollableScrollPhysics(),
                 safeAreaOption: const SafeAreaOption(right: false,left: false,top: false,bottom: true),
                 scrollOffset: 0,
-
-
                 halfHourIndicatorSettings: HourIndicatorSettings(
                     dashWidth: 3,
                     offset: 20,

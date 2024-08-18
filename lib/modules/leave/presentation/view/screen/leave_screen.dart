@@ -24,6 +24,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
   Widget build(BuildContext context) {
     return controller.obx(
         (state) => Scaffold(
+              backgroundColor: AppColor.backgroundColor,
               body: RefreshIndicator(
                 backgroundColor: Colors.white,
                 onRefresh: _refreshScreen,
@@ -121,25 +122,22 @@ SliverAppBar get sliverAppBar {
     pinned: true,
     backgroundColor: AppColor.primaryColor,
     flexibleSpace: FlexibleSpaceBar(
-      background: SizedBox(
-        height: AppLayout.getHeight(100),
-        child: Padding(
-          padding: marginLayout,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customSpacerHeight(height: 45),
-                  _leaveText(),
-                  customSpacerHeight(height: 14),
-                  leaveLayout(),
-                  customSpacerHeight(height: 14),
-                ],
-              ),
-            ],
-          ),
+      background: Padding(
+        padding: marginLayout,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customSpacerHeight(height: 45),
+                _leaveText(),
+                customSpacerHeight(height: 14),
+                leaveLayout(),
+                customSpacerHeight(height: 14),
+              ],
+            ),
+          ],
         ),
       ),
     ),
@@ -167,7 +165,7 @@ _buttonRadiusLayout() {
     preferredSize: const Size.fromHeight(20),
     child: Container(
       decoration: BoxDecoration(
-          color: AppColor.backgroundColor,
+          color: AppColor.cardColor,
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(Dimensions.radiusMid + 15),
               topLeft: Radius.circular(Dimensions.radiusMid + 15))),

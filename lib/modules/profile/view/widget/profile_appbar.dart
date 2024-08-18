@@ -9,7 +9,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 AppBar profileAppbar({onAction}) {
   return AppBar(
     leadingWidth: AppLayout.getWidth(200),
-    backgroundColor: AppColor.backgroundColor,
+    backgroundColor: AppColor.cardColor,
     elevation: 0,
     actions: [
       IconButton(onPressed: onAction, icon:  const Icon(Icons.menu,color: AppColor.hintColor,)),

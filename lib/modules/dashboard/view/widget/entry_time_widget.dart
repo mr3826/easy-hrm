@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
@@ -42,15 +43,61 @@ Widget entryAndStartTimeLayout(context) {
   );
 }
 
+// _addTimeEntry(BuildContext context) {
+//   // Get the screen width and height
+//   double screenWidth = MediaQuery.of(context).size.width;
+//   double screenHeight = MediaQuery.of(context).size.height;
+//
+//   // Calculate the scale factor based on screen size
+//   //text size according to screen size
+//   double getResponsiveTextSize(double baseSize) {
+//     double scaleFactor =
+//         screenWidth / 400; // Use a baseline screen width (e.g., 400)
+//     return baseSize * scaleFactor;
+//   }
+//
+//   double height = screenHeight;
+//   double width = screenWidth;
+//
+//   return InkWell(
+//     onTap: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
+//     child: Stack(
+//       children: [
+//
+//         SizedBox(
+//           height: height /7 ,
+//           width: width / 2.5,
+//           child: SvgPicture.asset(
+//             Images.add_time_entry,
+//           ),
+//         ),
+//         Positioned(
+//           bottom: 0,
+//           left: width < 400.0 || height < 400.0 ? 30 : 36,
+//           top: width < 400.0 || height < 400.0 ? 58 : 80,
+//           child: Text(
+//             AppString.text_time_entry.tr,
+//             style: AppStyle.normal_text_grey.copyWith(
+//               color: AppColor.cardColor,
+//               fontSize: getResponsiveTextSize(12),
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
+
 _addTimeEntry(BuildContext context) {
   // Get the screen width and height
   double screenWidth = MediaQuery.of(context).size.width;
   double screenHeight = MediaQuery.of(context).size.height;
 
   // Calculate the scale factor based on screen size
-  //text size according to screen size
+  // Text size according to screen size
   double getResponsiveTextSize(double baseSize) {
-    double scaleFactor = screenWidth / 400; // Use a baseline screen width (e.g., 400)
+    double scaleFactor =
+        screenWidth / 400; // Use a baseline screen width (e.g., 400)
     return baseSize * scaleFactor;
   }
 
@@ -59,30 +106,35 @@ _addTimeEntry(BuildContext context) {
 
   return InkWell(
     onTap: () => Get.toNamed(Routes.NEW_ENTRY_SCREEN),
-    child: Stack(
-      children: [
-        customSvgImage(
-          imageUrl: Images.add_time_entry,
-          height: height / 7,
-          width: width / 2.5,
-        ),
-        Positioned(
-          bottom: 0,
-          left: width < 400.0 || height < 400.0 ? 30 : 36,
-          top: width < 400.0 || height < 400.0 ? 58 : 80,
-          child: Text(
-            AppString.text_time_entry.tr,
-            style: AppStyle.normal_text_grey.copyWith(
-              color: AppColor.cardColor,
-              fontSize: getResponsiveTextSize(12),
+    child: Container(
+      decoration: BoxDecoration(
+          color: const Color(0xFF2C67FF),
+          borderRadius: BorderRadius.circular(10)),
+      height: height / 8,
+      width: width / 2.5,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SvgPicture.asset(
+            Images.add_time_entry,
+          ),
+          Positioned(
+            bottom:
+                23, // Ensure it's visible by bringing it closer to the bottom
+            child: Text(
+              AppString.text_time_entry.tr,
+              style: AppStyle.normal_text_grey.copyWith(
+                color: AppColor.cardColor,
+                fontSize: getResponsiveTextSize(11.7),
+              ),
+              textAlign: TextAlign.center, // Center the text
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
-
 
 _startingTimeOpen({required time, context}) {
   return InkWell(

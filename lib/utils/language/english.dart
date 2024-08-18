@@ -218,7 +218,7 @@ Map<String, String> eng = {
     AppString.text_verify_your_email_address: "Verify your email address",
     AppString.text_view_less: "View less",
     AppString.text_view_more: "View more",
-    AppString.text_we_have_sent_a_verification_etc: "We have sent a verification code to your email address.Enter this code below to verify your account.",
+    AppString.text_we_have_sent_a_verification_etc: "We have sent a verification code to your email address. Enter this code below to verify your account.",
     AppString.text_welcome: "Welcome",
     AppString.text_with_the_help_etc: "With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.",
     AppString.text_working_day: "Working day",

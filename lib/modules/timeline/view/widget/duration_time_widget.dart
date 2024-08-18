@@ -101,10 +101,9 @@ _statusButtonLayout({required String status}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      customSpacerHeight(height: 16),
-      SizedBox(
-        width: 140,
-        height: 40,
+      customSpacerHeight(height: 12),
+      FittedBox(
+        fit: BoxFit.scaleDown,
         child: _showStatusButton(status),
       ),
     ],
@@ -147,14 +146,25 @@ Widget _statusBtn({required Color textColor, required String? text}) {
 }
 
 String _getTimeDuration() {
-  Duration timeDifference = DateTime.parse(
-          "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-      .difference(DateTime.parse(
-          "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+  // Fetch the inDate, inTime, and outTime using GetX
+  String inDate = Get.find<DateTimePickerController>().inDate.value;
+  String inTime = Get.find<DateTimePickerController>().inTime.value;
+  String outTime = Get.find<DateTimePickerController>().outTime.value;
 
-  return timeDifference.isNegative
-      ? "0h 0m"
-      : "${timeDifference.inHours}h ${(timeDifference.inMinutes - timeDifference.inHours * 60).abs()}m";
+  // Calculate the time difference
+  Duration timeDifference = DateTime.parse("$inDate $outTime")
+      .difference(DateTime.parse("$inDate $inTime"));
+
+  // If the duration is negative, return "00h 00m"
+  if (timeDifference.isNegative) {
+    return "00h 00m";
+  }
+
+  // Format the hours and minutes to ensure two digits
+  String hours = timeDifference.inHours.toString().padLeft(2, '0');
+  String minutes = (timeDifference.inMinutes % 60).toString().padLeft(2, '0');
+
+  return "${hours}h ${minutes}m";
 }
 
 _verticalDivider({required double height, required Color bgColor}) {

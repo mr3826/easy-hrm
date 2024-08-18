@@ -21,9 +21,10 @@ class UpcomingLeaveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<DashboardController>();
     return Padding(
-      padding: marginLayout,
+      padding: marginLayout.copyWith(top: 8),
       child: ListView.builder(
         shrinkWrap: true,
+        padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ?? 0,
         itemBuilder: (context, index) {
