@@ -32,7 +32,8 @@ class TimeLogEntryTextField extends StatelessWidget {
   final bool? isFromUpdateTimelogEntry;
   final String? status;
 
-  const TimeLogEntryTextField({this.isFromUpdateTimelogEntry = false, this.status, super.key});
+  const TimeLogEntryTextField(
+      {this.isFromUpdateTimelogEntry = false, this.status, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,40 +103,42 @@ class TimeLogEntryTextField extends StatelessWidget {
                             childForSaveBtn: Obx(() => removeTextLayout()));
                       },
                       buttonColor: AppColor.errorColorLight)
-                  : Get.find<TimelineController>()
-                              .isManualEntryLoading
-                              .isTrue ||
-                          Get.find<TimelineController>()
-                              .isUpdateTimeLogLoading
-                              .isTrue
-                      ? const Center(
-                          child: CupertinoActivityIndicator(),
-                        )
-                      : CustomDoubleAppButton(
-                          buttonText: isFromUpdateTimelogEntry == true
-                              ? AppString.text_save.tr
-                              : AppString.text_add.tr,
-                          btnColor: Get.find<TimelineController>()
-                                      .isValueChangeForTimeLogUpdate
-                                      .value ==
-                                  true
-                              ? AppColor.primaryColor
-                              : AppColor.primaryColor.withOpacity(0.5),
-                          onAction: Get.find<TimelineController>()
-                                      .isValueChangeForTimeLogUpdate
-                                      .value ==
-                                  true
-                              ? () {
-                                  isFromUpdateTimelogEntry == true
-                                      ? Get.find<TimelineController>()
-                                          .updateTimelineLogDetails()
-                                      : Get.find<TimelineController>()
-                                          .createManualEntry();
-                                }
-                              : () {},
-                          cancelAction: () {
-                            Navigator.pop(context);
-                          }),
+                  : Obx(
+                      () => Get.find<TimelineController>()
+                                  .isManualEntryLoading
+                                  .isTrue ||
+                              Get.find<TimelineController>()
+                                  .isUpdateTimeLogLoading
+                                  .isTrue
+                          ? const Center(
+                              child: CupertinoActivityIndicator(),
+                            )
+                          : CustomDoubleAppButton(
+                              buttonText: isFromUpdateTimelogEntry == true
+                                  ? AppString.text_save.tr
+                                  : AppString.text_add.tr,
+                              btnColor: Get.find<TimelineController>()
+                                          .isValueChangeForTimeLogUpdate
+                                          .value ==
+                                      true
+                                  ? AppColor.primaryColor
+                                  : AppColor.primaryColor.withOpacity(0.5),
+                              onAction: Get.find<TimelineController>()
+                                          .isValueChangeForTimeLogUpdate
+                                          .value ==
+                                      true
+                                  ? () {
+                                      isFromUpdateTimelogEntry == true
+                                          ? Get.find<TimelineController>()
+                                              .updateTimelineLogDetails()
+                                          : Get.find<TimelineController>()
+                                              .createManualEntry();
+                                    }
+                                  : () {},
+                              cancelAction: () {
+                                Navigator.pop(context);
+                              }),
+                    ),
               customSpacerHeight(height: 40)
             ],
           ),

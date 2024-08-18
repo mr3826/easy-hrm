@@ -36,7 +36,7 @@ class TimelineScreen extends GetView<TimelineController> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     sliverAppBar,
-                     sliverList,
+                    sliverList,
                   ],
                 ),
               ),
