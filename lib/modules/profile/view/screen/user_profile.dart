@@ -724,11 +724,9 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   _horizontalDivider() {
-    return Column(
-      children: [
-        customSpacerHeight(height: 15),
-        const Divider(thickness: .6, color: AppColor.disableColor),
-      ],
+    return const Padding(
+      padding: EdgeInsets.only(top: 15.0,bottom: 15),
+      child: Divider(thickness: .6, color: AppColor.disableColor),
     );
   }
 }
