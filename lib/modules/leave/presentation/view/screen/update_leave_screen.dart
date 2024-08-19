@@ -111,11 +111,12 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      customTitleText(text: AppString.text_leave_name.tr, isRequired: true),
-
+                      customTitleText(
+                          text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
-                      UpdateLeaveDropdown(dropdownValue: leaveRecords?.leaveType?.leaveId ?? ""),
-
+                      UpdateLeaveDropdown(
+                          dropdownValue:
+                              leaveRecords?.leaveType?.leaveId ?? ""),
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
                       customSpacerHeight(height: 20),
@@ -197,13 +198,11 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                                 }
                               },
                               buttonText: AppString.text_apply.tr,
-
                               btnColor: Get.find<UpDateLeaveController>()
-                          .isButtonEnabledForUpdateLeave ==
-                          true
-                          ? AppColor.primaryColor
-                          : AppColor.primaryColor.withOpacity(0.5),
-
+                                          .isButtonEnabledForUpdateLeave ==
+                                      true
+                                  ? AppColor.primaryColor
+                                  : AppColor.primaryColor.withOpacity(0.5),
                               cancelAction: () {
                                 Navigator.pop(context);
                                 Get.find<FileUploadController>()
@@ -243,8 +242,8 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
           }
         }
       },
-      onChanged: (String?value){
-        Get.find<UpDateLeaveController>().noteValue.value=value!;
+      onChanged: (String? value) {
+        Get.find<UpDateLeaveController>().noteValue.value = value!;
       },
       controller: leaveNoteController,
       hintText: AppString.text_add_note.tr,
@@ -388,16 +387,14 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
                         children: [
                           Text(
                             e.name.toString(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                overflow: TextOverflow.ellipsis),
+                            style: AppStyle.normal_text_grey
+                                .copyWith(color: Colors.black),
                           ),
                           Text(
                             e.type.toString(),
-                            style: const TextStyle(
-                                fontSize: 12,
+                            style: AppStyle.normal_text_grey.copyWith(
                                 color: AppColor.hintColor,
-                                overflow: TextOverflow.ellipsis),
+                                fontSize: Dimensions.fontSizeSmall),
                           ),
                         ],
                       ),
@@ -410,8 +407,7 @@ class _UpdateLeaveDropdownState extends State<UpdateLeaveDropdown> {
           onChanged: (value) {
             setState(() {
               dropDownValue = value as String;
-              Get.find<UpDateLeaveController>().isSelectLeaveType.value=value;
-
+              Get.find<UpDateLeaveController>().isSelectLeaveType.value = value;
             });
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
                 Get.find<UpDateLeaveController>()

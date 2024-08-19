@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/enum.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
@@ -50,7 +51,7 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    getIconAccordingToLeaveType(e.type),
+                    getIconAccordingToLeaveType(e.name),
                     customSpacerWidth(width: 8),
                     Expanded(
                       child: Column(
@@ -58,16 +59,12 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
                         children: [
                           Text(
                             e.name.toString(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                overflow: TextOverflow.ellipsis),
+                            style: AppStyle.normal_text_grey.copyWith(color: Colors.black),
                           ),
                           Text(
                             e.type.toString(),
-                            style: const TextStyle(
-                                fontSize: 12,
-                                color: AppColor.hintColor,
-                                overflow: TextOverflow.ellipsis),
+                            style:  AppStyle.normal_text_grey.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeSmall),
+
                           ),
                         ],
                       ),
@@ -102,8 +99,8 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
   }
 }
 
-getIconAccordingToLeaveType(String? type) {
-  switch (type) {
+getIconAccordingToLeaveType(String? leaveName) {
+  switch (leaveName) {
     case "Vacationing":
       return customSvgImage(imageUrl: Images.leaveImage7);
     case "Paternity":
@@ -123,4 +120,7 @@ getIconAccordingToLeaveType(String? type) {
     default:
       return customSvgImage(imageUrl: Images.leaveImage8);
   }
+
+
+
 }

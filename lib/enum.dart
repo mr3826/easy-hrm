@@ -8,4 +8,11 @@ enum Language { english, norwegian }
 
 
 
+enum LeaveTypeKey {
+  Vacation,
+  Parental,
+  SickChildAndCare,
+  DoctorDeclaration,
+  SelfDeclaration
+}
 
