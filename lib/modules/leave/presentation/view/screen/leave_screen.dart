@@ -17,7 +17,6 @@ import '../../../../../utils/utils.dart';
 import '../widget/individual_event_view.dart';
 import '../widget/widget.dart';
 
-
 class LeaveScreen extends GetView<LeaveScreenController> {
   const LeaveScreen({super.key});
 

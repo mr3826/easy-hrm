@@ -1,10 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/notification/data/remote/notification_remote_data_source.dart';
-import 'package:payrun_mobile/network/exception_helper.dart';
-import 'package:payrun_mobile/network/network_client.dart';
-
-import '../../../../utils/api_endpoints.dart';
 import '../../domain/notification.dart';
 
 class NotificationController extends GetxController with StateMixin {
@@ -77,7 +73,7 @@ class NotificationController extends GetxController with StateMixin {
     newNotificationIdList?.addAll(
         newNotification?.map((e) => e.notification?.id ?? "").toList() ?? []);
     if (notificationResponse != null &&
-        notificationResponse!.getNotificationActivities!.metaData!
+        notificationResponse.getNotificationActivities!.metaData!
                 .notificationCounts!.unSeenCount! >
             newNotification!.length) {
       isMoreNewNotificationAvailable(true);
@@ -161,7 +157,6 @@ class NotificationController extends GetxController with StateMixin {
       ..addListener(() {
         if (newNotificationScrollController.position.pixels ==
             newNotificationScrollController.position.maxScrollExtent) {
-          print("Method come here");
           if (isMoreNewNotificationAvailable.isTrue &&
               isMoreNewNotificationLoading.isFalse) {
             getMoreNewNotification();
@@ -179,7 +174,6 @@ class NotificationController extends GetxController with StateMixin {
         }
       });
 
-    // getNewNotification();
     getNewNotifications();
     getSeenNotification();
     super.onInit();

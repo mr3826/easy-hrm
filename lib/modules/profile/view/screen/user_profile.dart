@@ -18,7 +18,7 @@ class ProfileScreen extends GetView<UserProfileController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx(
-          (state) => Scaffold(
+      (state) => Scaffold(
         backgroundColor: AppColor.backgroundColor,
         appBar: profileAppbar(
           onAction: () {
@@ -94,7 +94,7 @@ class ProfileScreen extends GetView<UserProfileController> {
   _buildProfileDivider() {
     // Display the divider only if the user's profile "about" section is not null or empty.
     if (controller.userDetails?.getOrganizationUserDetails?.profile?.about !=
-        null &&
+            null &&
         controller.userDetails!.getOrganizationUserDetails!.profile!.about!
             .isNotEmpty) {
       return horizontalDivider();
@@ -105,10 +105,10 @@ class ProfileScreen extends GetView<UserProfileController> {
   _buildDepartmentLayout(context) {
     // Display department layout if the department histories exist and are not empty.
     if (Get.find<UserProfileController>()
-        .employeeWorkHistory
-        ?.getOrganizationUserHistory
-        ?.deptHistories !=
-        null &&
+                .employeeWorkHistory
+                ?.getOrganizationUserHistory
+                ?.deptHistories !=
+            null &&
         Get.find<UserProfileController>()
             .employeeWorkHistory!
             .getOrganizationUserHistory!
@@ -122,10 +122,10 @@ class ProfileScreen extends GetView<UserProfileController> {
   _buildDesignationHistoryLayout(context) {
     // Display employee status layout if the designation histories exist and are not empty.
     if (Get.find<UserProfileController>()
-        .employeeWorkHistory
-        ?.getOrganizationUserHistory
-        ?.designationHistories !=
-        null &&
+                .employeeWorkHistory
+                ?.getOrganizationUserHistory
+                ?.designationHistories !=
+            null &&
         Get.find<UserProfileController>()
             .employeeWorkHistory!
             .getOrganizationUserHistory!
@@ -149,4 +149,3 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 }
-

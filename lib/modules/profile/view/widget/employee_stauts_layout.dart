@@ -84,7 +84,8 @@ Widget employeeStatusLayout({BuildContext? context}) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    customSvgImage(imageUrl: Images.FLAG, height: 25, width: 25),
+                    customSvgImage(
+                        imageUrl: Images.FLAG, height: 25, width: 25),
                     customSpacerHeight(height: 12),
                     _employmentInfo(),
                     customSpacerHeight(height: 12),
@@ -181,4 +182,3 @@ _designationInfo() {
         )
       : Container();
 }
-

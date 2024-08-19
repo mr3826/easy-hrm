@@ -932,17 +932,17 @@ Widget _emptyNotificationLayout() {
   final mediaQuery = MediaQuery.of(context).size;
 
   return SizedBox(
-    height: mediaQuery.height * 0.66, // equivalent to height / 1.5
+    height: mediaQuery.height * 0.66,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         customSvgImage(
           imageUrl: Images.emptyNotification,
-          height: mediaQuery.height * 0.33, // equivalent to height / 3
+          height: mediaQuery.height * 0.33,
           width: double.infinity,
         ),
         SizedBox(
-          width: mediaQuery.width * 0.77, // equivalent to width / 1.3
+          width: mediaQuery.width * 0.77,
           child: Text(
             AppString.text_you_have_seen_all_notification.tr,
             textAlign: TextAlign.center,
