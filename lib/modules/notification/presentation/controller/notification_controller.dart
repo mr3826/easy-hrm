@@ -94,7 +94,6 @@ class NotificationController extends GetxController with StateMixin {
             notificationLimit: notificationLimit,
             seenNotificationOffset: seenNotificationOffset.value);
 
-
     seenNotification = notificationResponse?.getNotificationActivities?.data;
     seenNotificationLength = notificationResponse?.getNotificationActivities
             ?.metaData?.notificationCounts?.seenCount ??
