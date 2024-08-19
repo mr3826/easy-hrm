@@ -40,7 +40,8 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
           underline: const SizedBox.shrink(),
           isExpanded: true,
           items: Get.find<ApplyLeaveController>()
-              .leaveTypeDropdown?.getAvailableLeaveTypes!
+              .leaveTypeDropdown
+              ?.getAvailableLeaveTypes!
               .map((e) {
             return DropdownMenuItem(
               value: e.leaveTypeId,
@@ -79,22 +80,23 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
           onChanged: (valueType) {
             setState(() {
               dropDownValue = valueType as String;
-              Get.find<ApplyLeaveController>().isSelectLeaveType.value=valueType;
+              Get.find<ApplyLeaveController>().isSelectLeaveType.value =
+                  valueType;
             });
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
                 Get.find<ApplyLeaveController>()
                     .leaveTypeDropdown
                     ?.getAvailableLeaveTypes
                     ?.firstWhere((element) => element.leaveTypeId == valueType);
-            Get.find<ApplyLeaveController>().numberOfLeaves.value = getLeaveTypesDropdown?.availableLeave??"0"  ;
-            Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value = getLeaveTypesDropdown?.calculateAllowanceBy??""  ;
+            Get.find<ApplyLeaveController>().numberOfLeaves.value =
+                getLeaveTypesDropdown?.availableLeave ?? "0";
+            Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value =
+                getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
             Get.find<ApplyLeaveController>().leaveId = valueType!;
             Get.find<ApplyLeaveController>().isDocumentRequired.value =
                 getLeaveTypesDropdown?.attachDocumentRequired ?? false;
             Get.find<ApplyLeaveController>().isNoteRequired.value =
                 getLeaveTypesDropdown?.addNoteRequired ?? false;
-
-
           }),
     );
   }
@@ -122,4 +124,3 @@ getIconAccordingToLeaveType(String? type) {
       return customSvgImage(imageUrl: Images.leaveImage8);
   }
 }
-

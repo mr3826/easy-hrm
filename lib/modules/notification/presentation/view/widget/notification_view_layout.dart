@@ -918,7 +918,7 @@ class NotificationViewLayout extends StatelessWidget {
   _minTextStyle() {
     return  AppStyle.mid_large_text.copyWith(
         color: AppColor.normalTextColor.withOpacity(0.5),
-        fontSize: Dimensions.fontSizeDefault-2);
+        fontSize: Dimensions.fontSizeSmall);
   }
 
   _contentTextStyle() {

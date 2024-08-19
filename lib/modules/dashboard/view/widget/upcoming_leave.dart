@@ -26,10 +26,13 @@ class UpcomingLeaveLayout extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ?? 0,
+        itemCount: controller
+                .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
+            0,
         itemBuilder: (context, index) {
-          Color itemBgColor =
-          index % 2 == 0 ? AppColor.primaryColor.withOpacity(0.04) : Colors.transparent;
+          Color itemBgColor = index % 2 == 0
+              ? AppColor.bgColorWithPrimary.withOpacity(0.3)
+              : Colors.transparent;
           return SizedBox(
             width: double.infinity,
             child: Padding(

@@ -288,7 +288,7 @@ _userImageLayout() {
 
 _decorationStyle() {
   return BoxDecoration(
-      color: AppColor.primaryColor.withOpacity(0.1),
+    color: AppColor.bgColorWithPrimary,
       borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(Dimensions.radiusExtraLarge - 10),
           bottomRight: Radius.circular(Dimensions.radiusExtraLarge - 10)));
