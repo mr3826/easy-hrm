@@ -223,7 +223,7 @@ Map<String, String> nn = {
   AppString.text_yes: "Ja",
   AppString.text_yesterday: "I går",
   AppString.text_you_have: "Du har",
-  AppString.text_you_have_seen_all_notification: "Du har sett alle varsler.",
+  AppString.text_you_have_seen_all_notification: "Det er ingen varsler å vise akkurat nå. Vi vil varsle deg når det er noe nytt!",
   AppString.text_your_password_has_been_etc: "Ditt passord har blitt endret vellykket. Bruk ditt.",
   AppString.textDay: "dag",
   AppString.textDays: "dager",

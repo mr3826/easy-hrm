@@ -225,7 +225,7 @@ Map<String, String> eng = {
     AppString.text_yes: "Yes",
     AppString.text_yesterday: "Yesterday",
     AppString.text_you_have: "You have",
-    AppString.text_you_have_seen_all_notification: "You have seen all notification",
+    AppString.text_you_have_seen_all_notification: "There is no notification to show right now. We'll notify you when there is something new!",
     AppString.text_your_password_has_been_etc: "Your password has been changed successfully. Use your",
     AppString.textDay: "day",
     AppString.textDays: "days",
