@@ -37,6 +37,7 @@ class LeaveRecordDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _checkLeaveDateDuration(leaveRecords ?? GetLeaveRecords());
+    print("leave :::: ${leaveRecords?.duration.toString()}");
 
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -47,17 +48,19 @@ class LeaveRecordDetails extends StatelessWidget {
               subtext: _getDate(),
               isLeave: true,
               status: status,
-               duration: getDurationTimeForDetails(duration: leaveRecords?.duration.toString() ?? "",workShift: leaveRecords!.leaveDetails![0].scheduleHour??""),
-          ),
+              // duration: getDurationTimeForDetails(duration: leaveRecords?.duration.toString() ?? "",workShift: leaveRecords!.leaveDetails![0].scheduleHour??""),
+              duration: getLeaveDuration(
+                  leaveRecords!.leaveDetails![0].leaveHour.toString(),
+                  leaveRecords?.duration.toString() ?? "")),
           customSpacerHeight(height: 12),
           _infoLayout(
               text: AppString.text_type_dot.tr,
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: "${AppString.text_duration.tr}:",
-
-              dynamicText: getDurationTimeForDetails(
-                  duration: leaveRecords?.duration.toString() ?? "")),
+              dynamicText: getLeaveDuration(
+                  leaveRecords!.leaveDetails![0].leaveHour.toString(),
+                  leaveRecords?.duration.toString() ?? "")),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
           _infoLayout(
               text: AppString.text_date_of_application.tr,
@@ -85,8 +88,6 @@ class LeaveRecordDetails extends StatelessWidget {
           "${leaveWeekday = findWeekdayFormDateString(leaveRecord.startDate ?? "")} - ${leaveWeekday = findWeekdayFormDateString(leaveRecord.endDate ?? "")}";
     }
   }
-
-
 
   _buttonLayout(context) {
     if (status == "rejected") {
@@ -371,5 +372,21 @@ String _getDaysForDuration({required String duration}) {
     return "$value ${value > 1 ? "days" : "day"}";
   } else {
     return "0 m";
+  }
+}
+
+String getLeaveDuration(String leaveDuration, String totalDuration) {
+  double duration = double.parse(totalDuration.toString());
+
+  if (duration < 1) {
+    String leaveHourStr = leaveDuration.toString() ?? "0";
+    double leaveHour = double.parse(leaveHourStr);
+    String unit = leaveHour < 1 ? "m" : "h";
+
+    // Return formatted duration based on whether it's a whole number or not
+    return "${leaveHour.toStringAsFixed(1).replaceAll(RegExp(r'([.0]*|(?<=\d)\.0)'), '')} $unit";
+  } else {
+    int days = duration.floor();
+    return "$days ${days > 1 ? "days" : "day"}";
   }
 }

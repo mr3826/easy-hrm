@@ -120,6 +120,12 @@ class UpcomingLeaveLayout extends StatelessWidget {
                                   .leaveDetails?[0]
                                   .scheduleHour ??
                               "",
+                          leaveHour:  controller
+                              .upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index]
+                              .leaveDetails?[0]
+                              .leaveHour ??
+                              "",
                         )
                       ],
                     ),
@@ -174,7 +180,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
     String? leaveDate;
 
     print(
-        "duration ::: ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays}");
+        "numberOfDays ::: ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays}");
 
     String starDate = dateMonthFormatFromDatetime(controller
             .upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate

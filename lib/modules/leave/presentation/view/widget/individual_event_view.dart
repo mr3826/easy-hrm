@@ -103,8 +103,9 @@ class IndividualEventView extends StatelessWidget {
               ?.getLeaveRequests
               ?.length,
           itemBuilder: (context, index) {
-            Color itemBgColor =
-            index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
+            Color itemBgColor = index % 2 == 0
+                ? AppColor.leaveRecordCardColor
+                : Colors.transparent;
             return InkWell(
               onTap: () {
                 customAntButtonSheet(
@@ -118,10 +119,20 @@ class IndividualEventView extends StatelessWidget {
                         "",
                     leaveRecords: GetLeaveRecords(
                       leaveDetails: [
-                        LeaveDetails(scheduleHour:  Get.find<LeaveScreenController>()
-                            .leaveDetailsByDate
-                            ?.getLeaveRequests?[index]
-                            .leaveDetails![0].scheduleHour??"")
+                        LeaveDetails(
+                          scheduleHour: Get.find<LeaveScreenController>()
+                                  .leaveDetailsByDate
+                                  ?.getLeaveRequests?[index]
+                                  .leaveDetails![0]
+                                  .scheduleHour ??
+                              "",
+                          leaveHour: Get.find<LeaveScreenController>()
+                                  .leaveDetailsByDate
+                                  ?.getLeaveRequests?[index]
+                                  .leaveDetails![0]
+                                  .leaveHour ??
+                              "",
+                        )
                       ],
                       files: [
                         (Get.find<LeaveScreenController>()
@@ -256,7 +267,6 @@ class IndividualEventView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
                           Text(
                             Get.find<LeaveScreenController>()
                                     .leaveDetailsByDate
@@ -270,16 +280,15 @@ class IndividualEventView extends StatelessWidget {
                                 fontSize: Dimensions.fontSizeDefault + 1,
                                 fontWeight: FontWeight.w500),
                           ),
-
-
                           Get.find<LeaveScreenController>()
                                       .leaveDetailsByDate
                                       ?.getLeaveRequests?[index]
                                       .numberOfDays !=
                                   null
                               ? Text(
-                                  getDurationTime(
-                                      duration:
+                            getLeaveDuration(
+                                Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].leaveDetails?[0].leaveHour??"",
+
                                           "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays}"),
                                   style: AppStyle.normal_text_black.copyWith(
                                       color: AppColor.hintColor,

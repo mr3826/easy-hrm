@@ -26,12 +26,9 @@ class TimeLineCalendar extends StatelessWidget {
             .isTrue
         ? Container()
         : SizedBox(
-      height: MediaQuery.of(context).size.height+2500,
-          child: Padding(
-              padding:  const EdgeInsets.only(
-                  top: 8.0,
-                  left: 14,
-                  right: 14),
+            height: MediaQuery.of(context).size.height + 2500,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 14, right: 14),
               child: DayView(
                 showVerticalLine: false,
                 minDay: DateTime(2021),
@@ -39,11 +36,17 @@ class TimeLineCalendar extends StatelessWidget {
                 initialDay: DateTime.parse("2024-01-24"),
                 timeLineOffset: 4,
                 showHalfHours: true,
-                headerStyle:  const HeaderStyle( rightIconVisible: false,leftIconVisible: false,headerMargin: EdgeInsets.zero,headerPadding: EdgeInsets.zero,),
+                headerStyle: const HeaderStyle(
+                  rightIconVisible: false,
+                  leftIconVisible: false,
+                  headerMargin: EdgeInsets.zero,
+                  headerPadding: EdgeInsets.zero,
+                ),
                 heightPerMinute: 2,
-               scrollPhysics: const NeverScrollableScrollPhysics(),
+                scrollPhysics: const NeverScrollableScrollPhysics(),
                 pageViewPhysics: const NeverScrollableScrollPhysics(),
-                safeAreaOption: const SafeAreaOption(right: false,left: false,top: false,bottom: true),
+                safeAreaOption: const SafeAreaOption(
+                    right: false, left: false, top: false, bottom: true),
                 scrollOffset: 0,
                 halfHourIndicatorSettings: HourIndicatorSettings(
                     dashWidth: 3,
@@ -60,25 +63,25 @@ class TimeLineCalendar extends StatelessWidget {
                   return formattedTime;
                 },
                 timeLineWidth: 55,
-
                 onEventTap: (events, date) {
-                  Iterable<String> eventData = events.map((e) => e.description!);
+                  Iterable<String> eventData =
+                      events.map((e) => e.description!);
 
                   String timeLId = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .timeLId)
                       .toString();
                   String startDate = eventData
                       .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
                           .startDate)
                       .toString();
                   String endDate = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .endDate)
                       .toString();
                   String taskName = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .taskName)
                       .toString();
                   String status = eventData
                       .map((e) =>
@@ -114,12 +117,12 @@ class TimeLineCalendar extends StatelessWidget {
                       .toString();
 
                   String leaveId = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).leaveId)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .leaveId)
                       .toString();
                   String duration = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).duration)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .duration)
                       .toString();
                   String description = eventData
                       .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
@@ -158,6 +161,23 @@ class TimeLineCalendar extends StatelessWidget {
                               .name ??
                           "")
                       .toString();
+
+                  String scheduleHour = eventData
+                      .map((e) =>
+                          li.ModelForDescription.fromJson(jsonDecode(e))
+                              .leaveDetails?[0]
+                              .scheduleHour ??
+                          "")
+                      .toString();
+
+                  String leaveHour = eventData
+                      .map((e) =>
+                          li.ModelForDescription.fromJson(jsonDecode(e))
+                              .leaveDetails?[0]
+                              .leaveHour ??
+                          "")
+                      .toString();
+
                   String fileSize = eventData
                       .map((e) =>
                           li.ModelForDescription.fromJson(jsonDecode(e))
@@ -204,9 +224,8 @@ class TimeLineCalendar extends StatelessWidget {
                             totalDur: duration
                                 .toString()
                                 .substring(1, duration.toString().length - 1),
-                            description: description
-                                .toString()
-                                .substring(1, description.toString().length - 1),
+                            description: description.toString().substring(
+                                1, description.toString().length - 1),
                             timeLineId: timeLId
                                 .toString()
                                 .substring(1, timeLId.toString().length - 1),
@@ -216,12 +235,10 @@ class TimeLineCalendar extends StatelessWidget {
                             projectId: projectId
                                 .toString()
                                 .substring(1, projectId.toString().length - 1),
-                            projectName: projectName
-                                .toString()
-                                .substring(1, projectName.toString().length - 1),
-                            projectColor: projectColor
-                                .toString()
-                                .substring(1, projectColor.toString().length - 1),
+                            projectName: projectName.toString().substring(
+                                1, projectName.toString().length - 1),
+                            projectColor: projectColor.toString().substring(
+                                1, projectColor.toString().length - 1),
                           )
                         : LeaveRecordDetails(
                             status: status
@@ -229,11 +246,18 @@ class TimeLineCalendar extends StatelessWidget {
                                 .substring(1, status.toString().length - 1),
                             leaveRecords: GetLeaveRecords(
                               leaveDetails: [
-                                LeaveDetails()
+                                LeaveDetails(
+                                  leaveHour: leaveHour.toString().substring(
+                                      1, leaveHour.toString().length - 1),
+                                  scheduleHour: scheduleHour
+                                      .toString()
+                                      .substring(1,
+                                          scheduleHour.toString().length - 1),
+                                )
                               ],
+
                               ///For view file
                               files: [
-
                                 Files(
                                   name: fileName.toString().substring(
                                       1, fileName.toString().length - 1),
@@ -241,9 +265,8 @@ class TimeLineCalendar extends StatelessWidget {
                                       1, fileSize.toString().length - 1),
                                   key: fileKey.toString().substring(
                                       1, fileKey.toString().length - 1),
-                                  id: fileId
-                                      .toString()
-                                      .substring(1, fileId.toString().length - 1),
+                                  id: fileId.toString().substring(
+                                      1, fileId.toString().length - 1),
                                 )
                               ],
                               id: leaveId
@@ -285,8 +308,8 @@ class TimeLineCalendar extends StatelessWidget {
                                           ? true
                                           : false,
                                   isAddNoteRequired: isAddNoteRequired
-                                              .substring(
-                                                  1, isAddNoteRequired.length - 1)
+                                              .substring(1,
+                                                  isAddNoteRequired.length - 1)
                                               .toLowerCase() ==
                                           "true"
                                       ? true
@@ -316,18 +339,18 @@ class TimeLineCalendar extends StatelessWidget {
                           .startDate)
                       .toString();
                   String endDate = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .endDate)
                       .toString();
 
                   String taskName = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .taskName)
                       .toString();
 
                   String duration = eventData
-                      .map((e) =>
-                          li.ModelForDescription.fromJson(jsonDecode(e)).duration)
+                      .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
+                          .duration)
                       .toString();
 
                   String leaveId = eventData
@@ -355,7 +378,8 @@ class TimeLineCalendar extends StatelessWidget {
                               ? false
                               : true,
                       status: status.substring(1, status.length - 1),
-                      startDateTime: startDate.substring(1, startDate.length - 1),
+                      startDateTime:
+                          startDate.substring(1, startDate.length - 1),
                       endDateTime: endDate.substring(1, endDate.length - 1),
                       taskName: taskName.substring(1, taskName.length - 1),
                       duration: duration.substring(1, duration.length - 1),
@@ -368,9 +392,8 @@ class TimeLineCalendar extends StatelessWidget {
                 },
               ),
             ),
-        ));
+          ));
   }
-
 }
 
 customAntButtonSheet({required BuildContext context, child, double? height}) {
@@ -399,4 +422,3 @@ double _modelHeightAccordingScreenSize() {
     return 500;
   }
 }
-

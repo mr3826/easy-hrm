@@ -105,6 +105,8 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
               LeaveDetails(
                 scheduleHour: controller
                     .leaveRecordList?[monthIndex].data?[index].leaveDetails![0].scheduleHour??"",
+                leaveHour: controller
+                    .leaveRecordList?[monthIndex].data?[index].leaveDetails![0].leaveHour??"",
               )
               ],
               leaveType: LeaveType(
@@ -242,7 +244,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
           ),
         Flexible(
           child: Text(
-            getDurationTime(duration: leaveRecord.duration.toString() ?? ""),
+            getLeaveDuration(leaveRecord.leaveDetails?[0].leaveHour??"",leaveRecord.duration.toString() ?? "",),
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor.withOpacity(0.7),
               fontSize: Dimensions.fontSizeDefault-2,

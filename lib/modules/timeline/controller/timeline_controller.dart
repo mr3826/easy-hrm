@@ -449,6 +449,7 @@ class TimelineController extends GetxController with StateMixin {
                     leaveDetails: [
                       LeaveDetails(
                         scheduleHour: e.leaveDetails?[0].scheduleHour ?? "",
+                        leaveHour: e.leaveDetails?[0].leaveHour ?? "",
                       )
                     ],
                     taskName: e.leaveType?.leaveName ?? "",

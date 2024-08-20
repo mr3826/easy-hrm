@@ -492,6 +492,8 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
       }
       leave_details {
         schedule_hour
+        date
+        leave_hour
       }
       leaveType {
         name

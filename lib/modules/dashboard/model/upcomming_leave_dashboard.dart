@@ -67,16 +67,22 @@ class GetUpcomingLeavesForApp {
 }
 class LeaveDetails {
   String? scheduleHour;
+  String? leaveHour;
+  String? date;
 
-  LeaveDetails({this.scheduleHour});
+  LeaveDetails({this.scheduleHour, this.leaveHour, this.date});
 
   LeaveDetails.fromJson(Map<String, dynamic> json) {
     scheduleHour = json['schedule_hour'];
+    leaveHour = json['leave_hour'];
+    date = json['date'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['schedule_hour'] = this.scheduleHour;
+    data['leave_hour'] = this.leaveHour;
+    data['date'] = this.date;
     return data;
   }
 }
