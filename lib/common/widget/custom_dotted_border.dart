@@ -33,7 +33,7 @@ class DashedLinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..color = AppColor.hintColor.withOpacity(0.8)
-      ..strokeWidth = .5;
+      ..strokeWidth = .7;
 
     double dashWidth = 4;
     double dashSpace = 4;

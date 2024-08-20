@@ -8,6 +8,7 @@ import 'package:payrun_mobile/modules/dashboard/view/widget/upcoming_leave.dart'
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
+import 'package:payrun_mobile/utils/dimensions.dart';
 import '../widget/progress_bar_layout.dart';
 
 class Dashboard extends GetView<DashboardController> {
@@ -27,7 +28,7 @@ class Dashboard extends GetView<DashboardController> {
                       ProgressbarLayout(),
                       customSpacerHeight(height: 12),
                       Obx(() => entryAndStartTimeLayout(context)),
-                      customSpacerHeight(height: 12),
+                      customSpacerHeight(height: 16),
                       controller.upcommingLeaveDashboard
                                       ?.getUpcomingLeavesForApp !=
                                   null &&
@@ -35,8 +36,8 @@ class Dashboard extends GetView<DashboardController> {
                                   .getUpcomingLeavesForApp!.isNotEmpty
                           ? Text(
                               AppString.text_upcoming_leave.tr,
-                              style: AppStyle.mid_large_text
-                                  .copyWith(color: AppColor.normalTextColor),
+                              style: AppStyle.normal_text_black
+                                  .copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeMid),
                             )
                           : Container(),
                       const UpcomingLeaveLayout(),

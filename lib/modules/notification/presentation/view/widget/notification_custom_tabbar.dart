@@ -25,22 +25,33 @@ class NotificationTabBar extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          /// The tab bar layout with different notification categories.
           _buildTabBar(currentIndex, controller),
           customSpacerHeight(height: 14),
+          /// The body of the tab bar displaying notifications based on the selected tab.
           Obx(() => NotificationViewLayout(index: currentIndex.value)),
         ],
       ),
     );
   }
 
+  /// Builds the tab bar with horizontal scrolling and tab items.
+  ///
+  /// This method creates a container with a border and uses a [ListView.builder]
+  /// to build the tab items. Each item represents a category of notifications.
+  ///
   Widget _buildTabBar(RxInt currentIndex, NotificationController controller) {
-    return SizedBox(
-      height: AppLayout.getHeight(66),
+    return Container(
+      height: AppLayout.getHeight(50),
+      decoration: BoxDecoration(
+          border: BorderDirectional(
+              bottom: BorderSide(
+                  color: AppColor.hintColor.withOpacity(0.6), width: .6))),
       child: ListView.builder(
         itemCount: notificationTabBarIndex.length,
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.only(left: 8),
         itemBuilder: (context, index) {
           return Obx(() => _buildTabBarItem(index, currentIndex, controller));
         },
@@ -114,7 +125,11 @@ class NotificationTabBar extends StatelessWidget {
       ),
     );
   }
-
+  /// Reloads the notifications by updating the index and fetching new data.
+  ///
+  /// This method resets the tab bar index and offsets, then calls methods
+  /// to fetch new and seen notifications from the [NotificationController]
+  /// 
   Future<void> _reloadPage() async {
     Get.find<NotificationController>()
       ..notificationTabBarIndex.value = 0

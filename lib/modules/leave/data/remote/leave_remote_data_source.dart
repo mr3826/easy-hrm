@@ -204,9 +204,9 @@ class LeaveRemoteDataSource {
           UploadPolicyResponse.fromJson(response.data!);
 
       return await uploadFile(
-              url: uploadPolicyResponse.getUploadPolicy?.url ?? "",
-              fileName: fileName,
-              list: uploadPolicyResponse.getUploadPolicy?.policyData);
+          url: uploadPolicyResponse.getUploadPolicy?.url ?? "",
+          fileName: fileName,
+          list: uploadPolicyResponse.getUploadPolicy?.policyData);
     } catch (e) {
       log('Error in getUploadPolicy: $e');
       return false;
@@ -233,7 +233,7 @@ class LeaveRemoteDataSource {
         MultipartFile(
           File(fileName),
           filename:
-          "${DateTime.now().millisecondsSinceEpoch}.${fileName.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch}.${fileName.split('.').last}",
         ),
       ));
 
@@ -241,7 +241,9 @@ class LeaveRemoteDataSource {
       final Response response = await networkClient.post(url, formData);
 
       // Check the response status and return true if successful
-      if (response.statusCode == 200 || response.statusCode == 201|| response.statusCode == 204) {
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 204) {
         print("Upload successful with status: ${response.statusCode}");
         return true;
       } else {
@@ -254,5 +256,4 @@ class LeaveRemoteDataSource {
       return false;
     }
   }
-
 }

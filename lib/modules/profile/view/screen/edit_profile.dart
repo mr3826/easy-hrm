@@ -146,35 +146,25 @@ class EditProfileScreen extends StatelessWidget {
         final pikedProfileImgController = Get.find<PikedProfileImgController>();
         final userProfileController = Get.find<UserProfileController>();
 
-        // Ensure null checks are properly performed
-        final storageFilePath =
-            pikedProfileImgController.storageForUpload.filePath.value;
-        final userDetails = userProfileController.userDetails;
-        final profileImage =
-            userDetails?.getOrganizationUserDetails?.profile?.image;
-        print("profileImage ::: $profileImage");
+        final storageFilePath = pikedProfileImgController.storageForUpload.filePath.value;
+        final profileImage = userProfileController.userDetails?.getOrganizationUserDetails?.profile?.image;
 
-        if (storageFilePath.isNotEmpty == true || profileImage?.isNotEmpty == true) {
-
+        if ((storageFilePath.isNotEmpty || _isProfileImageValid(profileImage))) {
           customDialog(
             context: context,
             saveBtnAction: () {
               pikedProfileImgController.storageForUpload.filePath.value = "";
 
-              final variables = _addVariables();
-
-              if (editFirstNameController.text.isNotEmpty &&
-                  editLastNameController.text.isNotEmpty) {
-                Get.find<UpdateProfileController>()
-                    .updateUserProfile(variables!);
+              if (_isProfileInfoValid()) {
+                final variables = _addVariables();
+                Get.find<UpdateProfileController>().updateUserProfile(variables!);
               } else {
                 showWarningMessage(
                   message: AppString.text_first_and_last_field_is_requured.tr,
                 );
               }
 
-              if (pikedProfileImgController
-                  .storageForUpload.filePath.value.isEmpty) {
+              if (pikedProfileImgController.storageForUpload.filePath.value.isEmpty) {
                 Get.back();
               }
             },
@@ -199,6 +189,29 @@ class EditProfileScreen extends StatelessWidget {
       ),
     );
   }
+
+  bool _isProfileImageValid(String? profileImage) {
+    if (profileImage == null || profileImage.isEmpty) return false;
+    return _hasValidImageExtension(profileImage);
+  }
+
+  bool _hasValidImageExtension(String key) {
+    List<String> validExtensions = ['.jpeg', '.jpg', '.png'];
+    return validExtensions.any((ext) => key.toLowerCase().endsWith(ext));
+  }
+
+  bool _isProfileInfoValid() {
+    return editFirstNameController.text.isNotEmpty &&
+        editLastNameController.text.isNotEmpty;
+  }
+
+
+
+
+
+
+
+
 
   _profileImageLayout() {
     return Get.find<PikedProfileImgController>()

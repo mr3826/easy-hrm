@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
-import 'package:payrun_mobile/common/controller/timer_picker.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -25,7 +23,6 @@ import '../../../../common/widget/custom_dialog.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
-import '../../../leave/presentation/view/widget/single_date_picker_calendar.dart';
 import '../../../leave/presentation/view/widget/status_btn_widget.dart';
 import '../../../leave/presentation/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
@@ -49,7 +46,7 @@ class TimeLogEntryTextField extends StatelessWidget {
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+                  topLeft: Radius.circular(24), topRight: Radius.circular(24))),
           padding: marginLayout.copyWith(top: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +71,7 @@ class TimeLogEntryTextField extends StatelessWidget {
                 controller: descriptionController,
               ),
               customSpacerHeight(height: 20),
-              Obx(() => status != null && status == "reject"
+              status != null && status == "reject"
                   ? CustomAppButton(
                       isButtonExpanded: false,
                       buttonText: Text(AppString.text_remove.tr,
@@ -106,40 +103,42 @@ class TimeLogEntryTextField extends StatelessWidget {
                             childForSaveBtn: Obx(() => removeTextLayout()));
                       },
                       buttonColor: AppColor.errorColorLight)
-                  : Get.find<TimelineController>()
-                              .isManualEntryLoading
-                              .isTrue ||
-                          Get.find<TimelineController>()
-                              .isUpdateTimeLogLoading
-                              .isTrue
-                      ? const Center(
-                          child: CupertinoActivityIndicator(),
-                        )
-                      : CustomDoubleAppButton(
-                          buttonText: isFromUpdateTimelogEntry == true
-                              ? AppString.text_save.tr
-                              : AppString.text_add.tr,
-                          btnColor: Get.find<TimelineController>()
-                                      .isValueChangeForTimeLogUpdate
-                                      .value ==
-                                  true
-                              ? AppColor.primaryColor
-                              : AppColor.primaryColor.withOpacity(0.5),
-                          onAction: Get.find<TimelineController>()
-                                      .isValueChangeForTimeLogUpdate
-                                      .value ==
-                                  true
-                              ? () {
-                                  isFromUpdateTimelogEntry == true
-                                      ? Get.find<TimelineController>()
-                                          .updateTimelineLogDetails()
-                                      : Get.find<TimelineController>()
-                                          .createManualEntry();
-                                }
-                              : () {},
-                          cancelAction: () {
-                            Navigator.pop(context);
-                          })),
+                  : Obx(
+                      () => Get.find<TimelineController>()
+                                  .isManualEntryLoading
+                                  .isTrue ||
+                              Get.find<TimelineController>()
+                                  .isUpdateTimeLogLoading
+                                  .isTrue
+                          ? const Center(
+                              child: CupertinoActivityIndicator(),
+                            )
+                          : CustomDoubleAppButton(
+                              buttonText: isFromUpdateTimelogEntry == true
+                                  ? AppString.text_save.tr
+                                  : AppString.text_add.tr,
+                              btnColor: Get.find<TimelineController>()
+                                          .isValueChangeForTimeLogUpdate
+                                          .value ==
+                                      true
+                                  ? AppColor.primaryColor
+                                  : AppColor.primaryColor.withOpacity(0.5),
+                              onAction: Get.find<TimelineController>()
+                                          .isValueChangeForTimeLogUpdate
+                                          .value ==
+                                      true
+                                  ? () {
+                                      isFromUpdateTimelogEntry == true
+                                          ? Get.find<TimelineController>()
+                                              .updateTimelineLogDetails()
+                                          : Get.find<TimelineController>()
+                                              .createManualEntry();
+                                    }
+                                  : () {},
+                              cancelAction: () {
+                                Navigator.pop(context);
+                              }),
+                    ),
               customSpacerHeight(height: 40)
             ],
           ),

@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: appTheme,
+
         translations: Internationalization(),
         locale: GetStorage().read("languageCode") != null
             ? Locale(GetStorage().read("languageCode"),

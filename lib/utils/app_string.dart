@@ -235,7 +235,7 @@ class AppString {
   static const String text_yes = "Yes";
   static const String text_yesterday = "Yesterday";
   static const String text_you_have = "You have";
-  static const String text_you_have_seen_all_notification = "You have seen all notification";
+  static const String text_you_have_seen_all_notification = "There is no notification to show right now. We'll notify you when there is something new!";
   static const String text_your_password_has_been_etc = "Your password has been changed successfully. Use your";
   static const String textDay = "day";
   static const String textDays = "days";
