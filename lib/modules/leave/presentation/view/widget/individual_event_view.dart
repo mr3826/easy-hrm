@@ -117,6 +117,12 @@ class IndividualEventView extends StatelessWidget {
                             ?.toLowerCase() ??
                         "",
                     leaveRecords: GetLeaveRecords(
+                      leaveDetails: [
+                        LeaveDetails(scheduleHour:  Get.find<LeaveScreenController>()
+                            .leaveDetailsByDate
+                            ?.getLeaveRequests?[index]
+                            .leaveDetails![0].scheduleHour??"")
+                      ],
                       files: [
                         (Get.find<LeaveScreenController>()
                                         .leaveDetailsByDate
@@ -250,6 +256,7 @@ class IndividualEventView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+
                           Text(
                             Get.find<LeaveScreenController>()
                                     .leaveDetailsByDate
@@ -263,6 +270,8 @@ class IndividualEventView extends StatelessWidget {
                                 fontSize: Dimensions.fontSizeDefault + 1,
                                 fontWeight: FontWeight.w500),
                           ),
+
+
                           Get.find<LeaveScreenController>()
                                       .leaveDetailsByDate
                                       ?.getLeaveRequests?[index]

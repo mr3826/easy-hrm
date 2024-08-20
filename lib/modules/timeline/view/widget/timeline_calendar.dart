@@ -228,8 +228,12 @@ class TimeLineCalendar extends StatelessWidget {
                                 .toString()
                                 .substring(1, status.toString().length - 1),
                             leaveRecords: GetLeaveRecords(
+                              leaveDetails: [
+                                LeaveDetails()
+                              ],
                               ///For view file
                               files: [
+
                                 Files(
                                   name: fileName.toString().substring(
                                       1, fileName.toString().length - 1),

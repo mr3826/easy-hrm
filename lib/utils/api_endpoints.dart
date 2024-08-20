@@ -61,6 +61,11 @@ query GetLeaveRequests($queryData: LeaveRequestQueryType) {
     createdAt
       description
       end_date
+      leave_details {
+        schedule_hour
+        date
+        leave_hour
+      }
       files {
         name
         size
@@ -98,7 +103,11 @@ query GetLeaveRecordsForApp($optionData: OptionDataType) {
         key
         id
       }
-      
+       leave_details {
+      schedule_hour
+      date
+      leave_hour
+      }
       leave_status
       leaveType {
         type
@@ -324,6 +333,11 @@ query GetUpcomingLeavesForApp {
     status
     createdAt
     number_of_days
+     leave_details {
+       schedule_hour
+        leave_hour
+        date
+    }
     files {
         name
         size
@@ -475,6 +489,9 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
         createdAt
         key
         id
+      }
+      leave_details {
+        schedule_hour
       }
       leaveType {
         name

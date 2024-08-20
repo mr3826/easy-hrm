@@ -1,3 +1,5 @@
+import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
+
 import 'files_model.dart';
 
 class LastInput {
@@ -26,6 +28,7 @@ class ModelForDescription {
   String? duration;
   String? createdAt;
   List<Files>?files;
+  List<LeaveDetails>?leaveDetails;
 
   LeaveType? leaveType;
   dynamic numberOfDays;
@@ -40,6 +43,7 @@ class ModelForDescription {
       {this.status,
       this.description,
       this.timeLId,
+      this.leaveDetails,
       this.startDate,
       this.endDate,
       this.duration,
@@ -65,7 +69,12 @@ class ModelForDescription {
     leaveType = json['leaveType'] != null
         ? LeaveType.fromJson(json['leaveType'])
         : null;
-
+    if (json['leave_details'] != null) {
+      leaveDetails = <LeaveDetails>[];
+      json['leave_details'].forEach((v) {
+        leaveDetails!.add(new LeaveDetails.fromJson(v));
+      });
+    }
     if (json['files'] != null) {
       files = <Files>[];
       json['files'].forEach((v) {

@@ -28,6 +28,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
 
   @override
   Widget build(BuildContext context) {
+    print("work_shift ::: start ==  ${Get.find<LeaveScreenController>().startTime}  endTime == ${Get.find<LeaveScreenController>().endTime}");
     return controller.obx(
         (state) => Padding(
               padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
@@ -50,8 +51,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customSpacerHeight(height: 8),
                       Get.find<LeaveScreenController>().startTime != null
                           ? CustomTimePickerInTime(
-                              inTime:
-                                  "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
+                              inTime: "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
                       customSpacerHeight(height: 20),

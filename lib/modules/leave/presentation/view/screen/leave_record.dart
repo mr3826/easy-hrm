@@ -100,6 +100,13 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                       )
                     : Files()
               ],
+
+              leaveDetails: [
+              LeaveDetails(
+                scheduleHour: controller
+                    .leaveRecordList?[monthIndex].data?[index].leaveDetails![0].scheduleHour??"",
+              )
+              ],
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
                     .leaveRecordList?[monthIndex]

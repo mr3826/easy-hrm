@@ -47,14 +47,15 @@ class LeaveRecordDetails extends StatelessWidget {
               subtext: _getDate(),
               isLeave: true,
               status: status,
-              duration: getDurationTimeForDetails(
-                  duration: leaveRecords?.duration.toString() ?? "")),
+               duration: getDurationTimeForDetails(duration: leaveRecords?.duration.toString() ?? "",workShift: leaveRecords!.leaveDetails![0].scheduleHour??""),
+          ),
           customSpacerHeight(height: 12),
           _infoLayout(
               text: AppString.text_type_dot.tr,
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: "${AppString.text_duration.tr}:",
+
               dynamicText: getDurationTimeForDetails(
                   duration: leaveRecords?.duration.toString() ?? "")),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
@@ -84,6 +85,8 @@ class LeaveRecordDetails extends StatelessWidget {
           "${leaveWeekday = findWeekdayFormDateString(leaveRecord.startDate ?? "")} - ${leaveWeekday = findWeekdayFormDateString(leaveRecord.endDate ?? "")}";
     }
   }
+
+
 
   _buttonLayout(context) {
     if (status == "rejected") {
@@ -316,9 +319,7 @@ class LeaveRecordDetails extends StatelessWidget {
 String getDurationTime({required String duration, String? workShift}) {
   String days = _getDaysForDuration(duration: duration);
   String durationInHour = _getLeaveRecodeDurationTimeFormat(
-      workShift: "9.00", durationValue: duration);
-  // return "$days ${durationInHour=="0 days 0 m"?"":durationInHour}";
-
+      workShift: workShift ?? "9.00", durationValue: duration);
   if (days.isNotEmpty) return days;
 
   return durationInHour;

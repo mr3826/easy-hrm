@@ -9,6 +9,7 @@ import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
+import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
@@ -445,6 +446,11 @@ class TimelineController extends GetxController with StateMixin {
                     numberOfDays: e.numberOfDays ?? 0,
                     createdAt: e.createdAt ?? "",
                     leaveId: e.id ?? "",
+                    leaveDetails: [
+                      LeaveDetails(
+                        scheduleHour: e.leaveDetails?[0].scheduleHour ?? "",
+                      )
+                    ],
                     taskName: e.leaveType?.leaveName ?? "",
                     files: [
                       (e.files != null && e.files!.isNotEmpty)
