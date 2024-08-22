@@ -18,7 +18,6 @@ class DashboardController extends GetxController with StateMixin {
     getUpComingInfoForDashboard();
   }
 
-
   ProfileSummaryForDashboard? profileSummaryForDashboard;
   TimelineSummaryDashboard? timelineSummaryDashboard;
   UpcommingLeaveDashboard? upcommingLeaveDashboard;

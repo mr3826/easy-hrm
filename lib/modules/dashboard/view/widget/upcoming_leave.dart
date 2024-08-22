@@ -120,11 +120,11 @@ class UpcomingLeaveLayout extends StatelessWidget {
                                   .leaveDetails?[0]
                                   .scheduleHour ??
                               "",
-                          leaveHour:  controller
-                              .upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index]
-                              .leaveDetails?[0]
-                              .leaveHour ??
+                          leaveHour: controller
+                                  .upcommingLeaveDashboard
+                                  ?.getUpcomingLeavesForApp?[index]
+                                  .leaveDetails?[0]
+                                  .leaveHour ??
                               "",
                         )
                       ],
@@ -208,7 +208,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
         ),
         customSpacerWidth(width: 8),
         Text(
-          " | ${getDurationTime(duration: "${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays ?? ""}", workShift: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].leaveDetails?[0].scheduleHour ?? "")}",
+          " | ${getLeaveDuration(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].leaveDetails?[0].leaveHour.toString() ?? "", controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays.toString() ?? "")}",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
         )

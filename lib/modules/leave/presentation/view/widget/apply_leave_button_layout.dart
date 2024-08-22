@@ -18,6 +18,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../common/widget/custom_card_style.dart';
+import '../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../controller/file_upload_controller.dart';
 import 'apply_leave_dropdown.dart';
 
@@ -28,7 +29,6 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
 
   @override
   Widget build(BuildContext context) {
-    print("work_shift ::: start ==  ${Get.find<LeaveScreenController>().startTime}  endTime == ${Get.find<LeaveScreenController>().endTime}");
     return controller.obx(
         (state) => Padding(
               padding: marginLayout.copyWith(top: Dimensions.fontSizeMid),
