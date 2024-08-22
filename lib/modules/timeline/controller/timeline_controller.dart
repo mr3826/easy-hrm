@@ -447,10 +447,11 @@ class TimelineController extends GetxController with StateMixin {
                     createdAt: e.createdAt ?? "",
                     leaveId: e.id ?? "",
                     leaveDetails: [
+                      e.leaveDetails !=null && e.leaveDetails!.isNotEmpty?
                       LeaveDetails(
                         scheduleHour: e.leaveDetails?[0].scheduleHour ?? "",
                         leaveHour: e.leaveDetails?[0].leaveHour ?? "",
-                      )
+                      ):LeaveDetails()
                     ],
                     taskName: e.leaveType?.leaveName ?? "",
                     files: [

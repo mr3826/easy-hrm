@@ -113,20 +113,30 @@ class UpcomingLeaveLayout extends StatelessWidget {
                       description: controller.upcommingLeaveDashboard
                           ?.getUpcomingLeavesForApp?[index].description,
                       leaveDetails: [
-                        LeaveDetails(
-                          scheduleHour: controller
-                                  .upcommingLeaveDashboard
-                                  ?.getUpcomingLeavesForApp?[index]
-                                  .leaveDetails?[0]
-                                  .scheduleHour ??
-                              "",
-                          leaveHour: controller
-                                  .upcommingLeaveDashboard
-                                  ?.getUpcomingLeavesForApp?[index]
-                                  .leaveDetails?[0]
-                                  .leaveHour ??
-                              "",
-                        )
+                        controller.upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .leaveDetails !=
+                                    null &&
+                                controller
+                                    .upcommingLeaveDashboard!
+                                    .getUpcomingLeavesForApp![index]
+                                    .leaveDetails!
+                                    .isNotEmpty
+                            ? LeaveDetails(
+                                scheduleHour: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .leaveDetails?[0]
+                                        .scheduleHour ??
+                                    "",
+                                leaveHour: controller
+                                        .upcommingLeaveDashboard
+                                        ?.getUpcomingLeavesForApp?[index]
+                                        .leaveDetails?[0]
+                                        .leaveHour ??
+                                    "",
+                              )
+                            : LeaveDetails()
                       ],
                     ),
                   ),

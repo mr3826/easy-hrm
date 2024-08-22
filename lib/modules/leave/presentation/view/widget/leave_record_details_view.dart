@@ -48,7 +48,6 @@ class LeaveRecordDetails extends StatelessWidget {
               subtext: _getDate(),
               isLeave: true,
               status: status,
-              // duration: getDurationTimeForDetails(duration: leaveRecords?.duration.toString() ?? "",workShift: leaveRecords!.leaveDetails![0].scheduleHour??""),
               duration: getLeaveDuration(
                   leaveRecords!.leaveDetails![0].leaveHour.toString(),
                   leaveRecords?.duration.toString() ?? "")),
@@ -375,16 +374,40 @@ String _getDaysForDuration({required String duration}) {
   }
 }
 
+/// Returns a formatted string representing the leave duration based on the total duration.
+/// If the total duration is less than 1, the function returns the leave duration
+/// formatted as hours or minutes. If the total duration is 1 or more, it returns
+/// the duration in days.
+///
+/// - Parameters:
+///   - leaveDuration: The actual leave duration in hours or minutes, passed as a string.
+///   - totalDuration: The total duration in hours, passed as a string.
+///
+/// - Returns: A formatted string that represents the leave duration, either as
+///   hours/minutes or days, based on the total duration.
+
 String getLeaveDuration(String leaveDuration, String totalDuration) {
-  double duration = double.parse(totalDuration.toString());
+  if (leaveDuration.isEmpty || totalDuration.isEmpty) return "";
+
+  double duration;
+  try {
+    duration = double.parse(totalDuration);
+  } catch (e) {
+    return ""; // or handle the error as appropriate
+  }
 
   if (duration < 1) {
-    String leaveHourStr = leaveDuration.toString() ?? "0";
-    double leaveHour = double.parse(leaveHourStr);
-    String unit = leaveHour < 1 ? "m" : "h";
+    double leaveHour;
+    try {
+      leaveHour = double.parse(leaveDuration);
+    } catch (e) {
+      return ""; // or handle the error as appropriate
+    }
 
-    // Return formatted duration based on whether it's a whole number or not
-    return "${leaveHour.toStringAsFixed(1).replaceAll(RegExp(r'([.0]*|(?<=\d)\.0)'), '')} $unit";
+    String unit = duration < 1 ? "m" : "h";
+
+    // Format the duration to show a solid number or one decimal place
+    return "${leaveHour < 1 ? leaveHour.toStringAsFixed(1) : leaveHour.toStringAsFixed(0)} $unit";
   } else {
     int days = duration.floor();
     return "$days ${days > 1 ? "days" : "day"}";
