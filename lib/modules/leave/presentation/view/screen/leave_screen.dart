@@ -153,7 +153,6 @@ SliverList get sliverList {
   );
 }
 
-
 _leaveText() {
   return Text(
     AppString.text_leave.tr,
