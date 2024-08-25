@@ -86,6 +86,7 @@ class LeaveRemoteDataSource {
   }
 
   Future<WorkShiftResponse?> getWorkShift() async {
+    print("ORGANIZATION_USER_ID :: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     try {
       final response = await networkClient
           .graphRequest(queryString: workShiftQuery, variables: {

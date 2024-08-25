@@ -1,8 +1,9 @@
+import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
+
 import 'files_model.dart';
 
 class LastInput {
   String? email;
-
 
   LastInput({this.email});
 
@@ -25,8 +26,8 @@ class ModelForDescription {
   String? endDate;
   String? duration;
   String? createdAt;
-  List<Files>?files;
-
+  List<Files>? files;
+  List<LeaveDetails>? leaveDetails;
   LeaveType? leaveType;
   dynamic numberOfDays;
   String? leaveId;
@@ -40,6 +41,7 @@ class ModelForDescription {
       {this.status,
       this.description,
       this.timeLId,
+      this.leaveDetails,
       this.startDate,
       this.endDate,
       this.duration,
@@ -72,6 +74,12 @@ class ModelForDescription {
         files!.add(Files.fromJson(v));
       });
     }
+    if (json['leave_details'] != null) {
+      leaveDetails = <LeaveDetails>[];
+      json['leave_details'].forEach((v) {
+        leaveDetails!.add(new LeaveDetails.fromJson(v));
+      });
+    }
     numberOfDays = json['numberOfDays'];
     leaveId = json['leaveId'];
     taskName = json['taskName'];
@@ -93,7 +101,11 @@ class ModelForDescription {
     data['createdAt'] = createdAt;
     if (files != null) {
       data['files'] = files!.map((v) => v.toJson()).toList();
-  }
+    }
+    if (leaveDetails != null) {
+      data['leave_details'] = leaveDetails!.map((v) => v.toJson()).toList();
+    }
+
     if (leaveType != null) {
       data['leaveType'] = leaveType!.toJson();
     }

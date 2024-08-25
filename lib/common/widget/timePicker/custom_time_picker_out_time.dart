@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../modules/leave/presentation/controller/update_leave_controller.dart';
 import '../../../utils/app_color.dart';
@@ -83,54 +82,61 @@ class CustomTimePickerOutTime extends StatelessWidget {
   }
 
   _timePicker(BuildContext context) {
-    return Expanded(
-        child: GestureDetector(
-      onTap: () {
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => Dialog(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+    return Expanded(child: Obx(() {
+      final outDataTime =
+          Get.find<DateTimePickerController>().outDateTime.value;
+      final inDate = Get.find<DateTimePickerController>().inDate.value;
+      final outDate = Get.find<DateTimePickerController>().outDate.value;
+      return GestureDetector(
+        onTap: () {
+          if (inDate == outDate) {
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => Dialog(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: const Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      OutTimePicker(),
+                    ],
+                  ),
+                ),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  OutTimePicker(),
-                ],
+            );
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: Colors.grey)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                DateFormat('HH:mm').format(DateTime.parse(outDataTime)),
+                style: TextStyle(
+                    color: inDate == outDate ? Colors.black : Colors.grey,
+                    fontSize: 16),
               ),
-            ),
+              const Icon(
+                CupertinoIcons.clock,
+                color: Colors.grey,
+                size: 28,
+              ),
+            ],
           ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: Colors.grey)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Obx(
-              () => Text(
-                DateFormat('HH:mm').format(DateTime.parse(
-                    Get.find<DateTimePickerController>().outDateTime.value)),
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-              ),
-            ),
-            const Icon(
-              CupertinoIcons.clock,
-              color: Colors.grey,
-              size: 28,
-            ),
-          ],
         ),
-      ),
-    ));
+      );
+    }));
   }
 
   void _setDefaultData() {
@@ -216,15 +222,16 @@ class _OutDatePickerState extends State<OutDatePicker> {
             GestureDetector(
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
-
                 if (!Get.find<LeaveScreenController>()
                     .holidays
                     .contains(today.weekday)) {
                   Get.find<DateTimePickerController>().outDate.value =
                       DateFormat('yyyy-MM-dd').format(today);
                   Get.find<DateTimePickerController>().getOutDateTime();
+
                   ///For active update leave details button
-                  Get.find<UpDateLeaveController>().isSelectDate.value= Get.find<DateTimePickerController>().outDate.value;
+                  Get.find<UpDateLeaveController>().isSelectDate.value =
+                      Get.find<DateTimePickerController>().outDate.value;
                   Navigator.pop(context);
                 }
               },
@@ -288,8 +295,8 @@ class OutTimePicker extends StatelessWidget {
                         time.toString();
                     Get.find<DateTimePickerController>().getOutDateTime();
                   }
-                  Get.find<UpDateLeaveController>().isSelectDate.value= Get.find<DateTimePickerController>().outTime.value;
-
+                  Get.find<UpDateLeaveController>().isSelectDate.value =
+                      Get.find<DateTimePickerController>().outTime.value;
                 }
                 Navigator.pop(context);
               },

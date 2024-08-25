@@ -18,6 +18,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../common/widget/custom_card_style.dart';
+import '../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../controller/file_upload_controller.dart';
 import 'apply_leave_dropdown.dart';
 
@@ -50,8 +51,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customSpacerHeight(height: 8),
                       Get.find<LeaveScreenController>().startTime != null
                           ? CustomTimePickerInTime(
-                              inTime:
-                                  "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
+                              inTime: "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
                       customSpacerHeight(height: 20),

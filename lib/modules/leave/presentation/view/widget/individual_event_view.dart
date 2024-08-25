@@ -118,6 +118,33 @@ class IndividualEventView extends StatelessWidget {
                             ?.toLowerCase() ??
                         "",
                     leaveRecords: GetLeaveRecords(
+                      leaveDetails: [
+                        Get.find<LeaveScreenController>()
+                                        .leaveDetailsByDate
+                                        ?.getLeaveRequests?[index]
+                                        .leaveDetails !=
+                                    null &&
+                                Get.find<LeaveScreenController>()
+                                    .leaveDetailsByDate!
+                                    .getLeaveRequests![index]
+                                    .leaveDetails!
+                                    .isNotEmpty
+                            ? LeaveDetails(
+                                scheduleHour: Get.find<LeaveScreenController>()
+                                        .leaveDetailsByDate
+                                        ?.getLeaveRequests?[index]
+                                        .leaveDetails?[0]
+                                        .scheduleHour ??
+                                    "",
+                                leaveHour: Get.find<LeaveScreenController>()
+                                        .leaveDetailsByDate
+                                        ?.getLeaveRequests?[index]
+                                        .leaveDetails?[0]
+                                        .leaveHour ??
+                                    "",
+                              )
+                            : LeaveDetails()
+                      ],
                       files: [
                         (Get.find<LeaveScreenController>()
                                         .leaveDetailsByDate
@@ -270,9 +297,14 @@ class IndividualEventView extends StatelessWidget {
                                       .numberOfDays !=
                                   null
                               ? Text(
-                                  getDurationTime(
-                                      duration:
-                                          "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays}"),
+                                  getLeaveDuration(
+                                      Get.find<LeaveScreenController>()
+                                              .leaveDetailsByDate
+                                              ?.getLeaveRequests?[index]
+                                              .leaveDetails?[0]
+                                              .leaveHour ??
+                                          "",
+                                      "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays}"),
                                   style: AppStyle.normal_text_black.copyWith(
                                       color: AppColor.hintColor,
                                       fontSize: Dimensions.fontSizeDefault - 1),

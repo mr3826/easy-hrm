@@ -37,6 +37,7 @@ class LeaveRecordDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _checkLeaveDateDuration(leaveRecords ?? GetLeaveRecords());
+    print("leave :::: ${leaveRecords?.duration.toString()}");
 
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -47,16 +48,18 @@ class LeaveRecordDetails extends StatelessWidget {
               subtext: _getDate(),
               isLeave: true,
               status: status,
-              duration: getDurationTimeForDetails(
-                  duration: leaveRecords?.duration.toString() ?? "")),
+              duration: getLeaveDuration(
+                  leaveRecords!.leaveDetails![0].leaveHour.toString(),
+                  leaveRecords?.duration.toString() ?? "")),
           customSpacerHeight(height: 12),
           _infoLayout(
               text: AppString.text_type_dot.tr,
               dynamicText: leaveRecords?.leaveType?.type ?? ""),
           _infoLayout(
               text: "${AppString.text_duration.tr}:",
-              dynamicText: getDurationTimeForDetails(
-                  duration: leaveRecords?.duration.toString() ?? "")),
+              dynamicText: getLeaveDuration(
+                  leaveRecords!.leaveDetails![0].leaveHour.toString(),
+                  leaveRecords?.duration.toString() ?? "")),
           _infoLayout(text: AppString.text_satus.tr, widget: _statusBtn()),
           _infoLayout(
               text: AppString.text_date_of_application.tr,
@@ -316,9 +319,7 @@ class LeaveRecordDetails extends StatelessWidget {
 String getDurationTime({required String duration, String? workShift}) {
   String days = _getDaysForDuration(duration: duration);
   String durationInHour = _getLeaveRecodeDurationTimeFormat(
-      workShift: "9.00", durationValue: duration);
-  // return "$days ${durationInHour=="0 days 0 m"?"":durationInHour}";
-
+      workShift: workShift ?? "9.00", durationValue: duration);
   if (days.isNotEmpty) return days;
 
   return durationInHour;
@@ -371,4 +372,27 @@ String _getDaysForDuration({required String duration}) {
   } else {
     return "0 m";
   }
+}
+
+/// Formats the leave duration based on the given hours.
+///
+/// Returns a string representing the leave in minutes, hours, or days.
+///
+/// - Returns empty if inputs are invalid or empty.
+/// - Converts duration < 1 to minutes or hours.
+/// - Returns "Full day" if duration equals 1, or days otherwise.
+
+String getLeaveDuration(String leaveDuration, String totalDuration) {
+  if (leaveDuration.isEmpty || totalDuration.isEmpty) return "";
+
+  double leaveHours = double.tryParse(leaveDuration) ?? 0;
+  double total = double.tryParse(totalDuration) ?? 0;
+
+  if (total < 1) {
+    return total < 0.1
+        ? "${(leaveHours * 60).toStringAsFixed(0)} m" // Minutes
+        : "${leaveHours.toStringAsFixed(1)} h"; // Hours
+  }
+
+  return total == 1 ? "Full day" : "${total.floor()} days";
 }

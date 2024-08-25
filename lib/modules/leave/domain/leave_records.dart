@@ -25,8 +25,8 @@ class GetLeaveRecords {
   LeaveType? leaveType;
   dynamic duration;
   String? status;
-  List<Files>?files;
-
+  List<Files>? files;
+  List<LeaveDetails>? leaveDetails;
 
   GetLeaveRecords(
       {this.endDate,
@@ -36,6 +36,7 @@ class GetLeaveRecords {
       this.leaveType,
       this.files,
       this.duration,
+       this.leaveDetails,
       this.status,
       this.description});
 
@@ -50,5 +51,27 @@ class GetLeaveRecords {
     duration = json['duration'];
     status = json['status'];
     description = json['description'];
+  }
+}
+
+class LeaveDetails {
+  String? scheduleHour;
+  String? leaveHour;
+  String? date;
+
+  LeaveDetails({this.scheduleHour, this.leaveHour, this.date});
+
+  LeaveDetails.fromJson(Map<String, dynamic> json) {
+    scheduleHour = json['schedule_hour'];
+    leaveHour = json['leave_hour'];
+    date = json['date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['schedule_hour'] = this.scheduleHour;
+    data['leave_hour'] = this.leaveHour;
+    data['date'] = this.date;
+    return data;
   }
 }

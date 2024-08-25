@@ -28,10 +28,6 @@ class TimeLogSummary extends StatelessWidget {
           child: Column(
             children: [
                SummaryTimeLogCalendar(),
-
-
-
-
               Obx(() => Get.find<TimelineSummaryController>()
                       .isMonthlySummaryDataLoading
                       .isTrue

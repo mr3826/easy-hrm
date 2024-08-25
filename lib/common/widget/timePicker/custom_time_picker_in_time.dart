@@ -86,53 +86,64 @@ class CustomTimePickerInTime extends StatelessWidget {
 
   _timePicker(BuildContext context) {
     return Expanded(
-        child: GestureDetector(
-      onTap: () {
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => Dialog(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  InTimePicker(),
-                ],
-              ),
+      child: Obx(() {
+        final inDateTime =
+            Get.find<DateTimePickerController>().inDateTime.value;
+        final inDate = Get.find<DateTimePickerController>().inDate.value;
+        final outDate = Get.find<DateTimePickerController>().outDate.value;
+
+        return GestureDetector(
+          onTap: () {
+            if (inDate == outDate) {
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => Dialog(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 20),
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InTimePicker(),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  DateFormat('HH:mm').format(DateTime.parse(inDateTime)),
+                  style: TextStyle(
+                      color: inDate == outDate ? Colors.black : Colors.grey,
+                      fontSize: 16),
+                ),
+                const Icon(
+                  CupertinoIcons.clock,
+                  color: Colors.grey,
+                  size: 28,
+                ),
+              ],
             ),
           ),
         );
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: Colors.grey)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Obx(
-              () => Text(
-                DateFormat('HH:mm').format(DateTime.parse(
-                    Get.find<DateTimePickerController>().inDateTime.value)),
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-              ),
-            ),
-            const Icon(
-              CupertinoIcons.clock,
-              color: Colors.grey,
-              size: 28,
-            ),
-          ],
-        ),
-      ),
-    ));
+      }),
+    );
   }
 
   void _setDefaultData() {

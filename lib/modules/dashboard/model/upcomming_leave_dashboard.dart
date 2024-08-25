@@ -24,9 +24,9 @@ class GetUpcomingLeavesForApp {
   String? createdAt;
   String? description;
   dynamic numberOfDays;
+  List<LeaveDetails>? leaveDetails;
   LeaveType? leaveType;
-  List<Files>?files;
-
+  List<Files>? files;
 
   GetUpcomingLeavesForApp(
       {this.endDate,
@@ -36,7 +36,7 @@ class GetUpcomingLeavesForApp {
       this.numberOfDays,
       this.description,
       this.leaveType,
-        this.files,
+      this.files,
       this.id});
 
   GetUpcomingLeavesForApp.fromJson(Map<String, dynamic> json) {
@@ -47,6 +47,12 @@ class GetUpcomingLeavesForApp {
     description = json['description'];
     createdAt = json['createdAt'];
     numberOfDays = json['number_of_days'];
+    if (json['leave_details'] != null) {
+      leaveDetails = <LeaveDetails>[];
+      json['leave_details'].forEach((v) {
+        leaveDetails!.add(new LeaveDetails.fromJson(v));
+      });
+    }
     if (json['files'] != null) {
       files = <Files>[];
       json['files'].forEach((v) {
@@ -56,5 +62,27 @@ class GetUpcomingLeavesForApp {
     leaveType = json['leaveType'] != null
         ? LeaveType.fromJson(json['leaveType'])
         : null;
+  }
+}
+
+class LeaveDetails {
+  String? scheduleHour;
+  String? leaveHour;
+  String? date;
+
+  LeaveDetails({this.scheduleHour, this.leaveHour, this.date});
+
+  LeaveDetails.fromJson(Map<String, dynamic> json) {
+    scheduleHour = json['schedule_hour'];
+    leaveHour = json['leave_hour'];
+    date = json['date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['schedule_hour'] = this.scheduleHour;
+    data['leave_hour'] = this.leaveHour;
+    data['date'] = this.date;
+    return data;
   }
 }

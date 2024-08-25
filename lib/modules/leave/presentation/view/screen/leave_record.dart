@@ -60,6 +60,8 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
+        print(
+            "leave ::: ${controller.leaveRecordList?[monthIndex].data?[index].leaveDetails}");
         Color itemColor =
             index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
         return _infoLayoutView(
@@ -99,6 +101,21 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                             "",
                       )
                     : Files()
+              ],
+              leaveDetails: [
+                (controller.leaveRecordList?[monthIndex].data?[index].leaveDetails !=
+                    null &&
+                    controller.leaveRecordList![monthIndex].data![index]
+                        .leaveDetails!.isNotEmpty)
+                    ?
+                LeaveDetails(
+                  scheduleHour: controller.leaveRecordList?[monthIndex]
+                          .data?[index].leaveDetails?[0].scheduleHour ??
+                      "",
+                  leaveHour: controller.leaveRecordList?[monthIndex]
+                          .data?[index].leaveDetails?[0].leaveHour ??
+                      "",
+                ):LeaveDetails()
               ],
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
@@ -235,7 +252,10 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
           ),
         Flexible(
           child: Text(
-            getDurationTime(duration: leaveRecord.duration.toString() ?? ""),
+            getLeaveDuration(
+              leaveRecord.leaveDetails?[0].leaveHour ?? "",
+              leaveRecord.duration.toString() ?? "",
+            ),
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor.withOpacity(0.7),
               fontSize: Dimensions.fontSizeDefault - 2,

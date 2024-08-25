@@ -1,4 +1,5 @@
 import '../../../common/domain/files_model.dart';
+import '../../dashboard/model/upcomming_leave_dashboard.dart';
 
 class LeaveRecord {
   List<GetLeaveRecordsForApp>? getLeaveRecordsForApp;
@@ -43,6 +44,8 @@ class Data {
   String? startDate;
   String? id;
   String? totalLeaveMinutes;
+  List<LeaveDetails>? leaveDetails;
+
 
   Data(
       {this.createdAt,
@@ -51,7 +54,8 @@ class Data {
       this.files,
       this.leaveType,
       this.status,
-      this.numberOfDays,
+        this.leaveDetails,
+        this.numberOfDays,
       this.startDate,
       this.id});
 
@@ -64,6 +68,12 @@ class Data {
       files = <Files>[];
       json['files'].forEach((v) {
         files!.add(Files.fromJson(v));
+      });
+    }
+    if (json['leave_details'] != null) {
+      leaveDetails = <LeaveDetails>[];
+      json['leave_details'].forEach((v) {
+        leaveDetails!.add(new LeaveDetails.fromJson(v));
       });
     }
     leaveType = json['leaveType'] != null
