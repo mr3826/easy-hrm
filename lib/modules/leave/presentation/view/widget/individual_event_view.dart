@@ -106,7 +106,7 @@ class IndividualEventView extends StatelessWidget {
             Color itemBgColor = index % 2 == 0
                 ? AppColor.leaveRecordCardColor
                 : Colors.transparent;
-            return InkWell(
+            return GestureDetector(
               onTap: () {
                 customAntButtonSheet(
                   context: context,
