@@ -36,7 +36,7 @@ class TimelineScreen extends GetView<TimelineController> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     sliverAppBar,
-                     sliverList,
+                    sliverList,
                   ],
                 ),
               ),
@@ -122,7 +122,7 @@ class TimelineScreen extends GetView<TimelineController> {
 
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
-    expandedHeight: AppLayout.getHeight(280),
+    expandedHeight: AppLayout.getHeight(284),
     elevation: 0,
     bottom: _buttonRadiusLayout(),
     pinned: true,

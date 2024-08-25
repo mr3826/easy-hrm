@@ -18,7 +18,7 @@ class ConnectivityController extends GetxController {
   @override
   void onInit() {
     _connectivity.onConnectivityChanged.listen(
-        (connectivityResult) => _updateConnectivity(connectivityResult));
+        (connectivityResult) => _updateConnectivity(connectivityResult.first));
     super.onInit();
   }
 

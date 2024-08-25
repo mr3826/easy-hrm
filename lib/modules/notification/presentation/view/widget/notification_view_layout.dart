@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -416,7 +417,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -435,35 +436,23 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 Text(
                   changerName,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeMid,
-                      fontWeight: FontWeight.w500),
+                  style: _titleTextStyle(),
                 ),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                       TextSpan(
                         text: departmentInfo,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: AppColor.secondaryColor),
+                        style: _dateTextStyle(),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -485,7 +474,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -504,20 +493,13 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 Text(
                   changerName,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeMid,
-                      fontWeight: FontWeight.w500),
+                  style: _titleTextStyle(),
                 ),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                       TextSpan(
                         text: departmentRoleInfo,
                         style: TextStyle(
@@ -525,12 +507,7 @@ class NotificationViewLayout extends StatelessWidget {
                             fontSize: Dimensions.fontSizeDefault,
                             color: AppColor.secondaryColor),
                       ),
-                      TextSpan(
-                          text: " on ",
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                      TextSpan(text: " on ", style: _contentTextStyle()),
                       TextSpan(
                         text: departmentInfo,
                         style: TextStyle(
@@ -543,9 +520,7 @@ class NotificationViewLayout extends StatelessWidget {
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -564,7 +539,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -583,35 +558,23 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 Text(
                   changerName,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeMid,
-                      fontWeight: FontWeight.w500),
+                  style: _titleTextStyle(),
                 ),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                       TextSpan(
                         text: AppString.textHiringManager.tr,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: AppColor.secondaryColor),
+                        style: _dateTextStyle(),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -631,7 +594,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -650,20 +613,13 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 Text(
                   changerName,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeMid,
-                      fontWeight: FontWeight.w500),
+                  style: _titleTextStyle(),
                 ),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                       TextSpan(
                         text: AppString.textHiringTeam.tr,
                         style: TextStyle(
@@ -689,9 +645,7 @@ class NotificationViewLayout extends StatelessWidget {
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -712,7 +666,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -731,35 +685,23 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 Text(
                   changerName,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeMid,
-                      fontWeight: FontWeight.w500),
+                  style: _titleTextStyle(),
                 ),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                       TextSpan(
                         text: leaveTimeInfo,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: AppColor.secondaryColor),
+                        style: _dateTextStyle(),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -779,7 +721,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -798,35 +740,23 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 Text(
                   changerName,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeMid,
-                      fontWeight: FontWeight.w500),
+                  style: _titleTextStyle(),
                 ),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                       TextSpan(
                         text: timeLineTimeInfo,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: AppColor.secondaryColor),
+                        style: _dateTextStyle(),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -847,7 +777,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -869,35 +799,23 @@ class NotificationViewLayout extends StatelessWidget {
               children: [
                 Text(
                   changerName,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      fontSize: Dimensions.fontSizeMid,
-                      fontWeight: FontWeight.w500),
+                  style: _titleTextStyle(),
                 ),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                       TextSpan(
                         text: approverContext,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: AppColor.secondaryColor),
+                        style: _dateTextStyle(),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -913,7 +831,7 @@ class NotificationViewLayout extends StatelessWidget {
       required int index}) {
     return Container(
       width: Get.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.only(top: 18, bottom: 18, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         color: index.isOdd ? Colors.blueAccent.withOpacity(0.05) : Colors.white,
@@ -935,19 +853,13 @@ class NotificationViewLayout extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                          text: contextInfoText,
-                          style: TextStyle(
-                            color: AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                          )),
+                          text: contextInfoText, style: _contentTextStyle()),
                     ],
                   ),
                 ),
                 Text(
                   notificationDuration,
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault),
+                  style: _minTextStyle(),
                 )
               ],
             ),
@@ -987,25 +899,60 @@ class NotificationViewLayout extends StatelessWidget {
     if (creationDate.isEmpty) return "";
     return DateFormat("d MMM y").format(DateTime.parse(creationDate));
   }
+
+  _titleTextStyle() {
+    return AppStyle.normal_text_grey.copyWith(
+        color: AppColor.secondaryColor.withOpacity(0.9),
+        fontSize: Dimensions.fontSizeDefault);
+  }
+
+  _minTextStyle() {
+    return AppStyle.mid_large_text.copyWith(
+        color: AppColor.normalTextColor.withOpacity(0.5),
+        fontSize: Dimensions.fontSizeSmall);
+  }
+
+  _contentTextStyle() {
+    return AppStyle.normal_text.copyWith(
+        color: AppColor.normalTextColor.withOpacity(0.7),
+        fontWeight: FontWeight.w400,
+        fontSize: Dimensions.fontSizeDefault);
+  }
+
+  _dateTextStyle() {
+    return AppStyle.normal_text.copyWith(
+        color: AppColor.normalTextColor.withOpacity(0.8),
+        fontWeight: FontWeight.w600,
+        fontSize: Dimensions.fontSizeDefault - 1);
+  }
 }
 
-_emptyNotificationLayout() {
+Widget _emptyNotificationLayout() {
+  final context = Get.context!;
+  final mediaQuery = MediaQuery.of(context).size;
+
   return SizedBox(
-    height: MediaQuery.of(Get.context!).size.height / 1.8,
-    child: Center(
-        child: Column(
+    height: mediaQuery.height * 0.66,
+    child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        customSvgImage(
+          imageUrl: Images.emptyNotification,
+          height: mediaQuery.height * 0.33,
+          width: double.infinity,
+        ),
         SizedBox(
-            width: AppLayout.getWidth(200),
-            child: Image.asset(Images.emptyNotification)),
-        Text(
-          "${AppString.text_you_have_seen_all_notification.tr}.",
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault - 2),
+          width: mediaQuery.width * 0.77,
+          child: Text(
+            AppString.text_you_have_seen_all_notification.tr,
+            textAlign: TextAlign.center,
+            style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.normalTextColor.withOpacity(0.6),
+              fontSize: Dimensions.fontSizeDefault + 1,
+            ),
+          ),
         ),
       ],
-    )),
+    ),
   );
 }

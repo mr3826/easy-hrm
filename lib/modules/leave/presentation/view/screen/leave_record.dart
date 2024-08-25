@@ -238,7 +238,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
             getDurationTime(duration: leaveRecord.duration.toString() ?? ""),
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor.withOpacity(0.7),
-              fontSize: Dimensions.fontSizeDefault-2,
+              fontSize: Dimensions.fontSizeDefault - 2,
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w500,
             ),

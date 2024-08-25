@@ -24,7 +24,7 @@ Widget departmentLayout(BuildContext? context) {
     child: Card(
       elevation: 0,
       shape: roundedRectangleBorder,
-      color: AppColor.primaryColor.withOpacity(0.05),
+      color: AppColor.bgColorWithPrimary.withOpacity(0.3),
       child: Padding(
         padding: marginLayout.copyWith(top: 12, bottom: 14),
         child: Column(

@@ -29,11 +29,11 @@ String urlBuilder({imgUrlKey, String? fileDir, String? profileImageKey}) {
 Widget circleImageLayout(
     {radius, required url, borderColor, required errorText}) {
   return CircleAvatar(
-    radius: radius + 2.5,
+    radius: radius + 2.1,
     backgroundColor: borderColor ?? AppColor.hintColor,
     child: CircleAvatar(
       backgroundColor: borderColor ?? AppColor.cardColor,
-      radius: radius + 2,
+      radius: radius + 1.8,
       child: CircleAvatar(
         radius: radius,
         backgroundColor: AppColor.cardColor,

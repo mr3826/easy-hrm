@@ -58,7 +58,6 @@ class UpdateTimeLineLog extends StatelessWidget {
     Get.find<DateTimePickerController>().getOutDateTime();
     setIndexForPrevTdayOrTomListTimelog(DateTime.parse(startDateTime));
   }
-
 }
 
 AppBar timeLogAppbar(BuildContext context) {

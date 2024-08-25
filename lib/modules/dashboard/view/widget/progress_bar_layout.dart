@@ -269,7 +269,7 @@ _userImageLayout() {
   var controller = Get.find<DashboardController>();
 
   return CustomNetworkImage(
-    height: 22,
+    height: 22.4,
     errorText: (controller.profileSummaryForDashboard
                     ?.getProfileSummaryForDashboard?.profile?.firstName !=
                 null &&
@@ -281,15 +281,15 @@ _userImageLayout() {
     profileImageKey: controller.profileSummaryForDashboard
             ?.getProfileSummaryForDashboard?.profile?.image ??
         "",
-    borderColor: Colors.transparent,
     imgUrlKey: '',
+    borderColor: Colors.transparent,
   );
 }
 
 _decorationStyle() {
   return BoxDecoration(
-      color: AppColor.primaryColor.withOpacity(0.1),
+    color: AppColor.bgColorWithPrimary,
       borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(Dimensions.radiusExtraLarge - 14),
-          bottomRight: Radius.circular(Dimensions.radiusExtraLarge - 14)));
+          bottomLeft: Radius.circular(Dimensions.radiusExtraLarge - 10),
+          bottomRight: Radius.circular(Dimensions.radiusExtraLarge - 10)));
 }

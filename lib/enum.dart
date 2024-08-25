@@ -6,6 +6,3 @@ enum StartOrEndTimer { start, end }
 
 enum Language { english, norwegian }
 
-
-
-

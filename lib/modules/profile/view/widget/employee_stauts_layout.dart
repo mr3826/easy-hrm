@@ -36,7 +36,7 @@ Widget employeeStatusLayout({BuildContext? context}) {
                 child: SizedBox(
                   child: Card(
                     elevation: 0,
-                    color: AppColor.primaryColor.withOpacity(0.05),
+                    color: AppColor.bgColorWithPrimary.withOpacity(0.3),
                     shape: roundedRectangleBorder,
                     child: Padding(
                       padding: marginLayout.copyWith(top: 12),
@@ -77,14 +77,15 @@ Widget employeeStatusLayout({BuildContext? context}) {
           child: SizedBox(
             child: Card(
               elevation: 0,
-              color: AppColor.primaryColor.withOpacity(0.05),
+              color: AppColor.bgColorWithPrimary.withOpacity(0.3),
               shape: roundedRectangleBorder,
               child: Padding(
                 padding: marginLayout.copyWith(top: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    customSvgImage(imageUrl: Images.FLAG, height: 25, width: 25),
+                    customSvgImage(
+                        imageUrl: Images.FLAG, height: 25, width: 25),
                     customSpacerHeight(height: 12),
                     _employmentInfo(),
                     customSpacerHeight(height: 12),
@@ -181,4 +182,3 @@ _designationInfo() {
         )
       : Container();
 }
-
