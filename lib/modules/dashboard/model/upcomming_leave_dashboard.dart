@@ -26,8 +26,7 @@ class GetUpcomingLeavesForApp {
   dynamic numberOfDays;
   List<LeaveDetails>? leaveDetails;
   LeaveType? leaveType;
-  List<Files>?files;
-
+  List<Files>? files;
 
   GetUpcomingLeavesForApp(
       {this.endDate,
@@ -37,7 +36,7 @@ class GetUpcomingLeavesForApp {
       this.numberOfDays,
       this.description,
       this.leaveType,
-        this.files,
+      this.files,
       this.id});
 
   GetUpcomingLeavesForApp.fromJson(Map<String, dynamic> json) {
@@ -65,6 +64,7 @@ class GetUpcomingLeavesForApp {
         : null;
   }
 }
+
 class LeaveDetails {
   String? scheduleHour;
   String? leaveHour;

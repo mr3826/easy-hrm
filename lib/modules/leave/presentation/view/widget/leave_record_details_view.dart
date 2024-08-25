@@ -374,42 +374,25 @@ String _getDaysForDuration({required String duration}) {
   }
 }
 
-/// Returns a formatted string representing the leave duration based on the total duration.
-/// If the total duration is less than 1, the function returns the leave duration
-/// formatted as hours or minutes. If the total duration is 1 or more, it returns
-/// the duration in days.
+/// Formats the leave duration based on the given hours.
 ///
-/// - Parameters:
-///   - leaveDuration: The actual leave duration in hours or minutes, passed as a string.
-///   - totalDuration: The total duration in hours, passed as a string.
+/// Returns a string representing the leave in minutes, hours, or days.
 ///
-/// - Returns: A formatted string that represents the leave duration, either as
-///   hours/minutes or days, based on the total duration.
+/// - Returns empty if inputs are invalid or empty.
+/// - Converts duration < 1 to minutes or hours.
+/// - Returns "Full day" if duration equals 1, or days otherwise.
 
 String getLeaveDuration(String leaveDuration, String totalDuration) {
   if (leaveDuration.isEmpty || totalDuration.isEmpty) return "";
 
-  double duration;
-  try {
-    duration = double.parse(totalDuration);
-  } catch (e) {
-    return ""; // or handle the error as appropriate
+  double leaveHours = double.tryParse(leaveDuration) ?? 0;
+  double total = double.tryParse(totalDuration) ?? 0;
+
+  if (total < 1) {
+    return total < 0.1
+        ? "${(leaveHours * 60).toStringAsFixed(0)} m" // Minutes
+        : "${leaveHours.toStringAsFixed(1)} h"; // Hours
   }
 
-  if (duration < 1) {
-    double leaveHour;
-    try {
-      leaveHour = double.parse(leaveDuration);
-    } catch (e) {
-      return ""; // or handle the error as appropriate
-    }
-
-    String unit = duration < 1 ? "m" : "h";
-
-    // Format the duration to show a solid number or one decimal place
-    return "${leaveHour < 1 ? leaveHour.toStringAsFixed(1) : leaveHour.toStringAsFixed(0)} $unit";
-  } else {
-    int days = duration.floor();
-    return "$days ${days > 1 ? "days" : "day"}";
-  }
+  return total == 1 ? "Full day" : "${total.floor()} days";
 }

@@ -184,10 +184,15 @@ class UserProfileController extends GetxController with StateMixin {
 
     isLoading(true);
     try {
-      final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
+      final response = await NetworkClient().postRequest(Api.CHANGE_MAIL,
+
+
+      {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
-      });
+      }
+
+      );
 
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);

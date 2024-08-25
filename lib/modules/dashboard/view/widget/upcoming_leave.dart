@@ -113,7 +113,8 @@ class UpcomingLeaveLayout extends StatelessWidget {
                       description: controller.upcommingLeaveDashboard
                           ?.getUpcomingLeavesForApp?[index].description,
                       leaveDetails: [
-                        controller.upcommingLeaveDashboard
+                        controller
+                                        .upcommingLeaveDashboard
                                         ?.getUpcomingLeavesForApp?[index]
                                         .leaveDetails !=
                                     null &&
@@ -189,9 +190,6 @@ class UpcomingLeaveLayout extends StatelessWidget {
   _leaveInfoRow(int index, DashboardController controller) {
     String? leaveDate;
 
-    print(
-        "numberOfDays ::: ${controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays}");
-
     String starDate = dateMonthFormatFromDatetime(controller
             .upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate
             ?.substring(0, 10) ??
@@ -200,27 +198,45 @@ class UpcomingLeaveLayout extends StatelessWidget {
             .upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].endDate
             ?.substring(0, 10) ??
         "2023-01-01T08:23:49.550Z");
+
     if (starDate == endDate) {
-      leaveDate = dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard
-              ?.getUpcomingLeavesForApp?[index].startDate ??
-          "2023-01-01T08:23:49.550Z");
+      leaveDate = starDate;
     } else {
-      leaveDate =
-          "${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].endDate ?? "2023-01-01T08:23:49.550Z")}";
+      leaveDate = "$starDate - $endDate";
     }
+
+    // Check if leaveDetails is not null and not empty
+    String leaveDuration = "";
+    if (controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
+            .leaveDetails?.isNotEmpty ??
+        false) {
+      leaveDuration = getLeaveDuration(
+          controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
+                  .leaveDetails![0].leaveHour
+                  .toString() ??
+              "",
+          controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
+                  .numberOfDays
+                  .toString() ??
+              "");
+    }
+
     return Row(
       children: [
         Text(
           leaveDate.toString(),
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.secondaryColor,
-              fontSize: Dimensions.fontSizeDefault),
+            color: AppColor.secondaryColor,
+            fontSize: Dimensions.fontSizeDefault,
+          ),
         ),
         customSpacerWidth(width: 8),
         Text(
-          " | ${getLeaveDuration(controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].leaveDetails?[0].leaveHour.toString() ?? "", controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index].numberOfDays.toString() ?? "")}",
+          leaveDuration.isNotEmpty ? " | $leaveDuration" : "",
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
+            color: AppColor.hintColor,
+            fontSize: Dimensions.fontSizeDefault,
+          ),
         )
       ],
     );

@@ -6,7 +6,6 @@ import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../controller/timelog_summary_controller.dart';
 
-
 class SummaryTimeLogCalendar extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
   final Map<String, GlobalKey> _monthKeys = {};
@@ -52,20 +51,19 @@ class SummaryTimeLogCalendar extends StatelessWidget {
     }
   }
 
-  void _handleMonthTap(int year, String month) async{
+  void _handleMonthTap(int year, String month) async {
     _controller.selectedValue.value = '$year-$month';
     _scrollToMonth(_controller.selectedValue.value);
 
     int monthNumber = monthToNumber[month] ?? 0;
     // //add selected date info
-    Get.find<TimelineSummaryController>().selectedMonthStartDate.value = "${DateTime(year, monthNumber, 1, 0, 0, 0)}";
+    Get.find<TimelineSummaryController>().selectedMonthStartDate.value =
+        "${DateTime(year, monthNumber, 1, 0, 0, 0)}";
 
     Get.find<TimelineSummaryController>().selectedMonthEndDate.value =
-    "${DateTime(year, monthNumber + 1, 0, 23, 59, 59)}";
-    await Get.find<TimelineSummaryController>()
-        .getTimelineByMonth();
-    await Get.find<TimelineSummaryController>()
-        .getTimelogDetailsByMonth();
+        "${DateTime(year, monthNumber + 1, 0, 23, 59, 59)}";
+    await Get.find<TimelineSummaryController>().getTimelineByMonth();
+    await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
   }
 
   @override
@@ -102,7 +100,8 @@ class SummaryTimeLogCalendar extends StatelessWidget {
                 _monthKeys[monthKey] = monthGlobalKey;
                 return Padding(
                   key: monthGlobalKey,
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0,vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18.0, vertical: 4),
                   child: GestureDetector(
                     onTap: () => _handleMonthTap(entry.key, month),
                     child: Column(
@@ -114,8 +113,10 @@ class SummaryTimeLogCalendar extends StatelessWidget {
                                           _controller.selectedValue.value
                                       ? AppColor.primaryColor
                                       : AppColor.hintColor,
-                                  fontSize:monthKey ==
-                                      _controller.selectedValue.value? Dimensions.fontSizeDefault+1:Dimensions.fontSizeDefault),
+                                  fontSize: monthKey ==
+                                          _controller.selectedValue.value
+                                      ? Dimensions.fontSizeDefault + 1
+                                      : Dimensions.fontSizeDefault),
                             )),
                         Obx(() => monthKey == _controller.selectedValue.value
                             ? Text(
@@ -145,6 +146,7 @@ Map<int, List<String>> _generateDateMap(int startYear, int endYear) {
       year: SummaryTimeLogCalendar._months
   };
 }
+
 Map<String, int> monthToNumber = {
   'January': 1,
   'February': 2,
