@@ -13,9 +13,9 @@ class DashboardController extends GetxController with StateMixin {
   @override
   void onInit() async {
     super.onInit();
-    getProfileInfoForDashboard();
-    getMonthlyTimelineInfoForDashboard();
-    getUpComingInfoForDashboard();
+     await getProfileInfoForDashboard();
+    await getMonthlyTimelineInfoForDashboard();
+    await getUpComingInfoForDashboard();
   }
 
   ProfileSummaryForDashboard? profileSummaryForDashboard;
@@ -29,8 +29,6 @@ class DashboardController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
-      log("getProfileInfoForDashboard ::::: ${response.hasException}",
-          error: 0);
     } else {
       profileSummaryForDashboard =
           ProfileSummaryForDashboard.fromJson(response.data!);
@@ -51,8 +49,6 @@ class DashboardController extends GetxController with StateMixin {
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
-      log("getMonthlyTimelineInfoForDashboard ::::: ${response.hasException}",
-          error: 1);
     } else {
       timelineSummaryDashboard =
           TimelineSummaryDashboard.fromJson(response.data!);
@@ -62,14 +58,14 @@ class DashboardController extends GetxController with StateMixin {
   }
 
   getUpComingInfoForDashboard() async {
+    print("getUpComingInfoForDashboard called");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .graphRequest(queryString: upcommingLeaveForDashboardQuery);
+    print("getUpComingInfoForDashboard :::: ${response.data}");
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
-      log("getUpComingInfoForDashboard ::::: ${response.hasException}",
-          error: 2);
     } else {
       upcommingLeaveDashboard =
           UpcommingLeaveDashboard.fromJson(response.data!);

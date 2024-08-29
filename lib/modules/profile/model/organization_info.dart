@@ -61,11 +61,13 @@ class Organization {
 
 class OrganizationSetting {
   String? logoKey;
+  String? logIconKey;
 
-  OrganizationSetting({this.logoKey});
+  OrganizationSetting({this.logoKey,this.logIconKey});
 
   OrganizationSetting.fromJson(Map<String, dynamic> json) {
     logoKey = json['logo_key'];
+    logIconKey = json['logo_icon_key'];
   }
 }
 

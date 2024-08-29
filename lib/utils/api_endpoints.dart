@@ -204,6 +204,7 @@ query GetOrganizationUserDetails {
     organization {
       organization_setting {
         logo_key
+        logo_icon_key
         language
       }
       name
@@ -366,6 +367,8 @@ query GetUserOrganizations {
         sub_domain
         organization_setting {
           logo_key
+          logo_icon_key
+
         }
       }
       designation {

@@ -13,18 +13,29 @@ import '../../utils/dimensions.dart';
 import 'custom_card_style.dart';
 import 'custom_spacer.dart';
 
-String urlBuilder({imgUrlKey, String? fileDir, String? profileImageKey}) {
+String urlBuilder({
+  required String imgUrlKey,
+  String? fileDir,
+  String? profileImageKey,
+  String? orgId,
+  bool isPublic = false,
+}) {
+  final cdmKey = isPublic
+      ? Api.CDN_DOMAIN.replaceAll("private", "public")
+      : Api.CDN_DOMAIN;
+
   final client = URLBuilder(
-    domain: Api.CDN_DOMAIN,
+    domain: cdmKey,
     shouldUseHttpsByDefault: true,
     defaultSignKey: Api.CDN_KEY,
   );
-  final url = client.createURLString(
-    profileImageKey ??
-        '${fileDir ?? "files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey',
-  );
-  return url;
+
+  final urlPath = profileImageKey ??
+      '${fileDir ?? "files"}/${orgId??GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey';
+
+  return client.createURLString(urlPath);
 }
+
 
 Widget circleImageLayout(
     {radius, required url, borderColor, required errorText}) {

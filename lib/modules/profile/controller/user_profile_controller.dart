@@ -51,7 +51,7 @@ class UserProfileController extends GetxController with StateMixin {
   RxInt seconds = 59.obs;
   RxBool timerActive = false.obs;
   RxBool isOTPProvided = false.obs;
-  String OTPCode = "";
+  String otpCode = "";
 
   void startTimer() {
     timerActive.value = true;
@@ -113,14 +113,10 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     final response =
         await NetworkClient().graphRequest(queryString: getUserProfileQuery);
-
-    print("User profile :::: ${response.data}");
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       userDetails = UserDetails.fromJson(response.data!);
-      log("getUserProfile:::${UserDetails.fromJson(response.data!).getOrganizationUserDetails?.organization?.orgName}");
     }
     change(null, status: RxStatus.success());
   }
@@ -135,7 +131,6 @@ class UserProfileController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
-      log("getEmploymentInfo:::${EmployeeWorkHistory.fromJson(response.data!).getOrganizationUserHistory?.deptHistories?.length}");
     }
 
     change(null, status: RxStatus.success());
@@ -149,7 +144,6 @@ class UserProfileController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
       userLogHistory = UserLogHistory.fromJson(response.data!);
-      log("getUserLogHistory:: ${UserLogHistory.fromJson(response.data!)}");
     }
     change(null, status: RxStatus.success());
   }
@@ -255,8 +249,6 @@ class UserProfileController extends GetxController with StateMixin {
         "email": emailAddress,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
-
-      print("resendOtp ::${response.body}");
 
       if (response.status.hasError) {
         logErrorMessage(logName: "resendOtp", response: response);

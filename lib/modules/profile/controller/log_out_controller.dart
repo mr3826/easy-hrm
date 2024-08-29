@@ -43,19 +43,18 @@ class LogoutController extends GetxController {
             message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
         logSuccessMessage(logName: "logout", response: response);
-        if (Platform.isAndroid) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        } else if (Platform.isIOS) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        }
+        _clearSession();
       }
     } catch (e) {
       log(e.toString());
     }
     isLogoutLoading(false);
+  }
+
+  void _clearSession() {
+    GetStorage().remove(AppString.ACCESS_TOKEN);
+    GetStorage().remove(AppString.LOGGED_IN);
+    Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+    passwordController.clear();
   }
 }
