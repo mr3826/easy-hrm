@@ -129,25 +129,30 @@ class OrganisationView extends StatelessWidget {
   }
 
   _organisationLogoLayout(int index) {
-    print("image_org_logo::: ${ Get.find<UserProfileController>()
-        .organizationInfo
-        ?.getUserOrganizations
-        ?.data?[index].organization?.organizationSetting?.logoKey??""}");
     return CustomNetworkImage(
-      fileDir: "cover_images",
+      fileDir: "profile_images",
       height: 22,
       errorText: getFirstTwoLetterFromWord(Get.find<UserProfileController>()
+              .organizationInfo
+              ?.getUserOrganizations
+              ?.data?[index]
+              .organization
+              ?.name ??
+          ""),
+      orgId: Get.find<UserProfileController>()
           .organizationInfo
           ?.getUserOrganizations
-          ?.data?[index].organization?.name??""),
-
+          ?.data?[index]
+          .organization
+          ?.id,
+      isPublic: true,
       imgUrlKey: Get.find<UserProfileController>()
               .organizationInfo
               ?.getUserOrganizations
               ?.data?[index]
               .organization
               ?.organizationSetting
-              ?.logoKey ??
+              ?.logIconKey ??
           "",
       borderColor: Colors.transparent,
       logoUrl: Images.ORG,
@@ -166,6 +171,7 @@ class OrganisationView extends StatelessWidget {
                 ?.getOrganizationUserDetails
                 ?.organization
                 ?.orgId);
+    print("index ::: $index");
     isSelected.value = index ?? 0;
   }
 }

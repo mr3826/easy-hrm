@@ -383,7 +383,8 @@ String _getDaysForDuration({required String duration}) {
 /// - Returns "Full day" if duration equals 1, or days otherwise.
 
 String getLeaveDuration(String leaveDuration, String totalDuration) {
-  if (leaveDuration.isEmpty || totalDuration.isEmpty) return "";
+  print("getLeaveDuration ::: leaveDuration $leaveDuration totalDuration :: $totalDuration");
+  if (leaveDuration.isEmpty && totalDuration.isEmpty) return "";
 
   double leaveHours = double.tryParse(leaveDuration) ?? 0;
   double total = double.tryParse(totalDuration) ?? 0;

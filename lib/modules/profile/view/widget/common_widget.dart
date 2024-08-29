@@ -500,15 +500,16 @@ userImageLayout({double? height}) {
 organisationLogoLayout() {
   return CustomNetworkImage(
     height: AppLayout.getHeight(25),
-    fileDir: "cover_images",
+    fileDir: "profile_images",
     errorText: getFirstTwoLetterFromWord(Get.find<UserProfileController>()
             .userDetails
             ?.getOrganizationUserDetails
             ?.organization!
             .orgName ??
         ""),
+    isPublic: true,
     imgUrlKey:
-        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoKey}",
+        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
     borderColor: Colors.transparent,
     logoUrl: Images.ORG,
   );
