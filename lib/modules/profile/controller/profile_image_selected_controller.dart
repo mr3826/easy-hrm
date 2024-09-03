@@ -6,8 +6,7 @@ import '../../../../common/widget/error_message.dart';
 import '../../../../common/widget/success_message.dart';
 import '../../../../common/widget/warning_message.dart';
 import '../../../../utils/app_string.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 
 class PikedProfileImgController extends GetxController {
   //picked document path here
@@ -34,12 +33,7 @@ class PickedProfileFormStorage {
         filePath.value = result.files.single.path!;
         int size = await file.length();
         fileSize.value = size.toString();
-
         Get.find<UpdateProfileController>().getUploadPolicy(fileName: filePath.value.toString());
-
-
-
-
       } else {
         showWarningMessage(message: AppString.text_please_valid_photo.tr);
       }

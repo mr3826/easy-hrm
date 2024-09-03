@@ -4,10 +4,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
-
 import '../../../../../common/widget/custom_icon_shape_style.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../utils/app_style.dart';
@@ -426,7 +424,7 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.department_notification, color: iconColor),
+              image: Images.departmentNotification, color: iconColor),
           customSpacerWidth(width: 20),
           SizedBox(
             width: Get.width / 1.5,
@@ -483,7 +481,7 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.department_notification, color: iconColor),
+              image: Images.departmentNotification, color: iconColor),
           customSpacerWidth(width: 20),
           SizedBox(
             width: Get.width / 1.5,
@@ -548,7 +546,7 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.announment_notification, color: iconColor),
+              image: Images.announcementNotification, color: iconColor),
           customSpacerWidth(width: 20),
           SizedBox(
             width: Get.width / 1.5,
@@ -603,7 +601,7 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.department_notification, color: iconColor),
+              image: Images.departmentNotification, color: iconColor),
           customSpacerWidth(width: 20),
           SizedBox(
             width: Get.width / 1.5,
@@ -675,7 +673,7 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.leave_notification, color: iconColor),
+              image: Images.leaveNotification, color: iconColor),
           customSpacerWidth(width: 20),
           SizedBox(
             width: Get.width / 1.5,
@@ -730,7 +728,7 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.time_log_notification, color: iconColor),
+              image: Images.timeLogNotification, color: iconColor),
           customSpacerWidth(width: 20),
           SizedBox(
             width: Get.width / 1.5,
@@ -787,8 +785,8 @@ class NotificationViewLayout extends StatelessWidget {
         children: [
           customIconShapeStyle(
               image: isForLeaveApprover == true
-                  ? Images.leave_notification
-                  : Images.time_log_notification,
+                  ? Images.leaveNotification
+                  : Images.timeLogNotification,
               color: AppColor.primaryColor),
           customSpacerWidth(width: 20),
           SizedBox(
@@ -840,7 +838,7 @@ class NotificationViewLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customIconShapeStyle(
-              image: Images.announment_notification,
+              image: Images.announcementNotification,
               color: AppColor.primaryColor),
           customSpacerWidth(width: 20),
           SizedBox(

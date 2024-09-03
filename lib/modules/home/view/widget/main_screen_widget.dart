@@ -43,7 +43,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
     _navbarIcon(
         activeIcon: Images.timelineIconNav,
         text: AppString.text_time_line.tr,
-        imgUrl: Images.clock_nav),
+        imgUrl: Images.clockNav),
     _navbarIcon(
         activeIcon: Images.leaveIconNav,
         text: AppString.text_leave.tr,

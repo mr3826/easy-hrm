@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -110,10 +109,6 @@ Future otpVerificationLayout(context) {
     ),
   );
 }
-
-
-
-
 
 _verifyBtnLayout({verifyAction, closeAction}) {
   return Padding(

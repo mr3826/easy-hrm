@@ -178,15 +178,10 @@ class UserProfileController extends GetxController with StateMixin {
 
     isLoading(true);
     try {
-      final response = await NetworkClient().postRequest(Api.CHANGE_MAIL,
-
-
-      {
+      final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
-      }
-
-      );
+      });
 
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
@@ -195,7 +190,6 @@ class UserProfileController extends GetxController with StateMixin {
                 "Some Error occur!");
       } else {
         logSuccessMessage(logName: "changeMail", response: response);
-        // SuccessModel value = SuccessModel.fromJson(response.body);
         validation = true;
       }
     } catch (e) {
@@ -207,7 +201,6 @@ class UserProfileController extends GetxController with StateMixin {
 
   submitVerificationCode({required String verificationCode}) async {
     isVerificationApiLoading(true);
-    print("submitVerificationCode called");
     try {
       final response =
           await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
@@ -226,7 +219,6 @@ class UserProfileController extends GetxController with StateMixin {
         changeEmailController.clear();
         Get.back(canPop: false);
         Get.back(canPop: false);
-        //  switchOrganisationDataChange();
         if (Platform.isAndroid) {
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LOGGED_IN);

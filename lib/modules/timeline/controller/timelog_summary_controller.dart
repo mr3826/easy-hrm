@@ -75,10 +75,4 @@ class TimelineSummaryController extends GetxController with StateMixin {
     isMonthlySummaryDataLoading(false);
   }
 
-
-
-
-
-
-
 }

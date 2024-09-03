@@ -9,7 +9,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
 Widget projectViewBtnSheetAppbar({required  DateTime date, required String duration, required Color bgColor}) {
-  print("date1 :: $date");
   return Padding(
     padding: const EdgeInsets.all(2.0),
     child: Container(

@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -205,7 +204,7 @@ class LeaveRecordDetails extends StatelessWidget {
               childForSaveBtn: Obx(() => _cancelLeaveProgress()),
               drcText: "",
               iconWidget: customSvgImage(
-                  imageUrl: Images.cancel_leave, height: 60, width: 60),
+                  imageUrl: Images.cancelLeave, height: 60, width: 60),
               titleText: AppString.cancelLeaveText.tr,
               subText: AppString.cancelLeaveNotificationText.tr,
               iconBgColor: AppColor.cardColor,
@@ -268,7 +267,7 @@ class LeaveRecordDetails extends StatelessWidget {
             childForSaveBtn: Obx(() => _cancelLeaveProgress()),
             drcText: "",
             iconWidget: customSvgImage(
-                imageUrl: Images.cancel_leave, height: 60, width: 60),
+                imageUrl: Images.cancelLeave, height: 60, width: 60),
             titleText: AppString.cancelLeaveText.tr,
             subText: AppString.cancelLeaveNotificationText.tr,
             iconBgColor: AppColor.cardColor,

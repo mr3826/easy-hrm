@@ -101,7 +101,7 @@ class DepartmentHistory extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSvgImage(
-                    imageUrl: Images.department_notification,
+                    imageUrl: Images.departmentNotification,
                     color: AppColor.normalTextColor,
                     height: 18,
                     width: 18),
@@ -161,14 +161,13 @@ class DepartmentHistory extends StatelessWidget {
           radius: 8,
           backgroundColor: AppColor.pureOrange,
           child: customSvgImage(
-              imageUrl: Images.department_notification,
+              imageUrl: Images.departmentNotification,
               color: AppColor.cardColor,
               height: 10),
         ));
   }
 
   String? _getEmploymentDate(String? date) {
-    print(date);
     if (date != null) {
       return DateFormat('dd MMM, yyyy').format(DateTime.parse(date));
     } else {
