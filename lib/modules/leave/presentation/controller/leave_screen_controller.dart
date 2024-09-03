@@ -114,8 +114,7 @@ class LeaveScreenController extends GetxController with StateMixin {
 
 /// Updates data across different controllers.
 void updateData() {
-  final LeaveScreenController leaveScreenController =
-      Get.find<LeaveScreenController>();
+  final LeaveScreenController leaveScreenController = Get.find<LeaveScreenController>();
   leaveScreenController
     ..getLeaveSummaryForDashboard()
     ..getLeaveDetailsByDate();

@@ -46,7 +46,7 @@ class SplashController extends GetxController {
   }
 
   chooseScreen() async {
-    final box = GetStorage();
+    GetStorage box = GetStorage();
     if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
         box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
       Get.offNamed(Routes.ONBOARD_SCRREN);
@@ -62,8 +62,7 @@ class SplashController extends GetxController {
 
     // Specify the target date and time
 
-    DateTime targetDate =
-        JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
+    DateTime targetDate = JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
 
     // Calculate the difference
     Duration difference = targetDate.difference(now);
@@ -83,12 +82,9 @@ class SplashController extends GetxController {
         return false;
       } else {
         logSuccessMessage(logName: "refresh token", response: response);
-        GetStorage().write(AppString.ID_TOKEN,
-            SignInResponse.fromJson(response.body).data?.idToken ?? "");
-        GetStorage().write(AppString.ACCESS_TOKEN,
-            SignInResponse.fromJson(response.body).data?.accessToken ?? "");
-        GetStorage().write(AppString.REFRESH_TOKEN,
-            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
+        GetStorage().write(AppString.ID_TOKEN, SignInResponse.fromJson(response.body).data?.idToken ?? "");
+        GetStorage().write(AppString.ACCESS_TOKEN, SignInResponse.fromJson(response.body).data?.accessToken ?? "");
+        GetStorage().write(AppString.REFRESH_TOKEN, SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
         return true;
       }
     } catch (e) {

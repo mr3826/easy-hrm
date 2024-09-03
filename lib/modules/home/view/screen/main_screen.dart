@@ -47,9 +47,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     /// initialController controller
     _initialController();
-
-    print("isValue.isSubscriptionExpired :: ${isValue.isSubscriptionExpired}");
-
     return WillPopScope(
       onWillPop: () => appExitChecker,
       child: Scaffold(

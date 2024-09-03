@@ -171,7 +171,6 @@ class OrganisationView extends StatelessWidget {
                 ?.getOrganizationUserDetails
                 ?.organization
                 ?.orgId);
-    print("index ::: $index");
     isSelected.value = index ?? 0;
   }
 }

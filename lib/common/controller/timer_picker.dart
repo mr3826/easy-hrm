@@ -86,14 +86,12 @@ _openClock() {
 }
 
 _hrs() {
-  List<String> hrsList =
-      List.generate(13, (element) => element < 10 ? "0$element" : "$element");
+  List<String> hrsList = List.generate(13, (element) => element < 10 ? "0$element" : "$element");
   return SizedBox(
     height: AppLayout.getHeight(200),
     width: AppLayout.getWidth(40),
     child: Center(
-      child: CustomWheelPickerHrs(
-          list: hrsList, controller: Get.find<DateTimeController>()),
+      child: CustomWheelPickerHrs(list: hrsList, controller: Get.find<DateTimeController>()),
     ),
   );
 }

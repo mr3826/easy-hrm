@@ -11,7 +11,6 @@ Widget timerTextField(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
 
     child: TextField(
-
       readOnly: true,
       onTap: () => dobIconAction(),
       decoration: InputDecoration(

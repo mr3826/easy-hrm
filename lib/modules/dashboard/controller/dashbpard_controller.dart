@@ -58,11 +58,9 @@ class DashboardController extends GetxController with StateMixin {
   }
 
   getUpComingInfoForDashboard() async {
-    print("getUpComingInfoForDashboard called");
     change(null, status: RxStatus.loading());
     final response = await NetworkClient()
         .graphRequest(queryString: upcommingLeaveForDashboardQuery);
-    print("getUpComingInfoForDashboard :::: ${response.data}");
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);

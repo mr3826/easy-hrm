@@ -31,11 +31,11 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ONBOARD_SCRREN,
-      page: () => OnboardScreen(),
+      page: () => const OnboardScreen(),
     ),
     GetPage(
       name: _Paths.TIMER_SCREEN,
-      page: () => TimerScreen(),
+      page: () => const TimerScreen(),
     ),
     GetPage(
       name: _Paths.SIGN_IN_SCREEN,
@@ -65,7 +65,7 @@ class AppPages {
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,
-      page: () =>  SubscriptionScreen(),
+      page: () =>  const SubscriptionScreen(),
     ),
 
     GetPage(
@@ -81,7 +81,7 @@ class AppPages {
     GetPage(
       name: _Paths.LEAVE_RECORD_SCREEN,
       transition: Transition.size,
-      page: () => LeaveRecordScreen(),
+      page: () => const LeaveRecordScreen(),
     ),
     GetPage(
       name: _Paths.NOTIFICATION_SCREEN,
@@ -91,12 +91,12 @@ class AppPages {
     GetPage(
       name: _Paths.HOME_SCREEN,
       transition: Transition.size,
-      page: () => Dashboard(),
+      page: () => const Dashboard(),
     ),
     GetPage(
       name: _Paths.PROFILE_SCREEN,
       transition: Transition.size,
-      page: () =>  ProfileScreen(),
+      page: () =>  const ProfileScreen(),
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE_SCREEN,

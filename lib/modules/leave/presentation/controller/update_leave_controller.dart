@@ -13,12 +13,6 @@ import 'file_upload_controller.dart';
 import 'leave_screen_controller.dart';
 
 class UpDateLeaveController extends GetxController with StateMixin {
-  // @override
-  // void onInit() async {
-  //   await getLeaveTypeDropdown();
-  //   super.onInit();
-  // }
-
   String leaveId = '';
   String leaveTypeId = '';
   RxBool isNoteRequired = false.obs;
@@ -156,7 +150,6 @@ class UpDateLeaveController extends GetxController with StateMixin {
         "leave_type_id": null
       }
     });
-    print("getLeaveTypeDropdown :::: ${response.data}");
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {

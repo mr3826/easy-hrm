@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -548,6 +547,7 @@ class TimelineController extends GetxController with StateMixin {
             title: '',
             description: objData);
       }).toList();
+
       timelogList?.addAll(
           calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
                 //todo

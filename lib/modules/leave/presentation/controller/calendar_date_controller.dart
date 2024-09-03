@@ -1,9 +1,6 @@
-
 import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../../../common/controller/date_time_controller.dart';
 
 class DateController extends GetxController {

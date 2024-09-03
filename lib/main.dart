@@ -12,6 +12,7 @@ void main() async {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -22,7 +23,6 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: appTheme,
-
         translations: Internationalization(),
         locale: GetStorage().read("languageCode") != null
             ? Locale(GetStorage().read("languageCode"),

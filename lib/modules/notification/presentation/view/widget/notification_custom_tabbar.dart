@@ -39,7 +39,7 @@ class NotificationTabBar extends StatelessWidget {
   ///
   /// This method creates a container with a border and uses a [ListView.builder]
   /// to build the tab items. Each item represents a category of notifications.
-  ///
+
   Widget _buildTabBar(RxInt currentIndex, NotificationController controller) {
     return Container(
       height: AppLayout.getHeight(50),
@@ -126,10 +126,9 @@ class NotificationTabBar extends StatelessWidget {
     );
   }
   /// Reloads the notifications by updating the index and fetching new data.
-  ///
   /// This method resets the tab bar index and offsets, then calls methods
   /// to fetch new and seen notifications from the [NotificationController]
-  /// 
+
   Future<void> _reloadPage() async {
     Get.find<NotificationController>()
       ..notificationTabBarIndex.value = 0

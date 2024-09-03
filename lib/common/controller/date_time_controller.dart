@@ -26,8 +26,6 @@ class DateTimeController extends GetxController {
   RxBool isErrorOccurred = false.obs;
 
   void getTime() {
-    print("gettime called");
-
     if (isInTimeClicked.isTrue) {
       //only time
       pickedInTime.value =
@@ -58,10 +56,8 @@ class DateTimeController extends GetxController {
   }
 
   void getApplyLeaveTime() {
-    print("getApplyLeaveTime called");
     if (isInTimeClicked.isTrue) {
       //only time
-      print("if called");
       pickedInTime.value =
           "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
 
@@ -77,11 +73,8 @@ class DateTimeController extends GetxController {
                 "${Get.find<DateTimeController>().requestedInDate.value} ${Get.find<DateTimeController>().pickedInTime.value.replaceAll(" ", "")}$clockHrsFormat")
             .toString();
       }
-      print("request in date:::${requestedInDate.value}");
     } else {
       //only time
-
-      print("Else called");
       pickedOutTime.value =
           "${selectedInputHrs.padLeft(2, '0')}:${selectedInputMins.padLeft(2, '0')} $clockHrsFormat";
       //total datetime
@@ -96,7 +89,6 @@ class DateTimeController extends GetxController {
                 "${Get.find<DateTimeController>().requestedOutDate.value} ${Get.find<DateTimeController>().pickedOutTime.value.replaceAll(" ", "")}$clockHrsFormat")
             .toString();
       }
-      print("request out date:::${requestedOutDate.value}");
     }
 
     isInTimeClicked.value = !isInTimeClicked.value;

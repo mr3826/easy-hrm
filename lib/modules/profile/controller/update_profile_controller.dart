@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -98,8 +97,6 @@ class UpdateProfileController extends GetxController {
       }
     });
 
-    print("get policy ::: $response");
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!);
     } else {
@@ -131,7 +128,6 @@ class UpdateProfileController extends GetxController {
                 "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
-      print(value.statusCode);
       isFileUploadedSuccessfully.value = true;
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);

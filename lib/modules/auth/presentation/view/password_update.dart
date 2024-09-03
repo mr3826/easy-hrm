@@ -31,7 +31,7 @@ class PasswordUpdateScreen extends StatelessWidget {
                   const Spacer(),
 
                   ///Password updated image
-                  imageLayout(url: Images.passwordResetSuccessfull),
+                  imageLayout(url: Images.passwordResetSuccessfully),
                   customSpacerHeight(height: 50),
 
                   ///Title text
