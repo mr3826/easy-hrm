@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -20,6 +22,7 @@ import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     if (Get.isRegistered()) {
@@ -50,7 +53,7 @@ class TimelineScreen extends GetView<TimelineController> {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
     return Padding(
-      padding: const EdgeInsets.only(left: 35.0, bottom: 18),
+      padding: EdgeInsets.only(left: 35.0, bottom: Platform.isAndroid ? 18 : 0, top:Platform.isAndroid ? 0 : 40),
       child: Row(
         children: [
           controller.isRunning.value
