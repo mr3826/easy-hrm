@@ -18,12 +18,13 @@ class ConnectivityController extends GetxController {
   @override
   void onInit() {
     _connectivity.onConnectivityChanged.listen(
-        (connectivityResult) => _updateConnectivity(connectivityResult.first));
+        (List<ConnectivityResult> connectivityResult) =>
+            _updateConnectivity(connectivityResult));
     super.onInit();
   }
 
-  void _updateConnectivity(ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none) {
+  void _updateConnectivity(List<ConnectivityResult> connectivityResult) {
+    if (connectivityResult.contains(ConnectivityResult.none)) {
       Get.to(() => const NetworkErrorPage());
       isDialogIsOpened(true);
     } else {
