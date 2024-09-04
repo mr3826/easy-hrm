@@ -72,7 +72,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
       }
     });
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "updateLeave");
     } else {
       leaveId = '';
       isNoteRequired.value = false;
@@ -105,7 +105,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
     } else {
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
       uploadFile(
@@ -151,7 +151,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
       }
     });
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveTypeDropdown");
     } else {
       leaveTypeDropdown = LeaveTypeDropdown.fromJson(response.data!);
     }

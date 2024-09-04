@@ -114,7 +114,7 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().graphRequest(queryString: getUserProfileQuery);
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUserProfile");
     } else {
       userDetails = UserDetails.fromJson(response.data!);
     }
@@ -128,7 +128,7 @@ class UserProfileController extends GetxController with StateMixin {
     );
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getEmploymentInfo");
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
     }
@@ -141,7 +141,7 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().graphRequest(queryString: userLogHistoryQuery);
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUserLogHistory");
     } else {
       userLogHistory = UserLogHistory.fromJson(response.data!);
     }
@@ -263,7 +263,7 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().graphRequest(queryString: organizationInfoQuery);
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrganizationInfo");
     } else {
       organizationInfo = OrganizationInfoDetails.fromJson(response.data!);
     }

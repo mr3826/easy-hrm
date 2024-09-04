@@ -70,7 +70,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "saveTimeEntry");
       return false;
     } else {
       startOrEndTimerResponse =
@@ -108,7 +108,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "saveTimeEntry");
     } else {
       showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
       timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
@@ -158,7 +158,7 @@ class TimelineController extends GetxController with StateMixin {
         }
       });
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "createManualEntry");
       } else {
         showSuccessMessage(message: "Time entry created successfully");
         taskId.value = "";
@@ -205,7 +205,7 @@ class TimelineController extends GetxController with StateMixin {
       log(response.toString(), error: 0);
 
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "updateTimelineLogDetails");
       } else {
         descriptionController.clear();
         timeLineID = '';
@@ -231,7 +231,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getProjectDropdown");
     } else {
       projectDropDownResponse =
           ProjectDropDownResponse.fromJson(response.data!);
@@ -261,7 +261,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "removeTimeEntry");
       isTimelogEntryOrRemoveLoading(false);
       return false;
     } else {
@@ -389,7 +389,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (responseForCalendar.hasException) {
-      ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
+      ExceptionHelper.errorHandler(exception: responseForCalendar.exception!,methodName: "getCalendarTimelineDataByDate");
     } else {
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {

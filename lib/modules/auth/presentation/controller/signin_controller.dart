@@ -98,14 +98,14 @@ class SignInController extends GetxController with StateMixin {
       final response = await NetworkClient()
           .graphRequest(queryString: getOrgSubscriptionInfoQuery);
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrgSubscriptionInfo");
       } else {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
         checkIfSubscription();
       }
     } catch (ex) {
-      print("getOrgSubscriptionInfo  ::::: $ex");
+      log("getOrgSubscriptionInfo  ::::: $ex");
     }
   }
 

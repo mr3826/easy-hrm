@@ -86,7 +86,7 @@ class TimeCounterController extends GetxController {
         await NetworkClient().graphRequest(queryString: timerStatusQuery);
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "timerStatus");
     } else {
       TimerResponse timerResponse = TimerResponse.fromJson(response.data!);
       if (timerResponse.checkStartOrStopTimeline != null) {
