@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -205,7 +204,7 @@ class LeaveRecordDetails extends StatelessWidget {
               childForSaveBtn: Obx(() => _cancelLeaveProgress()),
               drcText: "",
               iconWidget: customSvgImage(
-                  imageUrl: Images.cancel_leave, height: 60, width: 60),
+                  imageUrl: Images.cancelLeave, height: 60, width: 60),
               titleText: AppString.cancelLeaveText.tr,
               subText: AppString.cancelLeaveNotificationText.tr,
               iconBgColor: AppColor.cardColor,
@@ -268,7 +267,7 @@ class LeaveRecordDetails extends StatelessWidget {
             childForSaveBtn: Obx(() => _cancelLeaveProgress()),
             drcText: "",
             iconWidget: customSvgImage(
-                imageUrl: Images.cancel_leave, height: 60, width: 60),
+                imageUrl: Images.cancelLeave, height: 60, width: 60),
             titleText: AppString.cancelLeaveText.tr,
             subText: AppString.cancelLeaveNotificationText.tr,
             iconBgColor: AppColor.cardColor,
@@ -383,7 +382,8 @@ String _getDaysForDuration({required String duration}) {
 /// - Returns "Full day" if duration equals 1, or days otherwise.
 
 String getLeaveDuration(String leaveDuration, String totalDuration) {
-  if (leaveDuration.isEmpty || totalDuration.isEmpty) return "";
+  print("getLeaveDuration ::: leaveDuration $leaveDuration totalDuration :: $totalDuration");
+  if (leaveDuration.isEmpty && totalDuration.isEmpty) return "";
 
   double leaveHours = double.tryParse(leaveDuration) ?? 0;
   double total = double.tryParse(totalDuration) ?? 0;

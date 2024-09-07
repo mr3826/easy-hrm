@@ -211,17 +211,17 @@ String getDayName(String date) {
 
 List<Map<String, dynamic>> onboardInfoList = [
   {
-    "image": Images.time_log_on,
+    "image": Images.timeLogOn,
     "title": AppString.text_track_your_time.tr,
     "description": AppString.text_with_the_help_etc.tr,
   },
   {
-    "image": Images.leave_on,
+    "image": Images.leaveOn,
     "title": AppString.text_manage_your_leave.tr,
     "description": AppString.text_leave_management_etc.tr,
   },
   {
-    "image": Images.employee_on,
+    "image": Images.employeeOn,
     "title": AppString.text_stitch_org.tr,
     "description": AppString.text_there_is_not_etc.tr,
   },
@@ -420,9 +420,9 @@ List _selectedDay = [
 ];
 
 List _selectedDayIcon = [
-  Images.full_day_lav,
-  Images.half_day_lav,
-  Images.last_half_day_lav
+  Images.fullDayLav,
+  Images.halfDayLav,
+  Images.lastHalfDayLav
 ];
 
 List _selectedBeforeDayAndAfterDay = [

@@ -47,7 +47,7 @@ class TimelineSummaryController extends GetxController with StateMixin {
       }
     });
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getTimelineByMonth");
     } else {
       print(response.data);
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
@@ -67,10 +67,11 @@ class TimelineSummaryController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getTimelineByMonth");
     } else {
       timelogDetailsByMonth = TimelogDetailsByMonth.fromJson(response.data!);
     }
     isMonthlySummaryDataLoading(false);
   }
+
 }

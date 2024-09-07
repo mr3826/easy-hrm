@@ -1,22 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
-import 'package:payrun_mobile/modules/profile/view/widget/expanded_text_layout.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-
 import '../../../../../utils/utils.dart';
 
 Widget leaveLayout() {
+
   return SizedBox(
     height: AppLayout.getHeight(120),
     width: double.infinity,
@@ -50,6 +47,7 @@ Widget leaveLayout() {
       ),
     ),
   );
+
 }
 
 _takenLeave() {
@@ -152,6 +150,7 @@ _divider() {
     color: AppColor.cardColor,
   );
 }
+
 
 noDataFoundLayout() {
   return SizedBox(

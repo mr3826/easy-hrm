@@ -77,7 +77,6 @@ void _editProfileRoute() {
   controller.phone.value = "";
   controller.emergencyNumber.value = "";
   controller.description.value = "";
-
   Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
 
 }

@@ -67,7 +67,7 @@ class _NetworkErrorPageState extends State<NetworkErrorPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(Images.network_error),
+            SvgPicture.asset(Images.networkError),
             customSpacerHeight(height: 20),
             Text(
               AppString.no_internet_title_text,
@@ -96,7 +96,7 @@ class _NetworkErrorPageState extends State<NetworkErrorPage> {
                     color: AppColor.primaryColor,
                     borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.symmetric(vertical: AppLayout.getHeight(8)),
-                child: isLoading == false
+                child: (isLoading == false)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

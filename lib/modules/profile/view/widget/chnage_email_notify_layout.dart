@@ -10,7 +10,6 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
-import 'action_layout_widget.dart';
 
 class ChangeEmailNotifyLayout extends StatelessWidget {
   ChangeEmailNotifyLayout({super.key});

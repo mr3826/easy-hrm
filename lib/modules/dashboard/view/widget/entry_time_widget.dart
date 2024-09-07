@@ -71,7 +71,7 @@ _addTimeEntry(BuildContext context) {
         alignment: Alignment.center,
         children: [
           SvgPicture.asset(
-            Images.add_time_entry,
+            Images.addTimeEntry,
           ),
           Positioned(
             bottom:
@@ -99,7 +99,7 @@ _startingTimeOpen({required time, context}) {
     child: Stack(
       children: [
         customSvgImage(
-            imageUrl: Images.start_time_open,
+            imageUrl: Images.startTimeOpen,
             height: MediaQuery.of(context).size.height / 7,
             width: MediaQuery.of(context).size.width / 2.5),
         Positioned(
@@ -133,7 +133,7 @@ _startingTime(context) {
       _checkIfSubscription();
     },
     child: customSvgImage(
-        imageUrl: Images.start_time,
+        imageUrl: Images.startTime,
         height: MediaQuery.of(context).size.height / 7,
         width: MediaQuery.of(context).size.width / 2.5),
   );

@@ -13,12 +13,6 @@ import 'file_upload_controller.dart';
 import 'leave_screen_controller.dart';
 
 class UpDateLeaveController extends GetxController with StateMixin {
-  // @override
-  // void onInit() async {
-  //   await getLeaveTypeDropdown();
-  //   super.onInit();
-  // }
-
   String leaveId = '';
   String leaveTypeId = '';
   RxBool isNoteRequired = false.obs;
@@ -78,7 +72,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
       }
     });
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "updateLeave");
     } else {
       leaveId = '';
       isNoteRequired.value = false;
@@ -111,7 +105,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
     } else {
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
       uploadFile(
@@ -156,9 +150,8 @@ class UpDateLeaveController extends GetxController with StateMixin {
         "leave_type_id": null
       }
     });
-    print("getLeaveTypeDropdown :::: ${response.data}");
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveTypeDropdown");
     } else {
       leaveTypeDropdown = LeaveTypeDropdown.fromJson(response.data!);
     }

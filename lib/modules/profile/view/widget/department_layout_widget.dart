@@ -31,7 +31,7 @@ Widget departmentLayout(BuildContext? context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             customSvgImage(
-                imageUrl: Images.department_notification,
+                imageUrl: Images.departmentNotification,
                 color: AppColor.primaryColor,
                 height: 25,
                 width: 25),

@@ -60,8 +60,6 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        print(
-            "leave ::: ${controller.leaveRecordList?[monthIndex].data?[index].leaveDetails}");
         Color itemColor =
             index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
         return _infoLayoutView(
@@ -103,19 +101,20 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                     : Files()
               ],
               leaveDetails: [
-                (controller.leaveRecordList?[monthIndex].data?[index].leaveDetails !=
-                    null &&
-                    controller.leaveRecordList![monthIndex].data![index]
-                        .leaveDetails!.isNotEmpty)
-                    ?
-                LeaveDetails(
-                  scheduleHour: controller.leaveRecordList?[monthIndex]
-                          .data?[index].leaveDetails?[0].scheduleHour ??
-                      "",
-                  leaveHour: controller.leaveRecordList?[monthIndex]
-                          .data?[index].leaveDetails?[0].leaveHour ??
-                      "",
-                ):LeaveDetails()
+                (controller.leaveRecordList?[monthIndex].data?[index]
+                                .leaveDetails !=
+                            null &&
+                        controller.leaveRecordList![monthIndex].data![index]
+                            .leaveDetails!.isNotEmpty)
+                    ? LeaveDetails(
+                        scheduleHour: controller.leaveRecordList?[monthIndex]
+                                .data?[index].leaveDetails?[0].scheduleHour ??
+                            "",
+                        leaveHour: controller.leaveRecordList?[monthIndex]
+                                .data?[index].leaveDetails?[0].leaveHour ??
+                            "",
+                      )
+                    : LeaveDetails()
               ],
               leaveType: LeaveType(
                 isAttachDocumentRequired: controller
@@ -229,8 +228,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
       leaveDate = dateMonthFormatFromDatetime(
           leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z");
     } else {
-      leaveDate =
-          "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
+      leaveDate = "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
     }
     return Row(
       children: [

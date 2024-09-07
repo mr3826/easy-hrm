@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io' show Platform, exit;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
@@ -8,7 +7,6 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
 import '../../../routes/app_pages.dart';
 
 class LogoutController extends GetxController {
@@ -43,19 +41,18 @@ class LogoutController extends GetxController {
             message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
         logSuccessMessage(logName: "logout", response: response);
-        if (Platform.isAndroid) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        } else if (Platform.isIOS) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        }
+        _clearSession();
       }
     } catch (e) {
       log(e.toString());
     }
     isLogoutLoading(false);
+  }
+
+  void _clearSession() {
+    GetStorage().remove(AppString.ACCESS_TOKEN);
+    GetStorage().remove(AppString.LOGGED_IN);
+    Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+    passwordController.clear();
   }
 }

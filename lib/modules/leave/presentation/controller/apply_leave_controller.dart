@@ -135,7 +135,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
     } else {
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
       uploadFile(
@@ -165,34 +165,8 @@ class ApplyLeaveController extends GetxController with StateMixin {
             "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
-      print(value.statusCode);
       isFileUploadedSuccessfully.value = true;
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);
   }
-
-  // getUploadPolicy({required String fileName}) async {
-  //   try {
-  //     isUploadPolicyLoading(true);
-  //
-  //     // Construct the filename with a timestamp to avoid conflicts
-  //     String formattedFileName =
-  //         "${DateTime.now().millisecondsSinceEpoch}.${fileName.split('.').last}";
-  //
-  //     // Fetch the organization ID from storage
-  //     String? organizationId = GetStorage().read(AppString.ORGANIZATION_ID);
-  //
-  //     Map<String, dynamic> inputData = {
-  //       "sub_folder_name": organizationId,
-  //       "filename": formattedFileName,
-  //       "directive": "Files"
-  //     };
-  //
-  //     // Make the GraphQL request to get the upload policy
-  //     isFileUploadedSuccessfully.value =
-  //         await _leaveRemoteDataSource.getUploadPolicy(inputData, fileName);
-  //   } finally {
-  //     isUploadPolicyLoading(false);
-  //   }
-  // }
 }

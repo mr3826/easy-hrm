@@ -175,7 +175,7 @@ class SignInScreen extends GetView<SignInController> {
       height: height,
       width: width,
       child: SvgPicture.asset(
-        Images.app_logo,
+        Images.appLogo,
         fit: BoxFit.fitHeight,
       ),
     );

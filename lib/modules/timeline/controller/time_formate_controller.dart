@@ -1,4 +1,3 @@
-
 import 'package:intl/intl.dart';
 
 String timeFormatTo24h(DateTime dateTime) {

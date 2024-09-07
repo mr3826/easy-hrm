@@ -9,15 +9,20 @@ class CustomNetworkImage extends StatelessWidget {
   final double height;
   final Color? borderColor;
   final bool? isDocumentLayout;
+  final bool? isPublic;
   final String errorText;
   final String? fileDir;
   final String? profileImageKey;
+  final  String? orgId;
+
 
   const CustomNetworkImage({
     super.key,
     this.height = 32,
     required this.imgUrlKey,
     this.borderColor,
+    this.isPublic,
+    this.orgId,
     this.logoUrl,
     this.profileImageKey,
     required this.errorText,
@@ -27,7 +32,12 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String url = urlBuilder(imgUrlKey: imgUrlKey,fileDir: fileDir,profileImageKey: profileImageKey);
+    String url = urlBuilder(imgUrlKey: imgUrlKey,fileDir: fileDir,profileImageKey: profileImageKey,isPublic: isPublic??false,orgId: orgId);
+
+    print("urlBuilder ::: $url");
+
+
+
     var radius = height;
     return isDocumentLayout != true
         ? circleImageLayout(

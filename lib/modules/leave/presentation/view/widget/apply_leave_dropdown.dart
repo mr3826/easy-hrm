@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/enum.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
@@ -120,7 +119,4 @@ getIconAccordingToLeaveType(String? leaveName) {
     default:
       return customSvgImage(imageUrl: Images.leaveImage8);
   }
-
-
-
 }

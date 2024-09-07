@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -71,7 +70,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "saveTimeEntry");
       return false;
     } else {
       startOrEndTimerResponse =
@@ -109,7 +108,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "saveTimeEntry");
     } else {
       showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
       timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
@@ -159,7 +158,7 @@ class TimelineController extends GetxController with StateMixin {
         }
       });
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "createManualEntry");
       } else {
         showSuccessMessage(message: "Time entry created successfully");
         taskId.value = "";
@@ -206,7 +205,7 @@ class TimelineController extends GetxController with StateMixin {
       log(response.toString(), error: 0);
 
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "updateTimelineLogDetails");
       } else {
         descriptionController.clear();
         timeLineID = '';
@@ -232,7 +231,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getProjectDropdown");
     } else {
       projectDropDownResponse =
           ProjectDropDownResponse.fromJson(response.data!);
@@ -262,7 +261,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "removeTimeEntry");
       isTimelogEntryOrRemoveLoading(false);
       return false;
     } else {
@@ -390,7 +389,7 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (responseForCalendar.hasException) {
-      ExceptionHelper.errorHandler(exception: responseForCalendar.exception!);
+      ExceptionHelper.errorHandler(exception: responseForCalendar.exception!,methodName: "getCalendarTimelineDataByDate");
     } else {
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
@@ -548,6 +547,7 @@ class TimelineController extends GetxController with StateMixin {
             title: '',
             description: objData);
       }).toList();
+
       timelogList?.addAll(
           calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
                 //todo

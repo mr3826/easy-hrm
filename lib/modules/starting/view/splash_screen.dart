@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
   }
 
   _logoLayout() {
-    return SvgPicture.asset(Images.splash_logo);
+    return SvgPicture.asset(Images.splashLogo);
   }
 }
 

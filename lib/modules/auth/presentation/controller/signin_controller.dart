@@ -51,10 +51,6 @@ class SignInController extends GetxController with StateMixin {
     try {
       Response response = await NetworkClient()
           .postRequest(Api.LOGIN, {"email": email, "password": password});
-
-
-      print("login_res ::: ${response.body}");
-
       if (response.hasError) {
         logErrorMessage(logName: "login", response: response);
 
@@ -101,16 +97,15 @@ class SignInController extends GetxController with StateMixin {
     try {
       final response = await NetworkClient()
           .graphRequest(queryString: getOrgSubscriptionInfoQuery);
-      print("getOrgSubscriptionInfo ::::: $response");
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrgSubscriptionInfo");
       } else {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
         checkIfSubscription();
       }
     } catch (ex) {
-      print("getOrgSubscriptionInfo  ::::: $ex");
+      log("getOrgSubscriptionInfo  ::::: $ex");
     }
   }
 
