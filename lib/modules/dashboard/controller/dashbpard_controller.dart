@@ -28,7 +28,7 @@ class DashboardController extends GetxController with StateMixin {
         .graphRequest(queryString: profileInfoForDashboardQuery);
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getProfileInfoForDashboard");
     } else {
       profileSummaryForDashboard =
           ProfileSummaryForDashboard.fromJson(response.data!);
@@ -48,7 +48,7 @@ class DashboardController extends GetxController with StateMixin {
         .graphRequest(queryString: timelineSummaryInfoDashboardQuery);
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getMonthlyTimelineInfoForDashboard");
     } else {
       timelineSummaryDashboard =
           TimelineSummaryDashboard.fromJson(response.data!);
@@ -63,7 +63,7 @@ class DashboardController extends GetxController with StateMixin {
         .graphRequest(queryString: upcommingLeaveForDashboardQuery);
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUpComingInfoForDashboard");
     } else {
       upcommingLeaveDashboard =
           UpcommingLeaveDashboard.fromJson(response.data!);

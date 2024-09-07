@@ -6,12 +6,12 @@ import '../utils/app_string.dart';
 class ExceptionHelper {
   ExceptionHelper._();
 
-  static errorHandler({required OperationException exception}) async {
+  static errorHandler({required OperationException exception,required String methodName}) async {
     if (exception.graphqlErrors.isNotEmpty) {
-      log("Method: ${exception.graphqlErrors[0].path} Code:${exception.graphqlErrors[0].extensions?['code']}",
-          error: exception.graphqlErrors[0].message);
+      log("Method Name ::: $methodName : Method: ${exception.graphqlErrors[0].path} Code:${exception.graphqlErrors[0].extensions?['code']}", error: exception.graphqlErrors[0].message);
       showErrorMessage(message: exception.graphqlErrors[0].message);
     } else {
+      log("$methodName ::: ",error: "$exception");
       showErrorMessage(message: AppString.error_text);
     }
   }

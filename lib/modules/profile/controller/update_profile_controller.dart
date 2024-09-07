@@ -32,7 +32,7 @@ class UpdateProfileController extends GetxController {
         variables: {"inputData": variables});
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "updateUserProfile");
     } else {
       Get.find<UserProfileController>().getUserProfile();
       Get.back();
@@ -98,7 +98,7 @@ class UpdateProfileController extends GetxController {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
     } else {
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
       uploadFile(

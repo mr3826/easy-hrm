@@ -30,8 +30,7 @@ class LeaveRemoteDataSource {
       );
 
       if (response.hasException) {
-        log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveRecordList");
         return null;
       }
 
@@ -50,7 +49,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveSummaryForDashboard");
         return null;
       }
 
@@ -74,7 +73,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveRecordByDate");
         return null;
       }
 
@@ -97,7 +96,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getWorkShift");
         return null;
       }
 
@@ -117,7 +116,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "cancelLeave");
         return false;
       }
 
@@ -137,7 +136,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "removeLeave");
         return false;
       }
 
@@ -160,7 +159,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveTypeDropdown");
         return null;
       }
       return LeaveTypeDropdown.fromJson(response.data!);
@@ -177,7 +176,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "applyLeave");
         return false;
       }
 
@@ -197,7 +196,7 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!);
+        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
         return false;
       }
 

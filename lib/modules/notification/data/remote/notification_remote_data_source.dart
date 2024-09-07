@@ -17,10 +17,11 @@ class NotificationRemoteDataSource {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getNewNotification");
     } else {
       return NotificationResponse.fromJson(response.data!);
     }
+    return null;
   }
 
   Future<NotificationResponse?> getSeenNotification(
@@ -32,10 +33,11 @@ class NotificationRemoteDataSource {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getSeenNotification");
     } else {
       return NotificationResponse.fromJson(response.data!);
     }
+    return null;
   }
 
   Future<bool> markNotificationAsSeen(
@@ -46,7 +48,7 @@ class NotificationRemoteDataSource {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!);
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "markNotificationAsSeen");
       return false;
     }
     return true;
