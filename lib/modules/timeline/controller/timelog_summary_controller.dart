@@ -27,7 +27,6 @@ class TimelineSummaryController extends GetxController with StateMixin {
     super.onInit();
   }
 
-
   RxBool isMonthlySummaryDataLoading = false.obs;
   RxString selectedSummaryDate = "".obs;
   RxInt selectedYearIndex = 10.obs;
@@ -40,7 +39,8 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelineByMonth() async {
     isMonthlySummaryDataLoading(true);
-    final response = await NetworkClient().graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
+    final response = await NetworkClient()
+        .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
         "start_date": selectedMonthStartDate.value,
         "end_date": selectedMonthEndDate.value,
@@ -49,7 +49,6 @@ class TimelineSummaryController extends GetxController with StateMixin {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getTimelineByMonth");
     } else {
-      print(response.data);
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
     }
     isMonthlySummaryDataLoading(false);
@@ -57,11 +56,12 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelogDetailsByMonth() async {
     isMonthlySummaryDataLoading(true);
-    final response = await NetworkClient()
+      final response = await NetworkClient()
         .graphRequest(queryString: getTimelogDetailsByMonthQuery, variables: {
       "queryData": {
         "start_date": selectedMonthStartDate.value,
         "end_date": selectedMonthEndDate.value,
+        "leave_statuses": ["approved", "pending"],
       }
     });
 
