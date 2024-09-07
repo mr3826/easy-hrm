@@ -471,6 +471,7 @@ query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: Op
       logged_total_seconds
       total_leaves_seconds
       balance
+    
     }
   }
 }
