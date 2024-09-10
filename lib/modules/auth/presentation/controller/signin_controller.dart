@@ -63,7 +63,6 @@ class SignInController extends GetxController with StateMixin {
         Map<String, dynamic> jsonModel = TokenModel(
           accessToken:
               SignInResponse.fromJson(response.body).data?.accessToken ?? "",
-          idToken: SignInResponse.fromJson(response.body).data?.idToken ?? "",
           refreshToken:
               SignInResponse.fromJson(response.body).data?.refreshToken ?? "",
         ).toJson();
@@ -73,8 +72,6 @@ class SignInController extends GetxController with StateMixin {
             SignInResponse.fromJson(response.body).ordId ?? "", jsonObject);
 
         /// save token info for Api response
-        GetStorage().write(AppString.ID_TOKEN,
-            SignInResponse.fromJson(response.body).data?.idToken ?? "");
         GetStorage().write(AppString.ACCESS_TOKEN,
             SignInResponse.fromJson(response.body).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN,

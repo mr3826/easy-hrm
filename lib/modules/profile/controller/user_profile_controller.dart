@@ -114,7 +114,8 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().graphRequest(queryString: getUserProfileQuery);
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUserProfile");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getUserProfile");
     } else {
       userDetails = UserDetails.fromJson(response.data!);
     }
@@ -128,7 +129,8 @@ class UserProfileController extends GetxController with StateMixin {
     );
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getEmploymentInfo");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getEmploymentInfo");
     } else {
       employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
     }
@@ -141,7 +143,8 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().graphRequest(queryString: userLogHistoryQuery);
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUserLogHistory");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getUserLogHistory");
     } else {
       userLogHistory = UserLogHistory.fromJson(response.data!);
     }
@@ -263,7 +266,8 @@ class UserProfileController extends GetxController with StateMixin {
     final response =
         await NetworkClient().graphRequest(queryString: organizationInfoQuery);
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrganizationInfo");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getOrganizationInfo");
     } else {
       organizationInfo = OrganizationInfoDetails.fromJson(response.data!);
     }
@@ -279,7 +283,10 @@ class UserProfileController extends GetxController with StateMixin {
               .isNegative ||
           _checkTokenExpiration(accessToken: tokenModel.accessToken ?? "") <
               1) {
-        _getNewToken(refreshToken: tokenModel.refreshToken ?? "", orgId: orgId)
+        _getNewToken(
+                refreshToken: tokenModel.refreshToken ?? "",
+                orgId: orgId,
+                accessToken: tokenModel.accessToken ?? "")
             .then((value) {
           if (value == true) {
             Get.back(canPop: false);
@@ -291,7 +298,6 @@ class UserProfileController extends GetxController with StateMixin {
         });
       } else {
         GetStorage().write(AppString.ORGANIZATION_ID, orgId);
-        GetStorage().write(AppString.ID_TOKEN, tokenModel.idToken);
         GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
         GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
         Get.back(canPop: false);
@@ -365,11 +371,6 @@ class UserProfileController extends GetxController with StateMixin {
                                                         .data
                                                         ?.accessToken ??
                                                     "",
-                                            idToken: SignInResponse.fromJson(
-                                                        response.body)
-                                                    .data
-                                                    ?.idToken ??
-                                                "",
                                             refreshToken:
                                                 SignInResponse.fromJson(
                                                             response.body)
@@ -384,13 +385,6 @@ class UserProfileController extends GetxController with StateMixin {
                                           GetStorage().write(
                                               AppString.ORGANIZATION_ID, orgId);
 
-                                          GetStorage().write(
-                                              AppString.ID_TOKEN,
-                                              SignInResponse.fromJson(
-                                                          response.body)
-                                                      .data
-                                                      ?.idToken ??
-                                                  "");
                                           GetStorage().write(
                                               AppString.ACCESS_TOKEN,
                                               SignInResponse.fromJson(
@@ -440,10 +434,12 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   Future<bool> _getNewToken(
-      {required String orgId, required String refreshToken}) async {
+      {required String accessToken,
+      required String refreshToken,
+      required String orgId}) async {
     try {
-      Response response = await NetworkClient().postRequest(
-          Api.REFRESH_TOKEN, {"orgId": orgId, "refreshToken": refreshToken});
+      Response response = await NetworkClient().postRequest(Api.REFRESH_TOKEN,
+          {"accessToken": accessToken, "refreshToken": refreshToken});
 
       if (response.hasError) {
         logErrorMessage(logName: "refresh token", response: response);
@@ -452,7 +448,6 @@ class UserProfileController extends GetxController with StateMixin {
         Map<String, dynamic> jsonModel = TokenModel(
           accessToken:
               SignInResponse.fromJson(response.body).data?.accessToken ?? "",
-          idToken: SignInResponse.fromJson(response.body).data?.idToken ?? "",
           refreshToken:
               SignInResponse.fromJson(response.body).data?.refreshToken ?? "",
         ).toJson();
@@ -460,9 +455,6 @@ class UserProfileController extends GetxController with StateMixin {
         GetStorage().write(orgId, jsonObject);
 
         GetStorage().write(AppString.ORGANIZATION_ID, orgId);
-
-        GetStorage().write(AppString.ID_TOKEN,
-            SignInResponse.fromJson(response.body).data?.idToken ?? "");
         GetStorage().write(AppString.ACCESS_TOKEN,
             SignInResponse.fromJson(response.body).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN,
