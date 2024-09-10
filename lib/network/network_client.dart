@@ -24,7 +24,7 @@ class NetworkClient extends GetConnect {
       return await post(_getRequestUrl(apiEndPoint), body, headers: {
         "Content-Type": "application/json",
         "User-Agent": "getx-client",
-        "Authorization": GetStorage().read(AppString.ID_TOKEN) ?? ""
+        "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
       }).timeout(const Duration(seconds: 15));
     } catch (e) {
       log('Error in postRequest: $e');
@@ -42,7 +42,7 @@ class NetworkClient extends GetConnect {
     }
 
     final httpLink = gql.HttpLink(Api.PRIVATE_URL, defaultHeaders: {
-      "Authorization": GetStorage().read(AppString.ID_TOKEN)
+      "Authorization": GetStorage().read(AppString.ACCESS_TOKEN)
     });
 
     // Create the Link with request/response logging
@@ -71,8 +71,8 @@ class NetworkClient extends GetConnect {
   Future<void> _getNewToken() async {
     try {
       final response = await postRequest(Api.REFRESH_TOKEN, {
-        "orgId": GetStorage().read(AppString.ORGANIZATION_ID),
-        "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN)
+        "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
+        "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
 
       if (response.hasError) {
@@ -85,7 +85,6 @@ class NetworkClient extends GetConnect {
         logSuccessMessage(logName: "refresh token", response: response);
 
         GetStorage()
-          ..write(AppString.ID_TOKEN, data?.idToken ?? "")
           ..write(AppString.ACCESS_TOKEN, data?.accessToken ?? "")
           ..write(AppString.REFRESH_TOKEN, data?.refreshToken ?? "");
       }
@@ -103,5 +102,6 @@ int checkTokenExpiration() {
       JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
 
   final difference = expirationDate.difference(now);
+  print("expire time: ${difference.inHours}");
   return difference.inHours;
 }

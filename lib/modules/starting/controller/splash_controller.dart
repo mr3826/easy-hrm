@@ -73,8 +73,8 @@ class SplashController extends GetxController {
   Future<bool> _getNewToken() async {
     try {
       Response response = await NetworkClient().postRequest(Api.REFRESH_TOKEN, {
-        "orgId": GetStorage().read(AppString.ORGANIZATION_ID),
-        "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN)
+        "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
+        "accessToken": GetStorage().read(AppString.ACCESS_TOKEN),
       });
 
       if (response.hasError) {
@@ -82,7 +82,6 @@ class SplashController extends GetxController {
         return false;
       } else {
         logSuccessMessage(logName: "refresh token", response: response);
-        GetStorage().write(AppString.ID_TOKEN, SignInResponse.fromJson(response.body).data?.idToken ?? "");
         GetStorage().write(AppString.ACCESS_TOKEN, SignInResponse.fromJson(response.body).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN, SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
         return true;

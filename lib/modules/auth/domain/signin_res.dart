@@ -14,16 +14,13 @@ class SignInResponse {
 
 class Data {
   String? accessToken;
-  String? idToken;
-  int? expiresIn;
+
   String? refreshToken;
 
-  Data({this.accessToken, this.idToken, this.expiresIn, this.refreshToken});
+  Data({this.accessToken, this.refreshToken});
 
   Data.fromJson(Map<String, dynamic> json) {
     accessToken = json['accessToken'];
-    idToken = json['idToken'];
-    expiresIn = json['expiresIn'];
     refreshToken = json['refreshToken'];
   }
 }
