@@ -50,6 +50,8 @@ class ForgotPasswordController extends GetxController {
                 AppString.error_text);
       } else {
         logSuccessMessage(logName: "resendOtp");
+        showSuccessMessage(
+            message: SuccessModel.fromJson(response.body).message ?? "");
       }
     } catch (exp) {
       log(exp.toString());
@@ -57,8 +59,9 @@ class ForgotPasswordController extends GetxController {
     isLoading(false);
   }
 
-  Future<void> resetPassword(
-      {required String confirmationCode,}) async {
+  Future<void> resetPassword({
+    required String confirmationCode,
+  }) async {
     isLoading(true);
     try {
       Response response =

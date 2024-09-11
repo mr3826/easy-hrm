@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/domain/success_model.dart';
+import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import '../../../../common/domain/error_model.dart';
 import '../../../../common/widget/error_message.dart';
@@ -8,7 +10,6 @@ import '../../../../routes/app_pages.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/utils.dart';
 
-
 class OtpController extends GetxController {
   final isLoading = false.obs;
 
@@ -16,27 +17,16 @@ class OtpController extends GetxController {
     isLoading(true);
     try {
       Response response =
-      await NetworkClient().postRequest(Api.RESET_PASSWORD, {
-
+          await NetworkClient().postRequest(Api.VERIFY_OTP_CODE, {
         "email": restPasswordController.text,
         "confirmationCode": confirmationCode,
-        "password": "111111",
       });
       if (response.status.hasError) {
         logErrorMessage(logName: "verifyOtp", response: response);
-        if (ErrorModel.fromJson(response.body)
-            .message!
-            .startsWith("Invalid verification code provided")) {
-          showErrorMessage(message: AppString.invalidVerificationCode.tr);
-        } else if (ErrorModel.fromJson(response.body)
-            .message!
-            .startsWith("Password does not conform to policy")) {
-          Get.offAndToNamed(Routes.RESET_PASSWORD,arguments: [confirmationCode]);
-
-        } else {
-          showErrorMessage(
-              message: ErrorModel.fromJson(response.body).message!);
-        }
+        showErrorMessage(message: ErrorModel.fromJson(response.body).message!);
+      } else {
+        showSuccessMessage(message: SuccessModel.fromJson(response.body).message!);
+        Get.offAndToNamed(Routes.RESET_PASSWORD, arguments: [confirmationCode]);
       }
     } catch (exp) {
       log(exp.toString());

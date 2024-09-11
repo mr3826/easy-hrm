@@ -90,8 +90,8 @@ class _OTPScreenState extends State<OTPScreen> {
                     _otpLayout(),
                     customSpacerHeight(height: 15),
 
-                    ///Reset otp button
-                    _resetBtnLayout(),
+                    ///Resend otp button
+                    _resendBtnLayout(),
                     customSpacerHeight(height: 18),
 
                     ///Confirm button
@@ -113,7 +113,7 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
-  _resetBtnLayout() {
+  _resendBtnLayout() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Text(
         AppString.text_do_not_receive_otp.tr,
