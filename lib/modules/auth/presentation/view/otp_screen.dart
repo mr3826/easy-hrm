@@ -122,19 +122,23 @@ class _OTPScreenState extends State<OTPScreen> {
       customSpacerWidth(width: 4),
       timerActive == true
           ? Text("$seconds s")
-          : InkWell(
+          : GestureDetector(
               onTap: () async {
                 await Get.find<ForgotPasswordController>()
                     .resendOtp(mailAddress: emailAddress);
                 seconds = 59;
                 startTimer();
               },
-              child: Text(AppString.text_resend,
-                  style: TextStyle(
-                    color: AppColor.secondaryColor,
-                    fontSize: Dimensions.fontSizeDefault,
-                    fontWeight: FontWeight.bold
-                  )),
+              child: Obx(() =>
+                  Get.find<ForgotPasswordController>().isResendLoading.isTrue
+                      ? const CupertinoActivityIndicator(
+                          color: AppColor.primaryColor,
+                        )
+                      : Text(AppString.text_resend,
+                          style: TextStyle(
+                              color: AppColor.secondaryColor,
+                              fontSize: Dimensions.fontSizeDefault,
+                              fontWeight: FontWeight.bold))),
             ),
     ]);
   }
@@ -161,35 +165,32 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   _confirmBtnLayout() {
-    return CustomAppButton(
-      buttonText: Get.find<OtpController>().isLoading.isTrue
-          ? const CupertinoActivityIndicator(
-              color: Colors.white,
-            )
-          : Text(
-              AppString.confirmText.tr,
-              overflow: TextOverflow.ellipsis,
-              style: AppStyle.normal_text.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: Dimensions.fontSizeMid
-              ),
-            ),
-      onPressed: () async {
-        if (OTPCode.isNotEmpty && OTPCode.length == 6) {
-          Get.find<OtpController>().verifyOtp(confirmationCode: OTPCode);
-        } else {
-          showWarningMessage(message: AppString.validOtpText.tr);
-        }
-      },
-      buttonColor: isOTPProvided == false
-          ? AppColor.primaryColor.withOpacity(.5)
-          : AppColor.primaryColor,
-      btnTextSize: Dimensions.fontSizeMid + 2,
-      isButtonExpanded: false,
-    );
+    return Obx(() => CustomAppButton(
+          buttonText: Get.find<OtpController>().isLoading.isTrue
+              ? const CupertinoActivityIndicator(
+                  color: Colors.white,
+                )
+              : Text(
+                  AppString.confirmText.tr,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppStyle.normal_text.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: Dimensions.fontSizeMid),
+                ),
+          onPressed: () async {
+            if (OTPCode.isNotEmpty && OTPCode.length == 6) {
+              Get.find<OtpController>().verifyOtp(confirmationCode: OTPCode);
+            } else {
+              showWarningMessage(message: AppString.validOtpText.tr);
+            }
+          },
+          buttonColor: isOTPProvided == false
+              ? AppColor.primaryColor.withOpacity(.5)
+              : AppColor.primaryColor,
+          btnTextSize: Dimensions.fontSizeMid + 2,
+          isButtonExpanded: false,
+        ));
   }
-
-
 
   _otpLayout() {
     return PinCodeTextField(
