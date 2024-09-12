@@ -47,58 +47,11 @@ class UpdateProfileController extends GetxController {
   }
 
 
-
-
-///Old method for change password
-
-
-  //
-  // void changePassword({required String currentPassword, required String newPassword}) async {
-  //   print("changePassword_input ::: $currentPassword ::: $newPassword");
-  //   isLoading(true);
-  //   try {
-  //     final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
-  //       "oldPassword": currentPassword,
-  //       "newPassword": newPassword,
-  //       "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
-  //     });
-  //     print("change_pass_response :::: ${response.body}");
-  //
-  //     if (response.status.hasError) {
-  //       logErrorMessage(logName: "changePassword", response: response);
-  //       showErrorMessage(
-  //           message: ErrorModel.fromJson(response.body).message ??
-  //               "Some Error occur!");
-  //     } else {
-  //       logSuccessMessage(
-  //           logName: "submitVerificationCode", response: response);
-  //       showSuccessMessage(message: AppString.passwordChangeSuccessfulMessage);
-  //       currentPasswordController.clear();
-  //       newPasswordController.clear();
-  //       confirmPasswordController.clear();
-  //       if (Platform.isAndroid) {
-  //         GetStorage().remove(AppString.ACCESS_TOKEN);
-  //         GetStorage().remove(AppString.LOGGED_IN);
-  //         Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-  //       } else if (Platform.isIOS) {
-  //         GetStorage().remove(AppString.ACCESS_TOKEN);
-  //         GetStorage().remove(AppString.LOGGED_IN);
-  //         Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-  //       }
-  //     }
-  //   } catch (e) {
-  //     log(e.toString());
-  //   }
-  //   isLoading(false);
-  // }
-
-
 ///change password updated
   Future<void> changePassword({required String currentPassword, required String newPassword}) async {
     print("changePassword_input ::: $currentPassword ::: $newPassword");
     isLoading(true);
     try {
-      // Send the POST request
       final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
         "oldPassword": currentPassword,
         "newPassword": newPassword,

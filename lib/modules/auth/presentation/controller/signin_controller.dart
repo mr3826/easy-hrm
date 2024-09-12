@@ -124,6 +124,7 @@ class SignInController extends GetxController with StateMixin {
 }
 
 handleUnknownError(Response response) {
+  // Check if the response body is null
   if (response.body == null) {
    return showErrorMessage(message: "Something went wrong. Please try again.");
   }
