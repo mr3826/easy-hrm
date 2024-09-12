@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import '../../../../common/widget/custom_network_image.dart';
-import '../../../../common/widget/custom_spacer.dart';
-import '../../../../utils/app_color.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
-import '../../../auth/presentation/view/otp_screen.dart';
-import '../../../profile/controller/user_profile_controller.dart';
-import '../../presentation/controller/dashbpard_controller.dart';
+import '../../../../../common/widget/custom_network_image.dart';
+import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../profile/controller/user_profile_controller.dart';
+import '../../controller/dashbpard_controller.dart';
 import 'dashboad_widget.dart';
 
 class ProgressbarLayout extends GetView<DashboardController> {

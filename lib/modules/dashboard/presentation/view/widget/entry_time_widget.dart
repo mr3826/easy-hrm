@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../../../common/controller/date_time_controller.dart';
-import '../../../../common/widget/custom_card_style.dart';
-import '../../../../common/widget/custom_dialog.dart';
-import '../../../../common/widget/custom_spacer.dart';
-import '../../../../common/widget/custom_svg_image.dart';
-import '../../../../routes/app_pages.dart';
-import '../../../../utils/app_color.dart';
-import '../../../../utils/app_string.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
-import '../../../../utils/images.dart';
-import '../../../auth/presentation/controller/signin_controller.dart';
-import '../../../auth/presentation/view/otp_screen.dart';
-import '../../../timeline/controller/timer_controller.dart';
+import '../../../../../common/controller/date_time_controller.dart';
+import '../../../../../common/widget/custom_card_style.dart';
+import '../../../../../common/widget/custom_dialog.dart';
+import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../routes/app_pages.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_string.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../../../../utils/images.dart';
+import '../../../../auth/presentation/controller/signin_controller.dart';
+import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../timeline/controller/timer_controller.dart';
+
 
 Widget entryAndStartTimeLayout(context) {
   final TimeCounterController controller = Get.put(TimeCounterController());

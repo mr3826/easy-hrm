@@ -24,12 +24,10 @@ class OtpController extends GetxController {
     try {
       // API call to verify OTP
       Response response = await _networkClient.postRequest(
-          Api.VERIFY_OTP_CODE,
-          {
-            "email": restPasswordController.text,
-            "confirmationCode": confirmationCode
-          }
-      );
+          Api.VERIFY_OTP_CODE, {
+        "email": restPasswordController.text,
+        "confirmationCode": confirmationCode
+      });
       handleUnknownError(response);
 
       if (response.status.hasError) {
@@ -47,8 +45,7 @@ class OtpController extends GetxController {
 
   /// Handles success response, shows a success message, and navigates to the Reset Password screen.
   void _handleSuccess(Response response, String confirmationCode) {
-    showSuccessMessage(
-        message: SuccessModel.fromJson(response.body).message!);
+    showSuccessMessage(message: SuccessModel.fromJson(response.body).message!);
     Get.offAndToNamed(Routes.RESET_PASSWORD, arguments: [confirmationCode]);
   }
 
