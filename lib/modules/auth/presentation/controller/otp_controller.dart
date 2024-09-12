@@ -20,12 +20,15 @@ class OtpController extends GetxController {
           await NetworkClient().postRequest(Api.VERIFY_OTP_CODE, {
         "email": restPasswordController.text,
         "confirmationCode": confirmationCode,
-      });
-      if (response.status.hasError) {
+      }); // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.status.hasError) {
         logErrorMessage(logName: "verifyOtp", response: response);
         showErrorMessage(message: ErrorModel.fromJson(response.body).message!);
       } else {
-        showSuccessMessage(message: SuccessModel.fromJson(response.body).message!);
+        showSuccessMessage(
+            message: SuccessModel.fromJson(response.body).message!);
         Get.offAndToNamed(Routes.RESET_PASSWORD, arguments: [confirmationCode]);
       }
     } catch (exp) {

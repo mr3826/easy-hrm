@@ -45,43 +45,122 @@ class UpdateProfileController extends GetxController {
     isLoading(false);
   }
 
-  void changePassword(
-      {required String currentPassword, required String newPassword}) async {
+
+
+
+
+
+
+  //
+  // void changePassword({required String currentPassword, required String newPassword}) async {
+  //   print("changePassword_input ::: $currentPassword ::: $newPassword");
+  //   isLoading(true);
+  //   try {
+  //     final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
+  //       "oldPassword": currentPassword,
+  //       "newPassword": newPassword,
+  //       "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
+  //     });
+  //     print("change_pass_response :::: ${response.body}");
+  //
+  //     if (response.status.hasError) {
+  //       logErrorMessage(logName: "changePassword", response: response);
+  //       showErrorMessage(
+  //           message: ErrorModel.fromJson(response.body).message ??
+  //               "Some Error occur!");
+  //     } else {
+  //       logSuccessMessage(
+  //           logName: "submitVerificationCode", response: response);
+  //       showSuccessMessage(message: AppString.passwordChangeSuccessfulMessage);
+  //       currentPasswordController.clear();
+  //       newPasswordController.clear();
+  //       confirmPasswordController.clear();
+  //       if (Platform.isAndroid) {
+  //         GetStorage().remove(AppString.ACCESS_TOKEN);
+  //         GetStorage().remove(AppString.LOGGED_IN);
+  //         Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+  //       } else if (Platform.isIOS) {
+  //         GetStorage().remove(AppString.ACCESS_TOKEN);
+  //         GetStorage().remove(AppString.LOGGED_IN);
+  //         Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
+  //   isLoading(false);
+  // }
+
+
+
+  Future<void> changePassword({required String currentPassword, required String newPassword}) async {
+    print("changePassword_input ::: $currentPassword ::: $newPassword");
     isLoading(true);
     try {
+      // Send the POST request
       final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
         "oldPassword": currentPassword,
         "newPassword": newPassword,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
       });
 
-      if (response.status.hasError) {
-        logErrorMessage(logName: "changePassword", response: response);
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
-                "Some Error occur!");
+      // Log the status code and response body
+      log("changePassword_res :: ${response.statusCode}", error: "${response.body}");
+
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      }else if (response.status.hasError) {
+        final errorModel = response.body is Map<String, dynamic>
+            ? ErrorModel.fromJson(response.body)
+            : null;
+
+        showErrorMessage(message: errorModel?.message ?? "An error occurred!");
       } else {
-        logSuccessMessage(
-            logName: "submitVerificationCode", response: response);
+        logSuccessMessage(logName: "submitVerificationCode", response: response);
         showSuccessMessage(message: AppString.passwordChangeSuccessfulMessage);
-        currentPasswordController.clear();
-        newPasswordController.clear();
-        confirmPasswordController.clear();
-        if (Platform.isAndroid) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        } else if (Platform.isIOS) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        }
+         clearPasswordFields();
+         handleLogout();
       }
     } catch (e) {
-      log(e.toString());
+      log("Exception caught: $e");
+    } finally {
+      isLoading(false); // Stop loading indicator
     }
-    isLoading(false);
   }
+
+
+
+
+
+
+
+
+
+
+  void clearPasswordFields() {
+    print("clearPasswordFields");
+
+    currentPasswordController.clear();
+    newPasswordController.clear();
+    confirmPasswordController.clear();
+  }
+
+  void handleLogout() {
+    print("called_logout_method");
+    GetStorage().remove(AppString.ACCESS_TOKEN);
+    GetStorage().remove(AppString.LOGGED_IN);
+    Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+  }
+
+
+
+
+
+
+
+
+
 
   getUploadPolicy({fileName}) async {
     isUploadPolicyLoading(true);

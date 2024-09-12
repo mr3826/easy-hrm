@@ -159,8 +159,10 @@ class UserProfileController extends GetxController with StateMixin {
     try {
       final response = await NetworkClient()
           .postRequest(Api.VERIFY_PASSWORD, {"password": password});
-
-      if (response.status.hasError) {
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.status.hasError) {
         logErrorMessage(logName: "getPasswordVerification", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -187,8 +189,10 @@ class UserProfileController extends GetxController with StateMixin {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
-
-      if (response.status.hasError) {
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      }else if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -212,8 +216,10 @@ class UserProfileController extends GetxController with StateMixin {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
-
-      if (response.status.hasError) {
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      }else if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -241,17 +247,19 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   resendOtp({required String emailAddress}) async {
-
     print("resendOtpLoading ::: $resendOtpLoading");
 
     resendOtpLoading(true);
     try {
-      final response = await NetworkClient().postRequest(Api.RESEND_OTP_CHANGE_EMAIL, {
+      final response = await NetworkClient().postRequest(
+          Api.RESEND_OTP_CHANGE_EMAIL, {
         "email": emailAddress,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
-
-      if (response.status.hasError) {
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.status.hasError) {
         logErrorMessage(logName: "resendOtp", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -262,7 +270,6 @@ class UserProfileController extends GetxController with StateMixin {
         startTimer();
         showSuccessMessage(message: AppString.resend_otp_text.tr);
         resendOtpLoading(false);
-
       }
       resendOtpLoading(false);
     } catch (e) {

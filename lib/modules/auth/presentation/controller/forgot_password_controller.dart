@@ -19,8 +19,10 @@ class ForgotPasswordController extends GetxController {
     try {
       Response response = await NetworkClient().postRequest(
           Api.FORGOT_PASSWORD, {"email": restPasswordController.text});
-
-      if (response.status.hasError) {
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.status.hasError) {
         logErrorMessage(logName: "forgotPassword", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -44,7 +46,10 @@ class ForgotPasswordController extends GetxController {
       Response response = await NetworkClient().postRequest(Api.RESEND_OTP, {
         "email": mailAddress,
       });
-      if (response.status.hasError) {
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.status.hasError) {
         logErrorMessage(logName: "resendOtp", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -71,8 +76,10 @@ class ForgotPasswordController extends GetxController {
         "confirmationCode": confirmationCode,
         "password": confirmPasswordController.text,
       });
-      log(response.body.toString());
-      if (response.status.hasError) {
+      log(response.body.toString()); // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.status.hasError) {
         logErrorMessage(logName: "resetPassword", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??

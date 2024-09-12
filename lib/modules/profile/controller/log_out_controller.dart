@@ -18,8 +18,10 @@ class LogoutController extends GetxController {
       Response response = await NetworkClient().postRequest(Api.LOGOUT, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
       });
-
-      if (response.hasError) {
+      // Check if the response body is null
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.hasError) {
         logErrorMessage(logName: "logout", response: response);
         if (ErrorModel.fromJson(response.body).message != null &&
             ErrorModel.fromJson(response.body)

@@ -49,15 +49,16 @@ class SignInController extends GetxController with StateMixin {
   Future<void> login({required String email, required String password}) async {
     print("login_input ::: $email : $password");
 
-
     isSignInLoading(true);
     try {
-      Response response = await NetworkClient().postRequest(Api.LOGIN, {"email": email, "password": password});
+      Response response = await NetworkClient()
+          .postRequest(Api.LOGIN, {"email": email, "password": password});
 
       print("response_for_login :: ${response.body}");
 
-
-      if (response.hasError) {
+      if (response.body == null) {
+        showErrorMessage(message: "Something went wrong. Please try again.");
+      } else if (response.hasError) {
         logErrorMessage(logName: "login", response: response);
 
         showErrorMessage(
@@ -88,7 +89,6 @@ class SignInController extends GetxController with StateMixin {
         _saveData();
         getOrgSubscriptionInfo();
         Get.offNamed(Routes.MAIN_SCREEN);
-
       }
     } catch (e) {
       log(e.toString());
@@ -101,7 +101,9 @@ class SignInController extends GetxController with StateMixin {
       final response = await NetworkClient()
           .graphRequest(queryString: getOrgSubscriptionInfoQuery);
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrgSubscriptionInfo");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!,
+            methodName: "getOrgSubscriptionInfo");
       } else {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
