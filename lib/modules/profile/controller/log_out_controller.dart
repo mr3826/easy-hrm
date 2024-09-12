@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../routes/app_pages.dart';
+import '../../auth/presentation/controller/signin_controller.dart';
 
 class LogoutController extends GetxController {
   RxBool isLogoutLoading = false.obs;
@@ -19,9 +20,8 @@ class LogoutController extends GetxController {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
       });
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      } else if (response.hasError) {
+      handleUnknownError(response);
+      if (response.hasError) {
         logErrorMessage(logName: "logout", response: response);
         if (ErrorModel.fromJson(response.body).message != null &&
             ErrorModel.fromJson(response.body)

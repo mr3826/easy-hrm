@@ -4,6 +4,7 @@ import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/success_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/auth/presentation/controller/signin_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -20,9 +21,8 @@ class ForgotPasswordController extends GetxController {
       Response response = await NetworkClient().postRequest(
           Api.FORGOT_PASSWORD, {"email": restPasswordController.text});
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      } else if (response.status.hasError) {
+      handleUnknownError(response);
+      if (response.status.hasError) {
         logErrorMessage(logName: "forgotPassword", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -47,9 +47,8 @@ class ForgotPasswordController extends GetxController {
         "email": mailAddress,
       });
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      } else if (response.status.hasError) {
+      handleUnknownError(response);
+      if (response.status.hasError) {
         logErrorMessage(logName: "resendOtp", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -77,9 +76,8 @@ class ForgotPasswordController extends GetxController {
         "password": confirmPasswordController.text,
       });
       log(response.body.toString()); // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      } else if (response.status.hasError) {
+      handleUnknownError(response);
+      if (response.status.hasError) {
         logErrorMessage(logName: "resetPassword", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??

@@ -32,6 +32,7 @@ import '../../../utils/dimensions.dart';
 import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
+import '../../auth/presentation/controller/signin_controller.dart';
 import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
@@ -160,9 +161,8 @@ class UserProfileController extends GetxController with StateMixin {
       final response = await NetworkClient()
           .postRequest(Api.VERIFY_PASSWORD, {"password": password});
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      } else if (response.status.hasError) {
+      handleUnknownError(response);
+      if (response.status.hasError) {
         logErrorMessage(logName: "getPasswordVerification", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -190,9 +190,8 @@ class UserProfileController extends GetxController with StateMixin {
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      }else if (response.status.hasError) {
+      handleUnknownError(response);
+      if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -217,9 +216,8 @@ class UserProfileController extends GetxController with StateMixin {
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      }else if (response.status.hasError) {
+      handleUnknownError(response);
+      if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??
@@ -257,9 +255,8 @@ class UserProfileController extends GetxController with StateMixin {
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      } else if (response.status.hasError) {
+      handleUnknownError(response);
+      if (response.status.hasError) {
         logErrorMessage(logName: "resendOtp", response: response);
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ??

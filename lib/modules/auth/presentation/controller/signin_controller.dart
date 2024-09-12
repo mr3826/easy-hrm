@@ -56,13 +56,11 @@ class SignInController extends GetxController with StateMixin {
 
       print("response_for_login :: ${response.body}");
 
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      } else if (response.hasError) {
-        logErrorMessage(logName: "login", response: response);
+     handleUnknownError(response);
 
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ?? "");
+      if (response.hasError) {
+        logErrorMessage(logName: "login", response: response);
+        showErrorMessage(message: ErrorModel.fromJson(response.body).message ?? "");
       } else {
         logSuccessMessage(logName: "login", response: response);
 
@@ -89,6 +87,9 @@ class SignInController extends GetxController with StateMixin {
         _saveData();
         getOrgSubscriptionInfo();
         Get.offNamed(Routes.MAIN_SCREEN);
+
+        log(GetStorage().read(AppString.ACCESS_TOKEN));
+
       }
     } catch (e) {
       log(e.toString());
@@ -119,5 +120,11 @@ class SignInController extends GetxController with StateMixin {
     Map<String, dynamic> jsonModel = myInput.toJson();
     String jsonObject = jsonEncode(jsonModel);
     GetStorage().write(AppString.LAST_INPUT, jsonObject);
+  }
+}
+
+handleUnknownError(Response response) {
+  if (response.body == null) {
+   return showErrorMessage(message: "Something went wrong. Please try again.");
   }
 }

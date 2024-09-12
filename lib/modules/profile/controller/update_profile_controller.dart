@@ -13,6 +13,7 @@ import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
+import '../../auth/presentation/controller/signin_controller.dart';
 import '../../dashboard/controller/dashbpard_controller.dart';
 
 class UpdateProfileController extends GetxController {
@@ -48,7 +49,7 @@ class UpdateProfileController extends GetxController {
 
 
 
-
+///Old method for change password
 
 
   //
@@ -92,7 +93,7 @@ class UpdateProfileController extends GetxController {
   // }
 
 
-
+///change password updated
   Future<void> changePassword({required String currentPassword, required String newPassword}) async {
     print("changePassword_input ::: $currentPassword ::: $newPassword");
     isLoading(true);
@@ -106,15 +107,13 @@ class UpdateProfileController extends GetxController {
 
       // Log the status code and response body
       log("changePassword_res :: ${response.statusCode}", error: "${response.body}");
-
       // Check if the response body is null
-      if (response.body == null) {
-        showErrorMessage(message: "Something went wrong. Please try again.");
-      }else if (response.status.hasError) {
+      handleUnknownError(response);
+
+      if (response.status.hasError) {
         final errorModel = response.body is Map<String, dynamic>
             ? ErrorModel.fromJson(response.body)
             : null;
-
         showErrorMessage(message: errorModel?.message ?? "An error occurred!");
       } else {
         logSuccessMessage(logName: "submitVerificationCode", response: response);
@@ -134,32 +133,17 @@ class UpdateProfileController extends GetxController {
 
 
 
-
-
-
-
   void clearPasswordFields() {
-    print("clearPasswordFields");
-
     currentPasswordController.clear();
     newPasswordController.clear();
     confirmPasswordController.clear();
   }
 
   void handleLogout() {
-    print("called_logout_method");
     GetStorage().remove(AppString.ACCESS_TOKEN);
     GetStorage().remove(AppString.LOGGED_IN);
     Get.offAllNamed(Routes.SIGN_IN_SCREEN);
   }
-
-
-
-
-
-
-
-
 
 
   getUploadPolicy({fileName}) async {
