@@ -13,10 +13,13 @@ import '../../../../routes/app_pages.dart';
 class ForgotPasswordController extends GetxController {
   final isLoading = false.obs;
 
+
+  final NetworkClient _networkClient = Get.find<NetworkClient>();
+
   Future<void> forgotPassword() async {
     isLoading(true);
     try {
-      Response response = await NetworkClient().postRequest(
+      Response response = await _networkClient.postRequest(
           Api.FORGOT_PASSWORD, {"email": restPasswordController.text});
 
       if (response.status.hasError) {
@@ -40,7 +43,7 @@ class ForgotPasswordController extends GetxController {
   Future<void> resendOtp({required String mailAddress}) async {
     isLoading(true);
     try {
-      Response response = await NetworkClient().postRequest(Api.RESEND_OTP, {
+      Response response = await _networkClient.postRequest(Api.RESEND_OTP, {
         "email": mailAddress,
       });
       if (response.status.hasError) {
@@ -62,7 +65,7 @@ class ForgotPasswordController extends GetxController {
     isLoading(true);
     try {
       Response response =
-          await NetworkClient().postRequest(Api.RESET_PASSWORD, {
+          await _networkClient.postRequest(Api.RESET_PASSWORD, {
         "email": restPasswordController.text,
         "confirmationCode": confirmationCode,
         "password": confirmPasswordController.text,

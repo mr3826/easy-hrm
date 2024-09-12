@@ -28,7 +28,10 @@ import 'modules/starting/controller/splash_controller.dart';
 Future<void> initApp() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
-  NetworkClient client=Get.put(NetworkClient());
+
+
+  NetworkClient client = Get.put(NetworkClient());
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -63,7 +66,7 @@ Future<void> initApp() async {
   Get.put(SignInController());
   Get.put(OtpController());
 
+
   Get.put(NotificationRemoteDataSource(client), permanent: true);
   Get.put(LeaveRemoteDataSource(client), permanent: true);
-
 }

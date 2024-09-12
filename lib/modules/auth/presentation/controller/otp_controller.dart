@@ -12,11 +12,13 @@ import '../../../../utils/utils.dart';
 class OtpController extends GetxController {
   final isLoading = false.obs;
 
+  final NetworkClient _networkClient = Get.find<NetworkClient>();
+
   Future<void> verifyOtp({required String confirmationCode}) async {
     isLoading(true);
     try {
       Response response =
-      await NetworkClient().postRequest(Api.RESET_PASSWORD, {
+      await _networkClient.postRequest(Api.RESET_PASSWORD, {
 
         "email": restPasswordController.text,
         "confirmationCode": confirmationCode,

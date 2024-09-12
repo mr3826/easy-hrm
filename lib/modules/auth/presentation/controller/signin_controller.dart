@@ -27,6 +27,9 @@ class SignInController extends GetxController with StateMixin {
   OrgSubscriptionInfoModel orgSubscriptionInfoModel =
       OrgSubscriptionInfoModel();
 
+  ///create instance of network client
+  final NetworkClient _networkClient = Get.find<NetworkClient>();
+
   changeVal() {
     return isValue.value = !isValue.value;
   }
@@ -49,7 +52,7 @@ class SignInController extends GetxController with StateMixin {
   Future<void> login({required String email, required String password}) async {
     isSignInLoading(true);
     try {
-      Response response = await NetworkClient()
+      Response response = await _networkClient
           .postRequest(Api.LOGIN, {"email": email, "password": password});
       if (response.hasError) {
         logErrorMessage(logName: "login", response: response);
@@ -82,7 +85,6 @@ class SignInController extends GetxController with StateMixin {
         _saveData();
         getOrgSubscriptionInfo();
         Get.offNamed(Routes.MAIN_SCREEN);
-
       }
     } catch (e) {
       log(e.toString());
@@ -92,10 +94,12 @@ class SignInController extends GetxController with StateMixin {
 
   getOrgSubscriptionInfo() async {
     try {
-      final response = await NetworkClient()
+      final response = await _networkClient
           .graphRequest(queryString: getOrgSubscriptionInfoQuery);
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrgSubscriptionInfo");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!,
+            methodName: "getOrgSubscriptionInfo");
       } else {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
