@@ -97,9 +97,11 @@ class UserProfileController extends GetxController with StateMixin {
   UserLogHistory? userLogHistory;
   OrganizationInfoDetails? organizationInfo;
   final isLoading = false.obs;
+  final isLoadingChangeEmail = false.obs;
   final isOrganizationChangeLoading = false.obs;
   final isNewOrganizationChangeLoading = false.obs;
   final isVerificationApiLoading = false.obs;
+  final resendOtpLoading = false.obs;
 
   var isOtpString = ''.obs;
 
@@ -179,7 +181,7 @@ class UserProfileController extends GetxController with StateMixin {
   Future<bool> changeMail({required String newEmail}) async {
     bool validation = false;
 
-    isLoading(true);
+    isLoadingChangeEmail(true);
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
@@ -198,7 +200,7 @@ class UserProfileController extends GetxController with StateMixin {
     } catch (e) {
       log(e.toString());
     }
-    isLoading(false);
+    isLoadingChangeEmail(false);
     return validation;
   }
 
@@ -239,8 +241,12 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   resendOtp({required String emailAddress}) async {
+
+    print("resendOtpLoading ::: $resendOtpLoading");
+
+    resendOtpLoading(true);
     try {
-      final response = await NetworkClient().postRequest(Api.RESEND_OTP, {
+      final response = await NetworkClient().postRequest(Api.RESEND_OTP_CHANGE_EMAIL, {
         "email": emailAddress,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
@@ -255,9 +261,13 @@ class UserProfileController extends GetxController with StateMixin {
         seconds.value = 59;
         startTimer();
         showSuccessMessage(message: AppString.resend_otp_text.tr);
+        resendOtpLoading(false);
+
       }
+      resendOtpLoading(false);
     } catch (e) {
       log(e.toString());
+      resendOtpLoading(false);
     }
   }
 

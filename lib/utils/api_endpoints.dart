@@ -13,6 +13,7 @@ class Api {
   static const REFRESH_TOKEN = "/auth/refresh-token";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/retry-forgot-password";
+  static const RESEND_OTP_CHANGE_EMAIL = "/auth/resend-verification-code";
   static const VERIFY_OTP_CODE = "/auth/verify-forgot-password-code";
   static const RESET_PASSWORD = "/auth/verify-forgot-password";
   static const VERIFY_PASSWORD = "/auth/verify-password";
@@ -20,6 +21,7 @@ class Api {
   static const VERIFY_CHANGE_MAIL_OTP = "/auth/confirm-change-email";
   static const CHANGE_PASSWORD = "/auth/change-password";
 }
+///auth/resend-verification-code
 
 //leave module
 const getLeaveSummaryForDashboardQuery = """
