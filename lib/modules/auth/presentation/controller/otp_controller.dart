@@ -30,6 +30,7 @@ class OtpController extends GetxController {
             "confirmationCode": confirmationCode
           }
       );
+      handleUnknownError(response);
 
       if (response.status.hasError) {
         _handleError(response); // Handle error response

@@ -62,9 +62,8 @@ class SignInController extends GetxController with StateMixin {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      Response response = await _networkClient
-          .postRequest(Api.LOGIN, {"email": email, "password": password});
-
+      Response response = await _networkClient.postRequest(Api.LOGIN, {"email": email, "password": password});
+      handleUnknownError(response);
       if (response.hasError) {
         _handleError(logName: "login", response: response);
       } else {
@@ -146,3 +145,4 @@ class SignInController extends GetxController with StateMixin {
     // Logic to check subscription validity (based on orgSubscriptionInfoModel)
   }
 }
+

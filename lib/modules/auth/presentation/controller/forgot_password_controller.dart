@@ -28,6 +28,7 @@ class ForgotPasswordController extends GetxController {
       // API call to send forgot password request
       Response response = await _networkClient.postRequest(
           Api.FORGOT_PASSWORD, {"email": restPasswordController.text});
+      handleUnknownError(response);
 
       if (response.status.hasError) {
         // Handle error response
@@ -55,6 +56,8 @@ class ForgotPasswordController extends GetxController {
       Response response = await _networkClient.postRequest(Api.RESEND_OTP, {
         "email": mailAddress,
       });
+      handleUnknownError(response);
+
       if (response.status.hasError) {
         _handleError(logName: "resendOtp", response: response);
       } else {
@@ -83,6 +86,7 @@ class ForgotPasswordController extends GetxController {
         "password": confirmPasswordController.text,
       });
       log(response.body.toString()); // Log the response body for debugging
+      handleUnknownError(response);
 
       if (response.status.hasError) {
         _handleError(logName: "resetPassword", response: response);

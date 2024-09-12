@@ -62,7 +62,6 @@ class UpdateProfileController extends GetxController {
       log("changePassword_res :: ${response.statusCode}", error: "${response.body}");
       // Check if the response body is null
       handleUnknownError(response);
-
       if (response.status.hasError) {
         final errorModel = response.body is Map<String, dynamic>
             ? ErrorModel.fromJson(response.body)

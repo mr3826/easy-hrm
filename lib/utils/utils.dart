@@ -7,6 +7,8 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:intl/intl.dart';
 
+import '../common/widget/error_message.dart';
+
 //global items here
 TextEditingController _searchController = TextEditingController();
 TextEditingController _emailController = TextEditingController();
@@ -432,3 +434,9 @@ List _selectedBeforeDayAndAfterDay = [
 ];
 
 List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
+
+handleUnknownError(Response response) {
+  if (response.body == null) {
+    return showErrorMessage(message: "Something went wrong. Please try again.");
+  }
+}
