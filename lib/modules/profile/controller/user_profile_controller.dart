@@ -245,6 +245,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   resendOtp({required String emailAddress}) async {
+
     print("resendOtpLoading ::: $resendOtpLoading");
 
     resendOtpLoading(true);
@@ -267,6 +268,7 @@ class UserProfileController extends GetxController with StateMixin {
         startTimer();
         showSuccessMessage(message: AppString.resend_otp_text.tr);
         resendOtpLoading(false);
+
       }
       resendOtpLoading(false);
     } catch (e) {

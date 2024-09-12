@@ -14,7 +14,7 @@ import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
 import '../../auth/presentation/controller/signin_controller.dart';
-import '../../dashboard/controller/dashbpard_controller.dart';
+import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 
 class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
@@ -97,7 +97,6 @@ class UpdateProfileController extends GetxController {
     GetStorage().remove(AppString.LOGGED_IN);
     Get.offAllNamed(Routes.SIGN_IN_SCREEN);
   }
-
 
   getUploadPolicy({fileName}) async {
     isUploadPolicyLoading(true);

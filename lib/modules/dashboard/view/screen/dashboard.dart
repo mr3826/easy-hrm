@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/dashboard/view/widget/entry_time_widget.dart';
 import 'package:payrun_mobile/modules/dashboard/view/widget/upcoming_leave.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../presentation/controller/dashbpard_controller.dart';
 import '../widget/progress_bar_layout.dart';
 
 class Dashboard extends GetView<DashboardController> {

@@ -13,7 +13,7 @@ import '../../../common/widget/loading_indicator.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
-import '../../dashboard/controller/dashbpard_controller.dart';
+import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../profile/controller/log_out_controller.dart';
 import '../../profile/controller/user_profile_controller.dart';
 

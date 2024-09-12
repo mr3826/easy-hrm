@@ -29,7 +29,6 @@ class LogoutController extends GetxController {
                 .startsWith("Authorization failed, error: UserDoesNotExist")) {
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
         if (ErrorModel.fromJson(response.body).message != null &&
             ErrorModel.fromJson(response.body)
@@ -37,7 +36,6 @@ class LogoutController extends GetxController {
                 .startsWith("Unauthorized")) {
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ?? "");
@@ -47,6 +45,8 @@ class LogoutController extends GetxController {
       }
     } catch (e) {
       log(e.toString());
+    } finally {
+      _clearSession();
     }
     isLogoutLoading(false);
   }
