@@ -11,7 +11,7 @@ import '../../../auth/presentation/view/otp_screen.dart';
 import '../../../leave/domain/leave_records.dart';
 import '../../../leave/presentation/view/widget/leave_record_details_view.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
-import '../../controller/dashbpard_controller.dart';
+import '../../presentation/controller/dashbpard_controller.dart';
 import 'dashboad_widget.dart';
 
 class UpcomingLeaveLayout extends StatelessWidget {

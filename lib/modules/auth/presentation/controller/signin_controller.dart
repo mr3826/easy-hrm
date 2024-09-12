@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -28,7 +29,8 @@ class SignInController extends GetxController with StateMixin {
   RxBool isValue = true.obs;
 
   // Model to store organization subscription information
-  OrgSubscriptionInfoModel orgSubscriptionInfoModel = OrgSubscriptionInfoModel();
+  OrgSubscriptionInfoModel orgSubscriptionInfoModel =
+      OrgSubscriptionInfoModel();
 
   /// Instance of NetworkClient to handle API requests
   final NetworkClient _networkClient = Get.find<NetworkClient>();
@@ -60,10 +62,8 @@ class SignInController extends GetxController with StateMixin {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      Response response = await _networkClient.postRequest(
-          Api.LOGIN,
-          {"email": email, "password": password}
-      );
+      Response response = await _networkClient
+          .postRequest(Api.LOGIN, {"email": email, "password": password});
 
       if (response.hasError) {
         _handleError(logName: "login", response: response);
@@ -111,13 +111,16 @@ class SignInController extends GetxController with StateMixin {
 
     // Save token information
     TokenModel tokenModel = TokenModel(
-      accessToken: SignInResponse.fromJson(response.body).data?.accessToken ?? "",
-      refreshToken: SignInResponse.fromJson(response.body).data?.refreshToken ?? "",
+      accessToken:
+          SignInResponse.fromJson(response.body).data?.accessToken ?? "",
+      refreshToken:
+          SignInResponse.fromJson(response.body).data?.refreshToken ?? "",
     );
     String tokenJson = jsonEncode(tokenModel.toJson());
 
     // Store tokens in local storage
-    GetStorage().write(SignInResponse.fromJson(response.body).ordId ?? "", tokenJson);
+    GetStorage()
+        .write(SignInResponse.fromJson(response.body).ordId ?? "", tokenJson);
     GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
     GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
     GetStorage().write(AppString.LOGGED_IN, true);

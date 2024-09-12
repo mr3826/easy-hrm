@@ -62,7 +62,8 @@ class SplashController extends GetxController {
 
     // Specify the target date and time
 
-    DateTime targetDate = JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
+    DateTime targetDate =
+        JwtDecoder.getExpirationDate(GetStorage().read(AppString.ACCESS_TOKEN));
 
     // Calculate the difference
     Duration difference = targetDate.difference(now);
@@ -72,7 +73,8 @@ class SplashController extends GetxController {
 
   Future<bool> _getNewToken() async {
     try {
-      Response response = await NetworkClient().postRequest(Api.REFRESH_TOKEN, {
+      Response response =
+          await Get.find<NetworkClient>().postRequest(Api.REFRESH_TOKEN, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN),
       });
@@ -82,8 +84,10 @@ class SplashController extends GetxController {
         return false;
       } else {
         logSuccessMessage(logName: "refresh token", response: response);
-        GetStorage().write(AppString.ACCESS_TOKEN, SignInResponse.fromJson(response.body).data?.accessToken ?? "");
-        GetStorage().write(AppString.REFRESH_TOKEN, SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
+        GetStorage().write(AppString.ACCESS_TOKEN,
+            SignInResponse.fromJson(response.body).data?.accessToken ?? "");
+        GetStorage().write(AppString.REFRESH_TOKEN,
+            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
         return true;
       }
     } catch (e) {
@@ -93,10 +97,10 @@ class SplashController extends GetxController {
   }
 }
 
-
 void checkIfSubscription() {
   var data = Get.find<SignInController>().orgSubscriptionInfoModel;
-  if (data.getOrgSubscriptionInfo?.status =="paused" || data.getOrgSubscriptionInfo?.status =="canceled") {
+  if (data.getOrgSubscriptionInfo?.status == "paused" ||
+      data.getOrgSubscriptionInfo?.status == "canceled") {
     Get.find<SignInController>().isSubscriptionExpired(true);
   } else {
     data.getOrgSubscriptionInfo?.subscribedPlan?.planFeatures

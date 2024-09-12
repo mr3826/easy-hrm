@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:payrun_mobile/common/controller/connectivity_controller.dart';
+import 'package:payrun_mobile/modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/notification/data/remote/notification_remote_data_source.dart';
 import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
@@ -66,7 +67,7 @@ Future<void> initApp() async {
   Get.put(SignInController());
   Get.put(OtpController());
 
-
+  Get.put(DashboardRemoteDataSource(client), permanent: true);
   Get.put(NotificationRemoteDataSource(client), permanent: true);
   Get.put(LeaveRemoteDataSource(client), permanent: true);
 }

@@ -8,7 +8,7 @@ import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
+import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
@@ -22,7 +22,7 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../common/domain/last_input_model.dart';
 import '../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../network/exception_helper.dart';
-import '../../dashboard/controller/dashbpard_controller.dart';
+import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../home/view/screen/main_screen.dart';
 import '../model/calendar_timeline.dart';
 
@@ -70,7 +70,8 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "saveTimeEntry");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "saveTimeEntry");
       return false;
     } else {
       startOrEndTimerResponse =
@@ -108,7 +109,8 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "saveTimeEntry");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "saveTimeEntry");
     } else {
       showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
       timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
@@ -158,7 +160,8 @@ class TimelineController extends GetxController with StateMixin {
         }
       });
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "createManualEntry");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "createManualEntry");
       } else {
         showSuccessMessage(message: "Time entry created successfully");
         taskId.value = "";
@@ -205,7 +208,9 @@ class TimelineController extends GetxController with StateMixin {
       log(response.toString(), error: 0);
 
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "updateTimelineLogDetails");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!,
+            methodName: "updateTimelineLogDetails");
       } else {
         descriptionController.clear();
         timeLineID = '';
@@ -231,7 +236,8 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getProjectDropdown");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getProjectDropdown");
     } else {
       projectDropDownResponse =
           ProjectDropDownResponse.fromJson(response.data!);
@@ -261,7 +267,8 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "removeTimeEntry");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "removeTimeEntry");
       isTimelogEntryOrRemoveLoading(false);
       return false;
     } else {
@@ -389,7 +396,9 @@ class TimelineController extends GetxController with StateMixin {
     });
 
     if (responseForCalendar.hasException) {
-      ExceptionHelper.errorHandler(exception: responseForCalendar.exception!,methodName: "getCalendarTimelineDataByDate");
+      ExceptionHelper.errorHandler(
+          exception: responseForCalendar.exception!,
+          methodName: "getCalendarTimelineDataByDate");
     } else {
       if (timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
@@ -432,66 +441,66 @@ class TimelineController extends GetxController with StateMixin {
             title: '',
             description: objData);
       }).toList();
-      timelogList?.addAll(
-          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
-                //todo
-                /// add files info
-                ModelForDescription modelForDescription = ModelForDescription(
-                    status: e.status ?? "",
-                    description: e.description ?? "",
-                    endDate: e.endDate ?? "",
-                    startDate: e.startDate ?? "",
-                    duration: e.totalLeaveMinutes ?? "",
-                    numberOfDays: e.numberOfDays ?? 0,
-                    createdAt: e.createdAt ?? "",
-                    leaveId: e.id ?? "",
-                    leaveDetails: [
-                      e.leaveDetails !=null && e.leaveDetails!.isNotEmpty?
-                      LeaveDetails(
-                        scheduleHour: e.leaveDetails?[0].scheduleHour ?? "",
-                        leaveHour: e.leaveDetails?[0].leaveHour ?? "",
-                      ):LeaveDetails()
-                    ],
-                    taskName: e.leaveType?.leaveName ?? "",
-                    files: [
-                      (e.files != null && e.files!.isNotEmpty)
-                          ? Files(
-                              name: e.files?[0].name ?? "",
-                              id: e.files?[0].id ?? "",
-                              key: e.files?[0].key ?? "",
-                              size: e.files?[0].size ?? "",
-                              createdAt: e.files?[0].createdAt ?? "",
-                            )
-                          : Files()
-                    ],
-                    leaveType: LeaveType(
-                        type: e.leaveType?.type ?? "",
-                        isAddNoteRequired:
-                            e.leaveType?.isAddNoteRequired ?? false,
-                        isAttachDocumentRequired:
-                            e.leaveType?.isAttachDocumentRequired ?? false,
-                        leaveId: e.leaveType?.leaveId ?? "",
-                        leaveName: e.leaveType?.leaveName ?? ""));
+      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
+              ?.map((e) {
+            //todo
+            /// add files info
+            ModelForDescription modelForDescription = ModelForDescription(
+                status: e.status ?? "",
+                description: e.description ?? "",
+                endDate: e.endDate ?? "",
+                startDate: e.startDate ?? "",
+                duration: e.totalLeaveMinutes ?? "",
+                numberOfDays: e.numberOfDays ?? 0,
+                createdAt: e.createdAt ?? "",
+                leaveId: e.id ?? "",
+                leaveDetails: [
+                  e.leaveDetails != null && e.leaveDetails!.isNotEmpty
+                      ? LeaveDetails(
+                          scheduleHour: e.leaveDetails?[0].scheduleHour ?? "",
+                          leaveHour: e.leaveDetails?[0].leaveHour ?? "",
+                        )
+                      : LeaveDetails()
+                ],
+                taskName: e.leaveType?.leaveName ?? "",
+                files: [
+                  (e.files != null && e.files!.isNotEmpty)
+                      ? Files(
+                          name: e.files?[0].name ?? "",
+                          id: e.files?[0].id ?? "",
+                          key: e.files?[0].key ?? "",
+                          size: e.files?[0].size ?? "",
+                          createdAt: e.files?[0].createdAt ?? "",
+                        )
+                      : Files()
+                ],
+                leaveType: LeaveType(
+                    type: e.leaveType?.type ?? "",
+                    isAddNoteRequired: e.leaveType?.isAddNoteRequired ?? false,
+                    isAttachDocumentRequired:
+                        e.leaveType?.isAttachDocumentRequired ?? false,
+                    leaveId: e.leaveType?.leaveId ?? "",
+                    leaveName: e.leaveType?.leaveName ?? ""));
 
-                Map<String, dynamic> jsonModel = modelForDescription.toJson();
+            Map<String, dynamic> jsonModel = modelForDescription.toJson();
 
-                String objData = jsonEncode(jsonModel);
-                return CalendarEventData(
-                  date: DateTime.parse("2024-01-24"),
-                  startTime: e.startDate != null
-                      ? DateTime.parse(
-                          "2024-01-24 ${e.startDate?.substring(11, 19)}")
-                      : DateTime.parse(
-                          "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
-                  endTime: _createEndDateForTimeLine(
-                      startDate: e.startDate ?? DateTime.now().toString(),
-                      endDate: e.endDate),
-                  event: "",
-                  title: '',
-                  description: objData,
-                );
-              }).toList() ??
-              []);
+            String objData = jsonEncode(jsonModel);
+            return CalendarEventData(
+              date: DateTime.parse("2024-01-24"),
+              startTime: e.startDate != null
+                  ? DateTime.parse(
+                      "2024-01-24 ${e.startDate?.substring(11, 19)}")
+                  : DateTime.parse(
+                      "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
+              endTime: _createEndDateForTimeLine(
+                  startDate: e.startDate ?? DateTime.now().toString(),
+                  endDate: e.endDate),
+              event: "",
+              title: '',
+              description: objData,
+            );
+          }).toList() ??
+          []);
 
       CalendarControllerProvider.of(Get.context!)
           .controller
@@ -510,7 +519,7 @@ class TimelineController extends GetxController with StateMixin {
 
   void updateDataAfterTwoMinutes() {
     updateDataTime = Timer.periodic(const Duration(minutes: 2), (timer) {
-      if (timelogList!.isNotEmpty) {
+      if (timelogList != null && timelogList!.isNotEmpty) {
         for (var value in timelogList!) {
           CalendarControllerProvider.of(Get.context!).controller.remove(value);
         }

@@ -13,7 +13,7 @@ import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
-import '../../dashboard/controller/dashbpard_controller.dart';
+import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 
 class UpdateProfileController extends GetxController {
   final isLoading = false.obs;

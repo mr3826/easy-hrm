@@ -1,5 +1,5 @@
 import '../../../common/domain/files_model.dart';
-import '../../dashboard/model/upcomming_leave_dashboard.dart';
+import '../../dashboard/domain/upcomming_leave_dashboard.dart';
 
 class LeaveRecord {
   List<GetLeaveRecordsForApp>? getLeaveRecordsForApp;
