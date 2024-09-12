@@ -12,6 +12,7 @@ import '../../../../routes/app_pages.dart';
 
 class ForgotPasswordController extends GetxController {
   final isLoading = false.obs;
+  final isResendLoading = false.obs;
 
 
   final NetworkClient _networkClient = Get.find<NetworkClient>();
@@ -41,7 +42,7 @@ class ForgotPasswordController extends GetxController {
   }
 
   Future<void> resendOtp({required String mailAddress}) async {
-    isLoading(true);
+    isResendLoading(true);
     try {
       Response response = await _networkClient.postRequest(Api.RESEND_OTP, {
         "email": mailAddress,
@@ -53,15 +54,18 @@ class ForgotPasswordController extends GetxController {
                 AppString.error_text);
       } else {
         logSuccessMessage(logName: "resendOtp");
+        showSuccessMessage(
+            message: SuccessModel.fromJson(response.body).message ?? "");
       }
     } catch (exp) {
       log(exp.toString());
     }
-    isLoading(false);
+    isResendLoading(false);
   }
 
-  Future<void> resetPassword(
-      {required String confirmationCode,}) async {
+  Future<void> resetPassword({
+    required String confirmationCode,
+  }) async {
     isLoading(true);
     try {
       Response response =
