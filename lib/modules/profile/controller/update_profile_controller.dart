@@ -44,8 +44,8 @@ class UpdateProfileController extends GetxController {
 
     isLoading(false);
   }
-  void changePassword(
-      {required String currentPassword, required String newPassword}) async {
+
+  void changePassword({required String currentPassword, required String newPassword}) async {
     isLoading(true);
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/chnage_email.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/email_verification_otp.dart';
@@ -15,7 +16,7 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
   ChangeEmailNotifyLayout({super.key});
 
   final selectedValue = Get.put(PopupMenuController());
-  final selectedVerifyValue = Get.put(SelectedOtpVerifyController());
+  final selectedVerifyValue = Get.put(UserProfileController());
 
   @override
   Widget build(BuildContext context) {

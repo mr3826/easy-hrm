@@ -17,7 +17,6 @@ class OtpController extends GetxController {
     try {
       Response response =
       await NetworkClient().postRequest(Api.RESET_PASSWORD, {
-
         "email": restPasswordController.text,
         "confirmationCode": confirmationCode,
         "password": "111111",

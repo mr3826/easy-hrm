@@ -24,8 +24,7 @@ class SignInController extends GetxController with StateMixin {
   final isSubscriptionTimeTrackingIsAllow = true.obs;
 
   RxBool isValue = true.obs;
-  OrgSubscriptionInfoModel orgSubscriptionInfoModel =
-      OrgSubscriptionInfoModel();
+  OrgSubscriptionInfoModel orgSubscriptionInfoModel = OrgSubscriptionInfoModel();
 
   changeVal() {
     return isValue.value = !isValue.value;
@@ -97,8 +96,7 @@ class SignInController extends GetxController with StateMixin {
       if (response.hasException) {
         ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrgSubscriptionInfo");
       } else {
-        orgSubscriptionInfoModel =
-            OrgSubscriptionInfoModel.fromJson(response.data!);
+        orgSubscriptionInfoModel = OrgSubscriptionInfoModel.fromJson(response.data!);
         checkIfSubscription();
       }
     } catch (ex) {
