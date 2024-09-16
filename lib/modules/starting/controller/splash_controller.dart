@@ -17,7 +17,7 @@ class SplashController extends GetxController {
   void onReady() async {
     final connectivityResult = await (Connectivity().checkConnectivity());
 
-    if (connectivityResult == ConnectivityResult.none) {
+    if (connectivityResult.contains(ConnectivityResult.none)) {
       Get.to(const NetworkErrorPage());
       Get.find<ConnectivityController>().isDialogIsOpened(true);
     } else {
