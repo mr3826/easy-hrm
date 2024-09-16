@@ -15,7 +15,7 @@ import '../../auth/presentation/controller/signin_controller.dart';
 class SplashController extends GetxController {
   @override
   void onReady() async {
-    final connectivityResult = await (Connectivity().checkConnectivity());
+    final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
 
     if (connectivityResult.contains(ConnectivityResult.none)) {
       Get.to(const NetworkErrorPage());

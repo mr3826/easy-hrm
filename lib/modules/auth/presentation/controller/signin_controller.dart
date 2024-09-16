@@ -88,7 +88,7 @@ class SignInController extends GetxController with StateMixin {
       } else {
         orgSubscriptionInfoModel =
             OrgSubscriptionInfoModel.fromJson(response.data!);
-        _checkIfSubscriptionValid();
+        checkIfSubscription();
       }
     } catch (ex) {
       log("getOrgSubscriptionInfo: $ex");
@@ -129,20 +129,12 @@ class SignInController extends GetxController with StateMixin {
     // Save last input data and get subscription info
     _saveData();
     getOrgSubscriptionInfo();
-
-    // Navigate to the main screen
-    Get.offNamed(Routes.MAIN_SCREEN);
   }
 
   /// Handles errors by showing appropriate error messages and logging.
   void _handleError({required String logName, required Response response}) {
     logErrorMessage(logName: logName, response: response);
     showErrorMessage(message: ErrorModel.fromJson(response.body).message ?? "");
-  }
-
-  /// Checks if the subscription is valid or expired based on the fetched information.
-  void _checkIfSubscriptionValid() {
-    // Logic to check subscription validity (based on orgSubscriptionInfoModel)
   }
 }
 

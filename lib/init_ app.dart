@@ -16,15 +16,7 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
 import 'firebase_options.dart';
-import 'modules/auth/presentation/controller/forgot_password_controller.dart';
-import 'modules/auth/presentation/controller/otp_controller.dart';
-import 'modules/auth/presentation/controller/signin_controller.dart';
-import 'modules/leave/presentation/controller/calendar_date_controller.dart';
-import 'modules/leave/presentation/controller/file_upload_controller.dart';
-import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
-import 'modules/profile/controller/log_out_controller.dart';
-import 'modules/profile/controller/profile_image_selected_controller.dart';
-import 'modules/starting/controller/splash_controller.dart';
+
 
 Future<void> initApp() async {
   await GetStorage.init();
@@ -51,21 +43,6 @@ Future<void> initApp() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
-  Get.put(LanguageController());
-  Get.put(ForgotPasswordController());
-  Get.put(ConnectivityController());
-  Get.put(FileUploadController());
-  Get.put(PickedFileFormStorage());
-  Get.put(DateController());
-  Get.put(PikedProfileImgController());
-  Get.put(PasswordController());
-  Get.put(LogoutController());
-  Get.put(SelectedTaskController());
-  Get.put(DateTimeController());
-  Get.put(SplashController());
-  Get.put(UpdateProfileController());
-  Get.put(SignInController());
-  Get.put(OtpController());
 
   Get.put(DashboardRemoteDataSource(client), permanent: true);
   Get.put(NotificationRemoteDataSource(client), permanent: true);
