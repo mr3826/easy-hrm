@@ -44,7 +44,6 @@ class UpdateProfileController extends GetxController {
 
     isLoading(false);
   }
-
   void changePassword(
       {required String currentPassword, required String newPassword}) async {
     isLoading(true);
@@ -54,7 +53,6 @@ class UpdateProfileController extends GetxController {
         "newPassword": newPassword,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
       });
-
       if (response.status.hasError) {
         logErrorMessage(logName: "changePassword", response: response);
         showErrorMessage(

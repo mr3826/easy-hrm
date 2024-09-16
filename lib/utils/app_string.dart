@@ -96,6 +96,7 @@ class AppString {
   static const String text_done_of_save = "Done and Save";
   static const String text_dont_not_worry = "Don’t worry! It happens. Please enter the email address associated with your account.";
   static const String text_duration = "Duration";
+  static const String text_no_data_found = "No data found!";
   static const String text_edit = "Edit";
   static const String text_edit_profile = "Edit profile";
   static const String text_email = "Email";
