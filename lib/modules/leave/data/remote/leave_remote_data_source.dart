@@ -47,7 +47,7 @@ class LeaveRemoteDataSource {
         queryString: getLeaveSummaryForDashboardQuery,
       );
 
-      if (response.hasException) {
+      if (response.hasException)   {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveSummaryForDashboard");
         return null;
@@ -78,6 +78,7 @@ class LeaveRemoteDataSource {
       }
 
       return LeaveDetailsByDate.fromJson(response.data!);
+
     } catch (e) {
       log('Error in getLeaveRecordByDate: $e');
       return null;

@@ -63,72 +63,211 @@ class TimelineController extends GetxController with StateMixin {
   /// Method to check if the button should be enabled
   RxBool isValueChangeForTimeLogUpdate = false.obs;
 
-  Future<bool> startOrEndTimer({required String timerType}) async {
-    final response = await NetworkClient()
-        .graphRequest(queryString: startOrEndTimerQueryData, variables: {
-      "inputData": {"timer_type": timerType}
-    });
+  // Future<bool> startOrEndTimer({required String timerType}) async {
+  //   final response = await NetworkClient()
+  //       .graphRequest(queryString: startOrEndTimerQueryData, variables: {
+  //     "inputData": {"timer_type": timerType}
+  //   });
+  //
+  //   if (response.hasException) {
+  //     ExceptionHelper.errorHandler(
+  //         exception: response.exception!, methodName: "saveTimeEntry");
+  //     return false;
+  //   } else {
+  //     startOrEndTimerResponse =
+  //         StartOrEndTimerResponse.fromJson(response.data!);
+  //     if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
+  //       showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
+  //       Get.find<TimeCounterController>().start();
+  //       _refreshTimeline();
+  //     } else {
+  //       if (Get.find<TimeCounterController>().timer.isActive &&
+  //           Get.find<TimeCounterController>().animationTimer.isActive) {
+  //         Get.find<TimeCounterController>().stop();
+  //         Get.find<TimeCounterController>().isRunningHorizontalLine(false);
+  //       }
+  //     }
+  //     return true;
+  //   }
+  // }
 
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "saveTimeEntry");
-      return false;
-    } else {
+  /// Starts or stops the timer based on the [timerType].
+  ///
+  /// This method sends a GraphQL request to start or stop a timer based on the
+  /// [timerType] ("start" or "end"). It handles the response and updates the UI
+  /// accordingly, either starting the timer or stopping it based on the server's response.
+  ///
+  /// If the timer is successfully started, it triggers a success message and starts
+  /// the timer in the [TimeCounterController]. If the timer is stopped, it also stops
+  /// the animation and the timer in the same controller.
+  ///
+  /// Returns `true` if the timer was successfully started or stopped, and `false` if
+  /// an exception occurred during the API call.
+  ///
+  /// Throws: Exception handled by [ExceptionHelper.errorHandler].
+  Future<bool> startOrEndTimer({required String timerType}) async {
+    try {
+      // Make the GraphQL request to start or stop the timer.
+      final response = await NetworkClient()
+          .graphRequest(queryString: startOrEndTimerQueryData, variables: {
+        "inputData": {"timer_type": timerType}
+      });
+
+      // Handle exception from response
+      if (response.hasException) {
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "saveTimeEntry");
+        return false;
+      }
+
+      // Parse response data
       startOrEndTimerResponse =
           StartOrEndTimerResponse.fromJson(response.data!);
+
+      // If endDate is null, the timer has started
       if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
+        // Show success message and start timer in the controller
         showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
         Get.find<TimeCounterController>().start();
         _refreshTimeline();
       } else {
-        if (Get.find<TimeCounterController>().timer.isActive &&
-            Get.find<TimeCounterController>().animationTimer.isActive) {
-          Get.find<TimeCounterController>().stop();
-          Get.find<TimeCounterController>().isRunningHorizontalLine(false);
+        // If the timer is active, stop it along with the animation
+        TimeCounterController timerController =
+            Get.find<TimeCounterController>();
+        if (timerController.timer.isActive &&
+            timerController.animationTimer.isActive) {
+          timerController.stop();
+          timerController.isRunningHorizontalLine(false);
         }
       }
+
       return true;
+    } catch (e) {
+      // Handle unexpected errors
+      log("startOrEndTimer:: ${e.toString()}");
+      return false;
     }
   }
 
-  saveTimeEntry() async {
+  // saveTimeEntry() async {
+  //   isTimelogEntryOrRemoveLoading(true);
+  //   final response = await NetworkClient()
+  //       .graphRequest(queryString: saveTimerQueryData, variables: {
+  //     "inputData": {
+  //       "description": descriptionController.text,
+  //       "end_date":
+  //           "${DateTime.parse(startOrEndTimerResponse?.startOrStopTimer?.endDate ?? DateTime.now().toString()).toUtc()}",
+  //       "start_date":
+  //           "${DateTime.parse(startOrEndTimerResponse?.startOrStopTimer?.startDate ?? DateTime.now().toString()).toUtc()}",
+  //       "status": "pending",
+  //       "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+  //       "project_id": projectId.value.isNotEmpty ? projectId.value : null,
+  //       "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
+  //     }
+  //   });
+  //
+  //   if (response.hasException) {
+  //     ExceptionHelper.errorHandler(
+  //         exception: response.exception!, methodName: "saveTimeEntry");
+  //   } else {
+  //     showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
+  //     timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
+  //     taskId.value = "";
+  //     taskName.value = '';
+  //     projectId.value = '';
+  //     Get.find<TimeCounterController>().isTotalCount(true);
+  //     descriptionController.clear();
+  //     Get.find<TimeCounterController>().reset();
+  //     Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
+  //     Get.find<DashboardController>().getProfileInfoForDashboard();
+  //     _refreshTimeline();
+  //
+  //     Get.to(() => const MainScreen(
+  //           routeIndex: 0,
+  //         ));
+  //   }
+  //   isTimelogEntryOrRemoveLoading(false);
+  // }
+
+  /// Saves a time entry based on the current timer data.
+  ///
+  /// This method sends a GraphQL request to save the time entry using the start and end dates from the
+  /// [startOrEndTimerResponse], along with optional task and project IDs if provided.
+  ///
+  /// If the time entry is successfully saved, the method:
+  /// - Clears the task and project data.
+  /// - Resets the time entry description.
+  /// - Resets the [TimeCounterController] and refreshes the dashboard and timeline data.
+  /// - Navigates back to the main screen.
+  ///
+  /// If there is an exception during the request, it is handled by [ExceptionHelper.errorHandler].
+  ///
+  /// The [isTimelogEntryOrRemoveLoading] flag is used to show loading state during the API call.
+  Future<void> saveTimeEntry() async {
+    // Show loading indicator
     isTimelogEntryOrRemoveLoading(true);
-    final response = await NetworkClient()
-        .graphRequest(queryString: saveTimerQueryData, variables: {
+
+    // Prepare variables for the GraphQL request
+    final variables = {
       "inputData": {
         "description": descriptionController.text,
         "end_date":
-            "${DateTime.parse(startOrEndTimerResponse?.startOrStopTimer?.endDate ?? DateTime.now().toString()).toUtc()}",
+            _formatDate(startOrEndTimerResponse?.startOrStopTimer?.endDate),
         "start_date":
-            "${DateTime.parse(startOrEndTimerResponse?.startOrStopTimer?.startDate ?? DateTime.now().toString()).toUtc()}",
+            _formatDate(startOrEndTimerResponse?.startOrStopTimer?.startDate),
         "status": "pending",
         "task_id": taskId.value.isNotEmpty ? taskId.value : null,
         "project_id": projectId.value.isNotEmpty ? projectId.value : null,
         "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
       }
-    });
+    };
 
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "saveTimeEntry");
-    } else {
-      showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
-      timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
-      taskId.value = "";
-      taskName.value = '';
-      projectId.value = '';
-      Get.find<TimeCounterController>().isTotalCount(true);
-      descriptionController.clear();
-      Get.find<TimeCounterController>().reset();
-      Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
-      Get.find<DashboardController>().getProfileInfoForDashboard();
-      _refreshTimeline();
+    try {
+      // Make the GraphQL request to save the timer entry
+      final response = await NetworkClient().graphRequest(
+        queryString: saveTimerQueryData,
+        variables: variables,
+      );
 
-      Get.to(() => const MainScreen(
-            routeIndex: 0,
-          ));
+      // Handle response exception
+      if (response.hasException) {
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "saveTimeEntry");
+      } else {
+        // Success: Show a success message and process the response
+        showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
+        timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
+
+        // Reset fields and controllers after successful save
+        _resetFields();
+
+        // Refresh dashboard and timeline data
+        Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
+        Get.find<DashboardController>().getProfileInfoForDashboard();
+        _refreshTimeline();
+
+        // Navigate to the main screen
+        Get.to(() => const MainScreen(routeIndex: 0));
+      }
+    } finally {
+      // Hide loading indicator after completion
+      isTimelogEntryOrRemoveLoading(false);
     }
-    isTimelogEntryOrRemoveLoading(false);
+  }
+
+  /// Formats the date string to UTC format. Defaults to the current date and time if [date] is null.
+  String _formatDate(String? date) {
+    return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
+  }
+
+  /// Resets the task, project, and description fields and the time counter.
+  void _resetFields() {
+    taskId.value = "";
+    taskName.value = '';
+    projectId.value = '';
+    descriptionController.clear();
+    Get.find<TimeCounterController>().reset();
+    Get.find<TimeCounterController>().isTotalCount(true);
   }
 
   ///dev check
