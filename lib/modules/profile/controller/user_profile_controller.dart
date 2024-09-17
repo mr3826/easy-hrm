@@ -36,6 +36,7 @@ import '../../notification/presentation/controller/notification_controller.dart'
 import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
 import '../model/user_profile.dart';
+import 'package:dio/dio.dart' as di;
 
 class UserProfileController extends GetxController with StateMixin {
   @override
@@ -158,18 +159,15 @@ class UserProfileController extends GetxController with StateMixin {
     isLoading(true);
     try {
       final response = await NetworkClient()
-          .postRequest(Api.VERIFY_PASSWORD, {"password": password});
+          .postRequestWithDio(Api.VERIFY_PASSWORD, {"password": password});
       // Check if the response body is null
       handleUnknownError(response);
-      if (response.status.hasError) {
-        logErrorMessage(logName: "getPasswordVerification", response: response);
+      if (response.statusCode != 200) {
         showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
+            message: ErrorModel.fromJson(response.data).message ??
                 "Some Error occur!");
       } else {
-        logSuccessMessage(
-            logName: "getPasswordVerification", response: response);
-        ChangeMailResponse value = ChangeMailResponse.fromJson(response.body);
+        ChangeMailResponse value = ChangeMailResponse.fromJson(response.data);
         validation = value.valid!;
       }
     } catch (e) {
@@ -184,19 +182,18 @@ class UserProfileController extends GetxController with StateMixin {
 
     isLoadingChangeEmail(true);
     try {
-      final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
+      final response =
+          await NetworkClient().postRequestWithDio(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
       // Check if the response body is null
       handleUnknownError(response);
-      if (response.status.hasError) {
-        logErrorMessage(logName: "changeMail", response: response);
+      if (response.statusCode != 200) {
         showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
+            message: ErrorModel.fromJson(response.data).message ??
                 "Some Error occur!");
       } else {
-        logSuccessMessage(logName: "changeMail", response: response);
         validation = true;
       }
     } catch (e) {
@@ -210,20 +207,17 @@ class UserProfileController extends GetxController with StateMixin {
     isVerificationApiLoading(true);
     try {
       final response =
-          await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+          await NetworkClient().postRequestWithDio(Api.VERIFY_CHANGE_MAIL_OTP, {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
       // Check if the response body is null
       handleUnknownError(response);
-      if (response.status.hasError) {
-        logErrorMessage(logName: "submitVerificationCode", response: response);
+      if (response.statusCode != 200) {
         showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
+            message: ErrorModel.fromJson(response.data).message ??
                 "Some Error occur!");
       } else {
-        logSuccessMessage(
-            logName: "submitVerificationCode", response: response);
         changeEmailController.clear();
         Get.back(canPop: false);
         Get.back(canPop: false);
@@ -244,30 +238,26 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   resendOtp({required String emailAddress}) async {
-
     print("resendOtpLoading ::: $resendOtpLoading");
 
     resendOtpLoading(true);
     try {
-      final response = await NetworkClient().postRequest(
+      final response = await NetworkClient().postRequestWithDio(
           Api.RESEND_OTP_CHANGE_EMAIL, {
         "email": emailAddress,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
       // Check if the response body is null
       handleUnknownError(response);
-      if (response.status.hasError) {
-        logErrorMessage(logName: "resendOtp", response: response);
+      if (response.statusCode != 200) {
         showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
+            message: ErrorModel.fromJson(response.data).message ??
                 "Some Error occur!");
       } else {
-        logSuccessMessage(logName: "resendOtp", response: response);
         seconds.value = 59;
         startTimer();
         showSuccessMessage(message: AppString.resend_otp_text.tr);
         resendOtpLoading(false);
-
       }
       resendOtpLoading(false);
     } catch (e) {
@@ -357,23 +347,18 @@ class UserProfileController extends GetxController with StateMixin {
                                     try {
                                       if (passwordInputController
                                           .text.isNotEmpty) {
-                                        Response response =
-                                            await NetworkClient().postRequest(
-                                                Api.LOGIN, {
+                                        var response = await NetworkClient()
+                                            .postRequestWithDio(Api.LOGIN, {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
                                           "orgId": orgId
                                         });
 
-                                        if (response.hasError) {
-                                          logErrorMessage(
-                                              logName: "login",
-                                              response: response);
-
+                                        if (response.statusCode != 200) {
                                           showErrorMessage(
                                               message: ErrorModel.fromJson(
-                                                          response.body)
+                                                          response.data)
                                                       .message ??
                                                   "");
                                         } else {
@@ -382,13 +367,13 @@ class UserProfileController extends GetxController with StateMixin {
                                               TokenModel(
                                             accessToken:
                                                 SignInResponse.fromJson(
-                                                            response.body)
+                                                            response.data)
                                                         .data
                                                         ?.accessToken ??
                                                     "",
                                             refreshToken:
                                                 SignInResponse.fromJson(
-                                                            response.body)
+                                                            response.data)
                                                         .data
                                                         ?.refreshToken ??
                                                     "",
@@ -403,14 +388,14 @@ class UserProfileController extends GetxController with StateMixin {
                                           GetStorage().write(
                                               AppString.ACCESS_TOKEN,
                                               SignInResponse.fromJson(
-                                                          response.body)
+                                                          response.data)
                                                       .data
                                                       ?.accessToken ??
                                                   "");
                                           GetStorage().write(
                                               AppString.REFRESH_TOKEN,
                                               SignInResponse.fromJson(
-                                                          response.body)
+                                                          response.data)
                                                       .data
                                                       ?.refreshToken ??
                                                   "");
@@ -453,27 +438,26 @@ class UserProfileController extends GetxController with StateMixin {
       required String refreshToken,
       required String orgId}) async {
     try {
-      Response response = await NetworkClient().postRequest(Api.REFRESH_TOKEN,
+      var response = await NetworkClient().postRequestWithDio(Api.REFRESH_TOKEN,
           {"accessToken": accessToken, "refreshToken": refreshToken});
 
-      if (response.hasError) {
-        logErrorMessage(logName: "refresh token", response: response);
+      if (response.statusCode != 200) {
         return false;
       } else {
         Map<String, dynamic> jsonModel = TokenModel(
           accessToken:
-              SignInResponse.fromJson(response.body).data?.accessToken ?? "",
+              SignInResponse.fromJson(response.data).data?.accessToken ?? "",
           refreshToken:
-              SignInResponse.fromJson(response.body).data?.refreshToken ?? "",
+              SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
         ).toJson();
         String jsonObject = jsonEncode(jsonModel);
         GetStorage().write(orgId, jsonObject);
 
         GetStorage().write(AppString.ORGANIZATION_ID, orgId);
         GetStorage().write(AppString.ACCESS_TOKEN,
-            SignInResponse.fromJson(response.body).data?.accessToken ?? "");
+            SignInResponse.fromJson(response.data).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN,
-            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
+            SignInResponse.fromJson(response.data).data?.refreshToken ?? "");
 
         return true;
       }

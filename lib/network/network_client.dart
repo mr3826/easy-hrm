@@ -21,25 +21,24 @@ class NetworkClient extends GetConnect {
   /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
   /// Adds common headers such as content type and authorization token.
   /// Returns a [Response] object containing the server's response.
-  Future<Response> postRequest(String apiEndPoint, dynamic body) async {
-    try {
-      return await post(_getRequestUrl(apiEndPoint), body, headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "getx-client",
-        "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
-      }).timeout(const Duration(seconds: 15));
-    } catch (e) {
-      log('Error in postRequest: $e');
-      rethrow;
-    }
-  }
-
-
+  // Future<Response> postRequest(String apiEndPoint, dynamic body) async {
+  //   try {
+  //     return await post(_getRequestUrl(apiEndPoint), body, headers: {
+  //       "Content-Type": "application/json",
+  //       "User-Agent": "getx-client",
+  //       "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
+  //     }).timeout(const Duration(seconds: 15));
+  //   } catch (e) {
+  //     log('Error in postRequest: $e');
+  //     rethrow;
+  //   }
+  // }
 
   /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
   /// Adds common headers such as content type and authorization token.
   /// Returns a [Response] object containing the server's response.
-  Future<d.Response> postRequestWithDio(String apiEndPoint, dynamic body) async {
+  Future<d.Response> postRequestWithDio(
+      String apiEndPoint, dynamic body) async {
     d.Dio dio = d.Dio();
 
     // Attach the interceptor
@@ -62,7 +61,6 @@ class NetworkClient extends GetConnect {
       rethrow;
     }
   }
-
 
   /// Executes a GraphQL query using the provided [queryString] and optional [variables].
   /// Automatically refreshes the token if it is expired.
@@ -102,20 +100,17 @@ class NetworkClient extends GetConnect {
   /// If the refresh fails, redirects the user to the sign-in screen.
   Future<void> _getNewToken() async {
     try {
-      final response = await postRequest(Api.REFRESH_TOKEN, {
+      final response = await postRequestWithDio(Api.REFRESH_TOKEN, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
 
-      if (response.hasError) {
-        logErrorMessage(logName: "refresh token", response: response);
+      if (response.statusCode != 200) {
         showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ?? "");
+            message: ErrorModel.fromJson(response.data).message ?? "");
         Get.offAllNamed(Routes.SIGN_IN_SCREEN);
       } else {
-        final data = SignInResponse.fromJson(response.body).data;
-        logSuccessMessage(logName: "refresh token", response: response);
-
+        final data = SignInResponse.fromJson(response.data).data;
         GetStorage()
           ..write(AppString.ACCESS_TOKEN, data?.accessToken ?? "")
           ..write(AppString.REFRESH_TOKEN, data?.refreshToken ?? "");
@@ -137,6 +132,3 @@ int checkTokenExpiration() {
   print("expire time: ${difference.inHours}");
   return difference.inHours;
 }
-
-
-

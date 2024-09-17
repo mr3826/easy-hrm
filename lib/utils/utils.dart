@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as di;
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
@@ -411,8 +412,8 @@ void logSuccessMessage(
 
 
 
-handleUnknownError(Response response) {
-  if (response.body == null) {
+handleUnknownError(di.Response response) {
+  if (response.data == null) {
     return showErrorMessage(message: "Something went wrong. Please try again.");
   }
 }

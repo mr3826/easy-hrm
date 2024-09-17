@@ -13,6 +13,7 @@ import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
+import 'package:dio/dio.dart' as di;
 import '../../auth/presentation/controller/signin_controller.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 
@@ -52,23 +53,20 @@ class UpdateProfileController extends GetxController {
     print("changePassword_input ::: $currentPassword ::: $newPassword");
     isLoading(true);
     try {
-      final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
+      final response = await NetworkClient().postRequestWithDio(Api.CHANGE_PASSWORD, {
         "oldPassword": currentPassword,
         "newPassword": newPassword,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
       });
 
-      // Log the status code and response body
-      log("changePassword_res :: ${response.statusCode}", error: "${response.body}");
       // Check if the response body is null
       handleUnknownError(response);
-      if (response.status.hasError) {
-        final errorModel = response.body is Map<String, dynamic>
-            ? ErrorModel.fromJson(response.body)
+      if (response.statusCode!=200) {
+        final errorModel = response.data is Map<String, dynamic>
+            ? ErrorModel.fromJson(response.data)
             : null;
         showErrorMessage(message: errorModel?.message ?? "An error occurred!");
       } else {
-        logSuccessMessage(logName: "submitVerificationCode", response: response);
         showSuccessMessage(message: AppString.passwordChangeSuccessfulMessage);
          clearPasswordFields();
          handleLogout();

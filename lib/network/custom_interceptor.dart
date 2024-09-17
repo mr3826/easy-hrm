@@ -15,7 +15,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // Log response details
-    print('Response [${response.statusCode}] => DATA: ${response.data}');
+    print('Response [${response.statusCode}] => DATA: ${response.data['message']}');
 
     // Continue with the response
     handler.next(response);

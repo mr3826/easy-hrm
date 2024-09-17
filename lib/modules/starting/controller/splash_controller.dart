@@ -8,14 +8,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../common/controller/connectivity_controller.dart';
 import '../../../utils/api_endpoints.dart';
-import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
 import '../../auth/presentation/controller/signin_controller.dart';
 
 class SplashController extends GetxController {
   @override
   void onReady() async {
-    final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+    final List<ConnectivityResult> connectivityResult =
+        await (Connectivity().checkConnectivity());
 
     if (connectivityResult.contains(ConnectivityResult.none)) {
       Get.to(const NetworkErrorPage());
@@ -73,21 +73,19 @@ class SplashController extends GetxController {
 
   Future<bool> _getNewToken() async {
     try {
-      Response response =
-          await Get.find<NetworkClient>().postRequest(Api.REFRESH_TOKEN, {
+      var response = await Get.find<NetworkClient>()
+          .postRequestWithDio(Api.REFRESH_TOKEN, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN),
       });
 
-      if (response.hasError) {
-        logErrorMessage(logName: "refresh token", response: response);
+      if (response.statusCode != 200) {
         return false;
       } else {
-        logSuccessMessage(logName: "refresh token", response: response);
         GetStorage().write(AppString.ACCESS_TOKEN,
-            SignInResponse.fromJson(response.body).data?.accessToken ?? "");
+            SignInResponse.fromJson(response.data).data?.accessToken ?? "");
         GetStorage().write(AppString.REFRESH_TOKEN,
-            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
+            SignInResponse.fromJson(response.data).data?.refreshToken ?? "");
         return true;
       }
     } catch (e) {

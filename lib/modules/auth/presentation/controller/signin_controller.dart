@@ -63,7 +63,7 @@ class SignInController extends GetxController with StateMixin {
     try {
       // API call to perform login
       di.Response response = await _networkClient.postRequestWithDio(Api.LOGIN, {"email": email, "password": password});
-      // handleUnknownError(response);
+      handleUnknownError(response);
       if (response.statusCode!=200) {
         _handleError(logName: "login", response: response);
       } else {
