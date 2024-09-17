@@ -7,7 +7,6 @@ import 'package:payrun_mobile/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import 'common/controller/connectivity_controller.dart';
 import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
@@ -51,7 +50,7 @@ class MyApp extends StatelessWidget {
         onInit: () {
           Get.put(SplashController());
 
-          Get.lazyPut(() => SignInController());
+          Get.lazyPut(() => SignInController(),fenix: true);
 
           Get.lazyPut(() => ConnectivityController());
 

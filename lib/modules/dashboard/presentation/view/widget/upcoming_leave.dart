@@ -126,13 +126,13 @@ class UpcomingLeaveLayout extends StatelessWidget {
                                         .upcommingLeaveDashboard
                                         ?.getUpcomingLeavesForApp?[index]
                                         .leaveDetails?[0]
-                                        .scheduleHour ??
+                                        .scheduleSecond.toString() ??
                                     "",
                                 leaveHour: controller
                                         .upcommingLeaveDashboard
                                         ?.getUpcomingLeavesForApp?[index]
                                         .leaveDetails?[0]
-                                        .leaveHour ??
+                                        .leaveSecond.toString() ??
                                     "",
                               )
                             : LeaveDetails()
@@ -210,7 +210,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
         false) {
       leaveDuration = getLeaveDuration(
           controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
-                  .leaveDetails![0].leaveHour
+                  .leaveDetails![0].leaveSecond
                   .toString() ??
               "",
           controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]

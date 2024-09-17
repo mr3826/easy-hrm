@@ -166,7 +166,7 @@ class TimeLineCalendar extends StatelessWidget {
                       .map((e) =>
                           li.ModelForDescription.fromJson(jsonDecode(e))
                               .leaveDetails?[0]
-                              .scheduleHour ??
+                              .scheduleSecond ??
                           "")
                       .toString();
 
@@ -174,7 +174,7 @@ class TimeLineCalendar extends StatelessWidget {
                       .map((e) =>
                           li.ModelForDescription.fromJson(jsonDecode(e))
                               .leaveDetails?[0]
-                              .leaveHour ??
+                              .leaveSecond ??
                           "")
                       .toString();
 
