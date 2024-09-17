@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         onInit: () {
           Get.put(SplashController());
 
-          Get.lazyPut(() => SignInController(),fenix: true);
+          Get.lazyPut(() => SignInController(), fenix: true);
 
           Get.lazyPut(() => ConnectivityController());
 
@@ -56,9 +56,6 @@ class MyApp extends StatelessWidget {
           Get.lazyPut(() => ForgotPasswordController());
 
           Get.lazyPut(() => OtpController());
-
-        //  Get.lazyPut(() => PasswordController());
-
           Get.put(FileUploadController());
 
           Get.put(PickedFileFormStorage());
@@ -74,7 +71,6 @@ class MyApp extends StatelessWidget {
           Get.put(DateTimeController());
 
           Get.put(UpdateProfileController());
-
         },
       ),
     );
