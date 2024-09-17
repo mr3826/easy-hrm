@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:dio/dio.dart' as d;
 import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -10,6 +11,7 @@ import '../common/domain/error_model.dart';
 import '../common/widget/error_message.dart';
 import '../modules/auth/domain/signin_res.dart';
 import '../utils/utils.dart';
+import 'custom_interceptor.dart';
 
 /// Utility function to construct the complete API request URL.
 String _getRequestUrl(String apiEndPoint) => Api.PUBLIC_URL + apiEndPoint;
@@ -31,6 +33,36 @@ class NetworkClient extends GetConnect {
       rethrow;
     }
   }
+
+
+
+  /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
+  /// Adds common headers such as content type and authorization token.
+  /// Returns a [Response] object containing the server's response.
+  Future<d.Response> postRequestWithDio(String apiEndPoint, dynamic body) async {
+    d.Dio dio = d.Dio();
+
+    // Attach the interceptor
+    dio.interceptors.add(CustomInterceptor());
+
+    try {
+      dio.options.headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "getx-client",
+        "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
+      };
+
+      d.Response response = await dio
+          .post(_getRequestUrl(apiEndPoint), data: body)
+          .timeout(const Duration(seconds: 15));
+
+      return response;
+    } catch (e) {
+      log('Error in postRequestWithDio: $e');
+      rethrow;
+    }
+  }
+
 
   /// Executes a GraphQL query using the provided [queryString] and optional [variables].
   /// Automatically refreshes the token if it is expired.
@@ -105,3 +137,6 @@ int checkTokenExpiration() {
   print("expire time: ${difference.inHours}");
   return difference.inHours;
 }
+
+
+

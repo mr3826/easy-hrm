@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:dio/dio.dart' as di;
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -62,9 +62,9 @@ class SignInController extends GetxController with StateMixin {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      Response response = await _networkClient.postRequest(Api.LOGIN, {"email": email, "password": password});
-      handleUnknownError(response);
-      if (response.hasError) {
+      di.Response response = await _networkClient.postRequestWithDio(Api.LOGIN, {"email": email, "password": password});
+      // handleUnknownError(response);
+      if (response.statusCode!=200) {
         _handleError(logName: "login", response: response);
       } else {
         _handleLoginSuccess(response);
@@ -105,26 +105,26 @@ class SignInController extends GetxController with StateMixin {
   // Private helper functions
 
   /// Handles login success by saving tokens and navigating to the main screen.
-  void _handleLoginSuccess(Response response) {
-    logSuccessMessage(logName: "login", response: response);
+  void _handleLoginSuccess(di.Response response) {
+    // logSuccessMessage(logName: "login", response: response);
 
     // Save token information
     TokenModel tokenModel = TokenModel(
       accessToken:
-          SignInResponse.fromJson(response.body).data?.accessToken ?? "",
+          SignInResponse.fromJson(response.data).data?.accessToken ?? "",
       refreshToken:
-          SignInResponse.fromJson(response.body).data?.refreshToken ?? "",
+          SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
     );
     String tokenJson = jsonEncode(tokenModel.toJson());
 
     // Store tokens in local storage
     GetStorage()
-        .write(SignInResponse.fromJson(response.body).ordId ?? "", tokenJson);
+        .write(SignInResponse.fromJson(response.data).ordId ?? "", tokenJson);
     GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
     GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
     GetStorage().write(AppString.LOGGED_IN, true);
     GetStorage().write(AppString.ORGANIZATION_ID,
-        SignInResponse.fromJson(response.body).ordId ?? "");
+        SignInResponse.fromJson(response.data).ordId ?? "");
 
     // Save last input data and get subscription info
     _saveData();
@@ -132,9 +132,9 @@ class SignInController extends GetxController with StateMixin {
   }
 
   /// Handles errors by showing appropriate error messages and logging.
-  void _handleError({required String logName, required Response response}) {
-    logErrorMessage(logName: logName, response: response);
-    showErrorMessage(message: ErrorModel.fromJson(response.body).message ?? "");
+  void _handleError({required String logName, required di.Response response}) {
+    // logErrorMessage(logName: logName, response: response);
+    showErrorMessage(message: ErrorModel.fromJson(response.data).message ?? "");
   }
 }
 
