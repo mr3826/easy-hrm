@@ -44,7 +44,7 @@ class ChangEmailFieldLayout extends StatelessWidget {
                     },
                   ),
                   customSpacerHeight(height: 20),
-                  Obx(() => Get.find<UserProfileController>().isLoading.isTrue
+                  Obx(() => Get.find<UserProfileController>().isLoadingChangeEmail.isTrue
                       ? const Center(
                           child: CupertinoActivityIndicator(
                               color: Colors.blueAccent, radius: 16),
@@ -63,11 +63,8 @@ class ChangEmailFieldLayout extends StatelessWidget {
                               } else {
                                 if (context.mounted) {
                                   otpVerificationLayout(context);
-                                  Get.find<UserProfileController>()
-                                      .seconds
-                                      .value = 59;
-                                  Get.find<UserProfileController>()
-                                      .startTimer();
+                                  Get.find<UserProfileController>().seconds.value = 59;
+                                  Get.find<UserProfileController>().startTimer();
                                 }
                               }
                             }

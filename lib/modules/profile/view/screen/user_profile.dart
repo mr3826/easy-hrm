@@ -42,8 +42,8 @@ class ProfileScreen extends GetView<UserProfileController> {
               children: [
                 customSpacerHeight(height: 6),
 
-                ///User info section
-                userInfoLayout(),
+                // ///User info section
+                 userInfoLayout(),
                 customSpacerHeight(height: 30),
 
                 ///Monthly layout

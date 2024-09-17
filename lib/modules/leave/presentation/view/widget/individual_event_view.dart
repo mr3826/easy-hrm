@@ -17,6 +17,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_dotted_border.dart';
 import '../../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
+import '../../../../../utils/utils.dart';
 import '../../../domain/leave_record_response.dart';
 import 'leave_record_details_view.dart';
 
@@ -134,13 +135,13 @@ class IndividualEventView extends StatelessWidget {
                                         .leaveDetailsByDate
                                         ?.getLeaveRequests?[index]
                                         .leaveDetails?[0]
-                                        .scheduleHour ??
+                                        .scheduleSecond.toString() ??
                                     "",
                                 leaveHour: Get.find<LeaveScreenController>()
                                         .leaveDetailsByDate
                                         ?.getLeaveRequests?[index]
                                         .leaveDetails?[0]
-                                        .leaveHour ??
+                                        .leaveSecond.toString() ??
                                     "",
                               )
                             : LeaveDetails()
@@ -302,7 +303,7 @@ class IndividualEventView extends StatelessWidget {
                                               .leaveDetailsByDate
                                               ?.getLeaveRequests?[index]
                                               .leaveDetails?[0]
-                                              .leaveHour ??
+                                              .leaveSecond.toString() ??
                                           "",
                                       "${Get.find<LeaveScreenController>().leaveDetailsByDate?.getLeaveRequests?[index].numberOfDays}"),
                                   style: AppStyle.normal_text_black.copyWith(

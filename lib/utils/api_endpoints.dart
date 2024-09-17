@@ -10,15 +10,19 @@ class Api {
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
   static const LOGOUT = "/auth/logout";
+
   static const REFRESH_TOKEN = "/auth/refresh-token";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
-  static const RESEND_OTP = "/auth/resend-verification-code";
-  static const RESET_PASSWORD = "/auth/verify-forgot-password-code";
+  static const RESEND_OTP = "/auth/retry-forgot-password";
+  static const RESEND_OTP_CHANGE_EMAIL = "/auth/resend-verification-code";
+  static const VERIFY_OTP_CODE = "/auth/verify-forgot-password-code";
+  static const RESET_PASSWORD = "/auth/verify-forgot-password";
   static const VERIFY_PASSWORD = "/auth/verify-password";
   static const CHANGE_MAIL = "/auth/change-email";
   static const VERIFY_CHANGE_MAIL_OTP = "/auth/confirm-change-email";
   static const CHANGE_PASSWORD = "/auth/change-password";
 }
+///auth/resend-verification-code
 
 //leave module
 const getLeaveSummaryForDashboardQuery = """
@@ -62,9 +66,9 @@ query GetLeaveRequests($queryData: LeaveRequestQueryType) {
       description
       end_date
       leave_details {
-        schedule_hour
+        schedule_seconds
         date
-        leave_hour
+        leave_seconds
       }
       files {
         name
@@ -104,9 +108,9 @@ query GetLeaveRecordsForApp($optionData: OptionDataType) {
         id
       }
        leave_details {
-      schedule_hour
-      date
-      leave_hour
+        schedule_seconds
+        date
+        leave_seconds
       }
       leave_status
       leaveType {
@@ -335,9 +339,9 @@ query GetUpcomingLeavesForApp {
     createdAt
     number_of_days
      leave_details {
-       schedule_hour
-        leave_hour
-        date
+       schedule_seconds
+       date
+       leave_seconds
     }
     files {
         name
@@ -495,9 +499,9 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
         id
       }
       leave_details {
-        schedule_hour
+        schedule_seconds
         date
-        leave_hour
+        leave_seconds
       }
       leaveType {
         name

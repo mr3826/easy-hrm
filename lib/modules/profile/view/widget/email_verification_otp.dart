@@ -64,20 +64,31 @@ Future otpVerificationLayout(context) {
                       color: AppColor.normalTextColor,
                       fontSize: Dimensions.fontSizeDefault),
                 ),
-               Obx(() =>  GestureDetector(
-                   onTap: () {
-                     Get.find<UserProfileController>()
-                         .resendOtp(emailAddress: changeEmailController.text);
-                   },
-                   child:  Get.find<UserProfileController>(). timerActive.value == true
-                       ? Text("${Get.find<UserProfileController>().seconds.value} s"):
-                   Text(
-                     AppString.text_resend.tr,
-                     style: AppStyle.normal_text_grey.copyWith(
-                         color: AppColor.primaryColor,
-                         fontSize: Dimensions.fontSizeDefault),
-                   )),)
-
+                Obx(
+                  () => GestureDetector(
+                      onTap: () {
+                        Get.find<UserProfileController>().resendOtp(
+                            emailAddress: changeEmailController.text);
+                      },
+                      child: Get.find<UserProfileController>()
+                              .resendOtpLoading
+                              .isTrue
+                          ? const CupertinoActivityIndicator(
+                              color: AppColor.primaryColor,
+                            )
+                          : Get.find<UserProfileController>()
+                                      .timerActive
+                                      .value ==
+                                  true
+                              ? Text(
+                                  "${Get.find<UserProfileController>().seconds.value} s")
+                              : Text(
+                                  AppString.text_resend.tr,
+                                  style: AppStyle.normal_text_grey.copyWith(
+                                      color: AppColor.primaryColor,
+                                      fontSize: Dimensions.fontSizeDefault),
+                                )),
+                )
               ],
             ),
             customSpacerHeight(height: 16),
@@ -98,6 +109,7 @@ Future otpVerificationLayout(context) {
                           : null,
                       closeAction: () {
                         selectedValue.isSelected(true);
+                        Get.find<UserProfileController>().resendOtpLoading(false);
                         Navigator.pop(context);
                       }),
             ),
@@ -156,8 +168,10 @@ _verifyBtnLayout({verifyAction, closeAction}) {
                     child: Text(
                   AppString.text_verify.tr,
                   style: AppStyle.small_text_black.copyWith(
-                      color:Get.find<UserProfileController>()
-                          .isButtonEnabledForOTP? AppColor.cardColor:AppColor.normalTextColor.withOpacity(0.4),
+                      color: Get.find<UserProfileController>()
+                              .isButtonEnabledForOTP
+                          ? AppColor.cardColor
+                          : AppColor.normalTextColor.withOpacity(0.4),
                       fontSize: Dimensions.fontSizeDefault),
                 )),
               ),
@@ -182,8 +196,7 @@ class OtpLayout extends StatelessWidget {
         onChanged: (value) {
           // Handle OTP changes
           log("Otp :: $value");
-          Get.find<UserProfileController>().isOtpString.value =
-              value;
+          Get.find<UserProfileController>().isOtpString.value = value;
         },
         onCompleted: (verificationCode) {
           Get.find<UserProfileController>()

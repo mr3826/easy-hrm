@@ -13,7 +13,8 @@ import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
-import '../../dashboard/controller/dashbpard_controller.dart';
+import '../../auth/presentation/controller/signin_controller.dart';
+import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 
 class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
@@ -45,7 +46,11 @@ class UpdateProfileController extends GetxController {
     isLoading(false);
   }
 
-  void changePassword({required String currentPassword, required String newPassword}) async {
+
+
+///change password updated
+  Future<void> changePassword({required String currentPassword, required String newPassword}) async {
+    print("changePassword_input ::: $currentPassword ::: $newPassword");
     isLoading(true);
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
@@ -53,32 +58,45 @@ class UpdateProfileController extends GetxController {
         "newPassword": newPassword,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
       });
+
+
+      // Log the status code and response body
+      log("changePassword_res :: ${response.statusCode}", error: "${response.body}");
+      // Check if the response body is null
+      handleUnknownError(response);
       if (response.status.hasError) {
-        logErrorMessage(logName: "changePassword", response: response);
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ??
-                "Some Error occur!");
+        final errorModel = response.body is Map<String, dynamic>
+            ? ErrorModel.fromJson(response.body)
+            : null;
+        showErrorMessage(message: errorModel?.message ?? "An error occurred!");
       } else {
-        logSuccessMessage(
-            logName: "submitVerificationCode", response: response);
+        logSuccessMessage(logName: "submitVerificationCode", response: response);
         showSuccessMessage(message: AppString.passwordChangeSuccessfulMessage);
-        currentPasswordController.clear();
-        newPasswordController.clear();
-        confirmPasswordController.clear();
-        if (Platform.isAndroid) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        } else if (Platform.isIOS) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        }
+         clearPasswordFields();
+         handleLogout();
       }
     } catch (e) {
-      log(e.toString());
+      log("Exception caught: $e");
+    } finally {
+      isLoading(false); // Stop loading indicator
     }
-    isLoading(false);
+  }
+
+
+
+
+
+
+  void clearPasswordFields() {
+    currentPasswordController.clear();
+    newPasswordController.clear();
+    confirmPasswordController.clear();
+  }
+
+  void handleLogout() {
+    GetStorage().remove(AppString.ACCESS_TOKEN);
+    GetStorage().remove(AppString.LOGGED_IN);
+    Get.offAllNamed(Routes.SIGN_IN_SCREEN);
   }
 
   getUploadPolicy({fileName}) async {

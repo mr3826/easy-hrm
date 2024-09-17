@@ -11,7 +11,6 @@ import 'package:payrun_mobile/common/domain/token_model.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
-import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
@@ -32,6 +31,7 @@ import '../../../utils/dimensions.dart';
 import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
+import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
@@ -97,10 +97,12 @@ class UserProfileController extends GetxController with StateMixin {
   UserLogHistory? userLogHistory;
   OrganizationInfoDetails? organizationInfo;
   final isLoading = false.obs;
+  final isLoadingChangeEmail = false.obs;
   final isOrganizationChangeLoading = false.obs;
   final isNewOrganizationChangeLoading = false.obs;
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
+  final resendOtpLoading = false.obs;
 
   var isOtpString = ''.obs;
 
@@ -158,7 +160,8 @@ class UserProfileController extends GetxController with StateMixin {
     try {
       final response = await NetworkClient()
           .postRequest(Api.VERIFY_PASSWORD, {"password": password});
-
+      // Check if the response body is null
+      handleUnknownError(response);
       if (response.status.hasError) {
         logErrorMessage(logName: "getPasswordVerification", response: response);
         showErrorMessage(
@@ -180,13 +183,14 @@ class UserProfileController extends GetxController with StateMixin {
   Future<bool> changeMail({required String newEmail}) async {
     bool validation = false;
 
-    isLoading(true);
+    isLoadingChangeEmail(true);
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
-
+      // Check if the response body is null
+      handleUnknownError(response);
       if (response.status.hasError) {
         logErrorMessage(logName: "changeMail", response: response);
         showErrorMessage(
@@ -199,7 +203,7 @@ class UserProfileController extends GetxController with StateMixin {
     } catch (e) {
       log(e.toString());
     }
-    isLoading(false);
+    isLoadingChangeEmail(false);
     return validation;
   }
 
@@ -211,7 +215,8 @@ class UserProfileController extends GetxController with StateMixin {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
-
+      // Check if the response body is null
+      handleUnknownError(response);
       if (response.status.hasError) {
         logErrorMessage(logName: "submitVerificationCode", response: response);
         showErrorMessage(
@@ -240,12 +245,18 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   resendOtp({required String emailAddress}) async {
+
+    print("resendOtpLoading ::: $resendOtpLoading");
+
+    resendOtpLoading(true);
     try {
-      final response = await NetworkClient().postRequest(Api.RESEND_OTP, {
+      final response = await NetworkClient().postRequest(
+          Api.RESEND_OTP_CHANGE_EMAIL, {
         "email": emailAddress,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
-
+      // Check if the response body is null
+      handleUnknownError(response);
       if (response.status.hasError) {
         logErrorMessage(logName: "resendOtp", response: response);
         showErrorMessage(
@@ -256,9 +267,13 @@ class UserProfileController extends GetxController with StateMixin {
         seconds.value = 59;
         startTimer();
         showSuccessMessage(message: AppString.resend_otp_text.tr);
+        resendOtpLoading(false);
+
       }
+      resendOtpLoading(false);
     } catch (e) {
       log(e.toString());
+      resendOtpLoading(false);
     }
   }
 

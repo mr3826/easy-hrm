@@ -1,17 +1,30 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:payrun_mobile/init_%20app.dart';
+import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/language/internationalization.dart';
 import 'package:payrun_mobile/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'common/controller/connectivity_controller.dart';
+import 'common/controller/date_time_controller.dart';
+import 'common/controller/language_controller.dart';
+import 'modules/auth/presentation/controller/signin_controller.dart';
+import 'modules/auth/presentation/controller/forgot_password_controller.dart';
+import 'modules/auth/presentation/controller/otp_controller.dart';
+import 'modules/leave/presentation/controller/calendar_date_controller.dart';
+import 'modules/leave/presentation/controller/file_upload_controller.dart';
+import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
+import 'modules/profile/controller/log_out_controller.dart';
+import 'modules/profile/controller/profile_image_selected_controller.dart';
+import 'modules/profile/controller/update_profile_controller.dart';
+import 'modules/timeline/controller/selected_task_controller.dart';
 
 void main() async {
   await initApp();
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -31,6 +44,38 @@ class MyApp extends StatelessWidget {
         fallbackLocale: const Locale("en", "US"),
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
+        onInit: () {
+          Get.put(SplashController());
+
+          Get.lazyPut(() => SignInController(),fenix: true);
+
+          Get.lazyPut(() => ConnectivityController());
+
+          Get.lazyPut(() => LanguageController());
+
+          Get.lazyPut(() => ForgotPasswordController());
+
+          Get.lazyPut(() => OtpController());
+
+        //  Get.lazyPut(() => PasswordController());
+
+          Get.put(FileUploadController());
+
+          Get.put(PickedFileFormStorage());
+
+          Get.put(DateController());
+
+          Get.put(PikedProfileImgController());
+
+          Get.put(LogoutController());
+
+          Get.put(SelectedTaskController());
+
+          Get.put(DateTimeController());
+
+          Get.put(UpdateProfileController());
+
+        },
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
 import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -9,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../../auth/presentation/controller/signin_controller.dart';
-import '../../../dashboard/view/screen/dashboard.dart';
+import '../../../dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../../dashboard/presentation/view/screen/dashboard.dart';
 import '../../../leave/presentation/controller/leave_record_controller.dart';
 import '../../../leave/presentation/controller/update_leave_controller.dart';
 import '../../../leave/presentation/view/screen/leave_screen.dart';

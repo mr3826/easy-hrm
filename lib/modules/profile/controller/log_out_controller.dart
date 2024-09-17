@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../routes/app_pages.dart';
+import '../../auth/presentation/controller/signin_controller.dart';
 
 class LogoutController extends GetxController {
   RxBool isLogoutLoading = false.obs;
@@ -18,7 +19,8 @@ class LogoutController extends GetxController {
       Response response = await NetworkClient().postRequest(Api.LOGOUT, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
       });
-
+      // Check if the response body is null
+      handleUnknownError(response);
       if (response.hasError) {
         logErrorMessage(logName: "logout", response: response);
         if (ErrorModel.fromJson(response.body).message != null &&
@@ -27,7 +29,6 @@ class LogoutController extends GetxController {
                 .startsWith("Authorization failed, error: UserDoesNotExist")) {
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
         if (ErrorModel.fromJson(response.body).message != null &&
             ErrorModel.fromJson(response.body)
@@ -35,7 +36,6 @@ class LogoutController extends GetxController {
                 .startsWith("Unauthorized")) {
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
         showErrorMessage(
             message: ErrorModel.fromJson(response.body).message ?? "");
@@ -45,6 +45,8 @@ class LogoutController extends GetxController {
       }
     } catch (e) {
       log(e.toString());
+    } finally {
+      _clearSession();
     }
     isLogoutLoading(false);
   }
