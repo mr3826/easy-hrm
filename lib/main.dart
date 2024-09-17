@@ -13,7 +13,6 @@ import 'common/controller/language_controller.dart';
 import 'modules/auth/presentation/controller/signin_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/auth/presentation/controller/otp_controller.dart';
-import 'modules/auth/presentation/controller/signin_controller.dart';
 import 'modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'modules/leave/presentation/controller/file_upload_controller.dart';
 import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
@@ -21,7 +20,6 @@ import 'modules/profile/controller/log_out_controller.dart';
 import 'modules/profile/controller/password_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
 import 'modules/profile/controller/update_profile_controller.dart';
-import 'modules/starting/controller/splash_controller.dart';
 import 'modules/timeline/controller/selected_task_controller.dart';
 
 void main() async {
