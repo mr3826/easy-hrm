@@ -114,8 +114,11 @@ class UserProfileController extends GetxController with StateMixin {
 
   getUserProfile() async {
     change(null, status: RxStatus.loading());
-    final response =
-        await NetworkClient().graphRequest(queryString: getUserProfileQuery);
+    final response = await NetworkClient().graphRequest(
+        queryString: getUserProfileQuery,
+        variables: {
+          "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)
+        });
     if (response.hasException) {
       ExceptionHelper.errorHandler(
           exception: response.exception!, methodName: "getUserProfile");
@@ -238,8 +241,6 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   resendOtp({required String emailAddress}) async {
-    print("resendOtpLoading ::: $resendOtpLoading");
-
     resendOtpLoading(true);
     try {
       final response = await NetworkClient().postRequestWithDio(

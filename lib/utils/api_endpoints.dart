@@ -169,9 +169,9 @@ query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
 ''';
 // profile module
 
-const getUserProfileQuery = '''
-query GetOrganizationUserDetails {
-  getOrganizationUserDetails {
+const getUserProfileQuery = r'''
+query GetOrganizationUserDetails($orgUserId: UUID) {
+  getOrganizationUserDetails(org_user_id: $orgUserId) {
     profile {
       id
       about
@@ -301,7 +301,7 @@ query GetOrgSubscriptionInfo {
       active
       nickname
     }
-    subscribed_plan {
+    subscribed_plan { 
       name
       is_free  
     status
