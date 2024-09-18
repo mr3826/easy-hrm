@@ -63,9 +63,10 @@ class SignInController extends GetxController with StateMixin {
     try {
       // API call to perform login
       di.Response response = await _networkClient.postRequestWithDio(Api.LOGIN, {"email": email, "password": password});
+      log("Sign in err: ${response.toString()}");
       handleUnknownError(response);
       if (response.statusCode!=200) {
-        _handleError(logName: "login", response: response);
+        _handleError(logName: "login", errorMessage: '${response.data['message']}');
       } else {
         _handleLoginSuccess(response);
       }
@@ -106,8 +107,6 @@ class SignInController extends GetxController with StateMixin {
 
   /// Handles login success by saving tokens and navigating to the main screen.
   void _handleLoginSuccess(di.Response response) {
-    // logSuccessMessage(logName: "login", response: response);
-
     // Save token information
     TokenModel tokenModel = TokenModel(
       accessToken:
@@ -132,9 +131,8 @@ class SignInController extends GetxController with StateMixin {
   }
 
   /// Handles errors by showing appropriate error messages and logging.
-  void _handleError({required String logName, required di.Response response}) {
-    // logErrorMessage(logName: logName, response: response);
-    showErrorMessage(message: ErrorModel.fromJson(response.data).message ?? "");
+  void _handleError({required String logName, required String errorMessage}) {
+    showErrorMessage(message: errorMessage);
   }
 }
 
