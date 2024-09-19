@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         onInit: () {
           Get.put(SplashController());
 
-          Get.lazyPut(() => SignInController(),fenix: true);
+          Get.lazyPut(() => SignInController(), fenix: true);
 
           Get.lazyPut(() => ConnectivityController());
 
