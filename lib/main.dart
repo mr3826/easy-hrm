@@ -17,7 +17,6 @@ import 'modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'modules/leave/presentation/controller/file_upload_controller.dart';
 import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
 import 'modules/profile/controller/log_out_controller.dart';
-import 'modules/profile/controller/password_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
 import 'modules/profile/controller/update_profile_controller.dart';
 import 'modules/timeline/controller/selected_task_controller.dart';
@@ -57,9 +56,6 @@ class MyApp extends StatelessWidget {
           Get.lazyPut(() => ForgotPasswordController());
 
           Get.lazyPut(() => OtpController());
-
-          Get.lazyPut(() => PasswordController());
-
           Get.put(FileUploadController());
 
           Get.put(PickedFileFormStorage());
@@ -75,7 +71,6 @@ class MyApp extends StatelessWidget {
           Get.put(DateTimeController());
 
           Get.put(UpdateProfileController());
-
         },
       ),
     );

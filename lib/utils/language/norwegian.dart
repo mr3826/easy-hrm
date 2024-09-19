@@ -84,6 +84,7 @@ Map<String, String> nn = {
   AppString.text_dont_not_worry: "Ikke bekymre deg! Det skjer. Vennligst skriv inn e-postadressen som er knyttet til kontoen din.",
   AppString.text_duration: "Varighet",
   AppString.text_edit: "Rediger",
+  AppString.text_no_data_found: "tekst_ingen_data_funnet",
   AppString.text_edit_profile: "Rediger profil",
   AppString.text_email: "E-post",
   AppString.text_email_change_request_is_in_pendding_etc: "E-postendringsforespørsel er under behandling. Trenger verifisering.",

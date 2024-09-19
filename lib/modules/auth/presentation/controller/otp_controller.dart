@@ -23,6 +23,7 @@ class OtpController extends GetxController {
   Future<void> verifyOtp({required String confirmationCode}) async {
     isLoading(true); // Start loading
     try {
+
       // API call to verify OTP
       di.Response response = await _networkClient.postRequest(
           Api.VERIFY_OTP_CODE, {

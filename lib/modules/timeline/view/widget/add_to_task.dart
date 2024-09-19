@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
@@ -46,9 +47,7 @@ class AddToTaskScreen extends StatelessWidget {
                           customSpacerHeight(height: 20),
                           customTitleText(text: AppString.text_description.tr),
                           customSpacerHeight(height: 8),
-                          InputNote(
-                            controller: descriptionController,
-                          ),
+                          InputNote(controller: descriptionController),
                           customSpacerHeight(height: 50),
                           Get.find<TimelineController>()
                                   .isTimelogEntryOrRemoveLoading
@@ -105,6 +104,7 @@ class AddToTaskScreen extends StatelessWidget {
       customButtonSheet(
           context: context, child: const TaskViewLayout(), height: .6);
     });
+
   }
 
   _loader() {

@@ -6,21 +6,18 @@ import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/notification/data/remote/notification_remote_data_source.dart';
-import 'package:payrun_mobile/modules/profile/controller/password_controller.dart';
-import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/modules/timeline/controller/selected_task_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
-import 'common/controller/date_time_controller.dart';
-import 'common/controller/language_controller.dart';
 import 'firebase_options.dart';
 
 Future<void> initApp() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
+
+
 
   NetworkClient client = Get.put(NetworkClient());
 

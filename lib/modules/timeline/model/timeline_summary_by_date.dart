@@ -34,9 +34,9 @@ class TimelineSummaryByDate {
 
 class GetTimelogSummaryForApp {
   dynamic totalScheduledSeconds;
-  dynamic? loggedTotalSeconds;
-  dynamic? totalLeavesSeconds;
-  dynamic? balance;
+  dynamic loggedTotalSeconds;
+  dynamic totalLeavesSeconds;
+  dynamic balance;
 
   GetTimelogSummaryForApp(
       {this.totalScheduledSeconds,

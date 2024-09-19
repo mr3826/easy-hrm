@@ -15,7 +15,7 @@ class ChangeEmailNotifyLayout extends StatelessWidget {
   ChangeEmailNotifyLayout({super.key});
 
   final selectedValue = Get.put(PopupMenuController());
-  final selectedVerifyValue = Get.put(SelectedOtpVerifyController());
+  final selectedVerifyValue = Get.put(UserProfileController());
 
   @override
   Widget build(BuildContext context) {
