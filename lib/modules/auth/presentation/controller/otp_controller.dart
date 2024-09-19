@@ -24,7 +24,7 @@ class OtpController extends GetxController {
     isLoading(true); // Start loading
     try {
       // API call to verify OTP
-      di.Response response = await _networkClient.postRequestWithDio(
+      di.Response response = await _networkClient.postRequest(
           Api.VERIFY_OTP_CODE, {
         "email": restPasswordController.text,
         "confirmationCode": confirmationCode

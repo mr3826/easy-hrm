@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -41,7 +42,6 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
-  SignInController isValue = Get.find<SignInController>();
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
         child: PersistentTabView(
           context,
           controller: controller,
-          screens: isValue.isSubscriptionExpired.isTrue
+          screens: Get.find<UserInfoController>().isSubscriptionExpired.isTrue
               ? _ifNeedSubscription()
               : _screenListLayout(),
           items: iconList,

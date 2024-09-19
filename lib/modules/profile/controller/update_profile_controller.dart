@@ -53,7 +53,7 @@ class UpdateProfileController extends GetxController {
     print("changePassword_input ::: $currentPassword ::: $newPassword");
     isLoading(true);
     try {
-      final response = await NetworkClient().postRequestWithDio(Api.CHANGE_PASSWORD, {
+      final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
         "oldPassword": currentPassword,
         "newPassword": newPassword,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""

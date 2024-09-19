@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:payrun_mobile/common/controller/connectivity_controller.dart';
+import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/notification/data/remote/notification_remote_data_source.dart';
@@ -17,11 +18,9 @@ import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
 import 'firebase_options.dart';
 
-
 Future<void> initApp() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
-
 
   NetworkClient client = Get.put(NetworkClient());
 
@@ -43,6 +42,8 @@ Future<void> initApp() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
+
+  Get.put(UserInfoController(), permanent: true);
 
   Get.put(DashboardRemoteDataSource(client), permanent: true);
   Get.put(NotificationRemoteDataSource(client), permanent: true);

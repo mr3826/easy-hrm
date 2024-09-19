@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_dialog.dart';
@@ -141,7 +142,7 @@ _startingTime(context) {
 }
 
 void _checkIfSubscription() {
-  if (Get.find<SignInController>().isSubscriptionTimeTrackingIsAllow.isFalse) {
+  if (Get.find<UserInfoController>().isSubscriptionTimeTrackingIsAllow.isFalse) {
     alertForSubscriptionRequired();
   } else {
     Get.put(TimeCounterController()).timerStatus();

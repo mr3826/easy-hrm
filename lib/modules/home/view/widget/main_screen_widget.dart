@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import '../../../../common/controller/user_info_controller.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_layout.dart';
@@ -15,6 +16,7 @@ import '../../../../utils/images.dart';
 import '../../../auth/presentation/controller/signin_controller.dart';
 
 List<PersistentBottomNavBarItem> get iconList => _navBarsItems();
+
 Future<bool> get appExitChecker => _onWillPop();
 
 Future<bool> _onWillPop() async {
@@ -49,10 +51,10 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
         text: AppString.text_leave.tr,
         imgUrl: Images.leaveIconNavOutLine),
     PersistentBottomNavBarItem(
-      icon: customSvgImage(imageUrl: Images.home,height: 25,width: 25),
-
+      icon: customSvgImage(imageUrl: Images.home, height: 25, width: 25),
       activeColorPrimary: AppColor.primaryColor,
-      inactiveIcon: customSvgImage(imageUrl: Images.home,height: 25,width: 25),
+      inactiveIcon:
+          customSvgImage(imageUrl: Images.home, height: 25, width: 25),
     ),
     _navbarIcon(
         activeIcon: Images.notificationIconNav,
@@ -65,22 +67,15 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
   ];
 }
 
-
-
 PersistentBottomNavBarItem _navbarIcon(
     {required activeIcon, required String text, imgUrl}) {
-  SignInController isValue = Get.find<SignInController>();
-
   return PersistentBottomNavBarItem(
-    icon: Obx(() => isValue.isSubscriptionExpired.isTrue
+    icon: Obx(() => Get.find<UserInfoController>().isSubscriptionExpired.isTrue
         ? _inActiveIcon(text, imgUrl)
         : _activeIcon(text, activeIcon)),
     inactiveIcon: _inActiveIcon(text, imgUrl),
   );
 }
-
-
-
 
 _inActiveIcon(text, imgUrl) {
   return SizedBox(

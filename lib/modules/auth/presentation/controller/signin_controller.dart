@@ -25,14 +25,8 @@ class SignInController extends GetxController with StateMixin {
   // Observable variables to track the state
   RxString organizationAvailabilityMessage = "".obs;
   final isLoading = false.obs;
-  final isSubscriptionExpired = false.obs;
   final isSignInLoading = false.obs;
-  final isSubscriptionTimeTrackingIsAllow = true.obs;
   RxBool isValue = true.obs;
-
-  // Model to store organization subscription information
-  OrgSubscriptionInfoModel orgSubscriptionInfoModel =
-      OrgSubscriptionInfoModel();
 
   /// Instance of NetworkClient to handle API requests
   final NetworkClient _networkClient = Get.find<NetworkClient>();
@@ -64,38 +58,21 @@ class SignInController extends GetxController with StateMixin {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      di.Response response = await _networkClient.postRequestWithDio(
+      di.Response response = await _networkClient.postRequest(
           Api.LOGIN, {"email": email, "password": password});
-      handleUnknownError(response);
       if (response.statusCode == 200) {
         _handleTokenInfo(response);
-        final userInfoResponse = await UserInfoController().getUserInfo();
+        final userInfoResponse =
+            await Get.find<UserInfoController>().getUserInfo();
         _handleLoginSuccess(response, userInfoResponse);
+        await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+        // Navigate to the main screen
+        Get.offNamed(Routes.MAIN_SCREEN);
       }
     } catch (e) {
       log(e.toString());
     }
     isSignInLoading(false); // End loading
-  }
-
-  /// Fetches the organization subscription information
-  /// and checks the subscription status.
-  Future<void> getOrgSubscriptionInfo() async {
-    try {
-      final response = await _networkClient.graphRequest(
-          queryString: getOrgSubscriptionInfoQuery);
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!,
-            methodName: "getOrgSubscriptionInfo");
-      } else {
-        orgSubscriptionInfoModel =
-            OrgSubscriptionInfoModel.fromJson(response.data!);
-        checkIfSubscription();
-      }
-    } catch (ex) {
-      log("getOrgSubscriptionInfo: $ex");
-    }
   }
 
   /// Saves the last input data (email) to local storage.
@@ -126,10 +103,8 @@ class SignInController extends GetxController with StateMixin {
     // Store the organization user ID in GetStorage.
     GetStorage()
         .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
-
     // Save last input data and get subscription info
     _saveData();
-    getOrgSubscriptionInfo();
   }
 
   void _handleTokenInfo(di.Response response) {

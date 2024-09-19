@@ -17,7 +17,7 @@ class LogoutController extends GetxController {
   Future<void> logout() async {
     isLogoutLoading(true);
     try {
-      di.Response response = await NetworkClient().postRequestWithDio(Api.LOGOUT, {
+      di.Response response = await NetworkClient().postRequest(Api.LOGOUT, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
       });
       // Check if the response body is null

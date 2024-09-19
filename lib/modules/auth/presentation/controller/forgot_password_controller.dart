@@ -27,7 +27,7 @@ class ForgotPasswordController extends GetxController {
     isLoading(true); // Start loading
     try {
       // API call to send forgot password request
-      di.Response response = await _networkClient.postRequestWithDio(
+      di.Response response = await _networkClient.postRequest(
           Api.FORGOT_PASSWORD, {"email": restPasswordController.text});
       handleUnknownError(response);
 
@@ -54,7 +54,7 @@ class ForgotPasswordController extends GetxController {
     try {
       // API call to resend OTP
       di.Response response =
-          await _networkClient.postRequestWithDio(Api.RESEND_OTP, {
+          await _networkClient.postRequest(Api.RESEND_OTP, {
         "email": mailAddress,
       });
       handleUnknownError(response);
@@ -80,7 +80,7 @@ class ForgotPasswordController extends GetxController {
     try {
       // API call to reset the password
       di.Response response =
-          await _networkClient.postRequestWithDio(Api.RESET_PASSWORD, {
+          await _networkClient.postRequest(Api.RESET_PASSWORD, {
         "email": restPasswordController.text,
         "confirmationCode": confirmationCode,
         "password": confirmPasswordController.text,

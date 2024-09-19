@@ -50,7 +50,7 @@ class NetworkClient extends GetConnect {
   /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
   /// Adds common headers such as content type and authorization token.
   /// Returns a [Response] object containing the server's response.
-  Future<d.Response> postRequestWithDio(
+  Future<d.Response> postRequest(
       String apiEndPoint, dynamic body) async {
     d.Dio dio = d.Dio();
 
@@ -113,7 +113,7 @@ class NetworkClient extends GetConnect {
   /// If the refresh fails, redirects the user to the sign-in screen.
   Future<void> _getNewToken() async {
     try {
-      final response = await postRequestWithDio(Api.REFRESH_TOKEN, {
+      final response = await postRequest(Api.REFRESH_TOKEN, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });

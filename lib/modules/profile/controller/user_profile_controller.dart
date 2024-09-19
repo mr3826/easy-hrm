@@ -56,6 +56,8 @@ class UserProfileController extends GetxController with StateMixin {
   RxBool isOTPProvided = false.obs;
   String otpCode = "";
 
+  final NetworkClient _networkClient = Get.find<NetworkClient>();
+
   void startTimer() {
     timerActive.value = true;
     Timer.periodic(const Duration(seconds: 1), (Timer timer) {
@@ -116,7 +118,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   getUserProfile() async {
     change(null, status: RxStatus.loading());
-    final response = await NetworkClient().graphRequest(
+    final response = await _networkClient.graphRequest(
         queryString: getUserProfileQuery,
         variables: {
           "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)
@@ -132,7 +134,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   getEmploymentInfo() async {
     change(null, status: RxStatus.loading());
-    final response = await NetworkClient().graphRequest(
+    final response = await _networkClient.graphRequest(
       queryString: getEmploymentInfoQuery,
     );
 
@@ -149,7 +151,7 @@ class UserProfileController extends GetxController with StateMixin {
   getUserLogHistory() async {
     change(null, status: RxStatus.loading());
     final response =
-        await NetworkClient().graphRequest(queryString: userLogHistoryQuery);
+        await _networkClient.graphRequest(queryString: userLogHistoryQuery);
     if (response.hasException) {
       ExceptionHelper.errorHandler(
           exception: response.exception!, methodName: "getUserLogHistory");
@@ -164,7 +166,7 @@ class UserProfileController extends GetxController with StateMixin {
     isLoading(true);
     try {
       final response = await NetworkClient()
-          .postRequestWithDio(Api.VERIFY_PASSWORD, {"password": password});
+          .postRequest(Api.VERIFY_PASSWORD, {"password": password});
       // Check if the response body is null
       handleUnknownError(response);
       if (response.statusCode != 200) {
@@ -187,8 +189,7 @@ class UserProfileController extends GetxController with StateMixin {
 
     isLoadingChangeEmail(true);
     try {
-      final response =
-          await NetworkClient().postRequestWithDio(Api.CHANGE_MAIL, {
+      final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
@@ -212,7 +213,7 @@ class UserProfileController extends GetxController with StateMixin {
     isVerificationApiLoading(true);
     try {
       final response =
-          await NetworkClient().postRequestWithDio(Api.VERIFY_CHANGE_MAIL_OTP, {
+          await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
@@ -245,7 +246,7 @@ class UserProfileController extends GetxController with StateMixin {
   resendOtp({required String emailAddress}) async {
     resendOtpLoading(true);
     try {
-      final response = await NetworkClient().postRequestWithDio(
+      final response = await NetworkClient().postRequest(
           Api.RESEND_OTP_CHANGE_EMAIL, {
         "email": emailAddress,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
@@ -272,7 +273,7 @@ class UserProfileController extends GetxController with StateMixin {
   getOrganizationInfo() async {
     change(null, status: RxStatus.loading());
     final response =
-        await Get.find<NetworkClient>().graphRequest(queryString: organizationInfoQuery);
+        await _networkClient.graphRequest(queryString: organizationInfoQuery);
     if (response.hasException) {
       ExceptionHelper.errorHandler(
           exception: response.exception!, methodName: "getOrganizationInfo");
@@ -297,28 +298,24 @@ class UserProfileController extends GetxController with StateMixin {
                 accessToken: tokenModel.accessToken ?? "")
             .then((value) {
           if (value == true) {
-            Get.back(canPop: false);
-            Get.back(canPop: false);
             switchOrganisationDataChange();
           } else {
             showErrorMessage(message: AppString.error_text);
           }
         });
       } else {
-        // GetStorage().write(AppString.ORGANIZATION_ID, orgId);
-        GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
-        GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
+        await GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
+        await GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
 
         final userInfoResponse =
-        await UserInfoController()
-            .getUserInfo();
+            await Get.find<UserInfoController>().getUserInfo();
 
         _handleUserInfo(userInfoResponse);
 
-        Get.back(canPop: false);
-        Get.back(canPop: false);
         switchOrganisationDataChange();
       }
+      Get.back(canPop: false);
+      Get.back(canPop: false);
       isOrganizationChangeLoading(false);
     } else {
       Get.dialog(
@@ -359,7 +356,7 @@ class UserProfileController extends GetxController with StateMixin {
                                           .text.isNotEmpty) {
                                         di.Response response =
                                             await Get.find<NetworkClient>()
-                                                .postRequestWithDio(Api.LOGIN, {
+                                                .postRequest(Api.LOGIN, {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
@@ -371,9 +368,9 @@ class UserProfileController extends GetxController with StateMixin {
 
                                           _handleTokenInfo(response);
 
-                                          final userInfoResponse =
-                                              await UserInfoController()
-                                                  .getUserInfo();
+                                          final userInfoResponse = await Get
+                                                  .find<UserInfoController>()
+                                              .getUserInfo();
 
                                           _handleLoginSuccess(
                                               response, userInfoResponse);
@@ -383,7 +380,7 @@ class UserProfileController extends GetxController with StateMixin {
                                       }
                                     } catch (e) {
                                       log(e.toString());
-                                    }finally{
+                                    } finally {
                                       Get.back(canPop: false);
                                       Get.back(canPop: false);
                                       Get.back(canPop: false);
@@ -419,21 +416,19 @@ class UserProfileController extends GetxController with StateMixin {
       required String refreshToken,
       required String orgId}) async {
     try {
-      var response = await Get.find<NetworkClient>().postRequestWithDio(Api.REFRESH_TOKEN,
+      var response = await Get.find<NetworkClient>().postRequest(
+          Api.REFRESH_TOKEN,
           {"accessToken": accessToken, "refreshToken": refreshToken});
 
       if (response.statusCode != 200) {
         return false;
       } else {
-
         _handleTokenInfo(response);
 
         final userInfoResponse =
-        await UserInfoController()
-            .getUserInfo();
+            await Get.find<UserInfoController>().getUserInfo();
 
-        _handleLoginSuccess(
-            response, userInfoResponse);
+        _handleLoginSuccess(response, userInfoResponse);
 
         return true;
       }
@@ -510,8 +505,14 @@ class ChangeMailResponse {
   }
 }
 
-switchOrganisationDataChange() {
-  Get.find<TimeCounterController>().timerStatus();
+switchOrganisationDataChange() async {
+  await Get.find<TimeCounterController>().timerStatus();
+
+  Get.find<UserProfileController>()
+    ..getUserProfile()
+    ..getEmploymentInfo()
+    ..getUserLogHistory()
+    ..getOrganizationInfo();
 
   Get.find<TimelineController>()
     ..getTimelineSummaryByMonth(
@@ -544,10 +545,4 @@ switchOrganisationDataChange() {
     ..getProfileInfoForDashboard()
     ..getMonthlyTimelineInfoForDashboard()
     ..getUpComingInfoForDashboard();
-
-  Get.find<UserProfileController>()
-    ..getUserProfile()
-    ..getEmploymentInfo()
-    ..getUserLogHistory()
-    ..getOrganizationInfo();
 }
