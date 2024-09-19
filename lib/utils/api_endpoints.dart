@@ -21,6 +21,7 @@ class Api {
   static const CHANGE_MAIL = "/auth/change-email";
   static const VERIFY_CHANGE_MAIL_OTP = "/auth/confirm-change-email";
   static const CHANGE_PASSWORD = "/auth/change-password";
+  static const USER_INFO = "/auth/user";
 }
 ///auth/resend-verification-code
 

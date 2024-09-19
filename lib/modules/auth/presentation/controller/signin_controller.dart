@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:dio/dio.dart' as di;
+import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
+import 'package:payrun_mobile/common/domain/user_info.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
@@ -62,12 +64,13 @@ class SignInController extends GetxController with StateMixin {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      di.Response response = await _networkClient.postRequestWithDio(Api.LOGIN, {"email": email, "password": password});
+      di.Response response = await _networkClient.postRequestWithDio(
+          Api.LOGIN, {"email": email, "password": password});
       handleUnknownError(response);
-      if (response.statusCode!=200) {
-        _handleError(logName: "login", errorMessage: '${response.data['message']}');
-      } else {
-        _handleLoginSuccess(response);
+      if (response.statusCode == 200) {
+        _handleTokenInfo(response);
+        final userInfoResponse = await UserInfoController().getUserInfo();
+        _handleLoginSuccess(response, userInfoResponse);
       }
     } catch (e) {
       log(e.toString());
@@ -105,7 +108,7 @@ class SignInController extends GetxController with StateMixin {
   // Private helper functions
 
   /// Handles login success by saving tokens and navigating to the main screen.
-  void _handleLoginSuccess(di.Response response) {
+  void _handleLoginSuccess(di.Response response, UserInfo? userInfo) {
     // Save token information
     TokenModel tokenModel = TokenModel(
       accessToken:
@@ -116,22 +119,23 @@ class SignInController extends GetxController with StateMixin {
     String tokenJson = jsonEncode(tokenModel.toJson());
 
     // Store tokens in local storage
-    GetStorage()
-        .write(SignInResponse.fromJson(response.data).ordId ?? "", tokenJson);
-    GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
-    GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
+    GetStorage().write(userInfo?.user?.organizationId ?? "", tokenJson);
     GetStorage().write(AppString.LOGGED_IN, true);
-    GetStorage().write(AppString.ORGANIZATION_ID,
-        SignInResponse.fromJson(response.data).ordId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    // Store the organization user ID in GetStorage.
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
 
     // Save last input data and get subscription info
     _saveData();
     getOrgSubscriptionInfo();
   }
 
-  /// Handles errors by showing appropriate error messages and logging.
-  void _handleError({required String logName, required String errorMessage}) {
-    showErrorMessage(message: errorMessage);
+  void _handleTokenInfo(di.Response response) {
+    GetStorage().write(AppString.ACCESS_TOKEN,
+        SignInResponse.fromJson(response.data).data?.accessToken);
+    GetStorage().write(AppString.REFRESH_TOKEN,
+        SignInResponse.fromJson(response.data).data?.refreshToken);
   }
 }
-

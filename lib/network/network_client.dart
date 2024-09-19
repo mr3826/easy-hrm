@@ -18,21 +18,34 @@ String _getRequestUrl(String apiEndPoint) => Api.PUBLIC_URL + apiEndPoint;
 
 /// A network client class to handle HTTP and GraphQL requests using GetX and GraphQL Flutter.
 class NetworkClient extends GetConnect {
-  /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
+  /// Sends a GET request to the specified [apiEndPoint].
   /// Adds common headers such as content type and authorization token.
   /// Returns a [Response] object containing the server's response.
-  // Future<Response> postRequest(String apiEndPoint, dynamic body) async {
-  //   try {
-  //     return await post(_getRequestUrl(apiEndPoint), body, headers: {
-  //       "Content-Type": "application/json",
-  //       "User-Agent": "getx-client",
-  //       "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
-  //     }).timeout(const Duration(seconds: 15));
-  //   } catch (e) {
-  //     log('Error in postRequest: $e');
-  //     rethrow;
-  //   }
-  // }
+  Future<d.Response> getRequest(
+      String apiEndPoint) async {
+    d.Dio dio = d.Dio();
+
+    // Attach the interceptor
+    dio.interceptors.add(CustomInterceptor());
+
+    try {
+      dio.options.headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "getx-client",
+        "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
+      };
+
+      d.Response response = await dio
+          .get(_getRequestUrl(apiEndPoint))
+          .timeout(const Duration(seconds: 15));
+
+      return response;
+    } catch (e) {
+      log('Error in postRequestWithDio: $e');
+      rethrow;
+    }
+  }
+
 
   /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
   /// Adds common headers such as content type and authorization token.

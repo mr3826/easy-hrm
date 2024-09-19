@@ -47,12 +47,6 @@ class DashboardController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     profileSummaryForDashboard =
     await _dashboardRemoteDataSource.getProfileInfoForDashboard();
-
-    // Store the organization user ID in GetStorage.
-    GetStorage().write(
-        AppString.ORGANIZATION_USER_ID,
-        profileSummaryForDashboard?.getProfileSummaryForDashboard?.orgUserId ??
-            "");
     change(null, status: RxStatus.success());
   }
 

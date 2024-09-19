@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/common/domain/token_model.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -23,6 +24,7 @@ import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import '../../../common/controller/date_time_controller.dart';
 import '../../../common/domain/error_model.dart';
+import '../../../common/domain/user_info.dart';
 import '../../../common/widget/custom_password_text_field.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/app_color.dart';
@@ -270,7 +272,7 @@ class UserProfileController extends GetxController with StateMixin {
   getOrganizationInfo() async {
     change(null, status: RxStatus.loading());
     final response =
-        await NetworkClient().graphRequest(queryString: organizationInfoQuery);
+        await Get.find<NetworkClient>().graphRequest(queryString: organizationInfoQuery);
     if (response.hasException) {
       ExceptionHelper.errorHandler(
           exception: response.exception!, methodName: "getOrganizationInfo");
@@ -303,9 +305,16 @@ class UserProfileController extends GetxController with StateMixin {
           }
         });
       } else {
-        GetStorage().write(AppString.ORGANIZATION_ID, orgId);
+        // GetStorage().write(AppString.ORGANIZATION_ID, orgId);
         GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
         GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
+
+        final userInfoResponse =
+        await UserInfoController()
+            .getUserInfo();
+
+        _handleUserInfo(userInfoResponse);
+
         Get.back(canPop: false);
         Get.back(canPop: false);
         switchOrganisationDataChange();
@@ -348,65 +357,36 @@ class UserProfileController extends GetxController with StateMixin {
                                     try {
                                       if (passwordInputController
                                           .text.isNotEmpty) {
-                                        var response = await NetworkClient()
-                                            .postRequestWithDio(Api.LOGIN, {
+                                        di.Response response =
+                                            await Get.find<NetworkClient>()
+                                                .postRequestWithDio(Api.LOGIN, {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
                                           "orgId": orgId
                                         });
 
-                                        if (response.statusCode != 200) {
-                                          showErrorMessage(
-                                              message: ErrorModel.fromJson(
-                                                          response.data)
-                                                      .message ??
-                                                  "");
-                                        } else {
+                                        if (response.statusCode == 200) {
                                           passwordInputController.clear();
-                                          Map<String, dynamic> jsonModel =
-                                              TokenModel(
-                                            accessToken:
-                                                SignInResponse.fromJson(
-                                                            response.data)
-                                                        .data
-                                                        ?.accessToken ??
-                                                    "",
-                                            refreshToken:
-                                                SignInResponse.fromJson(
-                                                            response.data)
-                                                        .data
-                                                        ?.refreshToken ??
-                                                    "",
-                                          ).toJson();
-                                          String jsonObject =
-                                              jsonEncode(jsonModel);
-                                          GetStorage().write(orgId, jsonObject);
 
-                                          GetStorage().write(
-                                              AppString.ORGANIZATION_ID, orgId);
+                                          _handleTokenInfo(response);
 
-                                          GetStorage().write(
-                                              AppString.ACCESS_TOKEN,
-                                              SignInResponse.fromJson(
-                                                          response.data)
-                                                      .data
-                                                      ?.accessToken ??
-                                                  "");
-                                          GetStorage().write(
-                                              AppString.REFRESH_TOKEN,
-                                              SignInResponse.fromJson(
-                                                          response.data)
-                                                      .data
-                                                      ?.refreshToken ??
-                                                  "");
+                                          final userInfoResponse =
+                                              await UserInfoController()
+                                                  .getUserInfo();
+
+                                          _handleLoginSuccess(
+                                              response, userInfoResponse);
+
                                           switchOrganisationDataChange();
-                                          Get.back(canPop: false);
-                                          Get.back(canPop: false);
                                         }
                                       }
                                     } catch (e) {
                                       log(e.toString());
+                                    }finally{
+                                      Get.back(canPop: false);
+                                      Get.back(canPop: false);
+                                      Get.back(canPop: false);
                                     }
                                     isNewOrganizationChangeLoading(false);
                                   },
@@ -439,26 +419,21 @@ class UserProfileController extends GetxController with StateMixin {
       required String refreshToken,
       required String orgId}) async {
     try {
-      var response = await NetworkClient().postRequestWithDio(Api.REFRESH_TOKEN,
+      var response = await Get.find<NetworkClient>().postRequestWithDio(Api.REFRESH_TOKEN,
           {"accessToken": accessToken, "refreshToken": refreshToken});
 
       if (response.statusCode != 200) {
         return false;
       } else {
-        Map<String, dynamic> jsonModel = TokenModel(
-          accessToken:
-              SignInResponse.fromJson(response.data).data?.accessToken ?? "",
-          refreshToken:
-              SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
-        ).toJson();
-        String jsonObject = jsonEncode(jsonModel);
-        GetStorage().write(orgId, jsonObject);
 
-        GetStorage().write(AppString.ORGANIZATION_ID, orgId);
-        GetStorage().write(AppString.ACCESS_TOKEN,
-            SignInResponse.fromJson(response.data).data?.accessToken ?? "");
-        GetStorage().write(AppString.REFRESH_TOKEN,
-            SignInResponse.fromJson(response.data).data?.refreshToken ?? "");
+        _handleTokenInfo(response);
+
+        final userInfoResponse =
+        await UserInfoController()
+            .getUserInfo();
+
+        _handleLoginSuccess(
+            response, userInfoResponse);
 
         return true;
       }
@@ -488,6 +463,41 @@ class UserProfileController extends GetxController with StateMixin {
           fontSize: Dimensions.fontSizeDefault + 1),
     );
   }
+
+  void _handleTokenInfo(di.Response response) {
+    GetStorage().write(AppString.ACCESS_TOKEN,
+        SignInResponse.fromJson(response.data).data?.accessToken);
+    GetStorage().write(AppString.REFRESH_TOKEN,
+        SignInResponse.fromJson(response.data).data?.refreshToken);
+  }
+
+  void _handleLoginSuccess(di.Response response, UserInfo? userInfo) {
+    // Save token information
+    TokenModel tokenModel = TokenModel(
+      accessToken:
+          SignInResponse.fromJson(response.data).data?.accessToken ?? "",
+      refreshToken:
+          SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
+    );
+    String tokenJson = jsonEncode(tokenModel.toJson());
+
+    // Store tokens in local storage
+    GetStorage().write(userInfo?.user?.organizationId ?? "", tokenJson);
+
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    // Store the organization user ID in GetStorage.
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+  }
+
+  void _handleUserInfo(UserInfo? userInfo) {
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    // Store the organization user ID in GetStorage.
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+  }
 }
 
 class ChangeMailResponse {
@@ -502,12 +512,6 @@ class ChangeMailResponse {
 
 switchOrganisationDataChange() {
   Get.find<TimeCounterController>().timerStatus();
-
-  Get.find<UserProfileController>()
-    ..getUserProfile()
-    ..getEmploymentInfo()
-    ..getUserLogHistory()
-    ..getOrganizationInfo();
 
   Get.find<TimelineController>()
     ..getTimelineSummaryByMonth(
@@ -540,4 +544,10 @@ switchOrganisationDataChange() {
     ..getProfileInfoForDashboard()
     ..getMonthlyTimelineInfoForDashboard()
     ..getUpComingInfoForDashboard();
+
+  Get.find<UserProfileController>()
+    ..getUserProfile()
+    ..getEmploymentInfo()
+    ..getUserLogHistory()
+    ..getOrganizationInfo();
 }
