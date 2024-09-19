@@ -97,3 +97,4 @@ class ForgotPasswordController extends GetxController {
     log(exp.toString());
   }
 }
+
