@@ -49,13 +49,14 @@ class MyApp extends StatelessWidget {
 
           Get.lazyPut(() => SignInController(), fenix: true);
 
-          Get.lazyPut(() => ConnectivityController());
+          Get.lazyPut(() => ConnectivityController(), fenix: true);
 
-          Get.lazyPut(() => LanguageController());
+          Get.lazyPut(() => LanguageController(), fenix: true);
 
-          Get.lazyPut(() => ForgotPasswordController());
+          Get.lazyPut(() => ForgotPasswordController(), fenix: true);
 
-          Get.lazyPut(() => OtpController());
+          Get.lazyPut(() => OtpController(), fenix: true);
+
           Get.put(FileUploadController());
 
           Get.put(PickedFileFormStorage());
@@ -64,13 +65,14 @@ class MyApp extends StatelessWidget {
 
           Get.put(PikedProfileImgController());
 
-          Get.put(LogoutController());
+          Get.lazyPut(() => LogoutController(), fenix: true);
 
           Get.put(SelectedTaskController());
 
           Get.put(DateTimeController());
 
-          Get.put(UpdateProfileController());
+          Get.lazyPut(() => UpdateProfileController(), fenix: true);
+
         },
       ),
     );
