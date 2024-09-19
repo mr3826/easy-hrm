@@ -1,15 +1,15 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/modules/dashboard/controller/dashbpard_controller.dart';
+import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:upgrader/upgrader.dart';
-import '../../../auth/presentation/controller/signin_controller.dart';
-import '../../../dashboard/view/screen/dashboard.dart';
+import '../../../dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../../dashboard/presentation/view/screen/dashboard.dart';
 import '../../../leave/presentation/controller/leave_record_controller.dart';
 import '../../../leave/presentation/controller/update_leave_controller.dart';
 import '../../../leave/presentation/view/screen/leave_screen.dart';
@@ -41,12 +41,14 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
-  SignInController isValue = Get.find<SignInController>();
-
   @override
   Widget build(BuildContext context) {
     /// initialController controller
-    _initialController();
+
+    if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+      _initialController();
+    }
+
     return WillPopScope(
       onWillPop: () => appExitChecker,
       child: Scaffold(
@@ -57,37 +59,39 @@ class _MainScreenState extends State<MainScreen> {
         upgrader: Upgrader(
             durationUntilAlertAgain: const Duration(days: 1),
             countryCode: GetStorage().read("countryCode") ?? "US"),
-        child: PersistentTabView(
-          context,
-          controller: controller,
-          screens: isValue.isSubscriptionExpired.isTrue
-              ? _ifNeedSubscription()
-              : _screenListLayout(),
-          items: iconList,
-          // confineToSafeArea: false,
-          backgroundColor: AppColor.backgroundColor,
-          decoration: NavBarDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-            borderRadius: BorderRadius.circular(1.0),
-            colorBehindNavBar: Colors.white,
+        child: Obx(
+          () => PersistentTabView(
+            context,
+            controller: controller,
+            screens: Get.find<UserInfoController>().isSubscriptionExpired.isTrue
+                ? _ifNeedSubscription()
+                : _screenListLayout(),
+            items: iconList,
+            // confineToSafeArea: false,
+            backgroundColor: AppColor.backgroundColor,
+            decoration: NavBarDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+              borderRadius: BorderRadius.circular(1.0),
+              colorBehindNavBar: Colors.white,
+            ),
+
+            padding: const EdgeInsets.only(top: 8),
+
+            confineToSafeArea: true,
+            navBarStyle: NavBarStyle.style15,
+            navBarHeight: 60,
+            hideNavigationBarWhenKeyboardAppears: true,
+            onItemSelected: (value) {
+              print(controller.index == value);
+            },
           ),
-
-          padding: const EdgeInsets.only(top: 8),
-
-          confineToSafeArea: true,
-          navBarStyle: NavBarStyle.style15,
-          navBarHeight: 60,
-          hideNavigationBarWhenKeyboardAppears: true,
-          onItemSelected: (value) {
-            print(controller.index == value);
-          },
         ),
       )),
     );

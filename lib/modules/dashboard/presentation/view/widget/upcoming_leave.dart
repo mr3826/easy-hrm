@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../common/domain/files_model.dart';
-import '../../../../common/widget/custom_card_style.dart';
-import '../../../../common/widget/custom_spacer.dart';
-import '../../../../utils/app_color.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
-import '../../../../utils/utils.dart';
-import '../../../auth/presentation/view/otp_screen.dart';
-import '../../../leave/domain/leave_records.dart';
-import '../../../leave/presentation/view/widget/leave_record_details_view.dart';
-import '../../../timeline/view/widget/timeline_calendar.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../../common/domain/files_model.dart';
+import '../../../../../common/widget/custom_card_style.dart';
+import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../leave/domain/leave_records.dart';
+import '../../../../leave/presentation/view/widget/leave_record_details_view.dart';
+import '../../../../timeline/view/widget/timeline_calendar.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../../../../utils/utils.dart';
 import '../../controller/dashbpard_controller.dart';
 import 'dashboad_widget.dart';
 
@@ -126,13 +126,13 @@ class UpcomingLeaveLayout extends StatelessWidget {
                                         .upcommingLeaveDashboard
                                         ?.getUpcomingLeavesForApp?[index]
                                         .leaveDetails?[0]
-                                        .scheduleHour ??
+                                        .scheduleSecond.toString() ??
                                     "",
                                 leaveHour: controller
                                         .upcommingLeaveDashboard
                                         ?.getUpcomingLeavesForApp?[index]
                                         .leaveDetails?[0]
-                                        .leaveHour ??
+                                        .leaveSecond.toString() ??
                                     "",
                               )
                             : LeaveDetails()
@@ -210,7 +210,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
         false) {
       leaveDuration = getLeaveDuration(
           controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]
-                  .leaveDetails![0].leaveHour
+                  .leaveDetails![0].leaveSecond
                   .toString() ??
               "",
           controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?[index]

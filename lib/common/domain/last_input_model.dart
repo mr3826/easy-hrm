@@ -1,4 +1,4 @@
-import 'package:payrun_mobile/modules/dashboard/model/upcomming_leave_dashboard.dart';
+import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 
 import 'files_model.dart';
 

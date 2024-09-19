@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:dio/dio.dart' as d;
 import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -10,24 +11,66 @@ import '../common/domain/error_model.dart';
 import '../common/widget/error_message.dart';
 import '../modules/auth/domain/signin_res.dart';
 import '../utils/utils.dart';
+import 'custom_interceptor.dart';
 
 /// Utility function to construct the complete API request URL.
 String _getRequestUrl(String apiEndPoint) => Api.PUBLIC_URL + apiEndPoint;
 
 /// A network client class to handle HTTP and GraphQL requests using GetX and GraphQL Flutter.
 class NetworkClient extends GetConnect {
-  /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
+  /// Sends a GET request to the specified [apiEndPoint].
   /// Adds common headers such as content type and authorization token.
   /// Returns a [Response] object containing the server's response.
-  Future<Response> postRequest(String apiEndPoint, dynamic body) async {
+  Future<d.Response> getRequest(
+      String apiEndPoint) async {
+    d.Dio dio = d.Dio();
+
+    // Attach the interceptor
+    dio.interceptors.add(CustomInterceptor());
+
     try {
-      return await post(_getRequestUrl(apiEndPoint), body, headers: {
+      dio.options.headers = {
         "Content-Type": "application/json",
         "User-Agent": "getx-client",
         "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
-      }).timeout(const Duration(seconds: 15));
+      };
+
+      d.Response response = await dio
+          .get(_getRequestUrl(apiEndPoint))
+          .timeout(const Duration(seconds: 15));
+
+      return response;
     } catch (e) {
-      log('Error in postRequest: $e');
+      log('Error in postRequestWithDio: $e');
+      rethrow;
+    }
+  }
+
+
+  /// Sends a POST request to the specified [apiEndPoint] with the provided [body].
+  /// Adds common headers such as content type and authorization token.
+  /// Returns a [Response] object containing the server's response.
+  Future<d.Response> postRequest(
+      String apiEndPoint, dynamic body) async {
+    d.Dio dio = d.Dio();
+
+    // Attach the interceptor
+    dio.interceptors.add(CustomInterceptor());
+
+    try {
+      dio.options.headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "getx-client",
+        "Authorization": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
+      };
+
+      d.Response response = await dio
+          .post(_getRequestUrl(apiEndPoint), data: body)
+          .timeout(const Duration(seconds: 15));
+
+      return response;
+    } catch (e) {
+      log('Error in postRequestWithDio: $e');
       rethrow;
     }
   }
@@ -75,15 +118,12 @@ class NetworkClient extends GetConnect {
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
 
-      if (response.hasError) {
-        logErrorMessage(logName: "refresh token", response: response);
+      if (response.statusCode != 200) {
         showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ?? "");
+            message: ErrorModel.fromJson(response.data).message ?? "");
         Get.offAllNamed(Routes.SIGN_IN_SCREEN);
       } else {
-        final data = SignInResponse.fromJson(response.body).data;
-        logSuccessMessage(logName: "refresh token", response: response);
-
+        final data = SignInResponse.fromJson(response.data).data;
         GetStorage()
           ..write(AppString.ACCESS_TOKEN, data?.accessToken ?? "")
           ..write(AppString.REFRESH_TOKEN, data?.refreshToken ?? "");

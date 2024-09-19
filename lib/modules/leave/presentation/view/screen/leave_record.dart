@@ -108,10 +108,10 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                             .leaveDetails!.isNotEmpty)
                     ? LeaveDetails(
                         scheduleHour: controller.leaveRecordList?[monthIndex]
-                                .data?[index].leaveDetails?[0].scheduleHour ??
+                                .data?[index].leaveDetails?[0].scheduleSecond.toString() ??
                             "",
                         leaveHour: controller.leaveRecordList?[monthIndex]
-                                .data?[index].leaveDetails?[0].leaveHour ??
+                                .data?[index].leaveDetails?[0].leaveSecond.toString() ??
                             "",
                       )
                     : LeaveDetails()

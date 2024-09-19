@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
+import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_layout.dart';
 import '../../utils/app_string.dart';
@@ -29,9 +31,22 @@ class ConnectivityController extends GetxController {
       isDialogIsOpened(true);
     } else {
       if (isDialogIsOpened.isTrue) {
-        Get.find<SplashController>().chooseScreen();
+        _chooseScreen();
       }
       isDialogIsOpened(false);
+    }
+  }
+
+
+  _chooseScreen() {
+    GetStorage box = GetStorage();
+    if (box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == true ||
+        box.read(AppString.IS_LOGGED_IN_FIRST_TIME) == null) {
+      Get.offNamed(Routes.ONBOARD_SCRREN);
+    } else if (box.read(AppString.ACCESS_TOKEN) == null) {
+      Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
+    } else {
+      Get.offAndToNamed(Routes.MAIN_SCREEN);
     }
   }
 }

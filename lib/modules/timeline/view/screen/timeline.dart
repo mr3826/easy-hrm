@@ -15,9 +15,10 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
+import '../../../../common/controller/user_info_controller.dart';
 import '../../../../utils/app_style.dart';
 import '../../../auth/presentation/controller/signin_controller.dart';
-import '../../../dashboard/view/widget/entry_time_widget.dart';
+import '../../../dashboard/presentation/view/widget/entry_time_widget.dart';
 import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
@@ -53,7 +54,10 @@ class TimelineScreen extends GetView<TimelineController> {
     final TimeCounterController controller = Get.put(TimeCounterController());
 
     return Padding(
-      padding: EdgeInsets.only(left: 35.0, bottom: Platform.isAndroid ? 18 : 0, top:Platform.isAndroid ? 0 : 40),
+      padding: EdgeInsets.only(
+          left: 35.0,
+          bottom: Platform.isAndroid ? 18 : 0,
+          top: Platform.isAndroid ? 0 : 40),
       child: Row(
         children: [
           controller.isRunning.value
@@ -71,7 +75,7 @@ class TimelineScreen extends GetView<TimelineController> {
     return floatingButton(
         bgBtnColor: AppColor.secondaryColor,
         onAction: () {
-          if (Get.find<SignInController>()
+          if (Get.find<UserInfoController>()
               .isSubscriptionTimeTrackingIsAllow
               .isFalse) {
             alertForSubscriptionRequired();

@@ -103,30 +103,31 @@ class ResetPasswordScreen extends StatelessWidget {
   }
 
   _submitBtnLayout() {
-    return CustomAppButton(
-      buttonText: Get.find<ForgotPasswordController>().isLoading.isTrue
-          ? const CupertinoActivityIndicator(color: Colors.white)
-          : Text(
-              AppString.text_submit.tr,
-              overflow: TextOverflow.ellipsis,
-              style: AppStyle.normal_text.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: Dimensions.fontSizeMid),
-            ),
-      onPressed: () async {
-        if (_formKey.currentState!.validate()) {
-          if (newPasswordController.text == confirmPasswordController.text) {
-            await Get.find<ForgotPasswordController>()
-                .resetPassword(confirmationCode: otpCode);
-          } else {
-            showWarningMessage(message: AppString.password_not_matched);
-          }
-        }
-      },
-      buttonColor: AppColor.primaryColor,
-      isButtonExpanded: false,
-      btnTextSize: Dimensions.fontSizeMid - 2,
-    );
+    return Obx(() => CustomAppButton(
+          buttonText: Get.find<ForgotPasswordController>().isLoading.isTrue
+              ? const CupertinoActivityIndicator(color: Colors.white)
+              : Text(
+                  AppString.text_submit.tr,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppStyle.normal_text.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: Dimensions.fontSizeMid),
+                ),
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              if (newPasswordController.text ==
+                  confirmPasswordController.text) {
+                await Get.find<ForgotPasswordController>()
+                    .resetPassword(confirmationCode: otpCode);
+              } else {
+                showWarningMessage(message: AppString.password_not_matched);
+              }
+            }
+          },
+          buttonColor: AppColor.primaryColor,
+          isButtonExpanded: false,
+          btnTextSize: Dimensions.fontSizeMid - 2,
+        ));
   }
 
   _newPasswordLayout() {

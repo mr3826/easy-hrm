@@ -2,30 +2,24 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as di;
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:intl/intl.dart';
 
+import '../common/widget/error_message.dart';
+
 //global items here
-TextEditingController _searchController = TextEditingController();
 TextEditingController _emailController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
 TextEditingController _editMailPasswordController = TextEditingController();
-TextEditingController _userNameController = TextEditingController();
 TextEditingController _restPasswordController = TextEditingController();
-TextEditingController _addCountyController = TextEditingController();
-TextEditingController _phoneController = TextEditingController();
-TextEditingController _addressController = TextEditingController();
-TextEditingController _aboutMeController = TextEditingController();
 TextEditingController _newPasswordController = TextEditingController();
 TextEditingController _confirmPasswordController = TextEditingController();
-TextEditingController _orgNameController = TextEditingController();
 TextEditingController _leaveNoteController = TextEditingController();
-
 TextEditingController _editFirstNameController = TextEditingController();
 TextEditingController _editLastNameController = TextEditingController();
-TextEditingController _editEmailController = TextEditingController();
 TextEditingController _editAddressController = TextEditingController();
 TextEditingController _editPhoneController = TextEditingController();
 TextEditingController _editEmergencyPhoneController = TextEditingController();
@@ -33,18 +27,15 @@ TextEditingController _editBioController = TextEditingController();
 TextEditingController _currentPassController = TextEditingController();
 TextEditingController _taskController = TextEditingController();
 TextEditingController _descriptionController = TextEditingController();
-TextEditingController _timelineLogDetailsDrcController =
-    TextEditingController();
+
 
 TextEditingController _changeEmailController = TextEditingController();
 
 //global getter
-TextEditingController get searchController => _searchController;
 
 TextEditingController get taskSearchController => _taskController;
 
-TextEditingController get editMailPasswordController =>
-    _editMailPasswordController;
+TextEditingController get editMailPasswordController => _editMailPasswordController;
 
 TextEditingController get emailController => _emailController;
 
@@ -52,29 +43,17 @@ TextEditingController get changeEmailController => _changeEmailController;
 
 TextEditingController get passwordController => _passwordController;
 
-TextEditingController get userNameController => _userNameController;
 
 TextEditingController get restPasswordController => _restPasswordController;
 
 TextEditingController get descriptionController => _descriptionController;
 
-TextEditingController get timelineLogDetailsDrcController =>
-    _timelineLogDetailsDrcController;
-
-TextEditingController get addCountyController => _addCountyController;
-
-TextEditingController get phoneController => _phoneController;
-
-TextEditingController get addressController => _addressController;
-
-TextEditingController get aboutMeController => _aboutMeController;
 
 TextEditingController get newPasswordController => _newPasswordController;
 
 TextEditingController get confirmPasswordController =>
     _confirmPasswordController;
 
-TextEditingController get orgNameController => _orgNameController;
 
 TextEditingController get leaveNoteController => _leaveNoteController;
 
@@ -82,7 +61,6 @@ TextEditingController get editFirstNameController => _editFirstNameController;
 
 TextEditingController get editLastNameController => _editLastNameController;
 
-TextEditingController get editEmailController => _editEmailController;
 
 TextEditingController get editAddressController => _editAddressController;
 
@@ -95,9 +73,7 @@ TextEditingController get editBioController => _editBioController;
 
 TextEditingController get currentPasswordController => _currentPassController;
 
-List get selectedDayIndex => _selectedDay;
 
-List get selectedDayIconIndex => _selectedDayIcon;
 
 List get notificationTabBarIndex => _notificationTabBarIndex;
 
@@ -315,31 +291,6 @@ String formatLeaveDate(String inputDate) {
 }
 
 
-String convertDateRange(String input) {
-  // Define date formats
-  final DateFormat inputFormat = DateFormat('dd MMM yyyy');
-  final DateFormat outputFormat = DateFormat('EEE, d MMM');
-
-  // Extract the dates from the input string
-  final List<String> parts = input.split(',');
-  final List<String> dateRange = parts[1].split(' - ');
-
-  // Parse the dates
-  final DateTime startDate = inputFormat.parse(dateRange[0]);
-  final DateTime endDate = inputFormat.parse(dateRange[1]);
-
-  // Format the dates to the desired output format
-  final String formattedStartDate = outputFormat.format(startDate);
-  final String formattedEndDate = outputFormat.format(endDate);
-
-  // Create the output string
-  final String output = '$formattedStartDate - $formattedEndDate';
-
-  return output;
-}
-
-
-
 String abbreviateDayOfWeek(String fullDayName) {
   // Mapping of full day names to their abbreviations
   Map<String, String> dayAbbreviations = {
@@ -369,6 +320,16 @@ Map<String, String> dayAbbreviations = {
   'friday': 'Fri',
   'saturday': 'Sat',
 };
+List _selectedBeforeDayAndAfterDay = [
+  AppString.text_yesterday.tr,
+  AppString.text_today.tr,
+  AppString.text_tomorrow.tr,
+];
+
+List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
+
+
+
 
 String convertMiniToHour(Duration duration) {
   int hours = duration.inHours;
@@ -382,6 +343,41 @@ String convertMiniToHour(Duration duration) {
     return '$minutes m';
   }
 }
+
+
+
+String getLeaveDuration(String? leaveDurationSecond, String? numberOfDays) {
+  // Handle null or empty inputs
+  if (leaveDurationSecond == null || leaveDurationSecond.isEmpty ||
+      numberOfDays == null || numberOfDays.isEmpty) return "0s";
+
+  // Parse the leaveDuration and totalDuration, default to 0 if parsing fails
+  int leaveSecond = int.tryParse(leaveDurationSecond) ?? 0;
+  double total = double.tryParse(numberOfDays) ?? 0;
+
+  // Handle cases where total duration is less than 1 day
+  if (total < 1) {
+    // Calculate hours, minutes, and seconds from leaveHours
+    int hours = leaveSecond ~/ 3600;
+    int minutes = (leaveSecond % 3600) ~/ 60;
+    int remainingSeconds = leaveSecond % 60;
+
+    // Construct the result string
+    if (hours > 0) {
+      return '${hours}h${minutes > 0 ? ' ${minutes}m' : ''}${remainingSeconds > 0 ? ' ${remainingSeconds}s' : ''}';
+    } else {
+      return '${minutes}m${remainingSeconds > 0 ? ' ${remainingSeconds}s' : ''}';
+    }
+  }
+
+  // Handle cases where total duration is exactly 1 day
+  if (total == 1) {
+    return "Full day";
+  }
+  // Handle cases where total duration is greater than or equal to 1 day
+  return "${total.floor()} days";
+}
+
 
 String _getWeekday(int weekday) {
   switch (weekday) {
@@ -413,22 +409,11 @@ void logSuccessMessage(
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
 
-List _selectedDay = [
-  AppString.text_full_day.tr,
-  AppString.text_first_half.tr,
-  AppString.text_last_half.tr,
-];
 
-List _selectedDayIcon = [
-  Images.fullDayLav,
-  Images.halfDayLav,
-  Images.lastHalfDayLav
-];
 
-List _selectedBeforeDayAndAfterDay = [
-  AppString.text_yesterday.tr,
-  AppString.text_today.tr,
-  AppString.text_tomorrow.tr,
-];
 
-List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
+handleUnknownError(di.Response response) {
+  if (response.data == null) {
+    return showErrorMessage(message: "Something went wrong. Please try again.");
+  }
+}

@@ -2,114 +2,112 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:dio/dio.dart' as di;
+import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
+import 'package:payrun_mobile/common/domain/user_info.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/token_model.dart';
-import '../../../../network/exception_helper.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../../utils/utils.dart';
-import '../../../starting/controller/splash_controller.dart';
-import '../../domain/org_subscription_Info_model.dart';
 
+/// Controller responsible for managing the sign-in process
+/// including handling login, subscription status, and last input data.
 class SignInController extends GetxController with StateMixin {
+  // Observable variables to track the state
   RxString organizationAvailabilityMessage = "".obs;
   final isLoading = false.obs;
-  final isSubscriptionExpired = false.obs;
   final isSignInLoading = false.obs;
-  final isSubscriptionTimeTrackingIsAllow = true.obs;
-
   RxBool isValue = true.obs;
-  OrgSubscriptionInfoModel orgSubscriptionInfoModel =
-      OrgSubscriptionInfoModel();
 
-  changeVal() {
-    return isValue.value = !isValue.value;
+  /// Instance of NetworkClient to handle API requests
+  final NetworkClient _networkClient = Get.find<NetworkClient>();
+
+  /// Toggles the value of [isValue]
+  void changeVal() {
+    isValue.value = !isValue.value;
   }
 
   @override
   void onInit() {
-    setLastInputData();
+    setLastInputData(); // Load last input data when initializing
     super.onInit();
   }
 
+  /// Loads and sets the last input data (email) from storage.
   void setLastInputData() {
-    if (GetStorage().read(AppString.LAST_INPUT) != null) {
-      Map<String, dynamic> jsonMap =
-          json.decode(GetStorage().read(AppString.LAST_INPUT));
+    final lastInputJson = GetStorage().read(AppString.LAST_INPUT);
+    if (lastInputJson != null) {
+      Map<String, dynamic> jsonMap = json.decode(lastInputJson);
       LastInput lastInput = LastInput.fromJson(jsonMap);
       emailController.text = lastInput.email ?? "";
     }
   }
 
+  /// Handles the login process with provided [email] and [password].
+  /// Saves token info on success and navigates to the main screen.
   Future<void> login({required String email, required String password}) async {
-    isSignInLoading(true);
+    isSignInLoading(true); // Start loading
     try {
-      Response response = await NetworkClient()
-          .postRequest(Api.LOGIN, {"email": email, "password": password});
-      if (response.hasError) {
-        logErrorMessage(logName: "login", response: response);
-
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ?? "");
-      } else {
-        logSuccessMessage(logName: "login", response: response);
-
-        /// save token info or organization switch
-        Map<String, dynamic> jsonModel = TokenModel(
-          accessToken:
-              SignInResponse.fromJson(response.body).data?.accessToken ?? "",
-          refreshToken:
-              SignInResponse.fromJson(response.body).data?.refreshToken ?? "",
-        ).toJson();
-        String jsonObject = jsonEncode(jsonModel);
-
-        GetStorage().write(
-            SignInResponse.fromJson(response.body).ordId ?? "", jsonObject);
-
-        /// save token info for Api response
-        GetStorage().write(AppString.ACCESS_TOKEN,
-            SignInResponse.fromJson(response.body).data?.accessToken ?? "");
-        GetStorage().write(AppString.REFRESH_TOKEN,
-            SignInResponse.fromJson(response.body).data?.refreshToken ?? "");
-        GetStorage().write(AppString.LOGGED_IN, true);
-        GetStorage().write(AppString.ORGANIZATION_ID,
-            SignInResponse.fromJson(response.body).ordId ?? "");
-        _saveData();
-        getOrgSubscriptionInfo();
+      // API call to perform login
+      di.Response response = await _networkClient.postRequest(
+          Api.LOGIN, {"email": email, "password": password});
+      if (response.statusCode == 200) {
+        _handleTokenInfo(response);
+        final userInfoResponse =
+            await Get.find<UserInfoController>().getUserInfo();
+        _handleLoginSuccess(response, userInfoResponse);
+        await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+        // Navigate to the main screen
         Get.offNamed(Routes.MAIN_SCREEN);
-
       }
     } catch (e) {
       log(e.toString());
     }
-    isSignInLoading(false);
+    isSignInLoading(false); // End loading
   }
 
-  getOrgSubscriptionInfo() async {
-    try {
-      final response = await NetworkClient()
-          .graphRequest(queryString: getOrgSubscriptionInfoQuery);
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getOrgSubscriptionInfo");
-      } else {
-        orgSubscriptionInfoModel =
-            OrgSubscriptionInfoModel.fromJson(response.data!);
-        checkIfSubscription();
-      }
-    } catch (ex) {
-      log("getOrgSubscriptionInfo  ::::: $ex");
-    }
-  }
-
+  /// Saves the last input data (email) to local storage.
   void _saveData() {
-    LastInput myInput = LastInput(email: emailController.text);
-    Map<String, dynamic> jsonModel = myInput.toJson();
-    String jsonObject = jsonEncode(jsonModel);
+    LastInput lastInput = LastInput(email: emailController.text);
+    String jsonObject = jsonEncode(lastInput.toJson());
     GetStorage().write(AppString.LAST_INPUT, jsonObject);
+  }
+
+  // Private helper functions
+
+  /// Handles login success by saving tokens and navigating to the main screen.
+  void _handleLoginSuccess(di.Response response, UserInfo? userInfo) {
+    // Save token information
+    TokenModel tokenModel = TokenModel(
+      accessToken:
+          SignInResponse.fromJson(response.data).data?.accessToken ?? "",
+      refreshToken:
+          SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
+    );
+    String tokenJson = jsonEncode(tokenModel.toJson());
+
+    // Store tokens in local storage
+    GetStorage().write(userInfo?.user?.organizationId ?? "", tokenJson);
+    GetStorage().write(AppString.LOGGED_IN, true);
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    // Store the organization user ID in GetStorage.
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+    // Save last input data and get subscription info
+    _saveData();
+  }
+
+  void _handleTokenInfo(di.Response response) {
+    GetStorage().write(AppString.ACCESS_TOKEN,
+        SignInResponse.fromJson(response.data).data?.accessToken);
+    GetStorage().write(AppString.REFRESH_TOKEN,
+        SignInResponse.fromJson(response.data).data?.refreshToken);
   }
 }

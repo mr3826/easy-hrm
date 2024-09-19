@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as di;
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -8,6 +9,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../routes/app_pages.dart';
+import '../../auth/presentation/controller/signin_controller.dart';
 
 class LogoutController extends GetxController {
   RxBool isLogoutLoading = false.obs;
@@ -15,36 +17,35 @@ class LogoutController extends GetxController {
   Future<void> logout() async {
     isLogoutLoading(true);
     try {
-      Response response = await NetworkClient().postRequest(Api.LOGOUT, {
+      di.Response response = await NetworkClient().postRequest(Api.LOGOUT, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
       });
-
-      if (response.hasError) {
-        logErrorMessage(logName: "logout", response: response);
-        if (ErrorModel.fromJson(response.body).message != null &&
-            ErrorModel.fromJson(response.body)
+      // Check if the response body is null
+      handleUnknownError(response);
+      if (response.statusCode!=200) {
+        if (ErrorModel.fromJson(response.data).message != null &&
+            ErrorModel.fromJson(response.data)
                 .message!
                 .startsWith("Authorization failed, error: UserDoesNotExist")) {
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
-        if (ErrorModel.fromJson(response.body).message != null &&
-            ErrorModel.fromJson(response.body)
+        if (ErrorModel.fromJson(response.data).message != null &&
+            ErrorModel.fromJson(response.data)
                 .message!
                 .startsWith("Unauthorized")) {
           GetStorage().remove(AppString.ACCESS_TOKEN);
           GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
         }
         showErrorMessage(
-            message: ErrorModel.fromJson(response.body).message ?? "");
+            message: ErrorModel.fromJson(response.data).message ?? "");
       } else {
-        logSuccessMessage(logName: "logout", response: response);
         _clearSession();
       }
     } catch (e) {
       log(e.toString());
+    } finally {
+      _clearSession();
     }
     isLogoutLoading(false);
   }

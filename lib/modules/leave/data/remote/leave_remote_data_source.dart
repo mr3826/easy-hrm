@@ -47,7 +47,7 @@ class LeaveRemoteDataSource {
         queryString: getLeaveSummaryForDashboardQuery,
       );
 
-      if (response.hasException) {
+      if (response.hasException)   {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveSummaryForDashboard");
         return null;
@@ -78,6 +78,7 @@ class LeaveRemoteDataSource {
       }
 
       return LeaveDetailsByDate.fromJson(response.data!);
+
     } catch (e) {
       log('Error in getLeaveRecordByDate: $e');
       return null;
@@ -85,7 +86,6 @@ class LeaveRemoteDataSource {
   }
 
   Future<WorkShiftResponse?> getWorkShift() async {
-    print("ORGANIZATION_USER_ID :: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     try {
       final response = await networkClient
           .graphRequest(queryString: workShiftQuery, variables: {
