@@ -31,9 +31,7 @@ class OtpController extends GetxController {
       });
       handleUnknownError(response);
 
-      if (response.statusCode != 200) {
-        _handleError(response); // Handle error response
-      } else {
+      if (response.statusCode == 200) {
         _handleSuccess(response, confirmationCode); // Handle success response
       }
     } catch (exp) {
@@ -48,10 +46,5 @@ class OtpController extends GetxController {
   void _handleSuccess(di.Response response, String confirmationCode) {
     showSuccessMessage(message: SuccessModel.fromJson(response.data).message!);
     Get.offAndToNamed(Routes.RESET_PASSWORD, arguments: [confirmationCode]);
-  }
-
-  /// Handles error response, logs the error, and displays an error message.
-  void _handleError(di.Response response) {
-    showErrorMessage(message: ErrorModel.fromJson(response.data).message!);
   }
 }

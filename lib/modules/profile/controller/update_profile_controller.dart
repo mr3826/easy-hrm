@@ -34,7 +34,8 @@ class UpdateProfileController extends GetxController {
         variables: {"inputData": variables});
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "updateUserProfile");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "updateUserProfile");
     } else {
       Get.find<UserProfileController>().getUserProfile();
       Get.back();
@@ -47,10 +48,9 @@ class UpdateProfileController extends GetxController {
     isLoading(false);
   }
 
-
-///change password updated
-  Future<void> changePassword({required String currentPassword, required String newPassword}) async {
-    print("changePassword_input ::: $currentPassword ::: $newPassword");
+  ///change password updated
+  Future<void> changePassword(
+      {required String currentPassword, required String newPassword}) async {
     isLoading(true);
     try {
       final response = await NetworkClient().postRequest(Api.CHANGE_PASSWORD, {
@@ -59,17 +59,10 @@ class UpdateProfileController extends GetxController {
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN) ?? ""
       });
 
-      // Check if the response body is null
-      handleUnknownError(response);
-      if (response.statusCode!=200) {
-        final errorModel = response.data is Map<String, dynamic>
-            ? ErrorModel.fromJson(response.data)
-            : null;
-        showErrorMessage(message: errorModel?.message ?? "An error occurred!");
-      } else {
+      if (response.statusCode == 200) {
         showSuccessMessage(message: AppString.passwordChangeSuccessfulMessage);
-         clearPasswordFields();
-         handleLogout();
+        _clearPasswordFields();
+        _handleLogout();
       }
     } catch (e) {
       log("Exception caught: $e");
@@ -78,18 +71,13 @@ class UpdateProfileController extends GetxController {
     }
   }
 
-
-
-
-
-
-  void clearPasswordFields() {
+  void _clearPasswordFields() {
     currentPasswordController.clear();
     newPasswordController.clear();
     confirmPasswordController.clear();
   }
 
-  void handleLogout() {
+  void _handleLogout() {
     GetStorage().remove(AppString.ACCESS_TOKEN);
     GetStorage().remove(AppString.LOGGED_IN);
     Get.offAllNamed(Routes.SIGN_IN_SCREEN);
@@ -110,7 +98,8 @@ class UpdateProfileController extends GetxController {
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getUploadPolicy");
     } else {
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
       uploadFile(

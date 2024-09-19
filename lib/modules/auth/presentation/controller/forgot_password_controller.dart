@@ -31,10 +31,7 @@ class ForgotPasswordController extends GetxController {
           Api.FORGOT_PASSWORD, {"email": restPasswordController.text});
       handleUnknownError(response);
 
-      if (response.statusCode != 200) {
-        // Handle error response
-        _handleError(logName: "forgotPassword", response: response);
-      } else {
+      if (response.statusCode == 200) {
         // On success, navigate to OTP screen and show success message
         Get.toNamed(Routes.OTP, arguments: [restPasswordController.text]);
         showSuccessMessage(
@@ -53,15 +50,10 @@ class ForgotPasswordController extends GetxController {
     isResendLoading(true); // Start loading for resend
     try {
       // API call to resend OTP
-      di.Response response =
-          await _networkClient.postRequest(Api.RESEND_OTP, {
+      di.Response response = await _networkClient.postRequest(Api.RESEND_OTP, {
         "email": mailAddress,
       });
-      handleUnknownError(response);
-
-      if (response.statusCode != 200) {
-        _handleError(logName: "resendOtp", response: response);
-      } else {
+      if (response.statusCode == 200) {
         showSuccessMessage(
             message: SuccessModel.fromJson(response.data).message ?? "");
       }
@@ -85,11 +77,8 @@ class ForgotPasswordController extends GetxController {
         "confirmationCode": confirmationCode,
         "password": confirmPasswordController.text,
       });
-      handleUnknownError(response);
 
-      if (response.statusCode != 200) {
-        _handleError(logName: "resetPassword", response: response);
-      } else {
+      if (response.statusCode == 200) {
         confirmPasswordController.clear(); // Clear password fields
         restPasswordController.clear();
         showSuccessMessage(
@@ -100,13 +89,6 @@ class ForgotPasswordController extends GetxController {
       _handleException(exp as Exception); // Handle any exceptions
     }
     isLoading(false); // End loading
-  }
-
-  // Helper function to handle errors and log them
-  void _handleError({required String logName, required di.Response response}) {
-    showErrorMessage(
-        message:
-            ErrorModel.fromJson(response.data).message ?? AppString.error_text);
   }
 
   // Helper function to handle exceptions

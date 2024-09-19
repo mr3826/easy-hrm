@@ -119,8 +119,6 @@ class NetworkClient extends GetConnect {
       });
 
       if (response.statusCode != 200) {
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.data).message ?? "");
         Get.offAllNamed(Routes.SIGN_IN_SCREEN);
       } else {
         final data = SignInResponse.fromJson(response.data).data;

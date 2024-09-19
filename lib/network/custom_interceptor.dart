@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' as get;
 import 'package:payrun_mobile/common/widget/error_message.dart';
+
+import '../utils/app_string.dart';
 
 class CustomInterceptor extends Interceptor {
   @override
@@ -28,7 +31,9 @@ class CustomInterceptor extends Interceptor {
     // Log error details
     print(
         'Error [${err.response?.statusCode}] => MESSAGE: ${err.message} server err ${err.response?.data['message']} ');
-    showErrorMessage(message: "${err.response?.data['message']}");
+    showErrorMessage(
+        message: err.response?.data['message'].toString() ??
+            AppString.error_text.tr);
     // Continue with the error
     handler.next(err);
   }

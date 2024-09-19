@@ -165,15 +165,9 @@ class UserProfileController extends GetxController with StateMixin {
     bool validation = false;
     isLoading(true);
     try {
-      final response = await NetworkClient()
+      final response = await _networkClient
           .postRequest(Api.VERIFY_PASSWORD, {"password": password});
-      // Check if the response body is null
-      handleUnknownError(response);
-      if (response.statusCode != 200) {
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.data).message ??
-                "Some Error occur!");
-      } else {
+      if (response.statusCode == 200) {
         ChangeMailResponse value = ChangeMailResponse.fromJson(response.data);
         validation = value.valid!;
       }
@@ -189,17 +183,11 @@ class UserProfileController extends GetxController with StateMixin {
 
     isLoadingChangeEmail(true);
     try {
-      final response = await NetworkClient().postRequest(Api.CHANGE_MAIL, {
+      final response = await _networkClient.postRequest(Api.CHANGE_MAIL, {
         "newEmail": newEmail,
         "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
       });
-      // Check if the response body is null
-      handleUnknownError(response);
-      if (response.statusCode != 200) {
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.data).message ??
-                "Some Error occur!");
-      } else {
+      if (response.statusCode == 200) {
         validation = true;
       }
     } catch (e) {
@@ -213,29 +201,12 @@ class UserProfileController extends GetxController with StateMixin {
     isVerificationApiLoading(true);
     try {
       final response =
-          await NetworkClient().postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+          await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
-      // Check if the response body is null
-      handleUnknownError(response);
-      if (response.statusCode != 200) {
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.data).message ??
-                "Some Error occur!");
-      } else {
-        changeEmailController.clear();
-        Get.back(canPop: false);
-        Get.back(canPop: false);
-        if (Platform.isAndroid) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        } else if (Platform.isIOS) {
-          GetStorage().remove(AppString.ACCESS_TOKEN);
-          GetStorage().remove(AppString.LOGGED_IN);
-          Get.offAllNamed(Routes.SIGN_IN_SCREEN);
-        }
+      if (response.statusCode == 200) {
+        _handleResponseSuccess();
       }
     } catch (e) {
       log(e.toString());
@@ -246,28 +217,20 @@ class UserProfileController extends GetxController with StateMixin {
   resendOtp({required String emailAddress}) async {
     resendOtpLoading(true);
     try {
-      final response = await NetworkClient().postRequest(
+      final response = await _networkClient.postRequest(
           Api.RESEND_OTP_CHANGE_EMAIL, {
         "email": emailAddress,
         "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
       });
-      // Check if the response body is null
-      handleUnknownError(response);
-      if (response.statusCode != 200) {
-        showErrorMessage(
-            message: ErrorModel.fromJson(response.data).message ??
-                "Some Error occur!");
-      } else {
+      if (response.statusCode == 200) {
         seconds.value = 59;
         startTimer();
         showSuccessMessage(message: AppString.resend_otp_text.tr);
-        resendOtpLoading(false);
       }
-      resendOtpLoading(false);
     } catch (e) {
       log(e.toString());
-      resendOtpLoading(false);
     }
+    resendOtpLoading(false);
   }
 
   getOrganizationInfo() async {
@@ -383,8 +346,11 @@ class UserProfileController extends GetxController with StateMixin {
                                           _handleLoginSuccess(
                                               response, userInfoResponse);
 
-                                          Get.find<UserInfoController>().getOrgSubscriptionInfo();
-                                          if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+                                          Get.find<UserInfoController>()
+                                              .getOrgSubscriptionInfo();
+                                          if (Get.find<UserInfoController>()
+                                              .isSubscriptionExpired
+                                              .isFalse) {
                                             switchOrganisationDataChange();
                                           }
                                         }
@@ -503,6 +469,15 @@ class UserProfileController extends GetxController with StateMixin {
     // Store the organization user ID in GetStorage.
     GetStorage()
         .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+  }
+
+  void _handleResponseSuccess() {
+    changeEmailController.clear();
+    Get.back(canPop: false);
+    Get.back(canPop: false);
+    GetStorage().remove(AppString.ACCESS_TOKEN);
+    GetStorage().remove(AppString.LOGGED_IN);
+    Get.offAllNamed(Routes.SIGN_IN_SCREEN);
   }
 }
 
