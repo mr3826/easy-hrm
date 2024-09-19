@@ -300,8 +300,7 @@ class TimeLogEntryTextField extends StatelessWidget {
   _selectedTaskLayout(context) {
     return taskInputFieldLayout(
       onAction: () {
-        customButtonSheet(
-            context: context, height: .7, child: const TaskViewLayout());
+        customButtonSheet(context: context, height: .7, child: const TaskViewLayout());
       },
     );
   }

@@ -86,6 +86,7 @@ Map<String, String> eng = {
     AppString.text_dont_not_worry: "Don’t worry! It happens. Please enter the email address associated with your account.",
     AppString.text_duration: "Duration",
     AppString.text_edit: "Edit",
+    AppString.text_no_data_found: "No data found!",
     AppString.text_edit_profile: "Edit profile",
     AppString.text_email: "Email",
     AppString.text_email_change_request_is_in_pendding_etc: "Email change request is in pending. Need verification.",

@@ -17,7 +17,6 @@ import 'modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'modules/leave/presentation/controller/file_upload_controller.dart';
 import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
 import 'modules/profile/controller/log_out_controller.dart';
-import 'modules/profile/controller/password_controller.dart';
 import 'modules/profile/controller/profile_image_selected_controller.dart';
 import 'modules/profile/controller/update_profile_controller.dart';
 import 'modules/timeline/controller/selected_task_controller.dart';
@@ -48,17 +47,15 @@ class MyApp extends StatelessWidget {
         onInit: () {
           Get.put(SplashController());
 
-          Get.lazyPut(() => SignInController(),fenix: true);
+          Get.lazyPut(() => SignInController(), fenix: true);
 
-          Get.lazyPut(() => ConnectivityController());
+          Get.lazyPut(() => ConnectivityController(), fenix: true);
 
-          Get.lazyPut(() => LanguageController());
+          Get.lazyPut(() => LanguageController(), fenix: true);
 
-          Get.lazyPut(() => ForgotPasswordController());
+          Get.lazyPut(() => ForgotPasswordController(), fenix: true);
 
-          Get.lazyPut(() => OtpController());
-
-          Get.lazyPut(() => PasswordController());
+          Get.lazyPut(() => OtpController(), fenix: true);
 
           Get.put(FileUploadController());
 
@@ -68,13 +65,13 @@ class MyApp extends StatelessWidget {
 
           Get.put(PikedProfileImgController());
 
-          Get.put(LogoutController());
+          Get.lazyPut(() => LogoutController(), fenix: true);
 
           Get.put(SelectedTaskController());
 
           Get.put(DateTimeController());
 
-          Get.put(UpdateProfileController());
+          Get.lazyPut(() => UpdateProfileController(), fenix: true);
 
         },
       ),

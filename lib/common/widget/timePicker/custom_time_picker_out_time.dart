@@ -20,15 +20,12 @@ class CustomTimePickerOutTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _setDefaultData();
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          _datePicker(context),
-          customSpacerWidth(width: 10),
-          _timePicker(context),
-        ],
-      ),
+    return Row(
+      children: [
+        _datePicker(context),
+        customSpacerWidth(width: 10),
+        _timePicker(context),
+      ],
     );
   }
 

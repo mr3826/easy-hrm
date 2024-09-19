@@ -82,8 +82,7 @@ class TimeCounterController extends GetxController {
 
   timerStatus() async {
     isLoading(true);
-    final response =
-        await NetworkClient().graphRequest(queryString: timerStatusQuery);
+    final response = await NetworkClient().graphRequest(queryString: timerStatusQuery);
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!,methodName: "timerStatus");

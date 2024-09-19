@@ -106,6 +106,7 @@ class UserProfileController extends GetxController with StateMixin {
   final isOrganizationChangeLoading = false.obs;
   final isNewOrganizationChangeLoading = false.obs;
   final isVerificationApiLoading = false.obs;
+  RxBool isSelected = false.obs;
   final resendOtpLoading = false.obs;
 
   var isOtpString = ''.obs;

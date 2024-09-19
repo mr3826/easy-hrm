@@ -108,6 +108,6 @@ class ChangeEmailScreen extends StatelessWidget {
   }
 }
 
-class SelectedOtpVerifyController extends GetxController {
-  RxBool isSelected = false.obs;
-}
+
+
+

@@ -344,8 +344,6 @@ String convertMiniToHour(Duration duration) {
   }
 }
 
-
-
 String getLeaveDuration(String? leaveDurationSecond, String? numberOfDays) {
   // Handle null or empty inputs
   if (leaveDurationSecond == null || leaveDurationSecond.isEmpty ||
