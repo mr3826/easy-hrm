@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart' as get;
+import 'package:get/get.dart' as gt;
 import 'package:payrun_mobile/common/widget/error_message.dart';
 
 import '../utils/app_string.dart';
