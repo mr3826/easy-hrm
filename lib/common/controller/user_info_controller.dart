@@ -24,6 +24,9 @@ class UserInfoController {
     try {
       final response = await _networkClient.graphRequest(
           queryString: getOrgSubscriptionInfoQuery);
+
+
+
       if (response.hasException) {
         ExceptionHelper.errorHandler(
             exception: response.exception!,

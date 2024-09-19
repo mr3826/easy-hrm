@@ -17,25 +17,23 @@ import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../profile/controller/log_out_controller.dart';
 import '../../profile/controller/user_profile_controller.dart';
 
-class SubscriptionScreen extends GetView<DashboardController> {
- const SubscriptionScreen({super.key});
+class SubscriptionScreen extends StatelessWidget {
+  const SubscriptionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
-      body: controller.obx(
-          (state) => Padding(
-                padding: marginLayout,
-                child: Column(
-                  children: [
-                    customSpacerHeight(height: 46),
-                    _userInfoAppbarLayout(),
-                    _infoContactLayout()
-                  ],
-                ),
-              ),
-          onLoading:const LoadingIndicator()),
+      body: Padding(
+        padding: marginLayout,
+        child: Column(
+          children: [
+            // customSpacerHeight(height: 46),
+            // _userInfoAppbarLayout(),
+            _infoContactLayout()
+          ],
+        ),
+      ),
     );
   }
 

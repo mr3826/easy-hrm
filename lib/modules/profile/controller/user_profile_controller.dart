@@ -298,21 +298,29 @@ class UserProfileController extends GetxController with StateMixin {
                 accessToken: tokenModel.accessToken ?? "")
             .then((value) {
           if (value == true) {
-            switchOrganisationDataChange();
+            Get.find<UserInfoController>().getOrgSubscriptionInfo();
+            if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+              switchOrganisationDataChange();
+            }
           } else {
             showErrorMessage(message: AppString.error_text);
           }
         });
       } else {
-        await GetStorage().write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
-        await GetStorage().write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
+        await GetStorage()
+            .write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
+        await GetStorage()
+            .write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
 
         final userInfoResponse =
             await Get.find<UserInfoController>().getUserInfo();
 
         _handleUserInfo(userInfoResponse);
 
-        switchOrganisationDataChange();
+        Get.find<UserInfoController>().getOrgSubscriptionInfo();
+        if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+          switchOrganisationDataChange();
+        }
       }
       Get.back(canPop: false);
       Get.back(canPop: false);
@@ -375,7 +383,10 @@ class UserProfileController extends GetxController with StateMixin {
                                           _handleLoginSuccess(
                                               response, userInfoResponse);
 
-                                          switchOrganisationDataChange();
+                                          Get.find<UserInfoController>().getOrgSubscriptionInfo();
+                                          if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+                                            switchOrganisationDataChange();
+                                          }
                                         }
                                       }
                                     } catch (e) {
