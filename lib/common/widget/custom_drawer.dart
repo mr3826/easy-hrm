@@ -25,9 +25,12 @@ void showCustomDrawer({required BuildContext context, required child}) {
       }
       return SlideTransition(
         position: tween.animate(anim),
-        child: FadeTransition(
-          opacity: anim,
-          child: child,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 45.0),
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
         ),
       );
     },

@@ -518,7 +518,7 @@ organisationLogoLayout() {
 endDrawer(BuildContext context) {
   return Drawer(
     clipBehavior: Clip.antiAliasWithSaveLayer,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(8))),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

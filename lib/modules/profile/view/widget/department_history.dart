@@ -92,7 +92,7 @@ class DepartmentHistory extends StatelessWidget {
     required String imageUrl,
   }) {
     return Padding(
-      padding: marginLayout.copyWith(bottom: 18, left: 0, right: 0, top: 16),
+      padding: marginLayout.copyWith(bottom: 14, left: 0, right: 0, top: 16),
       child: Stack(
         children: [
           Padding(
@@ -147,7 +147,7 @@ class DepartmentHistory extends StatelessWidget {
                   top: 26,
                   left: 1,
                   bottom: 0,
-                  child: dottedStyleLayout(height: 89)),
+                  child: dottedStyleLayout(height: 99)),
         ],
       ),
     );

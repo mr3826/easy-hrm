@@ -44,5 +44,10 @@ Future<void> initApp() async {
 
   Get.put(DashboardRemoteDataSource(client), permanent: true);
   Get.put(NotificationRemoteDataSource(client), permanent: true);
+
   Get.put(LeaveRemoteDataSource(client), permanent: true);
+
+
+
+
 }

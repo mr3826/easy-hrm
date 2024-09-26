@@ -28,14 +28,14 @@ TextEditingController _currentPassController = TextEditingController();
 TextEditingController _taskController = TextEditingController();
 TextEditingController _descriptionController = TextEditingController();
 
-
 TextEditingController _changeEmailController = TextEditingController();
 
 //global getter
 
 TextEditingController get taskSearchController => _taskController;
 
-TextEditingController get editMailPasswordController => _editMailPasswordController;
+TextEditingController get editMailPasswordController =>
+    _editMailPasswordController;
 
 TextEditingController get emailController => _emailController;
 
@@ -43,24 +43,20 @@ TextEditingController get changeEmailController => _changeEmailController;
 
 TextEditingController get passwordController => _passwordController;
 
-
 TextEditingController get restPasswordController => _restPasswordController;
 
 TextEditingController get descriptionController => _descriptionController;
-
 
 TextEditingController get newPasswordController => _newPasswordController;
 
 TextEditingController get confirmPasswordController =>
     _confirmPasswordController;
 
-
 TextEditingController get leaveNoteController => _leaveNoteController;
 
 TextEditingController get editFirstNameController => _editFirstNameController;
 
 TextEditingController get editLastNameController => _editLastNameController;
-
 
 TextEditingController get editAddressController => _editAddressController;
 
@@ -72,8 +68,6 @@ TextEditingController get editEmergencyPhoneController =>
 TextEditingController get editBioController => _editBioController;
 
 TextEditingController get currentPasswordController => _currentPassController;
-
-
 
 List get notificationTabBarIndex => _notificationTabBarIndex;
 
@@ -97,14 +91,13 @@ String dateMonthYearFormatFromDatetime(String dateString) {
   return formattedDate;
 }
 
-
 String dateMonthFormatFromDatetimeForLeaveDetails(String dateString) {
   if (dateString.isEmpty) return "";
   // Parse the string to DateTime
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
   String formattedDate = DateFormat('dd MMM').format(dateTime);
-  String weekDays=findWeekdayFormDateString(dateString);
+  String weekDays = findWeekdayFormDateString(dateString);
 
   return "${abbreviateDayOfWeek(weekDays)}, $formattedDate";
 }
@@ -130,14 +123,11 @@ String amPmFormatTimeFromString(String dateString) {
   return formattedTime;
 }
 
+bool isSameDate({required String startDate, required String endDate}) {
+  if (startDate.isEmpty || endDate.isEmpty) return false;
 
-bool isSameDate({required String startDate ,required String endDate}) {
-  if (startDate.isEmpty||endDate.isEmpty) return false;
-
- return startDate.substring(0, 10)==endDate.substring(0, 10);
-
+  return startDate.substring(0, 10) == endDate.substring(0, 10);
 }
-
 
 String getConvertSecondsToHours(String secondsStr) {
   if (secondsStr.isEmpty || secondsStr == "null") {
@@ -219,28 +209,50 @@ String getTimeDifference(String startTimeString, String endTimeString) {
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
 
-String workingTimeSinceFormString(String dateString) {
-  if (dateString.isEmpty) return "";
-  // Parse the input date string into a DateTime object
-  DateTime specifiedDate = DateTime.parse(dateString);
+String workingTimeSinceFormString(String startDateString, String? endDateString) {
 
-  // Get the current date and time
-  DateTime currentDate = DateTime.now();
+  // Parse the start date
+  DateTime startDate = DateTime.parse(startDateString);
 
-  // Calculate the duration between the specified date and the current date
-  Duration duration = currentDate.difference(specifiedDate);
+  // If endDateString is null or empty, use the current date
+  DateTime endDate = (endDateString == null || endDateString.isEmpty)
+      ? DateTime.now()
+      : DateTime.tryParse(endDateString) ?? DateTime.now();
 
-  // Calculate the difference in years and months
-  int years = (duration.inDays / 365).floor();
-  int months = ((duration.inDays % 365) / 30).floor();
-  int days = duration.inDays % 30;
+  // Calculate the difference in years, months, and days
+  int years = endDate.year - startDate.year;
+  int months = endDate.month - startDate.month;
+  int days = endDate.day - startDate.day;
 
+  // Adjust for negative day differences
+  if (days < 0) {
+    months--;
+    DateTime previousMonth = DateTime(endDate.year, endDate.month - 1, startDate.day);
+    days = endDate.difference(previousMonth).inDays;
+  }
+
+  // Adjust for negative month differences
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  // Logic to count the current month if the day is >= 20
+  if (endDate.day >= 20) {
+    months++;
+    if (months == 12) {
+      years++;
+      months = 0;
+    }
+  }
+
+  // Return formatted string based on the calculated time differences
   if (years == 0 && months == 0) {
-    return "$days days";
+    return "$days ${days > 1 ? "days" : "day"}";
   } else if (years == 0) {
-    return "$months months $days days";
+    return "$months ${months > 1 ? "months" : "month"}";
   } else {
-    return "$years years $months months $days days";
+    return "$years ${years > 1 ? "years" : "year"} $months ${months > 1 ? "months" : "month"}";
   }
 }
 
@@ -261,7 +273,6 @@ String getFirstTwoLetterFromWord(String input) {
   // Concatenate the results
   return '$firstLetter$lastLetter';
 }
-
 
 String formatLeaveDate(String inputDate) {
   // Check for empty input
@@ -289,7 +300,6 @@ String formatLeaveDate(String inputDate) {
 
   return outputDate;
 }
-
 
 String abbreviateDayOfWeek(String fullDayName) {
   // Mapping of full day names to their abbreviations
@@ -328,9 +338,6 @@ List _selectedBeforeDayAndAfterDay = [
 
 List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
 
-
-
-
 String convertMiniToHour(Duration duration) {
   int hours = duration.inHours;
   int minutes = duration.inMinutes % 60;
@@ -346,8 +353,10 @@ String convertMiniToHour(Duration duration) {
 
 String getLeaveDuration(String? leaveDurationSecond, String? numberOfDays) {
   // Handle null or empty inputs
-  if (leaveDurationSecond == null || leaveDurationSecond.isEmpty ||
-      numberOfDays == null || numberOfDays.isEmpty) return "0s";
+  if (leaveDurationSecond == null ||
+      leaveDurationSecond.isEmpty ||
+      numberOfDays == null ||
+      numberOfDays.isEmpty) return "0s";
 
   // Parse the leaveDuration and totalDuration, default to 0 if parsing fails
   int leaveSecond = int.tryParse(leaveDurationSecond) ?? 0;
@@ -375,7 +384,6 @@ String getLeaveDuration(String? leaveDurationSecond, String? numberOfDays) {
   // Handle cases where total duration is greater than or equal to 1 day
   return "${total.floor()} days";
 }
-
 
 String _getWeekday(int weekday) {
   switch (weekday) {
@@ -406,9 +414,6 @@ void logSuccessMessage(
         {required String logName, Response? response, String? message}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
-
-
-
 
 handleUnknownError(di.Response response) {
   if (response.data == null) {
