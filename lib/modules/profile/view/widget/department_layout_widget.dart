@@ -47,7 +47,7 @@ Widget departmentLayout(BuildContext? context) {
 }
 
 _departmentHistoryInfo(context) {
-  return InkWell(
+  return GestureDetector(
     onTap: () {
       customAntButtonSheet(context: context, child: const DepartmentHistory());
     },

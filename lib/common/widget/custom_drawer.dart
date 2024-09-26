@@ -29,7 +29,8 @@ void showCustomDrawer({required BuildContext context, required Widget child}) {
         position: tween.animate(anim),
         child: Padding(
           // Set top padding to statusBarHeight for dynamic height adjustment
-          padding: EdgeInsets.only(top: statusBarHeight), // 45.0 can be adjusted as needed
+          padding: EdgeInsets.only(
+              top: statusBarHeight), // 45.0 can be adjusted as needed
           child: FadeTransition(
             opacity: anim,
             child: child,
@@ -39,7 +40,6 @@ void showCustomDrawer({required BuildContext context, required Widget child}) {
     },
   );
 }
-
 
 void showCustomAtmBtnSheet(
     {required BuildContext context, required child, double height = 500}) {
