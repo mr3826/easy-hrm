@@ -92,6 +92,7 @@ class DesignationLayout extends StatelessWidget {
                   height: 18,
                   width: 18,
                 ),
+
               ),
               customSpacerWidth(width: 12),
               Expanded(
