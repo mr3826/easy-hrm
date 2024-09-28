@@ -16,6 +16,7 @@ import '../../../utils/utils.dart';
 import 'package:dio/dio.dart' as di;
 import '../../auth/presentation/controller/signin_controller.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
+import 'log_out_controller.dart';
 
 class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
@@ -80,13 +81,13 @@ class UpdateProfileController extends GetxController {
   void _handleLogout() {
     GetStorage().remove(AppString.ACCESS_TOKEN);
     GetStorage().remove(AppString.LOGGED_IN);
-    List<String?>? orgIds = Get.find<UserProfileController>()
+    removeTokenForOrg(Get.find<UserProfileController>()
         .organizationInfo
         ?.getUserOrganizations
         ?.data
         ?.map((e) => e.organization?.id)
-        .toList();
-    _removeTokenForOrg(orgIds ?? []);
+        .toList() ??
+        []);
     Get.offAllNamed(Routes.SIGN_IN_SCREEN);
   }
 
@@ -141,10 +142,4 @@ class UpdateProfileController extends GetxController {
     isUploadPolicyLoading(false);
   }
 
-  void _removeTokenForOrg(List<String?> orgIds) {
-    GetStorage box = GetStorage();
-    orgIds.map(
-      (e) async => await box.remove(e ?? ""),
-    );
-  }
 }
