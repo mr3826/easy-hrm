@@ -80,6 +80,13 @@ class UpdateProfileController extends GetxController {
   void _handleLogout() {
     GetStorage().remove(AppString.ACCESS_TOKEN);
     GetStorage().remove(AppString.LOGGED_IN);
+    List<String?>? orgIds = Get.find<UserProfileController>()
+        .organizationInfo
+        ?.getUserOrganizations
+        ?.data
+        ?.map((e) => e.organization?.id)
+        .toList();
+    _removeTokenForOrg(orgIds ?? []);
     Get.offAllNamed(Routes.SIGN_IN_SCREEN);
   }
 
@@ -132,5 +139,12 @@ class UpdateProfileController extends GetxController {
       isFileUploadedSuccessfully.value = true;
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);
+  }
+
+  void _removeTokenForOrg(List<String?> orgIds) {
+    GetStorage box = GetStorage();
+    orgIds.map(
+      (e) async => await box.remove(e ?? ""),
+    );
   }
 }
