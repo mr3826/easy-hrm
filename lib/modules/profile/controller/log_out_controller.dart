@@ -25,8 +25,10 @@ class LogoutController extends GetxController {
   }
 
   void _clearSession() {
-    GetStorage().remove(AppString.ACCESS_TOKEN);
-    GetStorage().remove(AppString.LOGGED_IN);
+    GetStorage()
+      ..remove(AppString.ACCESS_TOKEN)
+      ..remove(AppString.LOGGED_IN);
+
     Get.offAllNamed(Routes.SIGN_IN_SCREEN);
     passwordController.clear();
   }

@@ -103,7 +103,7 @@ Map<String, String> eng = {
     AppString.text_first_half: "First Half",
     AppString.text_first_name: "First name",
     AppString.text_forgot_password: "Forgot password?",
-    AppString.text_form_last: "Form last",
+    AppString.text_form_last: "From last",
     AppString.text_from: "From",
     AppString.text_full_day: "Full day",
     AppString.text_hide: "Hide",

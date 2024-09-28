@@ -248,6 +248,10 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
+
+
+    print("GetStorage().read(orgId)  :: ${GetStorage().read(orgId) }");
+
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));

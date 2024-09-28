@@ -209,52 +209,51 @@ String getTimeDifference(String startTimeString, String endTimeString) {
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
 
+
 String workingTimeSinceFormString(String startDateString, String? endDateString) {
 
+
   // Parse the start date
-  DateTime startDate = DateTime.parse(startDateString);
+  DateTime startDate = DateTime.tryParse(startDateString) ?? DateTime.now();
 
   // If endDateString is null or empty, use the current date
   DateTime endDate = (endDateString == null || endDateString.isEmpty)
       ? DateTime.now()
       : DateTime.tryParse(endDateString) ?? DateTime.now();
 
-  // Calculate the difference in years, months, and days
+
+
+  // Calculate the initial differences
   int years = endDate.year - startDate.year;
   int months = endDate.month - startDate.month;
   int days = endDate.day - startDate.day;
 
-  // Adjust for negative day differences
+  // Adjust days and months if necessary
   if (days < 0) {
     months--;
-    DateTime previousMonth = DateTime(endDate.year, endDate.month - 1, startDate.day);
-    days = endDate.difference(previousMonth).inDays;
+    // Get the number of days in the previous month
+    DateTime previousMonthDate = DateTime(endDate.year, endDate.month, 0);
+    days += previousMonthDate.day;
   }
 
-  // Adjust for negative month differences
   if (months < 0) {
     years--;
     months += 12;
   }
 
-  // Logic to count the current month if the day is >= 20
-  if (endDate.day >= 20) {
-    months++;
-    if (months == 12) {
-      years++;
-      months = 0;
-    }
-  }
-
   // Return formatted string based on the calculated time differences
-  if (years == 0 && months == 0) {
-    return "$days ${days > 1 ? "days" : "day"}";
-  } else if (years == 0) {
-    return "$months ${months > 1 ? "months" : "month"}";
+  if (years > 0) {
+    return "$years ${years > 1 ? 'years' : 'year'}";
+  } else if (months > 0) {
+    return "$months ${months > 1 ? 'months' : 'month'}";
+  } else if (days > 0) {
+    return "$days ${days > 1 ? 'days' : 'day'}";
   } else {
-    return "$years ${years > 1 ? "years" : "year"} $months ${months > 1 ? "months" : "month"}";
+    return "0 day";
   }
 }
+
+
 
 String getFirstTwoLetterFromWord(String input) {
   if (input.isEmpty) {
@@ -273,6 +272,7 @@ String getFirstTwoLetterFromWord(String input) {
   // Concatenate the results
   return '$firstLetter$lastLetter';
 }
+
 
 String formatLeaveDate(String inputDate) {
   // Check for empty input

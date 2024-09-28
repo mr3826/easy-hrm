@@ -68,6 +68,7 @@ class ProfileScreen extends GetView<UserProfileController> {
 
                 ///Department layout
                 _buildDepartmentLayout(context),
+
                 customSpacerHeight(height: 5),
 
                 ///Designation history

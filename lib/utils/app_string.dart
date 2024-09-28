@@ -114,7 +114,7 @@ class AppString {
   static const String text_first_half = "First Half";
   static const String text_first_name = "First name";
   static const String text_forgot_password = "Forgot password?";
-  static const String text_form_last = "Form last";
+  static const String text_form_last = "From last";
   static const String text_from = "From";
   static const String text_full_day = "Full day";
   static const String text_hide = "Hide";
