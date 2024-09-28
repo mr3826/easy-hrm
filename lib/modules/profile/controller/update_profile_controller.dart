@@ -7,14 +7,10 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../common/domain/error_model.dart';
 import '../../../common/domain/upload_policy.dart';
-import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
-import 'package:dio/dio.dart' as di;
-import '../../auth/presentation/controller/signin_controller.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import 'log_out_controller.dart';
 

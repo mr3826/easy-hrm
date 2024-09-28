@@ -248,8 +248,6 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
-    print("GetStorage().read(orgId)  :: ${GetStorage().read(orgId)}");
-
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
@@ -467,11 +465,9 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   void _handleUserInfo(UserInfo? userInfo) {
-    GetStorage()
-        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    GetStorage().write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
     // Store the organization user ID in GetStorage.
-    GetStorage()
-        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+    GetStorage().write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
   }
 
   void _handleResponseSuccess() {
