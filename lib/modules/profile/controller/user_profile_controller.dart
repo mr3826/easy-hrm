@@ -248,9 +248,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
-
-
-    print("GetStorage().read(orgId)  :: ${GetStorage().read(orgId) }");
+    print("GetStorage().read(orgId)  :: ${GetStorage().read(orgId)}");
 
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
@@ -340,8 +338,6 @@ class UserProfileController extends GetxController with StateMixin {
                                         });
 
                                         if (response.statusCode == 200) {
-                                          passwordInputController.clear();
-
                                           _handleTokenInfo(response);
 
                                           final userInfoResponse = await Get
@@ -357,15 +353,17 @@ class UserProfileController extends GetxController with StateMixin {
                                               .isSubscriptionExpired
                                               .isFalse) {
                                             switchOrganisationDataChange();
+
+                                            Get.back(canPop: false);
+                                            Get.back(canPop: false);
+                                            Get.back(canPop: false);
+
+                                            passwordInputController.clear();
                                           }
                                         }
                                       }
                                     } catch (e) {
                                       log(e.toString());
-                                    } finally {
-                                      Get.back(canPop: false);
-                                      Get.back(canPop: false);
-                                      Get.back(canPop: false);
                                     }
                                     isNewOrganizationChangeLoading(false);
                                   },
