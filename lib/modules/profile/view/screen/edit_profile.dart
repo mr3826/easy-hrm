@@ -141,15 +141,18 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   _removeBtnLayout(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        final pikedProfileImgController = Get.find<PikedProfileImgController>();
-        final userProfileController = Get.find<UserProfileController>();
+    final pikedProfileImgController = Get.find<PikedProfileImgController>();
+    final userProfileController = Get.find<UserProfileController>();
 
-        final storageFilePath = pikedProfileImgController.storageForUpload.filePath.value;
-        final profileImage = userProfileController.userDetails?.getOrganizationUserDetails?.profile?.image;
+    final storageFilePath =
+        pikedProfileImgController.storageForUpload.filePath.value;
+    final profileImage = userProfileController
+        .userDetails?.getOrganizationUserDetails?.profile?.image;
 
-        if ((storageFilePath.isNotEmpty || _isProfileImageValid(profileImage))) {
+    if ((storageFilePath.isNotEmpty || _isProfileImageValid(profileImage))) {
+
+      return GestureDetector(
+        onTap: () {
           customDialog(
             context: context,
             saveBtnAction: () {
@@ -157,14 +160,16 @@ class EditProfileScreen extends StatelessWidget {
 
               if (_isProfileInfoValid()) {
                 final variables = _addVariables();
-                Get.find<UpdateProfileController>().updateUserProfile(variables!);
+                Get.find<UpdateProfileController>()
+                    .updateUserProfile(variables!);
               } else {
                 showWarningMessage(
                   message: AppString.text_first_and_last_field_is_requured.tr,
                 );
               }
 
-              if (pikedProfileImgController.storageForUpload.filePath.value.isEmpty) {
+              if (pikedProfileImgController
+                  .storageForUpload.filePath.value.isEmpty) {
                 Get.back();
               }
             },
@@ -176,18 +181,21 @@ class EditProfileScreen extends StatelessWidget {
             btnText: AppString.text_remove.tr,
             drcText: "",
           );
-        }
-      },
-      child: Text(
-        AppString.text_remove_photo.tr,
-        maxLines: 1,
-        style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.pendingColor,
-          overflow: TextOverflow.ellipsis,
-          fontSize: Dimensions.fontSizeDefault,
+        },
+        child: Text(
+          AppString.text_remove_photo.tr,
+          maxLines: 1,
+          style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.pendingColor,
+            overflow: TextOverflow.ellipsis,
+            fontSize: Dimensions.fontSizeDefault,
+          ),
         ),
-      ),
-    );
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+  
   }
 
   bool _isProfileImageValid(String? profileImage) {
@@ -204,14 +212,6 @@ class EditProfileScreen extends StatelessWidget {
     return editFirstNameController.text.isNotEmpty &&
         editLastNameController.text.isNotEmpty;
   }
-
-
-
-
-
-
-
-
 
   _profileImageLayout() {
     return Get.find<PikedProfileImgController>()

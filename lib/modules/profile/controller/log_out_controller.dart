@@ -8,7 +8,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../routes/app_pages.dart';
 
-class LogoutController{
+class LogoutController {
   RxBool isLogoutLoading = false.obs;
 
   Future<void> logout() async {
@@ -44,6 +44,6 @@ class LogoutController{
 void removeTokenForOrg(List<String?> orgIds) {
   GetStorage box = GetStorage();
   orgIds.map(
-        (e) async => await box.remove(e ?? ""),
+    (e) async => await box.remove(e ?? ""),
   );
 }
