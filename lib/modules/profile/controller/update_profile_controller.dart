@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
@@ -37,8 +38,8 @@ class UpdateProfileController extends GetxController {
       Get.find<UserProfileController>().getUserProfile();
       Get.back();
       Get.back();
-      showSuccessMessage(
-          message: AppString.profile_update_successfully_text.tr);
+      showSuccessMessage(message: AppString.profile_update_successfully_text.tr);
+      Get.find<PikedProfileImgController>().storageForUpload.filePath.value="";
       Get.find<DashboardController>().getProfileInfoForDashboard();
     }
 

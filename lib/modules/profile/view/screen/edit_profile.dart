@@ -269,14 +269,14 @@ Map<String, dynamic>? _addVariables() {
 }
 
 Widget _imageLayout() {
-  if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue &&
-      Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+  if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue && Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
     /// file image
     return _selectedImageViewLayout();
   } else if (Get.find<UpdateProfileController>()
-          .isFileUploadedSuccessfully
+      .isFileUploadedSuccessfully
           .isFalse &&
       Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+
     if (Get.find<PikedProfileImgController>()
         .storageForUpload
         .filePath
@@ -311,6 +311,8 @@ Widget _brokenImageViewLayout() {
 }
 
 _placeholderImage() {
+
+  print("image_url ::: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
   return CustomNetworkImage(
     errorText: (Get.find<UserProfileController>()
                         .userDetails
