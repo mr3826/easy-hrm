@@ -47,7 +47,7 @@ Widget departmentLayout(BuildContext? context) {
 }
 
 _departmentHistoryInfo(context) {
-  return InkWell(
+  return GestureDetector(
     onTap: () {
       customAntButtonSheet(context: context, child: const DepartmentHistory());
     },
@@ -173,11 +173,14 @@ _workShiftDetailsLayout() {
       .map((e) => e)
       .toList();
 
+
   bool? allTimesSame = workSchedules?.every((schedule) {
     // Check if start_time and end_time are the same for each item
     return schedule.startTime == workSchedules[0].startTime &&
         schedule.endTime == workSchedules[0].endTime;
   });
+
+
   return Row(
     children: [
       Text(
@@ -321,13 +324,13 @@ String _getParentDepartmentName() {
   if (Get.find<UserProfileController>()
               .employeeWorkHistory
               ?.getOrganizationUserHistory
-              ?.deptHistories !=
+              ?.deptHistories ==
           null &&
       Get.find<UserProfileController>()
           .employeeWorkHistory!
           .getOrganizationUserHistory!
           .deptHistories!
-          .isNotEmpty) return "";
+          .isEmpty) return "";
 
   if (Get.find<UserProfileController>()
           .employeeWorkHistory

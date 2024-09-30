@@ -3,19 +3,17 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../common/domain/error_model.dart';
 import '../../../common/domain/upload_policy.dart';
-import '../../../common/widget/error_message.dart';
 import '../../../network/exception_helper.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/utils.dart';
-import 'package:dio/dio.dart' as di;
-import '../../auth/presentation/controller/signin_controller.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
+import 'log_out_controller.dart';
 
 class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
@@ -40,8 +38,8 @@ class UpdateProfileController extends GetxController {
       Get.find<UserProfileController>().getUserProfile();
       Get.back();
       Get.back();
-      showSuccessMessage(
-          message: AppString.profile_update_successfully_text.tr);
+      showSuccessMessage(message: AppString.profile_update_successfully_text.tr);
+      Get.find<PikedProfileImgController>().storageForUpload.filePath.value="";
       Get.find<DashboardController>().getProfileInfoForDashboard();
     }
 
@@ -80,6 +78,13 @@ class UpdateProfileController extends GetxController {
   void _handleLogout() {
     GetStorage().remove(AppString.ACCESS_TOKEN);
     GetStorage().remove(AppString.LOGGED_IN);
+    removeTokenForOrg(Get.find<UserProfileController>()
+        .organizationInfo
+        ?.getUserOrganizations
+        ?.data
+        ?.map((e) => e.organization?.id)
+        .toList() ??
+        []);
     Get.offAllNamed(Routes.SIGN_IN_SCREEN);
   }
 
@@ -133,4 +138,5 @@ class UpdateProfileController extends GetxController {
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);
   }
+
 }

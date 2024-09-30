@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../auth/presentation/view/otp_screen.dart';
+import '../../model/employee_work_history.dart';
 
 class DesignationLayout extends StatelessWidget {
   const DesignationLayout({super.key});
@@ -42,7 +43,19 @@ class DesignationLayout extends StatelessWidget {
                   .employeeWorkHistory
                   ?.getOrganizationUserHistory
                   ?.designationHistories?[index];
-              return _employeeStatusInfoLayout(designationHistory);
+
+              final designationHistories = Get.find<UserProfileController>()
+                  .employeeWorkHistory
+                  ?.getOrganizationUserHistory;
+
+              bool isLastItem = (designationHistories != null &&
+                      designationHistories.designationHistories != null &&
+                      designationHistories.designationHistories!.isNotEmpty)
+                  ? index ==
+                      designationHistories.designationHistories!.length - 1
+                  : false;
+
+              return _employeeStatusInfoLayout(designationHistory, isLastItem);
             },
           ),
         ),
@@ -50,7 +63,7 @@ class DesignationLayout extends StatelessWidget {
     );
   }
 
-  Widget _employeeStatusInfoLayout(designationHistory) {
+  Widget _employeeStatusInfoLayout(DesignationHistories ?designationHistory, bool isLastItem) {
     final baseTextStyle = AppStyle.mid_large_text.copyWith(
       fontSize: Dimensions.fontSizeDefault - 2,
       overflow: TextOverflow.ellipsis,
@@ -59,7 +72,7 @@ class DesignationLayout extends StatelessWidget {
     final developerStatus = designationHistory?.designation?.name ?? "";
     final date = _formatDate(designationHistory?.startDate);
     final durationText =
-        "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "")}";
+        "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "",designationHistory?.endDate ?? "")}";
     final employeeCurrentStatus = designationHistory?.endDate == null
         ? AppString.textPresent.tr
         : dateMonthYearFormatFromDatetime(designationHistory?.endDate ?? "");
@@ -79,6 +92,7 @@ class DesignationLayout extends StatelessWidget {
                   height: 18,
                   width: 18,
                 ),
+
               ),
               customSpacerWidth(width: 12),
               Expanded(
@@ -122,7 +136,7 @@ class DesignationLayout extends StatelessWidget {
             ],
           ),
         ),
-        _dottedLayout(),
+        isLastItem == true ? const SizedBox.shrink() : _dottedLayout(),
       ],
     );
   }

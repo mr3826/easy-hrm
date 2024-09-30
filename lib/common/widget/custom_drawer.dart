@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-void showCustomDrawer({required BuildContext context, required child}) {
+void showCustomDrawer({required BuildContext context, required Widget child}) {
+  final double statusBarHeight = MediaQuery.of(context).padding.top;
+
   showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -25,9 +27,14 @@ void showCustomDrawer({required BuildContext context, required child}) {
       }
       return SlideTransition(
         position: tween.animate(anim),
-        child: FadeTransition(
-          opacity: anim,
-          child: child,
+        child: Padding(
+          // Set top padding to statusBarHeight for dynamic height adjustment
+          padding: EdgeInsets.only(
+              top: statusBarHeight), // 45.0 can be adjusted as needed
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
         ),
       );
     },

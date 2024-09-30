@@ -28,32 +28,41 @@ class EmploymentLayout extends StatelessWidget {
             subtext: AppString.text_history.tr),
         Expanded(
             child: ListView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const BouncingScrollPhysics(),
-              itemCount: Get.find<UserProfileController>()
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const BouncingScrollPhysics(),
+          itemCount: Get.find<UserProfileController>()
                   .employeeWorkHistory
                   ?.getOrganizationUserHistory
                   ?.employmentHistories
                   ?.length ??
-                  0,
-              itemBuilder: (context, index) {
-                var history = Get.find<UserProfileController>()
-                    .employeeWorkHistory
-                    ?.getOrganizationUserHistory
-                    ?.employmentHistories?[index];
-                return EmployeeStatusInfoLayout(
-                  developerStatus: history?.employmentStatus?.name ?? '',
-                  date: getDateTimeFormat(history?.startDate ?? ""),
-                  durationText:
-                  "${AppString.text_form_last.tr} ${workingTimeSinceFormString(history?.startDate ?? "")}",
-                  employeeCurrentStatus: history?.endDate == null
-                      ? AppString.textPresent.tr
-                      : dateMonthYearFormatFromDatetime(history?.endDate ?? ""),
-                  statusColor: HexColor(history?.employmentStatus?.color ?? "#8F99AD"),
-                );
-              },
-            ))
+              0,
+          itemBuilder: (context, index) {
+
+
+            final employmentHistories = Get.find<UserProfileController>()
+                .employeeWorkHistory
+                ?.getOrganizationUserHistory
+                ?.employmentHistories;
+
+            bool isLastItem = (employmentHistories != null && employmentHistories.isNotEmpty)
+                ? index == employmentHistories.length - 1
+                : false;
+
+            return EmployeeStatusInfoLayout(
+              isLastItem: isLastItem,
+              developerStatus: employmentHistories?[index].employmentStatus?.name ?? '',
+              date: getDateTimeFormat(employmentHistories?[index].startDate ?? ""),
+              durationText:
+                  "${employmentHistories?[index].endDate != null ? "" : AppString.text_form_last.tr} ${workingTimeSinceFormString(employmentHistories?[index].startDate ?? "",employmentHistories?[index].endDate ?? "")}",
+              employeeCurrentStatus: employmentHistories?[index].endDate == null
+                  ? AppString.textPresent.tr
+                  : dateMonthYearFormatFromDatetime(employmentHistories?[index].endDate ?? ""),
+              statusColor:
+                  HexColor(employmentHistories?[index].employmentStatus?.color ?? "#8F99AD"),
+            );
+          },
+        ))
       ],
     );
   }
@@ -64,11 +73,14 @@ class EmployeeStatusInfoLayout extends StatelessWidget {
   final String date;
   final String durationText;
   final Color statusColor;
+  final bool isLastItem;
   final String employeeCurrentStatus;
 
-  const EmployeeStatusInfoLayout({super.key,
+  const EmployeeStatusInfoLayout({
+    super.key,
     required this.developerStatus,
     required this.date,
+    required this.isLastItem,
     required this.durationText,
     required this.statusColor,
     required this.employeeCurrentStatus,
@@ -150,6 +162,7 @@ class EmployeeStatusInfoLayout extends StatelessWidget {
             ],
           ),
         ),
+        isLastItem==true?const SizedBox.shrink():
         Positioned(
           top: 55,
           left: 1,

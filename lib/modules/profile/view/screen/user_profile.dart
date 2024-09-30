@@ -26,7 +26,7 @@ class ProfileScreen extends GetView<UserProfileController> {
             showCustomDrawer(
               context: context,
               child: Container(
-                color: Colors.white,
+                color: Colors.transparent,
                 width: double.infinity,
                 child: endDrawer(context),
               ),
@@ -68,6 +68,7 @@ class ProfileScreen extends GetView<UserProfileController> {
 
                 ///Department layout
                 _buildDepartmentLayout(context),
+
                 customSpacerHeight(height: 5),
 
                 ///Designation history

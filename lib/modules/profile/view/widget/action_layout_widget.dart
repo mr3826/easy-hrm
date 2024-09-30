@@ -12,6 +12,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
+import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/user_profile_controller.dart';
 import '../screen/change_password.dart';
 
@@ -27,6 +28,7 @@ Widget actionLayout({
     children: [
       customButtonSheetAppbar(text: userName, subtext: departmentText),
       customSpacerHeight(height: 20),
+
       ///Edit profile route and action added.
       InkWell(
         onTap: () => _editProfileRoute(),
@@ -58,10 +60,11 @@ Widget actionLayout({
 }
 
 void _editProfileRoute() {
-
-
   UserProfileController controller = Get.find<UserProfileController>();
-  final userDetails = controller.userDetails?.getOrganizationUserDetails?.profile;
+  final userDetails =
+      controller.userDetails?.getOrganizationUserDetails?.profile;
+
+  Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
 
   editFirstNameController.text = userDetails?.firstName ?? "";
   editLastNameController.text = userDetails?.lastName ?? "";
@@ -70,7 +73,7 @@ void _editProfileRoute() {
   editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
   editBioController.text = userDetails?.about ?? "";
 
- ///Clear controller
+  ///Clear controller
   controller.firstName.value = "";
   controller.lastName.value = "";
   controller.address.value = "";
@@ -78,10 +81,7 @@ void _editProfileRoute() {
   controller.emergencyNumber.value = "";
   controller.description.value = "";
   Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
-
 }
-
-
 
 Widget _fieldLayout({
   required String hintText,
