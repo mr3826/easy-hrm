@@ -75,8 +75,9 @@ class EmployeeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContactList() {
 
+
+  Widget _buildContactList() {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.only(left: 8,right: 8),
@@ -91,5 +92,12 @@ class EmployeeScreen extends StatelessWidget {
         },
       ),
     );
+
+
+
+
   }
+
+
+
 }

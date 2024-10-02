@@ -5,6 +5,7 @@ import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
+import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../common/widget/custom_status_button.dart';
 import '../../../../../../utils/dimensions.dart';
@@ -67,7 +68,26 @@ buildContactListInfo({
         ),
         const Spacer(),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            customButtonSheet(
+              context: Get.context!,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildHeader(),
+                  _buildActionItem("View profile", () {}),
+                  _divider(),
+                  _buildActionItem("Edit", () {}),
+                  _divider(),
+                  _buildActionItem("Terminate", () {}),
+                  _divider(),
+                  customSpacerHeight(height: 5),
+                ],
+              ),
+              height: .5,
+            );
+          },
           icon: const Icon(
             Icons.more_horiz,
             color: AppColor.hintColor,
@@ -75,6 +95,77 @@ buildContactListInfo({
           ),
         ),
       ],
+    ),
+  );
+}
+
+_divider() {
+  return Container(
+    width: double.infinity,
+    height: 1,
+    color: AppColor.normalTextColor.withOpacity(0.1),
+  );
+}
+
+Widget _buildHeader() {
+  return Container(
+    height: MediaQuery.of(Get.context!).size.height / 5,
+    width: double.infinity,
+    decoration: const BoxDecoration(
+      color: AppColor.bgColorWithTimeline,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+    ),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            height: 4,
+            width: 120,
+            color: AppColor.backgroundColor,
+          ),
+        ),
+        customSpacerHeight(height: 12),
+        const CustomNetworkImage(
+          imgUrlKey: "",
+          errorText: "ER",
+        ),
+        customSpacerHeight(height: 12),
+        Text(
+          "Michael Kahunas",
+          style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.secondaryColor,
+            fontWeight: FontWeight.w600,
+            fontSize: Dimensions.fontSizeDefault + 2,
+          ),
+        ),
+        Text(
+          "Laravel department",
+          style: subTextFieldTitleStyle.copyWith(
+            color: AppColor.hintColor,
+            fontSize: 12,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildActionItem(String text, Function? onAction) {
+  return GestureDetector(
+    onTap: onAction!(),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Text(
+        text,
+        style: AppStyle.normal_text_black.copyWith(
+          color: AppColor.normalTextColor.withOpacity(0.8),
+          fontSize: Dimensions.fontSizeDefault + 1,
+        ),
+      ),
     ),
   );
 }
