@@ -140,6 +140,7 @@ class AppString {
   static const String text_monthly_summary = "Monthly summary";
   static const String text_new = "New";
   static const String text_new_entry = "New entry";
+  static const String textEmployees = "Employees";
   static const String text_new_password = "New password";
   static const String text_no_available_leave = "No available leave";
   static const String text_note = "Note";

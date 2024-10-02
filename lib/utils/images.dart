@@ -58,6 +58,7 @@ class Images {
   static String timeLogNotification = "assets/images/time_log_notification.svg";
   static String announcementNotification = "assets/images/announce_icon.svg";
   static String user = "assets/images/user.jpeg";
+  static String filterIcon = "assets/images/filter.png";
 
   static String EMAIL_POP = "assets/images/email_pop.svg";
   static String LEAVE_TAKAN = "assets/images/leave_taken.svg";
