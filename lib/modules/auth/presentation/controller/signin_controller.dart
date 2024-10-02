@@ -4,14 +4,13 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:payrun_mobile/common/controller/user_info_controller.dart';
-import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/domain/user_info.dart';
-import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 import '../../../../common/domain/token_model.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../../../../utils/utils.dart';
@@ -24,6 +23,7 @@ class SignInController extends GetxController with StateMixin {
   final isLoading = false.obs;
   final isSignInLoading = false.obs;
   RxBool isValue = true.obs;
+  String deviceToken = '';
 
   /// Instance of NetworkClient to handle API requests
   final NetworkClient _networkClient = Get.find<NetworkClient>();
@@ -34,8 +34,9 @@ class SignInController extends GetxController with StateMixin {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     setLastInputData(); // Load last input data when initializing
+    deviceToken = await Pushy.register();
     super.onInit();
   }
 
@@ -51,12 +52,19 @@ class SignInController extends GetxController with StateMixin {
 
   /// Handles the login process with provided [email] and [password].
   /// Saves token info on success and navigates to the main screen.
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({
+    required String email,
+    required String password,
+  }) async {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      di.Response response = await _networkClient.postRequest(
-          Api.LOGIN, {"email": email, "password": password});
+      di.Response response = await _networkClient.postRequest(Api.LOGIN, {
+        "email": email,
+        "password": password,
+        "device_token": deviceToken,
+        "push_notification_platform": "pushy"
+      });
       if (response.statusCode == 200) {
         _handleTokenInfo(response);
         final userInfoResponse =
@@ -95,9 +103,11 @@ class SignInController extends GetxController with StateMixin {
     // Store tokens in local storage
     GetStorage().write(userInfo?.user?.organizationId ?? "", tokenJson);
     GetStorage().write(AppString.LOGGED_IN, true);
-    GetStorage().write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
     // Store the organization user ID in GetStorage.
-    GetStorage().write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
     // Save last input data and get subscription info
     _saveData();
   }

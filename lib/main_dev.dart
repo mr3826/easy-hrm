@@ -46,6 +46,13 @@ class MyApp extends StatelessWidget {
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         onInit: () {
+
+          Pushy.listen();
+          // Enable in-app notification banners (iOS 10+)
+          Pushy.toggleInAppBanner(true);
+          Pushy.setNotificationListener(backgroundNotificationListener);
+          Pushy.setNotificationClickListener((data) {});
+
           Get.put(SplashController());
 
           Get.lazyPut(() => SignInController(), fenix: true);
@@ -87,10 +94,10 @@ void backgroundNotificationListener(Map<String, dynamic> data) {
   print('Received notification: $data');
 
   // Notification title
-  String notificationTitle = 'Payrun';
+  String notificationTitle = 'MyApp';
 
   // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
-  String notificationText = data['message'] ?? 'Hello World!';
+  String notificationText = data['message'] ?? 'A new notification has come';
 
   // Android: Displays a system notification
   // iOS: Displays an alert dialog

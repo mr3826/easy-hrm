@@ -22,6 +22,7 @@ import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_contro
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 import '../../../common/controller/date_time_controller.dart';
 import '../../../common/domain/error_model.dart';
 import '../../../common/domain/user_info.dart';
@@ -322,6 +323,7 @@ class UserProfileController extends GetxController with StateMixin {
                               customSpacerWidth(width: 36),
                               InkWell(
                                   onTap: () async {
+                                    String deviceToken=await Pushy.register();
                                     isNewOrganizationChangeLoading(true);
                                     try {
                                       if (passwordInputController
@@ -332,7 +334,8 @@ class UserProfileController extends GetxController with StateMixin {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
-                                          "orgId": orgId
+                                          "orgId": orgId,"device_token": deviceToken,
+                                            "push_notification_platform": "pushy"
                                         });
 
                                         if (response.statusCode == 200) {

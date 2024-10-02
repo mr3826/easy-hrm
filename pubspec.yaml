@@ -71,7 +71,8 @@ dependencies:
   firebase_core:
   firebase_analytics:
   upgrader: ^10.3.0
-  dio: 
+  dio:
+  pushy_flutter: ^2.0.27
 
 
 dev_dependencies:
