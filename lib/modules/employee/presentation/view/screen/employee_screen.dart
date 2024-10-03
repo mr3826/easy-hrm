@@ -23,8 +23,7 @@ class EmployeeScreen extends StatelessWidget {
         children: [
           customSpacerHeight(height: 16),
           _buildSearchWithFilters(),
-         customSpacerHeight(height: 4),
-
+          customSpacerHeight(height: 4),
           _buildContactList(),
         ],
       ),
@@ -58,7 +57,7 @@ class EmployeeScreen extends StatelessWidget {
         const SizedBox(width: 20),
         SearchAndFilterButton(
           icon: CupertinoIcons.search,
-          labelText: "Search",
+          labelText: AppString.textSearch.tr,
           onTap: () {},
         ),
         const SizedBox(width: 8),
@@ -67,7 +66,7 @@ class EmployeeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 4.0),
             child: Image.asset(Images.filterIcon),
           ),
-          labelText: "Filters",
+          labelText: AppString.textFilters.tr,
           onTap: () {},
         ),
         const SizedBox(width: 20),
@@ -75,29 +74,47 @@ class EmployeeScreen extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildContactList() {
+    List<Map<String, String>> data = [
+      {
+        "name": "Jonas Kahnwald",
+        "departmentName": "Laravel department",
+        "imgUrlKey": "",
+        "statusText": "Permanent",
+        "color": "0xFF0CAA1B",
+      },
+      {
+        "name": "Martha Nielsen",
+        "departmentName": "Flutter department",
+        "imgUrlKey": "",
+        "statusText": "Probation",
+        "color": "0xFFFFA500",
+
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+    ];
+
     return Expanded(
       child: ListView.builder(
-        padding: const EdgeInsets.only(left: 8,right: 8),
+        padding: const EdgeInsets.only(left: 8, right: 8),
+        itemCount: data.length,
         itemBuilder: (context, index) {
           return buildContactListInfo(
-            name: "Jonus Kahnwald",
-            departmentName: "Laravel department",
-            imgUrlKey: "",
-            statusText: "Permanent",
-            statusColor: AppColor.successColor,
+            name: data[index]["name"] ?? "Unknown",
+            departmentName:
+                data[index]["departmentName"] ?? "Unknown department",
+            imgUrlKey: data[index]["imgUrlKey"] ?? "",
+            statusText: data[index]["statusText"] ?? "Unknown status",
+            statusColor: Color(int.parse(data[index]["color"].toString())),
           );
         },
       ),
     );
-
-
-
-
   }
-
-
-
 }

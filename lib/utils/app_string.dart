@@ -12,7 +12,25 @@ class AppString {
   static const String ORGANIZATION_USER_ID = "org_user_id";
   static const String LOGGED_IN = "loggedIn";
 
-  // Apps string here
+
+
+  ///String for Employee module
+  static const String textViewProfile = "View profile";
+  static const String textTerminate = "Terminate";
+  static const String textSearch = "Search";
+  static const String textFilters = "Filters";
+  static const String textEmployees = "Employees";
+
+
+
+
+
+
+
+
+
+
+  /// Apps string here
 
   static const String addedALeaveText = "has added your leave on";
   static const String addedATimelogText = "has added your time log on";
@@ -140,7 +158,6 @@ class AppString {
   static const String text_monthly_summary = "Monthly summary";
   static const String text_new = "New";
   static const String text_new_entry = "New entry";
-  static const String textEmployees = "Employees";
   static const String text_new_password = "New password";
   static const String text_no_available_leave = "No available leave";
   static const String text_note = "Note";
@@ -244,6 +261,7 @@ class AppString {
   static const String textHiringManager = "Hiring manager";
   static const String textHiringTeam = "Hiring team";
   static const String textManager = "Manager";
+
   static const String textOn = "on";
   static const String textPresent = "Present";
   static const String textTimelogApprover = "Time log approver";

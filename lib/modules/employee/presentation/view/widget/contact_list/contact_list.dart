@@ -4,6 +4,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_network_image.dart';
@@ -75,12 +76,12 @@ buildContactListInfo({
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildHeader(),
-                  _buildActionItem("View profile", () {}),
+                  _buildHeader(name,departmentName,imgUrlKey),
+                  _buildActionItem(AppString.textViewProfile.tr, () {}),
                   _divider(),
-                  _buildActionItem("Edit", () {}),
+                  _buildActionItem(AppString.text_edit.tr, () {}),
                   _divider(),
-                  _buildActionItem("Terminate", () {}),
+                  _buildActionItem(AppString.textTerminate.tr, () {}),
                   _divider(),
                   customSpacerHeight(height: 5),
                 ],
@@ -107,7 +108,7 @@ _divider() {
   );
 }
 
-Widget _buildHeader() {
+Widget _buildHeader(String? name, String? department, String? imgUrl) {
   return Container(
     height: MediaQuery.of(Get.context!).size.height / 5,
     width: double.infinity,
@@ -129,13 +130,13 @@ Widget _buildHeader() {
           ),
         ),
         customSpacerHeight(height: 12),
-        const CustomNetworkImage(
-          imgUrlKey: "",
+        CustomNetworkImage(
+          imgUrlKey: "$imgUrl",
           errorText: "ER",
         ),
         customSpacerHeight(height: 12),
         Text(
-          "Michael Kahunas",
+          "$name",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
             fontWeight: FontWeight.w600,
@@ -143,7 +144,7 @@ Widget _buildHeader() {
           ),
         ),
         Text(
-          "Laravel department",
+          "$department",
           style: subTextFieldTitleStyle.copyWith(
             color: AppColor.hintColor,
             fontSize: 12,
