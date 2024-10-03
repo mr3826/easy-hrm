@@ -3,19 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../common/widget/custom_buttom_sheet.dart';
-import '../../../../../common/widget/custom_button_sheet_appbar.dart';
-import '../../../../../common/widget/custom_network_image.dart';
-import '../../../../../common/widget/custom_search_field.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
-import '../widget/contact_list/contact_list.dart';
-import '../widget/contact_list/search_with_filter.dart';
+import '../widget/employee_list/contact_list.dart';
+import '../widget/employee_list/search_with_filter.dart';
+import '../widget/filter/filter_list.dart';
 import '../widget/serach_employee_list/search_employee_list.dart';
 
 class EmployeeScreen extends StatelessWidget {
@@ -65,7 +62,7 @@ class EmployeeScreen extends StatelessWidget {
           icon: CupertinoIcons.search,
           labelText: AppString.textSearch.tr,
           onTap: () {
-            showEmployeeSelectionSheet(Get.context!, searchController);
+            showEmployeeSelectionSheet();
           },
         ),
         customSpacerWidth(width: 8),
@@ -75,7 +72,10 @@ class EmployeeScreen extends StatelessWidget {
             child: Image.asset(Images.filterIcon),
           ),
           labelText: AppString.textFilters.tr,
-          onTap: () {},
+          onTap: () {
+            showFilterSelectionSheet();
+
+          },
         ),
         customSpacerWidth(width: 20),
       ],
@@ -126,65 +126,20 @@ class EmployeeScreen extends StatelessWidget {
   }
 }
 
-void showEmployeeSelectionSheet(
-    BuildContext context, TextEditingController controller) {
+void showEmployeeSelectionSheet() {
   customButtonSheet(
-    context: context,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildBottomSheetHeader(text: AppString.textEmployees.tr),
-          customSpacerHeight(height: 20),
-          CustomSearchField(
-            onSearchChanged: (value) {},
-            searchController: controller,
-            searchHintText: AppString.textSearchAndSelect.tr,
-          ),
-          customSpacerHeight(height: 8),
-          buildRecentSearchSection(),
-          customSpacerHeight(height: 14),
-          Expanded(child: _buildEmployeeList()),
-        ],
-      ),
-    ),
+    context: Get.context!,
+    child:const SearchEmployeeList() ,
     height: 0.8,
   );
 }
 
-Widget _buildEmployeeList() {
-  return ListView.builder(
-    itemCount: 3, // Adjust based on your data
-    itemBuilder: (context, index) {
-      return _buildEmployeeListItem(index);
-    },
+
+void showFilterSelectionSheet() {
+  customButtonSheet(
+    context: Get.context!,
+    child:const EmployeeFilterSection() ,
+    height: 0.8,
   );
 }
 
-Widget _buildEmployeeListItem(int index) {
-  return Padding(
-    padding: const EdgeInsets.all(14.0),
-    child: Row(
-      children: [
-        const CustomNetworkImage(
-          imgUrlKey: "", // Replace with actual image URL key
-          errorText: 'ER',
-          height: 22,
-        ),
-        customSpacerWidth(width: 14),
-        Expanded(
-          child: buildEmployeeDetails("Jonus Kahnwald", "Product Designer"),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.close,
-            color: AppColor.hintColor,
-            size: 26,
-          ),
-        ),
-      ],
-    ),
-  );
-}

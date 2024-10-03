@@ -20,9 +20,13 @@ class AppString {
   static const String textSearch = "Search";
   static const String textFilters = "Filters";
   static const String textEmployees = "Employees";
+  static const String textEmployeeStatus = "Employees status";
+  static const String textUserStatus = "User status";
+  static const String textTodayAttendance = "Today's attendance";
 
   static const String textRecentSearch = "Recent search";
   static const String textClearAll = "Clear all";
+  static const String textReset = "Reset";
   static const String textSearchAndSelect = "Search & select";
 
 

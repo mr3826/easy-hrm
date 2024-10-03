@@ -5,7 +5,6 @@ import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
 
 Widget buildBottomSheetHeader({Widget? customWidget, String? text}) {
-  print(MediaQuery.of(Get.context!).size.height / 8.8);
   return Container(
     height: MediaQuery.of(Get.context!).size.height / 8.8,
     width: double.infinity,
