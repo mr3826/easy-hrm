@@ -65,7 +65,7 @@ class EmployeeScreen extends StatelessWidget {
           icon: CupertinoIcons.search,
           labelText: AppString.textSearch.tr,
           onTap: () {
-            showEmployeeSelectionSheet(Get.context!, emailController);
+            showEmployeeSelectionSheet(Get.context!, searchController);
           },
         ),
         customSpacerWidth(width: 8),
@@ -127,7 +127,7 @@ class EmployeeScreen extends StatelessWidget {
 }
 
 void showEmployeeSelectionSheet(
-    BuildContext context, TextEditingController emailController) {
+    BuildContext context, TextEditingController controller) {
   customButtonSheet(
     context: context,
     child: Padding(
@@ -139,7 +139,7 @@ void showEmployeeSelectionSheet(
           customSpacerHeight(height: 20),
           CustomSearchField(
             onSearchChanged: (value) {},
-            searchController: emailController,
+            searchController: controller,
             searchHintText: AppString.textSearchAndSelect.tr,
           ),
           customSpacerHeight(height: 8),

@@ -12,6 +12,7 @@ import '../common/widget/error_message.dart';
 
 //global items here
 TextEditingController _emailController = TextEditingController();
+TextEditingController _searchController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
 TextEditingController _editMailPasswordController = TextEditingController();
 TextEditingController _restPasswordController = TextEditingController();
@@ -38,6 +39,7 @@ TextEditingController get editMailPasswordController =>
     _editMailPasswordController;
 
 TextEditingController get emailController => _emailController;
+TextEditingController get searchController => _searchController;
 
 TextEditingController get changeEmailController => _changeEmailController;
 

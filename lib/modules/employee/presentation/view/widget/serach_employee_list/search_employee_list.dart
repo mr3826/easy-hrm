@@ -5,6 +5,7 @@ import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
+import '../../../../../../utils/utils.dart';
 
 Widget buildRecentSearchSection() {
   return Padding(
@@ -21,7 +22,9 @@ Widget buildRecentSearchSection() {
           ),
         ),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            searchController.clear();
+          },
           child: Text(
             AppString.textClearAll.tr,
             style: AppStyle.normal_text_black.copyWith(
