@@ -21,8 +21,6 @@ class GSMultiCheckbox extends StatefulWidget {
 class _GSMultiCheckboxState extends State<GSMultiCheckbox> {
   @override
   Widget build(BuildContext context) {
-    print("widget.itemsList.length ::: ${widget.itemsList.length}");
-    print("widget.itemsList.length ::: ${widget.itemsList.first.checkBoxName}");
     return ListView.builder(
       itemCount: widget.itemsList.length,
       padding: const EdgeInsets.only(top: 12),

@@ -108,10 +108,18 @@ class AppPages {
       transition: Transition.size,
       page: () => const TimeLogSummary(),
     ),
+
+
     GetPage(
       name: _Paths.NEW_ENTRY_SCREEN,
       transition: Transition.size,
       page: () => const NewEntryScreen(),
     ),
+
+
+
+
+
+
   ];
 }

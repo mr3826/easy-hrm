@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
-import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../utils/app_string.dart';
@@ -58,7 +57,7 @@ class EmployeeScreen extends StatelessWidget {
     return Row(
       children: [
         customSpacerWidth(width: 20),
-        SearchAndFilterButton(
+        CustomButtonWithIconAndLabel(
           icon: CupertinoIcons.search,
           labelText: AppString.textSearch.tr,
           onTap: () {
@@ -66,15 +65,14 @@ class EmployeeScreen extends StatelessWidget {
           },
         ),
         customSpacerWidth(width: 8),
-        SearchAndFilterButton(
-          widget: Padding(
+        CustomButtonWithIconAndLabel(
+          customIconWidget: Padding(
             padding: const EdgeInsets.only(right: 4.0),
             child: Image.asset(Images.filterIcon),
           ),
           labelText: AppString.textFilters.tr,
           onTap: () {
             showFilterSelectionSheet();
-
           },
         ),
         customSpacerWidth(width: 20),
@@ -105,6 +103,62 @@ class EmployeeScreen extends StatelessWidget {
         "statusText": "Ad-hoc",
         "color": "0xFFFF6347",
       },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
+      {
+        "name": "Facility Nielsen",
+        "departmentName": "QA department",
+        "imgUrlKey": "",
+        "statusText": "Ad-hoc",
+        "color": "0xFFFF6347",
+      },
     ];
 
     return Expanded(
@@ -112,7 +166,7 @@ class EmployeeScreen extends StatelessWidget {
         padding: const EdgeInsets.only(left: 8, right: 8),
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return buildContactListInfo(
+          return ContactListInfo(
             name: data[index]["name"] ?? "Unknown",
             departmentName:
                 data[index]["departmentName"] ?? "Unknown department",
@@ -129,17 +183,15 @@ class EmployeeScreen extends StatelessWidget {
 void showEmployeeSelectionSheet() {
   customButtonSheet(
     context: Get.context!,
-    child:const SearchEmployeeList() ,
+    child: const SearchEmployeeList(),
     height: 0.8,
   );
 }
-
 
 void showFilterSelectionSheet() {
   customButtonSheet(
     context: Get.context!,
-    child:const EmployeeFilterSection() ,
+    child: const EmployeeFilterSection(),
     height: 0.8,
   );
 }
-

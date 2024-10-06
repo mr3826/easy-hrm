@@ -52,6 +52,100 @@ userProfileImgLayout() {
   return userImageLayout(height: 41);
 }
 
+userImageLayout({double? height}) {
+  return CustomNetworkImage(
+    errorText: (Get.find<UserProfileController>()
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.profile
+        ?.firstName !=
+        null &&
+        Get.find<UserProfileController>()
+            .userDetails!
+            .getOrganizationUserDetails!
+            .profile!
+            .firstName!
+            .isNotEmpty) &&
+        (Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.lastName !=
+            null &&
+            Get.find<UserProfileController>()
+                .userDetails!
+                .getOrganizationUserDetails!
+                .profile!
+                .lastName!
+                .isNotEmpty)
+        ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
+        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
+        : "",
+    height: height ?? 32,
+    profileImageKey:
+    "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
+    imgUrlKey: '',
+  );
+}
+
+Widget _userNameAndDptLayout() {
+  final user = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.profile;
+  final department = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.department
+      ?.name ??
+      "";
+  final employmentHistories = Get.find<UserProfileController>()
+      .employeeWorkHistory
+      ?.getOrganizationUserHistory
+      ?.employmentHistories;
+
+
+
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
+        style:
+        AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+      ),
+      Text(
+        department,
+        style: AppStyle.normal_text_grey,
+      ),
+      customSpacerHeight(height: 6),
+
+      /// Status
+      if (employmentHistories != null && employmentHistories.isNotEmpty)
+        Wrap(
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: employmentContractStatus(),
+            ),
+            customSpacerWidth(width: 12),
+
+            /// Status
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: employmentStatus(),
+            ),
+          ],
+        ),
+    ],
+  );
+}
+
+
+
+
+
 monthlyStatusLayout() {
   var controller = Get.find<UserProfileController>();
   return Row(
@@ -461,41 +555,7 @@ employmentStatus() {
   }
 }
 
-userImageLayout({double? height}) {
-  return CustomNetworkImage(
-    errorText: (Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.profile
-                        ?.firstName !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .userDetails!
-                    .getOrganizationUserDetails!
-                    .profile!
-                    .firstName!
-                    .isNotEmpty) &&
-            (Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.profile
-                        ?.lastName !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .userDetails!
-                    .getOrganizationUserDetails!
-                    .profile!
-                    .lastName!
-                    .isNotEmpty)
-        ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
-        : "",
-    height: height ?? 32,
-    profileImageKey:
-        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
-    imgUrlKey: '',
-  );
-}
+
 
 organisationLogoLayout() {
   return CustomNetworkImage(
@@ -603,59 +663,7 @@ String _getLanguageFlag() {
   return Images.FLAG_PNG;
 }
 
-Widget _userNameAndDptLayout() {
-  final user = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.profile;
-  final department = Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.department
-          ?.name ??
-      "";
-  final employmentHistories = Get.find<UserProfileController>()
-      .employeeWorkHistory
-      ?.getOrganizationUserHistory
-      ?.employmentHistories;
 
-
-
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
-        style:
-            AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
-      ),
-      Text(
-        department,
-        style: AppStyle.normal_text_grey,
-      ),
-      customSpacerHeight(height: 6),
-
-      /// Status
-      if (employmentHistories != null && employmentHistories.isNotEmpty)
-        Wrap(
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: employmentContractStatus(),
-            ),
-            customSpacerWidth(width: 12),
-
-            /// Status
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: employmentStatus(),
-            ),
-          ],
-        ),
-    ],
-  );
-}
 
 horizontalDivider() {
   return const Padding(

@@ -3,25 +3,35 @@ import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_style.dart';
 
-class SearchAndFilterButton extends StatelessWidget {
+class CustomButtonWithIconAndLabel extends StatelessWidget {
   final IconData? icon;
   final String labelText;
   final Color backgroundColor;
   final Color borderColor;
   final Color iconColor;
   final Color textColor;
- final Widget ?widget;
+  final Widget? customIconWidget;
+  final double borderRadius;
+  final double elevation;
+  final double borderWidth;
+  final EdgeInsetsGeometry padding;
+  final MainAxisAlignment alignment;
   final VoidCallback? onTap;
 
-   const SearchAndFilterButton({
+  const CustomButtonWithIconAndLabel({
     Key? key,
-     this.icon,
+    this.icon,
     required this.labelText,
     this.backgroundColor = AppColor.backgroundColor,
     this.borderColor = const Color(0xFFD8E0ED),
     this.iconColor = AppColor.hintColor,
-    this.widget,
+    this.customIconWidget,
     this.textColor = AppColor.normalTextColor,
+    this.borderRadius = 20.0,
+    this.elevation = 0.0,
+    this.borderWidth = 1.2,
+    this.padding = const EdgeInsets.symmetric(vertical: 10.0),
+    this.alignment = MainAxisAlignment.center,
     this.onTap, // Nullable callback
   }) : super(key: key);
 
@@ -31,16 +41,20 @@ class SearchAndFilterButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap ?? () {}, // Default empty action if onTap is null
         child: Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(
-            width: 1.2,color: borderColor
-          )),
+          elevation: elevation,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            side: BorderSide(
+              width: borderWidth,
+              color: borderColor,
+            ),
+          ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding: padding,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: alignment,
               children: [
-              widget??  Icon(icon, color: iconColor, size: 20),
+                customIconWidget ?? Icon(icon, color: iconColor, size: 20),
                 customSpacerWidth(width: 4),
                 Text(
                   labelText,
