@@ -11,6 +11,7 @@ class AppString {
   static const String REFRESH_TOKEN = "refresh_token";
   static const String ORGANIZATION_USER_ID = "org_user_id";
   static const String LOGGED_IN = "loggedIn";
+  static const String IOS_DEVICE_TOKEN = "ios_device_token";
 
   // Apps string here
 

@@ -323,7 +323,10 @@ class UserProfileController extends GetxController with StateMixin {
                               customSpacerWidth(width: 36),
                               InkWell(
                                   onTap: () async {
-                                    String deviceToken=await Pushy.register();
+                                    String deviceToken = "";
+                                    if (Platform.isAndroid) {
+                                      deviceToken = await Pushy.register();
+                                    }
                                     isNewOrganizationChangeLoading(true);
                                     try {
                                       if (passwordInputController
@@ -334,8 +337,12 @@ class UserProfileController extends GetxController with StateMixin {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
-                                          "orgId": orgId,"device_token": deviceToken,
-                                            "push_notification_platform": "pushy"
+                                          "device_token": Platform.isIOS
+                                              ? GetStorage().read(
+                                                  AppString.IOS_DEVICE_TOKEN)
+                                              : deviceToken,
+                                          "push_notification_platform":
+                                              Platform.isIOS ? "apns" : "pushy"
                                         });
 
                                         if (response.statusCode == 200) {
@@ -468,9 +475,11 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   void _handleUserInfo(UserInfo? userInfo) {
-    GetStorage().write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
     // Store the organization user ID in GetStorage.
-    GetStorage().write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
   }
 
   void _handleResponseSuccess() {

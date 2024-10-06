@@ -159,6 +159,7 @@ class SignInScreen extends GetView<SignInController> {
       onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
+
           await controller.login(
               email: emailController.text, password: passwordController.text);
         }

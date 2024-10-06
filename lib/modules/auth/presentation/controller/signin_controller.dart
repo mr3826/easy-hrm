@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:dio/dio.dart' as di;
@@ -18,6 +20,9 @@ import '../../../../utils/utils.dart';
 /// Controller responsible for managing the sign-in process
 /// including handling login, subscription status, and last input data.
 class SignInController extends GetxController with StateMixin {
+  static const MethodChannel _platform =
+      MethodChannel('com.gainhq.payrun/deviceToken');
+
   // Observable variables to track the state
   RxString organizationAvailabilityMessage = "".obs;
   final isLoading = false.obs;
@@ -36,7 +41,11 @@ class SignInController extends GetxController with StateMixin {
   @override
   void onInit() async {
     setLastInputData(); // Load last input data when initializing
-    deviceToken = await Pushy.register();
+    if (Platform.isIOS) {
+      _initializeDeviceToken();
+    } else {
+      deviceToken = await Pushy.register();
+    }
     super.onInit();
   }
 
@@ -62,8 +71,10 @@ class SignInController extends GetxController with StateMixin {
       di.Response response = await _networkClient.postRequest(Api.LOGIN, {
         "email": email,
         "password": password,
-        "device_token": deviceToken,
-        "push_notification_platform": "pushy"
+        "device_token": Platform.isIOS
+            ? GetStorage().read(AppString.IOS_DEVICE_TOKEN)
+            : deviceToken,
+        "push_notification_platform": Platform.isIOS ? "apns" : "pushy"
       });
       if (response.statusCode == 200) {
         _handleTokenInfo(response);
@@ -117,5 +128,23 @@ class SignInController extends GetxController with StateMixin {
         SignInResponse.fromJson(response.data).data?.accessToken);
     GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken);
+  }
+
+  Future<void> _initializeDeviceToken() async {
+    try {
+      // Set up a listener for the 'deviceToken' method from iOS native side
+      _platform.setMethodCallHandler((MethodCall call) async {
+        if (call.method == 'deviceToken') {
+          final String token = call.arguments ?? ""; // Ensure token is not null
+          GetStorage().write(AppString.IOS_DEVICE_TOKEN, token);
+          print('''
+          token: $token
+          saved token: ${GetStorage().read(AppString.IOS_DEVICE_TOKEN)}
+          ''');
+        }
+      });
+    } catch (e) {
+      print("Failed to receive device token: '${e.toString()}'");
+    }
   }
 }

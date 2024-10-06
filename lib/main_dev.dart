@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:payrun_mobile/init_%20app.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
@@ -46,12 +48,12 @@ class MyApp extends StatelessWidget {
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         onInit: () {
-
-          Pushy.listen();
-          // Enable in-app notification banners (iOS 10+)
-          Pushy.toggleInAppBanner(true);
-          Pushy.setNotificationListener(backgroundNotificationListener);
-          Pushy.setNotificationClickListener((data) {});
+          if (Platform.isAndroid) {
+            Pushy.listen();
+            Pushy.toggleInAppBanner(true);
+            Pushy.setNotificationListener(backgroundNotificationListener);
+            Pushy.setNotificationClickListener((data) {});
+          }
 
           Get.put(SplashController());
 
@@ -80,13 +82,11 @@ class MyApp extends StatelessWidget {
           Get.put(DateTimeController());
 
           Get.lazyPut(() => UpdateProfileController(), fenix: true);
-
         },
       ),
     );
   }
 }
-
 
 @pragma('vm:entry-point')
 void backgroundNotificationListener(Map<String, dynamic> data) {
