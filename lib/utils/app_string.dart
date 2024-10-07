@@ -27,6 +27,11 @@ class AppString {
   static const String textRecentSearch = "Recent search";
   static const String textClearAll = "Clear all";
   static const String textReset = "Reset";
+
+  static const String textOverview = "Overview";
+  static const String textLeaveSummary = "Leave Summary";
+
+
   static const String textSearchAndSelect = "Search & select";
 
 
