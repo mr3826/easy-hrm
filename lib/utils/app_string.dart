@@ -30,9 +30,11 @@ class AppString {
 
   static const String textOverview = "Overview";
   static const String textLeaveSummary = "Leave Summary";
+  static const String textTerminating = "Terminating";
 
 
   static const String textSearchAndSelect = "Search & select";
+  static const String textThisActionWillRemoveEtc = "This action will remove this worker's employment with your company. Are you certain you want to terminate this employee?";
 
 
 

@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/modules/employee/presentation/view/widget/employee_list/terminate_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
-import '../../../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../common/widget/custom_status_button.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../timeline/view/widget/timeline_calendar.dart';
 
-class ContactListInfo extends StatelessWidget {
+class EmployeeListInfo extends StatelessWidget {
   final String imgUrlKey;
   final String name;
   final String departmentName;
   final String statusText;
   final Color? statusColor;
 
-  const ContactListInfo({
+  const EmployeeListInfo({
     Key? key,
     required this.imgUrlKey,
     required this.name,
@@ -83,7 +83,7 @@ class ContactListInfo extends StatelessWidget {
             onPressed: () {
               customAntButtonSheet(
                 context: context,
-                height: MediaQuery.of(context).size.height/2,
+                height: MediaQuery.of(context).size.height / 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +95,10 @@ class ContactListInfo extends StatelessWidget {
                     _divider(),
                     _buildActionItem(AppString.text_edit.tr, () {}),
                     _divider(),
-                    _buildActionItem(AppString.textTerminate.tr, () {}),
+                    _buildActionItem(AppString.textTerminate.tr, () {
+                      _customButtonSheet(
+                          child: const TerminateWidget(), context: context);
+                    }),
                     _divider(),
                     customSpacerHeight(height: 5),
                   ],
@@ -111,6 +114,24 @@ class ContactListInfo extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _customButtonSheet({context, child}) {
+    return showCustomAtmBtnSheet(
+        height: Get.height * .8,
+        context: context,
+        child: Material(
+          color: AppColor.noColor,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(Dimensions.radiusMid),
+                  topLeft: Radius.circular(Dimensions.radiusMid)),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        ));
   }
 
   Widget _divider() {

@@ -27,7 +27,7 @@ class EmployeeScreen extends StatelessWidget {
           customSpacerHeight(height: 14),
           _buildSearchWithFilters(),
           customSpacerHeight(height: 4),
-          _buildContactList(),
+          _buildEmployeeList(),
 
 
         ],
@@ -83,7 +83,7 @@ class EmployeeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContactList() {
+  Widget _buildEmployeeList() {
     List<Map<String, String>> data = [
       {
         "name": "Jonas Kahnwald",
@@ -169,7 +169,7 @@ class EmployeeScreen extends StatelessWidget {
         padding: const EdgeInsets.only(left: 8, right: 8),
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return ContactListInfo(
+          return EmployeeListInfo(
             name: data[index]["name"] ?? "Unknown",
             departmentName:
                 data[index]["departmentName"] ?? "Unknown department",
