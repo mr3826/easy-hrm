@@ -249,6 +249,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
+    print("ordId: $orgId");
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
@@ -337,6 +338,7 @@ class UserProfileController extends GetxController with StateMixin {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
+                                          "orgId": orgId,
                                           "device_token": Platform.isIOS
                                               ? GetStorage().read(
                                                   AppString.IOS_DEVICE_TOKEN)
@@ -447,10 +449,10 @@ class UserProfileController extends GetxController with StateMixin {
     );
   }
 
-  void _handleTokenInfo(di.Response response) {
-    GetStorage().write(AppString.ACCESS_TOKEN,
+  void _handleTokenInfo(di.Response response) async {
+    await GetStorage().write(AppString.ACCESS_TOKEN,
         SignInResponse.fromJson(response.data).data?.accessToken);
-    GetStorage().write(AppString.REFRESH_TOKEN,
+    await GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken);
   }
 
