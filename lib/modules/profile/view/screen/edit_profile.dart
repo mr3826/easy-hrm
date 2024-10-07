@@ -31,13 +31,12 @@ class EditProfileScreen extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Scaffold(
-        appBar: customInsideAppbar(
-            title: AppString.text_edit_profile.tr,
-            onPressAction: () {
+        appBar: customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
               _clearInputField();
               Get.back();
               Get.back();
             }),
+
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
             : Padding(
@@ -55,6 +54,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               )),
+
       ),
     );
   }

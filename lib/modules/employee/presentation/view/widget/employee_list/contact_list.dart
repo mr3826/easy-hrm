@@ -11,6 +11,7 @@ import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../common/widget/custom_status_button.dart';
 import '../../../../../../utils/dimensions.dart';
+import '../../../../../timeline/view/widget/timeline_calendar.dart';
 
 class ContactListInfo extends StatelessWidget {
   final String imgUrlKey;
@@ -69,8 +70,8 @@ class ContactListInfo extends StatelessWidget {
                 height: AppLayout.getHeight(34),
                 child: CustomStatusButton(
                   textColor: statusColor ?? AppColor.primaryColor,
-                  bgColor: (statusColor ?? AppColor.primaryColor)
-                      .withOpacity(0.2),
+                  bgColor:
+                      (statusColor ?? AppColor.primaryColor).withOpacity(0.2),
                   text: statusText,
                   textSize: 13,
                 ),
@@ -80,14 +81,17 @@ class ContactListInfo extends StatelessWidget {
           const Spacer(),
           IconButton(
             onPressed: () {
-              customButtonSheet(
+              customAntButtonSheet(
                 context: context,
+                height: MediaQuery.of(context).size.height/2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildHeader(name, departmentName, imgUrlKey),
-                    _buildActionItem(AppString.textViewProfile.tr, ()=>Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE)),
+                    _buildActionItem(AppString.textViewProfile.tr, () {
+                      //Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+                    }),
                     _divider(),
                     _buildActionItem(AppString.text_edit.tr, () {}),
                     _divider(),
@@ -96,7 +100,6 @@ class ContactListInfo extends StatelessWidget {
                     customSpacerHeight(height: 5),
                   ],
                 ),
-                height: .5,
               );
             },
             icon: const Icon(

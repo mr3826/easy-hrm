@@ -23,10 +23,13 @@ class EmployeeScreen extends StatelessWidget {
       appBar: _buildEmployeeAppBar(),
       body: Column(
         children: [
+
           customSpacerHeight(height: 14),
           _buildSearchWithFilters(),
           customSpacerHeight(height: 4),
           _buildContactList(),
+
+
         ],
       ),
     );
