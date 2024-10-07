@@ -20,6 +20,14 @@ class LogoutController {
     } catch (e) {
       log(e.toString());
     } finally {
+      Get.find<UserProfileController>()
+          .organizationInfo
+          ?.getUserOrganizations
+          ?.data
+          ?.forEach(
+            (element) => print("ele: ${element.organization?.id}"),
+          );
+
       removeTokenForOrg(Get.find<UserProfileController>()
               .organizationInfo
               ?.getUserOrganizations
@@ -43,7 +51,8 @@ class LogoutController {
 
 void removeTokenForOrg(List<String?> orgIds) {
   GetStorage box = GetStorage();
-  orgIds.map(
-    (e) async => await box.remove(e ?? ""),
-  );
+  if (orgIds.isEmpty) return;
+  for (String? element in orgIds) {
+    box.remove(element!);
+  }
 }
