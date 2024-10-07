@@ -67,6 +67,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+            minifyEnabled true // Ensure this is true to enable ProGuard/R8
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
         }
     }
 
