@@ -17,6 +17,8 @@ class AppString {
   ///String for Employee module
   static const String textViewProfile = "View profile";
   static const String textTerminate = "Terminate";
+  static const String textTerminateDate = "Terminate date";
+  static const String textReasonNote = "Reason note";
   static const String textSearch = "Search";
   static const String textFilters = "Filters";
   static const String textEmployees = "Employees";
@@ -27,6 +29,8 @@ class AppString {
   static const String textRecentSearch = "Recent search";
   static const String textClearAll = "Clear all";
   static const String textReset = "Reset";
+  static const String textTerminated = "Terminated";
+  static const String textResigned = "Resigned";
 
   static const String textOverview = "Overview";
   static const String textLeaveSummary = "Leave Summary";

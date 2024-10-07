@@ -63,7 +63,7 @@ class CustomAppButton extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius:
                           BorderRadius.circular(borderRadius??Dimensions.radiusExtraLarge)),
-                  side: const BorderSide(width: 1, color: Colors.transparent)),
+                  side:  BorderSide(width: 1, color:borderColor?? Colors.transparent)),
               onPressed: () async {
                 onPressed();
               },

@@ -11,6 +11,7 @@ class InputNote extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final Color? hintColor;
+ final Color ?borderColor;
   final String? Function(String?)? validator;
   final String? Function(String?)? onChanged;
 
@@ -18,6 +19,7 @@ class InputNote extends StatelessWidget {
       {super.key,
       required this.controller,
       this.hintColor,
+        this.borderColor,
       this.onChanged,
       this.hintText = AppString.text_add_description,
       this.validator});
@@ -48,13 +50,13 @@ class InputNote extends StatelessWidget {
               color: hintColor ?? AppColor.solidGray,
               fontWeight: FontWeight.w400),
           focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColor.primaryColor),
+              borderSide:  BorderSide(color:borderColor?? AppColor.primaryColor),
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
           enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColor.solidGray),
+              borderSide:  BorderSide(color:borderColor?? AppColor.solidGray),
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.solidGray))),
+          border:  OutlineInputBorder(
+              borderSide: BorderSide(color:borderColor?? AppColor.solidGray))),
       maxLines: 4,
       maxLength: 150,
       minLines: 4,
