@@ -4,6 +4,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:payrun_mobile/init_%20app.dart';
 import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/language/internationalization.dart';
 import 'package:payrun_mobile/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         getPages: AppPages.routes,
         onInit: () {
           if (Platform.isAndroid) {
+            Pushy.setNotificationIcon(Images.appLogo);
             Pushy.listen();
             Pushy.toggleInAppBanner(true);
             Pushy.setNotificationListener(backgroundNotificationListener);
