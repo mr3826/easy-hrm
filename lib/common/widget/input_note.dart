@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -45,7 +44,7 @@ class InputNote extends StatelessWidget {
             Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
           },
       decoration: InputDecoration(
-          hintText: hintText ?? AppString.text_add_description.tr,
+          hintText: hintText,
           hintStyle: AppStyle.normal_text.copyWith(
               color: hintColor ?? AppColor.solidGray,
               fontWeight: FontWeight.w400),

@@ -13,7 +13,7 @@ import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
-import '../../../controller/employee_controller.dart';
+import '../../../controller/employment_controller.dart';
 
 
 class TerminateWidget extends StatelessWidget {
@@ -21,7 +21,7 @@ class TerminateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final EmployeeController controller = Get.put(EmployeeController());
+    final EmploymentController controller = Get.put(EmploymentController());
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
@@ -89,7 +89,7 @@ class TerminateWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTerminationOptions(BuildContext context, EmployeeController controller) {
+  Widget _buildTerminationOptions(BuildContext context, EmploymentController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -212,7 +212,7 @@ class TerminateWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildRadioOption(BuildContext context, String value, EmployeeController controller) {
+  Widget _buildRadioOption(BuildContext context, String value, EmploymentController controller) {
     return Expanded(
       child: Row(
         children: [

@@ -10,6 +10,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../utils/app_style.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
@@ -224,6 +225,7 @@ userTextFieldLayout(
             )
           : CustomInputField(
               hint: hintText,
+              hintStyle: AppStyle.normal_text_grey.copyWith(fontWeight: FontWeight.w500),
               controller: controller,
               textInputType: textInputType,
               validator: validator,

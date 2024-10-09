@@ -22,6 +22,7 @@ abstract class Routes {
   static const HOME_SCREEN = _Paths.HOME_SCREEN;
   static const SUBSCRIPTION_SCREEN = _Paths.SUBSCRIPTION_SCREEN;
   static const EMPOLYEE_VIEW_PROFILE = _Paths.EMPOLYEE_VIEW_PROFILE;
+  static const EDIT_EMPOLYEE_VIEW = _Paths.EDIT_EMPOLYEE_VIEW;
 }
 
 abstract class _Paths {
@@ -46,4 +47,5 @@ abstract class _Paths {
   static const HOME_SCREEN = '/home_screen';
   static const SUBSCRIPTION_SCREEN = '/subscription_screen';
   static const EMPOLYEE_VIEW_PROFILE = '/employee_view_profile_screen';
+  static const EDIT_EMPOLYEE_VIEW = '/edit_employee_view_screen';
 }

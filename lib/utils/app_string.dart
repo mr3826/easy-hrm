@@ -24,6 +24,7 @@ class AppString {
   static const String textEmployees = "Employees";
   static const String textEmployeeStatus = "Employees status";
   static const String textUserStatus = "User status";
+  static const String textJoiningDate = "Joining date";
   static const String textTodayAttendance = "Today's attendance";
 
   static const String textRecentSearch = "Recent search";
@@ -35,6 +36,8 @@ class AppString {
   static const String textOverview = "Overview";
   static const String textLeaveSummary = "Leave Summary";
   static const String textTerminating = "Terminating";
+
+  static const String text_edit_employee = "Edit Employee";
 
 
   static const String textSearchAndSelect = "Search & select";

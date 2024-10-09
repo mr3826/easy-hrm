@@ -10,6 +10,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../common/widget/custom_status_button.dart';
+import '../../../../../../routes/app_pages.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../timeline/view/widget/timeline_calendar.dart';
 
@@ -93,7 +94,10 @@ class EmployeeListInfo extends StatelessWidget {
                       //Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
                     }),
                     _divider(),
-                    _buildActionItem(AppString.text_edit.tr, () {}),
+                    _buildActionItem(AppString.text_edit.tr, () {
+                      Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
+
+                    }),
                     _divider(),
                     _buildActionItem(AppString.textTerminate.tr, () {
                       _customButtonSheet(

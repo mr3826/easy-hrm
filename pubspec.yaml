@@ -72,6 +72,7 @@ dependencies:
   firebase_analytics:
   upgrader: ^10.3.0
   dio: 
+  dropdown_button2: ^2.3.9
 
 
 dev_dependencies:
