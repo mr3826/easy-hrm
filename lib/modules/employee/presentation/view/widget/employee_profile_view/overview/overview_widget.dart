@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/modules/employee/presentation/view/widget/employee_profile_view/overview/employee_designation_history.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../common/widget/employee/custom_contact_info.dart';
 import '../../../../../../../utils/utils.dart';
@@ -74,7 +75,16 @@ class OverviewWidget extends StatelessWidget {
 
 
 
-            )
+            ),
+            customSpacerHeight(height: 15),
+
+           Row(
+            children: [
+              const Expanded(child: EmployeeStatusCard(titleText: 'Jr.\nDeveloper',date: "01 jan 2001",)),
+
+              Expanded(child: EmployeeStatusCard(titleText: 'Permanent\nEmployee',date: "01 jan 2001",sVGImg: Images.FLAG,))
+            ],
+          )
           ],
         ),
       ),

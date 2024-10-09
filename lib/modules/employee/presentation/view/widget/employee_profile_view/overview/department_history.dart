@@ -39,9 +39,7 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
             padding: EdgeInsets.zero,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-
-              print("statr::: ${data[index]["startDate"]}");
-              // Determine if the current item is the last in the list
+               // Determine if the current item is the last in the list
               bool isLastItem = index == data.length - 1;
               return _buildDepartmentHistoryItem(
                 isLastIndex: isLastItem,
