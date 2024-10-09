@@ -106,7 +106,9 @@ class EmployeeFilterSection extends StatelessWidget {
         color: AppColor.normalTextColor.withOpacity(0.9),
       ),
       itemsList: statusItems,
-      onSelectionChanged: (List<CheckBoxModel> list) {},
+      onSelectionChanged: (List<CheckBoxModel> list) {
+
+      },
     );
   }
 }

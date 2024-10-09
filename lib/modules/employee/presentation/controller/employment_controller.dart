@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class EmploymentController extends GetxController {
+class EmploymentController  {
   var selectedOption = ''.obs;
   var employeeStatusValue = ''.obs;
   var employeeDesignationValue = ''.obs;
