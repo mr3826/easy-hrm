@@ -143,7 +143,12 @@ class EditEmployee extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: const OutDatePicker(),
+              child: const Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  OutDatePicker(),
+                ],
+              ),
             ),
           ),
         );
