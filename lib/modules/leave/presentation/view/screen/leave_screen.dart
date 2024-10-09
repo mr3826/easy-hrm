@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -59,7 +61,9 @@ class LeaveScreen extends GetView<LeaveScreenController> {
         _customButtonSheet(context: context, child: const ApplyLeaveScreen());
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 35.0, bottom: 18),
+        padding: EdgeInsets.only(
+            left: 35.0,
+            bottom: Platform.isAndroid ? 18 : 0),
         child: Container(
           decoration: BoxDecoration(
               color: AppColor.primaryColor,

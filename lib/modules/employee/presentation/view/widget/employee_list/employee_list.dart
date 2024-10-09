@@ -91,7 +91,7 @@ class EmployeeListInfo extends StatelessWidget {
                   children: [
                     _buildHeader(name, departmentName, imgUrlKey),
                     _buildActionItem(AppString.textViewProfile.tr, () {
-                      //Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+                      Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
                     }),
                     _divider(),
                     _buildActionItem(AppString.text_edit.tr, () {
