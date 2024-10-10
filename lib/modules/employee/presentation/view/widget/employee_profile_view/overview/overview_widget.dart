@@ -12,8 +12,12 @@ import 'department/department_history.dart';
 import 'department/department_layout.dart';
 import 'designation/employee_designation_history.dart';
 
+/// A widget that displays an overview of an employee's profile,
+/// including descriptions, contact information, department,
+/// and designation details.
 class OverviewWidget extends StatelessWidget {
   const OverviewWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,31 +33,27 @@ class OverviewWidget extends StatelessWidget {
             _buildDepartment(context),
             customSpacerHeight(height: 4),
             _buildDesignation(context),
-
-
-
-
-
-
           ],
         ),
       ),
     );
   }
 
-  _buildDescription() {
+  /// Builds a description section for the employee profile.
+   _buildDescription() {
     return const ExpandedText(
       text:
-          "Publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface ",
+      "Publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface n publishing ana typeface ",
     );
   }
 
-  _buildDepartment(context) {
+  /// Builds the department information section for the employee.
+   _buildDepartment(BuildContext context) {
     return DepartmentLayout(
       departmentModel: DepartmentModel(
           departmentName: "Laravel Department",
           parentDepartmentName:
-              "${AppString.text_child_of_deparmtnet.tr} Main department",
+          "${AppString.text_child_of_deparmtnet.tr} Main department",
           workShiftStartTime: "09:00:00",
           workShiftEndTime: "17:00:00",
           workShiftName: "Regular Worksheet",
@@ -74,36 +74,42 @@ class OverviewWidget extends StatelessWidget {
     );
   }
 
-  _buildDesignation(BuildContext context) {
+  /// Builds the designation information section for the employee,
+  /// displaying the current job title and employment status.
+   _buildDesignation(BuildContext context) {
     return Row(
       children: [
         Expanded(
-            child: EmployeeStatusCard(
-          titleText: 'Jr.\nDeveloper',
-          date: "01 jan 2001",
-          onAction: () {
-            customAntButtonSheet(
-              child: const DesignationHistoryLayout(),
-              context: context,
-            );
-          },
-        )),
+          child: EmployeeStatusCard(
+            titleText: 'Jr.\nDeveloper',
+            date: "01 jan 2001",
+            onAction: () {
+              customAntButtonSheet(
+                child: const DesignationHistoryLayout(),
+                context: context,
+              );
+            },
+          ),
+        ),
         Expanded(
-            child: EmployeeStatusCard(
-          titleText: 'Permanent\nEmployee',
-          date: "01 jan 2001",
-          sVGImg: Images.FLAG,
-          onAction: () {
-            customAntButtonSheet(
-              child: const EmploymentHistoryLayout(),
-              context: context,
-            );
-          },
-        ))
+          child: EmployeeStatusCard(
+            titleText: 'Permanent\nEmployee',
+            date: "01 jan 2001",
+            sVGImg: Images.FLAG,
+            onAction: () {
+              customAntButtonSheet(
+                child: const EmploymentHistoryLayout(),
+                context: context,
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
+  /// Creates a list of contact information widgets for the employee,
+  /// including email, phone, and address.
   List<Widget> _createContactInfoWidgets() {
     final sectionTitles = [
       AppString.text_email.tr,
