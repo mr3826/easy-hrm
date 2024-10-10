@@ -23,7 +23,7 @@ class DepartmentLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 3.1,
+      height: MediaQuery.of(context).size.height / 3,
       child: Card(
         elevation: 0,
         shape: roundedRectangleBorder,

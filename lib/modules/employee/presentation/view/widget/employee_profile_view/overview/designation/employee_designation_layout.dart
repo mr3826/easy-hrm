@@ -12,8 +12,7 @@ import '../../../../../../../auth/presentation/view/otp_screen.dart';
 
 /// A stateless widget that displays the employee status with a designated
 /// image, title, and date.
-///
-///
+
 class EmployeeStatusCard extends StatelessWidget {
   /// Creates an [EmployeeStatusCard].
   ///
@@ -39,41 +38,33 @@ class EmployeeStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: ()=>onAction!(),
-            child: SizedBox(
-              child: Card(
-                elevation: 0,
-                color: AppColor.bgColorWithPrimary.withOpacity(0.3),
-                shape: roundedRectangleBorder,
-                child: Padding(
-                  padding: marginLayout.copyWith(top: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Display the SVG image
-                      customSvgImage(
-                        imageUrl: sVGImg ?? Images.EMPLOYEE_STATUS,
-                        height: 25,
-                        width: 25,
-                      ),
-                      customSpacerHeight(height: 14),
-                      // Display designation information
-                      _designationInfo(titleText, date),
-                      customSpacerHeight(height: 12),
-                    ],
-                  ),
+    return  GestureDetector(
+      onTap: ()=>onAction!(),
+      child: SizedBox(
+        child: Card(
+          elevation: 0,
+          color: AppColor.bgColorWithPrimary.withOpacity(0.3),
+          shape: roundedRectangleBorder,
+          child: Padding(
+            padding: marginLayout.copyWith(top: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Display the SVG image
+                customSvgImage(
+                  imageUrl: sVGImg ?? Images.EMPLOYEE_STATUS,
+                  height: 25,
+                  width: 25,
                 ),
-              ),
+                customSpacerHeight(height: 14),
+                // Display designation information
+                _designationInfo(titleText, date),
+                customSpacerHeight(height: 12),
+              ],
             ),
           ),
         ),
-        customSpacerWidth(width: 2),
-      ],
+      ),
     );
   }
 
@@ -85,16 +76,14 @@ class EmployeeStatusCard extends StatelessWidget {
   Widget _designationInfo(String text, String date) {
     return Wrap(
       children: [
-        Expanded(
-          child: Text(
-            text,
-            style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor,
-              overflow: TextOverflow.ellipsis,
-              fontSize: Dimensions.fontSizeMid,
-            ),
-            maxLines: 2,
+        Text(
+          text,
+          style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.normalTextColor,
+            overflow: TextOverflow.ellipsis,
+            fontSize: Dimensions.fontSizeMid,
           ),
+          maxLines: 2,
         ),
         Text(
           "${AppString.text_from.tr} - $date",
