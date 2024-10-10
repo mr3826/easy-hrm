@@ -112,7 +112,7 @@ Widget _buildTabBarView() {
     height: MediaQuery.of(Get.context!).size.height,
     child: TabBarView(
       children: [
-        const OverviewWidget(),
+         OverviewWidget(),
         Container(),
       ],
     ),
