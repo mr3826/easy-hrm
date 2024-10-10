@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/employee/presentation/view/widget/employee_profile_view/overview/employee_designation_history.dart';
+import 'package:payrun_mobile/modules/employee/presentation/view/widget/employee_profile_view/overview/designation/employee_designation_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../common/widget/employee/custom_contact_info.dart';
 import '../../../../../../../utils/utils.dart';
@@ -16,8 +16,8 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../timeline/view/widget/timeline_calendar.dart';
-import 'department_history.dart';
-import 'department_layout.dart';
+import 'department/department_history.dart';
+import 'department/department_layout.dart';
 
 class OverviewWidget extends StatelessWidget {
   const OverviewWidget({super.key});
