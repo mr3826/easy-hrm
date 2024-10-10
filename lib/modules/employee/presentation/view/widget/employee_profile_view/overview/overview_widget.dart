@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/employee/presentation/view/widget/employee_profile_view/overview/designation/employee_designation_layout.dart';
+import 'package:payrun_mobile/modules/employee/presentation/view/widget/employee_profile_view/overview/designation/employee_status_history.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../common/widget/employee/custom_contact_info.dart';
 import '../../../../../../../utils/utils.dart';
@@ -18,6 +19,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../timeline/view/widget/timeline_calendar.dart';
 import 'department/department_history.dart';
 import 'department/department_layout.dart';
+import 'designation/employee_designation_history.dart';
 
 class OverviewWidget extends StatelessWidget {
   const OverviewWidget({super.key});
@@ -49,42 +51,58 @@ class OverviewWidget extends StatelessWidget {
               dynamicText: "",
             ),
             customSpacerHeight(height: 15),
-
             DepartmentLayout(
-
               departmentModel: DepartmentModel(
-                departmentName: "Laravel Department",
-                parentDepartmentName:
-                    "${AppString.text_child_of_deparmtnet.tr} Main department",
-                workShiftStartTime: "09:00:00",
-                workShiftEndTime: "17:00:00",
-                workShiftName: "Regular Worksheet",
-                startDate: "2021-10-09 15:15:58",
-                workingDays: const [
-                  {"day": "friday", "holiday": true},
-                  {"day": "saturday", "holiday": true},
-                  {"day": "sunday", "holiday": false},
-                  {"day": "monday", "holiday": false},
-                  {"day": "tuesday", "holiday": false},
-                  {"day": "wednesday", "holiday": false},
-                  {"day": "thursday", "holiday": false},
-                ],
-
-                onAction: (){customAntButtonSheet(context: context, child: const DepartmentHistoryForEmployee());}
-              ),
-
-
-
+                  departmentName: "Laravel Department",
+                  parentDepartmentName:
+                      "${AppString.text_child_of_deparmtnet.tr} Main department",
+                  workShiftStartTime: "09:00:00",
+                  workShiftEndTime: "17:00:00",
+                  workShiftName: "Regular Worksheet",
+                  startDate: "2021-10-09 15:15:58",
+                  workingDays: const [
+                    {"day": "friday", "holiday": true},
+                    {"day": "saturday", "holiday": true},
+                    {"day": "sunday", "holiday": false},
+                    {"day": "monday", "holiday": false},
+                    {"day": "tuesday", "holiday": false},
+                    {"day": "wednesday", "holiday": false},
+                    {"day": "thursday", "holiday": false},
+                  ],
+                  onAction: () {
+                    customAntButtonSheet(
+                        context: context,
+                        child: const DepartmentHistoryForEmployee());
+                  }),
             ),
             customSpacerHeight(height: 15),
-
-           Row(
-            children: [
-              const Expanded(child: EmployeeStatusCard(titleText: 'Jr.\nDeveloper',date: "01 jan 2001",)),
-
-              Expanded(child: EmployeeStatusCard(titleText: 'Permanent\nEmployee',date: "01 jan 2001",sVGImg: Images.FLAG,))
-            ],
-          )
+            Row(
+              children: [
+                Expanded(
+                    child: EmployeeStatusCard(
+                  titleText: 'Jr.\nDeveloper',
+                  date: "01 jan 2001",
+                  onAction: () {
+                    customAntButtonSheet(
+                      child: const DesignationHistoryLayout(),
+                      context: context,
+                    );
+                  },
+                )),
+                Expanded(
+                    child: EmployeeStatusCard(
+                  titleText: 'Permanent\nEmployee',
+                  date: "01 jan 2001",
+                  sVGImg: Images.FLAG,
+                  onAction: () {
+                    customAntButtonSheet(
+                      child: const EmploymentHistoryLayout(),
+                      context: context,
+                    );
+                  },
+                ))
+              ],
+            )
           ],
         ),
       ),

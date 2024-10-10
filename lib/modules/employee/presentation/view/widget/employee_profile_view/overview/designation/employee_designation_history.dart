@@ -11,7 +11,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-
+import '../../../../../../../../common/widget/employee/dottend_style_layout.dart';
 import '../../../../../../../auth/presentation/view/otp_screen.dart';
 
 class DesignationHistoryLayout extends StatelessWidget {
@@ -148,11 +148,11 @@ class DesignationHistoryLayout extends StatelessWidget {
 
   /// Dotted separator between history items.
   Widget _dottedSeparator() {
-    return Positioned(
+    return const Positioned(
       top: 55,
       left: 1,
       bottom: 0,
-      child: dottedStyleLayout(height: 46),
+      child: DottedStyleLayout(height: 46,isVertical: true)
     );
   }
 

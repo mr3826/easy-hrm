@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/modules/employee/presentation/view/widget/employee_profile_view/overview/designation/employee_designation_history.dart';
 import '../../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../common/widget/custom_svg_image.dart';
@@ -10,7 +9,6 @@ import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
 import '../../../../../../../auth/presentation/view/otp_screen.dart';
-import '../../../../../../../timeline/view/widget/timeline_calendar.dart';
 
 /// A stateless widget that displays the employee status with a designated
 /// image, title, and date.
@@ -29,12 +27,15 @@ class EmployeeStatusCard extends StatelessWidget {
     this.sVGImg,
     required this.titleText,
     required this.date,
+    required this.onAction,
   }) : super(key: key);
 
   final BuildContext? context;
   final String? sVGImg;
   final String titleText;
   final String date;
+  final Function? onAction;
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +44,7 @@ class EmployeeStatusCard extends StatelessWidget {
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () => customAntButtonSheet(
-              child:  const DesignationHistoryLayout(),
-              context: context,
-            ),
+            onTap: ()=>onAction!(),
             child: SizedBox(
               child: Card(
                 elevation: 0,

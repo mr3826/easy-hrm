@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
+import '../../../../../../../../common/widget/employee/dottend_style_layout.dart';
 
 /// Displays the department history for an employee.
 class DepartmentHistoryForEmployee extends StatelessWidget {
@@ -22,8 +23,16 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
   Widget build(BuildContext context) {
     // Sample data for department history
     List<Map<String, String>> data = [
-      {"name": "Facility Nielsen","startDate":"2014-10-07 15:15:58","endDate":""},
-      {"name": "Facility Nielsen","startDate":"2021-10-07 15:15:58","endDate":"2024-10-07 15:15:58"},
+      {
+        "name": "Facility Nielsen",
+        "startDate": "2014-10-07 15:15:58",
+        "endDate": ""
+      },
+      {
+        "name": "Facility Nielsen",
+        "startDate": "2021-10-07 15:15:58",
+        "endDate": "2024-10-07 15:15:58"
+      },
     ];
 
     return Column(
@@ -39,7 +48,7 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
             padding: EdgeInsets.zero,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-               // Determine if the current item is the last in the list
+              // Determine if the current item is the last in the list
               bool isLastItem = index == data.length - 1;
               return _buildDepartmentHistoryItem(
                 isLastIndex: isLastItem,
@@ -122,12 +131,12 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
           ),
           isLastIndex
               ? const SizedBox()
-              : Positioned(
-            top: 26,
-            left: 1,
-            bottom: 0,
-            child: dottedStyleLayout(height: 99),
-          ),
+              : const Positioned(
+                  top: 26,
+                  left: 1,
+                  bottom: 0,
+                  child: DottedStyleLayout(height: 99, isVertical: true),
+                ),
         ],
       ),
     );
@@ -199,14 +208,14 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
               text: endDate ?? AppString.textPresent.tr,
               style: endDate == null
                   ? AppStyle.mid_large_text.copyWith(
-                color: AppColor.primaryColor,
-                fontSize: Dimensions.fontSizeDefault - 3,
-              )
+                      color: AppColor.primaryColor,
+                      fontSize: Dimensions.fontSizeDefault - 3,
+                    )
                   : AppStyle.mid_large_text.copyWith(
-                color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault - 3,
-                overflow: TextOverflow.ellipsis,
-              ),
+                      color: AppColor.hintColor,
+                      fontSize: Dimensions.fontSizeDefault - 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
             ),
           ],
         ),
@@ -243,7 +252,8 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
   }
 
   /// Displays manager information including the name and title.
-  Widget _buildManagerInfo({required String imageUrl, required String managerName}) {
+  Widget _buildManagerInfo(
+      {required String imageUrl, required String managerName}) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0),
       child: Row(
