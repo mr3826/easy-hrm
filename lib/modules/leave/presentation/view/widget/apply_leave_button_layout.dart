@@ -78,6 +78,8 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                           )),
                       customSpacerHeight(height: 8),
                       _noteTextField(),
+                      customSpacerHeight(height: 20),
+
                       Obx(() => Row(
                             children: [
                               customTitleText(text: AppString.text_document.tr),

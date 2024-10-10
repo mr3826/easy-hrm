@@ -7,6 +7,8 @@ import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../common/widget/employee/user_Info_widget.dart';
+import '../widget/employee_profile_view/leave/leave_widget.dart';
+import '../widget/employee_profile_view/leave_summary/leave_summary_widget.dart';
 import '../widget/employee_profile_view/overview/overview_widget.dart';
 
 class EmployeeProfileViewScreen extends StatelessWidget {
@@ -23,32 +25,12 @@ class EmployeeProfileViewScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  UserInfoWidget(
-                    employeeStatus: EmployeeStatus(
-                        firstName: "Rifat",
-                        lastName: "Hasan",
-                        department: "Mobile App",
-                        profileImageKey: "",
-                        currentEmployeeStatus: "Active",
-                        employmentContractType: "Permanent",
-                        employmentStatusColorCode: "0CAA1B"),
-                  ),
-                  MonthlyStatusWidget(
-                    status: MonthlyStatus(
-                        leaveBalance: "0.0",
-                        monthlyGoal: "0.0",
-                        loggedTime: "0.0"),
-                  ),
-              
-              
+                  _buildUserInfo(),
+                  _buildMonthlyGoal(),
                   customSpacerHeight(height: 20),
-              
                   _buildTabBar(),
                   customSpacerHeight(height: 20),
-              
                   _buildTabBarView()
-              
-              
                 ],
               ),
             ),
@@ -76,6 +58,26 @@ class EmployeeProfileViewScreen extends StatelessWidget {
       ),
     );
   }
+
+  _buildUserInfo() {
+    return UserInfoWidget(
+      employeeStatus: EmployeeStatus(
+          firstName: "Rifat",
+          lastName: "Hasan",
+          department: "Mobile App",
+          profileImageKey: "",
+          currentEmployeeStatus: "Active",
+          employmentContractType: "Permanent",
+          employmentStatusColorCode: "0CAA1B"),
+    );
+  }
+
+  _buildMonthlyGoal() {
+    return MonthlyStatusWidget(
+      status: MonthlyStatus(
+          leaveBalance: "0.0", monthlyGoal: "0.0", loggedTime: "0.0"),
+    );
+  }
 }
 
 Widget _buildTabBar() {
@@ -90,6 +92,7 @@ Widget _buildTabBar() {
         fontWeight: FontWeight.w600, fontSize: Dimensions.fontSizeDefault),
     tabs: [
       AppString.textOverview.tr,
+      AppString.text_leave.tr,
       AppString.textLeaveSummary.tr,
     ].map((text) => _buildTabBarText(text)).toList(),
   );
@@ -106,14 +109,14 @@ Widget _buildTabBarText(String text) {
   );
 }
 
-
 Widget _buildTabBarView() {
   return SizedBox(
     height: MediaQuery.of(Get.context!).size.height,
-    child: TabBarView(
+    child: const TabBarView(
       children: [
-         OverviewWidget(),
-        Container(),
+        OverviewWidget(),
+        LeaveWidget(),
+        LeaveSummaryWidget(),
       ],
     ),
   );
