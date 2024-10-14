@@ -34,7 +34,7 @@ class LeaveAllowance extends StatelessWidget {
                 _buildAllowanceCounter(),
                 customSpacerHeight(height: 12),
                 _alertMessageLayout(),
-                customSpacerHeight(height: 100),
+                SizedBox(height: MediaQuery.of(context).size.height/4.6,),
 
                 _buildButtons(), // Buttons at the bottom
               ],
@@ -199,7 +199,7 @@ class LeaveAllowance extends StatelessWidget {
                     const Icon(Icons.done, color: AppColor.cardColor, size: 23),
                     customSpacerWidth(width: 8),
                     Text(
-                      AppString.textTerminate.tr,
+                      AppString.text_save.tr,
                       style: AppStyle.normal_text.copyWith(
                         color: AppColor.cardColor,
                         fontSize: Dimensions.fontSizeDefault + 2,
