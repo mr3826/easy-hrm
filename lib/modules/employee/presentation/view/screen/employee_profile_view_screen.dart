@@ -17,7 +17,7 @@ class EmployeeProfileViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: _buildAppBar(),
           body: Padding(
@@ -90,6 +90,7 @@ Widget _buildTabBar() {
     unselectedLabelColor: AppColor.hintColor,
     labelStyle: AppStyle.normal_text_grey.copyWith(
         fontWeight: FontWeight.w600, fontSize: Dimensions.fontSizeDefault),
+
     tabs: [
       AppString.textOverview.tr,
       AppString.text_leave.tr,

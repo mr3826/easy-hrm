@@ -26,6 +26,9 @@ class AppString {
   static const String textUserStatus = "User status";
   static const String textJoiningDate = "Joining date";
   static const String textTodayAttendance = "Today's attendance";
+  static const String textAddAllowance = "Add allowance";
+  static const String textAllowanceBalance = "Allowance balance";
+  static const String textLeaveAllowance = "Leave allowance";
 
   static const String textRecentSearch = "Recent search";
   static const String textClearAll = "Clear all";
