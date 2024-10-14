@@ -36,9 +36,9 @@ class LeaveSummaryWidget extends StatelessWidget {
                 children: [
                   _buildHeader(),
                   customSpacerHeight(height: 12),
-                  _buildLeaveDetailsRow("Allowance: ", "20", "Earned: ", "-", "Taken: ", "6"),
+                  _buildLeaveDetailsRow(label1: "Allowance: ",value1:  "20",label2:  "Earned: ", value2: "-", label3: "Taken: ",value3:  "6"),
                   customSpacerHeight(height: 8),
-                  _buildLeaveDetailsRow("Approved: ", "6", "Available: ", "14"),
+                  _buildLeaveDetailsRow(label1: "Approved: ", value1: "6", label2: "Available: ", value2: "14"),
                   customSpacerHeight(height: 8),
                   _buildPendingRequest(),
                 ],
@@ -91,7 +91,13 @@ class LeaveSummaryWidget extends StatelessWidget {
   }
 
   // Build a row with multiple subtexts for leave details
-  Widget _buildLeaveDetailsRow(String label1, String value1, [String? label2, String? value2, String? label3, String? value3]) {
+  Widget _buildLeaveDetailsRow(
+      {required String label1,
+      required String value1,
+      String? label2,
+      String? value2,
+      String? label3,
+      String? value3}) {
     return Row(
       children: [
         _buildSubText(label: label1, value: value1),
