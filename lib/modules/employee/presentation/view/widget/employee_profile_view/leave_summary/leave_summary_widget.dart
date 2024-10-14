@@ -36,7 +36,7 @@ class LeaveSummaryWidget extends StatelessWidget {
                 children: [
                   _buildHeader(),
                   customSpacerHeight(height: 12),
-                  _buildLeaveDetailsRow("Allowance: ", "20", "Earned: ", "-", "Taken", "6"),
+                  _buildLeaveDetailsRow("Allowance: ", "20", "Earned: ", "-", "Taken: ", "6"),
                   customSpacerHeight(height: 8),
                   _buildLeaveDetailsRow("Approved: ", "6", "Available: ", "14"),
                   customSpacerHeight(height: 8),

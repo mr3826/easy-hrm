@@ -34,7 +34,9 @@ class LeaveAllowance extends StatelessWidget {
                 _buildAllowanceCounter(),
                 customSpacerHeight(height: 12),
                 _alertMessageLayout(),
-                SizedBox(height: MediaQuery.of(context).size.height/4.6,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 4.6,
+                ),
 
                 _buildButtons(), // Buttons at the bottom
               ],
