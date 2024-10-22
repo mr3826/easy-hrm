@@ -173,7 +173,8 @@ class EmployeeListInfo extends StatelessWidget {
           ),
           customSpacerHeight(height: 12),
           CustomNetworkImage(
-            imgUrlKey: imgUrl,
+            profileImageKey: imgUrl,
+            imgUrlKey: "",
             errorText: "ER",
           ),
           customSpacerHeight(height: 12),
