@@ -95,6 +95,47 @@ _departmentHistoryInfo(context) {
   );
 }
 
+
+_workingShiftLayout(context) {
+  return Expanded(
+    child: Row(
+      children: [
+        _verticalDivider(),
+        customSpacerWidth(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Get.find<UserProfileController>()
+                  .userDetails
+                  ?.getOrganizationUserDetails
+                  ?.department
+                  ?.workShift
+                  ?.name ??
+                  "",
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            ),
+            _workShiftDetailsLayout(),
+            customSpacerHeight(height: 8),
+            Text(
+              AppString.text_working_day.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor.withOpacity(0.7),
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            ),
+            _workingDaySchedule(context)
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+
+
+
 getDateTimeFormat(dateString){
   if(dateString.isEmpty) return"";
   DateTime dateTime = DateTime.parse(dateString);
@@ -116,42 +157,6 @@ _parentDepartmentInfo({required String parentDepartmentName}) {
   );
 }
 
-_workingShiftLayout(context) {
-  return Expanded(
-    child: Row(
-      children: [
-        _verticalDivider(),
-        customSpacerWidth(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Get.find<UserProfileController>()
-                      .userDetails
-                      ?.getOrganizationUserDetails
-                      ?.department
-                      ?.workShift
-                      ?.name ??
-                  "",
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.normalTextColor,
-                  fontSize: Dimensions.fontSizeDefault + 1),
-            ),
-            _workShiftDetailsLayout(),
-            customSpacerHeight(height: 8),
-            Text(
-              AppString.text_working_day.tr,
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.normalTextColor.withOpacity(0.7),
-                  fontSize: Dimensions.fontSizeDefault + 1),
-            ),
-            _workingDaySchedule(context)
-          ],
-        ),
-      ],
-    ),
-  );
-}
 
 _verticalDivider() {
   return Container(
@@ -179,6 +184,8 @@ _workShiftDetailsLayout() {
     return schedule.startTime == workSchedules[0].startTime &&
         schedule.endTime == workSchedules[0].endTime;
   });
+
+print(workSchedules?[0].startTime);
 
 
   return Row(

@@ -141,7 +141,7 @@ Widget _statusBtn({required Color textColor, required String? text}) {
   return CustomStatusButton(
     textColor: textColor,
     bgColor: AppColor.cardColor,
-    text: text,
+    text: "$text",
   );
 }
 

@@ -10,6 +10,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../../dashboard/presentation/view/screen/dashboard.dart';
+import '../../../employee/presentation/view/screen/employee_screen.dart';
 import '../../../leave/presentation/controller/leave_record_controller.dart';
 import '../../../leave/presentation/controller/update_leave_controller.dart';
 import '../../../leave/presentation/view/screen/leave_screen.dart';
@@ -115,7 +116,8 @@ class _MainScreenState extends State<MainScreen> {
     //  const LeaveScreen(),
       const LeaveHrScreen(),
       const Dashboard(),
-      const NotificationScreen(),
+     // const NotificationScreen(),
+      const EmployeeScreen(),
       const ProfileScreen(),
     ];
   }
@@ -129,4 +131,5 @@ class _MainScreenState extends State<MainScreen> {
       const SubscriptionScreen(),
     ];
   }
+
 }

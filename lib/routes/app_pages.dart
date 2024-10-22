@@ -12,6 +12,8 @@ import 'package:payrun_mobile/modules/starting/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
+import '../modules/employee/presentation/view/screen/employee_profile_view_screen.dart';
+import '../modules/employee/presentation/view/widget/employee_list/edit_employee.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
@@ -44,7 +46,7 @@ class AppPages {
     GetPage(
       name: _Paths.FIRGIR_PASSWORD_SCREEN,
       transition: Transition.size,
-      page: () =>  ForgotScreen(),
+      page: () => ForgotScreen(),
     ),
     GetPage(
       name: _Paths.OTP,
@@ -56,7 +58,6 @@ class AppPages {
       transition: Transition.size,
       page: () => ResetPasswordScreen(),
     ),
-
     GetPage(
       name: _Paths.PASSWORD_UPDATE_SCRREN,
       transition: Transition.size,
@@ -65,9 +66,8 @@ class AppPages {
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,
-      page: () =>  const SubscriptionScreen(),
+      page: () => const SubscriptionScreen(),
     ),
-
     GetPage(
       name: _Paths.MAIN_SCREEN,
       transition: Transition.size,
@@ -96,7 +96,7 @@ class AppPages {
     GetPage(
       name: _Paths.PROFILE_SCREEN,
       transition: Transition.size,
-      page: () =>  const ProfileScreen(),
+      page: () => const ProfileScreen(),
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE_SCREEN,
@@ -113,5 +113,19 @@ class AppPages {
       transition: Transition.size,
       page: () => const NewEntryScreen(),
     ),
+
+    GetPage(
+      name: _Paths.EMPOLYEE_VIEW_PROFILE,
+      transition: Transition.size,
+      page: () => const EmployeeProfileViewScreen(),
+    ),
+
+    GetPage(
+      name: _Paths.EDIT_EMPOLYEE_VIEW,
+      transition: Transition.size,
+      page: () =>  EditEmployee(),
+    ),
+
+
   ];
 }

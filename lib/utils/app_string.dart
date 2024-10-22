@@ -12,7 +12,50 @@ class AppString {
   static const String ORGANIZATION_USER_ID = "org_user_id";
   static const String LOGGED_IN = "loggedIn";
 
-  // Apps string here
+
+
+  ///String for Employee module
+  static const String textViewProfile = "View profile";
+  static const String textTerminate = "Terminate";
+  static const String textTerminateDate = "Terminate date";
+  static const String textReasonNote = "Reason note";
+  static const String textSearch = "Search";
+  static const String textFilters = "Filters";
+  static const String textEmployees = "Employees";
+  static const String textEmployeeStatus = "Employees status";
+  static const String textUserStatus = "User status";
+  static const String textJoiningDate = "Joining date";
+  static const String textTodayAttendance = "Today's attendance";
+  static const String textAddAllowance = "Add allowance";
+  static const String textAllowanceBalance = "Allowance balance";
+  static const String textLeaveAllowance = "Leave allowance";
+
+  static const String textRecentSearch = "Recent search";
+  static const String textClearAll = "Clear all";
+  static const String textReset = "Reset";
+  static const String textTerminated = "Terminated";
+  static const String textResigned = "Resigned";
+
+  static const String textOverview = "Overview";
+  static const String textLeaveSummary = "Leave Summary";
+  static const String textTerminating = "Terminating";
+
+  static const String text_edit_employee = "Edit Employee";
+
+
+  static const String textSearchAndSelect = "Search & select";
+  static const String textThisActionWillRemoveEtc = "This action will remove this worker's employment with your company. Are you certain you want to terminate this employee?";
+
+
+
+
+
+
+
+
+
+
+  /// Apps string here
 
   static const String addedALeaveText = "has added your leave on";
   static const String addedATimelogText = "has added your time log on";
@@ -243,6 +286,7 @@ class AppString {
   static const String textHiringManager = "Hiring manager";
   static const String textHiringTeam = "Hiring team";
   static const String textManager = "Manager";
+
   static const String textOn = "on";
   static const String textPresent = "Present";
   static const String textTimelogApprover = "Time log approver";
