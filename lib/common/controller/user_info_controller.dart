@@ -11,11 +11,15 @@ class UserInfoController {
 
   RxBool isSubscriptionExpired = false.obs;
   RxBool isSubscriptionTimeTrackingIsAllow = true.obs;
+  UserInfo userInfo = UserInfo();
 
   Future<UserInfo?> getUserInfo() async {
     final response = await _networkClient.getRequest(Api.USER_INFO);
     if (response.statusCode != 200) return null;
-    return UserInfo.fromJson(response.data);
+
+    userInfo = UserInfo.fromJson(response.data);
+    print("userInfo :: ${userInfo.user?.role}");
+    return userInfo;
   }
 
   /// Fetches the organization subscription information
@@ -24,8 +28,6 @@ class UserInfoController {
     try {
       final response = await _networkClient.graphRequest(
           queryString: getOrgSubscriptionInfoQuery);
-
-
 
       if (response.hasException) {
         ExceptionHelper.errorHandler(
@@ -52,7 +54,8 @@ class UserInfoController {
     final orgSubscriptionInfo = data.getOrgSubscriptionInfo;
 
     // Check if subscription is expired (paused or canceled)
-    if (orgSubscriptionInfo?.status == "paused" || orgSubscriptionInfo?.status == "canceled") {
+    if (orgSubscriptionInfo?.status == "paused" ||
+        orgSubscriptionInfo?.status == "canceled") {
       isSubscriptionExpired(true);
     } else {
       // Check if "time_tracking" feature is enabled
@@ -63,6 +66,4 @@ class UserInfoController {
       });
     }
   }
-
-
 }

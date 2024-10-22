@@ -60,6 +60,8 @@ class Images {
   static String user = "assets/images/user.jpeg";
   static String filterIcon = "assets/images/filter.png";
   static String terminate = "assets/images/terminate.svg";
+  static String employees_active = "assets/images/employees_active.svg";
+  static String employees_inactive = "assets/images/employees_inactive.svg";
 
   static String EMAIL_POP = "assets/images/email_pop.svg";
   static String LEAVE_TAKAN = "assets/images/leave_taken.svg";
