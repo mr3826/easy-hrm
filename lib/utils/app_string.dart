@@ -184,6 +184,7 @@ class AppString {
   static const String text_no_available_leave = "No available leave";
   static const String text_note = "Note";
   static const String text_notication = "Notifications";
+  static const String text_employees = "Employess";
   static const String text_notications = "Notifications";
   static const String text_ok = "Ok";
   static const String text_org_linked_with_your = "organization linked with your";
