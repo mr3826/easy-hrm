@@ -20,7 +20,6 @@ class EmployeeListInfo extends StatelessWidget {
   final String departmentName;
   final String statusText;
   final Color? statusColor;
-
   const EmployeeListInfo({
     Key? key,
     required this.imgUrlKey,
