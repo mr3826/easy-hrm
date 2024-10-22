@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/modules/employee/domain/employee_info.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
+import '../../controller/employment_controller.dart';
 import '../widget/employee_list/employee_list.dart';
 import '../widget/employee_list/search_with_filter.dart';
 import '../widget/filter/filter_list.dart';
@@ -23,13 +25,10 @@ class EmployeeScreen extends StatelessWidget {
       appBar: _buildEmployeeAppBar(),
       body: Column(
         children: [
-
           customSpacerHeight(height: 14),
           _buildSearchWithFilters(),
           customSpacerHeight(height: 4),
           _buildEmployeeList(),
-
-
         ],
       ),
     );
@@ -84,98 +83,26 @@ class EmployeeScreen extends StatelessWidget {
   }
 
   Widget _buildEmployeeList() {
-    List<Map<String, String>> data = [
-      {
-        "name": "Jonas Kahnwald",
-        "departmentName": "Laravel department",
-        "imgUrlKey": "",
-        "statusText": "Permanent",
-        "color": "0xFF0CAA1B",
-      },
-      {
-        "name": "Martha Nielsen",
-        "departmentName": "Flutter department",
-        "imgUrlKey": "",
-        "statusText": "Probation",
-        "color": "0xFFFFA500",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-      {
-        "name": "Facility Nielsen",
-        "departmentName": "QA department",
-        "imgUrlKey": "",
-        "statusText": "Ad-hoc",
-        "color": "0xFFFF6347",
-      },
-    ];
-
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.only(left: 8, right: 8),
-        itemCount: data.length,
+        itemCount: Get.find<EmploymentController>()
+            .employeeInfo
+            ?.getOrganizationUsers
+            ?.data?.length,
         itemBuilder: (context, index) {
+          Data? employee = Get.find<EmploymentController>()
+              .employeeInfo
+              ?.getOrganizationUsers
+              ?.data?[index];
           return EmployeeListInfo(
-            name: data[index]["name"] ?? "Unknown",
-            departmentName:
-                data[index]["departmentName"] ?? "Unknown department",
-            imgUrlKey: data[index]["imgUrlKey"] ?? "",
-            statusText: data[index]["statusText"] ?? "Unknown status",
-            statusColor: Color(int.parse(data[index]["color"].toString())),
+            name:
+                "${employee?.profile?.firstName ?? "Unknown"} ${employee?.profile?.lastName ?? ""}",
+            departmentName: employee?.designation?.name ?? "Unknown department",
+            imgUrlKey: employee?.profile?.image ?? "",
+            statusText: employee?.employmentStatus?.name ?? "Unknown status",
+            statusColor: Color(int.parse(
+                "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
           );
         },
       ),

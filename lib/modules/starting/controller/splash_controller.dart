@@ -26,6 +26,7 @@ class SplashController extends GetxController {
         if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
           _getNewToken().then((value) => value == true
               ? Future.delayed(const Duration(milliseconds: 2500), () async {
+                  await Get.find<UserInfoController>().getUserInfo();
                   await Get.find<UserInfoController>().getOrgSubscriptionInfo();
                   // Navigate to the main screen
                   Get.offNamed(Routes.MAIN_SCREEN);
@@ -34,13 +35,15 @@ class SplashController extends GetxController {
                   () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
         } else {
           Future.delayed(const Duration(milliseconds: 2500), () async {
+            await Get.find<UserInfoController>().getUserInfo();
             await Get.find<UserInfoController>().getOrgSubscriptionInfo();
             // Navigate to the main screen
             Get.offNamed(Routes.MAIN_SCREEN);
           });
         }
       } else {
-        Future.delayed(const Duration(milliseconds: 2500), () => _chooseRoute());
+        Future.delayed(
+            const Duration(milliseconds: 2500), () => _chooseRoute());
       }
 
       super.onReady();
@@ -73,8 +76,8 @@ class SplashController extends GetxController {
 
   Future<bool> _getNewToken() async {
     try {
-      di.Response response = await Get.find<NetworkClient>()
-          .postRequest(Api.REFRESH_TOKEN, {
+      di.Response response =
+          await Get.find<NetworkClient>().postRequest(Api.REFRESH_TOKEN, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN),
       });

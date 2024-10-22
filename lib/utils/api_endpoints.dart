@@ -23,6 +23,7 @@ class Api {
   static const CHANGE_PASSWORD = "/auth/change-password";
   static const USER_INFO = "/auth/user";
 }
+
 ///auth/resend-verification-code
 
 //leave module
@@ -589,6 +590,36 @@ const markAsSeenNotificationQuery = r'''
 mutation MarkUnreadNotificationAsSeen($inputData: UnreadNotificationSeenInputType!) {
   markUnreadNotificationAsSeen(inputData: $inputData) {
     result
+  }
+}
+''';
+
+/// employyee info
+///
+
+const getEmployeeList = r'''
+query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
+  getOrganizationUsers(queryData: $queryData) {
+    data {
+      id
+      profile {
+        first_name
+        last_name
+        image
+      }
+      employment_status {
+        name
+        color
+      }
+      designation {
+        name
+      }
+      user {
+        id
+        email
+      }
+      user_id
+    }
   }
 }
 ''';
