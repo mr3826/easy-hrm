@@ -114,7 +114,7 @@ class _MainScreenState extends State<MainScreen> {
     return [
       const TimelineScreen(),
     //  const LeaveScreen(),
-      const LeaveHrScreen(),
+       LeaveHrScreen(),
       const Dashboard(),
      // const NotificationScreen(),
       const EmployeeScreen(),
