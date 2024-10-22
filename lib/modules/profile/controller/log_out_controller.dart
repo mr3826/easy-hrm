@@ -17,16 +17,18 @@ class LogoutController {
       await NetworkClient().postRequest(Api.LOGOUT, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
       });
+
+      removeTokenForOrg(Get.find<UserProfileController>()
+          .organizationInfo
+          ?.getUserOrganizations
+          ?.data
+          ?.map((e) => e.organization?.id)
+          .toList() ??
+          []);
+
     } catch (e) {
       log(e.toString());
     } finally {
-      removeTokenForOrg(Get.find<UserProfileController>()
-              .organizationInfo
-              ?.getUserOrganizations
-              ?.data
-              ?.map((e) => e.organization?.id)
-              .toList() ??
-          []);
       _clearSession();
     }
     isLogoutLoading(false);
