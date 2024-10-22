@@ -41,6 +41,9 @@ Future<bool> _onWillPop() async {
 }
 
 List<PersistentBottomNavBarItem> _navBarsItems() {
+  bool isAdmin =
+      Get.find<UserInfoController>().userInfo.user?.role?.contains("admin") ??
+          false;
   return [
     _navbarIcon(
         activeIcon: Images.timelineIconNav,
@@ -57,9 +60,12 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
           customSvgImage(imageUrl: Images.home, height: 25, width: 25),
     ),
     _navbarIcon(
-        activeIcon: Images.notificationIconNav,
-        text: AppString.text_notication.tr,
-        imgUrl: Images.notificationIconNavOutLine),
+        activeIcon:
+            isAdmin ? Images.employees_active : Images.notificationIconNav,
+        text: isAdmin ? AppString.text_employees : AppString.text_notication.tr,
+        imgUrl: isAdmin
+            ? Images.employees_inactive
+            : Images.notificationIconNavOutLine),
     _navbarIcon(
         activeIcon: Images.profileIconNav,
         text: AppString.text_profile.tr,

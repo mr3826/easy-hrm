@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/user_info_controller.dart';
+import 'package:payrun_mobile/modules/employee/presentation/controller/employment_controller.dart';
 import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -100,6 +101,9 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _initialController() async {
+    bool isAdmin =
+        Get.find<UserInfoController>().userInfo.user?.role?.contains("admin") ??
+            false;
     Get.put(DashboardController());
     Get.put(TimelineController());
     Get.put(NotificationController());
@@ -107,17 +111,22 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
     Get.put(UserProfileController());
+    if(isAdmin){
+      Get.put(EmploymentController());
+    }
     Get.put(UpDateLeaveController());
   }
 
   _screenListLayout() {
+    bool isAdmin =
+        Get.find<UserInfoController>().userInfo.user?.role?.contains("admin") ??
+            false;
     return [
       const TimelineScreen(),
     //  const LeaveScreen(),
        LeaveHrScreen(),
       const Dashboard(),
-     // const NotificationScreen(),
-      const EmployeeScreen(),
+      isAdmin ? const EmployeeScreen() : const NotificationScreen(),
       const ProfileScreen(),
     ];
   }
@@ -131,5 +140,4 @@ class _MainScreenState extends State<MainScreen> {
       const SubscriptionScreen(),
     ];
   }
-
 }
