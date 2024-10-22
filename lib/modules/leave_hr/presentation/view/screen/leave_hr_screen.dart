@@ -27,18 +27,16 @@ class LeaveHrScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create TabController
+    final TabController tabController = TabController(length: 2, vsync: Scaffold.of(context));
+
     return Scaffold(
       appBar: _buildAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTabBar(), // No need to pass the TabController
-          Expanded(
-            child: Obx(() {
-              // Update the view based on the selected tab index
-              return _buildTabContent(leaveController.selectedTabIndex.value);
-            }),
-          ),
+          _buildTabBar(tabController), // Pass the TabController
+          Expanded(child: _buildTabBarView()), // Use Expanded here
         ],
       ),
     );
@@ -65,23 +63,48 @@ class LeaveHrScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTabBar() {
-    return Obx(() => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+  Widget _buildTabBarView() {
+    return const TabBarView(
       children: [
-        _buildTabBarTextWithBackground(AppString.textCalendar.tr, 0),
-        _buildTabBarTextWithBackground(AppString.textLeaveRecord.tr, 1),
+        Center(child: Text('Calendar View')),
+        Center(child: Text('Leave Record View')),
       ],
+    );
+  }
+
+  Widget _buildTabBar(TabController tabController) {
+    return Obx(() => TabBar(
+      controller: tabController,
+      indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.zero,
+      labelPadding: EdgeInsets.zero,
+      indicatorColor: Colors.transparent,
+      labelColor: AppColor.primaryColor,
+      unselectedLabelColor: AppColor.hintColor,
+      dividerColor: Colors.transparent,
+      labelStyle: AppStyle.normal_text_grey.copyWith(
+        fontWeight: FontWeight.w600,
+        fontSize: Dimensions.fontSizeDefault,
+      ),
+      onTap: (index) {
+        leaveController.updateTabIndex(index); // Update the tab index in the controller
+        tabController.animateTo(index); // Move to the selected tab
+      },
+      tabs: [
+        AppString.textCalendar.tr,
+        AppString.textLeaveRecord.tr,
+      ].asMap().entries.map((entry) {
+        int index = entry.key;
+        String text = entry.value;
+        return _buildTabBarTextWithBackground(text, index);
+      }).toList(),
     ));
   }
 
   Widget _buildTabBarTextWithBackground(String text, int index) {
     bool isSelected = leaveController.selectedTabIndex.value == index;
 
-    return GestureDetector(
-      onTap: () {
-        leaveController.updateTabIndex(index); // Update the tab index on tap
-      },
+    return Tab(
       child: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -99,16 +122,5 @@ class LeaveHrScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildTabContent(int index) {
-    switch (index) {
-      case 0:
-        return Center(child: Text('Calendar View'));
-      case 1:
-        return Center(child: Text('Leave Record View'));
-      default:
-        return Center(child: Text('Unknown Tab'));
-    }
   }
 }

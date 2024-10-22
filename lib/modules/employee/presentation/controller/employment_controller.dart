@@ -8,6 +8,20 @@ class EmploymentController extends GetxController {
   var employeeDesignationValue = ''.obs;
   var employeeDepartmentValue = ''.obs;
 
+
+  var count = 0.obs;
+
+  void increment() {
+    count++;
+  }
+
+  void decrement() {
+    if (count > 0) {
+      count--;
+    }}
+
+
+
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
 
