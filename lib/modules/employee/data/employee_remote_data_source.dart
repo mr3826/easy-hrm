@@ -11,12 +11,13 @@ class EmployeeRemoteDataSource {
 
   EmployeeRemoteDataSource(this.networkClient);
 
-  Future<EmployeeInfo?> getEmployees() async {
+  Future<EmployeeInfo?> getEmployees([String? searchQuery]) async {
     try {
       final response = await networkClient
           .graphRequest(queryString: getEmployeeList, variables: {
         "queryData": {
-          "role": ["org_employee"]
+          "role": ["org_employee"],
+          "search_text": searchQuery ?? ""
         }
       });
       if (response.hasException) {

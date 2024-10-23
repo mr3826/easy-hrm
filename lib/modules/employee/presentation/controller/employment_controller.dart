@@ -8,6 +8,8 @@ class EmploymentController extends GetxController {
   var employeeStatusValue = ''.obs;
   var employeeDesignationValue = ''.obs;
   var employeeDepartmentValue = ''.obs;
+  RxBool isSearchInfoLoading = false.obs;
+  RxBool isEmployeesInfoLoading = false.obs;
 
   @override
   void onClose() {
@@ -24,8 +26,20 @@ class EmploymentController extends GetxController {
 
   EmployeeInfo? employeeInfo = EmployeeInfo();
 
+  List<Data>? employeeList = <Data>[];
+
   Future<void> getEmployees() async {
+    isEmployeesInfoLoading(true);
     employeeInfo = await _employeeRemoteDataSource.getEmployees();
+    isEmployeesInfoLoading(false);
+  }
+
+  Future<void> getEmployeesBySearch({required String searchQuery}) async {
+    isSearchInfoLoading(true);
+    final EmployeeInfo? employees =
+        await _employeeRemoteDataSource.getEmployees(searchQuery);
+    employeeList = employees?.getOrganizationUsers?.data ?? [];
+    isSearchInfoLoading(false);
   }
 
   final List<String> items = [

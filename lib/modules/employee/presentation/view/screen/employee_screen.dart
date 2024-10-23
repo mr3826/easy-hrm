@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/employee/domain/employee_info.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../common/widget/custom_appbar.dart';
@@ -28,7 +29,11 @@ class EmployeeScreen extends StatelessWidget {
           customSpacerHeight(height: 14),
           _buildSearchWithFilters(),
           customSpacerHeight(height: 4),
-          _buildEmployeeList(),
+          GetBuilder<EmploymentController>(
+            builder: (controller) => controller.isEmployeesInfoLoading.isTrue
+                ? const LoadingIndicator()
+                : _buildEmployeeList(),
+          ),
         ],
       ),
     );
@@ -89,7 +94,8 @@ class EmployeeScreen extends StatelessWidget {
         itemCount: Get.find<EmploymentController>()
             .employeeInfo
             ?.getOrganizationUsers
-            ?.data?.length,
+            ?.data
+            ?.length,
         itemBuilder: (context, index) {
           Data? employee = Get.find<EmploymentController>()
               .employeeInfo
@@ -101,8 +107,10 @@ class EmployeeScreen extends StatelessWidget {
             departmentName: employee?.designation?.name ?? "Unknown department",
             imgUrlKey: employee?.profile?.image ?? "",
             statusText: employee?.employmentStatus?.name ?? "Unknown status",
-            statusColor: Color(int.parse(
-                "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
+            statusColor: employee?.employmentStatus?.color == null
+                ? Colors.transparent
+                : Color(int.parse(
+                    "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
           );
         },
       ),
