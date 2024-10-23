@@ -237,7 +237,7 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
   }
 
   /// Creates the manager's image layout with a circular avatar.
-  Widget _buildManagerImage(String imageUrl) {
+  Widget _buildDepartmentHeaderImage(String imageUrl) {
     return CircleAvatar(
       backgroundColor: AppColor.pendingColor,
       radius: 20,
@@ -247,7 +247,8 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
         child: CustomNetworkImage(
           errorText: "ER",
           height: 18,
-          imgUrlKey: imageUrl,
+          imgUrlKey: "",
+          profileImageKey: imageUrl,
           borderColor: Colors.transparent,
         ),
       ),
@@ -263,7 +264,7 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
       padding: const EdgeInsets.only(left: 12.0),
       child: Row(
         children: [
-          _buildManagerImage(imageUrl),
+          _buildDepartmentHeaderImage(imageUrl),
           customSpacerWidth(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
