@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/employee/data/employee_remote_data_source.dart';
 import 'package:payrun_mobile/modules/employee/domain/employee_info.dart';
@@ -7,6 +8,16 @@ class EmploymentController extends GetxController {
   var employeeStatusValue = ''.obs;
   var employeeDesignationValue = ''.obs;
   var employeeDepartmentValue = ''.obs;
+
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
+  }
+
+  RxString searchQuery = ''.obs;
+
+  TextEditingController searchController = TextEditingController();
 
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
