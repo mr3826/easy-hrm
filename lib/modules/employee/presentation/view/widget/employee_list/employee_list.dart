@@ -39,9 +39,11 @@ class EmployeeListInfo extends StatelessWidget {
       child: Row(
         children: [
           CustomNetworkImage(
-            imgUrlKey: imgUrlKey,
+            profileImageKey: imgUrlKey,
+            imgUrlKey: "",
             errorText: 'ER',
             height: 34,
+            isPublic: false,
           ),
           customSpacerWidth(width: 14),
           Column(
@@ -171,7 +173,8 @@ class EmployeeListInfo extends StatelessWidget {
           ),
           customSpacerHeight(height: 12),
           CustomNetworkImage(
-            imgUrlKey: imgUrl,
+            profileImageKey: imgUrl,
+            imgUrlKey: "",
             errorText: "ER",
           ),
           customSpacerHeight(height: 12),
