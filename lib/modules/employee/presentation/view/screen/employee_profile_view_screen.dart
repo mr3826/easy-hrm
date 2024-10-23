@@ -7,7 +7,9 @@ import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../common/widget/employee/user_Info_widget.dart';
-import '../widget/employee_profile_view/overview_widget.dart';
+import '../widget/employee_profile_view/leave/leave_widget.dart';
+import '../widget/employee_profile_view/leave_summary/leave_summary_widget.dart';
+import '../widget/employee_profile_view/overview/overview_widget.dart';
 
 class EmployeeProfileViewScreen extends StatelessWidget {
   const EmployeeProfileViewScreen({super.key});
@@ -15,40 +17,22 @@ class EmployeeProfileViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: _buildAppBar(),
           body: Padding(
             padding: marginLayout.copyWith(left: 12, right: 12),
-            child: Column(
-              children: [
-                UserInfoWidget(
-                  employeeStatus: EmployeeStatus(
-                      firstName: "Rifat",
-                      lastName: "Hasan",
-                      department: "Mobile App",
-                      profileImageKey: "",
-                      currentEmployeeStatus: "Active",
-                      employmentContractType: "Permanent",
-                      employmentStatusColorCode: "0CAA1B"),
-                ),
-                MonthlyStatusWidget(
-                  status: MonthlyStatus(
-                      leaveBalance: "0.0",
-                      monthlyGoal: "0.0",
-                      loggedTime: "0.0"),
-                ),
-
-
-                customSpacerHeight(height: 20),
-
-                _buildTabBar(),
-                customSpacerHeight(height: 20),
-
-                _buildTabBarView()
-
-
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildUserInfo(),
+                  _buildMonthlyGoal(),
+                  customSpacerHeight(height: 20),
+                  _buildTabBar(),
+                  customSpacerHeight(height: 20),
+                  _buildTabBarView()
+                ],
+              ),
             ),
           ),
         ));
@@ -74,6 +58,26 @@ class EmployeeProfileViewScreen extends StatelessWidget {
       ),
     );
   }
+
+  _buildUserInfo() {
+    return UserInfoWidget(
+      employeeStatus: EmployeeStatus(
+          firstName: "Rifat",
+          lastName: "Hasan",
+          department: "Mobile App",
+          profileImageKey: "",
+          currentEmployeeStatus: "Active",
+          employmentContractType: "Permanent",
+          employmentStatusColorCode: "0CAA1B"),
+    );
+  }
+
+  _buildMonthlyGoal() {
+    return MonthlyStatusWidget(
+      status: MonthlyStatus(
+          leaveBalance: "0.0", monthlyGoal: "0.0", loggedTime: "0.0"),
+    );
+  }
 }
 
 Widget _buildTabBar() {
@@ -86,8 +90,10 @@ Widget _buildTabBar() {
     unselectedLabelColor: AppColor.hintColor,
     labelStyle: AppStyle.normal_text_grey.copyWith(
         fontWeight: FontWeight.w600, fontSize: Dimensions.fontSizeDefault),
+
     tabs: [
       AppString.textOverview.tr,
+      AppString.text_leave.tr,
       AppString.textLeaveSummary.tr,
     ].map((text) => _buildTabBarText(text)).toList(),
   );
@@ -104,13 +110,14 @@ Widget _buildTabBarText(String text) {
   );
 }
 
-
 Widget _buildTabBarView() {
-  return Expanded(
-    child: TabBarView(
+  return SizedBox(
+    height: MediaQuery.of(Get.context!).size.height,
+    child: const TabBarView(
       children: [
-        const OverviewWidget(),
-        Container(),
+        OverviewWidget(),
+        LeaveWidget(),
+        LeaveSummaryWidget(),
       ],
     ),
   );

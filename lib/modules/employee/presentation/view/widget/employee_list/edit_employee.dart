@@ -25,7 +25,7 @@ class EditEmployee extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customInsideAppbar(
-        title: AppString.text_edit_employee.tr,
+        title: AppString.textEditEmployee.tr,
         onPressAction: () => Get.back(),
       ),
       body: Padding(

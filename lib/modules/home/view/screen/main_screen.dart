@@ -15,6 +15,7 @@ import '../../../employee/presentation/view/screen/employee_screen.dart';
 import '../../../leave/presentation/controller/leave_record_controller.dart';
 import '../../../leave/presentation/controller/update_leave_controller.dart';
 import '../../../leave/presentation/view/screen/leave_screen.dart';
+import '../../../leave_hr/presentation/view/screen/leave_hr_screen.dart';
 import '../../../notification/presentation/controller/notification_controller.dart';
 import '../../../notification/presentation/view/screen/notification.dart';
 import '../../../profile/controller/user_profile_controller.dart';
@@ -122,7 +123,8 @@ class _MainScreenState extends State<MainScreen> {
             false;
     return [
       const TimelineScreen(),
-      const LeaveScreen(),
+    //  const LeaveScreen(),
+       LeaveHrScreen(),
       const Dashboard(),
       isAdmin ? const EmployeeScreen() : const NotificationScreen(),
       const ProfileScreen(),

@@ -21,6 +21,20 @@ class EmploymentController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
 
+
+  var count = 0.obs;
+
+  void increment() {
+    count++;
+  }
+
+  void decrement() {
+    if (count > 0) {
+      count--;
+    }}
+
+
+
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
 

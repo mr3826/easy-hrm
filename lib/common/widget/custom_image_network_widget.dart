@@ -30,11 +30,10 @@ String urlBuilder({
   );
 
   final urlPath = profileImageKey ??
-      '${fileDir ?? "files"}/${orgId??GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey';
+      '${fileDir ?? "files"}/${orgId ?? GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey';
 
   return client.createURLString(urlPath);
 }
-
 
 Widget circleImageLayout(
     {radius, required url, borderColor, required errorText}) {

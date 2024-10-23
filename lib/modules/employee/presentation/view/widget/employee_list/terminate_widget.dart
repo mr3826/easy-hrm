@@ -25,32 +25,27 @@ class TerminateWidget extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customSvgImage(imageUrl: Images.terminate, width: 64, height: 64),
-                  customSpacerHeight(height: 20),
-                  _buildTitleRow(),
-                  customSpacerHeight(height: 15),
-                  _buildDescription(),
-                  customSpacerHeight(height: 15),
-                  _buildTerminationOptions(context, controller),
-                  customSpacerHeight(height: 8),
-                  _buildTerminateDatePicker(context),
-                  customSpacerHeight(height: 16),
-                  _buildReasonNote(),
-                  customSpacerHeight(height: 300),
-                ],
-              ),
-            ),
-          ),
-          _buildButtons(),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customSvgImage(imageUrl: Images.terminate, width: 64, height: 64),
+            customSpacerHeight(height: 20),
+            _buildTitleRow(),
+            customSpacerHeight(height: 15),
+            _buildDescription(),
+            customSpacerHeight(height: 15),
+            _buildTerminationOptions(context, controller),
+            customSpacerHeight(height: 8),
+            _buildTerminateDatePicker(context),
+            customSpacerHeight(height: 16),
+            _buildReasonNote(),
+            customSpacerHeight(height: 20),
 
-        ],
+            _buildButtons(),
+            customSpacerHeight(height: 300),
+          ],
+        ),
       ),
     );
   }

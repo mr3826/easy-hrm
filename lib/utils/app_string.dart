@@ -14,7 +14,7 @@ class AppString {
 
 
 
-  ///String for Employee module
+  ///String for Employee module v2
   static const String textViewProfile = "View profile";
   static const String textTerminate = "Terminate";
   static const String textTerminateDate = "Terminate date";
@@ -26,23 +26,26 @@ class AppString {
   static const String textUserStatus = "User status";
   static const String textJoiningDate = "Joining date";
   static const String textTodayAttendance = "Today's attendance";
-
+  static const String textAddAllowance = "Add allowance";
+  static const String textAllowanceBalance = "Allowance balance";
+  static const String textLeaveAllowance = "Leave allowance";
   static const String textRecentSearch = "Recent search";
   static const String textClearAll = "Clear all";
   static const String textReset = "Reset";
   static const String textTerminated = "Terminated";
   static const String textResigned = "Resigned";
-
   static const String textOverview = "Overview";
   static const String textLeaveSummary = "Leave Summary";
   static const String textTerminating = "Terminating";
-
-  static const String text_edit_employee = "Edit Employee";
-
-
+  static const String textEditEmployee = "Edit Employee";
   static const String textSearchAndSelect = "Search & select";
   static const String textThisActionWillRemoveEtc = "This action will remove this worker's employment with your company. Are you certain you want to terminate this employee?";
 
+
+  ///String for leave module v2
+
+  static const String textCalendar = "Calender";
+  static const String textLeaveRecord = "Leave recodes";
 
 
 

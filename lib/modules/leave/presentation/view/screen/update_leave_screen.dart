@@ -130,7 +130,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 8),
                       const CustomTimePickerOutTime(),
                       customSpacerHeight(height: 12),
-                      customSpacerHeight(height: 18),
+                      customSpacerHeight(height: 20),
                       Obx(() => Row(
                             children: [
                               customTitleText(text: AppString.text_note.tr),
