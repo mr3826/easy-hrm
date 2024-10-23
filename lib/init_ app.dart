@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:payrun_mobile/common/controller/user_info_controller.dart';
 import 'package:payrun_mobile/modules/dashboard/data/remote/dashboard_remote_data_source.dart';
-import 'package:payrun_mobile/modules/employee/data/employee_remote_data_source.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/notification/data/remote/notification_remote_data_source.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
+import 'admin_app/modules/employee/data/employee_remote_data_source.dart';
 import 'firebase_options.dart';
 
 Future<void> initApp() async {
