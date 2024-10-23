@@ -58,7 +58,7 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
                 endDate: _formatDate("${data[index]["endDate"]}"),
                 departmentName: "Main department",
                 parentDepartment: _formatParentDepartment("Manager"),
-                departmentHeaderName: _getManagerName(index),
+                departmentHeaderName: "Manager name",
               );
             },
           ),
@@ -231,10 +231,7 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
     return "${AppString.text_child_of_deparmtnet.tr} $departmentName";
   }
 
-  /// Returns a placeholder manager name.
-  String _getManagerName(int index) {
-    return "Manager name";
-  }
+
 
   /// Creates the manager's image layout with a circular avatar.
   Widget _buildDepartmentHeaderImage(String imageUrl) {
