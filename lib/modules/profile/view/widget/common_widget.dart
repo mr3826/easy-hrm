@@ -538,7 +538,7 @@ employmentStatus() {
       EmploymentStatus.active.name) {
     return CustomStatusButton(
       statusIcon: Icons.check_circle,
-      text: EmploymentStatus.active.name.capitalizeFirst,
+      text: EmploymentStatus.active.name.capitalizeFirst.toString(),
       bgColor: AppColor.successColor.withOpacity(.2),
       textColor: AppColor.successColor,
     );
@@ -547,7 +547,7 @@ employmentStatus() {
       EmploymentStatus.inactive.name) {
     return CustomStatusButton(
       statusIcon: Icons.stop_circle_outlined,
-      text: EmploymentStatus.inactive.name.capitalizeFirst,
+      text: EmploymentStatus.inactive.name.capitalizeFirst.toString(),
       bgColor: AppColor.disableColor.withOpacity(.2),
       textColor: Colors.black87,
     );
@@ -556,7 +556,7 @@ employmentStatus() {
       EmploymentStatus.invited.name) {
     return CustomStatusButton(
       statusIcon: Icons.send,
-      text: EmploymentStatus.invited.name.capitalizeFirst,
+      text: EmploymentStatus.invited.name.capitalizeFirst.toString(),
       bgColor: AppColor.pendingColor.withOpacity(.2),
       textColor: AppColor.pendingColor,
     );

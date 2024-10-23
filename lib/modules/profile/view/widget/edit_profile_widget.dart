@@ -222,10 +222,12 @@ userTextFieldLayout(
               controller: editBioController,
               hintText: hintText,
               onChanged: onChanged,
+              maxLength: 150,
             )
           : CustomInputField(
               hint: hintText,
-              hintStyle: AppStyle.normal_text_grey.copyWith(fontWeight: FontWeight.w500),
+              hintStyle: AppStyle.normal_text_grey
+                  .copyWith(fontWeight: FontWeight.w500),
               controller: controller,
               textInputType: textInputType,
               validator: validator,

@@ -20,7 +20,6 @@ class EmployeeListInfo extends StatelessWidget {
   final String departmentName;
   final String statusText;
   final Color? statusColor;
-
   const EmployeeListInfo({
     Key? key,
     required this.imgUrlKey,
@@ -89,7 +88,6 @@ class EmployeeListInfo extends StatelessWidget {
                 height: MediaQuery.of(context).size.height / 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildHeader(name, departmentName, imgUrlKey),
                     _buildActionItem(AppString.textViewProfile.tr, () {
@@ -98,14 +96,12 @@ class EmployeeListInfo extends StatelessWidget {
                     _divider(),
                     _buildActionItem(AppString.text_edit.tr, () {
                       Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
-
                     }),
                     _divider(),
                     _buildActionItem(AppString.textTerminate.tr, () {
                       _customButtonSheet(
                           child: const TerminateWidget(), context: context);
                     }),
-                    _divider(),
                     customSpacerHeight(height: 5),
                   ],
                 ),
@@ -141,10 +137,13 @@ class EmployeeListInfo extends StatelessWidget {
   }
 
   Widget _divider() {
-    return Container(
-      width: double.infinity,
-      height: 1,
-      color: AppColor.normalTextColor.withOpacity(0.1),
+    return Padding(
+      padding: const EdgeInsets.only(left: 24.0, right: 24),
+      child: Container(
+        width: double.infinity,
+        height: 1,
+        color: AppColor.normalTextColor.withOpacity(0.1),
+      ),
     );
   }
 
@@ -199,15 +198,30 @@ class EmployeeListInfo extends StatelessWidget {
   }
 
   Widget _buildActionItem(String text, Function onAction) {
-    return GestureDetector(
-      onTap: () => onAction(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Text(
-          text,
-          style: AppStyle.normal_text_black.copyWith(
-            color: AppColor.normalTextColor.withOpacity(0.8),
-            fontSize: Dimensions.fontSizeDefault + 1,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: () => onAction(),
+        child: Container(
+          color: AppColor.cardColor,
+          width: double.infinity,
+          height: 54,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.start,
+                  style: AppStyle.normal_text_black.copyWith(
+                    color: AppColor.normalTextColor.withOpacity(0.8),
+                    fontSize: Dimensions.fontSizeDefault + 1,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
