@@ -36,9 +36,15 @@ class LeaveSummaryWidget extends StatelessWidget {
                 children: [
                   _buildHeader(),
                   customSpacerHeight(height: 12),
-                  _buildLeaveDetailsRow(label1: "Allowance: ",value1:  "20",label2:  "Earned: ", value2: "-", label3: "Taken: ",value3:  "6"),
+
+                  _buildLeaveDetailsRow(staticText1: "Allowance: ",dynamicText1:  "20",staticText2:  "Earned: ", dynamicText2: "-", staticText3: "Taken: ",dynamicText3:  "6"),
+
                   customSpacerHeight(height: 8),
-                  _buildLeaveDetailsRow(label1: "Approved: ", value1: "6", label2: "Available: ", value2: "14"),
+
+                  _buildLeaveDetailsRow(staticText1: "Approved: ", dynamicText1: "6", staticText2: "Available: ", dynamicText2: "14"),
+
+
+
                   customSpacerHeight(height: 8),
                   _buildPendingRequest(),
                 ],
@@ -92,22 +98,22 @@ class LeaveSummaryWidget extends StatelessWidget {
 
   // Build a row with multiple subtexts for leave details
   Widget _buildLeaveDetailsRow(
-      {required String label1,
-      required String value1,
-      String? label2,
-      String? value2,
-      String? label3,
-      String? value3}) {
+      {required String staticText1,
+      required String dynamicText1,
+      String? staticText2,
+      String? dynamicText2,
+      String? staticText3,
+      String? dynamicText3}) {
     return Row(
       children: [
-        _buildSubText(label: label1, value: value1),
-        if (label2 != null) ...[
+        _buildSubText(label: staticText1, value: dynamicText1),
+        if (staticText2 != null) ...[
           customSpacerWidth(width: 20),
-          _buildSubText(label: label2, value: value2 ?? "-"),
+          _buildSubText(label: staticText2, value: dynamicText2 ?? "-"),
         ],
-        if (label3 != null) ...[
+        if (staticText3 != null) ...[
           customSpacerWidth(width: 20),
-          _buildSubText(label: label3, value: value3 ?? "-"),
+          _buildSubText(label: staticText3, value: dynamicText3 ?? "-"),
         ],
       ],
     );

@@ -51,12 +51,13 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
               bool isLastItem = index == data.length - 1;
               return _buildDepartmentHistoryItem(
                 isLastIndex: isLastItem,
+                role: "Manager",
                 imageUrl: "",
                 startDate: _formatDate("${data[index]["startDate"]}"),
                 endDate: _formatDate("${data[index]["endDate"]}"),
                 departmentName: "Main department",
                 parentDepartment: _formatParentDepartment("Manager"),
-                managerName: _getManagerName(index),
+                departmentHeaderName: "Manager name",
               );
             },
           ),
@@ -72,8 +73,9 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
     String? startDate,
     String? endDate,
     required bool isLastIndex,
-    required String managerName,
+    required String departmentHeaderName,
     required String imageUrl,
+    required String role,
   }) {
     return Padding(
       padding: marginLayout.copyWith(bottom: 14, top: 16),
@@ -113,9 +115,10 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
                           _buildDividers(),
                           Stack(
                             children: [
-                              _buildManagerInfo(
+                              _buildDepartmentHeaderInfo(
                                 imageUrl: imageUrl,
-                                managerName: managerName,
+                                departmentHeaderName: departmentHeaderName,
+                                role: role
                               ),
                               _buildDepartmentCircle(),
                             ],
@@ -227,13 +230,10 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
     return "${AppString.text_child_of_deparmtnet.tr} $departmentName";
   }
 
-  /// Returns a placeholder manager name.
-  String _getManagerName(int index) {
-    return "Manager name";
-  }
+
 
   /// Creates the manager's image layout with a circular avatar.
-  Widget _buildManagerImage(String imageUrl) {
+  Widget _buildDepartmentHeaderImage(String imageUrl) {
     return CircleAvatar(
       backgroundColor: AppColor.pendingColor,
       radius: 20,
@@ -243,34 +243,37 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
         child: CustomNetworkImage(
           errorText: "ER",
           height: 18,
-          imgUrlKey: imageUrl,
+          imgUrlKey: "",
+          profileImageKey: imageUrl,
           borderColor: Colors.transparent,
         ),
       ),
     );
   }
 
+
+
   /// Displays manager information including the name and title.
-  Widget _buildManagerInfo(
-      {required String imageUrl, required String managerName}) {
+  Widget _buildDepartmentHeaderInfo(
+      {required String imageUrl, required String departmentHeaderName,required String role}) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0),
       child: Row(
         children: [
-          _buildManagerImage(imageUrl),
+          _buildDepartmentHeaderImage(imageUrl),
           customSpacerWidth(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                managerName,
+                departmentHeaderName,
                 style: AppStyle.normal_text_grey.copyWith(
                   color: AppColor.secondaryColor,
                   fontSize: Dimensions.fontSizeDefault - 1,
                 ),
               ),
               Text(
-                AppString.textManager.tr,
+                role,
                 style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeDefault - 3,

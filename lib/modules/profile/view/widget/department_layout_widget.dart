@@ -184,10 +184,7 @@ _workShiftDetailsLayout() {
     return schedule.startTime == workSchedules[0].startTime &&
         schedule.endTime == workSchedules[0].endTime;
   });
-
-print(workSchedules?[0].startTime);
-
-
+  
   return Row(
     children: [
       Text(
