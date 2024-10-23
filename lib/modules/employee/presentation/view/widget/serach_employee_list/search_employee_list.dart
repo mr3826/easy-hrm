@@ -26,7 +26,7 @@ class SearchEmployeeList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CustomSearchField(
             onSearchChanged: (value) {},
-            searchController: searchController,
+            searchController: searchController.value,
             searchHintText: AppString.textSearchAndSelect.tr,
           ),
         ),
@@ -97,7 +97,7 @@ Widget buildRecentSearchSection() {
         ),
         InkWell(
           onTap: () {
-            searchController.clear();
+            searchController.value.clear();
           },
           child: Text(
             AppString.textClearAll.tr,
