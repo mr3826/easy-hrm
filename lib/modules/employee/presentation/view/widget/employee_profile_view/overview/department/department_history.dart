@@ -52,12 +52,13 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
               bool isLastItem = index == data.length - 1;
               return _buildDepartmentHistoryItem(
                 isLastIndex: isLastItem,
+                role: "Manager",
                 imageUrl: "",
                 startDate: _formatDate("${data[index]["startDate"]}"),
                 endDate: _formatDate("${data[index]["endDate"]}"),
                 departmentName: "Main department",
                 parentDepartment: _formatParentDepartment("Manager"),
-                managerName: _getManagerName(index),
+                departmentHeaderName: _getManagerName(index),
               );
             },
           ),
@@ -73,8 +74,9 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
     String? startDate,
     String? endDate,
     required bool isLastIndex,
-    required String managerName,
+    required String departmentHeaderName,
     required String imageUrl,
+    required String role,
   }) {
     return Padding(
       padding: marginLayout.copyWith(bottom: 14, top: 16),
@@ -114,9 +116,10 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
                           _buildDividers(),
                           Stack(
                             children: [
-                              _buildManagerInfo(
+                              _buildDepartmentHeaderInfo(
                                 imageUrl: imageUrl,
-                                managerName: managerName,
+                                departmentHeaderName: departmentHeaderName,
+                                role: role
                               ),
                               _buildDepartmentCircle(),
                             ],
@@ -251,9 +254,11 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
     );
   }
 
+
+
   /// Displays manager information including the name and title.
-  Widget _buildManagerInfo(
-      {required String imageUrl, required String managerName}) {
+  Widget _buildDepartmentHeaderInfo(
+      {required String imageUrl, required String departmentHeaderName,required String role}) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0),
       child: Row(
@@ -264,14 +269,14 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                managerName,
+                departmentHeaderName,
                 style: AppStyle.normal_text_grey.copyWith(
                   color: AppColor.secondaryColor,
                   fontSize: Dimensions.fontSizeDefault - 1,
                 ),
               ),
               Text(
-                AppString.textManager.tr,
+                role,
                 style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeDefault - 3,
