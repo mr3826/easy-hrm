@@ -28,7 +28,8 @@ class LeaveWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         final leaveType = data[index]["type"]!;
         final leaveStatus = data[index]["status"]!;
-        final itemColor = index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
+        final itemColor =
+            index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
 
         return SizedBox(
           child: Card(
@@ -96,15 +97,16 @@ class LeaveWidget extends StatelessWidget {
 Widget _showStatusButton(String leaveStatus) {
   switch (leaveStatus.toLowerCase()) {
     case 'approved':
-      return StatusBtnHelper().approvedStatusBtn();
+      return StatusBtnHelper.approvedStatusBtn();
+
     case 'rejected':
-      return StatusBtnHelper().rejectedStatusBtn();
+      return StatusBtnHelper.rejectedStatusBtn();
     case 'pending':
-      return StatusBtnHelper().pendingStatusBtn();
+      return StatusBtnHelper.pendingStatusBtn();
     case 'taken':
-      return StatusBtnHelper().tokenStatusBtn();
+      return StatusBtnHelper.tokenStatusBtn();
     case 'cancelled':
-      return StatusBtnHelper().cancelStatusBtn();
+      return StatusBtnHelper.cancelStatusBtn();
     default:
       return Container();
   }

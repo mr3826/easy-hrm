@@ -12,8 +12,8 @@ import '../../../../../controller/employment_controller.dart';
 
 class LeaveAllowance extends StatelessWidget {
   LeaveAllowance({super.key});
-  final EmploymentController counterController =
-      Get.find<EmploymentController>();
+
+  final EmploymentController controller = Get.find<EmploymentController>();
 
   @override
   Widget build(BuildContext context) {
@@ -128,18 +128,18 @@ class LeaveAllowance extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildIconButton(Icons.remove, counterController.decrement),
+            _buildIconButton(Icons.remove, controller.decrement),
             const SizedBox(width: 20),
             Obx(
               () => Text(
-                '${counterController.count}',
+                '${controller.count}',
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontSize: Dimensions.fontSizeMid),
               ),
             ),
             const SizedBox(width: 20),
-            _buildIconButton(Icons.add, counterController.increment),
+            _buildIconButton(Icons.add, controller.increment),
           ],
         ),
       ),

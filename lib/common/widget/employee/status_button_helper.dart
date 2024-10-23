@@ -6,7 +6,7 @@ import '../../../utils/app_string.dart';
 import '../custom_status_button.dart';
 
 class StatusBtnHelper {
-  Widget approvedStatusBtn() {
+  static Widget approvedStatusBtn() {
     return CustomStatusButton(
       textColor: AppColor.successColor,
       bgColor: AppColor.successColor.withOpacity(0.2),
@@ -16,7 +16,7 @@ class StatusBtnHelper {
     );
   }
 
-  Widget rejectedStatusBtn() {
+  static Widget rejectedStatusBtn() {
     return CustomStatusButton(
       textColor: AppColor.errorColorLight,
       bgColor: AppColor.errorColor.withOpacity(0.1),
@@ -26,7 +26,7 @@ class StatusBtnHelper {
     );
   }
 
-  Widget pendingStatusBtn() {
+  static Widget pendingStatusBtn() {
     return CustomStatusButton(
       textColor: AppColor.pendingColor,
       bgColor: AppColor.pendingColor.withOpacity(0.1),
@@ -36,7 +36,7 @@ class StatusBtnHelper {
     );
   }
 
-  Widget tokenStatusBtn() {
+  static Widget tokenStatusBtn() {
     return CustomStatusButton(
       textColor: AppColor.primaryColor,
       bgColor: AppColor.primaryColor.withOpacity(0.1),
@@ -46,7 +46,7 @@ class StatusBtnHelper {
     );
   }
 
-  Widget cancelStatusBtn() {
+  static Widget cancelStatusBtn() {
     return CustomStatusButton(
       textColor: AppColor.bgColor,
       bgColor: AppColor.errorColorLight.withOpacity(.9),
