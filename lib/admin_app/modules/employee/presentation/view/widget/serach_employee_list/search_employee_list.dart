@@ -14,6 +14,7 @@ import '../../../controller/employment_controller.dart';
 class SearchEmployeeList extends StatelessWidget {
   const SearchEmployeeList({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -128,7 +129,7 @@ class SearchEmployeeList extends StatelessWidget {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 24, // Adjust based on your data
+      itemCount: 3, // Adjust based on your data
       itemBuilder: (context, index) {
         return _buildEmployeeListItem(index);
       },
