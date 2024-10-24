@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../../../../utils/app_string.dart';
+
+import '../../../../../utils/app_string.dart';
 
 class LeaveController extends GetxController {
   RxInt tabLength = 0.obs;  // Reactive variable for tab index

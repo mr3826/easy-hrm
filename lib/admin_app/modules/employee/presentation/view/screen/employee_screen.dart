@@ -33,6 +33,7 @@ class EmployeeScreen extends StatelessWidget {
             builder: (controller) => controller.isEmployeesInfoLoading.isTrue
                 ? const LoadingIndicator()
                 : _buildEmployeeList(),
+
           ),
         ],
       ),
