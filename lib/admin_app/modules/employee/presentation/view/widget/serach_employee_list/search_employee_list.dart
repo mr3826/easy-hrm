@@ -21,127 +21,183 @@ class SearchEmployeeList extends StatelessWidget {
       children: [
         buildBottomSheetHeader(text: AppString.textEmployees.tr),
         customSpacerHeight(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CustomSearchField(
-            onSearchChanged: (value) async{
-              _valueChange(value);
-            },
-            searchController:
-                Get.find<EmploymentController>().searchController,
-            searchHintText: AppString.textSearchAndSelect.tr,
+
+        /// Search employee input field
+        _buildSearchField(),
+
+        customSpacerHeight(height: 8),
+
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                customSpacerHeight(height: 12),
+
+                /// Current user section (You)
+                _buildEmployeeInfo(
+                    name: "John Doe", role: "Laravel department", imgUrl: ""),
+
+                /// Recent search employee text section
+                _buildRecentSearchSection(),
+
+                /// Employee list section
+                _buildEmployeeSection(),
+                SizedBox(height: MediaQuery.of(context).size.height / 2),
+              ],
+            ),
           ),
         ),
-        customSpacerHeight(height: 8),
-        buildRecentSearchSection(),
-        Obx(() => Get.find<EmploymentController>().searchQuery.isEmpty
-            ? Expanded(child: _buildEmployeeList())
-            : Container()),
       ],
     );
   }
 
-  void _valueChange(String value) {
-    _clearTextField();
-    Get.find<EmploymentController>().searchQuery.value = value;
-    Get.find<EmploymentController>().searchController.text = value;
+  void _onSearchValueChanged(String value) {
+    _clearSearchField();
+    final controller = Get.find<EmploymentController>();
+    controller.searchQuery.value = value;
+    controller.searchController.text = value;
   }
-}
 
-Widget _buildEmployeeList() {
-  return ListView.builder(
-    shrinkWrap: true,
-    itemCount: 3, // Adjust based on your data
-    itemBuilder: (context, index) {
-      return _buildEmployeeListItem(index);
-    },
-  );
-}
+  Widget _buildEmployeeSection() {
+    return Obx(() {
+      return Get.find<EmploymentController>().searchQuery.isEmpty
+          ? _buildEmployeeList()
+          : Container();
+    });
+  }
 
-Widget _buildEmployeeListItem(int index) {
-  return Padding(
-    padding: const EdgeInsets.all(14.0),
-    child: Row(
+  Widget _buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: CustomSearchField(
+        onSearchChanged: (value) async {
+          _onSearchValueChanged(value);
+        },
+        searchController: Get.find<EmploymentController>().searchController,
+        searchHintText: AppString.textSearchAndSelect.tr,
+      ),
+    );
+  }
+
+  Widget _buildEmployeeInfo({
+    required String name,
+    required String role,
+    required String imgUrl,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20, top: 14, bottom: 16),
+      child: Row(
+        children: [
+          CustomNetworkImage(
+            imgUrlKey: "", // Replace with actual image URL key
+            profileImageKey: imgUrl,
+            errorText: 'ER',
+            height: 22,
+          ),
+          customSpacerWidth(width: 14),
+          Expanded(child: _buildEmployeeDetails(name, role)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmployeeDetails(String name, String role) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CustomNetworkImage(
-          imgUrlKey: "", // Replace with actual image URL key
-          errorText: 'ER',
-          height: 22,
+        Text(
+          name,
+          style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.secondaryColor,
+            fontWeight: FontWeight.w600,
+            fontSize: Dimensions.fontSizeDefault + 2,
+          ),
         ),
-        customSpacerWidth(width: 14),
-        Expanded(
-          child: buildEmployeeDetails("Jonus Kahnwald", "Product Designer"),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon:  const Icon(
-            Icons.close,
+        Text(
+          role,
+          style: subTextFieldTitleStyle.copyWith(
             color: AppColor.hintColor,
-            size: 26,
           ),
         ),
       ],
-    ),
-  );
-}
+    );
+  }
 
-Widget buildRecentSearchSection() {
-  return Obx(() => Get.find<EmploymentController>().searchQuery.isEmpty
-      ? Padding(
-          padding:
-              const EdgeInsets.only(left: 24.0, top: 20, bottom: 20, right: 24),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppString.textRecentSearch.tr,
-                style: AppStyle.normal_text_black.copyWith(
-                  color: AppColor.normalTextColor,
-                  fontSize: Dimensions.fontSizeMid - 1,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  _clearTextField();
-                },
-                child: Text(
-                  AppString.textClearAll.tr,
-                  style: AppStyle.normal_text_black.copyWith(
-                    color: AppColor.secondaryColor,
-                    fontSize: Dimensions.fontSizeDefault,
-                  ),
-                ),
-              ),
-            ],
+  Widget _buildEmployeeList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 24, // Adjust based on your data
+      itemBuilder: (context, index) {
+        return _buildEmployeeListItem(index);
+      },
+    );
+  }
+
+  Widget _buildEmployeeListItem(int index) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 20, top: 14, bottom: 8),
+      child: Row(
+        children: [
+          const CustomNetworkImage(
+            imgUrlKey: "", // Replace with actual image URL key
+            errorText: 'ER',
+            height: 22,
           ),
-        )
-      : Container());
-}
-
-void _clearTextField() {
-  Get.find<EmploymentController>().searchController.clear();
-  Get.find<EmploymentController>().searchQuery.value = "";
-}
-
-Widget buildEmployeeDetails(name, department) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        "$name",
-        style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.secondaryColor,
-          fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeDefault + 2,
-        ),
+          customSpacerWidth(width: 14),
+          Expanded(
+            child: _buildEmployeeDetails("Jonas Kahnwald", "Product Designer"),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.close,
+              color: AppColor.hintColor,
+              size: 26,
+            ),
+          ),
+        ],
       ),
-      Text(
-        "$department",
-        style: subTextFieldTitleStyle.copyWith(
-          color: AppColor.hintColor,
+    );
+  }
+
+  Widget _buildRecentSearchSection() {
+    return Obx(() {
+      return Get.find<EmploymentController>().searchQuery.isEmpty
+          ? Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              AppString.textRecentSearch.tr,
+              style: AppStyle.normal_text_black.copyWith(
+                color: AppColor.normalTextColor,
+                fontSize: Dimensions.fontSizeMid - 1,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            InkWell(
+              onTap: () => _clearSearchField(),
+              child: Text(
+                AppString.textClearAll.tr,
+                style: AppStyle.normal_text_black.copyWith(
+                  color: AppColor.secondaryColor,
+                  fontSize: Dimensions.fontSizeDefault,
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-    ],
-  );
+      )
+          : Container();
+    });
+  }
+
+  void _clearSearchField() {
+    final controller = Get.find<EmploymentController>();
+    controller.searchController.clear();
+    controller.searchQuery.value = "";
+  }
 }
