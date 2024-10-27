@@ -29,9 +29,12 @@ class LeaveAllowance extends StatelessWidget {
               children: [
                 const SelectedLeaveType(),
                 customSpacerHeight(height: 20),
-                _buildAllowanceBalanceText(),
-                customSpacerHeight(height: 4),
-                _buildAllowanceCounter(),
+
+
+                _buildAllowanceCounterLayout(),
+
+
+
                 customSpacerHeight(height: 12),
                 _alertMessageLayout(),
                 SizedBox(
@@ -101,9 +104,9 @@ class LeaveAllowance extends StatelessWidget {
   }
 
   // Text for the Allowance Balance
-  Widget _buildAllowanceBalanceText() {
+  Widget _buildAllowanceBalanceText(text) {
     return Text(
-      AppString.textAllowanceBalance.tr,
+     text,
       style: AppStyle.mid_large_text.copyWith(
         color: AppColor.normalTextColor,
         fontSize: Dimensions.fontSizeDefault,
@@ -113,8 +116,11 @@ class LeaveAllowance extends StatelessWidget {
     );
   }
 
-  // Counter for Allowance using increment and decrement
-  Widget _buildAllowanceCounter() {
+
+
+
+    // Counter for Allowance using increment and decrement
+  Widget _applicationBalance() { ///Number of application
     return Card(
       shape: roundedRectangleBorder.copyWith(
         side: BorderSide(
@@ -128,23 +134,105 @@ class LeaveAllowance extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildIconButton(Icons.remove, controller.decrement),
+            _buildIconButton(Icons.remove, controller.applicationBalanceDecrement),
             const SizedBox(width: 20),
             Obx(
               () => Text(
-                '${controller.count}',
+                '${controller.applicationBalanceCount}',
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontSize: Dimensions.fontSizeMid),
               ),
             ),
             const SizedBox(width: 20),
-            _buildIconButton(Icons.add, controller.increment),
+            _buildIconButton(Icons.add, controller.applicationBalanceIncrement),
+          ],
+        ),
+      ),
+    );
+  }///Number of application
+
+  Widget _maxConsecutiveDays() { ///Number of application
+    return Card(
+      shape: roundedRectangleBorder.copyWith(
+        side: BorderSide(
+          width: 1,
+          color: AppColor.hintColor.withOpacity(0.6),
+        ),
+      ),
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildIconButton(Icons.remove, controller.applicationMaxDayDecrement),
+            const SizedBox(width: 20),
+            Obx(
+              () => Text(
+                '${controller.applicationMaxDaysCount}',
+                style: AppStyle.normal_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeMid),
+              ),
+            ),
+            const SizedBox(width: 20),
+            _buildIconButton(Icons.add, controller.applicationMaxDayIncrement),
           ],
         ),
       ),
     );
   }
+
+
+
+
+
+  Widget _buildAllowanceCounterNumberOfDays() { ///Number of days
+    return Card(
+      shape: roundedRectangleBorder.copyWith(
+        side: BorderSide(
+          width: 1,
+          color: AppColor.hintColor.withOpacity(0.6),
+        ),
+      ),
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildIconButton(Icons.remove, controller.dayDecrement),
+            const SizedBox(width: 20),
+            Obx(
+              () => Text(
+                '${controller.daysCount}',
+                style: AppStyle.normal_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontSize: Dimensions.fontSizeMid),
+              ),
+            ),
+            const SizedBox(width: 20),
+            _buildIconButton(Icons.add, controller.dayIncrement),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Reusable method for IconButton
   Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
@@ -217,6 +305,44 @@ class LeaveAllowance extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  _buildAllowanceCounterLayout() {
+    String data ="No_of_applications";
+    if(data=="No_of_applications"){
+      return _numberOfApplication();
+    }else {
+      return _numberOfDays();
+    }
+  }
+
+
+  _numberOfDays(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildAllowanceBalanceText( AppString.textAllowanceBalance.tr),
+        customSpacerHeight(height: 4),
+        _buildAllowanceCounterNumberOfDays(),
+      ],
+    );
+  }
+  _numberOfApplication(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildAllowanceBalanceText( AppString.textApplicationBalance.tr),
+        customSpacerHeight(height: 4),
+        _applicationBalance(),
+        customSpacerHeight(height: 20),
+
+        _buildAllowanceBalanceText( AppString.textMaxConsecutiveBalance.tr),
+        customSpacerHeight(height: 4),
+
+        _maxConsecutiveDays(),
+
+      ],
     );
   }
 }

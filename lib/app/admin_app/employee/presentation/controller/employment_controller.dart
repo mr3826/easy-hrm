@@ -21,19 +21,39 @@ class EmploymentController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
 
+  RxInt daysCount = 0.obs;
+  RxInt applicationBalanceCount = 0.obs;
+  RxInt applicationMaxDaysCount = 0.obs;
 
-  var count = 0.obs;
-
-  void increment() {
-    count++;
+  void dayIncrement() {
+    daysCount++;
   }
 
-  void decrement() {
-    if (count > 0) {
-      count--;
-    }}
+  void dayDecrement() {
+    if (daysCount > 0) {
+      daysCount--;
+    }
+  }
 
+  void applicationBalanceIncrement() {
+    applicationBalanceCount++;
+  }
 
+  void applicationBalanceDecrement() {
+    if (applicationBalanceCount > 0) {
+      applicationBalanceCount--;
+    }
+  }
+
+  void applicationMaxDayIncrement() {
+    applicationMaxDaysCount++;
+  }
+
+  void applicationMaxDayDecrement() {
+    if (applicationMaxDaysCount > 0) {
+      applicationMaxDaysCount--;
+    }
+  }
 
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
