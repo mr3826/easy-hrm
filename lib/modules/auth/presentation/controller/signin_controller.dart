@@ -55,8 +55,8 @@ class SignInController extends GetxController with StateMixin {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      di.Response response = await _networkClient.postRequest(
-          Api.LOGIN, {"email": email, "password": password});
+      di.Response response = await _networkClient
+          .postRequest(Api.LOGIN, {"email": email, "password": password});
       if (response.statusCode == 200) {
         _handleTokenInfo(response);
         final userInfoResponse =
@@ -95,9 +95,11 @@ class SignInController extends GetxController with StateMixin {
     // Store tokens in local storage
     GetStorage().write(userInfo?.user?.organizationId ?? "", tokenJson);
     GetStorage().write(AppString.LOGGED_IN, true);
-    GetStorage().write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
     // Store the organization user ID in GetStorage.
-    GetStorage().write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
     // Save last input data and get subscription info
     _saveData();
   }
