@@ -14,6 +14,8 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../controller/leave_controller.dart';
+import '../widget/calandar_widget.dart';
+import '../widget/range_calendar.dart';
 
 class LeaveHrScreen extends StatelessWidget {
   const LeaveHrScreen({super.key});
@@ -27,11 +29,19 @@ class LeaveHrScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+
             _buildTabBar(context),
-            customSpacerHeight(height: 4),
-            _buildSearchBar(context, onSearch: () {
-              showEmployeeSelectionSheet();
+            customSpacerHeight(height: 4), _buildSearchBar(context, onSearch: () {showEmployeeSelectionSheet();
             }),
+
+            DateNavigatorWidget(onDateChanged: (String value) {  },),
+
+
+           // RangeCalendarExample()
+
+
+
           ],
         ),
       ),
