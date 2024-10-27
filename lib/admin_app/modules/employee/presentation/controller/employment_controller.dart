@@ -22,7 +22,6 @@ class EmploymentController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
 
-
   var count = 0.obs;
 
   void increment() {
@@ -32,9 +31,8 @@ class EmploymentController extends GetxController {
   void decrement() {
     if (count > 0) {
       count--;
-    }}
-
-
+    }
+  }
 
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
@@ -42,6 +40,8 @@ class EmploymentController extends GetxController {
   EmployeeInfo? employeeInfo = EmployeeInfo();
 
   List<Data>? employeeList = <Data>[];
+
+  RxList<Data> recentlySearchedEmployeeList = <Data>[].obs;
 
   Future<void> getEmployees() async {
     isEmployeesInfoLoading(true);

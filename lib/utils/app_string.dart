@@ -289,6 +289,7 @@ class AppString {
   static const String textManager = "Manager";
 
   static const String textOn = "on";
+  static const String textYou = "You";
   static const String textPresent = "Present";
   static const String textTimelogApprover = "Time log approver";
   static const String textWeDidNotEtc = "We did not find anything to show here!";

@@ -30,6 +30,7 @@ class Data {
   Profile? profile;
   EmploymentStatus? employmentStatus;
   EmploymentStatus? designation;
+  EmploymentStatus? department;
   User? user;
   String? userId;
 
@@ -50,6 +51,9 @@ class Data {
         : null;
     designation = json['designation'] != null
         ? new EmploymentStatus.fromJson(json['designation'])
+        : null;
+    department = json['department'] != null
+        ? new EmploymentStatus.fromJson(json['department'])
         : null;
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     userId = json['user_id'];

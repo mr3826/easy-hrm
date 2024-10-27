@@ -614,6 +614,9 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
       designation {
         name
       }
+      department {
+        name
+      }
       user {
         id
         email
