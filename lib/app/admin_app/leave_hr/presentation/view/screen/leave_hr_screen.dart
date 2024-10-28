@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/employee_search.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
+import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../../common/widget/employee/status_button_helper.dart';
 import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
@@ -15,6 +18,7 @@ import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../controller/leave_controller.dart';
 import '../widget/calandar_widget.dart';
+import '../widget/leave_recorde/leave_recorde_list.dart';
 import '../widget/range_calendar.dart';
 
 class LeaveHrScreen extends StatelessWidget {
@@ -29,19 +33,13 @@ class LeaveHrScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-
             _buildTabBar(context),
-            customSpacerHeight(height: 4), _buildSearchBar(context, onSearch: () {showEmployeeSelectionSheet();
+            customSpacerHeight(height: 4),
+            _buildSearchBar(context, onSearch: () {
+              showEmployeeSelectionSheet();
             }),
-
             const DateNavigatorWidget(),
-
-
-
-
-
-
+            const LeaveRecordList()
           ],
         ),
       ),
@@ -138,7 +136,7 @@ class LeaveHrScreen extends StatelessWidget {
                     color: AppColor.hintColor, size: 20),
                 customSpacerWidth(width: 6),
                 Text(
-                  AppString.textSearch.tr,
+                  AppString.textSearchEmployee.tr,
                   style: AppStyle.normal_text_black.copyWith(
                     fontSize: Dimensions.fontSizeMid - 3,
                   ),
@@ -150,7 +148,11 @@ class LeaveHrScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
+
+
 
 void showEmployeeSelectionSheet() {
   customButtonSheet(

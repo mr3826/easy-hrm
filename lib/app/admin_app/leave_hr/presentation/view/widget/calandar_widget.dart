@@ -15,7 +15,7 @@ class DateNavigatorWidget extends StatelessWidget {
     var controller = Get.put(LeaveController());
 
     return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 8, right: 8),
+      padding: const EdgeInsets.only(top: 12, left: 12, right: 10),
       child: GestureDetector(
         onTap: () {
           showDialog<String>(
@@ -25,47 +25,47 @@ class DateNavigatorWidget extends StatelessWidget {
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColor.normalTextColor,
-                      size: 18,
-                    ),
-                  ),
-                  Obx(
-                    () => Text(
+              GestureDetector(
+                onTap: () {},
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColor.normalTextColor,
+                  size: 18,
+                ),
+              ),
+              Obx(
+                () => Column(
+                  children: [
+                    Text(
                       controller.currentDate.value,
                       style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.secondaryColor,
-                        fontSize: Dimensions.fontSizeDefault + 2,
+                        fontSize: Dimensions.fontSizeDefault+1       ,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      color: AppColor.normalTextColor,
-                      size: 18,
+
+                    Center(
+                      child: Text(
+                        DateFormat('EEEE').format(DateTime.now()),
+                        style: AppStyle.mid_large_text.copyWith(
+                          color: AppColor.hintColor,
+                          fontSize: Dimensions.fontSizeDefault - 2,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Center(
-                child: Text(
-                  DateFormat('EEEE').format(DateTime.now()),
-                  style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.hintColor,
-                    fontSize: Dimensions.fontSizeDefault - 1,
-                  ),
+              GestureDetector(
+                onTap: () {},
+                child: const Icon(
+                  Icons.arrow_forward_ios_sharp,
+                  color: AppColor.normalTextColor,
+                  size: 18,
                 ),
               ),
             ],
