@@ -48,6 +48,7 @@ class AppString {
 
   static const String textCalendar = "Calender";
   static const String textLeaveRecord = "Leave recodes";
+  static const String textClear = "Clear";
 
 
 

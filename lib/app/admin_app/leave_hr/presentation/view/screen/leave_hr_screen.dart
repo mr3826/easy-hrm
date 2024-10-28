@@ -35,10 +35,10 @@ class LeaveHrScreen extends StatelessWidget {
             customSpacerHeight(height: 4), _buildSearchBar(context, onSearch: () {showEmployeeSelectionSheet();
             }),
 
-            DateNavigatorWidget(onDateChanged: (String value) {  },),
+            const DateNavigatorWidget(),
 
 
-           // RangeCalendarExample()
+
 
 
 
