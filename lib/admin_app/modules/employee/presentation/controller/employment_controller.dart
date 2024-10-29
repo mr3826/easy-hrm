@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 import '../../data/employee_remote_data_source.dart';
 import '../../domain/employee_info.dart';
@@ -41,7 +42,6 @@ class EmploymentController extends GetxController {
 
   List<Data>? employeeList = <Data>[];
 
-  RxList<Data> recentlySearchedEmployeeList = <Data>[].obs;
 
   Future<void> getEmployees() async {
     isEmployeesInfoLoading(true);
@@ -62,6 +62,35 @@ class EmploymentController extends GetxController {
     'Ad-hoc',
     'Probation',
   ];
+
+
+  void addRecentSearchData(Data data) async {
+    var box = Hive.box<Data>('dataBox');
+    final dataList = box.values.toList();
+
+    // Check if the data already exists
+    if (dataList.any((element) => element.id == data.id)) {
+      return;
+    }
+
+    // Ensure the list has a maximum of 3 elements
+    if (dataList.length >= 3) {
+      await dataList.last.delete();
+    }
+
+    await box.add(data);
+  }
+
+  void removeRecentSearchData(String id) async {
+    var box = Hive.box<Data>('dataBox');
+    final data = box.values.firstWhere((element) => element.id == id);
+    await data.delete();
+  }
+
+  void clearAllRecentSearchData() async {
+    var box = Hive.box<Data>('dataBox');
+    await box.clear();
+  }
 
   @override
   void onInit() {

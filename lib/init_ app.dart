@@ -8,13 +8,18 @@ import 'package:payrun_mobile/modules/notification/data/remote/notification_remo
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:get_storage/get_storage.dart' as get_storage;
 import 'package:payrun_mobile/network/network_client.dart';
 import 'admin_app/modules/employee/data/employee_remote_data_source.dart';
+import 'admin_app/modules/employee/domain/employee_info.dart';
 import 'firebase_options.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 Future<void> initApp() async {
-  await GetStorage.init();
+  initializeHive();
+
+  await get_storage.GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
 
   NetworkClient client = Get.put(NetworkClient());
@@ -47,4 +52,38 @@ Future<void> initApp() async {
   Get.put(LeaveRemoteDataSource(client), permanent: true);
 
   Get.put(EmployeeRemoteDataSource(client), permanent: true);
+}
+
+Future<void> initializeHive() async {
+  await Hive.initFlutter();
+  registerAdapters();
+  await openBoxes();
+}
+
+void registerAdapters() {
+  Hive.registerAdapter(DataAdapter());
+  Hive.registerAdapter(ProfileAdapter());
+  Hive.registerAdapter(EmploymentStatusAdapter());
+  Hive.registerAdapter(UserAdapter());
+}
+
+Future<void> openBoxes() async {
+  Box<String> settingsBox = await Hive.openBox<String>('settingsBox');
+  await checkAppVersion(settingsBox);
+  await Hive.openBox<Data>('dataBox');
+}
+
+Future<void> checkAppVersion(Box<String> box) async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  String currentVersion = packageInfo.version;
+
+  String? storedVersion = box.get('appVersion');
+
+  if (storedVersion == null || storedVersion != currentVersion) {
+    // Clear the data box if the version has changed
+    Box<Data> dataBox = await Hive.openBox<Data>('dataBox');
+    await dataBox.clear();
+    // Store the new version
+    await box.put('appVersion', currentVersion);
+  }
 }

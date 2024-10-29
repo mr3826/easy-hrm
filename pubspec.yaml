@@ -73,6 +73,9 @@ dependencies:
   upgrader: ^10.3.0
   dio: 
   dropdown_button2: ^2.3.9
+  hive:
+  hive_flutter:
+  package_info_plus: ^8.1.0
 
 
 dev_dependencies:
@@ -86,6 +89,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
+  build_runner:
+  hive_generator:
 
 
 flutter_launcher_icons:

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:payrun_mobile/admin_app/modules/employee/domain/employee_info.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
@@ -85,15 +87,8 @@ class SearchEmployeeList extends StatelessWidget {
                             .employeeList?[index];
                         return GestureDetector(
                           onTap: () {
-                            var recentlySearchList =
-                                Get.find<EmploymentController>()
-                                    .recentlySearchedEmployeeList;
-                            if (recentlySearchList.length == 3) {
-                              recentlySearchList.removeLast();
-                            }
-                            if (!recentlySearchList.contains(employee)) {
-                              recentlySearchList.add(employee ?? Data());
-                            }
+                            Get.find<EmploymentController>()
+                                .addRecentSearchData(employee ?? Data());
                           },
                           child: _buildEmploymeeInfo(
                               name:
@@ -115,9 +110,7 @@ class SearchEmployeeList extends StatelessWidget {
     controller.searchController.text = value;
   }
 
-  Widget _buildRecentlySearchedEmployeeSection() => Obx(
-        () => _buildEmployeeList(),
-      );
+  Widget _buildRecentlySearchedEmployeeSection() => _buildEmployeeList();
 
   Widget _buildSearchField() {
     return Padding(
@@ -213,16 +206,20 @@ class SearchEmployeeList extends StatelessWidget {
   }
 
   Widget _buildEmployeeList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount:
-          Get.find<EmploymentController>().recentlySearchedEmployeeList.length,
-      // Adjust based on your data
-      itemBuilder: (context, index) {
-        return _buildEmployeeListItem(Get.find<EmploymentController>()
-            .recentlySearchedEmployeeList[index]);
+    return ValueListenableBuilder(
+      valueListenable: Hive.box<Data>('dataBox').listenable(),
+      builder: (BuildContext context, Box<Data> value, Widget? child) {
+        final dataList = value.values.toList();
+        return ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: dataList.length,
+          // Adjust based on your data
+          itemBuilder: (context, index) {
+            return _buildEmployeeListItem(dataList[index]);
+          },
+        );
       },
     );
   }
@@ -246,8 +243,7 @@ class SearchEmployeeList extends StatelessWidget {
           IconButton(
             onPressed: () {
               Get.find<EmploymentController>()
-                  .recentlySearchedEmployeeList
-                  .remove(employeeData);
+                  .removeRecentSearchData(employeeData.id ?? "");
             },
             icon: const Icon(
               Icons.close,
@@ -274,26 +270,28 @@ class SearchEmployeeList extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          Obx(
-            () => Get.find<EmploymentController>()
-                    .recentlySearchedEmployeeList
-                    .isNotEmpty
-                ? InkWell(
-                    onTap: () {
-                      Get.find<EmploymentController>()
-                          .recentlySearchedEmployeeList
-                          .clear();
-                    },
-                    child: Text(
-                      AppString.textClearAll.tr,
-                      style: AppStyle.normal_text_black.copyWith(
-                        color: AppColor.secondaryColor,
-                        fontSize: Dimensions.fontSizeDefault,
+          ValueListenableBuilder(
+            valueListenable: Hive.box<Data>('dataBox').listenable(),
+            builder: (BuildContext context, Box<Data> value, child) {
+              final dataList = value.values.toList();
+
+              return dataList.isNotEmpty
+                  ? InkWell(
+                      onTap: () {
+                        Get.find<EmploymentController>()
+                            .clearAllRecentSearchData();
+                      },
+                      child: Text(
+                        AppString.textClearAll.tr,
+                        style: AppStyle.normal_text_black.copyWith(
+                          color: AppColor.secondaryColor,
+                          fontSize: Dimensions.fontSizeDefault,
+                        ),
                       ),
-                    ),
-                  )
-                : Container(),
-          )
+                    )
+                  : Container();
+            },
+          ),
         ],
       ),
     );
