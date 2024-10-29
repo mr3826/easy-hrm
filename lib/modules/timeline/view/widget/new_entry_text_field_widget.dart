@@ -78,9 +78,9 @@ class TimeLogEntryTextField extends StatelessWidget {
                           style: const TextStyle(
                               color: Colors.white, fontSize: 16)),
                       onPressed: () {
-                        customDialog(
+                        showCustomAlertDialog(
                             context: context,
-                            saveBtnAction: () async {
+                            onConfirm: () async {
                               Get.find<TimelineController>()
                                   .removeTimeEntry(
                                       timeLogId: Get.find<TimelineController>()
@@ -91,16 +91,16 @@ class TimeLogEntryTextField extends StatelessWidget {
                                 }
                               });
                             },
-                            icon: CupertinoIcons.delete,
+                            iconData: CupertinoIcons.delete,
                             titleText: AppString.text_remove_timelog.tr,
-                            subText: AppString
+                            descriptionText: AppString
                                 .text_sure_you_want_to_delete_timelog.tr,
-                            iconBgColor: AppColor.errorColorLight,
-                            btnBgColor: AppColor.errorColorLight,
-                            btnText: "",
-                            drcText: "",
-                            drcFontSize: Dimensions.fontSizeDefault,
-                            childForSaveBtn: Obx(() => removeTextLayout()));
+                            iconBackgroundColor: AppColor.errorColorLight,
+                            confirmButtonColor: AppColor.errorColorLight,
+                            confirmButtonText: "",
+                            extraInfoText: "",
+                            descriptionFontSize: Dimensions.fontSizeDefault,
+                            confirmButtonChild: Obx(() => removeTextLayout()));
                       },
                       buttonColor: AppColor.errorColorLight)
                   : Obx(

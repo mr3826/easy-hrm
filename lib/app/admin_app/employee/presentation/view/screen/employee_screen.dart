@@ -40,6 +40,11 @@ class EmployeeScreen extends StatelessWidget {
     );
   }
 
+
+
+
+
+
   PreferredSizeWidget _buildEmployeeAppBar() {
     return customAppbar(
       leadingIcon: Text(

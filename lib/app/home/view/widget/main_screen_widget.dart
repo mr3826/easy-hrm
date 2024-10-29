@@ -19,23 +19,23 @@ List<PersistentBottomNavBarItem> get iconList => _navBarsItems();
 Future<bool> get appExitChecker => _onWillPop();
 
 Future<bool> _onWillPop() async {
-  return customDialog(
+  return showCustomAlertDialog(
     context: Get.context!,
-    saveBtnAction: () {
+    onConfirm: () {
       if (Platform.isAndroid) {
         SystemNavigator.pop();
       } else if (Platform.isIOS) {
         exit(0);
       }
     },
-    icon: Icons.logout,
+    iconData: Icons.logout,
     titleText: AppString.text_are_you_sure.tr,
-    subText: "${AppString.text_are_you_sure_want_to_exit_from_app.tr}.",
-    iconBgColor: AppColor.secondaryColor,
-    btnBgColor: AppColor.secondaryColor,
-    btnText: AppString.text_yes.tr,
-    drcText: "",
-    drcFontSize: Dimensions.fontSizeDefault,
+    descriptionText: "${AppString.text_are_you_sure_want_to_exit_from_app.tr}.",
+    iconBackgroundColor: AppColor.secondaryColor,
+    confirmButtonColor: AppColor.secondaryColor,
+    confirmButtonText: AppString.text_yes.tr,
+    extraInfoText: "",
+    descriptionFontSize: Dimensions.fontSizeDefault,
   );
 }
 

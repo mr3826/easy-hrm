@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/employee/status_button_helper.dart';
@@ -7,7 +8,8 @@ import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-import 'leave_recorde_details.dart';
+import 'leave_recorde_details /leave_record_details.dart';
+import 'leave_recorde_details /more_leave_record_details.dart';
 
 class LeaveRecordList extends StatelessWidget {
   const LeaveRecordList({super.key});
@@ -70,6 +72,12 @@ class LeaveRecordList extends StatelessWidget {
         "name": "Claudia Tiedemann",
         "leaveName": "Sick Leave",
         "designation": "Product Owner"
+      }, {
+        "type": "Paid",
+        "status": "cancelled",
+        "name": "Claudia Tiedemann",
+        "leaveName": "Sick Leave",
+        "designation": "Product Owner"
       },
     ];
 
@@ -91,16 +99,23 @@ class LeaveRecordList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildUserDetails(
-
-                        LeaveRecordDetailsModel(  employeeName: data[index]["name"] ?? '',
+                        LeaveRecordDetailsModel(
+                            employeeName: data[index]["name"] ?? '',
                             applicationStatus: data[index]["status"] ?? '',
                             designation: data[index]["designation"] ?? '',
                             typeOfLeave: data[index]["leaveName"] ?? '',
                             leaveStatus: data[index]["type"] ?? '',
                             imgUrl: "",
-                            leaveDate: "12 Mar 22 - 15 Mar 22",
+                            leaveDate:
+                                "${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))} - ${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))}",
+
+                            //"12 Mar 22 - 15 Mar 22",
                             leaveDuration: "3 days",
-                            applicationDate: '09 March 2020'),
+                            applicationDate: "2024-10-29 16:13:16.049738"
+
+                            // '09 March 2020'
+
+                            ),
                       ),
                     ],
                   ),
@@ -114,71 +129,70 @@ class LeaveRecordList extends StatelessWidget {
   }
 
   Widget _buildUserDetails(LeaveRecordDetailsModel leaveRecordDetailsModel) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomNetworkImage(
-          imgUrlKey:leaveRecordDetailsModel.imgUrl??"",
-          errorText: "Er",
-          height: 20,
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-            leaveRecordDetailsModel.employeeName??"",
-                maxLines: 2,
-                style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.secondaryColor,
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: Dimensions.fontSizeMid - 2,
-                ),
-              ),
-              Text(
-                leaveRecordDetailsModel.designation??"",                maxLines: 2,
-                style: AppStyle.normal_text_black.copyWith(
-                  color: AppColor.hintColor,
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: Dimensions.fontSizeDefault - 2,
-                ),
-              ),
-              const SizedBox(height: 14),
-              _buildLeaveDetails(leaveRecordDetailsModel.typeOfLeave??"", leaveRecordDetailsModel.leaveStatus??"", leaveRecordDetailsModel.leaveDate??"",),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  _showStatusButton(leaveRecordDetailsModel.applicationStatus??"",),
-                  const Spacer(),
-                ],
-              ),
-            ],
+    return InkWell(
+      onTap: () {
+        _showLeaveRecodeDetails(leaveRecordDetailsModel);
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomNetworkImage(
+            imgUrlKey: leaveRecordDetailsModel.imgUrl ?? "",
+            errorText: "Er",
+            height: 20,
           ),
-        ),
-        InkWell(
-          onTap: () {
-
-            customAntButtonSheet(context: Get.context!, child: LeaveRecordDetails(leaveRecordDetailsModel: LeaveRecordDetailsModel(
-              applicationDate: leaveRecordDetailsModel.applicationDate,
-              applicationStatus: leaveRecordDetailsModel.applicationStatus,
-              employeeName: leaveRecordDetailsModel.employeeName,
-              leaveDate:leaveRecordDetailsModel. leaveDate,
-              leaveDuration:leaveRecordDetailsModel.leaveDuration ,
-              typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-              designation: leaveRecordDetailsModel.designation,
-              imgUrl: leaveRecordDetailsModel.imgUrl
-
-            ),));
-
-
-          },
-          child: const Icon(
-            Icons.more_horiz,
-            color: AppColor.hintColor,
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  leaveRecordDetailsModel.employeeName ?? "",
+                  maxLines: 2,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.secondaryColor,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: Dimensions.fontSizeMid - 2,
+                  ),
+                ),
+                Text(
+                  leaveRecordDetailsModel.designation ?? "",
+                  maxLines: 2,
+                  style: AppStyle.normal_text_black.copyWith(
+                    color: AppColor.hintColor,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: Dimensions.fontSizeDefault - 2,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                _buildLeaveDetails(
+                  leaveRecordDetailsModel.typeOfLeave ?? "",
+                  leaveRecordDetailsModel.leaveStatus ?? "",
+                  leaveRecordDetailsModel.leaveDate ?? "",
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    _showStatusButton(
+                      leaveRecordDetailsModel.applicationStatus ?? "",
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          InkWell(
+            onTap: () {
+              _showLeaveRecordDetailsSheet(leaveRecordDetailsModel);
+            },
+            child: const Icon(
+              Icons.more_horiz,
+              color: AppColor.hintColor,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -219,10 +233,48 @@ class LeaveRecordList extends StatelessWidget {
         return StatusBtnHelper.pendingStatusBtn();
       case 'taken':
         return StatusBtnHelper.tokenStatusBtn();
-      case 'cancelled':
+      case 'cancel':
         return StatusBtnHelper.cancelStatusBtn();
+        case 'cancelled':
+        return StatusBtnHelper.cancelledStatusBtn();
       default:
         return Container();
     }
+  }
+
+  void _showLeaveRecordDetailsSheet(
+      LeaveRecordDetailsModel leaveRecordDetailsModel) {
+    customAntButtonSheet(
+        context: Get.context!,
+        height: MediaQuery.of(Get.context!).size.height / 1.5,
+        child: MoreLeaveRecordDetails(
+          leaveRecordDetails: LeaveRecordDetailsModel(
+              applicationDate: leaveRecordDetailsModel.leaveStatus,
+              applicationStatus: leaveRecordDetailsModel.applicationStatus,
+              employeeName: leaveRecordDetailsModel.employeeName,
+              leaveDate: leaveRecordDetailsModel.leaveDate,
+              leaveDuration: leaveRecordDetailsModel.leaveDuration,
+              typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
+              leaveStatus: leaveRecordDetailsModel.leaveStatus,
+              designation: leaveRecordDetailsModel.designation,
+              imgUrl: leaveRecordDetailsModel.imgUrl),
+        ));
+  }
+
+  void _showLeaveRecodeDetails(
+      LeaveRecordDetailsModel leaveRecordDetailsModel) {
+    customAntButtonSheet(
+        context: Get.context!,
+        child: LeaveRecordDetails(
+          leaveRecordDetailsModel: LeaveRecordDetailsModel(
+              applicationDate: leaveRecordDetailsModel.applicationDate,
+              applicationStatus: leaveRecordDetailsModel.applicationStatus,
+              employeeName: leaveRecordDetailsModel.employeeName,
+              leaveDate: leaveRecordDetailsModel.leaveDate,
+              leaveDuration: leaveRecordDetailsModel.leaveDuration,
+              typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
+              designation: leaveRecordDetailsModel.designation,
+              imgUrl: leaveRecordDetailsModel.imgUrl),
+        ));
   }
 }

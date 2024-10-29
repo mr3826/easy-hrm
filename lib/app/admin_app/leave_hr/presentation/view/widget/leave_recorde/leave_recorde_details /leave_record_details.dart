@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../../../../../common/widget/custom_network_image.dart';
-import '../../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../../common/widget/custom_text_field.dart';
-import '../../../../../../../common/widget/employee/status_button_helper.dart';
-import '../../../../../../../utils/app_color.dart';
-import '../../../../../../../utils/app_style.dart';
-import '../../../../../../../utils/dimensions.dart';
+import '../../../../../../../../common/widget/custom_network_image.dart';
+import '../../../../../../../../common/widget/custom_spacer.dart';
+import '../../../../../../../../common/widget/custom_text_field.dart';
+import '../../../../../../../../common/widget/employee/status_button_helper.dart';
+import '../../../../../../../../enum.dart';
+import '../../../../../../../../utils/app_color.dart';
+import '../../../../../../../../utils/app_style.dart';
+import '../../../../../../../../utils/dimensions.dart';
+import 'more_leave_record_details.dart';
 
 
 class LeaveRecordDetails extends StatelessWidget {
@@ -31,8 +34,12 @@ class LeaveRecordDetails extends StatelessWidget {
         _buildRow(label: "Date", value: leaveRecordDetailsModel.leaveDate),
         _buildRow(label: "Duration", value: leaveRecordDetailsModel.leaveDuration),
         _buildRow(label: "Status", widget: _showStatusButton(leaveRecordDetailsModel.applicationStatus ?? "")),
-        _buildRow(label: "Date of application", value: leaveRecordDetailsModel.applicationDate),
-        _buildActionButtons(),
+        _buildRow(label: "Date of application", value:  DateFormat("dd MMMM yyyy").format(DateTime.parse(leaveRecordDetailsModel.applicationDate.toString()))
+
+
+
+        ),
+        _buildActionButtons(leaveRecordDetailsModel.applicationStatus),
       ],
     );
   }
@@ -53,27 +60,30 @@ class LeaveRecordDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: CustomAppButton(
+  Widget _buildActionButtons(status) {
+
+    if(leaveRecordDetailsModel.applicationStatus ==LeaveStatus.pending.name){
+      return Padding(
+
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          children: [
+            CustomAppButton(
               buttonText: Text(
-                "Reject",
+                AppString.textReject.tr,
                 style: TextStyle(color: AppColor.errorColor, fontSize: Dimensions.fontSizeDefault),
               ),
-              onPressed: () {},
+              onPressed: () {
+                showRejectDialog(Get.context!,leaveRecordDetailsModel.leaveDate.toString());
+
+              },
               buttonColor: AppColor.cardColor,
               borderColor: AppColor.errorColor,
               textColor: AppColor.errorColor,
               borderRadius: Dimensions.radiusLarge,
             ),
-          ),
-          customSpacerWidth(width: 20),
-          Expanded(
-            child: CustomAppButton(
+            customSpacerWidth(width: 20),
+            CustomAppButton(
               buttonText: Text(
                 AppString.text_approved.tr,
                 style: TextStyle(color: AppColor.cardColor, fontSize: Dimensions.fontSizeDefault + 1),
@@ -84,10 +94,14 @@ class LeaveRecordDetails extends StatelessWidget {
               textColor: AppColor.cardColor,
               borderRadius: Dimensions.radiusLarge,
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+
+
   }
 
   Widget _buildHeader({String? imgUrl, String? employeeName, String? designation}) {
@@ -147,6 +161,8 @@ class LeaveRecordDetails extends StatelessWidget {
       case 'taken':
         return StatusBtnHelper.tokenStatusBtn();
       case 'cancelled':
+        return StatusBtnHelper.cancelledStatusBtn();
+        case 'cancel':
         return StatusBtnHelper.cancelStatusBtn();
       default:
         return Container();

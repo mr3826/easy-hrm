@@ -153,9 +153,9 @@ class EditProfileScreen extends StatelessWidget {
 
       return GestureDetector(
         onTap: () {
-          customDialog(
+          showCustomAlertDialog(
             context: context,
-            saveBtnAction: () {
+            onConfirm: () {
               pikedProfileImgController.storageForUpload.filePath.value = "";
 
               if (_isProfileInfoValid()) {
@@ -173,13 +173,13 @@ class EditProfileScreen extends StatelessWidget {
                 Get.back();
               }
             },
-            icon: Icons.delete_outline_outlined,
+            iconData: Icons.delete_outline_outlined,
             titleText: AppString.text_remove_photo.tr,
-            subText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
-            iconBgColor: AppColor.errorColorLight,
-            btnBgColor: AppColor.errorColorLight,
-            btnText: AppString.text_remove.tr,
-            drcText: "",
+            descriptionText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
+            iconBackgroundColor: AppColor.errorColorLight,
+            confirmButtonColor: AppColor.errorColorLight,
+            confirmButtonText: AppString.text_remove.tr,
+            extraInfoText: "",
           );
         },
         child: Text(

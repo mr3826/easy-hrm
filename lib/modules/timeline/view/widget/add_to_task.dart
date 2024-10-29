@@ -66,9 +66,9 @@ class AddToTaskScreen extends StatelessWidget {
                                   },
                                   cancelText: AppString.text_remove,
                                   cancelAction: () {
-                                    customDialog(
+                                    showCustomAlertDialog(
                                         context: context,
-                                        saveBtnAction: () async {
+                                        onConfirm: () async {
                                           Get.find<TimelineController>()
                                               .removeTimeEntry()
                                               .then((value) {
@@ -77,18 +77,18 @@ class AddToTaskScreen extends StatelessWidget {
                                             }
                                           });
                                         },
-                                        icon: CupertinoIcons.delete,
+                                        iconData: CupertinoIcons.delete,
                                         titleText:
                                             AppString.text_remove_timelog.tr,
-                                        subText: AppString
+                                        descriptionText: AppString
                                             .text_sure_you_want_to_delete_timelog
                                             .tr,
-                                        iconBgColor: AppColor.errorColorLight,
-                                        btnBgColor: AppColor.errorColorLight,
-                                        btnText: "",
-                                        drcText: "",
-                                        drcFontSize: Dimensions.fontSizeDefault,
-                                        childForSaveBtn:
+                                        iconBackgroundColor: AppColor.errorColorLight,
+                                        confirmButtonColor: AppColor.errorColorLight,
+                                        confirmButtonText: "",
+                                        extraInfoText: "",
+                                        descriptionFontSize: Dimensions.fontSizeDefault,
+                                        confirmButtonChild:
                                             Obx(() => removeTextLayout()));
                                   }),
                         ],

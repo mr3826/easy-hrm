@@ -269,20 +269,20 @@ filterTextLengthLayout() {
 logoutLayout(context) {
   return GestureDetector(
     onTap: () {
-      customDialog(
+      showCustomAlertDialog(
           context: context,
-          saveBtnAction: () {
+          onConfirm: () {
             Get.find<LogoutController>().logout();
           },
-          icon: Icons.logout,
+          iconData: Icons.logout,
           titleText: AppString.text_are_you_sure.tr,
-          subText: "${AppString.text_if_you_do_this_etc.tr}.",
-          iconBgColor: AppColor.errorColorLight,
-          btnBgColor: AppColor.errorColorLight,
-          btnText: AppString.text_log_out.tr,
-          drcText: "",
-          drcFontSize: Dimensions.fontSizeDefault,
-          childForSaveBtn: Obx(() => logoutTextLayout()));
+          descriptionText: "${AppString.text_if_you_do_this_etc.tr}.",
+          iconBackgroundColor: AppColor.errorColorLight,
+          confirmButtonColor: AppColor.errorColorLight,
+          confirmButtonText: AppString.text_log_out.tr,
+          extraInfoText: "",
+          descriptionFontSize: Dimensions.fontSizeDefault,
+          confirmButtonChild: Obx(() => logoutTextLayout()));
     },
     child: Container(
       height: AppLayout.getHeight(80),
