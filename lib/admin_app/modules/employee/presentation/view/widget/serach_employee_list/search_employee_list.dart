@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart' as gs;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:payrun_mobile/admin_app/modules/employee/domain/employee_info.dart';
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
@@ -18,7 +18,12 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../controller/employment_controller.dart';
 
 class SearchEmployeeList extends StatelessWidget {
-  const SearchEmployeeList({super.key});
+  final Function(String)? onValueSelected;
+  final Function onClickRouteAction;
+
+  const SearchEmployeeList(
+      {Key? key, this.onValueSelected, required this.onClickRouteAction})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,21 +47,29 @@ class SearchEmployeeList extends StatelessWidget {
                         customSpacerHeight(height: 12),
 
                         /// Current user section (You)
-                        _buildOwnInfo(
-                            name:
-                                "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-                            role: Get.find<UserProfileController>()
-                                    .userDetails
-                                    ?.getOrganizationUserDetails
-                                    ?.department
-                                    ?.name ??
-                                "",
-                            imgUrl: Get.find<UserProfileController>()
-                                    .userDetails
-                                    ?.getOrganizationUserDetails
-                                    ?.profile
-                                    ?.image ??
-                                ""),
+                        GestureDetector(
+                          onTap: () {
+                            onValueSelected?.call(gs.GetStorage()
+                                    .read(AppString.ORGANIZATION_USER_ID) ??
+                                "");
+                            onClickRouteAction.call();
+                          },
+                          child: _buildOwnInfo(
+                              name:
+                                  "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+                              role: Get.find<UserProfileController>()
+                                      .userDetails
+                                      ?.getOrganizationUserDetails
+                                      ?.department
+                                      ?.name ??
+                                  "",
+                              imgUrl: Get.find<UserProfileController>()
+                                      .userDetails
+                                      ?.getOrganizationUserDetails
+                                      ?.profile
+                                      ?.image ??
+                                  ""),
+                        ),
 
                         /// Recent search employee text section
                         _buildRecentSearchTitleSection(),
@@ -89,6 +102,8 @@ class SearchEmployeeList extends StatelessWidget {
                           onTap: () {
                             Get.find<EmploymentController>()
                                 .addRecentSearchData(employee ?? Data());
+                            onValueSelected?.call(employee?.id ?? "");
+                            onClickRouteAction.call();
                           },
                           child: _buildEmploymeeInfo(
                               name:
@@ -225,33 +240,40 @@ class SearchEmployeeList extends StatelessWidget {
   }
 
   Widget _buildEmployeeListItem(Data employeeData) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 20, top: 14, bottom: 8),
-      child: Row(
-        children: [
-          const CustomNetworkImage(
-            imgUrlKey: "", // Replace with actual image URL key
-            errorText: 'ER',
-            height: 22,
-          ),
-          customSpacerWidth(width: 14),
-          Expanded(
-            child: _buildEmployeeDetails(
-                "${employeeData.profile?.firstName ?? ""} ${employeeData.profile?.lastName ?? ""}",
-                employeeData.department?.name ?? ""),
-          ),
-          IconButton(
-            onPressed: () {
-              Get.find<EmploymentController>()
-                  .removeRecentSearchData(employeeData.id ?? "");
-            },
-            icon: const Icon(
-              Icons.close,
-              color: AppColor.hintColor,
-              size: 26,
+    return GestureDetector(
+      onTap: () {
+        onValueSelected?.call(employeeData.id ?? "");
+        onClickRouteAction.call();
+      },
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 16.0, right: 20, top: 14, bottom: 8),
+        child: Row(
+          children: [
+            const CustomNetworkImage(
+              imgUrlKey: "", // Replace with actual image URL key
+              errorText: 'ER',
+              height: 22,
             ),
-          ),
-        ],
+            customSpacerWidth(width: 14),
+            Expanded(
+              child: _buildEmployeeDetails(
+                  "${employeeData.profile?.firstName ?? ""} ${employeeData.profile?.lastName ?? ""}",
+                  employeeData.department?.name ?? ""),
+            ),
+            IconButton(
+              onPressed: () {
+                Get.find<EmploymentController>()
+                    .removeRecentSearchData(employeeData.id ?? "");
+              },
+              icon: const Icon(
+                Icons.close,
+                color: AppColor.hintColor,
+                size: 26,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

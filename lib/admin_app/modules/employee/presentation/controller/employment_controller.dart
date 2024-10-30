@@ -88,7 +88,7 @@ class EmploymentController extends GetxController {
   }
 
   void clearAllRecentSearchData() async {
-    var box = Hive.box<Data>('dataBox');
+    Box<Data> box = Hive.box<Data>('dataBox');
     await box.clear();
   }
 
