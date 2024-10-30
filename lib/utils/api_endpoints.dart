@@ -623,6 +623,30 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
       }
       user_id
     }
+    metaData {
+      filteredRows
+    }
+  }
+}
+''';
+
+
+const getDepartment='''
+query GetDepartments {
+  getDepartments {
+    data {
+      id
+      name
+    }
+  }
+}
+''';
+
+const getEmploymentStatus='''
+query GetEmploymentsStatus {
+  getEmploymentsStatus {
+    id
+    name
   }
 }
 ''';

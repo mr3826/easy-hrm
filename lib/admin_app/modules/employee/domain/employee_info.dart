@@ -16,8 +16,9 @@ class EmployeeInfo {
 
 class GetOrganizationUsers {
   List<Data>? data;
+  MetaData? metaData;
 
-  GetOrganizationUsers({this.data});
+  GetOrganizationUsers({this.data, this.metaData});
 
   GetOrganizationUsers.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -26,8 +27,29 @@ class GetOrganizationUsers {
         data!.add(new Data.fromJson(v));
       });
     }
+    metaData = json['metaData'] != null
+        ? new MetaData.fromJson(json['metaData'])
+        : null;
   }
 }
+
+class MetaData {
+  int? filteredRows;
+
+  MetaData({this.filteredRows});
+
+  MetaData.fromJson(Map<String, dynamic> json) {
+    filteredRows = json['filteredRows'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['filteredRows'] = this.filteredRows;
+    return data;
+  }
+}
+
+
 
 @HiveType(typeId: 0)
 class Data extends HiveObject {

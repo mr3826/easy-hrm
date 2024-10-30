@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:payrun_mobile/admin_app/modules/employee/domain/employement_status.dart';
+import 'package:payrun_mobile/admin_app/modules/employee/presentation/view/widget/filter/check_box.dart';
 
 import '../../data/employee_remote_data_source.dart';
 import '../../domain/employee_info.dart';
@@ -12,28 +14,13 @@ class EmploymentController extends GetxController {
   var employeeDepartmentValue = ''.obs;
   RxBool isSearchInfoLoading = false.obs;
   RxBool isEmployeesInfoLoading = false.obs;
-
-  @override
-  void onClose() {
-    searchController.dispose();
-    super.onClose();
-  }
+  RxBool isFilterInfoLoading = false.obs;
 
   RxString searchQuery = ''.obs;
 
   TextEditingController searchController = TextEditingController();
 
   var count = 0.obs;
-
-  void increment() {
-    count++;
-  }
-
-  void decrement() {
-    if (count > 0) {
-      count--;
-    }
-  }
 
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
@@ -42,27 +29,92 @@ class EmploymentController extends GetxController {
 
   List<Data>? employeeList = <Data>[];
 
+  List<CheckBoxModel> departmentList = [];
 
+  List<CheckBoxModel> employmentStatusList = [];
+
+  List<CheckBoxModel> userStatusList = [
+    CheckBoxModel(checkBoxName: "Active", checkBoxNameValue: "active"),
+    CheckBoxModel(checkBoxName: "Inactive", checkBoxNameValue: "inactive"),
+    CheckBoxModel(checkBoxName: "Invited", checkBoxNameValue: "invited")
+  ];
+
+  List<CheckBoxModel> attendanceList = [
+    CheckBoxModel(checkBoxName: "Working", checkBoxNameValue: "working"),
+    CheckBoxModel(
+        checkBoxName: "Not working", checkBoxNameValue: "not_working"),
+    CheckBoxModel(checkBoxName: "On leave", checkBoxNameValue: "on_leave")
+  ];
+
+  // "attendance": [],
+  // "department_id": [],
+  // "employment_status_ids": [],
+  // "user_status": []
+
+  ///methods
   Future<void> getEmployees() async {
     isEmployeesInfoLoading(true);
-    employeeInfo = await _employeeRemoteDataSource.getEmployees();
+
+    Map<String, Map<String, Object>> queryMap = {
+      "queryData": {
+        "role": ["org_employee"]
+      },
+      "optionData": {"limit": 20, "offset": 0}
+    };
+    employeeInfo = await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
     isEmployeesInfoLoading(false);
   }
 
   Future<void> getEmployeesBySearch({required String searchQuery}) async {
     isSearchInfoLoading(true);
+
+    Map<String, Map<String, Object>> queryMap = {
+      "queryData": {
+        "role": ["org_employee"],
+        "search_text": searchQuery,
+      },
+      "optionData": {"limit": 20, "offset": 0}
+    };
+
     final EmployeeInfo? employees =
-        await _employeeRemoteDataSource.getEmployees(searchQuery);
+        await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
     employeeList = employees?.getOrganizationUsers?.data ?? [];
     isSearchInfoLoading(false);
   }
 
-  final List<String> items = [
-    'Permanent',
-    'Ad-hoc',
-    'Probation',
-  ];
+  Future<void> getEmploymentStatus() async {
+    isFilterInfoLoading(true);
+    final response = await _employeeRemoteDataSource.getEmploymentsStatus();
+    employmentStatusList = response?.getEmploymentsStatus
+            ?.map(
+              (GetEmploymentsStatus employmentsStatus) => CheckBoxModel(
+                  checkBoxName: employmentsStatus.name ?? "",
+                  checkBoxNameValue: employmentsStatus.id ?? ""),
+            )
+            .toList() ??
+        [];
+    isFilterInfoLoading(false);
+  }
 
+  Future<void> getDepartments() async {
+    isFilterInfoLoading(true);
+    final response = await _employeeRemoteDataSource.getDepartments();
+    departmentList = response?.getDepartments?.data
+            ?.map(
+              (department) => CheckBoxModel(
+                  checkBoxName: department.name ?? "",
+                  checkBoxNameValue: department.name ?? ""),
+            )
+            .toList() ??
+        [];
+    isFilterInfoLoading(false);
+  }
+
+  void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {
+    for (CheckBoxModel item in checkBoxList) {
+      item.value = false;
+    }
+  }
 
   void addRecentSearchData(Data data) async {
     var box = Hive.box<Data>('dataBox');
@@ -92,9 +144,41 @@ class EmploymentController extends GetxController {
     await box.clear();
   }
 
+  void increment() {
+    count++;
+  }
+
+  void decrement() {
+    if (count > 0) {
+      count--;
+    }
+  }
+
+  final List<String> items = [
+    'Permanent',
+    'Ad-hoc',
+    'Probation',
+  ];
+
+  List<String> getSelectedCheckBoxValues(List<CheckBoxModel> checkBoxList) {
+    return checkBoxList
+        .where((item) => item.value == true) // Filter items where value is true
+        .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue
+        .toList();
+  }
+
   @override
   void onInit() {
     getEmployees();
+    getDepartments();
+    getEmploymentStatus();
     super.onInit();
   }
+
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
+  }
+
 }

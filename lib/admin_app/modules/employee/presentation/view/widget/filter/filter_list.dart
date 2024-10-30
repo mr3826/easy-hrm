@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/admin_app/modules/employee/presentation/controller/employment_controller.dart';
 import 'package:payrun_mobile/admin_app/modules/employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../utils/app_color.dart';
@@ -8,9 +9,14 @@ import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import 'check_box.dart';
 
-class EmployeeFilterSection extends StatelessWidget {
+class EmployeeFilterSection extends StatefulWidget {
   const EmployeeFilterSection({super.key});
 
+  @override
+  State<EmployeeFilterSection> createState() => _EmployeeFilterSectionState();
+}
+
+class _EmployeeFilterSectionState extends State<EmployeeFilterSection> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -40,7 +46,7 @@ class EmployeeFilterSection extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: _statusCheckBox(),
+                child: _statusCheckBox(title),
               ),
             ],
           ),
@@ -78,6 +84,12 @@ class EmployeeFilterSection extends StatelessWidget {
   Widget _buildResetButton() {
     return InkWell(
       onTap: () {
+        var controller = Get.find<EmploymentController>();
+        controller.resetCheckBoxList(controller.departmentList);
+        controller.resetCheckBoxList(controller.employmentStatusList);
+        controller.resetCheckBoxList(controller.userStatusList);
+        controller.resetCheckBoxList(controller.attendanceList);
+        setState(() {});
         // Implement reset functionality
       },
       child: Text(
@@ -99,39 +111,28 @@ class EmployeeFilterSection extends StatelessWidget {
     );
   }
 
-  Widget _statusCheckBox() {
+  Widget _statusCheckBox(String title) {
+    List<CheckBoxModel> list = [];
+
+    if (title == AppString.text_deparmtnet.tr) {
+      list = Get.find<EmploymentController>().departmentList;
+    } else if (title == AppString.textEmployeeStatus.tr) {
+      list = Get.find<EmploymentController>().employmentStatusList;
+    } else if (title == AppString.textUserStatus.tr) {
+      list = Get.find<EmploymentController>().userStatusList;
+    } else {
+      list = Get.find<EmploymentController>().attendanceList;
+    }
+
     return GSMultiCheckbox(
       textStyle: AppStyle.normal_text_black.copyWith(
         fontSize: Dimensions.fontSizeDefault + 1,
         color: AppColor.normalTextColor.withOpacity(0.9),
       ),
-      itemsList: statusItems,
+      itemsList: list,
       onSelectionChanged: (List<CheckBoxModel> list) {
-
+        print(list);
       },
     );
   }
 }
-
-final List<CheckBoxModel> statusItems = [
-  CheckBoxModel(
-    checkBoxName: "Laravel department",
-    checkBoxNameValue: "Laravel department1",
-    value: false,
-  ),
-  CheckBoxModel(
-    checkBoxName: "UL Department",
-    checkBoxNameValue: "Laravel department1",
-    value: false,
-  ),
-  CheckBoxModel(
-    checkBoxName: "QA & Support",
-    checkBoxNameValue: "Laravel department1",
-    value: false,
-  ),
-  CheckBoxModel(
-    checkBoxName: "Main Department",
-    checkBoxNameValue: "Laravel department1",
-    value: false,
-  ),
-];
