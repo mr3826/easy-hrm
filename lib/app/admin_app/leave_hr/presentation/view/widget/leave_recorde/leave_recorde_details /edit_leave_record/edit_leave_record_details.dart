@@ -41,11 +41,9 @@ class EditLeaveRecordDetails extends StatelessWidget {
           customSpacerHeight(height: 20),
           _buildTitleText(text: AppString.text_from.tr, isRequired: true),
           customSpacerHeight(height: 8),
-          _buildFromDateWithTime(context) ,
+          _buildFromDateWithTime(context),
           customSpacerHeight(height: 20),
-
           _buildTitleText(text: AppString.text_to.tr, isRequired: true),
-
           customSpacerHeight(height: 8),
           _buildToDateWithTime(context)
         ],
@@ -55,66 +53,60 @@ class EditLeaveRecordDetails extends StatelessWidget {
 }
 
 Widget _buildFromDateWithTime(BuildContext context) {
-  return SizedBox(
-   // height: AppLayout.getHeight(52),
-    child: Row(
-      children: [
-        Expanded(
+  return Row(
+    children: [
+      Expanded(
           child: GestureDetector(
-            onTap: () {
-              showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => Dialog(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 20),
-                    child: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        OutDatePicker(),
-                      ],
-                    ),
-                  ),
+        onTap: () {
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => Dialog(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                    color: AppColor.hintColor.withOpacity(0.5), width: 1),
-              ),
-
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Obx(() {
-                    final dateTime =
-                        Get.find<DateTimePickerController>().outDateTime.value;
-                    final parsedDate =
-                        DateTime.tryParse(dateTime) ?? DateTime.now();
-                    final formattedDate =
-                        DateFormat('yyyy-MM-dd').format(parsedDate);
-                    return Text(formattedDate,
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 16));
-                  }),
-                  const Icon(Icons.calendar_today_outlined,
-                      color: Colors.grey, size: 24),
-                ],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    InDatePicker(),
+                  ],
+                ),
               ),
             ),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+                color: AppColor.hintColor.withOpacity(0.5), width: 1),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Obx(() => Text(
+                    DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                        Get.find<DateTimePickerController>().inDateTime.value)),
+                    style: const TextStyle(color: Colors.black, fontSize: 16),
+                  )),
+              const Icon(
+                CupertinoIcons.calendar,
+                color: Colors.grey,
+                size: 28,
+              ),
+            ],
           ),
         ),
-        customSpacerWidth(width: 12),
-        _fromTimePicker(context)
-      ],
-    ),
+      )),
+      customSpacerWidth(width: 12),
+      _fromTimePicker(context)
+    ],
   );
 }
 
@@ -152,7 +144,6 @@ Widget _buildToDateWithTime(BuildContext context) {
                 border: Border.all(
                     color: AppColor.hintColor.withOpacity(0.5), width: 1),
               ),
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -181,30 +172,10 @@ Widget _buildToDateWithTime(BuildContext context) {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 _fromTimePicker(BuildContext context) {
   return Expanded(
     child: Obx(() {
-      final inDateTime =
-          Get.find<DateTimePickerController>().inDateTime.value;
+      final inDateTime = Get.find<DateTimePickerController>().inDateTime.value;
       final inDate = Get.find<DateTimePickerController>().inDate.value;
       final outDate = Get.find<DateTimePickerController>().outDate.value;
 
@@ -219,8 +190,8 @@ _fromTimePicker(BuildContext context) {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: const Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -240,9 +211,6 @@ _fromTimePicker(BuildContext context) {
             border: Border.all(
                 color: AppColor.hintColor.withOpacity(0.5), width: 1),
           ),
-
-
-
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -265,70 +233,64 @@ _fromTimePicker(BuildContext context) {
     }),
   );
 }
-_toTimePicker(BuildContext context) {
-  return Expanded(
-    child: Obx(() {
-      final inDateTime =
-          Get.find<DateTimePickerController>().inDateTime.value;
-      final inDate = Get.find<DateTimePickerController>().inDate.value;
-      final outDate = Get.find<DateTimePickerController>().outDate.value;
 
-      return GestureDetector(
-        onTap: () {
-          if (inDate == outDate) {
-            showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => Dialog(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 8),
-                  child: const Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      InTimePicker(),
-                    ],
-                  ),
+_toTimePicker(BuildContext context) {
+  return Expanded(child: Obx(() {
+    final outDataTime = Get.find<DateTimePickerController>().outDateTime.value;
+    final inDate = Get.find<DateTimePickerController>().inDate.value;
+    final outDate = Get.find<DateTimePickerController>().outDate.value;
+    return GestureDetector(
+      onTap: () {
+        if (inDate == outDate) {
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => Dialog(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    OutTimePicker(),
+                  ],
                 ),
               ),
-            );
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 11),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-                color: AppColor.hintColor.withOpacity(0.5), width: 1),
-          ),
-
-
-
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                DateFormat('HH:mm').format(DateTime.parse(inDateTime)),
-                style: TextStyle(
-                    color: inDate == outDate ? Colors.black : Colors.grey,
-                    fontSize: 16),
-              ),
-              const Icon(
-                CupertinoIcons.clock,
-                color: Colors.grey,
-                size: 25,
-              ),
-            ],
-          ),
+            ),
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border:
+              Border.all(color: AppColor.hintColor.withOpacity(0.5), width: 1),
         ),
-      );
-    }),
-  );
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              DateFormat('HH:mm').format(DateTime.parse(outDataTime)),
+              style: TextStyle(
+                  color: inDate == outDate ? Colors.black : Colors.grey,
+                  fontSize: 16),
+            ),
+            const Icon(
+              CupertinoIcons.clock,
+              color: Colors.grey,
+              size: 28,
+            ),
+          ],
+        ),
+      ),
+    );
+  }));
 }
 
 Widget _buildTitleText({required String text, bool isRequired = false}) {

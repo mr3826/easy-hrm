@@ -5,12 +5,10 @@ import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/em
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
-import '../../../../../../common/widget/employee/status_button_helper.dart';
 import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
@@ -18,8 +16,7 @@ import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../controller/leave_controller.dart';
 import '../widget/calandar_widget.dart';
-import '../widget/leave_recorde/leave_recorde_list.dart';
-import '../widget/range_calendar.dart';
+import '../widget/leave_recorde/leave_record_list.dart';
 
 class LeaveHrScreen extends StatelessWidget {
   const LeaveHrScreen({super.key});
@@ -156,53 +153,50 @@ class LeaveHrScreen extends StatelessWidget {
   _buildIndividualPerson() {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: InkWell(
-        onTap: () {},
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomNetworkImage(
-              imgUrlKey: "",
-              errorText: "Er",
-              height: 20,
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Jonus Kahnwald",
-                    maxLines: 2,
-                    style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.secondaryColor,
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: Dimensions.fontSizeMid - 2,
-                    ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CustomNetworkImage(
+            imgUrlKey: "",
+            errorText: "Er",
+            height: 20,
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Jonus Kahnwald",
+                  maxLines: 2,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.secondaryColor,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: Dimensions.fontSizeMid - 2,
                   ),
-                  Text(
-                    "Jonus Kahnwald",
-                    maxLines: 2,
-                    style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: Dimensions.fontSizeDefault - 1,
-                    ),
+                ),
+                Text(
+                  "Jonus Kahnwald",
+                  maxLines: 2,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: Dimensions.fontSizeDefault - 1,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            InkWell(
-              onTap: () {
-                Get.find<LeaveController>().isFilterIndividual(false);
-              },
-              child: const Icon(
-                Icons.close,
-                color: AppColor.hintColor,
-              ),
+          ),
+          InkWell(
+            onTap: () {
+              Get.find<LeaveController>().isFilterIndividual(false);
+            },
+            child: const Icon(
+              Icons.close,
+              color: AppColor.hintColor,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
