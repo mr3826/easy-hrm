@@ -90,6 +90,7 @@ class _EmployeeFilterSectionState extends State<EmployeeFilterSection> {
         controller.resetCheckBoxList(controller.userStatusList);
         controller.resetCheckBoxList(controller.attendanceList);
         setState(() {});
+        controller.getEmployees();
         // Implement reset functionality
       },
       child: Text(

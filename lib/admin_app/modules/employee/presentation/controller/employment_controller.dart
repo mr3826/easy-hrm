@@ -25,9 +25,9 @@ class EmploymentController extends GetxController {
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
 
-  EmployeeInfo? employeeInfo = EmployeeInfo();
-
   List<Data>? employeeList = <Data>[];
+
+  List<Data>? searchedEmployeeList = <Data>[];
 
   List<CheckBoxModel> departmentList = [];
 
@@ -52,7 +52,7 @@ class EmploymentController extends GetxController {
 
     List<String> departmentIds = getSelectedCheckBoxValues(departmentList);
     List<String> employmentStatusIds =
-    getSelectedCheckBoxValues(employmentStatusList);
+        getSelectedCheckBoxValues(employmentStatusList);
     List<String> userStatusIds = getSelectedCheckBoxValues(userStatusList);
     List<String> attendanceIds = getSelectedCheckBoxValues(attendanceList);
 
@@ -75,8 +75,10 @@ class EmploymentController extends GetxController {
     if (attendanceIds.isNotEmpty) {
       queryMap["queryData"]?["attendance"] = attendanceIds;
     }
-    employeeInfo =
+    EmployeeInfo? employeeInfo =
         await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
+    employeeList = employeeInfo?.getOrganizationUsers?.data;
+    update();
     isEmployeesInfoLoading(false);
   }
 
@@ -93,7 +95,7 @@ class EmploymentController extends GetxController {
 
     final EmployeeInfo? employees =
         await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
-    employeeList = employees?.getOrganizationUsers?.data ?? [];
+    searchedEmployeeList = employees?.getOrganizationUsers?.data ?? [];
     isSearchInfoLoading(false);
   }
 

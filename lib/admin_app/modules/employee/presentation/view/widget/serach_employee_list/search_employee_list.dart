@@ -92,12 +92,12 @@ class SearchEmployeeList extends StatelessWidget {
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: Get.find<EmploymentController>()
-                              .employeeList
+                              .searchedEmployeeList
                               ?.length ??
                           0,
                       itemBuilder: (context, index) {
                         Data? employee = Get.find<EmploymentController>()
-                            .employeeList?[index];
+                            .searchedEmployeeList?[index];
                         return GestureDetector(
                           onTap: () {
                             Get.find<EmploymentController>()

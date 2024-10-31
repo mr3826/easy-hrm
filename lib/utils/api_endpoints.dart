@@ -9,12 +9,10 @@ class Api {
   static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
   static const CDN_KEY = String.fromEnvironment("CDN_KEY");
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
-  static const String PUBLIC_IMAGE_URL_DOMAIN =
-      String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
+  static const String PUBLIC_IMAGE_URL_DOMAIN = String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
   static const LOGOUT = "/auth/logout";
-
   static const REFRESH_TOKEN = "/auth/refresh-token";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/retry-forgot-password";
