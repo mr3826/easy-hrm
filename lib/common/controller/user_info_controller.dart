@@ -14,12 +14,14 @@ class UserInfoController {
   UserInfo userInfo = UserInfo();
 
   Future<UserInfo?> getUserInfo() async {
-    final response = await _networkClient.getRequest(Api.USER_INFO);
-    if (response.statusCode != 200) return null;
-
-    userInfo = UserInfo.fromJson(response.data);
-    print("userInfo :: ${userInfo.user?.role}");
-    return userInfo;
+    try {
+      final response = await _networkClient.getRequest(Api.USER_INFO);
+      if (response.statusCode != 200) return null;
+      userInfo = UserInfo.fromJson(response.data);
+      return userInfo;
+    } catch (e) {
+      log("getUserInfo $e");
+    }
   }
 
   /// Fetches the organization subscription information

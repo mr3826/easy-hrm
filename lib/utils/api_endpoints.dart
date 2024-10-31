@@ -1,5 +1,9 @@
 class Api {
-  Api._();
+  static final Api _instance = Api._internal();
+
+  Api._internal();
+
+  factory Api() => _instance;
 
   static const String PUBLIC_URL = String.fromEnvironment("PUBLIC_URL");
   static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
@@ -630,8 +634,7 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
 }
 ''';
 
-
-const getDepartment='''
+const getDepartment = '''
 query GetDepartments {
   getDepartments {
     data {
@@ -642,7 +645,7 @@ query GetDepartments {
 }
 ''';
 
-const getEmploymentStatus='''
+const getEmploymentStatus = '''
 query GetEmploymentsStatus {
   getEmploymentsStatus {
     id

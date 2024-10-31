@@ -46,14 +46,15 @@ class EmploymentController extends GetxController {
     CheckBoxModel(checkBoxName: "On leave", checkBoxNameValue: "on_leave")
   ];
 
-  // "attendance": [],
-  // "department_id": [],
-  // "employment_status_ids": [],
-  // "user_status": []
-
   ///methods
   Future<void> getEmployees() async {
     isEmployeesInfoLoading(true);
+
+    List<String> departmentIds = getSelectedCheckBoxValues(departmentList);
+    List<String> employmentStatusIds =
+    getSelectedCheckBoxValues(employmentStatusList);
+    List<String> userStatusIds = getSelectedCheckBoxValues(userStatusList);
+    List<String> attendanceIds = getSelectedCheckBoxValues(attendanceList);
 
     Map<String, Map<String, Object>> queryMap = {
       "queryData": {
@@ -61,7 +62,21 @@ class EmploymentController extends GetxController {
       },
       "optionData": {"limit": 20, "offset": 0}
     };
-    employeeInfo = await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
+
+    if (departmentIds.isNotEmpty) {
+      queryMap["queryData"]?["department_id"] = departmentIds;
+    }
+    if (employmentStatusIds.isNotEmpty) {
+      queryMap["queryData"]?["employment_status_ids"] = employmentStatusIds;
+    }
+    if (userStatusIds.isNotEmpty) {
+      queryMap["queryData"]?["user_status"] = userStatusIds;
+    }
+    if (attendanceIds.isNotEmpty) {
+      queryMap["queryData"]?["attendance"] = attendanceIds;
+    }
+    employeeInfo =
+        await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
     isEmployeesInfoLoading(false);
   }
 
@@ -103,7 +118,7 @@ class EmploymentController extends GetxController {
             ?.map(
               (department) => CheckBoxModel(
                   checkBoxName: department.name ?? "",
-                  checkBoxNameValue: department.name ?? ""),
+                  checkBoxNameValue: department.id ?? ""),
             )
             .toList() ??
         [];
@@ -119,17 +134,14 @@ class EmploymentController extends GetxController {
   void addRecentSearchData(Data data) async {
     var box = Hive.box<Data>('dataBox');
     final dataList = box.values.toList();
-
     // Check if the data already exists
     if (dataList.any((element) => element.id == data.id)) {
       return;
     }
-
     // Ensure the list has a maximum of 3 elements
     if (dataList.length >= 3) {
       await dataList.last.delete();
     }
-
     await box.add(data);
   }
 
@@ -161,6 +173,7 @@ class EmploymentController extends GetxController {
   ];
 
   List<String> getSelectedCheckBoxValues(List<CheckBoxModel> checkBoxList) {
+    print("checkBoxList: $checkBoxList");
     return checkBoxList
         .where((item) => item.value == true) // Filter items where value is true
         .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue
@@ -180,5 +193,4 @@ class EmploymentController extends GetxController {
     searchController.dispose();
     super.onClose();
   }
-
 }

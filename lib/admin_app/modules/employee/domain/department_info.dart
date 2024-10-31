@@ -5,12 +5,12 @@ class DepartmentsInfo {
 
   DepartmentsInfo.fromJson(Map<String, dynamic> json) {
     getDepartments = json['getDepartments'] != null
-        ? new GetDepartments.fromJson(json['getDepartments'])
+        ? GetDepartments.fromJson(json['getDepartments'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.getDepartments != null) {
       data['getDepartments'] = this.getDepartments!.toJson();
     }
@@ -33,7 +33,7 @@ class GetDepartments {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -53,7 +53,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = this.id;
     data['name'] = this.name;
     return data;

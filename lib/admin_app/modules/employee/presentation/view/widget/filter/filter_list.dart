@@ -130,8 +130,8 @@ class _EmployeeFilterSectionState extends State<EmployeeFilterSection> {
         color: AppColor.normalTextColor.withOpacity(0.9),
       ),
       itemsList: list,
-      onSelectionChanged: (List<CheckBoxModel> list) {
-        print(list);
+      onSelectionChanged: (List<CheckBoxModel> list) async {
+        Get.find<EmploymentController>().getEmployees();
       },
     );
   }
