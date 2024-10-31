@@ -34,10 +34,14 @@ class LeaveHrScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildTabBar(context),
-            customSpacerHeight(height: 4),
-            _buildSearchBar(context, onSearch: () {
-              showEmployeeSelectionSheet();
-            }),
+            customSpacerHeight(height: 12),
+            Obx(
+              () => Get.find<LeaveController>().isFilterIndividual.isFalse
+                  ? _buildSearchBar(context, onSearch: () {
+                      showEmployeeSelectionSheet();
+                    })
+                  : _buildIndividualPerson(),
+            ),
             const DateNavigatorWidget(),
             const LeaveRecordList()
           ],
@@ -149,10 +153,60 @@ class LeaveHrScreen extends StatelessWidget {
     );
   }
 
-
+  _buildIndividualPerson() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: InkWell(
+        onTap: () {},
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const CustomNetworkImage(
+              imgUrlKey: "",
+              errorText: "Er",
+              height: 20,
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Jonus Kahnwald",
+                    maxLines: 2,
+                    style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.secondaryColor,
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: Dimensions.fontSizeMid - 2,
+                    ),
+                  ),
+                  Text(
+                    "Jonus Kahnwald",
+                    maxLines: 2,
+                    style: AppStyle.mid_large_text.copyWith(
+                      color: AppColor.hintColor,
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: Dimensions.fontSizeDefault - 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Get.find<LeaveController>().isFilterIndividual(false);
+              },
+              child: const Icon(
+                Icons.close,
+                color: AppColor.hintColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
-
-
 
 void showEmployeeSelectionSheet() {
   customButtonSheet(

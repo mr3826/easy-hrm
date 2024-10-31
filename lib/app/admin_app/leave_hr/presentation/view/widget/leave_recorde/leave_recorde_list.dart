@@ -106,8 +106,7 @@ class LeaveRecordList extends StatelessWidget {
                             typeOfLeave: data[index]["leaveName"] ?? '',
                             leaveStatus: data[index]["type"] ?? '',
                             imgUrl: "",
-                            leaveDate:
-                                "${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))} - ${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))}",
+                            leaveDate: "${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))} - ${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))}",
 
                             //"12 Mar 22 - 15 Mar 22",
                             leaveDuration: "3 days",

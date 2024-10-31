@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
@@ -11,8 +10,8 @@ import '../../../../../../../../enum.dart';
 import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
+import '../../../../../../../../utils/utils.dart';
 import 'more_leave_record_details.dart';
-
 
 class LeaveRecordDetails extends StatelessWidget {
   final LeaveRecordDetailsModel leaveRecordDetailsModel;
@@ -30,15 +29,24 @@ class LeaveRecordDetails extends StatelessWidget {
           designation: leaveRecordDetailsModel.designation,
         ),
         customSpacerHeight(height: 12),
-        _buildRow(label: "Type", value: leaveRecordDetailsModel.typeOfLeave),
-        _buildRow(label: "Date", value: leaveRecordDetailsModel.leaveDate),
-        _buildRow(label: "Duration", value: leaveRecordDetailsModel.leaveDuration),
-        _buildRow(label: "Status", widget: _showStatusButton(leaveRecordDetailsModel.applicationStatus ?? "")),
-        _buildRow(label: "Date of application", value:  DateFormat("dd MMMM yyyy").format(DateTime.parse(leaveRecordDetailsModel.applicationDate.toString()))
-
-
-
-        ),
+        _buildRow(
+            label: AppString.textType.tr,
+            value: leaveRecordDetailsModel.typeOfLeave),
+        _buildRow(
+            label: AppString.text_date.tr,
+            value: leaveRecordDetailsModel.leaveDate),
+        _buildRow(
+            label: AppString.text_duration.tr,
+            value: leaveRecordDetailsModel.leaveDuration),
+        _buildRow(
+            label: AppString.text_status.tr,
+            widget: _showStatusButton(
+                leaveRecordDetailsModel.applicationStatus ?? "")),
+        _buildRow(
+            label: AppString.text_date_of_application.tr,
+            value: formatDate(
+                date: leaveRecordDetailsModel.applicationDate.toString(),
+                format: "dd MMMM yyyy")),
         _buildActionButtons(leaveRecordDetailsModel.applicationStatus),
       ],
     );
@@ -52,7 +60,8 @@ class LeaveRecordDetails extends StatelessWidget {
         children: [
           Text(
             "$label:",
-            style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+            style:
+                AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
           ),
           widget ?? Text(value ?? "", style: AppStyle.normal_text_black),
         ],
@@ -61,21 +70,21 @@ class LeaveRecordDetails extends StatelessWidget {
   }
 
   Widget _buildActionButtons(status) {
-
-    if(leaveRecordDetailsModel.applicationStatus ==LeaveStatus.pending.name){
+    if (leaveRecordDetailsModel.applicationStatus == LeaveStatus.pending.name) {
       return Padding(
-
         padding: const EdgeInsets.all(20.0),
         child: Row(
           children: [
             CustomAppButton(
               buttonText: Text(
                 AppString.textReject.tr,
-                style: TextStyle(color: AppColor.errorColor, fontSize: Dimensions.fontSizeDefault),
+                style: TextStyle(
+                    color: AppColor.errorColor,
+                    fontSize: Dimensions.fontSizeDefault),
               ),
               onPressed: () {
-                showRejectDialog(Get.context!,leaveRecordDetailsModel.leaveDate.toString());
-
+                showRejectDialog(
+                    Get.context!, leaveRecordDetailsModel.leaveDate.toString());
               },
               buttonColor: AppColor.cardColor,
               borderColor: AppColor.errorColor,
@@ -86,7 +95,9 @@ class LeaveRecordDetails extends StatelessWidget {
             CustomAppButton(
               buttonText: Text(
                 AppString.text_approved.tr,
-                style: TextStyle(color: AppColor.cardColor, fontSize: Dimensions.fontSizeDefault + 1),
+                style: TextStyle(
+                    color: AppColor.cardColor,
+                    fontSize: Dimensions.fontSizeDefault + 1),
               ),
               onPressed: () {},
               buttonColor: AppColor.successColor,
@@ -97,14 +108,13 @@ class LeaveRecordDetails extends StatelessWidget {
           ],
         ),
       );
-    }else{
+    } else {
       return const SizedBox.shrink();
     }
-
-
   }
 
-  Widget _buildHeader({String? imgUrl, String? employeeName, String? designation}) {
+  Widget _buildHeader(
+      {String? imgUrl, String? employeeName, String? designation}) {
     final screenHeight = MediaQuery.of(Get.context!).size.height;
 
     return Container(
@@ -121,7 +131,8 @@ class LeaveRecordDetails extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(height: 4, width: 120, color: AppColor.backgroundColor),
+            child: Container(
+                height: 4, width: 120, color: AppColor.backgroundColor),
           ),
           customSpacerHeight(height: 12),
           CustomNetworkImage(
@@ -162,7 +173,7 @@ class LeaveRecordDetails extends StatelessWidget {
         return StatusBtnHelper.tokenStatusBtn();
       case 'cancelled':
         return StatusBtnHelper.cancelledStatusBtn();
-        case 'cancel':
+      case 'cancel':
         return StatusBtnHelper.cancelStatusBtn();
       default:
         return Container();

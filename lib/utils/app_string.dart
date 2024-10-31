@@ -55,7 +55,8 @@ class AppString {
   static const String textSeeDocument = "See document";
   static const String textAttachedFiles = "Attached files";
   static const String textViewLeaveRecord = "View leave recod";
-  static const String text_cancelled = "Cancelled";
+  static const String textCancelled = "Cancelled";
+  static const String textType = "Type";
 
   static const String textRejectLeaveRequestDated = "Rejecting leave request dated";
   static const String textThisWillRejectTheSelectedLeaveEtc = "This will reject the selected leave request for this requester.Do you still want to reject this leave request?";

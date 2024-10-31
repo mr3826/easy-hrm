@@ -37,8 +37,8 @@ class _SelectedLeaveTypeState extends State<SelectedLeaveType> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10),vertical: 2),
       decoration: BoxDecoration(
-          border: Border.all(color: AppColor.hintColor.withOpacity(0.5),width: 1),
-          borderRadius: BorderRadius.circular(5)),
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(8)),
       child: DropdownButton(
           value: dropDownValue,
           hint: Text(

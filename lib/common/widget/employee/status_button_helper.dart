@@ -61,7 +61,7 @@ class StatusBtnHelper {
     return CustomStatusButton(
       textColor: AppColor.hintColor,
       bgColor: AppColor.hintColor.withOpacity(0.2),
-      text: AppString.text_cancelled.tr,
+      text: AppString.textCancelled.tr,
       paddingTop: 0,
       textSize: Dimensions.fontSizeSmall,
     );

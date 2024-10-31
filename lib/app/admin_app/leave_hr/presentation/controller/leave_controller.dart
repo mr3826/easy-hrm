@@ -13,6 +13,7 @@ class LeaveController extends GetxController {
   final searchController = TextEditingController().obs;
   final searchText = ''.obs;
   final selectedDateRange = "".obs;
+  RxBool isFilterIndividual=false.obs;
 
   RxString currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
 

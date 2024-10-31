@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/see_document_details.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -13,6 +14,7 @@ import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
+import 'edit_leave_record/edit_leave_record_details.dart';
 import 'leave_record_details.dart';
 
 class MoreLeaveRecordDetails extends StatelessWidget {
@@ -36,6 +38,7 @@ class MoreLeaveRecordDetails extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name)
                   ...[
                     _buildActionOption(AppString.textApprove.tr, () {}),
@@ -43,12 +46,17 @@ class MoreLeaveRecordDetails extends StatelessWidget {
                     _buildCancel(context),
                     _divider(),
 
-                    _buildActionOption(AppString.text_edit.tr, () {}),
+                    _buildActionOption(AppString.text_edit.tr, () {_showEditLeaveDetails(leaveRecordDetails);}),
                     _divider(),
                   ],
                 _buildActionOption(AppString.textSeeDocument.tr, _showBuildAttachedFile),
                 _divider(),
-                _buildActionOption(AppString.textViewLeaveRecord.tr, () {}),
+                _buildActionOption(AppString.textViewLeaveRecord.tr, () {
+
+                  Get.find<LeaveController>().isFilterIndividual(true);
+                  Get.back(canPop: false);
+
+                }),
               ],
             ),
           ),
@@ -161,6 +169,24 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     return _buildActionOption(AppString.text_cancel.tr, () {
       showRejectDialog(context, leaveRecordDetails.leaveDate.toString());
     });
+  }
+
+  void _showEditLeaveDetails(LeaveRecordDetailsModel leaveRecordDetailsModel) {
+    customAntButtonSheet(
+        context: Get.context!,
+        height: MediaQuery.of(Get.context!).size.height / 1.2,
+        child: EditLeaveRecordDetails(
+          leaveRecordDetailsModel: LeaveRecordDetailsModel(
+              applicationDate: leaveRecordDetailsModel.leaveStatus,
+              applicationStatus: leaveRecordDetailsModel.applicationStatus,
+              employeeName: leaveRecordDetailsModel.employeeName,
+              leaveDate: leaveRecordDetailsModel.leaveDate,
+              leaveDuration: leaveRecordDetailsModel.leaveDuration,
+              typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
+              leaveStatus: leaveRecordDetailsModel.leaveStatus,
+              designation: leaveRecordDetailsModel.designation,
+              imgUrl: leaveRecordDetailsModel.imgUrl),
+        ));
   }
 }
 
