@@ -29,7 +29,12 @@ class DateNavigatorWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => Dialog(child: leaveRecodeFilterDialog()),
+                  );
+                },
                 child: const Icon(
                   Icons.arrow_back_ios,
                   color: AppColor.normalTextColor,
@@ -61,7 +66,12 @@ class DateNavigatorWidget extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => Dialog(child: leaveRecodeFilterDialog()),
+                  );
+                },
                 child: const Icon(
                   Icons.arrow_forward_ios_sharp,
                   color: AppColor.normalTextColor,
