@@ -31,31 +31,30 @@ class MoreLeaveRecordDetails extends StatelessWidget {
           imageUrl: leaveRecordDetails.imgUrl,
           name: leaveRecordDetails.employeeName,
           details:
-          "${leaveRecordDetails.typeOfLeave}: ${leaveRecordDetails.leaveStatus} - ${leaveRecordDetails.leaveDate}",
+              "${leaveRecordDetails.typeOfLeave}: ${leaveRecordDetails.leaveStatus} - ${leaveRecordDetails.leaveDate}",
         ),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name)
-                  ...[
-                    _buildActionOption(AppString.textApprove.tr, () {}),
-                    _divider(),
-                    _buildCancel(context),
-                    _divider(),
-
-                    _buildActionOption(AppString.text_edit.tr, () {_showEditLeaveDetails(leaveRecordDetails);}),
-                    _divider(),
-                  ],
-                _buildActionOption(AppString.textSeeDocument.tr, _showBuildAttachedFile),
+                if (leaveRecordDetails.applicationStatus ==
+                    LeaveStatus.pending.name) ...[
+                  _buildActionOption(AppString.textApprove.tr, () {}),
+                  _divider(),
+                  _buildCancel(context),
+                  _divider(),
+                  _buildActionOption(AppString.text_edit.tr, () {
+                    _showEditLeaveDetails(leaveRecordDetails);
+                  }),
+                  _divider(),
+                ],
+                _buildActionOption(
+                    AppString.textSeeDocument.tr, _showBuildAttachedFile),
                 _divider(),
                 _buildActionOption(AppString.textViewLeaveRecord.tr, () {
-
                   Get.find<LeaveController>().isFilterIndividual(true);
                   Get.back(canPop: false);
-
                 }),
               ],
             ),
@@ -106,7 +105,8 @@ class MoreLeaveRecordDetails extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(height: 4, width: 120, color: AppColor.backgroundColor),
+            child: Container(
+                height: 4, width: 120, color: AppColor.backgroundColor),
           ),
           customSpacerHeight(height: 12),
           CustomNetworkImage(
@@ -253,53 +253,49 @@ Widget _buildDialogActions() {
     height: 40,
     child: Row(
       children: [
-        Expanded(
-          child: CustomAppButton(
-            buttonText: Row(
-              children: [
-                const Icon(Icons.close, color: AppColor.hintColor),
-                customSpacerWidth(width: 8),
-                Text(
-                  AppString.text_cancel.tr,
-                  style: AppStyle.normal_text.copyWith(
-                    color: AppColor.hintColor,
-                    fontSize: Dimensions.fontSizeDefault + 1,
-                  ),
+        CustomAppButton(
+          buttonText: Row(
+            children: [
+              const Icon(Icons.close, color: AppColor.hintColor),
+              customSpacerWidth(width: 8),
+              Text(
+                AppString.text_cancel.tr,
+                style: AppStyle.normal_text.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault + 1,
                 ),
-              ],
-            ),
-            onPressed: () => Get.back(),
-            buttonColor: AppColor.cardColor,
-            borderColor: AppColor.hintColor.withOpacity(0.6),
-            textColor: AppColor.hintColor,
-            borderRadius: Dimensions.radiusDefault,
+              ),
+            ],
           ),
+          onPressed: () => Get.back(),
+          buttonColor: AppColor.cardColor,
+          borderColor: AppColor.hintColor.withOpacity(0.6),
+          textColor: AppColor.hintColor,
+          borderRadius: Dimensions.radiusDefault,
         ),
         customSpacerWidth(width: 20),
-        Expanded(
-          child: CustomAppButton(
-            buttonText: Row(
-              children: [
-                const Icon(Icons.done, color: AppColor.cardColor),
-                customSpacerWidth(width: 8),
-                Text(
-                  AppString.text_confirm.tr,
-                  style: AppStyle.normal_text.copyWith(
-                    color: AppColor.cardColor,
-                    fontSize: Dimensions.fontSizeDefault + 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+        CustomAppButton(
+          buttonText: Row(
+            children: [
+              const Icon(Icons.done, color: AppColor.cardColor),
+              customSpacerWidth(width: 8),
+              Text(
+                AppString.text_confirm.tr,
+                style: AppStyle.normal_text.copyWith(
+                  color: AppColor.cardColor,
+                  fontSize: Dimensions.fontSizeDefault + 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            ),
-            onPressed: () {
-              print(DateTime.now());
-            },
-            buttonColor: AppColor.errorColorLight,
-            borderColor: AppColor.errorColorLight.withOpacity(0.6),
-            textColor: AppColor.errorColorLight,
-            borderRadius: Dimensions.radiusDefault,
+              ),
+            ],
           ),
+          onPressed: () {
+            print(DateTime.now());
+          },
+          buttonColor: AppColor.errorColorLight,
+          borderColor: AppColor.errorColorLight.withOpacity(0.6),
+          textColor: AppColor.errorColorLight,
+          borderRadius: Dimensions.radiusDefault,
         ),
       ],
     ),
