@@ -19,9 +19,12 @@ import '../../../../../controller/leave_controller.dart';
 import '../../../../../controller/picked_file_from_stroage.dart';
 import '../leave_record_details.dart';
 
+/// A widget that displays and edits leave record details.
 class EditLeaveRecordDetails extends StatelessWidget {
+  /// The leave record details model containing information about a specific leave.
   final LeaveRecordDetailsModel leaveRecordDetailsModel;
 
+  /// Constructor for the [EditLeaveRecordDetails] widget.
   const EditLeaveRecordDetails(
       {super.key, required this.leaveRecordDetailsModel});
 
@@ -29,13 +32,16 @@ class EditLeaveRecordDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        /// Builds the header with a static date and day.
         _buildHeader(date: "26 March", day: "Thursday"),
+        /// Builds the list of text fields for various leave record details.
         _buildListOfTextField(context),
       ],
     );
   }
 
-  _buildListOfTextField(context) {
+  /// Builds a scrollable list of form fields for editing leave record details.
+  Widget _buildListOfTextField(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -43,37 +49,48 @@ class EditLeaveRecordDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTitleText(
-                  text: AppString.text_leave_name.tr, isRequired: true),
+              /// Displays the title and a required leave type dropdown.
+              _buildTitleText(text: AppString.text_leave_name.tr, isRequired: true),
               customSpacerHeight(height: 8),
               const SelectedLeaveType(),
               customSpacerHeight(height: 20),
+
+              /// Displays the title and a date picker for the "From" date.
               _buildTitleText(text: AppString.text_from.tr, isRequired: true),
               customSpacerHeight(height: 8),
               _buildFromDateWithTime(context),
               customSpacerHeight(height: 20),
+
+              /// Displays the title and a date picker for the "To" date.
               _buildTitleText(text: AppString.text_to.tr, isRequired: true),
               customSpacerHeight(height: 8),
               _buildToDateWithTime(context),
               customSpacerHeight(height: 20),
+
+              /// Displays the title and a status selection tab.
               _buildTitleText(text: AppString.text_status.tr),
               customSpacerHeight(height: 8),
               _buildStatusTabSelector(),
               customSpacerHeight(height: 20),
+
+              /// Displays the title and a note input field.
               _buildTitleText(text: AppString.text_note.tr),
               customSpacerHeight(height: 8),
               _buildNote(),
               customSpacerHeight(height: 20),
+
+              /// Displays the title and an attachment input.
               _buildTitleText(text: AppString.text_document.tr),
               const AddAttachmentFile(),
               customSpacerHeight(height: 20),
+
+              /// Displays the action buttons.
               CustomDoubleAppButton(
                   onAction: () {},
                   cancelAction: () {
-
-                    Get.find<LeaveFileUploadController>().path.value="";
-
-
+                    /// Clears the file upload path and navigates back.
+                    Get.find<LeaveFileUploadController>().path.value = "";
+                    Get.back(canPop: false);
                   }),
               customSpacerHeight(height: 100),
             ],
@@ -83,6 +100,7 @@ class EditLeaveRecordDetails extends StatelessWidget {
     );
   }
 
+  /// Builds a horizontal tab selector for leave status options.
   Widget _buildStatusTabSelector() {
     final leaveController = Get.find<LeaveController>();
     return SizedBox(
@@ -91,14 +109,15 @@ class EditLeaveRecordDetails extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColor.cardColor,
           borderRadius: BorderRadius.circular(4),
-          border:
-              Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
+          border: Border.all(
+              width: 1, color: AppColor.hintColor.withOpacity(0.5)),
         ),
         child: ListView.builder(
           itemCount: leaveController.statusOptions.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Obx(() {
+              // Checks if the current index is selected.
               final isSelected =
                   index == leaveController.selectedStatusIndex.value;
               return GestureDetector(
@@ -107,7 +126,7 @@ class EditLeaveRecordDetails extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
                     color:
-                        isSelected ? AppColor.pendingColor : Colors.transparent,
+                    isSelected ? AppColor.pendingColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   alignment: Alignment.center,
@@ -115,7 +134,7 @@ class EditLeaveRecordDetails extends StatelessWidget {
                     leaveController.statusOptions[index],
                     style: AppStyle.normal_text.copyWith(
                       color:
-                          isSelected ? AppColor.cardColor : AppColor.hintColor,
+                      isSelected ? AppColor.cardColor : AppColor.hintColor,
                     ),
                   ),
                 ),
@@ -127,7 +146,8 @@ class EditLeaveRecordDetails extends StatelessWidget {
     );
   }
 
-  _buildNote() {
+  /// Builds the note input field.
+  Widget _buildNote() {
     return InputNote(
       controller: TextEditingController(),
       hintText: AppString.text_add_note.tr,
@@ -136,6 +156,7 @@ class EditLeaveRecordDetails extends StatelessWidget {
     );
   }
 }
+
 
 Widget _buildFromDateWithTime(BuildContext context) {
   return Row(

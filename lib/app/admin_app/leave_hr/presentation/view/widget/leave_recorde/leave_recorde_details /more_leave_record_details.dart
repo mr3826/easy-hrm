@@ -17,9 +17,19 @@ import '../../../../../../../../utils/images.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
 import 'leave_record_details.dart';
 
+
+
+
+/// A widget that displays detailed information for a specific leave record,
+/// including options to approve, reject, edit, and view attached documents.
+///
+/// The actions displayed depend on the leave record's status.
 class MoreLeaveRecordDetails extends StatelessWidget {
   final LeaveRecordDetailsModel leaveRecordDetails;
 
+  /// Constructor for `MoreLeaveRecordDetails`.
+  ///
+  /// Accepts [leaveRecordDetails] of type `LeaveRecordDetailsModel` to display the information.
   const MoreLeaveRecordDetails({super.key, required this.leaveRecordDetails});
 
   @override
@@ -27,30 +37,33 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        /// Header with employee details
         _buildHeader(
           imageUrl: leaveRecordDetails.imgUrl,
           name: leaveRecordDetails.employeeName,
-          details:
-              "${leaveRecordDetails.typeOfLeave}: ${leaveRecordDetails.leaveStatus} - ${leaveRecordDetails.leaveDate}",
+          details: "${leaveRecordDetails.typeOfLeave}: ${leaveRecordDetails.leaveStatus} - ${leaveRecordDetails.leaveDate}",
         ),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (leaveRecordDetails.applicationStatus ==
-                    LeaveStatus.pending.name) ...[
-                  _buildActionOption(AppString.textApprove.tr, () {}),
+                ///Conditional actions based on application status
+                if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name || leaveRecordDetails.applicationStatus == LeaveStatus.approved.name) ...[
+                  if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name) ...[
+                    _buildActionOption(AppString.textApprove.tr, () {}),
+                    _divider(),
+                  ],
+                  _buildCancel(context),  ///reject || cancel build action
                   _divider(),
-                  _buildCancel(context),
-                  _divider(),
-                  _buildActionOption(AppString.text_edit.tr, () {
-                    _showEditLeaveDetails(leaveRecordDetails);
-                  }),
-                  _divider(),
+                  if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name) ...[
+                    _buildActionOption(AppString.text_edit.tr, () {
+                      _showEditLeaveDetails(leaveRecordDetails);
+                    }),
+                    _divider(),
+                  ],
                 ],
-                _buildActionOption(
-                    AppString.textSeeDocument.tr, _showBuildAttachedFile),
+                _buildActionOption(AppString.textSeeDocument.tr, _showBuildAttachedFile),
                 _divider(),
                 _buildActionOption(AppString.textViewLeaveRecord.tr, () {
                   Get.find<LeaveController>().isFilterIndividual(true);
@@ -64,6 +77,7 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     );
   }
 
+  /// Builds an action button for various leave options like Approve, Reject, Edit.
   Widget _buildActionOption(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -84,6 +98,7 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     );
   }
 
+  /// Creates a divider to separate action options visually.
   Widget _divider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 22.0),
@@ -91,6 +106,7 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     );
   }
 
+  /// Builds the header containing profile image, name, and leave details.
   Widget _buildHeader({String? imageUrl, String? name, String? details}) {
     final screenHeight = MediaQuery.of(Get.context!).size.height;
 
@@ -135,6 +151,7 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     );
   }
 
+  /// Displays a sheet with attached files for viewing.
   void _showBuildAttachedFile() {
     customAntButtonSheet(
       context: Get.context!,
@@ -143,6 +160,8 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     );
   }
 
+  /// Builds a cancel action based on the leave status and displays
+  /// appropriate cancel or reject options.
   Widget _buildCancel(BuildContext context) {
     if (leaveRecordDetails.applicationStatus == LeaveStatus.taken.name ||
         leaveRecordDetails.applicationStatus == LeaveStatus.reject.name ||
@@ -165,31 +184,36 @@ class MoreLeaveRecordDetails extends StatelessWidget {
     );
   }
 
+  /// Builds a cancel option for approved leaves.
   Widget _buildActionCancel(BuildContext context) {
     return _buildActionOption(AppString.text_cancel.tr, () {
       showRejectDialog(context, leaveRecordDetails.leaveDate.toString());
     });
   }
 
+  /// Shows a sheet to edit leave details.
   void _showEditLeaveDetails(LeaveRecordDetailsModel leaveRecordDetailsModel) {
     customAntButtonSheet(
-        context: Get.context!,
-        height: MediaQuery.of(Get.context!).size.height / 1.2,
-        child: EditLeaveRecordDetails(
-          leaveRecordDetailsModel: LeaveRecordDetailsModel(
-              applicationDate: leaveRecordDetailsModel.leaveStatus,
-              applicationStatus: leaveRecordDetailsModel.applicationStatus,
-              employeeName: leaveRecordDetailsModel.employeeName,
-              leaveDate: leaveRecordDetailsModel.leaveDate,
-              leaveDuration: leaveRecordDetailsModel.leaveDuration,
-              typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-              leaveStatus: leaveRecordDetailsModel.leaveStatus,
-              designation: leaveRecordDetailsModel.designation,
-              imgUrl: leaveRecordDetailsModel.imgUrl),
-        ));
+      context: Get.context!,
+      height: MediaQuery.of(Get.context!).size.height / 1.2,
+      child: EditLeaveRecordDetails(
+        leaveRecordDetailsModel: LeaveRecordDetailsModel(
+          applicationDate: leaveRecordDetailsModel.leaveStatus,
+          applicationStatus: leaveRecordDetailsModel.applicationStatus,
+          employeeName: leaveRecordDetailsModel.employeeName,
+          leaveDate: leaveRecordDetailsModel.leaveDate,
+          leaveDuration: leaveRecordDetailsModel.leaveDuration,
+          typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
+          leaveStatus: leaveRecordDetailsModel.leaveStatus,
+          designation: leaveRecordDetailsModel.designation,
+          imgUrl: leaveRecordDetailsModel.imgUrl,
+        ),
+      ),
+    );
   }
 }
 
+/// Shows a rejection dialog with custom alert and actions.
 void showRejectDialog(BuildContext context, String leaveData) {
   showCustomAlertDialog(
     context: context,
@@ -248,11 +272,21 @@ void showRejectDialog(BuildContext context, String leaveData) {
   );
 }
 
+/// Builds a dialog action row with cancel and confirm buttons.
+/// - The cancel button is styled with a close icon and a hint color,
+///   allowing the user to close the dialog without taking action.
+/// - The confirm button includes a done icon and an error color,
+///   performing a specific action on press.
+///
+/// Returns:
+///   A `SizedBox` containing a `Row` of action buttons, styled and
+///   spaced appropriately for use in dialogs.
 Widget _buildDialogActions() {
   return SizedBox(
     height: 40,
     child: Row(
       children: [
+        // Cancel Button
         CustomAppButton(
           buttonText: Row(
             children: [
@@ -267,13 +301,17 @@ Widget _buildDialogActions() {
               ),
             ],
           ),
-          onPressed: () => Get.back(),
+          onPressed: () => Get.back(), // Closes the dialog on press
           buttonColor: AppColor.cardColor,
           borderColor: AppColor.hintColor.withOpacity(0.6),
           textColor: AppColor.hintColor,
           borderRadius: Dimensions.radiusDefault,
         ),
+
+        // Spacer between buttons
         customSpacerWidth(width: 20),
+
+        // Confirm Button
         CustomAppButton(
           buttonText: Row(
             children: [
@@ -290,7 +328,7 @@ Widget _buildDialogActions() {
             ],
           ),
           onPressed: () {
-            print(DateTime.now());
+            print(DateTime.now()); // Logs current date and time
           },
           buttonColor: AppColor.errorColorLight,
           borderColor: AppColor.errorColorLight.withOpacity(0.6),
@@ -301,3 +339,4 @@ Widget _buildDialogActions() {
     ),
   );
 }
+
