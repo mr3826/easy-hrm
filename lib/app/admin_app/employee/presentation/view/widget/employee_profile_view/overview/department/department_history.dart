@@ -135,9 +135,10 @@ class DepartmentHistoryForEmployee extends StatelessWidget {
               ? const SizedBox()
               : const Positioned(
                   top: 26,
-                  left: 1,
+                  left: 28,
+                  right: 0,
                   bottom: 0,
-                  child: DottedStyleLayout(height: 99, isVertical: true),
+                  child: CustomDottedStyle(height: 99, isVertical: true,),
                 ),
         ],
       ),

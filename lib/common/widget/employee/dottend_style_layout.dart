@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
-import '../../../utils/app_layout.dart';
+import '../../../utils/app_color.dart';
 
-class DottedStyleLayout extends StatelessWidget {
+
+class CustomDottedStyle extends StatelessWidget {
+  final Widget? child;
+  final bool isErrorOccurred;
   final double height;
-  final double width; // Added width parameter for horizontal orientation
+  final double width;
+  final StrokeCap? strokeCap;
   final EdgeInsetsGeometry padding;
   final Color dottedBorderColor;
   final List<double> dashPattern;
   final double strokeWidth;
-  final Color dividerColor;
-  final bool isVertical; // New parameter for orientation
+  final bool isVertical;
+  final bool isSquare;
 
-  const DottedStyleLayout({
+  const CustomDottedStyle({
     Key? key,
-    required this.height,
-    this.width = double.infinity, // Default to full width for horizontal
-    this.padding = const EdgeInsets.only(left: 28.0),
+    this.child,
+    this.strokeCap,
+    this.isErrorOccurred = false,
+    this.height = 140.0,
+    this.width = double.infinity,
+    this.padding = const EdgeInsets.all(0),
     this.dottedBorderColor = Colors.grey,
-    this.dashPattern = const [4, 4],
-    this.strokeWidth = 1.2,
-    this.dividerColor = Colors.transparent,
-    this.isVertical = false, // Default to horizontal
+    this.dashPattern = const [7, 6],
+    this.strokeWidth = 1.0,
+    this.isVertical = false,
+    this.isSquare = false,
   }) : super(key: key);
 
   @override
@@ -29,32 +36,28 @@ class DottedStyleLayout extends StatelessWidget {
     return Padding(
       padding: padding,
       child: DottedBorder(
-        customPath: (p0) {
-          if (isVertical) {
-            return Path()..lineTo(0, AppLayout.getHeight(height)); // Vertical line
+        strokeCap: strokeCap ?? StrokeCap.butt,
+        customPath: (size) {
+          if (isSquare) {
+            return Path()
+              ..addRect(Rect.fromLTWH(0, 0, width, height));
+          } else if (isVertical) {
+            return Path()
+              ..moveTo(size.width / 2, 0)
+              ..lineTo(size.width / 2, height);
           } else {
-            return Path()..lineTo(AppLayout.getWidth(width), 0); // Horizontal line
+            return Path()
+              ..moveTo(0, size.height / 2)
+              ..lineTo(width, size.height / 2);
           }
         },
-        color: dottedBorderColor.withOpacity(0.6),
+        color: isErrorOccurred ? AppColor.errorColorLight : dottedBorderColor.withOpacity(0.6),
         dashPattern: dashPattern,
         strokeWidth: strokeWidth,
-        child: isVertical
-            ? Column(
-          children: [
-            Divider(
-              height: AppLayout.getHeight(height),
-              color: dividerColor,
-            ),
-          ],
-        )
-            : Row(
-          children: [
-            Divider(
-              height: AppLayout.getHeight(height),
-              color: dividerColor,
-            ),
-          ],
+        child: SizedBox(
+          height: height,
+          width: isVertical ? strokeWidth : width,
+          child: child ?? Container(),
         ),
       ),
     );

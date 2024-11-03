@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/edit_leave_record/attachment.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import '../../../../../../../../../common/widget/custom_double_app_button.dart';
 import '../../../../../../../../../common/widget/custom_spacer.dart';
+import '../../../../../../../../../common/widget/input_note.dart';
 import '../../../../../../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../../../../../../common/widget/timePicker/custom_time_picker_out_time.dart';
 import '../../../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
@@ -11,6 +15,8 @@ import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../employee/presentation/view/widget/employee_profile_view/leave_summary/leave_allowance/selecte_leave_type.dart';
+import '../../../../../controller/leave_controller.dart';
+import '../../../../../controller/picked_file_from_stroage.dart';
 import '../leave_record_details.dart';
 
 class EditLeaveRecordDetails extends StatelessWidget {
@@ -30,24 +36,103 @@ class EditLeaveRecordDetails extends StatelessWidget {
   }
 
   _buildListOfTextField(context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTitleText(text: AppString.text_leave_name.tr, isRequired: true),
-          customSpacerHeight(height: 8),
-          const SelectedLeaveType(),
-          customSpacerHeight(height: 20),
-          _buildTitleText(text: AppString.text_from.tr, isRequired: true),
-          customSpacerHeight(height: 8),
-          _buildFromDateWithTime(context),
-          customSpacerHeight(height: 20),
-          _buildTitleText(text: AppString.text_to.tr, isRequired: true),
-          customSpacerHeight(height: 8),
-          _buildToDateWithTime(context)
-        ],
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTitleText(
+                  text: AppString.text_leave_name.tr, isRequired: true),
+              customSpacerHeight(height: 8),
+              const SelectedLeaveType(),
+              customSpacerHeight(height: 20),
+              _buildTitleText(text: AppString.text_from.tr, isRequired: true),
+              customSpacerHeight(height: 8),
+              _buildFromDateWithTime(context),
+              customSpacerHeight(height: 20),
+              _buildTitleText(text: AppString.text_to.tr, isRequired: true),
+              customSpacerHeight(height: 8),
+              _buildToDateWithTime(context),
+              customSpacerHeight(height: 20),
+              _buildTitleText(text: AppString.text_status.tr),
+              customSpacerHeight(height: 8),
+              _buildStatusTabSelector(),
+              customSpacerHeight(height: 20),
+              _buildTitleText(text: AppString.text_note.tr),
+              customSpacerHeight(height: 8),
+              _buildNote(),
+              customSpacerHeight(height: 20),
+              _buildTitleText(text: AppString.text_document.tr),
+              const AddAttachmentFile(),
+              customSpacerHeight(height: 20),
+              CustomDoubleAppButton(
+                  onAction: () {},
+                  cancelAction: () {
+
+                    Get.find<LeaveFileUploadController>().path.value="";
+
+
+                  }),
+              customSpacerHeight(height: 100),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget _buildStatusTabSelector() {
+    final leaveController = Get.find<LeaveController>();
+    return SizedBox(
+      height: AppLayout.getHeight(44),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColor.cardColor,
+          borderRadius: BorderRadius.circular(4),
+          border:
+              Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
+        ),
+        child: ListView.builder(
+          itemCount: leaveController.statusOptions.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Obx(() {
+              final isSelected =
+                  index == leaveController.selectedStatusIndex.value;
+              return GestureDetector(
+                onTap: () => leaveController.selectedStatusIndex.value = index,
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  decoration: BoxDecoration(
+                    color:
+                        isSelected ? AppColor.pendingColor : Colors.transparent,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    leaveController.statusOptions[index],
+                    style: AppStyle.normal_text.copyWith(
+                      color:
+                          isSelected ? AppColor.cardColor : AppColor.hintColor,
+                    ),
+                  ),
+                ),
+              );
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  _buildNote() {
+    return InputNote(
+      controller: TextEditingController(),
+      hintText: AppString.text_add_note.tr,
+      borderColor: AppColor.hintColor.withOpacity(0.5),
+      onChanged: (value) {},
     );
   }
 }
