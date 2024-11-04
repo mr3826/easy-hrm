@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
-import 'admin_app/modules/employee/data/employee_remote_data_source.dart';
+import 'app/admin_app/employee/data/employee_remote_data_source.dart';
 import 'firebase_options.dart';
 
 Future<void> initApp() async {

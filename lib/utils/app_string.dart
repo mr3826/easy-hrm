@@ -28,6 +28,8 @@ class AppString {
   static const String textTodayAttendance = "Today's attendance";
   static const String textAddAllowance = "Add allowance";
   static const String textAllowanceBalance = "Allowance balance";
+  static const String textApplicationBalance = "Application balance";
+  static const String textMaxConsecutiveBalance = "Max consecutive days";
   static const String textLeaveAllowance = "Leave allowance";
   static const String textRecentSearch = "Recent search";
   static const String textClearAll = "Clear all";
