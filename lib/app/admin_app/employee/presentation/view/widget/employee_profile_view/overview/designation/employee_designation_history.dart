@@ -149,9 +149,9 @@ class DesignationHistoryLayout extends StatelessWidget {
   Widget _dottedSeparator() {
     return const Positioned(
       top: 55,
-      left: 1,
+      left: 28,
       bottom: 0,
-      child: DottedStyleLayout(height: 46,isVertical: true)
+      child: CustomDottedStyle(height: 46,isVertical: true)
     );
   }
 

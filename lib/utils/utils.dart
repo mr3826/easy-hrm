@@ -209,10 +209,7 @@ String getTimeDifference(String startTimeString, String endTimeString) {
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
 
-
 String workingTimeSinceFormString(String startDateString, String? endDateString) {
-
-
   // Parse the start date
   DateTime startDate = DateTime.tryParse(startDateString) ?? DateTime.now();
 
@@ -220,8 +217,6 @@ String workingTimeSinceFormString(String startDateString, String? endDateString)
   DateTime endDate = (endDateString == null || endDateString.isEmpty)
       ? DateTime.now()
       : DateTime.tryParse(endDateString) ?? DateTime.now();
-
-
 
   // Calculate the initial differences
   int years = endDate.year - startDate.year;
@@ -253,8 +248,6 @@ String workingTimeSinceFormString(String startDateString, String? endDateString)
   }
 }
 
-
-
 String getFirstTwoLetterFromWord(String input) {
   if (input.isEmpty) {
     return "";
@@ -272,7 +265,6 @@ String getFirstTwoLetterFromWord(String input) {
   // Concatenate the results
   return '$firstLetter$lastLetter';
 }
-
 
 String formatLeaveDate(String inputDate) {
   // Check for empty input
@@ -410,8 +402,7 @@ void logErrorMessage({required String logName, Response? response}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: ErrorModel.fromJson(response?.body).message);
 
-void logSuccessMessage(
-        {required String logName, Response? response, String? message}) =>
+void logSuccessMessage({required String logName, Response? response, String? message}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
 
@@ -419,4 +410,28 @@ handleUnknownError(di.Response response) {
   if (response.data == null) {
     return showErrorMessage(message: "Something went wrong. Please try again.");
   }
+}
+
+
+
+///Updated formatting method
+String formatDate({required String date, String? format}) {
+  if (date.isEmpty) return ""; // Return empty string if date is empty
+
+  final String dateFormat = format ?? "dd MMM yy"; // Default format
+  DateTime? parsedDate;
+
+  // Try parsing with multiple date formats to handle different date inputs
+  try {
+    parsedDate = DateTime.parse(date); // ISO 8601 format
+  } catch (e) {
+    try {
+      parsedDate = DateFormat("dd MMM,yyyy").parse(date); // "25 Jul,2023" format
+    } catch (e) {
+      return date; // Return empty string if parsing fails
+    }
+  }
+
+  // Format the parsed date
+  return DateFormat(dateFormat).format(parsedDate);
 }

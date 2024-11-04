@@ -6,23 +6,25 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
- customDialog({
+ showCustomAlertDialog({
   required BuildContext context,
-   IconData? icon,
+   IconData? iconData,
   Widget? iconWidget,
-  double? drcFontSize,
-  required String titleText,
-  required String subText,
-  double horizontalPadding = 20.0,
-  double verticalPadding = 20.0,
-  double btnPadding = 12.0,
-  required Function() saveBtnAction,
-  required String btnText,
-  Widget? childForSaveBtn,
-  required String drcText,
-  Widget? btnWidget,
-  required Color iconBgColor,
-  required Color btnBgColor,
+  Widget? titleContent,
+  Widget? descriptionContent,
+  double? descriptionFontSize,
+   String ?titleText,
+   String ?descriptionText,
+  double paddingHorizontal = 20.0,
+  double paddingVertical = 20.0,
+  double buttonSpacing = 12.0,
+  required Function() onConfirm,
+  required String confirmButtonText,
+  Widget? confirmButtonChild,
+   String? extraInfoText,
+  Widget? actionButtonWidget,
+  required Color iconBackgroundColor,
+  required Color confirmButtonColor,
   Color ? closeButtonColor, // Added close button color with default value
 }) {
   showDialog<String>(
@@ -34,24 +36,24 @@ import 'package:payrun_mobile/utils/dimensions.dart';
           borderRadius: BorderRadius.circular(12),
         ),
         padding:
-        EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+        EdgeInsets.symmetric(horizontal: paddingHorizontal, vertical: paddingVertical),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             iconWidget ??
                 CircleAvatar(
-                  backgroundColor: iconBgColor.withOpacity(0.2),
+                  backgroundColor: iconBackgroundColor.withOpacity(0.2),
                   radius: 32,
                   child: Icon(
-                    icon,
+                    iconData,
                     size: 40,
-                    color: btnBgColor,
+                    color: confirmButtonColor,
                   ),
                 ),
             customSpacerHeight(height: 12),
-            Text(
-              titleText,
+            titleContent??   Text(
+              titleText??"",
               textAlign: TextAlign.center,
               style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.normalTextColor,
@@ -62,32 +64,32 @@ import 'package:payrun_mobile/utils/dimensions.dart';
             ),
             customSpacerHeight(height: 12),
             Center(
-              child: Text(
-                subText,
+              child: descriptionContent?? Text(
+                descriptionText??"",
                 textAlign: TextAlign.center,
                 style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
-                  fontSize: drcFontSize ?? Dimensions.fontSizeDefault-2,
+                  fontSize: descriptionFontSize ?? Dimensions.fontSizeDefault-2,
                 ),
               ),
             ),
             Center(
-              child: Text(
-                drcText,
+              child:Text(
+                extraInfoText??"",
                 style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.hintColor,
                   fontSize: Dimensions.fontSizeDefault - 3,
                 ),
               ),
             ),
-            customSpacerHeight(height: btnPadding),
-            btnWidget ??
+            customSpacerHeight(height: buttonSpacing),
+            actionButtonWidget ??
                 CustomDoubleAppButton(
-                  buttonText: btnText,
-                  onAction: saveBtnAction,
+                  buttonText: confirmButtonText,
+                  onAction: onConfirm,
                   cancelAction: () => Get.back(),
-                  btnColor: btnBgColor,
-                  saveBtn: childForSaveBtn,
+                  btnColor: confirmButtonColor,
+                  saveBtn: confirmButtonChild,
                   cancelBtnColor: closeButtonColor,
                 ),
           ],

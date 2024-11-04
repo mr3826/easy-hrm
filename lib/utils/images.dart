@@ -45,6 +45,7 @@ class Images {
   static String profileNav = "assets/images/profile_nav.svg";
   static String profileOutNav = "assets/images/profile_out_nav.svg";
   static String cancelLeave = "assets/images/cancel_leave_icon.svg";
+  static String rejectLeave = "assets/images/reject_leave.png.svg";
   static String calendarNav = "assets/images/calendar_nav.svg";
   static String calendarOutlineLav = "assets/images/calander_outline_lev.svg";
   static String calendarLav = "assets/images/calander_lev.svg";
