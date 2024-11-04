@@ -12,6 +12,7 @@ import 'package:get_storage/get_storage.dart' as get_storage;
 import 'package:payrun_mobile/network/network_client.dart';
 import 'admin_app/modules/employee/data/employee_remote_data_source.dart';
 import 'admin_app/modules/employee/domain/employee_info.dart';
+import 'app/admin_app/employee/data/employee_remote_data_source.dart';
 import 'firebase_options.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
