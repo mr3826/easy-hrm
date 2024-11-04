@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
@@ -25,10 +26,12 @@ class MonthNavigateWidget extends StatelessWidget {
             children: [
               _buildArrowButton(Icons.arrow_back_ios, context),
               Obx(
-                    () => Column(
+                () => Column(
                   children: [
                     Text(
-                      formatDate(date: controller.selectedMonthDate.value.toString(), format: "MMMM"),
+                      formatDate(
+                          date: controller.selectedMonthDate.value.toString(),
+                          format: "MMMM"),
                       style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.secondaryColor,
                         fontSize: Dimensions.fontSizeDefault + 1,
@@ -91,30 +94,43 @@ Widget _selectedMonthDialog() {
 Widget _buildYearDropdown(LeaveController controller) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Obx(() {
-      return DropdownButton<int>(
-        underline: Container(),
-        value: controller.years[controller.selectedYearIndex.value],
-        icon: const Icon(Icons.expand_more),
-        onChanged: (int? newYear) {
-          if (newYear != null) {
-            controller.selectedYearIndex.value = controller.years.indexOf(newYear);
-          }
-        },
-        items: controller.years.map((int year) {
-          return DropdownMenuItem<int>(
-            value: year,
-            child: Text(
-              year.toString(),
-              style: AppStyle.mid_large_text.copyWith(
-                color: Colors.black,
-                fontSize: Dimensions.fontSizeDefault + 2,
+    child: Obx(() => DropdownButtonHideUnderline(
+          child: DropdownButton2(
+            value: controller.years[controller.selectedYearIndex.value],
+            items: controller.years.map((int year) {
+              return DropdownMenuItem<int>(
+                value: year,
+                child: Text(
+                  year.toString(),
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: Colors.black,
+                    fontSize: Dimensions.fontSizeDefault + 2,
+                  ),
+                ),
+              );
+            }).toList(),
+            onChanged: (int? newYear) {
+              if (newYear != null) {
+                controller.selectedYearIndex.value =
+                    controller.years.indexOf(newYear);
+              }
+            },
+            dropdownStyleData: DropdownStyleData(
+              maxHeight: 500,
+              width: 90,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(0),
+                color: Colors.white,
+              ),
+              offset: const Offset(-20, 0),
+              scrollbarTheme: ScrollbarThemeData(
+                radius: const Radius.circular(40),
+                thickness: MaterialStateProperty.all(6),
+                thumbVisibility: MaterialStateProperty.all(true),
               ),
             ),
-          );
-        }).toList(),
-      );
-    }),
+          ),
+        )),
   );
 }
 
@@ -129,30 +145,31 @@ Widget _buildMonthGrid(LeaveController controller) {
     itemCount: controller.months.length,
     itemBuilder: (context, index) {
       return Obx(() => GestureDetector(
-        onTap: () {
-          controller.selectedMonthIndex.value = index;
-          print("Selected DateTime: ${controller.selectedMonthDate}");
-        },
-        child: Center(
-          child: Container(
-            decoration: BoxDecoration(
-              color: controller.selectedMonthIndex.value == index
-                  ? AppColor.primaryColor
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-            child: Text(
-              controller.months[index],
-              style: AppStyle.normal_text.copyWith(
-                color: controller.selectedMonthIndex.value == index
-                    ? Colors.white
-                    : AppColor.normalTextColor,
+            onTap: () {
+              controller.selectedMonthIndex.value = index;
+              print("Selected DateTime: ${controller.selectedMonthDate}");
+            },
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: controller.selectedMonthIndex.value == index
+                      ? AppColor.primaryColor
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                child: Text(
+                  controller.months[index],
+                  style: AppStyle.normal_text.copyWith(
+                    color: controller.selectedMonthIndex.value == index
+                        ? Colors.white
+                        : AppColor.normalTextColor,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ));
+          ));
     },
   );
 }
@@ -175,9 +192,11 @@ Widget _buildDialogActions(LeaveController controller) {
         const SizedBox(width: 30),
         GestureDetector(
           onTap: () {
-            int selectedYear = controller.years[controller.selectedYearIndex.value];
+            int selectedYear =
+                controller.years[controller.selectedYearIndex.value];
             int selectedMonthIndex = controller.selectedMonthIndex.value + 1;
-            DateTime selectedDateTime = DateTime(selectedYear, selectedMonthIndex);
+            DateTime selectedDateTime =
+                DateTime(selectedYear, selectedMonthIndex);
             print("Selected DateTime: $selectedDateTime");
             Get.back(canPop: false);
           },

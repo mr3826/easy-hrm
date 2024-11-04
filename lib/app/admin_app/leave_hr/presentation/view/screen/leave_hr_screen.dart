@@ -32,7 +32,6 @@ class LeaveHrScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             ///Tab-bar layout
             _buildTabBar(context),
             customSpacerHeight(height: 12),
@@ -46,15 +45,11 @@ class LeaveHrScreen extends StatelessWidget {
                   : _buildIndividualPerson(),
             ),
 
-
             ///Tab-bar view according to index
             Obx(
               () => Get.find<LeaveController>().tabLength.value == 0
                   ? _buildCalendar()
                   : _leaveRecordeList(),
-
-
-
             ),
           ],
         ),
@@ -135,7 +130,7 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _buildCalendar() {
-    return   Column(
+    return Column(
       children: [
         MonthNavigateWidget(),
         CalendarView(),
