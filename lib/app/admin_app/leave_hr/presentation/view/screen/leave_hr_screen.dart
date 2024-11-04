@@ -15,7 +15,9 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../controller/leave_controller.dart';
-import '../widget/calandar_widget.dart';
+import '../widget/calendar/calendar_view.dart';
+import '../widget/calendar/month_navigate_widget.dart';
+import '../widget/leave_recorde/date_navigate_widget.dart';
 import '../widget/leave_recorde/leave_record_list.dart';
 
 class LeaveHrScreen extends StatelessWidget {
@@ -30,8 +32,12 @@ class LeaveHrScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            ///Tab-bar layout
             _buildTabBar(context),
             customSpacerHeight(height: 12),
+
+            ///build search employee list
             Obx(
               () => Get.find<LeaveController>().isFilterIndividual.isFalse
                   ? _buildSearchBar(context, onSearch: () {
@@ -39,8 +45,17 @@ class LeaveHrScreen extends StatelessWidget {
                     })
                   : _buildIndividualPerson(),
             ),
-            const DateNavigatorWidget(),
-            const LeaveRecordList()
+
+
+            ///Tab-bar view according to index
+            Obx(
+              () => Get.find<LeaveController>().tabLength.value == 0
+                  ? _buildCalendar()
+                  : _leaveRecordeList(),
+
+
+
+            ),
           ],
         ),
       ),
@@ -108,6 +123,23 @@ class LeaveHrScreen extends StatelessWidget {
               ));
         },
       ),
+    );
+  }
+
+  _leaveRecordeList() {
+    return const Expanded(
+      child: Column(
+        children: [DateNavigatorWidget(), LeaveRecordList()],
+      ),
+    );
+  }
+
+  _buildCalendar() {
+    return   Column(
+      children: [
+        MonthNavigateWidget(),
+        CalendarView(),
+      ],
     );
   }
 

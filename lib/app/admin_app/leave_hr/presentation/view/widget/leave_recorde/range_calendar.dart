@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../../../../common/widget/custom_card_style.dart';
-import '../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/app_style.dart';
-import '../../../../../../utils/dimensions.dart';
-import '../../controller/calender_controller.dart';
-import '../../controller/leave_controller.dart';
+import '../../../../../../../common/widget/custom_card_style.dart';
+import '../../../../../../../common/widget/custom_spacer.dart';
+import '../../../../../../../utils/app_color.dart';
+import '../../../../../../../utils/app_style.dart';
+import '../../../../../../../utils/dimensions.dart';
+import '../../../controller/calender_controller.dart';
+import '../../../controller/leave_controller.dart';
 
 leaveRecodeFilterDialog() {
   var controller = Get.put(LeaveController());
@@ -24,8 +24,11 @@ leaveRecodeFilterDialog() {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+
         Obx(() => _createDialogTitle(_retrieveSelectedDate(controller))),
+
         customSpacerHeight(height: 16),
+
         ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: controller.dayList.length <= 5
@@ -76,7 +79,9 @@ leaveRecodeFilterDialog() {
             },
           ),
         ),
+
         customSpacerHeight(height: 4),
+
       ],
     ),
   );

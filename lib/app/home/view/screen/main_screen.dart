@@ -23,7 +23,7 @@ import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
 import '../../../../modules/timeline/view/screen/timeline.dart';
 import '../../../admin_app/leave_hr/presentation/view/screen/leave_hr_screen.dart';
-import '../../../admin_app/leave_hr/presentation/view/widget/range_calendar.dart';
+import '../../../admin_app/leave_hr/presentation/view/widget/leave_recorde/range_calendar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
