@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:payrun_mobile/admin_app/modules/employee/domain/department_info.dart';
 
+import '../../../../modules/profile/model/employee_work_history.dart';
+import '../../../../modules/profile/model/user_profile.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
 import '../../../../utils/api_endpoints.dart';
@@ -66,6 +68,42 @@ class EmployeeRemoteDataSource {
       return DepartmentsInfo.fromJson(response.data!);
     } catch (e) {
       log('Error in getDepartments: $e');
+      return null;
+    }
+  }
+
+  Future<UserDetails?> getEmployeeProfile({required String orgUserId}) async {
+    try {
+      final response = await networkClient.graphRequest(
+          queryString: getUserProfileQuery,
+          variables: {"orgUserId": orgUserId});
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getEmployeeProfile");
+        return null;
+      }
+      return UserDetails.fromJson(response.data!);
+    } catch (e) {
+      log('Error in getEmployeeProfile: $e');
+      return null;
+    }
+  }
+
+  Future<EmployeeWorkHistory?> getEmployeesEmploymentInfo({required String orgUserId}) async {
+    try {
+      final response = await networkClient.graphRequest(
+          queryString: getEmploymentInfoQuery,
+          variables: {"orgUserId": orgUserId});
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getEmployeesEmploymentInfo");
+        return null;
+      }
+      return EmployeeWorkHistory.fromJson(response.data!);
+    } catch (e) {
+      log('Error in getEmployeesEmploymentInfo: $e');
       return null;
     }
   }

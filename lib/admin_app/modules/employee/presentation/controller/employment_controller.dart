@@ -127,6 +127,7 @@ class EmploymentController extends GetxController {
     isFilterInfoLoading(false);
   }
 
+
   void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {
     for (CheckBoxModel item in checkBoxList) {
       item.value = false;
