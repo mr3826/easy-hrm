@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/user_profile_controller.dart';
+import '../../model/user_profile.dart';
 import '../screen/change_password.dart';
 
 Widget actionLayout({
@@ -60,11 +61,29 @@ Widget actionLayout({
 }
 
 void _editProfileRoute() {
-  UserProfileController controller = Get.find<UserProfileController>();
-  final userDetails =
-      controller.userDetails?.getOrganizationUserDetails?.profile;
-
+  ///clear img local path
   Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
+
+  UserProfileController controller = Get.find<UserProfileController>();
+  final userDetails = controller.userDetails?.getOrganizationUserDetails?.profile;
+  _setDataForUpdateChecker(userDetails); ///Save data
+
+
+
+
+  ///Clear controller
+  controller.firstName.value = "";
+  controller.lastName.value = "";
+  controller.address.value = "";
+  controller.phoneNumber.value = "";
+  controller.emergencyNumber.value = "";
+  controller.description.value = "";
+  Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
+}
+
+
+
+void _setDataForUpdateChecker(Profile? userDetails) {
 
   editFirstNameController.text = userDetails?.firstName ?? "";
   editLastNameController.text = userDetails?.lastName ?? "";
@@ -73,15 +92,14 @@ void _editProfileRoute() {
   editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
   editBioController.text = userDetails?.about ?? "";
 
-  ///Clear controller
-  controller.firstName.value = "";
-  controller.lastName.value = "";
-  controller.address.value = "";
-  controller.phone.value = "";
-  controller.emergencyNumber.value = "";
-  controller.description.value = "";
-  Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
+  Get.find<UserProfileController>().phoneNumber.value =userDetails?.personalNumber ?? "";
+  Get.find<UserProfileController>().emergencyNumber.value =userDetails?.emergencyNumber ?? "";
+
+
+
 }
+
+
 
 Widget _fieldLayout({
   required String hintText,

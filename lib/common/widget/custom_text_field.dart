@@ -66,17 +66,10 @@ class CustomInputField extends StatelessWidget {
               color: AppColor.hintColor,
             ),
         suffixIcon: weight,
-        border: OutlineInputBorder(
-          borderSide:
-              const BorderSide(width: 0.0, color: AppColor.primaryColor),
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
-        ),
+        border:outlineInputBorder,
         focusColor: AppColor.primaryColor,
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.disableColor)),
-        enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColor.disableColor),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+        focusedBorder: outlineInputBorder,
+        enabledBorder:outlineInputBorder,
       ),
     );
   }
@@ -95,22 +88,22 @@ class CustomInputField extends StatelessWidget {
             color: AppColor.hintColor,
             fontFamily: "Poppins",
             fontSize: Dimensions.fontSizeDefault + 1),
-        border: OutlineInputBorder(
-          borderSide:
-              const BorderSide(width: 0.0, color: AppColor.primaryColor),
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
-        ),
+        border:outlineInputBorder,
         focusColor: AppColor.primaryColor,
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.normalTextColor)),
-        enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColor.hintColor),
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+        focusedBorder:  outlineInputBorder,
+        enabledBorder: outlineInputBorder,
       ),
     );
   }
 }
 
+
+
+OutlineInputBorder get outlineInputBorder{
+  return OutlineInputBorder(
+      borderSide:  BorderSide(color: AppColor.hintColor.withOpacity(0.8)),
+      borderRadius: BorderRadius.circular(Dimensions.radiusDefault-2));
+}
 TextStyle get subTextFieldTitleStyle {
   return AppStyle.mid_large_text.copyWith(
       fontWeight: FontWeight.w400,

@@ -6,6 +6,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import '../../utils/app_style.dart';
+import 'custom_text_field.dart';
 
 class InputNote extends StatelessWidget {
   final TextEditingController controller;
@@ -45,18 +46,13 @@ class InputNote extends StatelessWidget {
       decoration: InputDecoration(
           hintText: hintText ?? AppString.text_add_description.tr,
           hintStyle: AppStyle.normal_text.copyWith(
-              color: hintColor ?? AppColor.solidGray,
+              color: hintColor ?? AppColor.hintColor,
               fontWeight: FontWeight.w400),
-          focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColor.primaryColor),
-              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColor.solidGray),
-              borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.solidGray))),
+          focusedBorder: outlineInputBorder,
+          enabledBorder: outlineInputBorder,
+          border: outlineInputBorder),
       maxLines: 4,
-      maxLength: 150,
+      maxLength: 255,
       minLines: 4,
     );
   }

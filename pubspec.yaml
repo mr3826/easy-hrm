@@ -72,7 +72,7 @@ dependencies:
   firebase_analytics:
   upgrader: ^10.3.0
   dio: 
-
+  intl_phone_field:
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +14,7 @@ import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
+import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
@@ -23,7 +23,6 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import '../../../common/controller/date_time_controller.dart';
-import '../../../common/domain/error_model.dart';
 import '../../../common/domain/user_info.dart';
 import '../../../common/widget/custom_password_text_field.dart';
 import '../../../network/exception_helper.dart';
@@ -79,7 +78,7 @@ class UserProfileController extends GetxController with StateMixin {
   var firstName = "".obs;
   var lastName = "".obs;
   var address = "".obs;
-  var phone = "".obs;
+  var phoneNumber = "".obs;
   var emergencyNumber = "".obs;
   var description = "".obs;
 
@@ -87,8 +86,8 @@ class UserProfileController extends GetxController with StateMixin {
     return firstName.isNotEmpty ||
         lastName.isNotEmpty ||
         address.isNotEmpty ||
-        phone.isNotEmpty ||
-        emergencyNumber.isNotEmpty ||
+        Get.find<UpdateProfileController>().editEmergencyPhoneNumber.value.isNotEmpty ||
+        Get.find<UpdateProfileController>().editPhoneNumber.value.isNotEmpty ||
         description.isNotEmpty ||
         Get.find<PikedProfileImgController>()
             .storageForUpload

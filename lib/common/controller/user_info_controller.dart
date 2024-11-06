@@ -28,9 +28,9 @@ class UserInfoController {
 
 
       if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!,
-            methodName: "getOrgSubscriptionInfo");
+        // ExceptionHelper.errorHandler(
+        //     exception: response.exception!,
+        //     methodName: "getOrgSubscriptionInfo");
       } else {
         _checkIfSubscription(OrgSubscriptionInfoModel.fromJson(response.data!));
       }

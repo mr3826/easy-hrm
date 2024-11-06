@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
@@ -10,6 +12,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../utils/dimensions.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
@@ -26,7 +29,7 @@ class TextFiledLayout extends StatelessWidget {
         _userFirstName(),
         _userLastName(),
         _userAddress(),
-        _userPhoneNumber(),
+        _phoneNumberInputField(),
         _userEmergencyPhoneNumber(),
         _userPersonalBio(),
         customSpacerHeight(height: 20),
@@ -72,7 +75,7 @@ void _clearInputField() {
   controller.firstName.value = "";
   controller.lastName.value = "";
   controller.address.value = "";
-  controller.phone.value = "";
+  controller.phoneNumber.value = "";
   controller.emergencyNumber.value = "";
   controller.description.value = "";
   editBioController.clear();
@@ -86,11 +89,20 @@ void _clearInputField() {
 Map<String, dynamic>? _addVariables() {
   Map<String, dynamic> inputData = {};
 
+
   inputData["about"] = editBioController.text;
 
-  inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
 
-  inputData["personal_phone_number"] = editPhoneController.text;
+
+  if (editEmergencyPhoneController.text != Get.find<UserProfileController>().emergencyNumber.value) {
+    inputData["emergency_phone_number"] = Get.find<UpdateProfileController>().countryCodeCountryCodeForEmergency.value + editEmergencyPhoneController.text;
+  }
+
+  if (editPhoneController.text != Get.find<UserProfileController>().phoneNumber.value) {
+    inputData["personal_phone_number"] = "${Get.find<UpdateProfileController>().countryCodeForPersonalNum.value}${editPhoneController.text}";
+  }
+
+
 
   inputData["address"] = editAddressController.text;
 
@@ -99,12 +111,7 @@ Map<String, dynamic>? _addVariables() {
   if (editFirstNameController.text.isNotEmpty) {
     inputData["first_name"] = editFirstNameController.text;
   } else {
-    inputData["first_name"] = Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.firstName ??
-        "";
+    inputData["first_name"] = Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? "";
   }
 
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
@@ -115,8 +122,15 @@ Map<String, dynamic>? _addVariables() {
           ?.department
           ?.id ??
       "";
-  inputData["image"] =
-      "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+
+  if (Get.find<PikedProfileImgController>()
+      .storageForUpload
+      .filePath
+      .value
+      .isNotEmpty) {
+    inputData["image"] =
+        "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+  }
 
   return inputData;
 }
@@ -131,30 +145,6 @@ _userPersonalBio() {
       },
       controller: editBioController,
       isNoteFieldVisible: true);
-}
-
-_userEmergencyPhoneNumber() {
-  return userTextFieldLayout(
-      isRequired: false,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().emergencyNumber.value = value!;
-      },
-      textInputType: TextInputType.number,
-      hintText: AppString.text_emergency_phone.tr,
-      titleText: AppString.text_emergency_phone.tr,
-      controller: editEmergencyPhoneController);
-}
-
-_userPhoneNumber() {
-  return userTextFieldLayout(
-      isRequired: false,
-      hintText: AppString.text_phone.tr,
-      titleText: AppString.text_phone.tr,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().phone.value = value!;
-      },
-      textInputType: TextInputType.number,
-      controller: editPhoneController);
 }
 
 _userAddress() {
@@ -232,4 +222,106 @@ userTextFieldLayout(
       customSpacerHeight(height: 12),
     ],
   );
+}
+
+_phoneNumberInputField() {
+  String phoneNumber = editPhoneController.text;
+  _getNumWithOutDialCodeForRegular();
+
+  return Column(
+    children: [
+      customTitleText(
+        text: AppString.text_phone.tr,
+      ),
+      customSpacerHeight(height: 12),
+      IntlPhoneField(
+        controller: editPhoneController,
+        cursorColor: AppColor.normalTextColor,
+        decoration: InputDecoration(
+          hintText: AppString.text_phone.tr,
+          hintStyle: TextStyle(
+              color: AppColor.normalTextColor.withOpacity(0.4),
+              fontFamily: "Poppins",
+              fontSize: Dimensions.fontSizeDefault + 1),
+          border: outlineInputBorder,
+          focusColor: AppColor.primaryColor,
+          focusedBorder: outlineInputBorder,
+          enabledBorder: outlineInputBorder,
+        ),
+        dropdownIcon: Icon(
+          Icons.expand_more,
+          color: AppColor.normalTextColor.withOpacity(0.8),
+        ),
+        initialCountryCode: phoneNumber.isEmpty
+            ? "NO"
+            : getCodeFromPhoneNumber(phoneNumber: phoneNumber),
+        onChanged: (phone) {
+          Get.find<UpdateProfileController>().countryCodeForPersonalNum.value =
+              phone.countryCode;
+          Get.find<UpdateProfileController>().editPhoneNumber.value =
+              phone.number;
+        },
+      ),
+    ],
+  );
+}
+
+_userEmergencyPhoneNumber() {
+  String phoneNumber = editEmergencyPhoneController.text;
+
+  _getNumWithOutDialCodeForEmergency();
+
+  return Column(
+    children: [
+      customTitleText(
+        text: AppString.text_emergency_phone.tr,
+      ),
+      customSpacerHeight(height: 12),
+      IntlPhoneField(
+        controller: editEmergencyPhoneController,
+        cursorColor: AppColor.normalTextColor,
+        decoration: InputDecoration(
+          hintText: AppString.text_emergency_phone.tr,
+          hintStyle: TextStyle(
+              color: AppColor.normalTextColor.withOpacity(0.4),
+              fontFamily: "Poppins",
+              fontSize: Dimensions.fontSizeDefault + 1),
+          border: outlineInputBorder,
+          focusColor: AppColor.primaryColor,
+          focusedBorder: outlineInputBorder,
+          enabledBorder: outlineInputBorder,
+        ),
+        dropdownIcon: Icon(
+          Icons.expand_more,
+          color: AppColor.normalTextColor.withOpacity(0.8),
+        ),
+        initialCountryCode: phoneNumber.isEmpty
+            ? "NO"
+            : getCodeFromPhoneNumber(phoneNumber: phoneNumber),
+        onChanged: (phone) {
+          Get.find<UpdateProfileController>()
+              .countryCodeCountryCodeForEmergency
+              .value = phone.countryCode;
+          Get.find<UpdateProfileController>().editEmergencyPhoneNumber.value =
+              phone.number;
+        },
+      ),
+    ],
+  );
+}
+
+_getNumWithOutDialCodeForEmergency() {
+  String dialCode = getDialCodeFromPhoneNumber(
+      phoneNumber: editEmergencyPhoneController.text);
+  String numWithOutDailCode =
+      editEmergencyPhoneController.text.replaceAll("+$dialCode", "");
+  editEmergencyPhoneController.text = numWithOutDailCode;
+}
+
+_getNumWithOutDialCodeForRegular() {
+  String dialCode =
+      getDialCodeFromPhoneNumber(phoneNumber: editPhoneController.text);
+  String numWithOutDailCode =
+      editPhoneController.text.replaceAll("+$dialCode", "");
+  editPhoneController.text = numWithOutDailCode;
 }

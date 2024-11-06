@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as di;
+import 'package:intl_phone_field/countries.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
@@ -383,6 +384,49 @@ String getLeaveDuration(String? leaveDurationSecond, String? numberOfDays) {
   }
   // Handle cases where total duration is greater than or equal to 1 day
   return "${total.floor()} days";
+}
+
+
+
+
+
+
+String getCodeFromPhoneNumber({required String phoneNumber}) {
+
+  // Remove all non-numeric characters from the phone number
+  String numericPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D+'), '');
+
+  // Iterate through the countries to find a match
+  for (Country country in countries) {
+
+    // Check if the dial code of the country matches the beginning of the phone number
+    if (numericPhoneNumber.startsWith(country.dialCode)) {
+      print("country code: ${country.code}");
+      return country.code;
+    }
+  }
+  // Return empty string if no match is found
+  return '';
+}
+
+
+
+
+
+String getDialCodeFromPhoneNumber({required String phoneNumber}) {
+  // Remove all non-numeric characters from the phone number
+  String numericPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D+'), '');
+
+  // Iterate through the countries to find a match
+  for (Country country in countries) {
+    // Check if the dial code of the country matches the beginning of the phone number
+    if (numericPhoneNumber.startsWith(country.dialCode)) {
+      print("country code getDialCodeFromPhoneNumber: ${country.dialCode}");
+      return country.dialCode;
+    }
+  }
+  // Return empty string if no match is found
+  return '';
 }
 
 String _getWeekday(int weekday) {
