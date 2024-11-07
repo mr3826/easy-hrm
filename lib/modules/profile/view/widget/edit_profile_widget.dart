@@ -11,8 +11,8 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../utils/dimensions.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
@@ -31,7 +31,7 @@ class TextFiledLayout extends StatelessWidget {
         _userAddress(),
        _phoneNumberInputField(),
 
-        customSpacerHeight(height: 12),
+        customSpacerHeight(height: 14),
 
         _userEmergencyPhoneNumber(),
         _userPersonalBio(),
@@ -100,7 +100,9 @@ _userEmergencyPhoneNumber() {
         text: AppString.text_emergency_phone.tr,
       ),
       customSpacerHeight(height: 12),
-      const EmergencyPhoneNumber()
+      const EmergencyPhoneNumber(),
+      customSpacerHeight(height: 12),
+
     ],
   );
 }
@@ -124,7 +126,6 @@ class PersonalPhoneNumber extends StatefulWidget {
 }
 
 class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
-  final TextEditingController controller = TextEditingController();
   PhoneNumber number = PhoneNumber(isoCode: 'NO', phoneNumber: editPhoneController.text);
 
   @override
@@ -138,6 +139,7 @@ class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
     return InternationalPhoneNumberInput(
       onInputChanged: (PhoneNumber number) {
         print("onInputChanged:: ${number.phoneNumber}");
+        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value=number.phoneNumber.toString();
       },
       onInputValidated: (bool value) {
         print(value);
@@ -159,12 +161,13 @@ class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
         border: outlineInputBorder,
         focusedBorder: outlineInputBorder,
         contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        hintStyle: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
 
         disabledBorder:outlineInputBorder,
         enabledBorder: outlineInputBorder,
       ),
       initialValue: number,
-      textFieldController: controller,
+      textFieldController: editPhoneController,
       onSaved: (PhoneNumber number) {
         print('On Saved: $number');
       },
@@ -178,11 +181,7 @@ class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
     });
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+
 }
 
 
@@ -201,7 +200,6 @@ class EmergencyPhoneNumber extends StatefulWidget {
 }
 
 class _EmergencyPhoneNumberState extends State<EmergencyPhoneNumber> {
-  final TextEditingController controller = TextEditingController();
   PhoneNumber number = PhoneNumber(isoCode: 'NO', phoneNumber: editEmergencyPhoneController.text);
 
   @override
@@ -232,7 +230,8 @@ class _EmergencyPhoneNumberState extends State<EmergencyPhoneNumber> {
       autoValidateMode: AutovalidateMode.onUserInteraction,
       formatInput: false,
       inputDecoration: InputDecoration(
-        hintText: 'Enter phone number',
+        hintText: 'Not added yet',
+        hintStyle: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
         border: outlineInputBorder,
         focusedBorder: outlineInputBorder,
         contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -241,7 +240,7 @@ class _EmergencyPhoneNumberState extends State<EmergencyPhoneNumber> {
         enabledBorder: outlineInputBorder,
       ),
       initialValue: number,
-      textFieldController: controller,
+      textFieldController: editEmergencyPhoneController,
       onSaved: (PhoneNumber number) {
         print('On Saved: $number');
       },
@@ -255,11 +254,7 @@ class _EmergencyPhoneNumberState extends State<EmergencyPhoneNumber> {
     });
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+
 
 }
 
@@ -350,23 +345,26 @@ void _addInputUserFirstName(Map<String, dynamic> inputData) {
 
 void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
 
-  var controller = Get.find<UpdateProfileController>();
 
   if (editPhoneController.text.isEmpty) {
-
     inputData["personal_phone_number"] = "";
 
-  } else if (controller.countryCodeForPersonalNum.value.isEmpty) {
-
-    inputData["personal_phone_number"] = controller.initialPersonalPhoneNumber.value;
-
+  }else{
+    inputData["personal_phone_number"] =  Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
   }
-  else if (editPhoneController.text != Get.find<UserProfileController>().phoneNumber.value) {
+;
 
-    inputData["personal_phone_number"] =
-    "${controller.countryCodeForPersonalNum.value}${editPhoneController.text}";
-
-  }
+  // else if (controller.countryCodeForPersonalNum.value.isEmpty) {
+  //
+  //   inputData["personal_phone_number"] = controller.initialPersonalPhoneNumber.value;
+  //
+  // }
+  // else if (editPhoneController.text != Get.find<UserProfileController>().phoneNumber.value) {
+  //
+  //   inputData["personal_phone_number"] =
+  //   "${controller.countryCodeForPersonalNum.value}${editPhoneController.text}";
+  //
+  // }
 
 
 
