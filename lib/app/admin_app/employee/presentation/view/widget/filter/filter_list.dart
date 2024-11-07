@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/admin_app/modules/employee/presentation/controller/employment_controller.dart';
-import 'package:payrun_mobile/admin_app/modules/employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import 'package:payrun_mobile/app/admin_app/employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../controller/employment_controller.dart';
 import 'check_box.dart';
 
 class EmployeeFilterSection extends StatefulWidget {
@@ -47,7 +46,7 @@ class _EmployeeFilterSectionState extends State<EmployeeFilterSection> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: _statusCheckBox(),
+                child: _statusCheckBox(title),
               ),
             ],
           ),

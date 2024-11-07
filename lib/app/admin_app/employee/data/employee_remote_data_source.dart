@@ -1,12 +1,11 @@
 import 'dart:developer';
 
-import 'package:payrun_mobile/admin_app/modules/employee/domain/department_info.dart';
-
 import '../../../../modules/profile/model/employee_work_history.dart';
 import '../../../../modules/profile/model/user_profile.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
 import '../../../../utils/api_endpoints.dart';
+import '../domain/department_info.dart';
 import '../domain/employee_info.dart';
 import '../domain/employement_status.dart';
 

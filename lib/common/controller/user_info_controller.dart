@@ -53,7 +53,8 @@ class UserInfoController {
   ///
   /// [data] - The organization's subscription information.
   void _checkIfSubscription(OrgSubscriptionInfoModel data) {
-    final orgSubscriptionInfo = data.getOrgSubscriptionInfo;
+    final GetAnOrganizationSubscription? orgSubscriptionInfo =
+        data.getAnOrganizationSubscription;
 
     // Check if subscription is expired (paused or canceled)
     if (orgSubscriptionInfo?.status == "paused" ||
@@ -61,7 +62,7 @@ class UserInfoController {
       isSubscriptionExpired(true);
     } else {
       // Check if "time_tracking" feature is enabled
-      orgSubscriptionInfo?.subscribedPlan?.planFeatures?.forEach((feature) {
+      orgSubscriptionInfo?.plan?.planFeatures?.forEach((feature) {
         if (feature.feature?.identifier == "time_tracking") {
           isSubscriptionTimeTrackingIsAllow(feature.isEnabled ?? false);
         }

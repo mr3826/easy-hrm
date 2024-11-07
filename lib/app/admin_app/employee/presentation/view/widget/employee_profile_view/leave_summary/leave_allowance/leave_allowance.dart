@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/admin_app/employee/presentation/view/widget/employee_profile_view/leave_summary/leave_allowance/selecte_leave_type.dart';
-import 'package:payrun_mobile/common/widget/custom_card_style.dart';
-import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
-import 'package:payrun_mobile/utils/dimensions.dart';
+
 import '../../../../../../../../../common/widget/custom_app_button.dart';
+import '../../../../../../../../../common/widget/custom_card_style.dart';
+import '../../../../../../../../../common/widget/custom_spacer.dart';
+import '../../../../../../../../../utils/app_color.dart';
+import '../../../../../../../../../utils/app_string.dart';
+import '../../../../../../../../../utils/app_style.dart';
+import '../../../../../../../../../utils/dimensions.dart';
+import '../../../../../../../leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details /edit_leave_record/selecte_leave_type.dart';
 import '../../../../../controller/employment_controller.dart';
 
 class LeaveAllowance extends StatelessWidget {

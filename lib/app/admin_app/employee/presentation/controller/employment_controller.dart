@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:payrun_mobile/admin_app/modules/employee/domain/employement_status.dart';
-import 'package:payrun_mobile/admin_app/modules/employee/presentation/view/widget/filter/check_box.dart';
 
 import '../../data/employee_remote_data_source.dart';
 import '../../domain/employee_info.dart';
+import '../../domain/employement_status.dart';
+import '../view/widget/filter/check_box.dart';
 
 class EmploymentController extends GetxController {
   var selectedOption = ''.obs;
@@ -20,10 +20,46 @@ class EmploymentController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
 
+  RxInt daysCount = 0.obs;
+  RxInt applicationBalanceCount = 0.obs;
+  RxInt applicationMaxDaysCount = 0.obs;
+
+  void dayIncrement() {
+    daysCount++;
+  }
+
   var count = 0.obs;
+
+  void dayDecrement() {
+    if (daysCount > 0) {
+      daysCount--;
+    }
+  }
+
+  void applicationBalanceIncrement() {
+    applicationBalanceCount++;
+  }
+
+  void applicationBalanceDecrement() {
+    if (applicationBalanceCount > 0) {
+      applicationBalanceCount--;
+    }
+  }
+
+  void applicationMaxDayIncrement() {
+    applicationMaxDaysCount++;
+  }
+
+  void applicationMaxDayDecrement() {
+    if (applicationMaxDaysCount > 0) {
+      applicationMaxDaysCount--;
+    }
+  }
 
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
+
+  EmployeeInfo? employeeInfo = EmployeeInfo();
 
   List<Data>? employeeList = <Data>[];
 
@@ -126,7 +162,6 @@ class EmploymentController extends GetxController {
         [];
     isFilterInfoLoading(false);
   }
-
 
   void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {
     for (CheckBoxModel item in checkBoxList) {
