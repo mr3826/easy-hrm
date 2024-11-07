@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -42,7 +41,9 @@ class TextFiledLayout extends StatelessWidget {
                       : () {
                           final variables = _addVariables();
                           variables?.forEach((key, value) {
+
                             print("key $key value:: $value");
+
                           });
                           if (formKey.currentState!.validate()) {
                             Get.find<UpdateProfileController>()
@@ -89,30 +90,20 @@ void _clearInputField() {
 Map<String, dynamic>? _addVariables() {
   Map<String, dynamic> inputData = {};
 
-
   inputData["about"] = editBioController.text;
 
+  // Set emergency phone number with country code if updated
+  _addInputPersonalPhoneNumber(inputData);
 
-
-  if (editEmergencyPhoneController.text != Get.find<UserProfileController>().emergencyNumber.value) {
-    inputData["emergency_phone_number"] = Get.find<UpdateProfileController>().countryCodeCountryCodeForEmergency.value + editEmergencyPhoneController.text;
-  }
-
-  if (editPhoneController.text != Get.find<UserProfileController>().phoneNumber.value) {
-    inputData["personal_phone_number"] = "${Get.find<UpdateProfileController>().countryCodeForPersonalNum.value}${editPhoneController.text}";
-  }
-
-
+  // Set personal phone number with country code if updated
+  _addInputEmergencyPhoneNumber(inputData);
 
   inputData["address"] = editAddressController.text;
 
   inputData["last_name"] = editLastNameController.text;
 
-  if (editFirstNameController.text.isNotEmpty) {
-    inputData["first_name"] = editFirstNameController.text;
-  } else {
-    inputData["first_name"] = Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? "";
-  }
+  // Set user first name
+  _addInputUserFirstName(inputData);
 
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
@@ -122,17 +113,66 @@ Map<String, dynamic>? _addVariables() {
           ?.department
           ?.id ??
       "";
+  // Set image path if there is an uploaded profile image
+  _addInputProfileImage(inputData);
 
+  return inputData;
+}
+
+
+void _addInputProfileImage(Map<String, dynamic> inputData) {
   if (Get.find<PikedProfileImgController>()
       .storageForUpload
       .filePath
       .value
       .isNotEmpty) {
-    inputData["image"] =
-        "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+    inputData["image"] = "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
   }
+}
 
-  return inputData;
+
+
+void _addInputUserFirstName(Map<String, dynamic> inputData) {
+  if (editFirstNameController.text.isNotEmpty) {
+    inputData["first_name"] = editFirstNameController.text;
+  } else {
+    inputData["first_name"] = Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.firstName ??
+        "";
+  }
+}
+
+void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
+  if (Get.find<UpdateProfileController>()
+      .countryCodeForPersonalNum
+      .value
+      .isEmpty) {
+    inputData["personal_phone_number"] =
+        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+  } else if (editPhoneController.text !=
+      Get.find<UserProfileController>().phoneNumber.value) {
+    inputData["personal_phone_number"] =
+        "${Get.find<UpdateProfileController>().countryCodeForPersonalNum.value}${editPhoneController.text}";
+  }
+}
+
+void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
+  if (Get.find<UpdateProfileController>()
+      .countryCodeCountryCodeForEmergency
+      .value
+      .isEmpty) {
+    inputData["emergency_phone_number"] =
+        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+  } else if (editEmergencyPhoneController.text !=
+      Get.find<UserProfileController>().emergencyNumber.value) {
+    inputData["emergency_phone_number"] = Get.find<UpdateProfileController>()
+            .countryCodeCountryCodeForEmergency
+            .value +
+        editEmergencyPhoneController.text;
+  }
 }
 
 _userPersonalBio() {
@@ -192,6 +232,10 @@ _userFirstName() {
       controller: editFirstNameController);
 }
 
+
+
+
+
 userTextFieldLayout(
     {required String titleText,
     required TextEditingController controller,
@@ -224,8 +268,14 @@ userTextFieldLayout(
   );
 }
 
+
+
+
 _phoneNumberInputField() {
   String phoneNumber = editPhoneController.text;
+  Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value =
+      phoneNumber;
+
   _getNumWithOutDialCodeForRegular();
 
   return Column(
@@ -268,6 +318,8 @@ _phoneNumberInputField() {
 
 _userEmergencyPhoneNumber() {
   String phoneNumber = editEmergencyPhoneController.text;
+  Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value =
+      phoneNumber;
 
   _getNumWithOutDialCodeForEmergency();
 

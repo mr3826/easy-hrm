@@ -23,7 +23,9 @@ class UpdateProfileController extends GetxController {
   final countryCodeForPersonalNum = ''.obs;
   RxString editPhoneNumber = ''.obs;
   RxString editEmergencyPhoneNumber = ''.obs;
-  RxString editEmergencyPhoneNumberNotEdit = ''.obs;
+
+  RxString initialEmergencyPhoneNumber = ''.obs;
+  RxString initialPersonalPhoneNumber = ''.obs;
 
 
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
@@ -39,8 +41,7 @@ class UpdateProfileController extends GetxController {
         variables: {"inputData": variables});
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "updateUserProfile");
+      ExceptionHelper.errorHandler(exception: response.exception!, methodName: "updateUserProfile");
     } else {
       Get.find<UserProfileController>().getUserProfile();
       Get.back();

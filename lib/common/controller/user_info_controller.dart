@@ -25,12 +25,10 @@ class UserInfoController {
       final response = await _networkClient.graphRequest(
           queryString: getOrgSubscriptionInfoQuery);
 
-
-
       if (response.hasException) {
-        // ExceptionHelper.errorHandler(
-        //     exception: response.exception!,
-        //     methodName: "getOrgSubscriptionInfo");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!,
+            methodName: "getOrgSubscriptionInfo");
       } else {
         _checkIfSubscription(OrgSubscriptionInfoModel.fromJson(response.data!));
       }

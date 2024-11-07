@@ -234,34 +234,18 @@ Map<String, dynamic>? _addVariables() {
 
   inputData["about"] = editBioController.text;
 
-  if (editEmergencyPhoneController.text !=
-      Get.find<UserProfileController>().emergencyNumber.value) {
-    inputData["emergency_phone_number"] = Get.find<UpdateProfileController>()
-            .countryCodeCountryCodeForEmergency
-            .value +
-        editEmergencyPhoneController.text;
-  }
+  // Set emergency phone number with country code if updated
+  _addInputEmergencyPhoneNumber(inputData);
 
-  if (editPhoneController.text !=
-      Get.find<UserProfileController>().phoneNumber.value) {
-    inputData["personal_phone_number"] =
-        "${Get.find<UpdateProfileController>().countryCodeForPersonalNum.value}${editPhoneController.text}";
-  }
+  // Set personal phone number with country code if updated
+  _addInputPersonalPhoneNumber(inputData);
 
   inputData["address"] = editAddressController.text;
 
   inputData["last_name"] = editLastNameController.text;
 
-  if (editFirstNameController.text.isNotEmpty) {
-    inputData["first_name"] = editFirstNameController.text;
-  } else {
-    inputData["first_name"] = Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.firstName ??
-        "";
-  }
+  // Set user first name
+  _addInputUserFirstName(inputData);
 
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
@@ -274,6 +258,49 @@ Map<String, dynamic>? _addVariables() {
   inputData["image"] = "";
 
   return inputData;
+}
+
+void _addInputUserFirstName(Map<String, dynamic> inputData) {
+  if (editFirstNameController.text.isNotEmpty) {
+    inputData["first_name"] = editFirstNameController.text;
+  } else {
+    inputData["first_name"] = Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.firstName ??
+        "";
+  }
+}
+
+void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
+  if (Get.find<UpdateProfileController>()
+      .countryCodeForPersonalNum
+      .value
+      .isEmpty) {
+    inputData["personal_phone_number"] =
+        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+  } else if (editPhoneController.text !=
+      Get.find<UserProfileController>().phoneNumber.value) {
+    inputData["personal_phone_number"] =
+        "${Get.find<UpdateProfileController>().countryCodeForPersonalNum.value}${editPhoneController.text}";
+  }
+}
+
+void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
+  if (Get.find<UpdateProfileController>()
+      .countryCodeCountryCodeForEmergency
+      .value
+      .isEmpty) {
+    inputData["emergency_phone_number"] =
+        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+  } else if (editEmergencyPhoneController.text !=
+      Get.find<UserProfileController>().emergencyNumber.value) {
+    inputData["emergency_phone_number"] = Get.find<UpdateProfileController>()
+            .countryCodeCountryCodeForEmergency
+            .value +
+        editEmergencyPhoneController.text;
+  }
 }
 
 Widget _imageLayout() {
