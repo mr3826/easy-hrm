@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import '../../../modules/profile/view/widget/common_widget.dart';
 import '../custom_network_image.dart';
 import '../custom_spacer.dart';
 import '../custom_status_button.dart';
@@ -12,6 +13,7 @@ import '../../../utils/utils.dart';
 
 class UserInfoWidget extends StatelessWidget {
   final EmployeeStatus? employeeStatus;
+
   const UserInfoWidget({super.key, this.employeeStatus});
 
   @override
@@ -62,9 +64,7 @@ class UserInfoWidget extends StatelessWidget {
             color: employeeStatus?.employmentStatusColorCode ?? "",
             text: employeeStatus?.employmentContractType ?? ""),
         customSpacerWidth(width: 12),
-        _buildEmploymentStatus(
-            color: employeeStatus?.employmentStatusColorCode ?? "",
-            text: employeeStatus?.currentEmployeeStatus ?? ""),
+        employmentStatus(employeeStatus?.currentEmployeeStatus),
       ],
     );
   }
@@ -81,8 +81,8 @@ class UserInfoWidget extends StatelessWidget {
 
 class MonthlyStatusWidget extends StatelessWidget {
   final MonthlyStatus? status;
-  const MonthlyStatusWidget({super.key, this.status});
 
+  const MonthlyStatusWidget({super.key, this.status});
 
   @override
   Widget build(BuildContext context) {

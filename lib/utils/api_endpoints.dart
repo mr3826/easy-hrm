@@ -263,9 +263,9 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
 }
 ''';
 
-const userLogHistoryQuery = '''
-query GeTimelogAndLeaveAvailabilityForApp {
-  geTimelogAndLeaveAvailabilityForApp {
+const userLogHistoryQuery = r'''
+query GeTimelogAndLeaveAvailabilityForApp($orgUserId: UUID) {
+  geTimelogAndLeaveAvailabilityForApp(org_user_id: $orgUserId) {
     total_logged
     total_schedule
     balance_leave

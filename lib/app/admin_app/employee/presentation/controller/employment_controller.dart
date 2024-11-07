@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
+import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
+import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
 
 import '../../data/employee_remote_data_source.dart';
 import '../../domain/employee_info.dart';
 import '../../domain/employement_status.dart';
 import '../view/widget/filter/check_box.dart';
 
-class EmploymentController extends GetxController {
+class EmploymentController extends GetxController with StateMixin {
   var selectedOption = ''.obs;
   var employeeStatusValue = ''.obs;
   var employeeDesignationValue = ''.obs;
@@ -60,6 +63,9 @@ class EmploymentController extends GetxController {
       Get.find<EmployeeRemoteDataSource>();
 
   EmployeeInfo? employeeInfo = EmployeeInfo();
+  UserDetails? employeeProfileInfo = UserDetails();
+  EmployeeWorkHistory? employeeWorkHistory = EmployeeWorkHistory();
+  UserLogHistory? employeesLogHistory = UserLogHistory();
 
   List<Data>? employeeList = <Data>[];
 
@@ -161,6 +167,27 @@ class EmploymentController extends GetxController {
             .toList() ??
         [];
     isFilterInfoLoading(false);
+  }
+
+  Future<void> getEmployeeProfile({required String orgUserId}) async {
+    change(null, status: RxStatus.loading());
+    employeeProfileInfo = await _employeeRemoteDataSource.getEmployeeProfile(
+        orgUserId: orgUserId);
+    change(null, status: RxStatus.success());
+  }
+
+  Future<void> getEmployeesEmploymentInfo({required String orgUserId}) async {
+    change(null, status: RxStatus.loading());
+    employeeWorkHistory = await _employeeRemoteDataSource
+        .getEmployeesEmploymentInfo(orgUserId: orgUserId);
+    change(null, status: RxStatus.success());
+  }
+
+  Future<void> getUserLogHistory({required String orgUserId}) async {
+    change(null, status: RxStatus.loading());
+    employeesLogHistory =
+        await _employeeRemoteDataSource.getUserLogHistory(orgUserId: orgUserId);
+    change(null, status: RxStatus.success());
   }
 
   void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {

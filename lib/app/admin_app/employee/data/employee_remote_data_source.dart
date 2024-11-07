@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import '../../../../modules/profile/model/employee_work_history.dart';
+import '../../../../modules/profile/model/user_log_history.dart';
 import '../../../../modules/profile/model/user_profile.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
@@ -16,8 +17,6 @@ class EmployeeRemoteDataSource {
 
   Future<EmployeeInfo?> getEmployees(
       {required Map<String, Map<String, Object>> queryVariable}) async {
-    print("queryVariable:: $queryVariable");
-
     try {
       final response = await networkClient.graphRequest(
           queryString: getEmployeeList, variables: queryVariable);
@@ -89,7 +88,8 @@ class EmployeeRemoteDataSource {
     }
   }
 
-  Future<EmployeeWorkHistory?> getEmployeesEmploymentInfo({required String orgUserId}) async {
+  Future<EmployeeWorkHistory?> getEmployeesEmploymentInfo(
+      {required String orgUserId}) async {
     try {
       final response = await networkClient.graphRequest(
           queryString: getEmploymentInfoQuery,
@@ -97,12 +97,31 @@ class EmployeeRemoteDataSource {
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "getEmployeesEmploymentInfo");
+            exception: response.exception!,
+            methodName: "getEmployeesEmploymentInfo");
         return null;
       }
       return EmployeeWorkHistory.fromJson(response.data!);
     } catch (e) {
       log('Error in getEmployeesEmploymentInfo: $e');
+      return null;
+    }
+  }
+
+  Future<UserLogHistory?> getUserLogHistory({required String orgUserId}) async {
+    try {
+      final response = await networkClient.graphRequest(
+          queryString: userLogHistoryQuery,
+          variables: {"orgUserId": orgUserId});
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getUserLogHistory");
+        return null;
+      }
+      return UserLogHistory.fromJson(response.data!);
+    } catch (e) {
+      log('Error in getUserLogHistory: $e');
       return null;
     }
   }

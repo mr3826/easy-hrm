@@ -39,17 +39,11 @@ class EmployeeScreen extends StatelessWidget {
                     ),
                   )
                 : _buildEmployeeList(),
-
           ),
         ],
       ),
     );
   }
-
-
-
-
-
 
   PreferredSizeWidget _buildEmployeeAppBar() {
     return customAppbar(
@@ -107,16 +101,26 @@ class EmployeeScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           Data? employee =
               Get.find<EmploymentController>().employeeList?[index];
-          return EmployeeListInfo(
-            name:
-                "${employee?.profile?.firstName ?? "Unknown"} ${employee?.profile?.lastName ?? ""}",
-            departmentName: employee?.department?.name ?? "Unknown department",
-            imgUrlKey: employee?.profile?.image ?? "",
-            statusText: employee?.employmentStatus?.name ?? "Unknown status",
-            statusColor: employee?.employmentStatus?.color == null
-                ? Colors.transparent
-                : Color(int.parse(
-                    "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
+          return GestureDetector(
+            onTap: () async {
+              Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+              Get.find<EmploymentController>()
+                ..getEmployeeProfile(orgUserId: employee?.id ?? "")
+                ..getEmployeesEmploymentInfo(orgUserId: employee?.id ?? "")
+                ..getUserLogHistory(orgUserId: employee?.id ?? "");
+            },
+            child: EmployeeListInfo(
+              name:
+                  "${employee?.profile?.firstName ?? "Unknown"} ${employee?.profile?.lastName ?? ""}",
+              departmentName:
+                  employee?.department?.name ?? "Unknown department",
+              imgUrlKey: employee?.profile?.image ?? "",
+              statusText: employee?.employmentStatus?.name ?? "Unknown status",
+              statusColor: employee?.employmentStatus?.color == null
+                  ? Colors.transparent
+                  : Color(int.parse(
+                      "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
+            ),
           );
         },
       ),

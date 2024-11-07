@@ -55,35 +55,35 @@ userProfileImgLayout() {
 userImageLayout({double? height}) {
   return CustomNetworkImage(
     errorText: (Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
-        ?.profile
-        ?.firstName !=
-        null &&
-        Get.find<UserProfileController>()
-            .userDetails!
-            .getOrganizationUserDetails!
-            .profile!
-            .firstName!
-            .isNotEmpty) &&
-        (Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.lastName !=
-            null &&
-            Get.find<UserProfileController>()
-                .userDetails!
-                .getOrganizationUserDetails!
-                .profile!
-                .lastName!
-                .isNotEmpty)
+                        .userDetails
+                        ?.getOrganizationUserDetails
+                        ?.profile
+                        ?.firstName !=
+                    null &&
+                Get.find<UserProfileController>()
+                    .userDetails!
+                    .getOrganizationUserDetails!
+                    .profile!
+                    .firstName!
+                    .isNotEmpty) &&
+            (Get.find<UserProfileController>()
+                        .userDetails
+                        ?.getOrganizationUserDetails
+                        ?.profile
+                        ?.lastName !=
+                    null &&
+                Get.find<UserProfileController>()
+                    .userDetails!
+                    .getOrganizationUserDetails!
+                    .profile!
+                    .lastName!
+                    .isNotEmpty)
         ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
-        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
         : "",
     height: height ?? 32,
     profileImageKey:
-    "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
+        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
     imgUrlKey: '',
   );
 }
@@ -94,18 +94,15 @@ Widget _userNameAndDptLayout() {
       ?.getOrganizationUserDetails
       ?.profile;
   final department = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.department
-      ?.name ??
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.department
+          ?.name ??
       "";
   final employmentHistories = Get.find<UserProfileController>()
       .employeeWorkHistory
       ?.getOrganizationUserHistory
       ?.employmentHistories;
-
-
-
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +110,7 @@ Widget _userNameAndDptLayout() {
       Text(
         "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
         style:
-        AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+            AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
       ),
       Text(
         department,
@@ -134,17 +131,16 @@ Widget _userNameAndDptLayout() {
             /// Status
             FittedBox(
               fit: BoxFit.scaleDown,
-              child: employmentStatus(),
+              child: employmentStatus(Get.find<UserProfileController>()
+                  .userDetails
+                  ?.getOrganizationUserDetails
+                  ?.status),
             ),
           ],
         ),
     ],
   );
 }
-
-
-
-
 
 monthlyStatusLayout() {
   var controller = Get.find<UserProfileController>();
@@ -197,16 +193,6 @@ divider() {
     color: AppColor.disableColor,
   );
 }
-
-
-
-
-
-
-
-
-
-
 
 actionBtnLayout(context) {
   return GestureDetector(
@@ -528,32 +514,25 @@ employmentContractStatus() {
   );
 }
 
-employmentStatus() {
-  var controller = Get.find<UserProfileController>();
-  if (controller.userDetails?.getOrganizationUserDetails?.status == null) {
+employmentStatus(String? employmentStatus) {
+  if (employmentStatus == null) {
     return Container();
   }
-  if (controller.userDetails?.getOrganizationUserDetails?.status
-          ?.toLowerCase() ==
-      EmploymentStatus.active.name) {
+  if (employmentStatus.toLowerCase() == EmploymentStatus.active.name) {
     return CustomStatusButton(
       statusIcon: Icons.check_circle,
       text: EmploymentStatus.active.name.capitalizeFirst.toString(),
       bgColor: AppColor.successColor.withOpacity(.2),
       textColor: AppColor.successColor,
     );
-  } else if (controller.userDetails?.getOrganizationUserDetails?.status
-          ?.toLowerCase() ==
-      EmploymentStatus.inactive.name) {
+  } else if (employmentStatus.toLowerCase() == EmploymentStatus.inactive.name) {
     return CustomStatusButton(
       statusIcon: Icons.stop_circle_outlined,
       text: EmploymentStatus.inactive.name.capitalizeFirst.toString(),
       bgColor: AppColor.disableColor.withOpacity(.2),
       textColor: Colors.black87,
     );
-  } else if (controller.userDetails?.getOrganizationUserDetails?.status
-          ?.toLowerCase() ==
-      EmploymentStatus.invited.name) {
+  } else if (employmentStatus.toLowerCase() == EmploymentStatus.invited.name) {
     return CustomStatusButton(
       statusIcon: Icons.send,
       text: EmploymentStatus.invited.name.capitalizeFirst.toString(),
@@ -564,8 +543,6 @@ employmentStatus() {
     return Container();
   }
 }
-
-
 
 organisationLogoLayout() {
   return CustomNetworkImage(
@@ -588,7 +565,8 @@ organisationLogoLayout() {
 endDrawer(BuildContext context) {
   return Drawer(
     clipBehavior: Clip.antiAliasWithSaveLayer,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(8))),
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(8))),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -672,8 +650,6 @@ String _getLanguageFlag() {
   }
   return Images.FLAG_PNG;
 }
-
-
 
 horizontalDivider() {
   return const Padding(
