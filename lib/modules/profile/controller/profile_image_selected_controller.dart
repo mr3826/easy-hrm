@@ -34,6 +34,8 @@ class PickedProfileFormStorage {
         int size = await file.length();
         fileSize.value = size.toString();
         Get.find<UpdateProfileController>().getUploadPolicy(fileName: filePath.value.toString());
+        print("path :: ${  Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value
+        }");
       } else {
         showWarningMessage(message: AppString.text_please_valid_photo.tr);
       }

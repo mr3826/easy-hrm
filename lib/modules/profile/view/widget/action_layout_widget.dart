@@ -88,8 +88,13 @@ void _setDataForUpdateChecker(Profile? userDetails) {
   editFirstNameController.text = userDetails?.firstName ?? "";
   editLastNameController.text = userDetails?.lastName ?? "";
   editAddressController.text = userDetails?.address ?? "";
+
+
   editPhoneController.text = userDetails?.personalNumber ?? "";
   editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
+
+
+
   editBioController.text = userDetails?.about ?? "";
 
   Get.find<UserProfileController>().phoneNumber.value =userDetails?.personalNumber ?? "";

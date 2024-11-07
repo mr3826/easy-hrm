@@ -73,6 +73,7 @@ dependencies:
   upgrader: ^10.3.0
   dio: 
   intl_phone_field:
+  intl_phone_number_input:
 
 dev_dependencies:
   flutter_test:
