@@ -23,6 +23,7 @@ class Api {
   static const CHANGE_PASSWORD = "/auth/change-password";
   static const USER_INFO = "/auth/user";
 }
+
 ///auth/resend-verification-code
 
 //leave module

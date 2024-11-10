@@ -213,6 +213,8 @@ class _EmergencyPhoneNumberState extends State<EmergencyPhoneNumber> {
     return InternationalPhoneNumberInput(
       onInputChanged: (PhoneNumber number) {
         print("onInputChanged:: ${number.phoneNumber}");
+        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value=number.phoneNumber.toString();
+
       },
       onInputValidated: (bool value) {
         print(value);
@@ -275,8 +277,6 @@ void _clearInputField() {
   controller.firstName.value = "";
   controller.lastName.value = "";
   controller.address.value = "";
-  controller.phoneNumber.value = "";
-  controller.emergencyNumber.value = "";
   controller.description.value = "";
   editBioController.clear();
   editEmergencyPhoneController.clear();
@@ -352,39 +352,19 @@ void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
   }else{
     inputData["personal_phone_number"] =  Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
   }
-;
-
-  // else if (controller.countryCodeForPersonalNum.value.isEmpty) {
-  //
-  //   inputData["personal_phone_number"] = controller.initialPersonalPhoneNumber.value;
-  //
-  // }
-  // else if (editPhoneController.text != Get.find<UserProfileController>().phoneNumber.value) {
-  //
-  //   inputData["personal_phone_number"] =
-  //   "${controller.countryCodeForPersonalNum.value}${editPhoneController.text}";
-  //
-  // }
-
-
 
 }
 
 void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
-  var controller = Get.find<UpdateProfileController>();
 
   if (editEmergencyPhoneController.text.isEmpty) {
     inputData["emergency_phone_number"] = "";
-  } else if (controller.countryCodeCountryCodeForEmergency.value.isEmpty) {
-    inputData["emergency_phone_number"] =
-        controller.initialEmergencyPhoneNumber.value;
-  } else if (editEmergencyPhoneController.text !=
-      Get.find<UserProfileController>().emergencyNumber.value) {
-    inputData["emergency_phone_number"] =
-        controller.countryCodeCountryCodeForEmergency.value +
-            editEmergencyPhoneController.text;
+  }else{
+    inputData["emergency_phone_number"] =  Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
   }
 }
+
+
 
 _userPersonalBio() {
   return userTextFieldLayout(

@@ -75,8 +75,6 @@ void _editProfileRoute() {
   controller.firstName.value = "";
   controller.lastName.value = "";
   controller.address.value = "";
-  controller.phoneNumber.value = "";
-  controller.emergencyNumber.value = "";
   controller.description.value = "";
   Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
 }
@@ -84,23 +82,12 @@ void _editProfileRoute() {
 
 
 void _setDataForUpdateChecker(Profile? userDetails) {
-
   editFirstNameController.text = userDetails?.firstName ?? "";
   editLastNameController.text = userDetails?.lastName ?? "";
   editAddressController.text = userDetails?.address ?? "";
-
-
   editPhoneController.text = userDetails?.personalNumber ?? "";
   editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
-
-
-
   editBioController.text = userDetails?.about ?? "";
-
-  Get.find<UserProfileController>().phoneNumber.value =userDetails?.personalNumber ?? "";
-  Get.find<UserProfileController>().emergencyNumber.value =userDetails?.emergencyNumber ?? "";
-
-
 
 }
 

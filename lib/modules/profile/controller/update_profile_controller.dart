@@ -19,11 +19,6 @@ class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
   final isUploadPolicyLoading = false.obs;
   final isFileUploadedSuccessfully = false.obs;
-  final countryCodeCountryCodeForEmergency = ''.obs;
-  final countryCodeForPersonalNum = ''.obs;
-  RxString editPhoneNumber = ''.obs;
-  RxString editEmergencyPhoneNumber = ''.obs;
-
   RxString initialEmergencyPhoneNumber = ''.obs;
   RxString initialPersonalPhoneNumber = ''.obs;
 

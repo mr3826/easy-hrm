@@ -275,24 +275,23 @@ void _addInputUserFirstName(Map<String, dynamic> inputData) {
 
 
 void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
-  var controller=Get.find<UpdateProfileController>();
-  if(editPhoneController.text.isEmpty){
-    inputData["personal_phone_number"]="";
-  }else if (controller.countryCodeForPersonalNum.value.isEmpty) {
-    inputData["personal_phone_number"] = controller.initialPersonalPhoneNumber.value;
-  } else if (editPhoneController.text != Get.find<UserProfileController>().phoneNumber.value) {
-    inputData["personal_phone_number"] = "${controller.countryCodeForPersonalNum.value}${editPhoneController.text}";
+
+
+  if (editPhoneController.text.isEmpty) {
+    inputData["personal_phone_number"] = "";
+
+  }else{
+    inputData["personal_phone_number"] =  Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
   }
+
 }
 
 void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
-  var controller=Get.find<UpdateProfileController>();
-  if(editEmergencyPhoneController.text.isEmpty){
-    inputData["emergency_phone_number"]="";
-  }else if (controller.countryCodeCountryCodeForEmergency.value.isEmpty) {
-    inputData["emergency_phone_number"] = controller.initialEmergencyPhoneNumber.value;
-  } else if (editEmergencyPhoneController.text != Get.find<UserProfileController>().emergencyNumber.value) {
-    inputData["emergency_phone_number"] = controller.countryCodeCountryCodeForEmergency.value + editEmergencyPhoneController.text;
+
+  if (editEmergencyPhoneController.text.isEmpty) {
+    inputData["emergency_phone_number"] = "";
+  }else{
+    inputData["emergency_phone_number"] =  Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
   }
 }
 

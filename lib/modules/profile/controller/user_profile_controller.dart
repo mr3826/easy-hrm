@@ -78,16 +78,20 @@ class UserProfileController extends GetxController with StateMixin {
   var firstName = "".obs;
   var lastName = "".obs;
   var address = "".obs;
-  var phoneNumber = "".obs;
-  var emergencyNumber = "".obs;
   var description = "".obs;
 
   bool get isEnableEditButton {
     return firstName.isNotEmpty ||
         lastName.isNotEmpty ||
         address.isNotEmpty ||
-        Get.find<UpdateProfileController>().editEmergencyPhoneNumber.value.isNotEmpty ||
-        Get.find<UpdateProfileController>().editPhoneNumber.value.isNotEmpty ||
+        Get.find<UpdateProfileController>()
+            .initialEmergencyPhoneNumber
+            .value
+            .isNotEmpty ||
+        Get.find<UpdateProfileController>()
+            .initialPersonalPhoneNumber
+            .value
+            .isNotEmpty ||
         description.isNotEmpty ||
         Get.find<PikedProfileImgController>()
             .storageForUpload
@@ -464,9 +468,11 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   void _handleUserInfo(UserInfo? userInfo) {
-    GetStorage().write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
     // Store the organization user ID in GetStorage.
-    GetStorage().write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
   }
 
   void _handleResponseSuccess() {
