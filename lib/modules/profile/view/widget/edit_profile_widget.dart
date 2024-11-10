@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/view/widget/phone_number_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -29,10 +29,8 @@ class TextFiledLayout extends StatelessWidget {
         _userFirstName(),
         _userLastName(),
         _userAddress(),
-       _phoneNumberInputField(),
-
+        _phoneNumberInputField(),
         customSpacerHeight(height: 14),
-
         _userEmergencyPhoneNumber(),
         _userPersonalBio(),
         customSpacerHeight(height: 20),
@@ -43,18 +41,12 @@ class TextFiledLayout extends StatelessWidget {
                   Get.find<UserProfileController>().isEnableEditButton == false
                       ? () {}
                       : () {
-
-
                           final variables = _addVariables();
-
 
                           if (formKey.currentState!.validate()) {
                             Get.find<UpdateProfileController>()
                                 .updateUserProfile(variables!);
                           }
-
-
-
                         },
               btnColor:
                   Get.find<UserProfileController>().isEnableEditButton == true
@@ -77,10 +69,6 @@ class TextFiledLayout extends StatelessWidget {
   }
 }
 
-
-
-
-
 _phoneNumberInputField() {
   return Column(
     children: [
@@ -102,175 +90,9 @@ _userEmergencyPhoneNumber() {
       customSpacerHeight(height: 12),
       const EmergencyPhoneNumber(),
       customSpacerHeight(height: 12),
-
     ],
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-class PersonalPhoneNumber extends StatefulWidget {
-  const PersonalPhoneNumber({super.key});
-
-  @override
-  State<PersonalPhoneNumber> createState() => _PersonalPhoneNumberState();
-}
-
-class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
-  PhoneNumber number = PhoneNumber(isoCode: 'NO', phoneNumber: editPhoneController.text);
-
-  @override
-  void initState() {
-    super.initState();
-    getPhoneNumber(editPhoneController.text);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InternationalPhoneNumberInput(
-      onInputChanged: (PhoneNumber number) {
-        print("onInputChanged:: ${number.phoneNumber}");
-        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value=number.phoneNumber.toString();
-      },
-      onInputValidated: (bool value) {
-        print(value);
-      },
-      selectorConfig: const SelectorConfig(
-        selectorType: PhoneInputSelectorType.DIALOG,
-        setSelectorButtonAsPrefixIcon: true,
-        leadingPadding: 12,
-      ),
-      inputBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.grey),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      ignoreBlank: true,
-      autoValidateMode: AutovalidateMode.onUserInteraction,
-      formatInput: false,
-      inputDecoration: InputDecoration(
-        hintText: 'Enter phone number',
-        border: outlineInputBorder,
-        focusedBorder: outlineInputBorder,
-        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        hintStyle: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
-
-        disabledBorder:outlineInputBorder,
-        enabledBorder: outlineInputBorder,
-      ),
-      initialValue: number,
-      textFieldController: editPhoneController,
-      onSaved: (PhoneNumber number) {
-        print('On Saved: $number');
-      },
-    );
-  }
-
-  void getPhoneNumber(String phoneNumber) async {
-    PhoneNumber number = await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'US');
-    setState(() {
-      this.number = number;
-    });
-  }
-
-
-}
-
-
-
-
-
-
-
-
-
-class EmergencyPhoneNumber extends StatefulWidget {
-  const EmergencyPhoneNumber({super.key});
-
-  @override
-  State<EmergencyPhoneNumber> createState() => _EmergencyPhoneNumberState();
-}
-
-class _EmergencyPhoneNumberState extends State<EmergencyPhoneNumber> {
-  PhoneNumber number = PhoneNumber(isoCode: 'NO', phoneNumber: editEmergencyPhoneController.text);
-
-  @override
-  void initState() {
-    super.initState();
-    getPhoneNumber(editEmergencyPhoneController.text);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InternationalPhoneNumberInput(
-      onInputChanged: (PhoneNumber number) {
-        print("onInputChanged:: ${number.phoneNumber}");
-        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value=number.phoneNumber.toString();
-
-      },
-      onInputValidated: (bool value) {
-        print(value);
-      },
-      selectorConfig: const SelectorConfig(
-        selectorType: PhoneInputSelectorType.DIALOG,
-        setSelectorButtonAsPrefixIcon: true,
-        leadingPadding: 12,
-      ),
-      inputBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.grey),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      ignoreBlank: true,
-      autoValidateMode: AutovalidateMode.onUserInteraction,
-      formatInput: false,
-      inputDecoration: InputDecoration(
-        hintText: 'Not added yet',
-        hintStyle: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
-        border: outlineInputBorder,
-        focusedBorder: outlineInputBorder,
-        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-
-        disabledBorder:outlineInputBorder,
-        enabledBorder: outlineInputBorder,
-      ),
-      initialValue: number,
-      textFieldController: editEmergencyPhoneController,
-      onSaved: (PhoneNumber number) {
-        print('On Saved: $number');
-      },
-    );
-  }
-
-  void getPhoneNumber(String phoneNumber) async {
-    PhoneNumber number = await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'NO');
-    setState(() {
-      this.number = number;
-    });
-  }
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 void _clearInputField() {
   UserProfileController controller = Get.find<UserProfileController>();
@@ -288,7 +110,6 @@ void _clearInputField() {
 
 Map<String, dynamic>? _addVariables() {
   Map<String, dynamic> inputData = {};
-
 
   inputData["about"] = editBioController.text;
 
@@ -308,10 +129,10 @@ Map<String, dynamic>? _addVariables() {
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
   inputData["department_id"] = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.department
-      ?.id ??
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.department
+          ?.id ??
       "";
   // Set image path if there is an uploaded profile image
   _addInputProfileImage(inputData);
@@ -326,7 +147,7 @@ void _addInputProfileImage(Map<String, dynamic> inputData) {
       .value
       .isNotEmpty) {
     inputData["image"] =
-    "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+        "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
   }
 }
 
@@ -335,36 +156,31 @@ void _addInputUserFirstName(Map<String, dynamic> inputData) {
     inputData["first_name"] = editFirstNameController.text;
   } else {
     inputData["first_name"] = Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
-        ?.profile
-        ?.firstName ??
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.firstName ??
         "";
   }
 }
 
 void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
-
-
   if (editPhoneController.text.isEmpty) {
     inputData["personal_phone_number"] = "";
-
-  }else{
-    inputData["personal_phone_number"] =  Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+  } else {
+    inputData["personal_phone_number"] =
+        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
   }
-
 }
 
 void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
-
   if (editEmergencyPhoneController.text.isEmpty) {
     inputData["emergency_phone_number"] = "";
-  }else{
-    inputData["emergency_phone_number"] =  Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+  } else {
+    inputData["emergency_phone_number"] =
+        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
   }
 }
-
-
 
 _userPersonalBio() {
   return userTextFieldLayout(
@@ -425,13 +241,13 @@ _userFirstName() {
 
 userTextFieldLayout(
     {required String titleText,
-      required TextEditingController controller,
-      required String hintText,
-      bool isNoteFieldVisible = false,
-      bool isRequired = true,
-      final String? Function(String?)? onChanged,
-      final TextInputType? textInputType,
-      validator}) {
+    required TextEditingController controller,
+    required String hintText,
+    bool isNoteFieldVisible = false,
+    bool isRequired = true,
+    final String? Function(String?)? onChanged,
+    final TextInputType? textInputType,
+    validator}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -439,28 +255,18 @@ userTextFieldLayout(
       customSpacerHeight(height: 12),
       isNoteFieldVisible != false
           ? InputNote(
-        controller: editBioController,
-        hintText: hintText,
-        onChanged: onChanged,
-      )
+              controller: editBioController,
+              hintText: hintText,
+              onChanged: onChanged,
+            )
           : CustomInputField(
-        hint: hintText,
-        controller: controller,
-        textInputType: textInputType,
-        validator: validator,
-        onChanged: onChanged,
-      ),
+              hint: hintText,
+              controller: controller,
+              textInputType: textInputType,
+              validator: validator,
+              onChanged: onChanged,
+            ),
       customSpacerHeight(height: 12),
     ],
   );
 }
-
-
-
-
-
-
-
-
-
-
