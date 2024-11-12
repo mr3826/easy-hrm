@@ -1,9 +1,9 @@
 class Api {
   static final Api _instance = Api._internal();
 
-  Api._internal();
-
   factory Api() => _instance;
+
+  Api._internal();
 
   static const String PUBLIC_URL = String.fromEnvironment("PUBLIC_URL");
   static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
