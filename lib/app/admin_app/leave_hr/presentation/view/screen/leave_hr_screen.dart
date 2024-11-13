@@ -15,7 +15,7 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../controller/leave_controller.dart';
-import '../widget/calendar/calendar_view.dart';
+import '../widget/calendar/vertical_calendar/calendar_view.dart';
 import '../widget/calendar/month_navigate_widget.dart';
 import '../widget/leave_recorde/date_navigate_widget.dart';
 import '../widget/leave_recorde/leave_record_list.dart';
@@ -131,11 +131,15 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _buildCalendar() {
-    return const Column(
-      children: [
-        MonthNavigateWidget(),
-        CalendarView(),
-      ],
+    return Expanded(
+      child: const Column(
+        children: [
+         MonthNavigateWidget(),
+
+          Expanded(child: CalendarView()),
+
+        ],
+      ),
     );
   }
 

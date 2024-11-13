@@ -172,7 +172,7 @@ class LeaveRecordList extends StatelessWidget {
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    _showStatusButton(
+                    showStatusButton(
                       leaveRecordDetailsModel.applicationStatus ?? "",
                     ),
                     const Spacer(),
@@ -221,25 +221,7 @@ class LeaveRecordList extends StatelessWidget {
     );
   }
 
-  Widget _showStatusButton(String leaveStatus) {
-    switch (leaveStatus.toLowerCase()) {
-      case 'approved':
-        return StatusBtnHelper.approvedStatusBtn();
 
-      case 'rejected':
-        return StatusBtnHelper.rejectedStatusBtn();
-      case 'pending':
-        return StatusBtnHelper.pendingStatusBtn();
-      case 'taken':
-        return StatusBtnHelper.tokenStatusBtn();
-      case 'cancel':
-        return StatusBtnHelper.cancelStatusBtn();
-        case 'cancelled':
-        return StatusBtnHelper.cancelledStatusBtn();
-      default:
-        return Container();
-    }
-  }
 
   void _showLeaveRecordDetailsSheet(
       LeaveRecordDetailsModel leaveRecordDetailsModel) {
@@ -275,5 +257,24 @@ class LeaveRecordList extends StatelessWidget {
               designation: leaveRecordDetailsModel.designation,
               imgUrl: leaveRecordDetailsModel.imgUrl),
         ));
+  }
+}
+Widget showStatusButton(String leaveStatus) {
+  switch (leaveStatus.toLowerCase()) {
+    case 'approved':
+      return StatusBtnHelper.approvedStatusBtn();
+
+    case 'rejected':
+      return StatusBtnHelper.rejectedStatusBtn();
+    case 'pending':
+      return StatusBtnHelper.pendingStatusBtn();
+    case 'taken':
+      return StatusBtnHelper.tokenStatusBtn();
+    case 'cancel':
+      return StatusBtnHelper.cancelStatusBtn();
+    case 'cancelled':
+      return StatusBtnHelper.cancelledStatusBtn();
+    default:
+      return Container();
   }
 }
