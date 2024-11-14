@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/assign_leave/assign_leave.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/employee_search.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
@@ -10,6 +11,7 @@ import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
+import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
@@ -27,6 +29,21 @@ class LeaveHrScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+
+          customAntButtonSheet(
+            height: MediaQuery.of(context).size.height/1.2,
+
+              context: context, child:  AssignLeave());
+        },
+        backgroundColor: AppColor.primaryColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+        child: const Icon(
+          Icons.add,
+          size: 28,
+        ),
+      ),
       body: Padding(
         padding: marginLayout.copyWith(left: 4, right: 4),
         child: Column(

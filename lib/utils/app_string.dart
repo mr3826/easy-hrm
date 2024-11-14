@@ -22,6 +22,7 @@ class AppString {
   static const String textSearch = "Search";
   static const String textFilters = "Filters";
   static const String textEmployees = "Employees";
+  static const String textLeaveTimeline = "Leave timeline";
   static const String textEmployeeStatus = "Employees status";
   static const String textUserStatus = "User status";
   static const String textJoiningDate = "Joining date";
@@ -49,6 +50,7 @@ class AppString {
   static const String textCalendar = "Calender";
   static const String textLeaveRecord = "Leave recodes";
   static const String textClear = "Clear";
+  static const String textSearchAndSelectEmployee = "Search & select employee";
   static const String textSearchEmployee = "Search employee";
   static const String textApprove = "Approve";
   static const String textReject = "Reject";
@@ -57,6 +59,8 @@ class AppString {
   static const String textViewLeaveRecord = "View leave recod";
   static const String textCancelled = "Cancelled";
   static const String textType = "Type";
+  static const String textLeaveType = "Leave type";
+  static const String textAssignLeave = "Assign leave";
 
   static const String textRejectLeaveRequestDated = "Rejecting leave request dated";
   static const String textThisWillRejectTheSelectedLeaveEtc = "This will reject the selected leave request for this requester.Do you still want to reject this leave request?";

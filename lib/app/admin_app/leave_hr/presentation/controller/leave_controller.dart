@@ -11,6 +11,8 @@ class LeaveController extends GetxController {
 
 
 
+  RxInt leaveTypeSelectedIndex = (-1).obs;  // Default to -1, indicating no selection
+
   /// The index of the selected leave status, used for updating leave status (e.g., Pending, Approved).
   RxInt selectedStatusIndex = 0.obs;
 
@@ -37,6 +39,15 @@ class LeaveController extends GetxController {
 
   /// A flag indicating whether individual filtering is enabled.
   RxBool isFilterIndividual = false.obs;
+
+
+  var selectAssignLeave = ''.obs;
+
+  final List<String> items = [
+    'This year',
+    'Next year',
+  ];
+
 
 
 

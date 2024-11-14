@@ -37,7 +37,6 @@ class CalendarView extends StatelessWidget {
           pendingCount: 2,
           rejectedCount: 1,
           takenCount: 2,
-
           cancelledCount: 4,
           imageUrls: [
             "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
@@ -59,7 +58,6 @@ class CalendarView extends StatelessWidget {
             approvedCount: 01,
             pendingCount: 02,
             rejectedCount: 21,
-
             imageUrls: [
               "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
               "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
@@ -159,8 +157,4 @@ class CalendarView extends StatelessWidget {
       },
     );
   }
-
-
-
-
 }
