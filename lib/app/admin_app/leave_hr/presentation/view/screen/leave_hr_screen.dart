@@ -125,14 +125,17 @@ class LeaveHrScreen extends StatelessWidget {
   _leaveRecordeList() {
     return const Expanded(
       child: Column(
-        children: [DateNavigatorWidget(), LeaveRecordList()],
+        children: [
+          DateNavigatorWidget(),
+
+          LeaveRecordList()],
       ),
     );
   }
 
   _buildCalendar() {
-    return Expanded(
-      child: const Column(
+    return const Expanded(
+      child: Column(
         children: [
          MonthNavigateWidget(),
 
