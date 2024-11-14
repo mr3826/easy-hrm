@@ -13,6 +13,7 @@ class DateNavigatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(LeaveController());
+    print("controller.currentDate.value :: ${controller.currentDate.value}");
 
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 12, right: 10),
@@ -20,7 +21,8 @@ class DateNavigatorWidget extends StatelessWidget {
         onTap: () {
           showDialog<String>(
             context: context,
-            builder: (BuildContext context) => Dialog(child: leaveRecodeFilterDialog()),
+            builder: (BuildContext context) =>
+                Dialog(child: leaveRecodeFilterDialog()),
           );
         },
         child: Padding(
@@ -32,7 +34,8 @@ class DateNavigatorWidget extends StatelessWidget {
                 onTap: () {
                   showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => Dialog(child: leaveRecodeFilterDialog()),
+                    builder: (BuildContext context) =>
+                        Dialog(child: leaveRecodeFilterDialog()),
                   );
                 },
                 child: const Icon(
@@ -48,14 +51,13 @@ class DateNavigatorWidget extends StatelessWidget {
                       controller.currentDate.value,
                       style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.secondaryColor,
-                        fontSize: Dimensions.fontSizeDefault+1       ,
+                        fontSize: Dimensions.fontSizeDefault + 1,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     Center(
                       child: Text(
-                        DateFormat('EEEE').format(DateTime.parse(controller.currentDate.value)),
+                        _getDay(controller.currentDate.value),
                         style: AppStyle.mid_large_text.copyWith(
                           color: AppColor.hintColor,
                           fontSize: Dimensions.fontSizeDefault - 2,
@@ -69,7 +71,8 @@ class DateNavigatorWidget extends StatelessWidget {
                 onTap: () {
                   showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => Dialog(child: leaveRecodeFilterDialog()),
+                    builder: (BuildContext context) =>
+                        Dialog(child: leaveRecodeFilterDialog()),
                   );
                 },
                 child: const Icon(
@@ -83,5 +86,16 @@ class DateNavigatorWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _getDay(date) {
+    try {
+      DateTime parsedDate = DateTime.parse(date);
+      String formattedDate = DateFormat('EEEE').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      print("Invalid date format: ${e.toString()}");
+      return date;
+    }
   }
 }
