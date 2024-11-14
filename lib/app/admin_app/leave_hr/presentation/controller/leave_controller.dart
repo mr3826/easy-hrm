@@ -9,6 +9,8 @@ class LeaveController extends GetxController {
   /// The total number of tabs in the leave management UI.
   RxInt tabLength = 0.obs;
 
+
+
   /// The index of the selected leave status, used for updating leave status (e.g., Pending, Approved).
   RxInt selectedStatusIndex = 0.obs;
 

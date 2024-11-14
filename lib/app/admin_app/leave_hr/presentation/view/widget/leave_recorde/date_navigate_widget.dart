@@ -55,7 +55,7 @@ class DateNavigatorWidget extends StatelessWidget {
 
                     Center(
                       child: Text(
-                        DateFormat('EEEE').format(DateTime.now()),
+                        DateFormat('EEEE').format(DateTime.parse(controller.currentDate.value)),
                         style: AppStyle.mid_large_text.copyWith(
                           color: AppColor.hintColor,
                           fontSize: Dimensions.fontSizeDefault - 2,
