@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/calendar/vertical_calendar/calendar_widget.dart';
+
+import '../../../../controller/leave_controller.dart';
 import '../../leave_recorde/leave_recorde_details /leave_record_details.dart';
 import 'calendar_task_card_widget.dart';
+import 'calendar_widget.dart';
 
 class CalendarView extends StatelessWidget {
   const CalendarView({super.key});
 
   // Generate a list of all dates in the current month
   List<DateTime> _generateDatesForCurrentMonth() {
-    DateTime now = DateTime.now();
+    DateTime now = DateTime.parse(Get.find<LeaveController>().selectedMonthDate.toString());
+
     int daysInMonth = DateTime(now.year, now.month + 1, 0).day;
     return List.generate(
         daysInMonth, (index) => DateTime(now.year, now.month, index + 1));
   }
+
+  //selectedMonthDate
 
   // Mock data to simulate tasks for specific dates
   Map<String, List<Task>> getMockedTaskData() {
@@ -108,7 +114,7 @@ class CalendarView extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize:
-                                  MediaQuery.of(context).size.width * 0.05,
+                              MediaQuery.of(context).size.width * 0.05,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -117,7 +123,7 @@ class CalendarView extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize:
-                                    MediaQuery.of(context).size.width * 0.03)),
+                                MediaQuery.of(context).size.width * 0.03)),
                       ],
                     ),
                   ),
@@ -128,26 +134,26 @@ class CalendarView extends StatelessWidget {
                     children: tasks.isEmpty
                         ? [const VerticalDottedDivider()]
                         : tasks
-                            .map((task) => Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 12, right: 12),
-                                  child: TaskCard(
-                                    task: task,
-                                    leaveRecordDetailsModel:
-                                        LeaveRecordDetailsModel(
-                                            leaveDate: "2024-11-10",
-                                            typeOfLeave: "Sick",
-                                            leaveStatus: "Paid",
-                                            leaveDuration: "2 days",
-                                            imgUrl: "",
-                                            employeeName: "Rifat Hasan",
-                                            designation:
-                                                "Mobile Application Developer",
-                                            applicationStatus: "pending",
-                                            applicationDate: "20 Apr 2034"),
-                                  ),
-                                ))
-                            .toList(),
+                        .map((task) => Padding(
+                      padding: const EdgeInsets.only(
+                          left: 12, right: 12),
+                      child: TaskCard(
+                        task: task,
+                        leaveRecordDetailsModel:
+                        LeaveRecordDetailsModel(
+                            leaveDate: "2024-11-10",
+                            typeOfLeave: "Sick",
+                            leaveStatus: "Paid",
+                            leaveDuration: "2 days",
+                            imgUrl: "",
+                            employeeName: "Rifat Hasan",
+                            designation:
+                            "Mobile Application Developer",
+                            applicationStatus: "pending",
+                            applicationDate: "20 Apr 2034"),
+                      ),
+                    ))
+                        .toList(),
                   ),
                 ),
               ],
