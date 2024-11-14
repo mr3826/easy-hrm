@@ -32,19 +32,16 @@ class LeaveHrScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             ///Tab-bar layout
             _buildTabBar(context),
             customSpacerHeight(height: 12),
 
-
             ///build search employee list
             Obx(() => Get.find<LeaveController>().isFilterIndividual.isFalse
-                  ? _buildSearchBar(context, onSearch: () {
-                      showEmployeeSelectionSheet();
-                    })
-                  : _buildIndividualPerson()),
-
+                ? _buildSearchBar(context, onSearch: () {
+                    showEmployeeSelectionSheet();
+                  })
+                : _buildIndividualPerson()),
 
             ///Tab-bar view according to index
             Obx(
@@ -125,10 +122,7 @@ class LeaveHrScreen extends StatelessWidget {
   _leaveRecordeList() {
     return const Expanded(
       child: Column(
-        children: [
-          DateNavigatorWidget(),
-
-          LeaveRecordList()],
+        children: [DateNavigatorWidget(), LeaveRecordList()],
       ),
     );
   }
@@ -137,10 +131,8 @@ class LeaveHrScreen extends StatelessWidget {
     return const Expanded(
       child: Column(
         children: [
-         MonthNavigateWidget(),
-
+          MonthNavigateWidget(),
           Expanded(child: CalendarView()),
-
         ],
       ),
     );
