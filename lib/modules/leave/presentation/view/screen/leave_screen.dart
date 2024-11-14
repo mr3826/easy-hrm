@@ -93,7 +93,7 @@ class LeaveScreen extends GetView<LeaveScreenController> {
     );
   }
 
-  void _customButtonSheet({context, child}) {
+  _customButtonSheet({context, child}) {
     return showCustomAtmBtnSheet(
         height: Get.height * .8,
         context: context,
