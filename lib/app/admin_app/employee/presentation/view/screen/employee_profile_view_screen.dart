@@ -4,6 +4,7 @@ import 'package:payrun_mobile/app/admin_app/employee/presentation/controller/emp
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import '../../../../../../modules/profile/model/user_profile.dart';
 import '../widget/employee_profile_view/leave/leave_widget.dart';
 import '../widget/employee_profile_view/leave_summary/leave_summary_widget.dart';
@@ -75,8 +76,7 @@ class EmployeeProfileViewScreen extends GetView<EmploymentController> {
         lastName: controller.employeeProfileInfo?.getOrganizationUserDetails
                 ?.profile?.lastName ??
             "",
-        department: controller
-            .employeeProfileInfo?.getOrganizationUserDetails?.department?.name,
+        department: _getUserDesignation(),
         profileImageKey: controller.employeeProfileInfo
                 ?.getOrganizationUserDetails?.profile?.image ??
             "",
@@ -90,14 +90,21 @@ class EmployeeProfileViewScreen extends GetView<EmploymentController> {
   }
 
   _buildMonthlyGoal() {
+    GeTimelogAndLeaveAvailabilityForApp? timelogAndLeaveAvailabilityForApp =
+        Get.find<EmploymentController>()
+            .employeesLogHistory
+            ?.geTimelogAndLeaveAvailabilityForApp;
     return MonthlyStatusWidget(
       status: MonthlyStatus(
-          leaveBalance: "0.0", monthlyGoal: "0.0", loggedTime: "0.0"),
+          leaveBalance:
+              timelogAndLeaveAvailabilityForApp?.balanceLeave ?? "0.0",
+          monthlyGoal:
+              timelogAndLeaveAvailabilityForApp?.totalSchedule ?? "0.0",
+          loggedTime: timelogAndLeaveAvailabilityForApp?.totalLogged ?? "0.0"),
     );
   }
 
   String? _getEmploymentContactType() {
-    EmploymentController controller = Get.find<EmploymentController>();
     if (controller.employeeWorkHistory?.getOrganizationUserHistory
                 ?.employmentHistories !=
             null &&
@@ -106,19 +113,33 @@ class EmployeeProfileViewScreen extends GetView<EmploymentController> {
       return controller.employeeWorkHistory?.getOrganizationUserHistory
           ?.employmentHistories?.first.employmentStatus?.name;
     }
+    return null;
   }
 
   String? _getEmploymentContactColor() {
-    EmploymentController controller = Get.find<EmploymentController>();
     if (controller.employeeWorkHistory?.getOrganizationUserHistory
                 ?.employmentHistories !=
             null &&
         controller.employeeWorkHistory!.getOrganizationUserHistory!
             .employmentHistories!.isNotEmpty) {
-      controller.employeeWorkHistory?.getOrganizationUserHistory
+      return controller.employeeWorkHistory?.getOrganizationUserHistory
           ?.employmentHistories?.first.employmentStatus?.color
           ?.replaceAll("#", "");
     }
+    return null;
+  }
+
+  _getUserDesignation() {
+    if (controller.employeeWorkHistory?.getOrganizationUserHistory
+                ?.designationHistories !=
+            null &&
+        controller.employeeWorkHistory!.getOrganizationUserHistory!
+            .designationHistories!.isNotEmpty) {
+      return controller.employeeWorkHistory?.getOrganizationUserHistory
+              ?.designationHistories?.first.designation?.name ??
+          AppString.notAddedText.tr;
+    }
+    return AppString.notAddedText.tr;
   }
 }
 

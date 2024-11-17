@@ -140,7 +140,9 @@ class TerminateWidget extends StatelessWidget {
           controller: TextEditingController(),
           hintText: "Type here",
           borderColor: AppColor.hintColor.withOpacity(0.5),
-          onChanged: (value) {},
+          onChanged: (value) {
+            return null;
+          },
         ),
       ],
     );

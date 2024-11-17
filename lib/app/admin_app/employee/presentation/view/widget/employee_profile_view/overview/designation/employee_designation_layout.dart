@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../../common/widget/custom_svg_image.dart';
@@ -86,7 +87,7 @@ class EmployeeStatusCard extends StatelessWidget {
           maxLines: 2,
         ),
         Text(
-          "${AppString.text_from.tr} - $date",
+          "${AppString.text_from.tr} - ${formatDate(date: date,format: "dd MMM, yyyy")}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.hintColor,
             fontSize: Dimensions.fontSizeDefault - 1,

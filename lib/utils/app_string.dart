@@ -18,6 +18,7 @@ class AppString {
 
   ///String for Employee module v2
   static const String textViewProfile = "View profile";
+  static const String notAddedText = "No designation";
   static const String textTerminate = "Terminate";
   static const String textTerminateDate = "Terminate date";
   static const String textReasonNote = "Reason note";

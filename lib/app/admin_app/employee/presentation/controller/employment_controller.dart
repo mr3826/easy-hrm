@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
 
+import '../../../../../modules/leave/domain/leave_record_response.dart' as lr;
 import '../../data/employee_remote_data_source.dart';
 import '../../domain/employee_info.dart';
 import '../../domain/employement_status.dart';
@@ -61,11 +63,15 @@ class EmploymentController extends GetxController with StateMixin {
 
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
       Get.find<EmployeeRemoteDataSource>();
+  final LeaveRemoteDataSource _employeeLeaveRemoteDataSource =
+      Get.find<LeaveRemoteDataSource>();
 
   EmployeeInfo? employeeInfo = EmployeeInfo();
   UserDetails? employeeProfileInfo = UserDetails();
   EmployeeWorkHistory? employeeWorkHistory = EmployeeWorkHistory();
   UserLogHistory? employeesLogHistory = UserLogHistory();
+  List<lr.GetLeaveRecordsForApp?> getLeaveRecordList =
+      <lr.GetLeaveRecordsForApp?>[];
 
   List<Data>? employeeList = <Data>[];
 
@@ -190,6 +196,13 @@ class EmploymentController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  _getEmployeeUserLeaveRecord({required String orgUserId}) async {
+    change(null, status: RxStatus.loading());
+    final res = await _employeeLeaveRemoteDataSource.getLeaveRecordList(
+        limit: 20, offset: 0, orgUserId: orgUserId);
+    change(null, status: RxStatus.success());
+  }
+
   void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {
     for (CheckBoxModel item in checkBoxList) {
       item.value = false;
@@ -238,7 +251,6 @@ class EmploymentController extends GetxController with StateMixin {
   ];
 
   List<String> getSelectedCheckBoxValues(List<CheckBoxModel> checkBoxList) {
-    print("checkBoxList: $checkBoxList");
     return checkBoxList
         .where((item) => item.value == true) // Filter items where value is true
         .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue

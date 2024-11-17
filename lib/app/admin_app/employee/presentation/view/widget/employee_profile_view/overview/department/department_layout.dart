@@ -70,7 +70,7 @@ class DepartmentLayout extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (departmentModel.parentDepartmentName.isNotEmpty)
+              if (departmentModel.parentDepartmentName != null)
                 _buildParentInfo(),
               if (departmentModel.startDate.isNotEmpty)
                 Expanded(
@@ -94,13 +94,13 @@ class DepartmentLayout extends StatelessWidget {
     return Row(
       children: [
         Text(
-          departmentModel.parentDepartmentName,
+          departmentModel.parentDepartmentName ?? "",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
             fontSize: Dimensions.fontSizeDefault - 1,
           ),
         ),
-        if (departmentModel.startDate.isNotEmpty) _buildDivider(),
+        if (departmentModel.parentDepartmentName != null) _buildDivider(),
       ],
     );
   }
@@ -159,7 +159,7 @@ class DepartmentLayout extends StatelessWidget {
         ),
         _buildDivider(),
         GestureDetector(
-          onTap: (){},
+          onTap: () {},
           child: Text(
             _getTimeDifference(departmentModel.workShiftStartTime,
                 departmentModel.workShiftEndTime),
@@ -245,7 +245,7 @@ class DepartmentLayout extends StatelessWidget {
 
 class DepartmentModel {
   final String departmentName;
-  final String parentDepartmentName;
+  final String? parentDepartmentName;
   final String startDate;
   final String workShiftStartTime;
   final String workShiftName;
@@ -257,7 +257,7 @@ class DepartmentModel {
 
   DepartmentModel({
     required this.departmentName,
-    required this.parentDepartmentName,
+    this.parentDepartmentName,
     required this.onAction,
     required this.startDate,
     required this.workShiftStartTime,
