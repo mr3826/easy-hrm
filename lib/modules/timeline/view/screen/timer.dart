@@ -56,11 +56,13 @@ class TimerScreen extends StatelessWidget {
                       .startOrEndTimer(timerType: StartOrEndTimer.end.name)
                       .then((value) {
                     Get.find<TimelineController>().getProjectDropdown();
-                    customButtonSheet(
-                        height: .6,
-                        context: context,
-                        isDismissible: false,
-                        child: const AddToTaskScreen());
+                    if(context.mounted){
+                      customButtonSheet(
+                          height: .6,
+                          context: context,
+                          isDismissible: false,
+                          child: const AddToTaskScreen());
+                    }
 
                   });
                 }
