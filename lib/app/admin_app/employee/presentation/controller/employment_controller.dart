@@ -198,7 +198,7 @@ class EmploymentController extends GetxController with StateMixin {
 
   _getEmployeeUserLeaveRecord({required String orgUserId}) async {
     change(null, status: RxStatus.loading());
-    final res = await _employeeLeaveRemoteDataSource.getLeaveRecordList(
+    final List<lr.GetLeaveRecordsForApp>? res = await _employeeLeaveRemoteDataSource.getLeaveRecordList(
         limit: 20, offset: 0, orgUserId: orgUserId);
     change(null, status: RxStatus.success());
   }

@@ -97,9 +97,9 @@ query GetLeaveRequests($queryData: LeaveRequestQueryType) {
         """;
 
 const getLeaveRecordsDataQuery = r'''
-query GetLeaveRecordsForApp($optionData: OptionDataType) {
-  getLeaveRecordsForApp(optionData: $optionData) {
-    date
+query GetLeaveRecordsForApp($queryData: LeaveRecordsQueryInput, $optionData: OptionDataType) {
+  getLeaveRecordsForApp(queryData: $queryData, optionData: $optionData) {
+     date
     data {
       createdAt
       description
