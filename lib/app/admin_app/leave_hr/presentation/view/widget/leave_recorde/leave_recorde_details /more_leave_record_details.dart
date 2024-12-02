@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
@@ -14,6 +15,7 @@ import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
+import '../../../../controller/hr_leave_controller.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
 import 'leave_record_details.dart';
 
@@ -34,6 +36,8 @@ class MoreLeaveRecordDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,8 +54,20 @@ class MoreLeaveRecordDetails extends StatelessWidget {
               children: [
                 ///Conditional actions based on application status
                 if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name || leaveRecordDetails.applicationStatus == LeaveStatus.approved.name) ...[
+
                   if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name) ...[
-                    _buildActionOption(AppString.textApprove.tr, () {}),
+
+
+                  Obx(()=>  Get.find<HrLeaveController>().updateLeaveLoader.isTrue?const Center(child: CupertinoActivityIndicator()):
+
+
+                  _buildActionOption(AppString.textApprove.tr, () {
+                    Get.find<HrLeaveController>().updateLeave(leaveId: leaveRecordDetails.leaveId??"",status: "approved");
+
+                  }),),
+
+
+
                     _divider(),
                   ],
                   _buildCancel(context),  ///reject || cancel build action

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/calendar/vertical_calendar/calendar_task_card_widget.dart';
 import 'package:payrun_mobile/enum.dart';
+import '../../../../../common/widget/success_message.dart';
+import '../../../../../utils/app_string.dart';
 import '../../data/leave_remote_data_source.dart';
 import '../model/hr_leave_calender.dart';
 
@@ -8,11 +10,12 @@ class HrLeaveController extends GetxController {
   final HrLeaveRemoteDataSource _leaveRemoteDataSource = Get.find();
   HrLeaveCalender? hrLeaveCalender = HrLeaveCalender();
   RxBool isHrLeaveCalendarLoading = false.obs;
+  RxBool updateLeaveLoader = false.obs;
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getEmployees() async {
+  Future<void> getEmployees({String ? startDate,String? endDate}) async {
     isHrLeaveCalendarLoading(true);
-    hrLeaveCalender = await _leaveRemoteDataSource.getLeaveCalender();
+    hrLeaveCalender = await _leaveRemoteDataSource.getLeaveCalender(startDate: startDate,endDate: endDate);
     isHrLeaveCalendarLoading(false);
   }
 
@@ -45,8 +48,21 @@ class HrLeaveController extends GetxController {
       cancelledCount: leave.totalCancelled ?? 0,
       imageUrls: _getUserImages(leave),
       isGroup: (leave.organizationUsers?.length ?? 0) > 1,
+      leaveId: _getLeaveId(leave)
     );
   }
+
+
+
+  String _getLeaveId(LeaveRequests leave) {
+
+    var data= leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ?? "";
+
+    print("Leave_id_remote ::: ${data}");
+
+    return data;
+  }
+
 
   String _getStatus(LeaveRequests leave) {
     if (leave.totalPending == 1) {
@@ -88,6 +104,46 @@ class HrLeaveController extends GetxController {
         }).toList() ??
         [];
   }
+
+
+
+
+
+  /// update a leave and updates the relevant data if successful.
+  Future<void> updateLeave({required String leaveId,String ?status}) async {
+
+    print("leaveId ::: $leaveId");
+    updateLeaveLoader(true);
+    final bool response =
+    await _leaveRemoteDataSource.updateLeave(leaveId: leaveId,status: status);
+
+    if (response) {
+      showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
+      getEmployees();
+      Get.back(canPop: false);
+    }
+    updateLeaveLoader(false);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @override
   void onInit() {

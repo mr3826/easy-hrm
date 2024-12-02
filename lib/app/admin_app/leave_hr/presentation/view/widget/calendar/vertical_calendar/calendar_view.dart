@@ -39,6 +39,7 @@ class CalendarView extends StatelessWidget {
         String dayLabel = DateFormat("EEE").format(date);
         List<Task> tasks = taskData[formattedDate] ?? [];
 
+
         return Column(
           children: [
             Padding(

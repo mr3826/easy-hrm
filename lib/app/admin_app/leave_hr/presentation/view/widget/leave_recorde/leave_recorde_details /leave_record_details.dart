@@ -223,6 +223,7 @@ class LeaveRecordDetails extends StatelessWidget {
 
 class LeaveRecordDetailsModel {
   final String? employeeName;
+  final String? leaveId;
   final String? typeOfLeave;
   final String? leaveStatus;
   final String? leaveDate;
@@ -238,6 +239,7 @@ class LeaveRecordDetailsModel {
     this.leaveStatus,
     this.leaveDate,
     this.leaveDuration,
+    this.leaveId,
     this.applicationStatus,
     this.applicationDate,
     this.imgUrl,

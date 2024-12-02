@@ -665,3 +665,14 @@ query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDa
 ''';
 
 
+
+const updateLeaveQuery = r'''
+mutation UPDATE_LEAVE($inputData: UpdateLeaveInputData) {
+  updateLeave(inputData: $inputData) {
+  id
+  }
+  
+}
+''';
+
+

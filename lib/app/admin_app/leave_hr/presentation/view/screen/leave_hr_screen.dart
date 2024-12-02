@@ -16,6 +16,7 @@ import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
+import '../../controller/hr_leave_controller.dart';
 import '../../controller/leave_controller.dart';
 import '../widget/calendar/vertical_calendar/calendar_view.dart';
 import '../widget/calendar/month_navigate_widget.dart';
@@ -145,6 +146,9 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _buildCalendar() {
+   if( Get.find<HrLeaveController>().isHrLeaveCalendarLoading.isTrue){
+     return  const Center(child: CupertinoActivityIndicator(color:AppColor.primaryColor,radius: 17,));
+   }
     return const Expanded(
       child: Column(
         children: [

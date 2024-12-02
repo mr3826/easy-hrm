@@ -96,7 +96,6 @@ class StatusTag extends StatelessWidget {
 
 class OverlappingAvatars extends StatelessWidget {
   final List<String> imageUrls;
-  final List<String> name;
   final int maxAvatars;
   final double radius;
   final double overlap;
@@ -104,7 +103,6 @@ class OverlappingAvatars extends StatelessWidget {
   const OverlappingAvatars({
     Key? key,
     required this.imageUrls,
-    required this.name,
     this.maxAvatars = 5,
     this.radius = 19,
     this.overlap = 23.0,

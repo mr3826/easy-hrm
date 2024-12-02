@@ -7,6 +7,7 @@ import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../controller/hr_leave_controller.dart';
 
 class MonthNavigateWidget extends StatelessWidget {
   const MonthNavigateWidget({super.key});
@@ -14,7 +15,6 @@ class MonthNavigateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LeaveController controller = Get.put(LeaveController());
-
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 12, right: 10),
       child: GestureDetector(
@@ -195,9 +195,11 @@ Widget _buildDialogActions(LeaveController controller) {
             int selectedYear =
                 controller.years[controller.selectedYearIndex.value];
             int selectedMonthIndex = controller.selectedMonthIndex.value + 1;
-            DateTime selectedDateTime =
-                DateTime(selectedYear, selectedMonthIndex);
+            DateTime selectedDateTime = DateTime(selectedYear, selectedMonthIndex);
             print("Selected DateTime: $selectedDateTime");
+
+
+            Get.find<HrLeaveController>().getEmployees(startDate:selectedDateTime.toString());
             Get.back(canPop: false);
           },
           child: Text(

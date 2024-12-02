@@ -37,7 +37,6 @@ class TaskCard extends StatelessWidget {
             children: [
               OverlappingAvatars(
                 imageUrls: task.imageUrls,
-                name: task.nameOfList??[],
               ),
               const SizedBox(height: 11),
               Wrap(
@@ -73,8 +72,19 @@ class TaskCard extends StatelessWidget {
     } else {
       return GestureDetector(
         onTap: () {
+
           _showLeaveRecodeDetails(
-              leaveRecordDetailsModel ?? LeaveRecordDetailsModel());
+            LeaveRecordDetailsModel(
+                leaveDate: "2024-11-10",
+                typeOfLeave: task.leaveType,
+                leaveStatus: task.status,
+                leaveDuration: "2 days",
+                imgUrl: "",
+                employeeName: task.name,
+                designation:
+                "Mobile Application Developer",
+                applicationStatus: "pending",
+                applicationDate: "20 Apr 2034"),);
         },
         child: Card(
           elevation: 0,
@@ -127,7 +137,19 @@ class TaskCard extends StatelessWidget {
                 InkWell(
                     onTap: () {
                       _showLeaveRecordDetailsSheet(
-                          leaveRecordDetailsModel ?? LeaveRecordDetailsModel());
+                        LeaveRecordDetailsModel(
+                          leaveId: task.leaveId,
+                            leaveDate: "2024-11-10",
+                            typeOfLeave: "Sick",
+                            leaveStatus: "Paid",
+                            leaveDuration: "2 days",
+                            imgUrl: "",
+                            employeeName: "Rifat Hasan",
+                            designation:
+                            "Mobile Application Developer",
+                            applicationStatus: "pending",
+                            applicationDate: "20 Apr 2034"),
+                      );
                     },
                     child: const Icon(Icons.more_horiz)),
               ],
@@ -157,6 +179,7 @@ void _showLeaveRecodeDetails(LeaveRecordDetailsModel leaveRecordDetailsModel) {
 
 class Task {
   final String? name;
+  final String? leaveId;
   final String? role;
   final String? leaveType;
   final String? status;
@@ -167,14 +190,13 @@ class Task {
   final int takenCount;
   final int cancelledCount;
   final List<String> imageUrls;
-  final List<String> ?nameOfList;
 
   Task({
     this.name,
     this.role,
     this.leaveType,
+    this.leaveId,
     this.status,
-    this.nameOfList,
     this.cancelledCount = 0,
     this.takenCount = 0,
     this.isGroup = false,
@@ -192,6 +214,7 @@ void _showLeaveRecordDetailsSheet(
       height: MediaQuery.of(Get.context!).size.height / 1.5,
       child: MoreLeaveRecordDetails(
         leaveRecordDetails: LeaveRecordDetailsModel(
+          leaveId: leaveRecordDetailsModel.leaveId,
             applicationDate: leaveRecordDetailsModel.leaveStatus,
             applicationStatus: leaveRecordDetailsModel.applicationStatus,
             employeeName: leaveRecordDetailsModel.employeeName,
