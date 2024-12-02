@@ -24,7 +24,7 @@ class CalendarView extends StatelessWidget {
   // Mock data to simulate tasks for specific dates
   Map<String, List<Task>> getMockedTaskData() {
     return {
-      "2024-11-09": [
+      "2024-12-09": [
         Task(
           name: "Michael Buchenwald",
           role: "UI/UX Designer",
@@ -35,7 +35,7 @@ class CalendarView extends StatelessWidget {
           ],
         ),
       ],
-      "2024-11-12": [
+      "2024-12-12": [
         Task(
           name: "Group Task",
           isGroup: true,
@@ -54,7 +54,7 @@ class CalendarView extends StatelessWidget {
           ],
         ),
       ],
-      "2024-11-14": [
+      "2024-12-14": [
         Task(
             name: "Sophia Fisher",
             role: "Developer",

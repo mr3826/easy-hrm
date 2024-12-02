@@ -28,7 +28,7 @@ class AssignLeave extends StatelessWidget {
     return Column(
       children: [
         // Bottom sheet header
-        _buildBottomSheetHeader(AppString.textAssignLeave.tr),
+        _buildBottomSheetHeader(),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -57,15 +57,7 @@ class AssignLeave extends StatelessWidget {
           ),
         ),
         // Action buttons
-        Padding(
-          padding: const EdgeInsets.only(left: 18, bottom: 18, right: 18),
-          child: CustomDoubleAppButton(
-              onAction: () {},
-              cancelAction: () {
-                Get.back(canPop: false);
-                controller.leaveTypeSelectedIndex.value = (-1); //clear selection index.
-              }),
-        ),
+       _buildButtonLayout(),
       ],
     );
   }
@@ -126,8 +118,8 @@ class AssignLeave extends StatelessWidget {
   }
 
   /// Builds the bottom sheet header widget with a given title.
-  Widget _buildBottomSheetHeader(String title) {
-    return buildBottomSheetHeader(text: title);
+  Widget _buildBottomSheetHeader() {
+    return buildBottomSheetHeader(text: AppString.textAssignLeave.tr);
   }
 
   /// Builds a title text widget with the provided text.
@@ -296,5 +288,20 @@ class AssignLeave extends StatelessWidget {
 
     return customSvgImage(
         imageUrl: imageUrl, height: 27, color: AppColor.secondaryColor);
+  }
+
+  _buildButtonLayout() {
+    return  Padding(
+      padding: const EdgeInsets.only(left: 18, bottom: 18, right: 18),
+      child: Obx(()=>CustomDoubleAppButton(
+          onAction: Get.find<LeaveController>().leaveTypeSelectedIndex.value>=0? () {}:(){},
+          buttonText: "Continue",
+          btnColor: Get.find<LeaveController>().leaveTypeSelectedIndex.value>=0?AppColor.primaryColor:AppColor.primaryColor.withOpacity(0.5),
+          cancelAction: () {
+            Get.back(canPop: false);
+            controller.leaveTypeSelectedIndex.value = (-1); //clear selection index.
+          })),
+
+    );
   }
 }
