@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../../enum.dart';
 
 class VerticalDottedDivider extends StatelessWidget {
@@ -85,7 +87,7 @@ class StatusTag extends StatelessWidget {
       child: FittedBox(
         child: Text(
           text,
-          style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.03),
+          style: AppStyle.normal_text_black.copyWith(fontSize: MediaQuery.of(context).size.width * 0.03),
         ),
       ),
     );
@@ -94,6 +96,7 @@ class StatusTag extends StatelessWidget {
 
 class OverlappingAvatars extends StatelessWidget {
   final List<String> imageUrls;
+  final List<String> name;
   final int maxAvatars;
   final double radius;
   final double overlap;
@@ -101,37 +104,26 @@ class OverlappingAvatars extends StatelessWidget {
   const OverlappingAvatars({
     Key? key,
     required this.imageUrls,
+    required this.name,
     this.maxAvatars = 5,
-    this.radius = 18,
+    this.radius = 19,
     this.overlap = 23.0,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final displayCount =
-        imageUrls.length > maxAvatars ? maxAvatars - 1 : imageUrls.length;
+
+    final displayCount = imageUrls.length > maxAvatars ? maxAvatars - 1 : imageUrls.length;
     final remainingCount = imageUrls.length - displayCount;
 
     return SizedBox(
-      height: radius * 2,
+      height: radius * 2.5,
       child: Stack(
         children: [
           for (int index = 0; index < displayCount; index++)
             Positioned(
               left: index * overlap,
-              child: CircleAvatar(
-                radius: radius,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: radius - .6,
-                  backgroundColor: AppColor.primaryColor,
-                  child: CircleAvatar(
-                    radius: radius - 1.5, // Adjusted radius for a border effect
-                    backgroundImage: NetworkImage(imageUrls[index]),
-                    backgroundColor: Colors.white,
-                  ),
-                ),
-              ),
+              child: CustomNetworkImage(profileImageKey: imageUrls[index], errorText:  getInitials(imageUrls[index]),imgUrlKey: "",height: 18,),
             ),
           if (remainingCount > 0)
             Positioned(
@@ -152,4 +144,19 @@ class OverlappingAvatars extends StatelessWidget {
       ),
     );
   }
+}
+
+String getInitials(String fullName) {
+  if (fullName.isEmpty) return "";
+
+  // Split the name into words
+  final words = fullName.trim().split(' ');
+
+  // Get the first letter of the first word
+  final firstInitial = words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
+
+  // Get the first letter of the last word
+  final lastInitial = words.last.isNotEmpty ? words.last[0].toUpperCase() : '';
+  // Combine the initials
+  return '$firstInitial$lastInitial';
 }

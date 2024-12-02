@@ -623,3 +623,45 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
   }
 }
 ''';
+
+
+
+//Hr_leave
+
+
+const getHrLeaveCalendarList = r'''
+query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDataType) {
+  getLeavesCalendar(queryData: $queryData, optionData: $optionData) {
+    leave_requests {
+      formatted_date
+      total_approved
+      total_pending
+      total_rejected
+      total_cancelled
+      total_taken
+    
+      organization_users {
+
+        profile {
+          first_name
+          last_name
+          image
+          __typename
+        }
+
+        roles {
+          name
+          __typename
+        }
+        id
+        leave_id
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+}
+''';
+
+

@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'app/admin_app/employee/data/employee_remote_data_source.dart';
+import 'app/admin_app/leave_hr/data/leave_remote_data_source.dart';
 import 'firebase_options.dart';
 
 Future<void> initApp() async {
@@ -47,4 +48,5 @@ Future<void> initApp() async {
   Get.put(LeaveRemoteDataSource(client), permanent: true);
 
   Get.put(EmployeeRemoteDataSource(client), permanent: true);
+  Get.put(HrLeaveRemoteDataSource(client), permanent: true);
 }

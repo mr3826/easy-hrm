@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../enum.dart';
 import '../../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../../utils/app_style.dart';
@@ -18,9 +19,14 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+    print("imageUrls_url :: ${task.imageUrls[0]}");
+
+
     if (task.isGroup) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: GestureDetector(
           onTap: (){
             Get.find<LeaveController>().tabLength(1);
@@ -31,6 +37,7 @@ class TaskCard extends StatelessWidget {
             children: [
               OverlappingAvatars(
                 imageUrls: task.imageUrls,
+                name: task.nameOfList??[],
               ),
               const SizedBox(height: 11),
               Wrap(
@@ -79,10 +86,7 @@ class TaskCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundImage: NetworkImage(task.imageUrls[0] ?? ""),
-                ),
+                CustomNetworkImage(profileImageKey: task.imageUrls[0], errorText: getInitials(task.imageUrls[0]),height: 18,imgUrlKey: "",),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -163,12 +167,14 @@ class Task {
   final int takenCount;
   final int cancelledCount;
   final List<String> imageUrls;
+  final List<String> ?nameOfList;
 
   Task({
     this.name,
     this.role,
     this.leaveType,
     this.status,
+    this.nameOfList,
     this.cancelledCount = 0,
     this.takenCount = 0,
     this.isGroup = false,

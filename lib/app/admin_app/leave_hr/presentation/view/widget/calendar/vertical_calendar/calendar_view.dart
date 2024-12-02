@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/hr_leave_calender.dart';
 
+import '../../../../controller/hr_leave_controller.dart';
 import '../../../../controller/leave_controller.dart';
 import '../../leave_recorde/leave_recorde_details /leave_record_details.dart';
 import 'calendar_task_card_widget.dart';
@@ -19,65 +21,13 @@ class CalendarView extends StatelessWidget {
         daysInMonth, (index) => DateTime(now.year, now.month, index + 1));
   }
 
-  //selectedMonthDate
 
-  // Mock data to simulate tasks for specific dates
-  Map<String, List<Task>> getMockedTaskData() {
-    return {
-      "2024-12-09": [
-        Task(
-          name: "Michael Buchenwald",
-          role: "UI/UX Designer",
-          leaveType: "Casual leave: Paid",
-          status: "Pending",
-          imageUrls: [
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3VuJfZepsmghuglByBpsb1rFIkgSeSK6nqA&s",
-          ],
-        ),
-      ],
-      "2024-12-12": [
-        Task(
-          name: "Group Task",
-          isGroup: true,
-          approvedCount: 1,
-          pendingCount: 2,
-          rejectedCount: 1,
-          takenCount: 2,
-          cancelledCount: 4,
-          imageUrls: [
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-          ],
-        ),
-      ],
-      "2024-12-14": [
-        Task(
-            name: "Sophia Fisher",
-            role: "Developer",
-            leaveType: "Sick leave",
-            status: "Approved",
-            isGroup: true,
-            approvedCount: 01,
-            pendingCount: 02,
-            rejectedCount: 21,
-            imageUrls: [
-              "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-              "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-              "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-              "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg",
-            ]),
-      ],
-    };
-  }
 
   @override
   Widget build(BuildContext context) {
     List<DateTime> monthDates = _generateDatesForCurrentMonth();
-    Map<String, List<Task>> taskData = getMockedTaskData();
+    Map<String, List<Task>> taskData =Get.find<HrLeaveController>().getMockedTaskData();
+
 
     return ListView.builder(
       itemCount: monthDates.length,
