@@ -1,58 +1,92 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/widget/custom_app_button.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/leave_details_button.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../../../../../../common/widget/custom_dialog.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../../common/widget/employee/status_button_helper.dart';
 import '../../../../../../../../enum.dart';
 import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
-import '../../../../../../../../utils/images.dart';
 import '../../../../../../../../utils/utils.dart';
-import 'more_leave_record_details.dart';
+import '../../../../controller/hr_leave_controller.dart';
 
-class LeaveRecordDetails extends StatelessWidget {
-  final LeaveRecordDetailsModel leaveRecordDetailsModel;
+class LeaveRecordDetails extends GetView<HrLeaveController> {
+  final String? leaveId;
 
-  const LeaveRecordDetails({super.key, required this.leaveRecordDetailsModel});
+  const LeaveRecordDetails({super.key, required this.leaveId});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildHeader(
-          imgUrl: leaveRecordDetailsModel.imgUrl,
-          employeeName: leaveRecordDetailsModel.employeeName,
-          designation: leaveRecordDetailsModel.designation,
-        ),
-        customSpacerHeight(height: 12),
-        _buildRow(
-            label: AppString.textType.tr,
-            value: leaveRecordDetailsModel.typeOfLeave),
-        _buildRow(
-            label: AppString.text_date.tr,
-            value: leaveRecordDetailsModel.leaveDate),
-        _buildRow(
-            label: AppString.text_duration.tr,
-            value: leaveRecordDetailsModel.leaveDuration),
-        _buildRow(
-            label: AppString.text_status.tr,
-            widget: _showStatusButton(
-                leaveRecordDetailsModel.applicationStatus ?? "")),
-        _buildRow(
-            label: AppString.text_date_of_application.tr,
-            value: formatDate(
-                date: leaveRecordDetailsModel.applicationDate.toString(),
-                format: "dd MMMM yyyy")),
-        _buildActionButtons(leaveRecordDetailsModel.applicationStatus),
-      ],
-    );
+    return Obx(() => controller.isHrLeaveDetailsByLoading.isTrue
+        ? const Center(
+            child: CupertinoActivityIndicator(
+            radius: 15,
+            color: AppColor.primaryColor,
+          ))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(
+                  imgUrl: controller.leaveDetailsById?.getLeaveDetailsById
+                          ?.organizationUser?.profile?.image ??
+                      "",
+                  employeeName:
+                      "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
+                      "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
+                  designation: controller.leaveDetailsById?.getLeaveDetailsById
+                          ?.organizationUser?.designation ??
+                      "No designation"),
+              customSpacerHeight(height: 12),
+              _buildRow(
+                label: AppString.textType.tr,
+                value: controller.leaveDetailsById?.getLeaveDetailsById
+                        ?.leaveType?.name ??
+                    "",
+              ),
+              _buildRow(
+                label: AppString.text_date.tr,
+                value: controller.leaveDetailsById?.getLeaveDetailsById
+                        ?.leaveDetails?.first.date ??
+                    "",
+              ),
+              _buildRow(
+                label: AppString.text_duration.tr,
+                value: getLeaveDuration(
+                    controller.leaveDetailsById?.getLeaveDetailsById
+                            ?.leaveDetails?.first.leaveSeconds
+                            ?.toString() ??
+                        "",
+                    controller
+                            .leaveDetailsById?.getLeaveDetailsById?.numberOfDays
+                            ?.toString() ??
+                        ""),
+              ),
+              _buildRow(
+                  label: AppString.text_status.tr,
+                  widget: _showStatusButton(controller
+                          .leaveDetailsById?.getLeaveDetailsById?.status ??
+                      "")),
+              _buildRow(
+                  label: AppString.text_date_of_application.tr,
+                  value: formatDate(
+                      date: controller.leaveDetailsById?.getLeaveDetailsById
+                              ?.createdAt ??
+                          "",
+                      format: "dd MMMM yyyy")),
+              _buildActionButtons(
+                  leaveId: leaveId.toString(),
+                  leaveDate: controller.leaveDetailsById?.getLeaveDetailsById
+                          ?.leaveDetails?.first.date ??
+                      "",
+                  status: controller
+                          .leaveDetailsById?.getLeaveDetailsById?.status ??
+                      ""),
+            ],
+          ));
   }
 
   Widget _buildRow({required String label, String? value, Widget? widget}) {
@@ -72,91 +106,24 @@ class LeaveRecordDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons(status) {
-    if (leaveRecordDetailsModel.applicationStatus == LeaveStatus.pending.name) {
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(
-          children: [
-            CustomAppButton(
-              buttonText: Text(
-                AppString.textReject.tr,
-                style: TextStyle(
-                    color: AppColor.errorColor,
-                    fontSize: Dimensions.fontSizeDefault),
-              ),
-              onPressed: () {
-                showRejectDialog(
-                    Get.context!, leaveRecordDetailsModel.leaveDate.toString());
-              },
-              buttonColor: AppColor.cardColor,
-              borderColor: AppColor.errorColor,
-              textColor: AppColor.errorColor,
-              borderRadius: Dimensions.radiusLarge,
-            ),
-            customSpacerWidth(width: 20),
-            CustomAppButton(
-              buttonText: Text(
-                AppString.text_approved.tr,
-                style: TextStyle(
-                    color: AppColor.cardColor,
-                    fontSize: Dimensions.fontSizeDefault + 1),
-              ),
-              onPressed: () {},
-              buttonColor: AppColor.successColor,
-              borderColor: AppColor.successColor,
-              textColor: AppColor.cardColor,
-              borderRadius: Dimensions.radiusLarge,
-            ),
-          ],
-        ),
-      );
-    } else if (leaveRecordDetailsModel.applicationStatus ==
-        LeaveStatus.approved.name) {
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: CustomAppButton(
-          buttonText: Text(
-            AppString.text_cancel.tr,
-            style: TextStyle(
-                color: AppColor.cardColor,
-                fontSize: Dimensions.fontSizeDefault + 1),
-          ),
-          onPressed: () {
-            showCustomAlertDialog(
-              context: Get.context!,
-              onConfirm: () {},
-              confirmButtonChild: Text(
-                AppString.confirmText.tr,
-                style: AppStyle.normal_text_grey.copyWith(
-                    fontSize: Dimensions.fontSizeDefault + 1,
-                    color: AppColor.cardColor),
-              ),
-              extraInfoText: "",
-              iconWidget: customSvgImage(
-                  imageUrl: Images.cancelLeave, height: 60, width: 60),
-              titleText: AppString.cancelLeaveText.tr,
-              descriptionText: AppString.cancelLeaveNotificationText.tr,
-              iconBackgroundColor: AppColor.cardColor,
-              confirmButtonColor: AppColor.hintColor,
-              confirmButtonText: AppString.confirmText.tr,
-            );
-          },
-          buttonColor: AppColor.hintColor,
-          borderColor: AppColor.hintColor,
-          textColor: AppColor.cardColor,
-          borderRadius: Dimensions.radiusLarge,
-        ),
-      );
+  ///Status according to details button
+  Widget _buildActionButtons(
+      {required String status,
+      required String leaveId,
+      required String leaveDate}) {
+    if (status == LeaveStatus.pending.name) {
+      return buildPendingBtn(leaveId: leaveId, leaveDate: leaveDate);
+    } else if (status == LeaveStatus.approved.name) {
+      return buildApprovedBtn(leaveId: leaveId, leaveDate: leaveDate);
     } else {
       return const SizedBox.shrink();
     }
   }
 
+  ///Button sheet header
   Widget _buildHeader(
       {String? imgUrl, String? employeeName, String? designation}) {
     final screenHeight = MediaQuery.of(Get.context!).size.height;
-
     return Container(
       height: screenHeight / 5,
       width: double.infinity,

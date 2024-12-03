@@ -48,5 +48,6 @@ Future<void> initApp() async {
   Get.put(LeaveRemoteDataSource(client), permanent: true);
 
   Get.put(EmployeeRemoteDataSource(client), permanent: true);
+
   Get.put(HrLeaveRemoteDataSource(client), permanent: true);
 }

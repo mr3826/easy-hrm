@@ -640,34 +640,25 @@ query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDa
       total_cancelled
       total_taken
       formatted_leave_hours
-    
       organization_users {
-
         profile {
           first_name
           last_name
           image
-          __typename
         }
-
         roles {
           name
-          __typename
         }
-          designation {
+
+        designation {
           description
         }
-        id
         leave_id
-        __typename
       }
-      __typename
     }
-    __typename
   }
 }
 ''';
-
 
 
 const updateLeaveQuery = r'''
@@ -676,6 +667,67 @@ mutation UPDATE_LEAVE($inputData: UpdateLeaveInputData) {
   id
   }
   
+}
+''';
+
+
+const getLeaveDetailsByIdQuery = r'''
+query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
+  getLeaveDetailsById(queryData: $queryData) {
+    id
+    createdAt
+    type
+    description
+    total_duration
+    totalLeaveMinutes
+    status
+    start_date
+    organization_user {
+      id
+      profile {
+        user_id
+        last_name
+        image
+        id
+        first_name
+        
+        __typename
+      }
+      roles {
+        name
+        __typename
+      }
+      designation {
+        name
+        __typename
+      }
+      __typename
+    }
+    leaveType {
+      id
+      name
+      type
+      calculate_allowance_by
+      __typename
+    }
+    leave_details {
+      date
+      leave_seconds
+      schedule_seconds
+      __typename
+    }
+    duration
+    end_date
+    files {
+      name
+      key
+      id
+      size
+      __typename
+    }
+    number_of_days
+    __typename
+  }
 }
 ''';
 

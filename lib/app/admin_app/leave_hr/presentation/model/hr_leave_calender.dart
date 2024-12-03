@@ -20,9 +20,8 @@ class HrLeaveCalender {
 
 class GetLeavesCalendar {
   List<LeaveRequests>? leaveRequests;
-  String? sTypename;
 
-  GetLeavesCalendar({this.leaveRequests, this.sTypename});
+  GetLeavesCalendar({this.leaveRequests});
 
   GetLeavesCalendar.fromJson(Map<String, dynamic> json) {
     if (json['leave_requests'] != null) {
@@ -31,7 +30,6 @@ class GetLeavesCalendar {
         leaveRequests!.add(new LeaveRequests.fromJson(v));
       });
     }
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,7 +38,6 @@ class GetLeavesCalendar {
       data['leave_requests'] =
           this.leaveRequests!.map((v) => v.toJson()).toList();
     }
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
@@ -54,7 +51,6 @@ class LeaveRequests {
   int? totalTaken;
   String? formattedLeaveHours;
   List<OrganizationUsers>? organizationUsers;
-  String? sTypename;
 
   LeaveRequests(
       {this.formattedDate,
@@ -64,8 +60,7 @@ class LeaveRequests {
         this.totalCancelled,
         this.totalTaken,
         this.formattedLeaveHours,
-        this.organizationUsers,
-        this.sTypename});
+        this.organizationUsers});
 
   LeaveRequests.fromJson(Map<String, dynamic> json) {
     formattedDate = json['formatted_date'];
@@ -81,7 +76,6 @@ class LeaveRequests {
         organizationUsers!.add(new OrganizationUsers.fromJson(v));
       });
     }
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -97,7 +91,6 @@ class LeaveRequests {
       data['organization_users'] =
           this.organizationUsers!.map((v) => v.toJson()).toList();
     }
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
@@ -105,18 +98,10 @@ class LeaveRequests {
 class OrganizationUsers {
   Profile? profile;
   List<Roles>? roles;
-  String? designation;
-  String? id;
+  Null? designation;
   String? leaveId;
-  String? sTypename;
 
-  OrganizationUsers(
-      {this.profile,
-        this.roles,
-        this.designation,
-        this.id,
-        this.leaveId,
-        this.sTypename});
+  OrganizationUsers({this.profile, this.roles, this.designation, this.leaveId});
 
   OrganizationUsers.fromJson(Map<String, dynamic> json) {
     profile =
@@ -128,9 +113,7 @@ class OrganizationUsers {
       });
     }
     designation = json['designation'];
-    id = json['id'];
     leaveId = json['leave_id'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -142,9 +125,7 @@ class OrganizationUsers {
       data['roles'] = this.roles!.map((v) => v.toJson()).toList();
     }
     data['designation'] = this.designation;
-    data['id'] = this.id;
     data['leave_id'] = this.leaveId;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
@@ -153,15 +134,13 @@ class Profile {
   String? firstName;
   String? lastName;
   String? image;
-  String? sTypename;
 
-  Profile({this.firstName, this.lastName, this.image, this.sTypename});
+  Profile({this.firstName, this.lastName, this.image});
 
   Profile.fromJson(Map<String, dynamic> json) {
     firstName = json['first_name'];
     lastName = json['last_name'];
     image = json['image'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -169,26 +148,22 @@ class Profile {
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
     data['image'] = this.image;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
 
 class Roles {
   String? name;
-  String? sTypename;
 
-  Roles({this.name, this.sTypename});
+  Roles({this.name});
 
   Roles.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }

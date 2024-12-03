@@ -3,6 +3,7 @@ import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
 import '../../../../utils/api_endpoints.dart';
 import '../presentation/model/hr_leave_calender.dart';
+import '../presentation/model/leave_details_by_id.dart';
 
 class HrLeaveRemoteDataSource {
   final NetworkClient networkClient;
@@ -14,16 +15,17 @@ class HrLeaveRemoteDataSource {
     String? endDate,
   }) async {
     try {
-      final defaultStartDate = _getDefaultStartDate();
-      final defaultEndDate = _getDefaultEndDate();
+
       final response = await networkClient.graphRequest(
         queryString: getHrLeaveCalendarList,
         variables: {
           "queryData": {
-            "startDate": startDate ?? defaultStartDate,
-            "endDate": endDate ?? defaultEndDate,
+             "startDate": startDate ?? _getDefaultStartDate(),
+             "endDate": endDate ?? _getDefaultEndDate(),
           },
         },
+
+
       );
 
       log("getLeaveCalender_response: ${response.data}");
@@ -41,8 +43,8 @@ class HrLeaveRemoteDataSource {
       return response.data != null
           ? HrLeaveCalender.fromJson(response.data!)
           : null;
-    } catch (e, stackTrace) {
-      log('Error in getLeaveCalender: $e', stackTrace: stackTrace);
+    } catch (e) {
+      log('Error in getLeaveCalender: $e');
       return null;
     }
   }
@@ -89,26 +91,27 @@ class HrLeaveRemoteDataSource {
 
 
 
+  Future<LeaveDetailsById?> getLeaveDetailsById(String? leaveId) async {
+    try {
+      final response = await networkClient
+          .graphRequest(queryString: getLeaveDetailsByIdQuery, variables: {
+        "queryData": {
+          "leave_id": leaveId
+        }
+      }
+      );
+      print("getLeaveDetailsById :: ${response.data}");
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveDetailsById");
+        return null;
+      }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      return LeaveDetailsById.fromJson(response.data!);
+    } catch (e) {
+      log('Error in getLeaveDetailsById: $e');
+      return null;
+    }
+  }
 }

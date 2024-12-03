@@ -5,18 +5,22 @@ import '../../../../../common/widget/success_message.dart';
 import '../../../../../utils/app_string.dart';
 import '../../data/leave_remote_data_source.dart';
 import '../model/hr_leave_calender.dart';
+import '../model/leave_details_by_id.dart';
 
 class HrLeaveController extends GetxController {
   final HrLeaveRemoteDataSource _leaveRemoteDataSource = Get.find();
   HrLeaveCalender? hrLeaveCalender = HrLeaveCalender();
+  LeaveDetailsById? leaveDetailsById = LeaveDetailsById();
   RxBool isHrLeaveCalendarLoading = false.obs;
+  RxBool isHrLeaveDetailsByLoading = false.obs;
   RxBool updateLeaveLoader = false.obs;
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getEmployees({String? startDate, String? endDate}) async {
+  Future<void> getHrLeaveCalender({String? startDate, String? endDate}) async {
     isHrLeaveCalendarLoading(true);
     hrLeaveCalender = await _leaveRemoteDataSource.getLeaveCalender(
         startDate: startDate, endDate: endDate);
+
     isHrLeaveCalendarLoading(false);
   }
 
@@ -51,12 +55,8 @@ class HrLeaveController extends GetxController {
         isGroup: (leave.organizationUsers?.length ?? 0) > 1,
         designation: _getUserDesignation(leave),
         leaveId: _getLeaveId(leave),
-      formattedLeaveHours: leave.formattedLeaveHours,
-      leaveDate: leave.formattedDate
-
-
-
-    );
+        formattedLeaveHours: leave.formattedLeaveHours,
+        leaveDate: leave.formattedDate);
   }
 
   String _getLeaveId(LeaveRequests leave) {
@@ -64,7 +64,7 @@ class HrLeaveController extends GetxController {
         leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ??
             "";
 
-    print("Leave_id_remote ::: ${data}");
+    leave.organizationUsers?.forEach((v) {});
 
     return data;
   }
@@ -124,15 +124,23 @@ class HrLeaveController extends GetxController {
 
     if (response) {
       showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
-      getEmployees();
+      getHrLeaveCalender();
       Get.back(canPop: false);
     }
     updateLeaveLoader(false);
   }
 
+  /// Fetches employee leave data and updates the [hrLeaveCalender] object.
+  Future<void> getLeaveDetailsById({String? leaveId}) async {
+    isHrLeaveDetailsByLoading(true);
+    leaveDetailsById =
+        await _leaveRemoteDataSource.getLeaveDetailsById(leaveId);
+    isHrLeaveDetailsByLoading(false);
+  }
+
   @override
   void onInit() {
-    getEmployees();
+    getHrLeaveCalender();
     super.onInit();
   }
 }

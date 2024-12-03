@@ -144,7 +144,7 @@ class AppString {
   static const String text_current_password = "Current password";
   static const String text_daily_summary = "Daily summary";
   static const String text_date = "Date";
-  static const String text_date_of_application = "Date of application:";
+  static const String text_date_of_application = "Date of application";
   static const String text_day = "day";
   static const String text_days = "days";
   static const String text_deparmtnet = "Department";

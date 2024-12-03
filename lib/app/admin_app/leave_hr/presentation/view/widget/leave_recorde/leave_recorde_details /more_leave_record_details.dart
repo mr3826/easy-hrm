@@ -19,78 +19,87 @@ import '../../../../controller/hr_leave_controller.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
 import 'leave_record_details.dart';
 
-
-
-
 /// A widget that displays detailed information for a specific leave record,
 /// including options to approve, reject, edit, and view attached documents.
 ///
 /// The actions displayed depend on the leave record's status.
-class MoreLeaveRecordDetails extends StatelessWidget {
-  final LeaveRecordDetailsModel leaveRecordDetails;
-
-  /// Constructor for `MoreLeaveRecordDetails`.
-  ///
-  /// Accepts [leaveRecordDetails] of type `LeaveRecordDetailsModel` to display the information.
-  const MoreLeaveRecordDetails({super.key, required this.leaveRecordDetails});
+class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
+final String ?leaveId;
+const MoreLeaveRecordDetails({super.key,this.leaveId});
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() => controller.isHrLeaveDetailsByLoading.isTrue
+        ? const Center(child: CupertinoActivityIndicator(radius: 15,color: AppColor.primaryColor,))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// Header with employee details
+              _buildHeader(
+                imageUrl: controller.leaveDetailsById?.getLeaveDetailsById
+                    ?.organizationUser?.profile?.image,
+                name:
+                    "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
+                    "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
+                details:
+                    "${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.name ?? ""}: ${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.name} - ${controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first.date ?? ""}",
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ///Conditional actions based on application status
+                      if (controller.leaveDetailsById?.getLeaveDetailsById
+                                  ?.status ==
+                              LeaveStatus.pending.name ||
+                          controller.leaveDetailsById?.getLeaveDetailsById
+                                  ?.status ==
+                              LeaveStatus.approved.name) ...[
+                        if (controller.leaveDetailsById?.getLeaveDetailsById
+                                ?.status ==
+                            LeaveStatus.pending.name) ...[
+                          Obx(
+                            () => Get.find<HrLeaveController>()
+                                    .updateLeaveLoader
+                                    .isTrue
+                                ? const Center(
+                                    child: CupertinoActivityIndicator())
+                                : _buildActionOption(AppString.textApprove.tr,
+                                    () {
+                                    Get.find<HrLeaveController>().updateLeave(
+                                        leaveId: leaveId ?? "",
+                                        status: "approved");
+                                  }),
+                          ),
+                          _divider(),
+                        ],
+                        _buildCancel(context,leaveId),
 
+                        ///reject || cancel build action
+                        _divider(),
+                        if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name) ...[
+                          _buildActionOption(AppString.text_edit.tr, () {
+                          //  _showEditLeaveDetails(leaveRecordDetails);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// Header with employee details
-        _buildHeader(
-          imageUrl: leaveRecordDetails.imgUrl,
-          name: leaveRecordDetails.employeeName,
-          details: "${leaveRecordDetails.typeOfLeave}: ${leaveRecordDetails.leaveStatus} - ${leaveRecordDetails.leaveDate}",
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ///Conditional actions based on application status
-                if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name || leaveRecordDetails.applicationStatus == LeaveStatus.approved.name) ...[
-
-                  if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name) ...[
-
-
-                  Obx(()=>  Get.find<HrLeaveController>().updateLeaveLoader.isTrue?const Center(child: CupertinoActivityIndicator()):
-
-
-                  _buildActionOption(AppString.textApprove.tr, () {
-                    Get.find<HrLeaveController>().updateLeave(leaveId: leaveRecordDetails.leaveId??"",status: "approved");
-
-                  }),),
-
-
-
-                    _divider(),
-                  ],
-                  _buildCancel(context),  ///reject || cancel build action
-                  _divider(),
-                  if (leaveRecordDetails.applicationStatus == LeaveStatus.pending.name) ...[
-                    _buildActionOption(AppString.text_edit.tr, () {
-                      _showEditLeaveDetails(leaveRecordDetails);
-                    }),
-                    _divider(),
-                  ],
-                ],
-                _buildActionOption(AppString.textSeeDocument.tr, _showBuildAttachedFile),
-                _divider(),
-                _buildActionOption(AppString.textViewLeaveRecord.tr, () {
-                  Get.find<LeaveController>().isFilterIndividual(true);
-                  Get.back(canPop: false);
-                }),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
+                            print("object");
+                          }),
+                          _divider(),
+                        ],
+                      ],
+                      _buildActionOption(
+                          AppString.textSeeDocument.tr, _showBuildAttachedFile),
+                      _divider(),
+                      _buildActionOption(AppString.textViewLeaveRecord.tr, () {
+                        Get.find<LeaveController>().isFilterIndividual(true);
+                        Get.back(canPop: false);
+                      }),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ));
   }
 
   /// Builds an action button for various leave options like Approve, Reject, Edit.
@@ -178,32 +187,36 @@ class MoreLeaveRecordDetails extends StatelessWidget {
 
   /// Builds a cancel action based on the leave status and displays
   /// appropriate cancel or reject options.
-  Widget _buildCancel(BuildContext context) {
-    if (leaveRecordDetails.applicationStatus == LeaveStatus.taken.name ||
-        leaveRecordDetails.applicationStatus == LeaveStatus.reject.name ||
-        leaveRecordDetails.applicationStatus == LeaveStatus.rejected.name ||
-        leaveRecordDetails.applicationStatus == LeaveStatus.cancelled.name ||
-        leaveRecordDetails.applicationStatus == LeaveStatus.cancel.name) {
+  Widget _buildCancel(BuildContext context,leaveId) {
+    var status=controller.leaveDetailsById?.getLeaveDetailsById?.status;
+    if (status == LeaveStatus.taken.name ||
+        status == LeaveStatus.reject.name ||
+        status == LeaveStatus.rejected.name ||
+        status == LeaveStatus.cancelled.name ||
+        status == LeaveStatus.cancel.name) {
       return const SizedBox.shrink();
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (leaveRecordDetails.applicationStatus == LeaveStatus.approved.name)
-          _buildActionCancel(context),
-        if (leaveRecordDetails.applicationStatus != LeaveStatus.approved.name)
+        if (status == LeaveStatus.approved.name)
+          _buildActionCancel(context,leaveId),
+        if (status != LeaveStatus.approved.name)
           _buildActionOption(AppString.textReject.tr, () {
-            showRejectDialog(context, leaveRecordDetails.leaveDate.toString());
+
+            showRejectDialog(context, controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first.date ?? "",leaveId:leaveId );
           }),
       ],
     );
   }
 
   /// Builds a cancel option for approved leaves.
-  Widget _buildActionCancel(BuildContext context) {
+  Widget _buildActionCancel(BuildContext context,String leaveId) {
     return _buildActionOption(AppString.text_cancel.tr, () {
-      showRejectDialog(context, leaveRecordDetails.leaveDate.toString());
+
+      print("object");
+      showRejectDialog(context, controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first.date ?? "",leaveId:leaveId);
     });
   }
 
@@ -230,10 +243,10 @@ class MoreLeaveRecordDetails extends StatelessWidget {
 }
 
 /// Shows a rejection dialog with custom alert and actions.
-void showRejectDialog(BuildContext context, String leaveData) {
+void showRejectDialog(BuildContext context, String leaveData, {required String leaveId}) {
   showCustomAlertDialog(
     context: context,
-    onConfirm: () {},
+    onConfirm: () {},//optional action
     confirmButtonChild: Text(
       AppString.confirmText.tr,
       style: AppStyle.normal_text_grey.copyWith(
@@ -246,6 +259,7 @@ void showRejectDialog(BuildContext context, String leaveData) {
       height: 60,
       width: 60,
     ),
+
     titleContent: Column(
       children: [
         Text(
@@ -284,9 +298,11 @@ void showRejectDialog(BuildContext context, String leaveData) {
     iconBackgroundColor: AppColor.cardColor,
     confirmButtonColor: AppColor.errorColor,
     confirmButtonText: AppString.confirmText.tr,
-    actionButtonWidget: _buildDialogActions(),
+    actionButtonWidget:  Obx(()=>Get.find<HrLeaveController>().updateLeaveLoader.isTrue?const Center(child: CupertinoActivityIndicator()): _buildDialogActions(leaveId)),
+
   );
 }
+
 
 /// Builds a dialog action row with cancel and confirm buttons.
 /// - The cancel button is styled with a close icon and a hint color,
@@ -297,7 +313,7 @@ void showRejectDialog(BuildContext context, String leaveData) {
 /// Returns:
 ///   A `SizedBox` containing a `Row` of action buttons, styled and
 ///   spaced appropriately for use in dialogs.
-Widget _buildDialogActions() {
+Widget _buildDialogActions(String leaveId) {
   return SizedBox(
     height: 40,
     child: Row(
@@ -344,7 +360,8 @@ Widget _buildDialogActions() {
             ],
           ),
           onPressed: () {
-            print(DateTime.now()); // Logs current date and time
+            Get.find<HrLeaveController>().updateLeave(leaveId: leaveId,status: "rejected");
+            Get.back(canPop: false);
           },
           buttonColor: AppColor.errorColorLight,
           borderColor: AppColor.errorColorLight.withOpacity(0.6),
@@ -355,4 +372,3 @@ Widget _buildDialogActions() {
     ),
   );
 }
-

@@ -229,16 +229,16 @@ class LeaveRecordList extends StatelessWidget {
         context: Get.context!,
         height: MediaQuery.of(Get.context!).size.height / 1.5,
         child: MoreLeaveRecordDetails(
-          leaveRecordDetails: LeaveRecordDetailsModel(
-              applicationDate: leaveRecordDetailsModel.leaveStatus,
-              applicationStatus: leaveRecordDetailsModel.applicationStatus,
-              employeeName: leaveRecordDetailsModel.employeeName,
-              leaveDate: leaveRecordDetailsModel.leaveDate,
-              leaveDuration: leaveRecordDetailsModel.leaveDuration,
-              typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-              leaveStatus: leaveRecordDetailsModel.leaveStatus,
-              designation: leaveRecordDetailsModel.designation,
-              imgUrl: leaveRecordDetailsModel.imgUrl),
+          // leaveRecordDetails: LeaveRecordDetailsModel(
+          //     applicationDate: leaveRecordDetailsModel.leaveStatus,
+          //     applicationStatus: leaveRecordDetailsModel.applicationStatus,
+          //     employeeName: leaveRecordDetailsModel.employeeName,
+          //     leaveDate: leaveRecordDetailsModel.leaveDate,
+          //     leaveDuration: leaveRecordDetailsModel.leaveDuration,
+          //     typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
+          //     leaveStatus: leaveRecordDetailsModel.leaveStatus,
+          //     designation: leaveRecordDetailsModel.designation,
+          //     imgUrl: leaveRecordDetailsModel.imgUrl),
         ));
   }
 
@@ -247,16 +247,19 @@ class LeaveRecordList extends StatelessWidget {
     customAntButtonSheet(
         context: Get.context!,
         child: LeaveRecordDetails(
-          leaveRecordDetailsModel: LeaveRecordDetailsModel(
-              applicationDate: leaveRecordDetailsModel.applicationDate,
-              applicationStatus: leaveRecordDetailsModel.applicationStatus,
-              employeeName: leaveRecordDetailsModel.employeeName,
-              leaveDate: leaveRecordDetailsModel.leaveDate,
-              leaveDuration: leaveRecordDetailsModel.leaveDuration,
-              typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-              designation: leaveRecordDetailsModel.designation,
-              imgUrl: leaveRecordDetailsModel.imgUrl),
-        ));
+          leaveId: leaveRecordDetailsModel.leaveId,
+          // leaveRecordDetailsModel: LeaveRecordDetailsModel(
+          //     applicationDate: leaveRecordDetailsModel.applicationDate,
+          //     applicationStatus: leaveRecordDetailsModel.applicationStatus,
+          //     employeeName: leaveRecordDetailsModel.employeeName,
+          //     leaveDate: leaveRecordDetailsModel.leaveDate,
+          //     leaveDuration: leaveRecordDetailsModel.leaveDuration,
+          //     typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
+          //     designation: leaveRecordDetailsModel.designation,
+          //     imgUrl: leaveRecordDetailsModel.imgUrl),
+        )
+
+    );
   }
 }
 Widget showStatusButton(String leaveStatus) {

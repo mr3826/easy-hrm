@@ -5,6 +5,7 @@ import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../enum.dart';
 import '../../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../../utils/app_style.dart';
+import '../../../../controller/hr_leave_controller.dart';
 import '../../../../controller/leave_controller.dart';
 import '../../leave_recorde/leave_record_list.dart';
 import '../../leave_recorde/leave_recorde_details /leave_record_details.dart';
@@ -19,14 +20,14 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     if (task.isGroup) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.find<LeaveController>().tabLength(1);
-            Get.find<LeaveController>().currentDate.value=leaveRecordDetailsModel?.leaveDate??"";
+            Get.find<LeaveController>().currentDate.value =
+                leaveRecordDetailsModel?.leaveDate ?? "";
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,19 +69,7 @@ class TaskCard extends StatelessWidget {
     } else {
       return GestureDetector(
         onTap: () {
-
-          _showLeaveRecodeDetails(
-            LeaveRecordDetailsModel(
-                leaveDate: task.leaveDate,
-                typeOfLeave: task.leaveType,
-                leaveStatus: task.status,
-                leaveDuration: task.formattedLeaveHours,
-                imgUrl: task.imageUrls[0],
-
-                employeeName: task.name,
-                designation:task.designation,
-                applicationStatus: task.status,
-                applicationDate: "20 Apr 2034"),);
+          _showLeaveRecodeDetails(task.leaveId.toString());
         },
         child: Card(
           elevation: 0,
@@ -92,7 +81,12 @@ class TaskCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomNetworkImage(profileImageKey: task.imageUrls[0], errorText: getInitials(task.imageUrls[0]),height: 18,imgUrlKey: "",),
+                CustomNetworkImage(
+                  profileImageKey: task.imageUrls[0],
+                  errorText: getInitials(task.imageUrls[0]),
+                  height: 18,
+                  imgUrlKey: "",
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -132,20 +126,7 @@ class TaskCard extends StatelessWidget {
                 ),
                 InkWell(
                     onTap: () {
-                      _showLeaveRecordDetailsSheet(
-                        LeaveRecordDetailsModel(
-                          leaveId: task.leaveId,
-                            leaveDate: "2024-11-10",
-                            typeOfLeave: "Sick",
-                            leaveStatus: "Paid",
-                            leaveDuration: "2 days",
-                            imgUrl: "",
-                            employeeName: "Rifat Hasan",
-                            designation:
-                            "Mobile Application Developer",
-                            applicationStatus: "pending",
-                            applicationDate: "20 Apr 2034"),
-                      );
+                      _showLeaveRecordDetailsSheet(task.leaveId ?? "");
                     },
                     child: const Icon(Icons.more_horiz)),
               ],
@@ -157,20 +138,16 @@ class TaskCard extends StatelessWidget {
   }
 }
 
-void _showLeaveRecodeDetails(LeaveRecordDetailsModel leaveRecordDetailsModel) {
+void _showLeaveRecodeDetails(String leaveId)  {
+  final controller = Get.find<HrLeaveController>();
+  // Fetch data and wait for completion
+   controller.getLeaveDetailsById(leaveId: leaveId);
   customAntButtonSheet(
-      context: Get.context!,
-      child: LeaveRecordDetails(
-        leaveRecordDetailsModel: LeaveRecordDetailsModel(
-            applicationDate: leaveRecordDetailsModel.applicationDate,
-            applicationStatus: leaveRecordDetailsModel.applicationStatus,
-            employeeName: leaveRecordDetailsModel.employeeName,
-            leaveDate: leaveRecordDetailsModel.leaveDate,
-            leaveDuration: leaveRecordDetailsModel.leaveDuration,
-            typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-            designation: leaveRecordDetailsModel.designation,
-            imgUrl: leaveRecordDetailsModel.imgUrl),
-      ));
+    context: Get.context!,
+    child: LeaveRecordDetails(
+      leaveId: leaveId,
+    ),
+  );
 }
 
 class Task {
@@ -209,22 +186,13 @@ class Task {
   });
 }
 
-void _showLeaveRecordDetailsSheet(
-    LeaveRecordDetailsModel leaveRecordDetailsModel) {
+void _showLeaveRecordDetailsSheet(String leaveId) {
+  final controller = Get.find<HrLeaveController>();
+  // Fetch data and wait for completion
+  controller.getLeaveDetailsById(leaveId: leaveId);
   customAntButtonSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
-      child: MoreLeaveRecordDetails(
-        leaveRecordDetails: LeaveRecordDetailsModel(
-          leaveId: leaveRecordDetailsModel.leaveId,
-            applicationDate: leaveRecordDetailsModel.leaveStatus,
-            applicationStatus: leaveRecordDetailsModel.applicationStatus,
-            employeeName: leaveRecordDetailsModel.employeeName,
-            leaveDate: leaveRecordDetailsModel.leaveDate,
-            leaveDuration: leaveRecordDetailsModel.leaveDuration,
-            typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-            leaveStatus: leaveRecordDetailsModel.leaveStatus,
-            designation: leaveRecordDetailsModel.designation,
-            imgUrl: leaveRecordDetailsModel.imgUrl),
-      ));
+
+      child:  MoreLeaveRecordDetails(leaveId: leaveId));
 }

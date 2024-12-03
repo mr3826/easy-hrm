@@ -199,7 +199,7 @@ Widget _buildDialogActions(LeaveController controller) {
             print("Selected DateTime: $selectedDateTime");
 
 
-            Get.find<HrLeaveController>().getEmployees(startDate:selectedDateTime.toString());
+            Get.find<HrLeaveController>().getHrLeaveCalender(startDate:selectedDateTime.toString());
             Get.back(canPop: false);
           },
           child: Text(
