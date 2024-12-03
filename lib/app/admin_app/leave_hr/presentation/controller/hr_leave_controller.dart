@@ -48,6 +48,7 @@ class HrLeaveController extends GetxController {
       cancelledCount: leave.totalCancelled ?? 0,
       imageUrls: _getUserImages(leave),
       isGroup: (leave.organizationUsers?.length ?? 0) > 1,
+      designation: _getUserDesignation(leave),
       leaveId: _getLeaveId(leave)
     );
   }
@@ -90,6 +91,11 @@ class HrLeaveController extends GetxController {
   /// Returns the role name of the first user in the leave request.
   String _getUserRole(LeaveRequests leave) {
     return leave.organizationUsers?.first.roles?.first.name ?? "Unknown Role";
+  }
+
+  /// Returns the role name of the first user in the leave request.
+  String _getUserDesignation(LeaveRequests leave) {
+    return leave.organizationUsers?.first.designation ?? "No designation";
   }
 
   /// Returns a list of image URLs or user names if images are unavailable.

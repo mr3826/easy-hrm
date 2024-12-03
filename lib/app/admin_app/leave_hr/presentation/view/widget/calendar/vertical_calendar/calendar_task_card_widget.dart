@@ -110,7 +110,7 @@ class TaskCard extends StatelessWidget {
                                 MediaQuery.of(context).size.width * 0.040),
                       ),
                       Text(
-                        task.role ?? "",
+                        task.designation ?? "",
                         style: AppStyle.normal_text_black.copyWith(
                             color: AppColor.hintColor,
                             fontSize: MediaQuery.of(context).size.width * 0.03),
@@ -183,6 +183,7 @@ class Task {
   final String? role;
   final String? leaveType;
   final String? status;
+  final String? designation;
   final bool isGroup;
   final int approvedCount;
   final int pendingCount;
@@ -196,6 +197,7 @@ class Task {
     this.role,
     this.leaveType,
     this.leaveId,
+    this.designation,
     this.status,
     this.cancelledCount = 0,
     this.takenCount = 0,

@@ -653,6 +653,9 @@ query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDa
           name
           __typename
         }
+          designation {
+          description
+        }
         id
         leave_id
         __typename

@@ -101,12 +101,18 @@ class LeaveRequests {
 class OrganizationUsers {
   Profile? profile;
   List<Roles>? roles;
+  String? designation;
   String? id;
   String? leaveId;
   String? sTypename;
 
   OrganizationUsers(
-      {this.profile, this.roles, this.id, this.leaveId, this.sTypename});
+      {this.profile,
+        this.roles,
+        this.designation,
+        this.id,
+        this.leaveId,
+        this.sTypename});
 
   OrganizationUsers.fromJson(Map<String, dynamic> json) {
     profile =
@@ -117,6 +123,7 @@ class OrganizationUsers {
         roles!.add(new Roles.fromJson(v));
       });
     }
+    designation = json['designation'];
     id = json['id'];
     leaveId = json['leave_id'];
     sTypename = json['__typename'];
@@ -130,6 +137,7 @@ class OrganizationUsers {
     if (this.roles != null) {
       data['roles'] = this.roles!.map((v) => v.toJson()).toList();
     }
+    data['designation'] = this.designation;
     data['id'] = this.id;
     data['leave_id'] = this.leaveId;
     data['__typename'] = this.sTypename;

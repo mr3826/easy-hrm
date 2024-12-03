@@ -1,7 +1,4 @@
 import 'dart:developer';
-import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
-
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
 import '../../../../utils/api_endpoints.dart';
@@ -19,11 +16,6 @@ class HrLeaveRemoteDataSource {
     try {
       final defaultStartDate = _getDefaultStartDate();
       final defaultEndDate = _getDefaultEndDate();
-
-
-
-      //log(GetStorage().read(AppString.ACCESS_TOKEN));
-
       final response = await networkClient.graphRequest(
         queryString: getHrLeaveCalendarList,
         variables: {
