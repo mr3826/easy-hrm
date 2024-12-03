@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/employee/presentation/controller/employment_controller.dart';
 import 'package:payrun_mobile/app/admin_app/employee/presentation/view/widget/employee_list/terminate_widget.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
@@ -20,8 +21,11 @@ class EmployeeListInfo extends StatelessWidget {
   final String departmentName;
   final String statusText;
   final Color? statusColor;
+  final String employeeId;
+
   const EmployeeListInfo({
     Key? key,
+    required this.employeeId,
     required this.imgUrlKey,
     required this.name,
     required this.departmentName,
@@ -94,8 +98,9 @@ class EmployeeListInfo extends StatelessWidget {
                       Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
                     }),
                     _divider(),
-                    _buildActionItem(AppString.text_edit.tr, () {
+                    _buildActionItem(AppString.text_edit.tr, () async{
                       Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
+                      await Get.find<EmploymentController>().getEmployeeProfile(orgUserId: employeeId);
                     }),
                     _divider(),
                     _buildActionItem(AppString.textTerminate.tr, () {

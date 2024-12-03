@@ -40,9 +40,12 @@ Future<bool> _onWillPop() async {
 }
 
 List<PersistentBottomNavBarItem> _navBarsItems() {
-  bool isAdmin =
-      Get.find<UserInfoController>().userInfo.user?.role?.contains("admin") ??
-          false;
+  bool isEmployee = Get.find<UserInfoController>()
+          .userInfo
+          .user
+          ?.roles
+          ?.contains("org_employee") ??
+      false;
   return [
     _navbarIcon(
         activeIcon: Images.timelineIconNav,
@@ -60,11 +63,13 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
     ),
     _navbarIcon(
         activeIcon:
-            isAdmin ? Images.employees_active : Images.notificationIconNav,
-        text: isAdmin ? AppString.text_employees : AppString.text_notication.tr,
-        imgUrl: isAdmin
-            ? Images.employees_inactive
-            : Images.notificationIconNavOutLine),
+            isEmployee ? Images.notificationIconNav : Images.employees_active,
+        text: isEmployee
+            ? AppString.text_notication.tr
+            : AppString.text_employees.tr,
+        imgUrl: isEmployee
+            ? Images.notificationIconNavOutLine
+            : Images.employees_inactive),
     _navbarIcon(
         activeIcon: Images.profileIconNav,
         text: AppString.text_profile.tr,

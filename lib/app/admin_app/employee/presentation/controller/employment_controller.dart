@@ -24,6 +24,8 @@ class EmploymentController extends GetxController with StateMixin {
   RxString searchQuery = ''.obs;
 
   TextEditingController searchController = TextEditingController();
+  TextEditingController editFirstNameController = TextEditingController();
+  TextEditingController editLastNameController = TextEditingController();
 
   RxInt daysCount = 0.obs;
   RxInt applicationBalanceCount = 0.obs;
@@ -268,6 +270,8 @@ class EmploymentController extends GetxController with StateMixin {
   @override
   void onClose() {
     searchController.dispose();
+    editFirstNameController.dispose();
+    editLastNameController.dispose();
     super.onClose();
   }
 }

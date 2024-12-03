@@ -20,28 +20,28 @@ class EmployeeProfileViewScreen extends GetView<EmploymentController> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
+    return Scaffold(
         appBar: _buildAppBar(),
         body: controller.obx(
-            (state) => Padding(
-                  padding: marginLayout.copyWith(left: 12, right: 12),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _buildUserInfo(),
-                        _buildMonthlyGoal(),
-                        customSpacerHeight(height: 20),
-                        _buildTabBar(),
-                        customSpacerHeight(height: 20),
-                        _buildTabBarView()
-                      ],
+            (state) => DefaultTabController(
+              length: 3,
+              child: Padding(
+                    padding: marginLayout.copyWith(left: 12, right: 12),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _buildUserInfo(),
+                          _buildMonthlyGoal(),
+                          customSpacerHeight(height: 20),
+                          _buildTabBar(),
+                          customSpacerHeight(height: 20),
+                          _buildTabBarView()
+                        ],
+                      ),
                     ),
                   ),
-                ),
+            ),
             onLoading: const LoadingIndicator()),
-      ),
     );
   }
 
@@ -65,6 +65,8 @@ class EmployeeProfileViewScreen extends GetView<EmploymentController> {
       ),
     );
   }
+
+
 
   _buildUserInfo() {
     EmploymentController controller = Get.find<EmploymentController>();

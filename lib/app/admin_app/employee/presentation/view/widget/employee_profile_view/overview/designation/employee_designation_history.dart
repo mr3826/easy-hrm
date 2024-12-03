@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/admin_app/employee/presentation/controller/employment_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -13,30 +15,11 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../../../common/widget/employee/dottend_style_layout.dart';
 import '../../../../../../../../../modules/auth/presentation/view/otp_screen.dart';
 
-class DesignationHistoryLayout extends StatelessWidget {
+class DesignationHistoryLayout extends GetView<EmploymentController> {
   const DesignationHistoryLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Sample data for department history
-    final List<Map<String, String>> designationHistory = [
-      {
-        "designation": "Senior Developer",
-        "startDate": "2014-10-07 15:15:58",
-        "endDate": ""
-      },
-      {
-        "designation": "Jr. Developer",
-        "startDate": "2021-10-07 15:15:58",
-        "endDate": "2024-10-07 15:15:58"
-      },
-      {
-        "designation": "QA Developer",
-        "startDate": "2021-10-07 15:15:58",
-        "endDate": "2024-10-07 15:15:58"
-      },
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,13 +33,26 @@ class DesignationHistoryLayout extends StatelessWidget {
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.zero,
-            itemCount: designationHistory.length,
+            itemCount: controller
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.designationHistories
+                    ?.length ??
+                0,
             itemBuilder: (context, index) {
-              final isLastItem = index == designationHistory.length - 1;
-              final historyItem = designationHistory[index];
-              final designation = historyItem["designation"] ?? "";
-              final startDate = historyItem["startDate"]!;
-              final endDate = historyItem["endDate"] ?? "";
+              List<DesignationHistories>? designationHistories = controller
+                  .employeeWorkHistory
+                  ?.getOrganizationUserHistory
+                  ?.designationHistories;
+              bool isLastItem = true;
+              if (designationHistories != null &&
+                  designationHistories.isNotEmpty) {
+                isLastItem = index == designationHistories.length - 1;
+              }
+              final designation =
+                  designationHistories?[index].designation?.name ?? "";
+              final startDate = designationHistories?[index].startDate ?? "";
+              final endDate = designationHistories?[index].endDate ?? "";
               final formattedStartDate = _formatDate(startDate);
               final durationText = _buildDurationText(startDate, endDate);
               final currentStatus = _getCurrentStatus(endDate);
@@ -148,11 +144,10 @@ class DesignationHistoryLayout extends StatelessWidget {
   /// Dotted separator between history items.
   Widget _dottedSeparator() {
     return const Positioned(
-      top: 55,
-      left: 28,
-      bottom: 0,
-      child: CustomDottedStyle(height: 46,isVertical: true)
-    );
+        top: 55,
+        left: 28,
+        bottom: 0,
+        child: CustomDottedStyle(height: 46, isVertical: true));
   }
 
   /// Formats the given date string to 'dd MMM, yyyy'.

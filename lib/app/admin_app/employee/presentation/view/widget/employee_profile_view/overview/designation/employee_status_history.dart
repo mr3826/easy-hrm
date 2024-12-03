@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/employee/presentation/controller/employment_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -15,27 +17,11 @@ import '../../../../../../../../../modules/auth/presentation/view/otp_screen.dar
 import '../../../../../../../../../utils/utils.dart';
 
 /// [EmploymentHistoryLayout] displays the employment status history of an employee.
-class EmploymentHistoryLayout extends StatelessWidget {
+class EmploymentHistoryLayout extends GetView<EmploymentController> {
   const EmploymentHistoryLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Sample data for department history
-    final List<Map<String, String>> employmentHistoryData = [
-      {
-        "status": "Permanent",
-        "startDate": "2014-10-07 15:15:58",
-        "endDate": "",
-        "color": "0CAA1B"
-      },
-      {
-        "status": "Probation",
-        "startDate": "2014-10-07 15:15:58",
-        "endDate": "2024-10-07 15:15:58",
-        "color": "FFA500"
-      },
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -47,18 +33,32 @@ class EmploymentHistoryLayout extends StatelessWidget {
           child: ListView.builder(
             padding: EdgeInsets.zero,
             physics: const BouncingScrollPhysics(),
-            itemCount: employmentHistoryData.length,
+            itemCount: controller.employeeWorkHistory
+                    ?.getOrganizationUserHistory?.employmentHistories?.length ??
+                0,
             itemBuilder: (context, index) {
-              final item = employmentHistoryData[index];
-              final isLastItem = index == employmentHistoryData.length - 1;
+              List<EmploymentHistories>? employmentHistories = controller
+                  .employeeWorkHistory
+                  ?.getOrganizationUserHistory
+                  ?.employmentHistories;
+              bool isLastItem = true;
+              if (employmentHistories != null &&
+                  employmentHistories.isNotEmpty) {
+                isLastItem = index == employmentHistories.length - 1;
+              }
+
+              final item = employmentHistories?[index];
 
               return _statusInfo(
                 isLastItem: isLastItem,
-                status: item["status"] ?? '',
-                startDate: getDateTimeFormat(item["startDate"] ?? ""),
-                duration: _getDuration(item),
-                endDate: _getEndDate(item),
-                statusColor: HexColor(item["color"] ?? "#8F99AD"),
+                status: item?.employmentStatus?.name ?? '',
+                startDate: getDateTimeFormat(item?.startDate ?? ""),
+                duration: _buildDurationText(
+                    startDate: item?.startDate ?? '',
+                    endDate: item?.endDate ?? ''),
+                endDate: _getEndDate(item?.endDate ?? ''),
+                statusColor:
+                    HexColor(item?.employmentStatus?.color ?? "#8F99AD"),
               );
             },
           ),
@@ -67,17 +67,19 @@ class EmploymentHistoryLayout extends StatelessWidget {
     );
   }
 
-  String _getDuration(Map<String, String> item) {
-    final endDate = item["endDate"];
-    return "${endDate == null || endDate.isEmpty ? AppString.text_form_last.tr : ""} ${workingTimeSinceFormString(
-      item["startDate"] ?? "",
-      endDate ?? "",
-    )}";
+
+  /// Builds the duration text by calculating the time between start and end dates.
+  /// If endDate is empty or null, it assumes the present time.
+  String _buildDurationText({required String startDate, String? endDate}) {
+    if (startDate.isEmpty) return '';
+    return (endDate == null || endDate.isEmpty)
+        ? "${AppString.text_form_last.tr} ${workingTimeSinceFormString(startDate, null)}"
+        : workingTimeSinceFormString(startDate, endDate);
   }
 
-  String _getEndDate(Map<String, String> item) {
-    final endDate = item["endDate"];
-    return (endDate == null || endDate.isEmpty)
+  String _getEndDate(String endDate) {
+    if (endDate.isEmpty) return AppString.textPresent.tr;
+    return (endDate.isEmpty)
         ? AppString.textPresent.tr
         : dateMonthYearFormatFromDatetime(endDate);
   }
@@ -140,7 +142,10 @@ Widget _statusInfo({
           top: 55,
           left: 28,
           bottom: 0,
-          child: CustomDottedStyle(height: 46,isVertical: true,),
+          child: CustomDottedStyle(
+            height: 46,
+            isVertical: true,
+          ),
         ),
     ],
   );

@@ -225,6 +225,7 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
   getOrganizationUserHistory(org_user_id: $orgUserId) {
+    join_date
     designation_histories {
       start_date
       end_date

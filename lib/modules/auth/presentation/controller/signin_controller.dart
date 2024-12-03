@@ -58,6 +58,8 @@ class SignInController extends GetxController with StateMixin {
       di.Response response = await _networkClient
           .postRequest(Api.LOGIN, {"email": email, "password": password});
       if (response.statusCode == 200) {
+        print("Access Token:: ${response.data}");
+
         _handleTokenInfo(response);
         final userInfoResponse =
             await Get.find<UserInfoController>().getUserInfo();

@@ -103,13 +103,15 @@ class EmployeeScreen extends StatelessWidget {
               Get.find<EmploymentController>().employeeList?[index];
           return GestureDetector(
             onTap: () async {
-              Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
               Get.find<EmploymentController>()
                 ..getEmployeeProfile(orgUserId: employee?.id ?? "")
                 ..getEmployeesEmploymentInfo(orgUserId: employee?.id ?? "")
                 ..getUserLogHistory(orgUserId: employee?.id ?? "");
+              Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+
             },
             child: EmployeeListInfo(
+              employeeId: employee?.id ?? "",
               name:
                   "${employee?.profile?.firstName ?? "Unknown"} ${employee?.profile?.lastName ?? ""}",
               departmentName:

@@ -66,7 +66,7 @@ class OverviewWidget extends GetView<EmploymentController> {
           parentDepartmentName: controller.employeeProfileInfo
                       ?.getOrganizationUserDetails?.department?.parent !=
                   null
-              ? "${AppString.text_child_of_deparmtnet.tr} ${controller.employeeProfileInfo?.getOrganizationUserDetails?.department?.parent}"
+              ? "${AppString.text_child_of_deparmtnet.tr} ${controller.employeeProfileInfo?.getOrganizationUserDetails?.department?.parent?.name}"
               : null,
           workShiftStartTime: _getShiftTime("startTime") ?? "00:00:00",
           workShiftEndTime: _getShiftTime("endTime") ?? "17:00:00",
@@ -104,12 +104,8 @@ class OverviewWidget extends GetView<EmploymentController> {
                           .designation
                           ?.name ??
                       "",
-                  date: controller
-                          .employeeWorkHistory
-                          ?.getOrganizationUserHistory
-                          ?.designationHistories
-                          ?.first
-                          .startDate ??
+                  date: controller.employeeWorkHistory
+                          ?.getOrganizationUserHistory?.joinDate ??
                       "",
                   onAction: () {
                     customAntButtonSheet(
