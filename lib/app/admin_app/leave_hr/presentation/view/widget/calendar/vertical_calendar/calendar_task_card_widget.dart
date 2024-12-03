@@ -20,10 +20,6 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-    print("imageUrls_url :: ${task.imageUrls[0]}");
-
-
     if (task.isGroup) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -75,15 +71,15 @@ class TaskCard extends StatelessWidget {
 
           _showLeaveRecodeDetails(
             LeaveRecordDetailsModel(
-                leaveDate: "2024-11-10",
+                leaveDate: task.leaveDate,
                 typeOfLeave: task.leaveType,
                 leaveStatus: task.status,
-                leaveDuration: "2 days",
-                imgUrl: "",
+                leaveDuration: task.formattedLeaveHours,
+                imgUrl: task.imageUrls[0],
+
                 employeeName: task.name,
-                designation:
-                "Mobile Application Developer",
-                applicationStatus: "pending",
+                designation:task.designation,
+                applicationStatus: task.status,
                 applicationDate: "20 Apr 2034"),);
         },
         child: Card(
@@ -182,8 +178,10 @@ class Task {
   final String? leaveId;
   final String? role;
   final String? leaveType;
+  final String? leaveDate;
   final String? status;
   final String? designation;
+  final String? formattedLeaveHours;
   final bool isGroup;
   final int approvedCount;
   final int pendingCount;
@@ -197,6 +195,8 @@ class Task {
     this.role,
     this.leaveType,
     this.leaveId,
+    this.leaveDate,
+    this.formattedLeaveHours,
     this.designation,
     this.status,
     this.cancelledCount = 0,

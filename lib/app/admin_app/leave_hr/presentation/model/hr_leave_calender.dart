@@ -52,6 +52,7 @@ class LeaveRequests {
   int? totalRejected;
   int? totalCancelled;
   int? totalTaken;
+  String? formattedLeaveHours;
   List<OrganizationUsers>? organizationUsers;
   String? sTypename;
 
@@ -62,6 +63,7 @@ class LeaveRequests {
         this.totalRejected,
         this.totalCancelled,
         this.totalTaken,
+        this.formattedLeaveHours,
         this.organizationUsers,
         this.sTypename});
 
@@ -72,6 +74,7 @@ class LeaveRequests {
     totalRejected = json['total_rejected'];
     totalCancelled = json['total_cancelled'];
     totalTaken = json['total_taken'];
+    formattedLeaveHours = json['formatted_leave_hours'];
     if (json['organization_users'] != null) {
       organizationUsers = <OrganizationUsers>[];
       json['organization_users'].forEach((v) {
@@ -89,6 +92,7 @@ class LeaveRequests {
     data['total_rejected'] = this.totalRejected;
     data['total_cancelled'] = this.totalCancelled;
     data['total_taken'] = this.totalTaken;
+    data['formatted_leave_hours'] = this.formattedLeaveHours;
     if (this.organizationUsers != null) {
       data['organization_users'] =
           this.organizationUsers!.map((v) => v.toJson()).toList();

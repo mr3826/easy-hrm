@@ -13,9 +13,10 @@ class HrLeaveController extends GetxController {
   RxBool updateLeaveLoader = false.obs;
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getEmployees({String ? startDate,String? endDate}) async {
+  Future<void> getEmployees({String? startDate, String? endDate}) async {
     isHrLeaveCalendarLoading(true);
-    hrLeaveCalender = await _leaveRemoteDataSource.getLeaveCalender(startDate: startDate,endDate: endDate);
+    hrLeaveCalender = await _leaveRemoteDataSource.getLeaveCalender(
+        startDate: startDate, endDate: endDate);
     isHrLeaveCalendarLoading(false);
   }
 
@@ -37,33 +38,36 @@ class HrLeaveController extends GetxController {
   /// Creates a [Task] object from a [LeaveRequests] object.
   Task _createTask(LeaveRequests leave) {
     return Task(
-      name: _getFirstUserName(leave),
-      role: _getUserRole(leave),
-      leaveType: "Leave Type", // Replace with actual leave type if needed.
-      status: _getStatus(leave), // Customize based on leave request status.
-      approvedCount: leave.totalApproved ?? 0,
-      pendingCount: leave.totalPending ?? 0,
-      rejectedCount: leave.totalRejected ?? 0,
-      takenCount: leave.totalTaken ?? 0,
-      cancelledCount: leave.totalCancelled ?? 0,
-      imageUrls: _getUserImages(leave),
-      isGroup: (leave.organizationUsers?.length ?? 0) > 1,
-      designation: _getUserDesignation(leave),
-      leaveId: _getLeaveId(leave)
+        name: _getFirstUserName(leave),
+        role: _getUserRole(leave),
+        leaveType: "Leave Type", // Replace with actual leave type if needed.
+        status: _getStatus(leave), // Customize based on leave request status.
+        approvedCount: leave.totalApproved ?? 0,
+        pendingCount: leave.totalPending ?? 0,
+        rejectedCount: leave.totalRejected ?? 0,
+        takenCount: leave.totalTaken ?? 0,
+        cancelledCount: leave.totalCancelled ?? 0,
+        imageUrls: _getUserImages(leave),
+        isGroup: (leave.organizationUsers?.length ?? 0) > 1,
+        designation: _getUserDesignation(leave),
+        leaveId: _getLeaveId(leave),
+      formattedLeaveHours: leave.formattedLeaveHours,
+      leaveDate: leave.formattedDate
+
+
+
     );
   }
 
-
-
   String _getLeaveId(LeaveRequests leave) {
-
-    var data= leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ?? "";
+    var data =
+        leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ??
+            "";
 
     print("Leave_id_remote ::: ${data}");
 
     return data;
   }
-
 
   String _getStatus(LeaveRequests leave) {
     if (leave.totalPending == 1) {
@@ -111,17 +115,12 @@ class HrLeaveController extends GetxController {
         [];
   }
 
-
-
-
-
   /// update a leave and updates the relevant data if successful.
-  Future<void> updateLeave({required String leaveId,String ?status}) async {
-
+  Future<void> updateLeave({required String leaveId, String? status}) async {
     print("leaveId ::: $leaveId");
     updateLeaveLoader(true);
-    final bool response =
-    await _leaveRemoteDataSource.updateLeave(leaveId: leaveId,status: status);
+    final bool response = await _leaveRemoteDataSource.updateLeave(
+        leaveId: leaveId, status: status);
 
     if (response) {
       showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
@@ -130,26 +129,6 @@ class HrLeaveController extends GetxController {
     }
     updateLeaveLoader(false);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   @override
   void onInit() {

@@ -639,6 +639,7 @@ query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDa
       total_rejected
       total_cancelled
       total_taken
+      formatted_leave_hours
     
       organization_users {
 
