@@ -107,7 +107,11 @@ class LeaveHrScreen extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Obx(() => GestureDetector(
-                onTap: () => controller.tabLength.value = index,
+                onTap: () {
+                  controller.tabLength.value = index;
+                  controller.currentDate.value="This month";
+                  Get.find<HrLeaveController>().getLeaveRecord();
+                },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width / 2.1,
                   child: Card(
@@ -138,9 +142,6 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _leaveRecordeList() {
-
-
-
     return  const Expanded(
       child: Column(
         children: [DateNavigatorWidget(), LeaveRecordList()],

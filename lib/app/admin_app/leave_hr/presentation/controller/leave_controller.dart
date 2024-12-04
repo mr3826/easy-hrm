@@ -73,5 +73,5 @@ class LeaveController extends GetxController {
   Rx<DateTime> get selectedMonthDate => DateTime(years[selectedYearIndex.value], selectedMonthIndex.value + 1).obs;
 
   /// Current date in a formatted string (optional, can be removed if not needed).
-  RxString currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  RxString currentDate = "This month".obs;
 }

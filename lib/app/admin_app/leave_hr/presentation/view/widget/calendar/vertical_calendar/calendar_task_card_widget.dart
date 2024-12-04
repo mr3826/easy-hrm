@@ -14,9 +14,8 @@ import 'calendar_widget.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
-  final LeaveRecordDetailsModel? leaveRecordDetailsModel;
 
-  const TaskCard({super.key, required this.task, this.leaveRecordDetailsModel});
+  const TaskCard({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +25,10 @@ class TaskCard extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             Get.find<LeaveController>().tabLength(1);
-            Get.find<LeaveController>().currentDate.value =
-                leaveRecordDetailsModel?.leaveDate ?? "";
+            Get.find<LeaveController>().currentDate.value = task.leaveDate  ?? "";
+             Get.find<HrLeaveController>().getLeaveRecord(startDate: task.leaveDate );
+
+
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

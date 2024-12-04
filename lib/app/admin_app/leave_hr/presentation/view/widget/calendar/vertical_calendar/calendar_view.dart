@@ -39,7 +39,6 @@ class CalendarView extends StatelessWidget {
         String dayLabel = DateFormat("EEE").format(date);
         List<Task> tasks = taskData[formattedDate] ?? [];
 
-
         return Column(
           children: [
             Padding(
@@ -90,18 +89,6 @@ class CalendarView extends StatelessWidget {
                           left: 12, right: 12),
                       child: TaskCard(
                         task: task,
-                        leaveRecordDetailsModel:
-                        LeaveRecordDetailsModel(
-                            leaveDate: "2024-11-10",
-                            typeOfLeave: "Sick",
-                            leaveStatus: "Paid",
-                            leaveDuration: "2 days",
-                            imgUrl: "",
-                            employeeName: "Rifat Hasan",
-                            designation:
-                            "Mobile Application Developer",
-                            applicationStatus: "pending",
-                            applicationDate: "20 Apr 2034"),
                       ),
                     ))
                         .toList(),

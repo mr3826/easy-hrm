@@ -210,15 +210,18 @@ void _showCustomDateRangeDialog(int index) {
                       elevation: 0,
                       child: InkWell(
                         onTap: () {
-                          Get.back(canPop: false);
-                          Get.back(canPop: false);
-                          String currentDate = DateTime.now().toString();
+                          Get.back(canPop: false); // Close the current screen once
+                          Get.back(canPop: false); // Close the current screen once
+                          String currentDate = DateTime.now().toIso8601String(); // Get the current date in ISO format
+
+                          var startDate = calendarController.rangeStart.value ?? currentDate;
+                          var endDate = calendarController.rangeEnd.value ?? startDate;
                           Get.find<HrLeaveController>().getLeaveRecord(
-                              startDate:
-                                  "${calendarController.rangeStart.value ?? currentDate}",
-                              endDate:
-                                  "${calendarController.rangeEnd.value ?? currentDate}");
+                            startDate: startDate.toString(),
+                            endDate: endDate.toString(),
+                          );
                         },
+
                         child: Padding(
                           padding: const EdgeInsets.only(
                               top: 8.0, bottom: 8, left: 20, right: 20),
