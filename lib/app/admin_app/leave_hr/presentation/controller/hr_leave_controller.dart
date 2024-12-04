@@ -6,17 +6,21 @@ import '../../../../../utils/app_string.dart';
 import '../../data/leave_remote_data_source.dart';
 import '../model/download_file.dart';
 import '../model/hr_leave_calender.dart';
+import '../model/hr_leave_record.dart';
 import '../model/leave_details_by_id.dart';
+import 'calender_controller.dart';
 
 class HrLeaveController extends GetxController {
   final HrLeaveRemoteDataSource _leaveRemoteDataSource = Get.find();
   HrLeaveCalender? hrLeaveCalender = HrLeaveCalender();
   LeaveDetailsById? leaveDetailsById = LeaveDetailsById();
   DownloadFile? downloadFile = DownloadFile();
+  HrLeaveRecorde? leaveRecorde = HrLeaveRecorde();
   RxBool isHrLeaveCalendarLoading = false.obs;
   RxBool isHrLeaveDetailsByLoading = false.obs;
   RxBool isDownloadLoading = false.obs;
   RxBool updateLeaveLoader = false.obs;
+  RxBool isLoadingLeaveRecord = false.obs;
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getHrLeaveCalender({String? startDate, String? endDate}) async {
@@ -128,6 +132,7 @@ class HrLeaveController extends GetxController {
     if (response) {
       showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
       getHrLeaveCalender();
+      getHrLeaveCalender();
       Get.back(canPop: false);
     }
     updateLeaveLoader(false);
@@ -148,9 +153,19 @@ class HrLeaveController extends GetxController {
     isDownloadLoading(false);
   }
 
+
+  /// Fetches employee leave record hr .
+  Future<void> getLeaveRecord({String? startDate,String ?endDate}) async {
+    isLoadingLeaveRecord(true);
+    leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(startDate: startDate,endDate: endDate);
+    isLoadingLeaveRecord(false);
+  }
+
   @override
   void onInit() {
     getHrLeaveCalender();
+    getLeaveRecord();
     super.onInit();
   }
+
 }

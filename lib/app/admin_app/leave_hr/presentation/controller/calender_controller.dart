@@ -58,52 +58,63 @@ class CalendarController {
   }
 
   /// Handles selection of predefined date ranges.
+
+
   void onDaySelected(String day) {
     final now = DateTime.now();
+    DateTime start;
+    DateTime end;
+
     switch (day) {
-      case "Today":
-        rangeStart.value = now;
-        print("Selected Today: ${rangeStart.value}");
+      case "0": //Today
+        start = now;
+        end = now; // End same as start for Today
         break;
 
-      case "Yesterday":
-        rangeStart.value = now.subtract(const Duration(days: 1));
-        print("Selected Yesterday: ${rangeStart.value}");
+      case "1": //Yesterday
+        start = now.subtract(const Duration(days: 1));
+        end = start; // End same as start for Yesterday
         break;
 
-      case "This week":
-        final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-        rangeStart.value = startOfWeek;
-        rangeEnd.value = startOfWeek.add(const Duration(days: 6));
-        print("Selected This Week: ${rangeStart.value} to ${rangeEnd.value}");
+      case "2"://This week
+        start = now.subtract(Duration(days: now.weekday - 1)); // Start of the current week
+        end = start.add(const Duration(days: 6)); // End of the current week
         break;
 
-      case "Last week":
-        final endOfLastWeek = now.subtract(Duration(days: now.weekday));
-        final startOfLastWeek = endOfLastWeek.subtract(const Duration(days: 6));
-        rangeStart.value = startOfLastWeek;
-        rangeEnd.value = endOfLastWeek;
-        print("Selected Last Week: ${rangeStart.value} to ${rangeEnd.value}");
+      case "3"://Last week
+        end = now.subtract(Duration(days: now.weekday)); // End of last week (Sunday)
+        start = end.subtract(const Duration(days: 6)); // Start of last week (Monday)
         break;
 
-      case "This month":
-        rangeStart.value = DateTime(now.year, now.month, 1);
-        rangeEnd.value = DateTime(now.year, now.month + 1, 0);
-        print("Selected This Month: ${rangeStart.value} to ${rangeEnd.value}");
+      case "4"://This month
+        start = DateTime(now.year, now.month, 1); // Start of the month
+        end = DateTime(now.year, now.month + 1, 0); // Last day of the current month
         break;
 
-      case "Last month":
-        rangeStart.value = DateTime(now.year, now.month - 1, 1);
-        rangeEnd.value = DateTime(now.year, now.month, 0);
-        print("Selected Last Month: ${rangeStart.value} to ${rangeEnd.value}");
+      case "5"://Last month
+        start = DateTime(now.year, now.month - 1, 1); // Start of last month
+        end = DateTime(now.year, now.month, 0); // Last day of last month
         break;
 
-      case "Custom":
+      case "6"://Custom
+      // Handle custom date selection if needed
+        start = DateTime.now(); // Placeholder for custom start
+        end = DateTime.now();   // Placeholder for custom end
         print("Custom date selection");
         break;
 
       default:
         print("Invalid selection");
+        return;
     }
+
+    // Update the observable values
+    rangeStart.value = start;
+    rangeEnd.value = end;
+
+    // Print the selected range
+    print("Selected range: ${rangeStart.value} to ${rangeEnd.value}");
   }
+
+
 }

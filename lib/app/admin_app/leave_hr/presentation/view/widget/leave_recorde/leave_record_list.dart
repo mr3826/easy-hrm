@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,85 +9,32 @@ import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../../../../utils/utils.dart';
+import '../../../controller/hr_leave_controller.dart';
 import 'leave_recorde_details /leave_record_details.dart';
 import 'leave_recorde_details /more_leave_record_details.dart';
 
-class LeaveRecordList extends StatelessWidget {
+class LeaveRecordList extends GetView<HrLeaveController> {
   const LeaveRecordList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> data = [
-      {
-        "type": "Paid",
-        "status": "approved",
-        "name": "Medicine Buchenwald",
-        "leaveName": "Sick Leave",
-        "designation": "Software Engineer"
-      },
-      {
-        "type": "Unpaid",
-        "status": "pending",
-        "name": "Peter Doppler",
-        "leaveName": "Annual Leave",
-        "designation": "Project Manager"
-      },
-      {
-        "type": "Medical",
-        "status": "rejected",
-        "name": "Elisabeth Doppler",
-        "leaveName": "Medical Leave",
-        "designation": "Designer"
-      },
-      {
-        "type": "Casual",
-        "status": "taken",
-        "name": "Charlotte Doppler",
-        "leaveName": "Casual Leave",
-        "designation": "HR Manager"
-      },
-      {
-        "type": "Paid",
-        "status": "rejected",
-        "name": "Hannah Kahnwald",
-        "leaveName": "Sick Leave",
-        "designation": "Developer"
-      },
-      {
-        "type": "Unpaid",
-        "status": "pending",
-        "name": "Katharina Nielsen",
-        "leaveName": "Maternity Leave",
-        "designation": "Accountant"
-      },
-      {
-        "type": "Emergency",
-        "status": "rejected",
-        "name": "Franziska Doppler",
-        "leaveName": "Emergency Leave",
-        "designation": "Team Lead"
-      },
-      {
-        "type": "Paid",
-        "status": "taken",
-        "name": "Claudia Tiedemann",
-        "leaveName": "Sick Leave",
-        "designation": "Product Owner"
-      }, {
-        "type": "Paid",
-        "status": "cancelled",
-        "name": "Claudia Tiedemann",
-        "leaveName": "Sick Leave",
-        "designation": "Product Owner"
-      },
-    ];
-
-    return Expanded(
+    return Obx(() => controller.isLoadingLeaveRecord.isTrue
+        ? const Center(child: CupertinoActivityIndicator(color: AppColor.primaryColor,radius: 15,))
+        : controller.leaveRecorde?.getLeaveRequests?.isEmpty ?? true
+        ? Center(child: Text("No leave record!", style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),))
+        : Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          itemCount: data.length,
+          itemCount: controller.leaveRecorde?.getLeaveRequests?.length ?? 0,
           itemBuilder: (context, index) {
+            var data = controller.leaveRecorde?.getLeaveRequests?[index];
+
+            if (data == null) {
+              return const SizedBox.shrink();
+            }
+
             return SizedBox(
               width: double.infinity,
               child: Card(
@@ -98,23 +46,22 @@ class LeaveRecordList extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildUserDetails(
+                      _buildLeaveCard(
                         LeaveRecordDetailsModel(
-                            employeeName: data[index]["name"] ?? '',
-                            applicationStatus: data[index]["status"] ?? '',
-                            designation: data[index]["designation"] ?? '',
-                            typeOfLeave: data[index]["leaveName"] ?? '',
-                            leaveStatus: data[index]["type"] ?? '',
-                            imgUrl: "",
-                            leaveDate: "${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))} - ${DateFormat("dd MMM yy").format(DateTime.parse("2024-10-29 16:13:16.049738"))}",
-
-                            //"12 Mar 22 - 15 Mar 22",
-                            leaveDuration: "3 days",
-                            applicationDate: "2024-10-29 16:13:16.049738"
-
-                            // '09 March 2020'
-
-                            ),
+                          employeeName: "${data.organizationUser?.profile?.firstName ?? "No added yet"} ${data.organizationUser?.profile?.lastName ?? ""}",
+                          applicationStatus: data.status ?? "Unknown",
+                          designation: data.organizationUser?.designation ?? "No designation",
+                          typeOfLeave: data.leaveType?.name ?? "N/A",
+                          leaveStatus: data.leaveType?.type ?? "N/A",
+                          imgUrl: data.organizationUser?.profile?.image ?? "",
+                          leaveDate: _formatLeaveDate(data.startDate, data.endDate),
+                          leaveDuration: getLeaveDuration(
+                            data.leaveDetails?.first.leaveSeconds?.toString() ?? "0",
+                            data.leaveType?.numberOfDays ?? "0",
+                          ),
+                          applicationDate: data.leaveType?.applicationDate ?? "N/A",
+                        ),
+                        data.leaveDetails?.first.leaveId ?? "",
                       ),
                     ],
                   ),
@@ -124,14 +71,13 @@ class LeaveRecordList extends StatelessWidget {
           },
         ),
       ),
-    );
+    ));
   }
 
-  Widget _buildUserDetails(LeaveRecordDetailsModel leaveRecordDetailsModel) {
+  Widget _buildLeaveCard(
+      LeaveRecordDetailsModel leaveRecordDetailsModel, String leaveId) {
     return InkWell(
-      onTap: () {
-        _showLeaveRecodeDetails(leaveRecordDetailsModel);
-      },
+      onTap: () => _showLeaveRecodeDetails(leaveId),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -146,7 +92,7 @@ class LeaveRecordList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  leaveRecordDetailsModel.employeeName ?? "",
+                  leaveRecordDetailsModel.employeeName ?? "No name",
                   maxLines: 2,
                   style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.secondaryColor,
@@ -155,7 +101,7 @@ class LeaveRecordList extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  leaveRecordDetailsModel.designation ?? "",
+                  leaveRecordDetailsModel.designation ?? "No designation",
                   maxLines: 2,
                   style: AppStyle.normal_text_black.copyWith(
                     color: AppColor.hintColor,
@@ -165,15 +111,15 @@ class LeaveRecordList extends StatelessWidget {
                 ),
                 const SizedBox(height: 14),
                 _buildLeaveDetails(
-                  leaveRecordDetailsModel.typeOfLeave ?? "",
-                  leaveRecordDetailsModel.leaveStatus ?? "",
-                  leaveRecordDetailsModel.leaveDate ?? "",
+                  leaveRecordDetailsModel.typeOfLeave ?? "N/A",
+                  leaveRecordDetailsModel.leaveStatus ?? "N/A",
+                  leaveRecordDetailsModel.leaveDate ?? "N/A",
                 ),
                 const SizedBox(height: 14),
                 Row(
                   children: [
                     showStatusButton(
-                      leaveRecordDetailsModel.applicationStatus ?? "",
+                      leaveRecordDetailsModel.applicationStatus ?? "Unknown",
                     ),
                     const Spacer(),
                   ],
@@ -182,9 +128,7 @@ class LeaveRecordList extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {
-              _showLeaveRecordDetailsSheet(leaveRecordDetailsModel);
-            },
+            onTap: () => _showLeaveRecordDetailsSheet(leaveId),
             child: const Icon(
               Icons.more_horiz,
               color: AppColor.hintColor,
@@ -221,52 +165,39 @@ class LeaveRecordList extends StatelessWidget {
     );
   }
 
-
-
-  void _showLeaveRecordDetailsSheet(
-      LeaveRecordDetailsModel leaveRecordDetailsModel) {
+  void _showLeaveRecodeDetails(String leaveId) {
+    final controller = Get.find<HrLeaveController>();
+    controller.getLeaveDetailsById(leaveId: leaveId);
     customAntButtonSheet(
-        context: Get.context!,
-        height: MediaQuery.of(Get.context!).size.height / 1.5,
-        child: MoreLeaveRecordDetails(
-          // leaveRecordDetails: LeaveRecordDetailsModel(
-          //     applicationDate: leaveRecordDetailsModel.leaveStatus,
-          //     applicationStatus: leaveRecordDetailsModel.applicationStatus,
-          //     employeeName: leaveRecordDetailsModel.employeeName,
-          //     leaveDate: leaveRecordDetailsModel.leaveDate,
-          //     leaveDuration: leaveRecordDetailsModel.leaveDuration,
-          //     typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-          //     leaveStatus: leaveRecordDetailsModel.leaveStatus,
-          //     designation: leaveRecordDetailsModel.designation,
-          //     imgUrl: leaveRecordDetailsModel.imgUrl),
-        ));
-  }
-
-  void _showLeaveRecodeDetails(
-      LeaveRecordDetailsModel leaveRecordDetailsModel) {
-    customAntButtonSheet(
-        context: Get.context!,
-        child: LeaveRecordDetails(
-          leaveId: leaveRecordDetailsModel.leaveId,
-          // leaveRecordDetailsModel: LeaveRecordDetailsModel(
-          //     applicationDate: leaveRecordDetailsModel.applicationDate,
-          //     applicationStatus: leaveRecordDetailsModel.applicationStatus,
-          //     employeeName: leaveRecordDetailsModel.employeeName,
-          //     leaveDate: leaveRecordDetailsModel.leaveDate,
-          //     leaveDuration: leaveRecordDetailsModel.leaveDuration,
-          //     typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-          //     designation: leaveRecordDetailsModel.designation,
-          //     imgUrl: leaveRecordDetailsModel.imgUrl),
-        )
-
+      context: Get.context!,
+      child: LeaveRecordDetails(leaveId: leaveId),
     );
   }
+
+  void _showLeaveRecordDetailsSheet(String leaveId) {
+    final controller = Get.find<HrLeaveController>();
+    controller.getLeaveDetailsById(leaveId: leaveId);
+    customAntButtonSheet(
+      context: Get.context!,
+      height: MediaQuery.of(Get.context!).size.height / 1.5,
+      child: MoreLeaveRecordDetails(leaveId: leaveId),
+    );
+  }
+
+  String _formatLeaveDate(String? startDate, String? endDate) {
+    if (startDate == null || endDate == null) return "N/A - N/A";
+    try {
+      return "${DateFormat("dd MMM yy").format(DateTime.parse(startDate))} - ${DateFormat("dd MMM yy").format(DateTime.parse(endDate))}";
+    } catch (e) {
+      return "Invalid date";
+    }
+  }
 }
+
 Widget showStatusButton(String leaveStatus) {
   switch (leaveStatus.toLowerCase()) {
     case 'approved':
       return StatusBtnHelper.approvedStatusBtn();
-
     case 'rejected':
       return StatusBtnHelper.rejectedStatusBtn();
     case 'pending':
@@ -274,9 +205,8 @@ Widget showStatusButton(String leaveStatus) {
     case 'taken':
       return StatusBtnHelper.tokenStatusBtn();
     case 'cancel':
-      return StatusBtnHelper.cancelStatusBtn();
     case 'cancelled':
-      return StatusBtnHelper.cancelledStatusBtn();
+      return StatusBtnHelper.cancelStatusBtn();
     default:
       return Container();
   }

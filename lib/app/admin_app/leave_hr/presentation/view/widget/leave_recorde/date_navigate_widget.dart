@@ -12,9 +12,7 @@ class DateNavigatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(LeaveController());
-    print("controller.currentDate.value :: ${controller.currentDate.value}");
-
+    LeaveController controller = Get.put(LeaveController());
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 12, right: 10),
       child: GestureDetector(

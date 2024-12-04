@@ -7,6 +7,7 @@ import '../../../../utils/api_endpoints.dart';
 import '../../../../utils/app_string.dart';
 import '../presentation/model/download_file.dart';
 import '../presentation/model/hr_leave_calender.dart';
+import '../presentation/model/hr_leave_record.dart';
 import '../presentation/model/leave_details_by_id.dart';
 
 class HrLeaveRemoteDataSource {
@@ -125,4 +126,41 @@ class HrLeaveRemoteDataSource {
       return null;
     }
   }
+
+
+    Future<HrLeaveRecorde?> getLeaveRecord({String? startDate,String ?endDate}) async {
+
+
+   var   start = DateTime(DateTime.now().year, DateTime.now().month, 1); // Start of the month
+    var  end = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
+      try {
+      final response = await networkClient.graphRequest(queryString: getHrLeaveRecordeQuery, variables: {
+        "queryData": {
+          "start_date": startDate??"$start",
+          "end_date": endDate??"$end",
+        },
+
+      });
+
+      print("getLeaveRecord ::: ${response.data}");
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveRecord");
+        return null;
+      }
+      return HrLeaveRecorde.fromJson(response.data!);
+    } catch (e) {
+      log('Error in getLeaveRecord: $e');
+      return null;
+    }
+  }
+
+
+
+
+
+
+
+
 }

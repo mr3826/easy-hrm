@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/see_documents/see_document_details.dart';
 import 'package:payrun_mobile/enum.dart';
@@ -43,7 +44,7 @@ const MoreLeaveRecordDetails({super.key,this.leaveId});
                     "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
                     "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
                 details:
-                    "${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.name ?? ""}: ${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.name} - ${controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first.date ?? ""}",
+                    "${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.name ?? ""}: ${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.type} - ${   "${DateFormat("dd MMM yy").format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.startDate?? ""))} - ${DateFormat("dd MMM yy").format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.endDate?? ""))}"}",
               ),
               Expanded(
                 child: SingleChildScrollView(

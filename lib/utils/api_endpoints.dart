@@ -676,6 +676,107 @@ query GET_FILE_SIGNED_URL($fileKey: String!, $isDownload: Boolean) {
     }
 '''
 ;
+const getHrLeaveRecordeQuery = r'''
+query GET_LEAVE_REQUESTS($queryData: LeaveRequestQueryType, $optionData: OptionDataType) {
+  getLeaveRequests(queryData: $queryData, optionData: $optionData) {
+    description
+    duration
+    start_date
+    end_date
+    total_duration
+    number_of_days
+    id
+    leaveType {
+      id
+      name
+      type
+      number_of_days
+      number_of_applications
+      max_consecutive_days
+      is_default
+      id
+      add_note_required
+      application_date
+      calculate_allowance_by
+      organization_id
+      is_enable
+      is_earned
+      leave_statuses {
+        available_number_of_days
+        earned_days
+        available_number_of_applications
+        total_available
+      }
+
+    }
+    leave_details {
+      date
+      leave_id
+      leave_seconds
+      schedule_seconds
+
+    }
+    start_date
+    status
+    type
+    user_id
+    files {
+      size
+      organization_id
+      name
+      key
+      id
+      createdAt
+      context
+
+    }
+    organization_user {
+      user_position
+      user_id
+      user {
+        id
+        email
+
+      }
+      status
+      roles {
+        user_id
+        name
+        id
+  
+      }
+      profile {
+        user_id
+        personal_number
+        last_name
+        image
+        id
+        first_name
+        emergency_number
+        address
+        about
+ 
+      }
+      organization_id
+      id
+      designation {
+        name
+        isDefault
+        id
+        description
+     
+      }
+      department {
+        name
+   
+      }
+
+    }
+    __typename
+  }
+}
+'''
+;
 
 
 const getLeaveDetailsByIdQuery = r'''

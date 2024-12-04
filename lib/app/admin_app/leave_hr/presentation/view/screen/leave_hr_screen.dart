@@ -138,7 +138,10 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _leaveRecordeList() {
-    return const Expanded(
+
+
+
+    return  const Expanded(
       child: Column(
         children: [DateNavigatorWidget(), LeaveRecordList()],
       ),
