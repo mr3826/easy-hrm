@@ -4,6 +4,7 @@ import 'package:payrun_mobile/enum.dart';
 import '../../../../../common/widget/success_message.dart';
 import '../../../../../utils/app_string.dart';
 import '../../data/leave_remote_data_source.dart';
+import '../model/download_file.dart';
 import '../model/hr_leave_calender.dart';
 import '../model/leave_details_by_id.dart';
 
@@ -11,8 +12,10 @@ class HrLeaveController extends GetxController {
   final HrLeaveRemoteDataSource _leaveRemoteDataSource = Get.find();
   HrLeaveCalender? hrLeaveCalender = HrLeaveCalender();
   LeaveDetailsById? leaveDetailsById = LeaveDetailsById();
+  DownloadFile? downloadFile = DownloadFile();
   RxBool isHrLeaveCalendarLoading = false.obs;
   RxBool isHrLeaveDetailsByLoading = false.obs;
+  RxBool isDownloadLoading = false.obs;
   RxBool updateLeaveLoader = false.obs;
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
@@ -136,6 +139,13 @@ class HrLeaveController extends GetxController {
     leaveDetailsById =
         await _leaveRemoteDataSource.getLeaveDetailsById(leaveId);
     isHrLeaveDetailsByLoading(false);
+  }
+
+  /// Fetches employee leave document download .
+  Future<void> getLeaveDocumentDownloadByUrl({String? imageKey}) async {
+    isDownloadLoading(true);
+    downloadFile = await _leaveRemoteDataSource.getFileSignUrl(imageKey);
+    isDownloadLoading(false);
   }
 
   @override

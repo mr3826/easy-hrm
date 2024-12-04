@@ -670,6 +670,13 @@ mutation UPDATE_LEAVE($inputData: UpdateLeaveInputData) {
 }
 ''';
 
+const getFileSignUrlQuery = r'''
+query GET_FILE_SIGNED_URL($fileKey: String!, $isDownload: Boolean) {
+   getFileSignedUrl(fileKey: $fileKey, isDownload: $isDownload)
+    }
+'''
+;
+
 
 const getLeaveDetailsByIdQuery = r'''
 query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {

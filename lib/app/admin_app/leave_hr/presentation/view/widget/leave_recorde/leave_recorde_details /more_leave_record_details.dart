@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/see_document_details.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/see_documents/see_document_details.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_app_button.dart';
@@ -15,6 +15,7 @@ import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
+import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
 import 'leave_record_details.dart';
@@ -80,9 +81,8 @@ const MoreLeaveRecordDetails({super.key,this.leaveId});
                         _divider(),
                         if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name) ...[
                           _buildActionOption(AppString.text_edit.tr, () {
-                          //  _showEditLeaveDetails(leaveRecordDetails);
+                            _showEditLeaveDetails();
 
-                            print("object");
                           }),
                           _divider(),
                         ],
@@ -221,21 +221,40 @@ const MoreLeaveRecordDetails({super.key,this.leaveId});
   }
 
   /// Shows a sheet to edit leave details.
-  void _showEditLeaveDetails(LeaveRecordDetailsModel leaveRecordDetailsModel) {
+  void _showEditLeaveDetails() {
+
+    HrLeaveController controller=Get.find<HrLeaveController>();
+
     customAntButtonSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
       child: EditLeaveRecordDetails(
         leaveRecordDetailsModel: LeaveRecordDetailsModel(
-          applicationDate: leaveRecordDetailsModel.leaveStatus,
-          applicationStatus: leaveRecordDetailsModel.applicationStatus,
-          employeeName: leaveRecordDetailsModel.employeeName,
-          leaveDate: leaveRecordDetailsModel.leaveDate,
-          leaveDuration: leaveRecordDetailsModel.leaveDuration,
-          typeOfLeave: leaveRecordDetailsModel.typeOfLeave,
-          leaveStatus: leaveRecordDetailsModel.leaveStatus,
-          designation: leaveRecordDetailsModel.designation,
-          imgUrl: leaveRecordDetailsModel.imgUrl,
+          applicationDate: controller.leaveDetailsById?.getLeaveDetailsById?.createdAt,
+          applicationStatus: controller.leaveDetailsById?.getLeaveDetailsById
+              ?.status,
+          employeeName: "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
+              "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
+
+
+          leaveDate: controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?[0].date,
+          leaveDuration:getLeaveDuration(
+              controller.leaveDetailsById?.getLeaveDetailsById
+                  ?.leaveDetails?.first.leaveSeconds
+                  ?.toString() ??
+                  "",
+              controller
+                  .leaveDetailsById?.getLeaveDetailsById?.numberOfDays
+                  ?.toString() ??
+                  ""),
+          typeOfLeave: controller.leaveDetailsById?.getLeaveDetailsById
+              ?.leaveType?.name ??
+              "",
+          leaveStatus: controller.leaveDetailsById?.getLeaveDetailsById?.status,
+          designation: controller.leaveDetailsById?.getLeaveDetailsById
+              ?.organizationUser?.designation ??
+              "No designation",
+          imgUrl: controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.image,
         ),
       ),
     );

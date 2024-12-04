@@ -19,9 +19,11 @@ String urlBuilder({
   String? orgId,
   bool isPublic = false,
 }) {
+
   final cdmKey = isPublic
       ? Api.CDN_DOMAIN.replaceAll("private", "public")
       : Api.CDN_DOMAIN;
+
 
   final client = URLBuilder(
     domain: cdmKey,
@@ -34,6 +36,10 @@ String urlBuilder({
 
   return client.createURLString(urlPath);
 }
+
+
+
+
 
 Widget circleImageLayout(
     {radius, required url, borderColor, required errorText}) {
