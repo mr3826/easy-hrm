@@ -4,6 +4,7 @@ import 'package:payrun_mobile/enum.dart';
 import '../../../../../common/widget/success_message.dart';
 import '../../../../../utils/app_string.dart';
 import '../../data/leave_remote_data_source.dart';
+import '../model/avaible_leave_type.dart';
 import '../model/download_file.dart';
 import '../model/hr_leave_calender.dart';
 import '../model/hr_leave_record.dart';
@@ -16,13 +17,18 @@ class HrLeaveController extends GetxController {
   LeaveDetailsById? leaveDetailsById = LeaveDetailsById();
   DownloadFile? downloadFile = DownloadFile();
   HrLeaveRecorde? leaveRecorde = HrLeaveRecorde();
+  AvailableLeaveType? availableLeaveType = AvailableLeaveType();
   RxBool isHrLeaveCalendarLoading = false.obs;
   RxBool isHrLeaveDetailsByLoading = false.obs;
   RxBool isDownloadLoading = false.obs;
   RxBool updateLeaveLoader = false.obs;
   RxBool isLoadingLeaveRecord = false.obs;
+  RxBool isAvailableLeaveType = false.obs;
+
+
   RxString selectedEmployeeInfo=AppString.textSearchEmployee.tr.obs;
   RxString selectedEmployeeImgKey="".obs;
+
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getHrLeaveCalender({String? startDate, String? endDate}) async {
@@ -158,11 +164,17 @@ class HrLeaveController extends GetxController {
 
   /// Fetches employee leave record hr .
   Future<void> getLeaveRecord({String? startDate,String ?endDate, String? assignedLeaveId}) async {
-
-    print("startDate:: $startDate endDate :: $endDate assignLeave :: $assignedLeaveId");
     isLoadingLeaveRecord(true);
     leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(startDate: startDate,endDate: endDate,assignedLeaveId: assignedLeaveId);
     isLoadingLeaveRecord(false);
+  }
+
+
+  /// Fetches leave type hr .
+  Future<void> getAvailableLeaveType({String? orgUserId,String ?year}) async {
+    isAvailableLeaveType(true);
+    availableLeaveType = await _leaveRemoteDataSource.getAvailableLeaveType(orgUserId: orgUserId,year:year );
+    isAvailableLeaveType(false);
   }
 
   @override

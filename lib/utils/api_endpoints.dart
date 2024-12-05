@@ -691,12 +691,34 @@ mutation UPDATE_LEAVE($inputData: UpdateLeaveInputData) {
 }
 ''';
 
+
+
+
 const getFileSignUrlQuery = r'''
 query GET_FILE_SIGNED_URL($fileKey: String!, $isDownload: Boolean) {
    getFileSignedUrl(fileKey: $fileKey, isDownload: $isDownload)
     }
 '''
 ;
+const getAvailableLeavesTypeQuery = r'''
+query GET_AVAILABLE_LEAVES_TYPES($queryData: AvailableLeaveTypesInput!, $optionData: OptionDataType) {
+  getAvailableLeaveTypes(queryData: $queryData, optionData: $optionData) {
+    add_note_required
+    attach_document_required
+    availableLeave
+    calculate_allowance_by
+    is_default
+    is_enable
+    leave_type_id
+    name
+    type
+  }
+}
+'''
+;
+
+
+
 const getHrLeaveRecordeQuery = r'''
 query GET_LEAVE_REQUESTS($queryData: LeaveRequestQueryType, $optionData: OptionDataType) {
   getLeaveRequests(queryData: $queryData, optionData: $optionData) {

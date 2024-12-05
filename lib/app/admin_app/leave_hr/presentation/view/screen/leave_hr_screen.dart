@@ -10,6 +10,7 @@ import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
+import '../../../../../../modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
@@ -30,20 +31,8 @@ class LeaveHrScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          customAntButtonSheet(
-              height: MediaQuery.of(context).size.height / 1.2,
-              context: context,
-              child: AssignLeave());
-        },
-        backgroundColor: AppColor.primaryColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
-        child: const Icon(
-          Icons.add,
-          size: 28,
-        ),
-      ),
+      floatingActionButton:_assignLeave(context),
+
       body: Padding(
         padding: marginLayout.copyWith(left: 8, right: 8),
         child: Column(
@@ -217,22 +206,55 @@ class LeaveHrScreen extends StatelessWidget {
                         overflow: TextOverflow.ellipsis),
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    controller.selectedEmployeeInfo.value =
-                        AppString.textSearchEmployee.tr;
-                    controller.selectedEmployeeImgKey.value = "";
-                    controller.getLeaveRecord();
-                  },
-                  child: const Icon(CupertinoIcons.clear,
-                      color: AppColor.hintColor, size: 23),
-                ),
+                if (controller.selectedEmployeeInfo.value !=
+                    AppString.textSearchEmployee)
+                  InkWell(
+                    onTap: () {
+                      controller.selectedEmployeeInfo.value =
+                          AppString.textSearchEmployee.tr;
+                      controller.selectedEmployeeImgKey.value = "";
+                      controller.getLeaveRecord();
+                    },
+                    child: const Icon(CupertinoIcons.clear,
+                        color: AppColor.hintColor, size: 23),
+                  ),
                 customSpacerWidth(width: 12),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  _assignLeave(BuildContext context) {
+
+    return  FloatingActionButton(
+      onPressed: () {
+        final hrLeaveController = Get.find<HrLeaveController>();
+        final userProfileController = Get.find<UserProfileController>();
+        final userDetails = userProfileController.userDetails?.getOrganizationUserDetails?.profile;
+
+        // Fetch available leave types
+        hrLeaveController.getAvailableLeaveType();
+
+        // Show custom bottom sheet
+        customAntButtonSheet(
+          height: MediaQuery.of(context).size.height/1.2, // Using a fraction for clarity
+          context: context,
+          child: AssignLeave(),
+        );
+
+        // Set selected employee info
+        hrLeaveController.selectedEmployeeInfo.value =
+        "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
+
+        // Set selected employee image key
+        hrLeaveController.selectedEmployeeImgKey.value = userDetails?.image ?? "";
+      },
+      backgroundColor: AppColor.primaryColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+      child: const Icon(Icons.add, size: 28),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/avaible_leave_type.dart';
 
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
@@ -134,7 +135,6 @@ class HrLeaveRemoteDataSource {
     try {
       final response = await networkClient
           .graphRequest(queryString: getHrLeaveRecordeQuery,
-
           variables: {
         "queryData": {
           "start_date": startDate ?? "$start",
@@ -144,8 +144,6 @@ class HrLeaveRemoteDataSource {
           ]:[]
         },
       });
-
-      print("getLeaveRecord ::: ${response.data}");
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
@@ -158,4 +156,36 @@ class HrLeaveRemoteDataSource {
       return null;
     }
   }
+
+
+   Future<AvailableLeaveType?> getAvailableLeaveType({String? orgUserId,String ?year}) async {
+
+    try {
+      final response = await networkClient
+          .graphRequest(queryString: getAvailableLeavesTypeQuery,
+          variables: {
+            "queryData": {
+              "org_user_id": orgUserId?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
+              "start_year": year??"${DateTime.now().year}"
+            },
+          });
+
+      print("getAvailableLeaveType:: ${response.data}");
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveRecord");
+        return null;
+      }
+      return AvailableLeaveType.fromJson(response.data!);
+    } catch (e) {
+      log('Error in getLeaveRecord: $e');
+      return null;
+    }
+  }
+
+
+
+
+
 }

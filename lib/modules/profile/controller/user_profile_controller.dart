@@ -109,6 +109,7 @@ class UserProfileController extends GetxController with StateMixin {
   RxBool isSelected = false.obs;
   final resendOtpLoading = false.obs;
 
+
   var isOtpString = ''.obs;
 
   bool get isButtonEnabledForOTP {

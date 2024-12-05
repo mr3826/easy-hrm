@@ -40,7 +40,7 @@ class LeaveController extends GetxController {
   /// A flag indicating whether individual filtering is enabled.
 
 
-  var selectAssignLeave = ''.obs;
+  var selectAssignLeave = 'This year'.obs;
 
   final List<String> items = [
     'This year',
