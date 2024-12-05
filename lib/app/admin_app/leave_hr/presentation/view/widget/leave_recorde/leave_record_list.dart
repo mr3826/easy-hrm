@@ -205,9 +205,11 @@ Widget showStatusButton(String leaveStatus) {
     case 'taken':
       return StatusBtnHelper.tokenStatusBtn();
     case 'cancel':
-    case 'cancelled':
       return StatusBtnHelper.cancelStatusBtn();
+    case 'cancelled':
+      return StatusBtnHelper.cancelledStatusBtn();
     default:
       return Container();
   }
 }
+

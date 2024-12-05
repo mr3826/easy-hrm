@@ -20,7 +20,6 @@ Widget buildPendingBtn({required String leaveDate, required String leaveId}) {
             ? const Center(
                 child: CupertinoActivityIndicator(
                   color: AppColor.primaryColor,
-
                 ),
               )
             : Row(
@@ -33,8 +32,8 @@ Widget buildPendingBtn({required String leaveDate, required String leaveId}) {
                           fontSize: Dimensions.fontSizeDefault),
                     ),
                     onPressed: () {
-                      showRejectDialog(Get.context!,
-                          leaveDate.toString(),leaveId: leaveId);
+                      showRejectDialog(Get.context!, leaveDate.toString(),
+                          leaveId: leaveId);
                     },
                     buttonColor: AppColor.cardColor,
                     borderColor: AppColor.errorColor,
@@ -66,37 +65,48 @@ Widget buildPendingBtn({required String leaveDate, required String leaveId}) {
 Widget buildApprovedBtn({required String leaveDate, required String leaveId}) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
-    child: CustomAppButton(
-      buttonText: Text(
-        AppString.text_cancel.tr,
-        style: TextStyle(
-            color: AppColor.cardColor,
-            fontSize: Dimensions.fontSizeDefault + 1),
-      ),
-      onPressed: () {
-        showCustomAlertDialog(
-          context: Get.context!,
-          onConfirm: () {},
-          confirmButtonChild: Text(
-            AppString.confirmText.tr,
-            style: AppStyle.normal_text_grey.copyWith(
-                fontSize: Dimensions.fontSizeDefault + 1,
-                color: AppColor.cardColor),
-          ),
-          extraInfoText: "",
-          iconWidget: customSvgImage(
-              imageUrl: Images.cancelLeave, height: 60, width: 60),
-          titleText: AppString.cancelLeaveText.tr,
-          descriptionText: AppString.cancelLeaveNotificationText.tr,
-          iconBackgroundColor: AppColor.cardColor,
-          confirmButtonColor: AppColor.hintColor,
-          confirmButtonText: AppString.confirmText.tr,
-        );
-      },
-      buttonColor: AppColor.hintColor,
-      borderColor: AppColor.hintColor,
-      textColor: AppColor.cardColor,
-      borderRadius: Dimensions.radiusLarge,
-    ),
+    child: Obx(() => Get.find<HrLeaveController>().updateLeaveLoader.isTrue
+        ? const Center(
+          child: CupertinoActivityIndicator(
+              color: AppColor.primaryColor,
+              radius: 15,
+            ),
+        )
+        : CustomAppButton(
+            isButtonExpanded: false,
+            buttonText: Text(
+              AppString.text_cancel.tr,
+              style: TextStyle(
+                  color: AppColor.cardColor,
+                  fontSize: Dimensions.fontSizeDefault + 1),
+            ),
+            onPressed: () {
+              showCustomAlertDialog(
+                context: Get.context!,
+                onConfirm: () {
+                  Get.find<HrLeaveController>().updateLeave(leaveId: leaveId, status: "cancelled");
+                  Get.back(canPop: false);
+                },
+                confirmButtonChild: Text(
+                  AppString.confirmText.tr,
+                  style: AppStyle.normal_text_grey.copyWith(
+                      fontSize: Dimensions.fontSizeDefault + 1,
+                      color: AppColor.cardColor),
+                ),
+                extraInfoText: "",
+                iconWidget: customSvgImage(
+                    imageUrl: Images.cancelLeave, height: 60, width: 60),
+                titleText: AppString.cancelLeaveText.tr,
+                descriptionText: AppString.cancelLeaveNotificationText.tr,
+                iconBackgroundColor: AppColor.cardColor,
+                confirmButtonColor: AppColor.hintColor,
+                confirmButtonText: AppString.confirmText.tr,
+              );
+            },
+            buttonColor: AppColor.hintColor,
+            borderColor: AppColor.hintColor,
+            textColor: AppColor.cardColor,
+            borderRadius: Dimensions.radiusLarge,
+          )),
   );
 }

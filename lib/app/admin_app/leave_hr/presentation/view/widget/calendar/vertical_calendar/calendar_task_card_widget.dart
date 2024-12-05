@@ -27,8 +27,6 @@ class TaskCard extends StatelessWidget {
             Get.find<LeaveController>().tabLength(1);
             Get.find<LeaveController>().currentDate.value = task.leaveDate  ?? "";
              Get.find<HrLeaveController>().getLeaveRecord(startDate: task.leaveDate );
-
-
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
