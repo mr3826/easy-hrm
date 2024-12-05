@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
 import '../../../../../utils/app_string.dart';
 
 /// Controller for managing the leave data and UI states in the leave management screen.
@@ -46,9 +44,6 @@ class LeaveController extends GetxController {
     'This year',
     'Next year',
   ];
-
-
-
 
   /// The currently selected year index.
   RxInt selectedYearIndex = 0.obs;

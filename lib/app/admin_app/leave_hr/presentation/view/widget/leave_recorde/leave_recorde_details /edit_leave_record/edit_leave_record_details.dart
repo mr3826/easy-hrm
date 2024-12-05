@@ -52,7 +52,7 @@ class EditLeaveRecordDetails extends StatelessWidget {
               /// Displays the title and a required leave type dropdown.
               _buildTitleText(text: AppString.text_leave_name.tr, isRequired: true),
               customSpacerHeight(height: 8),
-              const SelectedLeaveType(),
+             // const SelectedLeaveType(),
               customSpacerHeight(height: 20),
 
               /// Displays the title and a date picker for the "From" date.

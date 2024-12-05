@@ -41,9 +41,7 @@ class AssignLeave extends GetView<HrLeaveController> {
                 children: [
                   _buildTitleText(AppString.textEmployees.tr),
                   const SizedBox(height: 6),
-                  Obx(
-                    () => _buildSearchBar(context),
-                  ),
+                  Obx(() => _buildSearchBar(context)),
                   const SizedBox(height: 18),
                   _buildTitleText(AppString.textLeaveTimeline.tr),
                   const SizedBox(height: 6),

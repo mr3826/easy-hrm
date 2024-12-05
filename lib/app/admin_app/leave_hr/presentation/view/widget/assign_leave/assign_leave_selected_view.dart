@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/screen/leave_hr_screen.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/edit_leave_record/attachment.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -16,9 +15,12 @@ import '../../../../../../../../../common/widget/timePicker/date_time_picker_con
 import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
+import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
-import '../../../../../employee/presentation/view/widget/employee_profile_view/leave_summary/leave_allowance/selecte_leave_type.dart';
+import '../../../../../../../modules/auth/presentation/view/otp_screen.dart';
+import '../../../../../../../utils/utils.dart';
+import '../../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';
 import '../../../controller/leave_controller.dart';
 import '../../../controller/picked_file_from_stroage.dart';
@@ -43,7 +45,9 @@ class AssignLeaveSelectedValue extends StatelessWidget {
         _buildHeader(date: "26 March", day: "Thursday"),
 
         /// Builds the list of text fields for various leave record details.
-        _buildListOfTextField(context),
+        Obx(
+          () => _buildListOfTextField(context),
+        )
       ],
     );
   }
@@ -51,6 +55,18 @@ class AssignLeaveSelectedValue extends StatelessWidget {
   /// Builds a scrollable list of form fields for editing leave record details.
   Widget _buildListOfTextField(BuildContext context) {
     final LeaveController controller = Get.put(LeaveController());
+
+    // Show loader if leave types are being fetched
+    if (Get.find<HrLeaveController>().isAvailableLeaveType.isTrue) {
+      return const Padding(
+        padding: EdgeInsets.only(top: 28.0),
+        child: Center(
+            child: CupertinoActivityIndicator(
+          color: AppColor.primaryColor,
+          radius: 15,
+        )),
+      );
+    }
 
     return Expanded(
       child: Padding(
@@ -69,7 +85,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
               Obx(
                 () => _buildSearchBar(context, onSearch: () {
-                 // showEmployeeSelectionSheet();
+                  _showEmployeeSelectionSheet();
                 }),
               ),
               const SizedBox(height: 18),
@@ -90,8 +106,9 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               customSpacerHeight(height: 8),
               const LeaveTypeDropDown(),
 
-              //  const SelectedLeaveType(),
               customSpacerHeight(height: 18),
+
+              _leaveCountStyleLayout(),
 
               /// Displays the title and a status selection tab.
               _buildTitleText(text: AppString.text_status.tr),
@@ -140,6 +157,55 @@ class AssignLeaveSelectedValue extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _leaveCountStyleLayout() {
+    return Obx(() =>
+        Get.find<HrLeaveController>().calculateAllowanceOfLeave.value.isNotEmpty
+            ? SizedBox(
+                width: double.infinity,
+                child: Card(
+                  elevation: 0,
+                  shape: roundedRectangleBorder,
+                  color: AppColor.primaryColor.withOpacity(0.05),
+                  child: Padding(
+                    padding: marginLayout.copyWith(
+                        top: 8, bottom: 8, left: 16, right: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          formatToTwoDecimalPlaces(Get.find<HrLeaveController>()
+                              .calculateAllowanceOfLeave
+                              .value),
+                          style: AppStyle.mid_large_text
+                              .copyWith(color: AppColor.normalTextColor),
+                        ),
+                        Text(
+                          _getCalculateLeave(),
+                          style: AppStyle.mid_large_text.copyWith(
+                              color: AppColor.hintColor,
+                              fontSize: Dimensions.fontSizeDefault),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : Container());
+  }
+
+  String _getCalculateLeave() {
+    final calculateAllowanceOfLeave =
+        Get.find<HrLeaveController>().calculateAllowanceOfLeave.value;
+    switch (calculateAllowanceOfLeave) {
+      case "no_of_application":
+        return "Balance (No.of application)";
+      case "undefined":
+        return "Balance (Undefined)";
+      default:
+        return "Balance (No.of days)";
+    }
   }
 
   /// Builds a horizontal tab selector for leave status options.
@@ -597,5 +663,29 @@ Widget _buildDropdownField({
             ))
         .toList(),
     onChanged: onChanged,
+  );
+}
+
+void _showEmployeeSelectionSheet() {
+  HrLeaveController controller = Get.put(HrLeaveController());
+  LeaveController leaveController = Get.put(LeaveController());
+  customButtonSheet(
+    context: Get.context!,
+    child: SearchEmployeeList(
+      onValueSelected: (value) {
+        leaveController.tabLength.value = 1;
+        controller.getAvailableLeaveType(
+          orgUserId: value,
+        );
+        Get.back(canPop: false);
+        print("value ::: $value");
+      },
+      userInfo: (name) {
+        controller.selectedEmployeeInfo.value = name.name ?? "";
+        controller.selectedEmployeeImgKey.value = name.imgUrl ?? "";
+      },
+      onClickRouteAction: () {},
+    ),
+    height: 0.8,
   );
 }

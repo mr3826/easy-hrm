@@ -28,6 +28,7 @@ class HrLeaveController extends GetxController {
 
   RxString selectedEmployeeInfo=AppString.textSearchEmployee.tr.obs;
   RxString selectedEmployeeImgKey="".obs;
+  RxString calculateAllowanceOfLeave = ''.obs;
 
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.

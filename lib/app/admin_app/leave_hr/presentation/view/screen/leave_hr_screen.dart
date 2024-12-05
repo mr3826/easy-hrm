@@ -46,7 +46,7 @@ class LeaveHrScreen extends StatelessWidget {
 
             Obx(
               () => _buildSearchBar(context, onSearch: () {
-                showEmployeeSelectionSheet();
+                _showEmployeeSelectionSheet();
               }),
             ),
 
@@ -228,7 +228,6 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _assignLeave(BuildContext context) {
-
     return  FloatingActionButton(
       onPressed: () {
         final hrLeaveController = Get.find<HrLeaveController>();
@@ -242,7 +241,7 @@ class LeaveHrScreen extends StatelessWidget {
         customAntButtonSheet(
           height: MediaQuery.of(context).size.height/1.2, // Using a fraction for clarity
           context: context,
-          child: AssignLeave(),
+          child: const AssignLeave(),
         );
 
         // Set selected employee info
@@ -259,7 +258,7 @@ class LeaveHrScreen extends StatelessWidget {
   }
 }
 
-void showEmployeeSelectionSheet() {
+void _showEmployeeSelectionSheet() {
   HrLeaveController controller = Get.put(HrLeaveController());
   LeaveController leaveController = Get.put(LeaveController());
   customButtonSheet(

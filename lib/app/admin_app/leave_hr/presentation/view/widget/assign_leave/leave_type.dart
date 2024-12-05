@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import '../../../../../../../modules/leave/domain/leave_type.dart';
-import '../../../../../../../modules/leave/presentation/controller/apply_leave_controller.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_layout.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
-
+import '../../../controller/hr_leave_controller.dart';
+import '../../../model/avaible_leave_type.dart'as type;
 
 class LeaveTypeDropDown extends StatefulWidget {
   const LeaveTypeDropDown({super.key});
@@ -24,7 +22,7 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ApplyLeaveController());
+   HrLeaveController controller= Get.find<HrLeaveController>();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
       decoration: BoxDecoration(
@@ -41,36 +39,18 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
           dropdownColor: AppColor.cardColor,
           underline: const SizedBox.shrink(),
           isExpanded: true,
-          items: Get.find<ApplyLeaveController>()
-              .leaveTypeDropdown
-              ?.getAvailableLeaveTypes!
+          items: controller.availableLeaveType?.getAvailableLeaveTypes!
               .map((e) {
             return DropdownMenuItem(
               value: e.leaveTypeId,
               child: SizedBox(
                 width: double.infinity,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    getIconAccordingToLeaveType(e.name),
-                    customSpacerWidth(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            e.name.toString(),
-                            style: AppStyle.normal_text_grey.copyWith(color: Colors.black),
-                          ),
-                          Text(
-                            e.type.toString(),
-                            style:  AppStyle.normal_text_grey.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeSmall),
-
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: Text(
+                    "${e.name.toString()} (${e.availableLeave.toString()})",
+                    style: AppStyle.normal_text_black.copyWith(color: AppColor.normalTextColor),
+                  ),
                 ),
               ),
             );
@@ -78,23 +58,11 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
           onChanged: (valueType) {
             setState(() {
               dropDownValue = valueType as String;
-              Get.find<ApplyLeaveController>().isSelectLeaveType.value =
-                  valueType;
             });
-            GetAvailableLeaveTypes? getLeaveTypesDropdown =
-            Get.find<ApplyLeaveController>()
-                .leaveTypeDropdown
-                ?.getAvailableLeaveTypes
-                ?.firstWhere((element) => element.leaveTypeId == valueType);
-            Get.find<ApplyLeaveController>().numberOfLeaves.value =
-                getLeaveTypesDropdown?.availableLeave ?? "0";
-            Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value =
-                getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
-            Get.find<ApplyLeaveController>().leaveId = valueType!;
-            Get.find<ApplyLeaveController>().isDocumentRequired.value =
-                getLeaveTypesDropdown?.attachDocumentRequired ?? false;
-            Get.find<ApplyLeaveController>().isNoteRequired.value =
-                getLeaveTypesDropdown?.addNoteRequired ?? false;
+
+          type.GetAvailableLeaveTypes? getAvailableLeaveTypes= controller.availableLeaveType?.getAvailableLeaveTypes?.firstWhere((e)=>e.leaveTypeId==valueType.toString());
+             Get.find<HrLeaveController>().calculateAllowanceOfLeave.value =
+                 getAvailableLeaveTypes?.availableLeave ?? "0";
           }),
     );
   }
