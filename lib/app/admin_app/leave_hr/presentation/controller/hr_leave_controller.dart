@@ -158,6 +158,8 @@ class HrLeaveController extends GetxController {
 
   /// Fetches employee leave record hr .
   Future<void> getLeaveRecord({String? startDate,String ?endDate, String? assignedLeaveId}) async {
+
+    print("startDate:: $startDate endDate :: $endDate assignLeave :: $assignedLeaveId");
     isLoadingLeaveRecord(true);
     leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(startDate: startDate,endDate: endDate,assignedLeaveId: assignedLeaveId);
     isLoadingLeaveRecord(false);
