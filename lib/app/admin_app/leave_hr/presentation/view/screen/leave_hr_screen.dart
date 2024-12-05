@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/assign_leave/assign_leave.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/employee_search.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -16,6 +15,7 @@ import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
+import '../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../controller/hr_leave_controller.dart';
 import '../../controller/leave_controller.dart';
 import '../widget/calendar/vertical_calendar/calendar_view.dart';
@@ -32,11 +32,10 @@ class LeaveHrScreen extends StatelessWidget {
       appBar: _buildAppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
           customAntButtonSheet(
-            height: MediaQuery.of(context).size.height/1.2,
-
-              context: context, child:  AssignLeave());
+              height: MediaQuery.of(context).size.height / 1.2,
+              context: context,
+              child: AssignLeave());
         },
         backgroundColor: AppColor.primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
@@ -46,7 +45,7 @@ class LeaveHrScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: marginLayout.copyWith(left: 4, right: 4),
+        padding: marginLayout.copyWith(left: 8, right: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -55,11 +54,12 @@ class LeaveHrScreen extends StatelessWidget {
             customSpacerHeight(height: 12),
 
             ///build search employee list
-            Obx(() => Get.find<LeaveController>().isFilterIndividual.isFalse
-                ? _buildSearchBar(context, onSearch: () {
-                    showEmployeeSelectionSheet();
-                  })
-                : _buildIndividualPerson()),
+
+            Obx(
+              () => _buildSearchBar(context, onSearch: () {
+                showEmployeeSelectionSheet();
+              }),
+            ),
 
             ///Tab-bar view according to index
             Obx(
@@ -99,50 +99,53 @@ class LeaveHrScreen extends StatelessWidget {
   Widget _buildTabBar(BuildContext context) {
     final controller = Get.put(LeaveController());
 
-    return SizedBox(
-      height: 50,
-      width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-        itemCount: controller.tabList.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Obx(() => GestureDetector(
-                onTap: () {
-                  controller.tabLength.value = index;
-                  controller.currentDate.value="This month";
-                  Get.find<HrLeaveController>().getLeaveRecord();
-                },
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 2.1,
-                  child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    color: controller.tabLength.value == index
-                        ? AppColor.primaryColor
-                        : AppColor.hintColor.withOpacity(0.1),
-                    child: Center(
-                      child: Text(
-                        controller.tabList[index],
-                        style: AppStyle.normal_text.copyWith(
-                          fontSize: Dimensions.fontSizeDefault,
-                          color: controller.tabLength.value == index
-                              ? AppColor.cardColor
-                              : AppColor.normalTextColor,
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8),
+      child: SizedBox(
+        height: 50,
+        width: MediaQuery.of(context).size.width,
+        child: ListView.builder(
+          itemCount: controller.tabList.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Obx(() => GestureDetector(
+                  onTap: () {
+                    controller.tabLength.value = index;
+                    controller.currentDate.value = "This month";
+                    Get.find<HrLeaveController>().getLeaveRecord();
+                  },
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 2.2,
+                    child: Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      color: controller.tabLength.value == index
+                          ? AppColor.primaryColor
+                          : AppColor.hintColor.withOpacity(0.1),
+                      child: Center(
+                        child: Text(
+                          controller.tabList[index],
+                          style: AppStyle.normal_text.copyWith(
+                            fontSize: Dimensions.fontSizeDefault,
+                            color: controller.tabLength.value == index
+                                ? AppColor.cardColor
+                                : AppColor.normalTextColor,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ));
-        },
+                ));
+          },
+        ),
       ),
     );
   }
 
   _leaveRecordeList() {
-    return  const Expanded(
+    return const Expanded(
       child: Column(
         children: [DateNavigatorWidget(), LeaveRecordList()],
       ),
@@ -150,9 +153,13 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _buildCalendar() {
-   if( Get.find<HrLeaveController>().isHrLeaveCalendarLoading.isTrue){
-     return  const Center(child: CupertinoActivityIndicator(color:AppColor.primaryColor,radius: 17,));
-   }
+    if (Get.find<HrLeaveController>().isHrLeaveCalendarLoading.isTrue) {
+      return const Center(
+          child: CupertinoActivityIndicator(
+        color: AppColor.primaryColor,
+        radius: 17,
+      ));
+    }
     return const Expanded(
       child: Column(
         children: [
@@ -165,12 +172,14 @@ class LeaveHrScreen extends StatelessWidget {
 
   // Search bar method renamed and optimized
   Widget _buildSearchBar(BuildContext context, {required Function onSearch}) {
+    HrLeaveController controller = Get.put(HrLeaveController());
+
     return GestureDetector(
       onTap: () => onSearch(),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: SizedBox(
-          height: 48,
+          height: 52,
           width: MediaQuery.of(context).size.width,
           child: Card(
             elevation: 0,
@@ -183,17 +192,42 @@ class LeaveHrScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(Dimensions.fontSizeMid + 2),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                customSpacerWidth(width: 12),
                 const Icon(CupertinoIcons.search,
-                    color: AppColor.hintColor, size: 20),
-                customSpacerWidth(width: 6),
-                Text(
-                  AppString.textSearchEmployee.tr,
-                  style: AppStyle.normal_text_black.copyWith(
-                    fontSize: Dimensions.fontSizeMid - 3,
+                    color: AppColor.hintColor, size: 25),
+                customSpacerWidth(width: 8),
+                if (controller.selectedEmployeeImgKey.isNotEmpty) ...[
+                  CustomNetworkImage(
+                    imgUrlKey: controller.selectedEmployeeImgKey.value,
+                    errorText: "Er",
+                    height: 12,
+                    borderColor: Colors.transparent,
+                    errorTextStyle: AppStyle.normal_text_black
+                        .copyWith(fontSize: 14, color: AppColor.secondaryColor),
+                  ),
+                  customSpacerWidth(width: 6),
+                ],
+                Expanded(
+                  child: Text(
+                    controller.selectedEmployeeInfo.value,
+                    maxLines: 1,
+                    style: AppStyle.normal_text_black.copyWith(
+                        fontSize: Dimensions.fontSizeMid - 3,
+                        overflow: TextOverflow.ellipsis),
                   ),
                 ),
+                InkWell(
+                  onTap: () {
+                    controller.selectedEmployeeInfo.value =
+                        AppString.textSearchEmployee.tr;
+                    controller.selectedEmployeeImgKey.value = "";
+                    controller.getLeaveRecord();
+                  },
+                  child: const Icon(CupertinoIcons.clear,
+                      color: AppColor.hintColor, size: 23),
+                ),
+                customSpacerWidth(width: 12),
               ],
             ),
           ),
@@ -201,66 +235,25 @@ class LeaveHrScreen extends StatelessWidget {
       ),
     );
   }
-
-  _buildIndividualPerson() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const CustomNetworkImage(
-            imgUrlKey: "",
-            errorText: "Er",
-            height: 20,
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Jonus Kahnwald",
-                  maxLines: 2,
-                  style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.secondaryColor,
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: Dimensions.fontSizeMid - 2,
-                  ),
-                ),
-                Text(
-                  "Jonus Kahnwald",
-                  maxLines: 2,
-                  style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.hintColor,
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: Dimensions.fontSizeDefault - 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Get.find<LeaveController>().isFilterIndividual(false);
-            },
-            child: const Icon(
-              Icons.close,
-              color: AppColor.hintColor,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 void showEmployeeSelectionSheet() {
+  HrLeaveController controller = Get.put(HrLeaveController());
+  LeaveController leaveController = Get.put(LeaveController());
   customButtonSheet(
     context: Get.context!,
     child: SearchEmployeeList(
       onValueSelected: (value) {
-        print("value :: $value");
+        leaveController.tabLength.value = 1;
+        controller.getLeaveRecord(assignedLeaveId: value);
+        Get.back(canPop: false);
+        print("value ::: $value");
       },
+      userInfo: (name) {
+        controller.selectedEmployeeInfo.value = name.name ?? "";
+        controller.selectedEmployeeImgKey.value = name.imgUrl ?? "";
+      },
+      onClickRouteAction: () {},
     ),
     height: 0.8,
   );

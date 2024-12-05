@@ -105,15 +105,14 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-
   ///todo [Download link]
   Future<DownloadFile?> getFileSignUrl(String? fileKey) async {
-    final urlPath = '${"files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$fileKey';
+    final urlPath =
+        '${"files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$fileKey';
     try {
-      final response = await networkClient.graphRequest(queryString: getFileSignUrlQuery, variables: {
-        "fileKey": urlPath,
-        "isDownload": true
-      });
+      final response = await networkClient.graphRequest(
+          queryString: getFileSignUrlQuery,
+          variables: {"fileKey": urlPath, "isDownload": true});
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
@@ -127,19 +126,23 @@ class HrLeaveRemoteDataSource {
     }
   }
 
+  Future<HrLeaveRecorde?> getLeaveRecord(
+      {String? startDate, String? endDate, String? assignedLeaveId}) async {
+    var start = DateTime(
+        DateTime.now().year, DateTime.now().month, 1); // Start of the month
+    var end = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
+    try {
+      final response = await networkClient
+          .graphRequest(queryString: getHrLeaveRecordeQuery,
 
-    Future<HrLeaveRecorde?> getLeaveRecord({String? startDate,String ?endDate}) async {
-
-
-   var   start = DateTime(DateTime.now().year, DateTime.now().month, 1); // Start of the month
-    var  end = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
-      try {
-      final response = await networkClient.graphRequest(queryString: getHrLeaveRecordeQuery, variables: {
+          variables: {
         "queryData": {
-          "start_date": startDate??"$start",
-          "end_date": endDate??"$end",
+          "start_date": startDate ?? "$start",
+          "end_date": endDate ?? "$end",
+           "assigned_to":assignedLeaveId !=null? [
+            assignedLeaveId
+          ]:[]
         },
-
       });
 
       print("getLeaveRecord ::: ${response.data}");
@@ -155,12 +158,4 @@ class HrLeaveRemoteDataSource {
       return null;
     }
   }
-
-
-
-
-
-
-
-
 }

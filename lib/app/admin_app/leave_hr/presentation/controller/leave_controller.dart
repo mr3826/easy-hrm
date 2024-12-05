@@ -38,7 +38,6 @@ class LeaveController extends GetxController {
   final selectedDateRange = "".obs;
 
   /// A flag indicating whether individual filtering is enabled.
-  RxBool isFilterIndividual = false.obs;
 
 
   var selectAssignLeave = ''.obs;

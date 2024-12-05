@@ -14,6 +14,7 @@ class CustomNetworkImage extends StatelessWidget {
   final String? fileDir;
   final String? profileImageKey;
   final  String? orgId;
+ final TextStyle? errorTextStyle;
 
 
   const CustomNetworkImage({
@@ -25,7 +26,9 @@ class CustomNetworkImage extends StatelessWidget {
     this.orgId,
     this.logoUrl,
     this.profileImageKey,
+    this.errorTextStyle,
     required this.errorText,
+
     this.isDocumentLayout = false,
     this.fileDir
   });
@@ -45,6 +48,7 @@ class CustomNetworkImage extends StatelessWidget {
             radius: radius,
             borderColor: borderColor,
             errorText: errorText,
+      errorTextStyle: errorTextStyle
           )
         : rectangleImageLayout(url: url);
   }

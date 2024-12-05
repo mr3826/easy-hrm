@@ -31,6 +31,8 @@ const MoreLeaveRecordDetails({super.key,this.leaveId});
 
   @override
   Widget build(BuildContext context) {
+
+    var leaveController =Get.put(LeaveController());
     return Obx(() => controller.isHrLeaveDetailsByLoading.isTrue
         ? const Center(child: CupertinoActivityIndicator(radius: 15,color: AppColor.primaryColor,))
         : Column(
@@ -92,7 +94,8 @@ const MoreLeaveRecordDetails({super.key,this.leaveId});
                           AppString.textSeeDocument.tr, _showBuildAttachedFile),
                       _divider(),
                       _buildActionOption(AppString.textViewLeaveRecord.tr, () {
-                        Get.find<LeaveController>().isFilterIndividual(true);
+                        controller.getLeaveRecord(startDate: controller.leaveDetailsById?.getLeaveDetailsById?.startDate,endDate: controller.leaveDetailsById?.getLeaveDetailsById?.endDate,assignedLeaveId:controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.id);
+                        leaveController.tabLength(1);
                         Get.back(canPop: false);
                       }),
                     ],

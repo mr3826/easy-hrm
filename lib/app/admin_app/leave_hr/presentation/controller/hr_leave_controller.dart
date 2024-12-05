@@ -21,6 +21,8 @@ class HrLeaveController extends GetxController {
   RxBool isDownloadLoading = false.obs;
   RxBool updateLeaveLoader = false.obs;
   RxBool isLoadingLeaveRecord = false.obs;
+  RxString selectedEmployeeInfo=AppString.textSearchEmployee.tr.obs;
+  RxString selectedEmployeeImgKey="".obs;
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getHrLeaveCalender({String? startDate, String? endDate}) async {
@@ -155,9 +157,9 @@ class HrLeaveController extends GetxController {
 
 
   /// Fetches employee leave record hr .
-  Future<void> getLeaveRecord({String? startDate,String ?endDate}) async {
+  Future<void> getLeaveRecord({String? startDate,String ?endDate, String? assignedLeaveId}) async {
     isLoadingLeaveRecord(true);
-    leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(startDate: startDate,endDate: endDate);
+    leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(startDate: startDate,endDate: endDate,assignedLeaveId: assignedLeaveId);
     isLoadingLeaveRecord(false);
   }
 
