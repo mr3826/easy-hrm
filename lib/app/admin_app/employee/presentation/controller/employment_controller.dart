@@ -13,10 +13,14 @@ import '../../domain/user_work_info_dropdown.dart' as emp_wrk_inf;
 import '../view/widget/filter/check_box.dart';
 
 class EmploymentController extends GetxController with StateMixin {
+
+  final EmployeeRemoteDataSource _employeeRemoteDataSource =
+  Get.find<EmployeeRemoteDataSource>();
+  final LeaveRemoteDataSource _employeeLeaveRemoteDataSource =
+  Get.find<LeaveRemoteDataSource>();
+
   var selectedOption = ''.obs;
-  var employeeStatusValue = ''.obs;
-  var employeeDesignationValue = ''.obs;
-  var employeeDepartmentValue = ''.obs;
+
   RxBool isSearchInfoLoading = false.obs;
   RxBool isEmployeesInfoLoading = false.obs;
   RxBool isFilterInfoLoading = false.obs;
@@ -28,48 +32,21 @@ class EmploymentController extends GetxController with StateMixin {
   TextEditingController searchController = TextEditingController();
   TextEditingController editFirstNameController = TextEditingController();
   TextEditingController editLastNameController = TextEditingController();
+  TextEditingController editJoiningController = TextEditingController();
 
   RxInt daysCount = 0.obs;
   RxInt applicationBalanceCount = 0.obs;
   RxInt applicationMaxDaysCount = 0.obs;
   RxBool hasChangedProfileInfo = false.obs;
 
-  void dayIncrement() {
-    daysCount++;
-  }
-
-  var count = 0.obs;
-
-  void dayDecrement() {
-    if (daysCount > 0) {
-      daysCount--;
-    }
-  }
-
-  void applicationBalanceIncrement() {
-    applicationBalanceCount++;
-  }
-
-  void applicationBalanceDecrement() {
-    if (applicationBalanceCount > 0) {
-      applicationBalanceCount--;
-    }
-  }
-
-  void applicationMaxDayIncrement() {
-    applicationMaxDaysCount++;
-  }
-
-  void applicationMaxDayDecrement() {
-    if (applicationMaxDaysCount > 0) {
-      applicationMaxDaysCount--;
-    }
-  }
-
-  final EmployeeRemoteDataSource _employeeRemoteDataSource =
-      Get.find<EmployeeRemoteDataSource>();
-  final LeaveRemoteDataSource _employeeLeaveRemoteDataSource =
-      Get.find<LeaveRemoteDataSource>();
+  ///init values
+  ///check for update data
+  String? initFirstName;
+  String? initLastName;
+  String? initEmploymentStatusId;
+  String? initDesignationId;
+  String? initDepartmentId;
+  String? initJoiningDate;
 
   EmployeeInfo? employeeInfo = EmployeeInfo();
   UserDetails? employeeProfileInfo = UserDetails();
@@ -234,11 +211,9 @@ class EmploymentController extends GetxController with StateMixin {
 
   // Method to check for changes
   void checkForChanges() {
-    hasChangedProfileInfo.value = editFirstNameController.text !=
-            employeeProfileInfo
-                ?.getOrganizationUserDetails?.profile?.firstName ||
-        editLastNameController.text !=
-            employeeProfileInfo?.getOrganizationUserDetails?.profile?.lastName;
+    hasChangedProfileInfo.value =
+        editFirstNameController.text != initFirstName ||
+            editLastNameController.text != initLastName;
   }
 
   void addRecentSearchData(Data data) async {
@@ -289,6 +264,39 @@ class EmploymentController extends GetxController with StateMixin {
         .toList();
   }
 
+
+  void dayIncrement() {
+    daysCount++;
+  }
+
+  var count = 0.obs;
+
+  void dayDecrement() {
+    if (daysCount > 0) {
+      daysCount--;
+    }
+  }
+
+  void applicationBalanceIncrement() {
+    applicationBalanceCount++;
+  }
+
+  void applicationBalanceDecrement() {
+    if (applicationBalanceCount > 0) {
+      applicationBalanceCount--;
+    }
+  }
+
+  void applicationMaxDayIncrement() {
+    applicationMaxDaysCount++;
+  }
+
+  void applicationMaxDayDecrement() {
+    if (applicationMaxDaysCount > 0) {
+      applicationMaxDaysCount--;
+    }
+  }
+
   @override
   void onInit() {
     getEmployees();
@@ -302,6 +310,7 @@ class EmploymentController extends GetxController with StateMixin {
     searchController.dispose();
     editFirstNameController.dispose();
     editLastNameController.dispose();
+    editJoiningController.dispose();
     super.onClose();
   }
 }

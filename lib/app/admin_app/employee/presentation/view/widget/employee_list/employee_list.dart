@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/employee/domain/employee_info.dart';
 import 'package:payrun_mobile/app/admin_app/employee/presentation/controller/employment_controller.dart';
 import 'package:payrun_mobile/app/admin_app/employee/presentation/view/widget/employee_list/terminate_widget.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -17,21 +18,23 @@ import '../../../../../../../utils/dimensions.dart';
 
 class EmployeeListInfo extends StatelessWidget {
   final String imgUrlKey;
-  final String name;
-  final String departmentName;
-  final String statusText;
-  final Color? statusColor;
-  final String employeeId;
+  final String firstName;
+  final String lastName;
+  final EmploymentStatus department;
+  final EmploymentStatus employmentStatus;
+  final EmploymentStatus designation;
+  final String joiningDate;
 
-  const EmployeeListInfo({
-    Key? key,
-    required this.employeeId,
-    required this.imgUrlKey,
-    required this.name,
-    required this.departmentName,
-    required this.statusText,
-    this.statusColor,
-  }) : super(key: key);
+  const EmployeeListInfo(
+      {Key? key,
+      required this.imgUrlKey,
+      required this.firstName,
+      required this.lastName,
+      required this.employmentStatus,
+      required this.department,
+      required this.designation,
+      required this.joiningDate})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class EmployeeListInfo extends StatelessWidget {
               SizedBox(
                 width: screenWidth / 2,
                 child: Text(
-                  name,
+                  "$firstName $lastName",
                   style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.secondaryColor,
                     fontWeight: FontWeight.w600,
@@ -66,7 +69,7 @@ class EmployeeListInfo extends StatelessWidget {
               SizedBox(
                 width: screenWidth / 2,
                 child: Text(
-                  departmentName,
+                  department.name ?? "Unknown department",
                   style: subTextFieldTitleStyle.copyWith(
                     color: AppColor.hintColor,
                   ),
@@ -75,10 +78,16 @@ class EmployeeListInfo extends StatelessWidget {
               SizedBox(
                 height: AppLayout.getHeight(34),
                 child: CustomStatusButton(
-                  textColor: statusColor ?? AppColor.primaryColor,
-                  bgColor:
-                      (statusColor ?? AppColor.primaryColor).withOpacity(0.2),
-                  text: statusText,
+                  textColor: employmentStatus.color == null
+                      ? Colors.transparent
+                      : Color(int.parse(
+                          "0xFF${employmentStatus.color?.replaceAll("#", "")}")),
+                  bgColor: (employmentStatus.color == null
+                          ? Colors.transparent
+                          : Color(int.parse(
+                              "0xFF${employmentStatus.color?.replaceAll("#", "")}")))
+                      .withOpacity(0.2),
+                  text: employmentStatus.name ?? "Unknown status",
                   textSize: 13,
                 ),
               ),
@@ -93,7 +102,8 @@ class EmployeeListInfo extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(name, departmentName, imgUrlKey),
+                    _buildHeader("$firstName $lastName",
+                        department.name ?? "Unknown department", imgUrlKey),
                     _buildActionItem(AppString.textViewProfile.tr, () {
                       Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
                     }),
@@ -232,10 +242,20 @@ class EmployeeListInfo extends StatelessWidget {
   }
 
   _handleEditButtonClick() {
+    EmploymentController controller = Get.find<EmploymentController>();
+    controller.editFirstNameController.text =
+        controller.initFirstName = firstName;
+    controller.editLastNameController.text = controller.initLastName = lastName;
+    controller.initEmploymentStatusId = employmentStatus.id;
+    controller.initDesignationId = designation.id;
+    controller.initDepartmentId = department.id;
+    controller.editJoiningController.text =
+        controller.initJoiningDate = joiningDate;
+    controller.editLastNameController.addListener(controller.checkForChanges);
+    controller.editLastNameController.addListener(controller.checkForChanges);
+
     Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
-    Get.find<EmploymentController>()
-      ..getEmployeeProfile(orgUserId: employeeId)
-      ..getDesignations();
+    Get.find<EmploymentController>().getDesignations();
     if (!Get.find<EmploymentController>().isEmploymentHistoryApiCalled) {
       Get.find<EmploymentController>()
         ..getDepartments()

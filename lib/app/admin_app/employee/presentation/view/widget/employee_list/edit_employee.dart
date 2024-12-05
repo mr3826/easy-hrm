@@ -48,9 +48,7 @@ class EditEmployee extends GetView<EmploymentController> {
         _buildTitleText(text: title, isRequired: isRequired),
         customSpacerHeight(height: 8),
         DropdownButtonFormField2(
-          value: initValue.isNotEmpty
-              ? initValue
-              : null,
+          value: initValue.isNotEmpty ? initValue : null,
           decoration: _buildDropdownDecoration(),
           isExpanded: true,
           hint: Text(
@@ -226,14 +224,6 @@ class EditEmployee extends GetView<EmploymentController> {
   }
 
   Widget _body(BuildContext context) {
-    controller.editFirstNameController.text = controller.employeeProfileInfo
-            ?.getOrganizationUserDetails?.profile?.firstName ??
-        '';
-    controller.editLastNameController.text = controller.employeeProfileInfo
-            ?.getOrganizationUserDetails?.profile?.lastName ??
-        '';
-    controller.editLastNameController.addListener(controller.checkForChanges);
-    controller.editLastNameController.addListener(controller.checkForChanges);
     return Padding(
       padding: marginLayout,
       child: SingleChildScrollView(
@@ -245,33 +235,27 @@ class EditEmployee extends GetView<EmploymentController> {
             _userTextField(
                 AppString.text_last_name.tr, controller.editLastNameController),
             _buildDropdownField(
-              title: AppString.textEmployeeStatus.tr,
-              isRequired: true,
-              hint: 'Select status',
-              items: controller.employmentStatuses?.statuses ?? [],
-              initValue: "",
-              onChanged: (value) =>
-                  controller.employeeStatusValue.value = value ?? '',
-            ),
+                title: AppString.textEmployeeStatus.tr,
+                isRequired: true,
+                hint: 'Select status',
+                items: controller.employmentStatuses?.statuses ?? [],
+                initValue: controller.initEmploymentStatusId ?? "",
+                onChanged: (value) {}),
             customSpacerHeight(height: 12),
             _buildDropdownField(
-              title: AppString.text_designation.tr,
-              hint: 'Select designation',
-              items: controller.designations?.designations ?? [],
-              initValue: '',
-              onChanged: (value) =>
-                  controller.employeeDesignationValue.value = value ?? '',
-            ),
+                title: AppString.text_designation.tr,
+                hint: 'Select designation',
+                items: controller.designations?.designations ?? [],
+                initValue: controller.initDesignationId ?? "",
+                onChanged: (value) {}),
             customSpacerHeight(height: 12),
             _buildDropdownField(
-              title: AppString.text_deparmtnet.tr,
-              isRequired: true,
-              hint: 'Select department',
-              items: controller.departments?.departments ?? [],
-              initValue: '',
-              onChanged: (value) =>
-                  controller.employeeDepartmentValue.value = value ?? '',
-            ),
+                title: AppString.text_deparmtnet.tr,
+                isRequired: true,
+                hint: 'Select department',
+                items: controller.departments?.departments ?? [],
+                initValue: controller.initDepartmentId ?? '',
+                onChanged: (value) {}),
             customSpacerHeight(height: 12),
             _buildTitleText(
                 text: AppString.textJoiningDate.tr, isRequired: true),

@@ -590,27 +590,31 @@ mutation MarkUnreadNotificationAsSeen($inputData: UnreadNotificationSeenInputTyp
 }
 ''';
 
-/// employyee info
+/// employee info
 ///
 
 const getEmployeeList = r'''
-query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
-  getOrganizationUsers(queryData: $queryData) {
+query GetOrganizationUsers($queryData: OrganizationUserQueryData, $optionData: OptionDataType) {
+  getOrganizationUsers(queryData: $queryData, optionData: $optionData) {
     data {
       id
+      join_date
       profile {
         first_name
         last_name
         image
       }
       employment_status {
+        id
         name
         color
       }
       designation {
+        id
         name
       }
       department {
+        id
         name
       }
       user {
@@ -618,6 +622,7 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
         email
       }
       user_id
+      
     }
     metaData {
       filteredRows
