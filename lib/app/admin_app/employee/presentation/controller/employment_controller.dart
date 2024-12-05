@@ -9,7 +9,7 @@ import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
 import '../../../../../modules/leave/domain/leave_record_response.dart' as lr;
 import '../../data/employee_remote_data_source.dart';
 import '../../domain/employee_info.dart';
-import '../../domain/employement_status.dart';
+import '../../domain/user_work_info_dropdown.dart' as emp_wrk_inf;
 import '../view/widget/filter/check_box.dart';
 
 class EmploymentController extends GetxController with StateMixin {
@@ -20,6 +20,8 @@ class EmploymentController extends GetxController with StateMixin {
   RxBool isSearchInfoLoading = false.obs;
   RxBool isEmployeesInfoLoading = false.obs;
   RxBool isFilterInfoLoading = false.obs;
+  bool isEmploymentHistoryApiCalled = false;
+  bool isProfileInfoApiCalled = false;
 
   RxString searchQuery = ''.obs;
 
@@ -30,6 +32,7 @@ class EmploymentController extends GetxController with StateMixin {
   RxInt daysCount = 0.obs;
   RxInt applicationBalanceCount = 0.obs;
   RxInt applicationMaxDaysCount = 0.obs;
+  RxBool hasChangedProfileInfo = false.obs;
 
   void dayIncrement() {
     daysCount++;
@@ -82,6 +85,10 @@ class EmploymentController extends GetxController with StateMixin {
   List<CheckBoxModel> departmentList = [];
 
   List<CheckBoxModel> employmentStatusList = [];
+
+  emp_wrk_inf.DesignationList? designations;
+  emp_wrk_inf.EmploymentStatusList? employmentStatuses;
+  emp_wrk_inf.DepartmentList? departments;
 
   List<CheckBoxModel> userStatusList = [
     CheckBoxModel(checkBoxName: "Active", checkBoxNameValue: "active"),
@@ -151,30 +158,43 @@ class EmploymentController extends GetxController with StateMixin {
 
   Future<void> getEmploymentStatus() async {
     isFilterInfoLoading(true);
-    final response = await _employeeRemoteDataSource.getEmploymentsStatus();
-    employmentStatusList = response?.getEmploymentsStatus
-            ?.map(
-              (GetEmploymentsStatus employmentsStatus) => CheckBoxModel(
-                  checkBoxName: employmentsStatus.name ?? "",
-                  checkBoxNameValue: employmentsStatus.id ?? ""),
-            )
-            .toList() ??
-        [];
+    isEmploymentHistoryApiCalled = true;
+    employmentStatuses = await _employeeRemoteDataSource.getEmploymentsStatus();
+    if (employmentStatuses != null) {
+      employmentStatusList = employmentStatuses!.statuses
+          .map(
+            (emp_wrk_inf.EmploymentStatus employmentStatus) => CheckBoxModel(
+                checkBoxName: employmentStatus.name,
+                checkBoxNameValue: employmentStatus.id),
+          )
+          .toList();
+    }
     isFilterInfoLoading(false);
   }
 
   Future<void> getDepartments() async {
     isFilterInfoLoading(true);
-    final response = await _employeeRemoteDataSource.getDepartments();
-    departmentList = response?.getDepartments?.data
-            ?.map(
-              (department) => CheckBoxModel(
-                  checkBoxName: department.name ?? "",
-                  checkBoxNameValue: department.id ?? ""),
-            )
-            .toList() ??
-        [];
+    isEmploymentHistoryApiCalled = true;
+    departments = await _employeeRemoteDataSource.getDepartments();
+
+    if (departments != null) {
+      departmentList = departments!.departments
+          .map(
+            (emp_wrk_inf.DropdownItem department) => CheckBoxModel(
+                checkBoxName: department.name,
+                checkBoxNameValue: department.id),
+          )
+          .toList();
+    }
+
     isFilterInfoLoading(false);
+  }
+
+  Future<void> getDesignations() async {
+    change(null, status: RxStatus.loading());
+    isEmploymentHistoryApiCalled = true;
+    designations = await _employeeRemoteDataSource.getDesignations();
+    change(null, status: RxStatus.success());
   }
 
   Future<void> getEmployeeProfile({required String orgUserId}) async {
@@ -200,8 +220,9 @@ class EmploymentController extends GetxController with StateMixin {
 
   _getEmployeeUserLeaveRecord({required String orgUserId}) async {
     change(null, status: RxStatus.loading());
-    final List<lr.GetLeaveRecordsForApp>? res = await _employeeLeaveRemoteDataSource.getLeaveRecordList(
-        limit: 20, offset: 0, orgUserId: orgUserId);
+    final List<lr.GetLeaveRecordsForApp>? res =
+        await _employeeLeaveRemoteDataSource.getLeaveRecordList(
+            limit: 20, offset: 0, orgUserId: orgUserId);
     change(null, status: RxStatus.success());
   }
 
@@ -209,6 +230,15 @@ class EmploymentController extends GetxController with StateMixin {
     for (CheckBoxModel item in checkBoxList) {
       item.value = false;
     }
+  }
+
+  // Method to check for changes
+  void checkForChanges() {
+    hasChangedProfileInfo.value = editFirstNameController.text !=
+            employeeProfileInfo
+                ?.getOrganizationUserDetails?.profile?.firstName ||
+        editLastNameController.text !=
+            employeeProfileInfo?.getOrganizationUserDetails?.profile?.lastName;
   }
 
   void addRecentSearchData(Data data) async {

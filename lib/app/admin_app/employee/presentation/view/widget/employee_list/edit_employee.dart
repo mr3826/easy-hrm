@@ -16,6 +16,7 @@ import '../../../../../../../common/widget/timePicker/date_time_picker_controlle
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../domain/user_work_info_dropdown.dart';
 import '../../../controller/employment_controller.dart';
 
 class EditEmployee extends GetView<EmploymentController> {
@@ -28,56 +29,7 @@ class EditEmployee extends GetView<EmploymentController> {
         title: AppString.textEditEmployee.tr,
         onPressAction: () => Get.back(),
       ),
-      body: controller.obx(
-          (state) => Padding(
-                padding: marginLayout,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      customSpacerHeight(height: 12),
-                      _userTextField(AppString.text_first_name.tr,
-                          controller.editFirstNameController),
-                      _userTextField(AppString.text_last_name.tr,
-                          controller.editLastNameController),
-                      _buildDropdownField(
-                        title: AppString.textEmployeeStatus.tr,
-                        isRequired: true,
-                        hint: 'Select status',
-                        items: controller.items,
-                        value: controller.employeeStatusValue.value,
-                        onChanged: (value) =>
-                            controller.employeeStatusValue.value = value ?? '',
-                      ),
-                      customSpacerHeight(height: 12),
-                      _buildDropdownField(
-                        title: AppString.text_designation.tr,
-                        hint: 'Select designation',
-                        items: controller.items,
-                        value: controller.employeeDesignationValue.value,
-                        onChanged: (value) => controller
-                            .employeeDesignationValue.value = value ?? '',
-                      ),
-                      customSpacerHeight(height: 12),
-                      _buildDropdownField(
-                        title: AppString.text_deparmtnet.tr,
-                        isRequired: true,
-                        hint: 'Select department',
-                        items: controller.items,
-                        value: controller.employeeDepartmentValue.value,
-                        onChanged: (value) => controller
-                            .employeeDepartmentValue.value = value ?? '',
-                      ),
-                      customSpacerHeight(height: 12),
-                      _buildTitleText(
-                          text: AppString.textJoiningDate.tr, isRequired: true),
-                      customSpacerHeight(height: 8),
-                      _buildJoiningDate(context),
-                      customSpacerHeight(height: 28),
-                      _buildButtons(),
-                    ],
-                  ),
-                ),
-              ),
+      body: controller.obx((state) => _body(context),
           onLoading: const LoadingIndicator()),
     );
   }
@@ -85,8 +37,8 @@ class EditEmployee extends GetView<EmploymentController> {
   Widget _buildDropdownField({
     required String title,
     required String hint,
-    required List<String> items,
-    String? value,
+    required List<DropdownItem> items,
+    required String initValue,
     bool isRequired = false,
     ValueChanged<String?>? onChanged,
   }) {
@@ -96,7 +48,9 @@ class EditEmployee extends GetView<EmploymentController> {
         _buildTitleText(text: title, isRequired: isRequired),
         customSpacerHeight(height: 8),
         DropdownButtonFormField2(
-          value: value?.isNotEmpty == true ? value : null,
+          value: initValue.isNotEmpty
+              ? initValue
+              : null,
           decoration: _buildDropdownDecoration(),
           isExpanded: true,
           hint: Text(
@@ -106,8 +60,8 @@ class EditEmployee extends GetView<EmploymentController> {
           ),
           items: items
               .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item, style: AppStyle.normal_text_black),
+                    value: item.id,
+                    child: Text(item.name, style: AppStyle.normal_text_black),
                   ))
               .toList(),
           onChanged: onChanged,
@@ -236,9 +190,17 @@ class EditEmployee extends GetView<EmploymentController> {
                   fontSize: Dimensions.fontSizeDefault + 2,
                 ),
               ),
-              onPressed: () {},
-              buttonColor: AppColor.primaryColor,
-              borderColor: AppColor.primaryColor,
+              onPressed: controller.hasChangedProfileInfo.isFalse
+                  ? () {}
+                  : () {
+                      print("Clicked");
+                    },
+              buttonColor: controller.hasChangedProfileInfo.isFalse
+                  ? AppColor.primaryColor.withOpacity(.5)
+                  : AppColor.primaryColor,
+              borderColor: controller.hasChangedProfileInfo.isFalse
+                  ? AppColor.primaryColor.withOpacity(.5)
+                  : AppColor.primaryColor,
             ),
           ),
         ),
@@ -260,6 +222,68 @@ class EditEmployee extends GetView<EmploymentController> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
       borderSide: const BorderSide(color: AppColor.hintColor, width: 1),
+    );
+  }
+
+  Widget _body(BuildContext context) {
+    controller.editFirstNameController.text = controller.employeeProfileInfo
+            ?.getOrganizationUserDetails?.profile?.firstName ??
+        '';
+    controller.editLastNameController.text = controller.employeeProfileInfo
+            ?.getOrganizationUserDetails?.profile?.lastName ??
+        '';
+    controller.editLastNameController.addListener(controller.checkForChanges);
+    controller.editLastNameController.addListener(controller.checkForChanges);
+    return Padding(
+      padding: marginLayout,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            customSpacerHeight(height: 12),
+            _userTextField(AppString.text_first_name.tr,
+                controller.editFirstNameController),
+            _userTextField(
+                AppString.text_last_name.tr, controller.editLastNameController),
+            _buildDropdownField(
+              title: AppString.textEmployeeStatus.tr,
+              isRequired: true,
+              hint: 'Select status',
+              items: controller.employmentStatuses?.statuses ?? [],
+              initValue: "",
+              onChanged: (value) =>
+                  controller.employeeStatusValue.value = value ?? '',
+            ),
+            customSpacerHeight(height: 12),
+            _buildDropdownField(
+              title: AppString.text_designation.tr,
+              hint: 'Select designation',
+              items: controller.designations?.designations ?? [],
+              initValue: '',
+              onChanged: (value) =>
+                  controller.employeeDesignationValue.value = value ?? '',
+            ),
+            customSpacerHeight(height: 12),
+            _buildDropdownField(
+              title: AppString.text_deparmtnet.tr,
+              isRequired: true,
+              hint: 'Select department',
+              items: controller.departments?.departments ?? [],
+              initValue: '',
+              onChanged: (value) =>
+                  controller.employeeDepartmentValue.value = value ?? '',
+            ),
+            customSpacerHeight(height: 12),
+            _buildTitleText(
+                text: AppString.textJoiningDate.tr, isRequired: true),
+            customSpacerHeight(height: 8),
+            _buildJoiningDate(context),
+            customSpacerHeight(height: 28),
+            Obx(
+              () => _buildButtons(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

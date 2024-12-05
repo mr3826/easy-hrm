@@ -6,9 +6,8 @@ import '../../../../modules/profile/model/user_profile.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
 import '../../../../utils/api_endpoints.dart';
-import '../domain/department_info.dart';
 import '../domain/employee_info.dart';
-import '../domain/employement_status.dart';
+import '../domain/user_work_info_dropdown.dart';
 
 class EmployeeRemoteDataSource {
   final NetworkClient networkClient;
@@ -34,28 +33,28 @@ class EmployeeRemoteDataSource {
     }
   }
 
-  Future<EmploymentsStatus?> getEmploymentsStatus() async {
+  Future<EmploymentStatusList?>? getEmploymentsStatus() async {
     try {
-      final response =
-          await networkClient.graphRequest(queryString: getEmploymentStatus);
+      final response = await networkClient.graphRequest(
+          queryString: getEmploymentStatusInfo);
+
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
             exception: response.exception!, methodName: "getEmploymentsStatus");
         return null;
       }
-
-      return EmploymentsStatus.fromJson(response.data!);
+      return EmploymentStatusList.fromJson(response.data!);
     } catch (e) {
       log('Error in getEmploymentsStatus: $e');
       return null;
     }
   }
 
-  Future<DepartmentsInfo?> getDepartments() async {
+  Future<DepartmentList?> getDepartments() async {
     try {
       final response =
-          await networkClient.graphRequest(queryString: getDepartment);
+          await networkClient.graphRequest(queryString: getDepartmentInfo);
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
@@ -63,9 +62,27 @@ class EmployeeRemoteDataSource {
         return null;
       }
 
-      return DepartmentsInfo.fromJson(response.data!);
+      return DepartmentList.fromJson(response.data!);
     } catch (e) {
       log('Error in getDepartments: $e');
+      return null;
+    }
+  }
+
+  Future<DesignationList?> getDesignations() async {
+    try {
+      final response =
+          await networkClient.graphRequest(queryString: getEmploymentDesignationInfo);
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getDesignations");
+        return null;
+      }
+
+      return DesignationList.fromJson(response.data!);
+    } catch (e) {
+      log('Error in getDesignations: $e');
       return null;
     }
   }

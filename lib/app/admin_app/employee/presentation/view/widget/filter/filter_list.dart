@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/employee/presentation/view/widget/filter/section_expansion_tile.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
@@ -19,14 +20,23 @@ class EmployeeFilterSection extends StatefulWidget {
 class _EmployeeFilterSectionState extends State<EmployeeFilterSection> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          ..._buildSectionList(),
-        ],
-      ),
+    return Column(
+      children: [
+        _buildHeader(),
+        GetBuilder<EmploymentController>(
+          builder: (EmploymentController controller) =>
+              controller.isFilterInfoLoading.isTrue
+                  ? const LoadingIndicator()
+                  : Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [..._buildSectionList()],
+                        ),
+                      ),
+                    ),
+        ),
+      ],
     );
   }
 

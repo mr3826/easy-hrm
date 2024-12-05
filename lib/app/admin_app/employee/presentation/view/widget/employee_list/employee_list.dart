@@ -98,10 +98,8 @@ class EmployeeListInfo extends StatelessWidget {
                       Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
                     }),
                     _divider(),
-                    _buildActionItem(AppString.text_edit.tr, () async{
-                      Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
-                      await Get.find<EmploymentController>().getEmployeeProfile(orgUserId: employeeId);
-                    }),
+                    _buildActionItem(
+                        AppString.text_edit.tr, () => _handleEditButtonClick()),
                     _divider(),
                     _buildActionItem(AppString.textTerminate.tr, () {
                       _customButtonSheet(
@@ -231,5 +229,17 @@ class EmployeeListInfo extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _handleEditButtonClick() {
+    Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
+    Get.find<EmploymentController>()
+      ..getEmployeeProfile(orgUserId: employeeId)
+      ..getDesignations();
+    if (!Get.find<EmploymentController>().isEmploymentHistoryApiCalled) {
+      Get.find<EmploymentController>()
+        ..getDepartments()
+        ..getEmploymentStatus();
+    }
   }
 }

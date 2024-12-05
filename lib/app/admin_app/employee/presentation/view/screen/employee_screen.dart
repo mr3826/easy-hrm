@@ -85,6 +85,11 @@ class EmployeeScreen extends StatelessWidget {
           ),
           labelText: AppString.textFilters.tr,
           onTap: () {
+            if (!Get.find<EmploymentController>().isEmploymentHistoryApiCalled) {
+              Get.find<EmploymentController>()
+                ..getDepartments()
+                ..getEmploymentStatus();
+            }
             showFilterSelectionSheet();
           },
         ),
