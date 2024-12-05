@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart' as gs;
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:payrun_mobile/app/admin_app/employee/domain/employee_info.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/custom_search_field.dart';
@@ -12,7 +18,12 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../controller/employment_controller.dart';
 
 class SearchEmployeeList extends StatelessWidget {
-  const SearchEmployeeList({super.key});
+  final Function(String)? onValueSelected;
+  final Function onClickRouteAction;
+
+  const SearchEmployeeList(
+      {Key? key, this.onValueSelected, required this.onClickRouteAction})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,127 +32,296 @@ class SearchEmployeeList extends StatelessWidget {
       children: [
         buildBottomSheetHeader(text: AppString.textEmployees.tr),
         customSpacerHeight(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CustomSearchField(
-            onSearchChanged: (value) async{
-              _valueChange(value);
-            },
-            searchController:
-                Get.find<EmploymentController>().searchController,
-            searchHintText: AppString.textSearchAndSelect.tr,
-          ),
-        ),
+
+        /// Search employee input field
+        _buildSearchField(),
+
         customSpacerHeight(height: 8),
-        buildRecentSearchSection(),
-        Obx(() => Get.find<EmploymentController>().searchQuery.isEmpty
-            ? Expanded(child: _buildEmployeeList())
-            : Container()),
+
+        Obx(() {
+          return Get.find<EmploymentController>().searchQuery.isEmpty
+              ? Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        customSpacerHeight(height: 12),
+
+                        /// Current user section (You)
+                        GestureDetector(
+                          onTap: () {
+                            onValueSelected?.call(gs.GetStorage()
+                                    .read(AppString.ORGANIZATION_USER_ID) ??
+                                "");
+                            onClickRouteAction.call();
+                          },
+                          child: _buildOwnInfo(
+                              name:
+                                  "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+                              role: Get.find<UserProfileController>()
+                                      .userDetails
+                                      ?.getOrganizationUserDetails
+                                      ?.department
+                                      ?.name ??
+                                  "",
+                              imgUrl: Get.find<UserProfileController>()
+                                      .userDetails
+                                      ?.getOrganizationUserDetails
+                                      ?.profile
+                                      ?.image ??
+                                  ""),
+                        ),
+
+                        /// Recent search employee text section
+                        _buildRecentSearchTitleSection(),
+
+                        /// Employee list section
+                        _buildRecentlySearchedEmployeeSection(),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height / 2),
+                      ],
+                    ),
+                  ),
+                )
+              : Get.find<EmploymentController>().isSearchInfoLoading.isTrue
+                  ? const Center(
+                      child: CupertinoActivityIndicator(
+                        color: AppColor.primaryColor,
+                        radius: 14,
+                      ),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: Get.find<EmploymentController>()
+                              .searchedEmployeeList
+                              ?.length ??
+                          0,
+                      itemBuilder: (context, index) {
+                        Data? employee = Get.find<EmploymentController>()
+                            .searchedEmployeeList?[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Get.find<EmploymentController>()
+                                .addRecentSearchData(employee ?? Data());
+                            onValueSelected?.call(employee?.id ?? "");
+                            onClickRouteAction.call();
+                          },
+                          child: _buildEmploymeeInfo(
+                              name:
+                                  "${employee?.profile?.firstName ?? ""} ${employee?.profile?.lastName ?? ""}",
+                              role: employee?.department?.name ?? "",
+                              imgUrl: employee?.profile?.image ?? ""),
+                        );
+                      },
+                    );
+        }),
       ],
     );
   }
 
-  void _valueChange(String value) {
-    _clearTextField();
-    Get.find<EmploymentController>().searchQuery.value = value;
-    Get.find<EmploymentController>().searchController.text = value;
+  void _onSearchValueChanged(String value) {
+    _clearSearchField();
+    final controller = Get.find<EmploymentController>();
+    controller.searchQuery.value = value;
+    controller.searchController.text = value;
   }
-}
 
-Widget _buildEmployeeList() {
-  return ListView.builder(
-    shrinkWrap: true,
-    itemCount: 3, // Adjust based on your data
-    itemBuilder: (context, index) {
-      return _buildEmployeeListItem(index);
-    },
-  );
-}
+  Widget _buildRecentlySearchedEmployeeSection() => _buildEmployeeList();
 
-Widget _buildEmployeeListItem(int index) {
-  return Padding(
-    padding: const EdgeInsets.all(14.0),
-    child: Row(
+  Widget _buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: CustomSearchField(
+        onSearchChanged: (value) async {
+          _onSearchValueChanged(value);
+          if (value.isNotEmpty) {
+            await Get.find<EmploymentController>()
+                .getEmployeesBySearch(searchQuery: value);
+          }
+        },
+        searchController: Get.find<EmploymentController>().searchController,
+        searchHintText: AppString.textSearchAndSelect.tr,
+      ),
+    );
+  }
+
+  Widget _buildOwnInfo({
+    required String name,
+    required String role,
+    required String imgUrl,
+  }) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(left: 20.0, right: 20, top: 14, bottom: 16),
+      child: Row(
+        children: [
+          CustomNetworkImage(
+            imgUrlKey: "", // Replace with actual image URL key
+            profileImageKey: imgUrl,
+            errorText: 'ER',
+            height: 22,
+          ),
+          customSpacerWidth(width: 14),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildEmployeeDetails(name, role),
+                const Text("(${AppString.textYou})")
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmploymeeInfo({
+    required String name,
+    required String role,
+    required String imgUrl,
+  }) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(left: 20.0, right: 20, top: 14, bottom: 16),
+      child: Row(
+        children: [
+          CustomNetworkImage(
+            imgUrlKey: "", // Replace with actual image URL key
+            profileImageKey: imgUrl,
+            errorText: 'ER',
+            height: 22,
+          ),
+          customSpacerWidth(width: 14),
+          Expanded(child: _buildEmployeeDetails(name, role)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmployeeDetails(String name, String role) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CustomNetworkImage(
-          imgUrlKey: "", // Replace with actual image URL key
-          errorText: 'ER',
-          height: 22,
+        Text(
+          name,
+          style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.secondaryColor,
+            fontWeight: FontWeight.w600,
+            fontSize: Dimensions.fontSizeDefault + 2,
+          ),
         ),
-        customSpacerWidth(width: 14),
-        Expanded(
-          child: buildEmployeeDetails("Jonus Kahnwald", "Product Designer"),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon:  const Icon(
-            Icons.close,
+        Text(
+          role,
+          style: subTextFieldTitleStyle.copyWith(
             color: AppColor.hintColor,
-            size: 26,
           ),
         ),
       ],
-    ),
-  );
-}
+    );
+  }
 
-Widget buildRecentSearchSection() {
-  return Obx(() => Get.find<EmploymentController>().searchQuery.isEmpty
-      ? Padding(
-          padding:
-              const EdgeInsets.only(left: 24.0, top: 20, bottom: 20, right: 24),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppString.textRecentSearch.tr,
-                style: AppStyle.normal_text_black.copyWith(
-                  color: AppColor.normalTextColor,
-                  fontSize: Dimensions.fontSizeMid - 1,
-                  fontWeight: FontWeight.w600,
-                ),
+  Widget _buildEmployeeList() {
+    return ValueListenableBuilder(
+      valueListenable: Hive.box<Data>('dataBox').listenable(),
+      builder: (BuildContext context, Box<Data> value, Widget? child) {
+        final dataList = value.values.toList();
+        return ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: dataList.length,
+          // Adjust based on your data
+          itemBuilder: (context, index) {
+            return _buildEmployeeListItem(dataList[index]);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildEmployeeListItem(Data employeeData) {
+    return GestureDetector(
+      onTap: () {
+        onValueSelected?.call(employeeData.id ?? "");
+        onClickRouteAction.call();
+      },
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 16.0, right: 20, top: 14, bottom: 8),
+        child: Row(
+          children: [
+            const CustomNetworkImage(
+              imgUrlKey: "", // Replace with actual image URL key
+              errorText: 'ER',
+              height: 22,
+            ),
+            customSpacerWidth(width: 14),
+            Expanded(
+              child: _buildEmployeeDetails(
+                  "${employeeData.profile?.firstName ?? ""} ${employeeData.profile?.lastName ?? ""}",
+                  employeeData.department?.name ?? ""),
+            ),
+            IconButton(
+              onPressed: () {
+                Get.find<EmploymentController>()
+                    .removeRecentSearchData(employeeData.id ?? "");
+              },
+              icon: const Icon(
+                Icons.close,
+                color: AppColor.hintColor,
+                size: 26,
               ),
-              InkWell(
-                onTap: () {
-                  _clearTextField();
-                },
-                child: Text(
-                  AppString.textClearAll.tr,
-                  style: AppStyle.normal_text_black.copyWith(
-                    color: AppColor.secondaryColor,
-                    fontSize: Dimensions.fontSizeDefault,
-                  ),
-                ),
-              ),
-            ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecentSearchTitleSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            AppString.textRecentSearch.tr,
+            style: AppStyle.normal_text_black.copyWith(
+              color: AppColor.normalTextColor,
+              fontSize: Dimensions.fontSizeMid - 1,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        )
-      : Container());
-}
+          ValueListenableBuilder(
+            valueListenable: Hive.box<Data>('dataBox').listenable(),
+            builder: (BuildContext context, Box<Data> value, child) {
+              final dataList = value.values.toList();
 
-void _clearTextField() {
-  Get.find<EmploymentController>().searchController.clear();
-  Get.find<EmploymentController>().searchQuery.value = "";
-}
+              return dataList.isNotEmpty
+                  ? InkWell(
+                      onTap: () {
+                        Get.find<EmploymentController>()
+                            .clearAllRecentSearchData();
+                      },
+                      child: Text(
+                        AppString.textClearAll.tr,
+                        style: AppStyle.normal_text_black.copyWith(
+                          color: AppColor.secondaryColor,
+                          fontSize: Dimensions.fontSizeDefault,
+                        ),
+                      ),
+                    )
+                  : Container();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-Widget buildEmployeeDetails(name, department) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        "$name",
-        style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.secondaryColor,
-          fontWeight: FontWeight.w600,
-          fontSize: Dimensions.fontSizeDefault + 2,
-        ),
-      ),
-      Text(
-        "$department",
-        style: subTextFieldTitleStyle.copyWith(
-          color: AppColor.hintColor,
-        ),
-      ),
-    ],
-  );
+  void _clearSearchField() {
+    final controller = Get.find<EmploymentController>();
+    controller.searchController.clear();
+    controller.searchQuery.value = "";
+  }
 }

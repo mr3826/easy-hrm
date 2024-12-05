@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/employee/presentation/controller/employment_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
+import '../../../../../../modules/profile/model/user_profile.dart';
 import '../widget/employee_profile_view/leave/leave_widget.dart';
 import '../widget/employee_profile_view/leave_summary/leave_summary_widget.dart';
 import '../widget/employee_profile_view/overview/overview_widget.dart';
@@ -11,32 +15,34 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../common/widget/employee/user_Info_widget.dart';
 
-
-class EmployeeProfileViewScreen extends StatelessWidget {
+class EmployeeProfileViewScreen extends GetView<EmploymentController> {
   const EmployeeProfileViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: _buildAppBar(),
-          body: Padding(
-            padding: marginLayout.copyWith(left: 12, right: 12),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildUserInfo(),
-                  _buildMonthlyGoal(),
-                  customSpacerHeight(height: 20),
-                  _buildTabBar(),
-                  customSpacerHeight(height: 20),
-                  _buildTabBarView()
-                ],
-              ),
+    return Scaffold(
+        appBar: _buildAppBar(),
+        body: controller.obx(
+            (state) => DefaultTabController(
+              length: 3,
+              child: Padding(
+                    padding: marginLayout.copyWith(left: 12, right: 12),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _buildUserInfo(),
+                          _buildMonthlyGoal(),
+                          customSpacerHeight(height: 20),
+                          _buildTabBar(),
+                          customSpacerHeight(height: 20),
+                          _buildTabBarView()
+                        ],
+                      ),
+                    ),
+                  ),
             ),
-          ),
-        ));
+            onLoading: const LoadingIndicator()),
+    );
   }
 
   AppBar _buildAppBar() {
@@ -60,24 +66,82 @@ class EmployeeProfileViewScreen extends StatelessWidget {
     );
   }
 
+
+
   _buildUserInfo() {
+    EmploymentController controller = Get.find<EmploymentController>();
     return UserInfoWidget(
       employeeStatus: EmployeeStatus(
-          firstName: "Rifat",
-          lastName: "Hasan",
-          department: "Mobile App",
-          profileImageKey: "",
-          currentEmployeeStatus: "Active",
-          employmentContractType: "Permanent",
-          employmentStatusColorCode: "0CAA1B"),
+        firstName: controller.employeeProfileInfo?.getOrganizationUserDetails
+                ?.profile?.firstName ??
+            "",
+        lastName: controller.employeeProfileInfo?.getOrganizationUserDetails
+                ?.profile?.lastName ??
+            "",
+        department: _getUserDesignation(),
+        profileImageKey: controller.employeeProfileInfo
+                ?.getOrganizationUserDetails?.profile?.image ??
+            "",
+        currentEmployeeStatus: controller
+                .employeeProfileInfo?.getOrganizationUserDetails?.status ??
+            "",
+        employmentContractType: _getEmploymentContactType() ?? "",
+        employmentStatusColorCode: _getEmploymentContactColor() ?? "0CAA1B",
+      ),
     );
   }
 
   _buildMonthlyGoal() {
+    GeTimelogAndLeaveAvailabilityForApp? timelogAndLeaveAvailabilityForApp =
+        Get.find<EmploymentController>()
+            .employeesLogHistory
+            ?.geTimelogAndLeaveAvailabilityForApp;
     return MonthlyStatusWidget(
       status: MonthlyStatus(
-          leaveBalance: "0.0", monthlyGoal: "0.0", loggedTime: "0.0"),
+          leaveBalance:
+              timelogAndLeaveAvailabilityForApp?.balanceLeave ?? "0.0",
+          monthlyGoal:
+              timelogAndLeaveAvailabilityForApp?.totalSchedule ?? "0.0",
+          loggedTime: timelogAndLeaveAvailabilityForApp?.totalLogged ?? "0.0"),
     );
+  }
+
+  String? _getEmploymentContactType() {
+    if (controller.employeeWorkHistory?.getOrganizationUserHistory
+                ?.employmentHistories !=
+            null &&
+        controller.employeeWorkHistory!.getOrganizationUserHistory!
+            .employmentHistories!.isNotEmpty) {
+      return controller.employeeWorkHistory?.getOrganizationUserHistory
+          ?.employmentHistories?.first.employmentStatus?.name;
+    }
+    return null;
+  }
+
+  String? _getEmploymentContactColor() {
+    if (controller.employeeWorkHistory?.getOrganizationUserHistory
+                ?.employmentHistories !=
+            null &&
+        controller.employeeWorkHistory!.getOrganizationUserHistory!
+            .employmentHistories!.isNotEmpty) {
+      return controller.employeeWorkHistory?.getOrganizationUserHistory
+          ?.employmentHistories?.first.employmentStatus?.color
+          ?.replaceAll("#", "");
+    }
+    return null;
+  }
+
+  _getUserDesignation() {
+    if (controller.employeeWorkHistory?.getOrganizationUserHistory
+                ?.designationHistories !=
+            null &&
+        controller.employeeWorkHistory!.getOrganizationUserHistory!
+            .designationHistories!.isNotEmpty) {
+      return controller.employeeWorkHistory?.getOrganizationUserHistory
+              ?.designationHistories?.first.designation?.name ??
+          AppString.notAddedText.tr;
+    }
+    return AppString.notAddedText.tr;
   }
 }
 
@@ -91,7 +155,6 @@ Widget _buildTabBar() {
     unselectedLabelColor: AppColor.hintColor,
     labelStyle: AppStyle.normal_text_grey.copyWith(
         fontWeight: FontWeight.w600, fontSize: Dimensions.fontSizeDefault),
-
     tabs: [
       AppString.textOverview.tr,
       AppString.text_leave.tr,
@@ -114,7 +177,7 @@ Widget _buildTabBarText(String text) {
 Widget _buildTabBarView() {
   return SizedBox(
     height: MediaQuery.of(Get.context!).size.height,
-    child:  const TabBarView(
+    child: const TabBarView(
       children: [
         OverviewWidget(),
         LeaveWidget(),

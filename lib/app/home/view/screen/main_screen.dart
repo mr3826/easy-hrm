@@ -14,6 +14,7 @@ import '../../../../modules/dashboard/presentation/controller/dashbpard_controll
 import '../../../../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../../../../modules/leave/presentation/controller/leave_record_controller.dart';
 import '../../../../modules/leave/presentation/controller/update_leave_controller.dart';
+import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/notification/presentation/view/screen/notification.dart';
 import '../../../../modules/profile/controller/user_profile_controller.dart';
@@ -102,9 +103,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _initialController() async {
-    bool isAdmin =
-        Get.find<UserInfoController>().userInfo.user?.role?.contains("admin") ??
-            false;
+    bool isEmployee = Get.find<UserInfoController>()
+            .userInfo
+            .user
+            ?.roles
+            ?.contains("org_employee") ??
+        false;
     Get.put(DashboardController());
     Get.put(TimelineController());
     Get.put(NotificationController());
@@ -112,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
     Get.put(UserProfileController());
-    if(isAdmin){
+    if (!isEmployee) {
       Get.put(EmploymentController());
       Get.put(HrLeaveController());
     }
@@ -120,15 +124,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _screenListLayout() {
-    bool isAdmin =
-        Get.find<UserInfoController>().userInfo.user?.role?.contains("admin") ??
-            false;
+    bool isEmployee = Get.find<UserInfoController>()
+            .userInfo
+            .user
+            ?.roles
+            ?.contains("org_employee") ??
+        false;
     return [
       const TimelineScreen(),
-    //  const LeaveScreen(),
-      LeaveHrScreen(),
+      isEmployee ? const LeaveScreen() : const LeaveHrScreen(),
       const Dashboard(),
-      isAdmin ? const EmployeeScreen() : const NotificationScreen(),
+      isEmployee ? const NotificationScreen() : const EmployeeScreen(),
       const ProfileScreen(),
     ];
   }

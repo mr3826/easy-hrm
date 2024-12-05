@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
+import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
-import '../../../../leave_hr/presentation/view/widget/employee_search.dart';
 import '../../controller/employment_controller.dart';
 import '../../../domain/employee_info.dart';
 import '../widget/employee_list/employee_list.dart';
@@ -31,15 +32,18 @@ class EmployeeScreen extends StatelessWidget {
           customSpacerHeight(height: 4),
           GetBuilder<EmploymentController>(
             builder: (controller) => controller.isEmployeesInfoLoading.isTrue
-                ? const LoadingIndicator()
+                ? const Center(
+                    child: CupertinoActivityIndicator(
+                      color: AppColor.primaryColor,
+                      radius: 14,
+                    ),
+                  )
                 : _buildEmployeeList(),
-
           ),
         ],
       ),
     );
   }
-
 
   PreferredSizeWidget _buildEmployeeAppBar() {
     return customAppbar(
@@ -93,26 +97,32 @@ class EmployeeScreen extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.only(left: 8, right: 8),
-        itemCount: Get.find<EmploymentController>()
-            .employeeInfo
-            ?.getOrganizationUsers
-            ?.data
-            ?.length,
+        itemCount: Get.find<EmploymentController>().employeeList?.length,
         itemBuilder: (context, index) {
-          Data? employee = Get.find<EmploymentController>()
-              .employeeInfo
-              ?.getOrganizationUsers
-              ?.data?[index];
-          return EmployeeListInfo(
-            name:
-                "${employee?.profile?.firstName ?? "Unknown"} ${employee?.profile?.lastName ?? ""}",
-            departmentName: employee?.designation?.name ?? "Unknown department",
-            imgUrlKey: employee?.profile?.image ?? "",
-            statusText: employee?.employmentStatus?.name ?? "Unknown status",
-            statusColor: employee?.employmentStatus?.color == null
-                ? Colors.transparent
-                : Color(int.parse(
-                    "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
+          Data? employee =
+              Get.find<EmploymentController>().employeeList?[index];
+          return GestureDetector(
+            onTap: () async {
+              Get.find<EmploymentController>()
+                ..getEmployeeProfile(orgUserId: employee?.id ?? "")
+                ..getEmployeesEmploymentInfo(orgUserId: employee?.id ?? "")
+                ..getUserLogHistory(orgUserId: employee?.id ?? "");
+              Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+
+            },
+            child: EmployeeListInfo(
+              employeeId: employee?.id ?? "",
+              name:
+                  "${employee?.profile?.firstName ?? "Unknown"} ${employee?.profile?.lastName ?? ""}",
+              departmentName:
+                  employee?.department?.name ?? "Unknown department",
+              imgUrlKey: employee?.profile?.image ?? "",
+              statusText: employee?.employmentStatus?.name ?? "Unknown status",
+              statusColor: employee?.employmentStatus?.color == null
+                  ? Colors.transparent
+                  : Color(int.parse(
+                      "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
+            ),
           );
         },
       ),
@@ -123,10 +133,17 @@ class EmployeeScreen extends StatelessWidget {
 void showEmployeeSelectionSheet() {
   customButtonSheet(
     context: Get.context!,
-    child:  SearchEmployeeList(),
+    child: SearchEmployeeList(
+      onValueSelected: (String value) {
+        print("value id: $value");
+      },
+      onClickRouteAction: _goToProfileRoute,
+    ),
     height: 0.8,
   );
 }
+
+_goToProfileRoute() => Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
 
 void showFilterSelectionSheet() {
   customButtonSheet(

@@ -1,3 +1,7 @@
+import 'package:hive/hive.dart';
+part 'employee_info.g.dart';
+
+
 class EmployeeInfo {
   GetOrganizationUsers? getOrganizationUsers;
 
@@ -12,8 +16,9 @@ class EmployeeInfo {
 
 class GetOrganizationUsers {
   List<Data>? data;
+  MetaData? metaData;
 
-  GetOrganizationUsers({this.data});
+  GetOrganizationUsers({this.data, this.metaData});
 
   GetOrganizationUsers.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -22,44 +27,101 @@ class GetOrganizationUsers {
         data!.add(new Data.fromJson(v));
       });
     }
+    metaData = json['metaData'] != null
+        ? new MetaData.fromJson(json['metaData'])
+        : null;
   }
 }
 
-class Data {
+class MetaData {
+  int? filteredRows;
+
+  MetaData({this.filteredRows});
+
+  MetaData.fromJson(Map<String, dynamic> json) {
+    filteredRows = json['filteredRows'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['filteredRows'] = this.filteredRows;
+    return data;
+  }
+}
+
+
+
+@HiveType(typeId: 0)
+class Data extends HiveObject {
+  @HiveField(0)
   String? id;
+
+  @HiveField(1)
   Profile? profile;
+
+  @HiveField(2)
   EmploymentStatus? employmentStatus;
+
+  @HiveField(3)
   EmploymentStatus? designation;
+
+  @HiveField(4)
+  EmploymentStatus? department;
+
+  @HiveField(5)
   User? user;
+
+  @HiveField(6)
   String? userId;
 
-  Data(
-      {this.id,
-        this.profile,
-        this.employmentStatus,
-        this.designation,
-        this.user,
-        this.userId});
+  Data({
+    this.id,
+    this.profile,
+    this.employmentStatus,
+    this.designation,
+    this.department,
+    this.user,
+    this.userId,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    profile = json['profile'] != null ? Profile.fromJson(json['profile']) : null;
     employmentStatus = json['employment_status'] != null
-        ? new EmploymentStatus.fromJson(json['employment_status'])
+        ? EmploymentStatus.fromJson(json['employment_status'])
         : null;
     designation = json['designation'] != null
-        ? new EmploymentStatus.fromJson(json['designation'])
+        ? EmploymentStatus.fromJson(json['designation'])
         : null;
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    department = json['department'] != null
+        ? EmploymentStatus.fromJson(json['department'])
+        : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     userId = json['user_id'];
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['profile'] = this.profile?.toJson();
+    data['employment_status'] = this.employmentStatus?.toJson();
+    data['designation'] = this.designation?.toJson();
+    data['department'] = this.department?.toJson();
+    data['user'] = this.user?.toJson();
+    data['user_id'] = this.userId;
+    return data;
+  }
 }
 
-class Profile {
+@HiveType(typeId: 1)
+class Profile extends HiveObject {
+  @HiveField(0)
   String? firstName;
+
+  @HiveField(1)
   String? lastName;
+
+  @HiveField(2)
   String? image;
 
   Profile({this.firstName, this.lastName, this.image});
@@ -79,21 +141,35 @@ class Profile {
   }
 }
 
-class EmploymentStatus {
+@HiveType(typeId: 2)
+class EmploymentStatus extends HiveObject {
+  @HiveField(0)
   String? name;
+
+  @HiveField(1)
   String? color;
 
-  EmploymentStatus({this.name});
+  EmploymentStatus({this.name, this.color});
 
   EmploymentStatus.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     color = json['color'];
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['color'] = this.color;
+    return data;
+  }
 }
 
-class User {
+@HiveType(typeId: 3)
+class User extends HiveObject {
+  @HiveField(0)
   String? id;
+
+  @HiveField(1)
   String? email;
 
   User({this.id, this.email});

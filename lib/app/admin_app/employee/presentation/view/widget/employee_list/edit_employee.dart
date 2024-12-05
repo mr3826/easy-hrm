@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -17,9 +18,8 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../controller/employment_controller.dart';
 
-class EditEmployee extends StatelessWidget {
+class EditEmployee extends GetView<EmploymentController> {
   EditEmployee({super.key});
-  final EmploymentController controller = Get.put(EmploymentController());
 
   @override
   Widget build(BuildContext context) {
@@ -28,55 +28,57 @@ class EditEmployee extends StatelessWidget {
         title: AppString.textEditEmployee.tr,
         onPressAction: () => Get.back(),
       ),
-      body: Padding(
-        padding: marginLayout,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              customSpacerHeight(height: 12),
-              _userTextField(
-                  AppString.text_first_name.tr, editFirstNameController),
-              _userTextField(
-                  AppString.text_last_name.tr, editLastNameController),
-              _buildDropdownField(
-                title: AppString.textEmployeeStatus.tr,
-                isRequired: true,
-                hint: 'Select status',
-                items: controller.items,
-                value: controller.employeeStatusValue.value,
-                onChanged: (value) =>
-                    controller.employeeStatusValue.value = value ?? '',
+      body: controller.obx(
+          (state) => Padding(
+                padding: marginLayout,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      customSpacerHeight(height: 12),
+                      _userTextField(AppString.text_first_name.tr,
+                          controller.editFirstNameController),
+                      _userTextField(AppString.text_last_name.tr,
+                          controller.editLastNameController),
+                      _buildDropdownField(
+                        title: AppString.textEmployeeStatus.tr,
+                        isRequired: true,
+                        hint: 'Select status',
+                        items: controller.items,
+                        value: controller.employeeStatusValue.value,
+                        onChanged: (value) =>
+                            controller.employeeStatusValue.value = value ?? '',
+                      ),
+                      customSpacerHeight(height: 12),
+                      _buildDropdownField(
+                        title: AppString.text_designation.tr,
+                        hint: 'Select designation',
+                        items: controller.items,
+                        value: controller.employeeDesignationValue.value,
+                        onChanged: (value) => controller
+                            .employeeDesignationValue.value = value ?? '',
+                      ),
+                      customSpacerHeight(height: 12),
+                      _buildDropdownField(
+                        title: AppString.text_deparmtnet.tr,
+                        isRequired: true,
+                        hint: 'Select department',
+                        items: controller.items,
+                        value: controller.employeeDepartmentValue.value,
+                        onChanged: (value) => controller
+                            .employeeDepartmentValue.value = value ?? '',
+                      ),
+                      customSpacerHeight(height: 12),
+                      _buildTitleText(
+                          text: AppString.textJoiningDate.tr, isRequired: true),
+                      customSpacerHeight(height: 8),
+                      _buildJoiningDate(context),
+                      customSpacerHeight(height: 28),
+                      _buildButtons(),
+                    ],
+                  ),
+                ),
               ),
-              customSpacerHeight(height: 12),
-              _buildDropdownField(
-                title: AppString.text_designation.tr,
-                hint: 'Select designation',
-                items: controller.items,
-                value: controller.employeeDesignationValue.value,
-                onChanged: (value) =>
-                    controller.employeeDesignationValue.value = value ?? '',
-              ),
-              customSpacerHeight(height: 12),
-              _buildDropdownField(
-                title: AppString.text_deparmtnet.tr,
-                isRequired: true,
-                hint: 'Select department',
-                items: controller.items,
-                value: controller.employeeDepartmentValue.value,
-                onChanged: (value) =>
-                    controller.employeeDepartmentValue.value = value ?? '',
-              ),
-              customSpacerHeight(height: 12),
-              _buildTitleText(
-                  text: AppString.textJoiningDate.tr, isRequired: true),
-              customSpacerHeight(height: 8),
-              _buildJoiningDate(context),
-              customSpacerHeight(height: 28),
-              _buildButtons(),
-            ],
-          ),
-        ),
-      ),
+          onLoading: const LoadingIndicator()),
     );
   }
 

@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppLayout {
+
+  static final AppLayout _instance=AppLayout._internal();
+
+
+  factory AppLayout()=>_instance;
+
+  AppLayout._internal();
+
   static getSize(BuildContext context) {
     return MediaQuery.of(context).size;
   }

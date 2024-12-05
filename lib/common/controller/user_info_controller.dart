@@ -14,12 +14,15 @@ class UserInfoController {
   UserInfo userInfo = UserInfo();
 
   Future<UserInfo?> getUserInfo() async {
-    final response = await _networkClient.getRequest(Api.USER_INFO);
-    if (response.statusCode != 200) return null;
-
-    userInfo = UserInfo.fromJson(response.data);
-    print("userInfo :: ${userInfo.user?.role}");
-    return userInfo;
+    try {
+      final response = await _networkClient.getRequest(Api.USER_INFO);
+      if (response.statusCode != 200) return null;
+      userInfo = UserInfo.fromJson(response.data);
+      return userInfo;
+    } catch (e) {
+      log("getUserInfo $e");
+    }
+    return null;
   }
 
   /// Fetches the organization subscription information
@@ -51,19 +54,22 @@ class UserInfoController {
   ///
   /// [data] - The organization's subscription information.
   void _checkIfSubscription(OrgSubscriptionInfoModel data) {
-    final orgSubscriptionInfo = data.getOrgSubscriptionInfo;
-
-    // Check if subscription is expired (paused or canceled)
-    if (orgSubscriptionInfo?.status == "paused" ||
-        orgSubscriptionInfo?.status == "canceled") {
-      isSubscriptionExpired(true);
-    } else {
-      // Check if "time_tracking" feature is enabled
-      orgSubscriptionInfo?.subscribedPlan?.planFeatures?.forEach((feature) {
-        if (feature.feature?.identifier == "time_tracking") {
-          isSubscriptionTimeTrackingIsAllow(feature.isEnabled ?? false);
-        }
-      });
+    final GetAnOrganizationSubscription? orgSubscriptionInfo =
+        data.getAnOrganizationSubscription;
+    try {
+      // Check if subscription is not expired (active)
+      if (!orgSubscriptionInfo!.status!.contains("active")) {
+        isSubscriptionExpired(true);
+      } else {
+        // Check if "time_tracking" feature is enabled
+        orgSubscriptionInfo.plan?.planFeatures?.forEach((feature) {
+          if (feature.feature?.identifier == "time_tracking") {
+            isSubscriptionTimeTrackingIsAllow(feature.isEnabled ?? false);
+          }
+        });
+      }
+    } catch (e) {
+      log(e.toString());
     }
   }
 }

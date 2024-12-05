@@ -209,7 +209,8 @@ String getTimeDifference(String startTimeString, String endTimeString) {
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
 
-String workingTimeSinceFormString(String startDateString, String? endDateString) {
+String workingTimeSinceFormString(
+    String startDateString, String? endDateString) {
   // Parse the start date
   DateTime startDate = DateTime.tryParse(startDateString) ?? DateTime.now();
 
@@ -402,7 +403,8 @@ void logErrorMessage({required String logName, Response? response}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: ErrorModel.fromJson(response?.body).message);
 
-void logSuccessMessage({required String logName, Response? response, String? message}) =>
+void logSuccessMessage(
+        {required String logName, Response? response, String? message}) =>
     log("${response?.statusCode} :  ${response?.request?.url.toString()}",
         name: logName, error: message);
 
@@ -412,12 +414,9 @@ handleUnknownError(di.Response response) {
   }
 }
 
-
-
 ///Updated formatting method
 String formatDate({required String date, String? format}) {
   if (date.isEmpty) return ""; // Return empty string if date is empty
-
   final String dateFormat = format ?? "dd MMM yy"; // Default format
   DateTime? parsedDate;
 
@@ -426,9 +425,10 @@ String formatDate({required String date, String? format}) {
     parsedDate = DateTime.parse(date); // ISO 8601 format
   } catch (e) {
     try {
-      parsedDate = DateFormat("dd MMM,yyyy").parse(date); // "25 Jul,2023" format
+      parsedDate =
+          DateFormat("dd MMM,yyyy").parse(date); // "25 Jul,2023" format
     } catch (e) {
-      return date; // Return empty string if parsing fails
+      return ""; // Return empty string if parsing fails
     }
   }
 

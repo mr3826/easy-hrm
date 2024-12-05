@@ -124,6 +124,7 @@ class AppPages {
       name: _Paths.EDIT_EMPOLYEE_VIEW,
       transition: Transition.size,
       page: () =>  EditEmployee(),
+
     ),
 
 

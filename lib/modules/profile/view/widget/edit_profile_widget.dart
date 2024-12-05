@@ -116,6 +116,7 @@ Map<String, dynamic>? _addVariables() {
           ?.department
           ?.id ??
       "";
+
   inputData["image"] =
       "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
 

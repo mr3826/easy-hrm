@@ -1,16 +1,18 @@
 class Api {
-  Api._();
+  static final Api _instance = Api._internal();
+
+  factory Api() => _instance;
+
+  Api._internal();
 
   static const String PUBLIC_URL = String.fromEnvironment("PUBLIC_URL");
   static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
   static const CDN_KEY = String.fromEnvironment("CDN_KEY");
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
-  static const String PUBLIC_IMAGE_URL_DOMAIN =
-      String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
+  static const String PUBLIC_IMAGE_URL_DOMAIN = String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
   static const LOGOUT = "/auth/logout";
-
   static const REFRESH_TOKEN = "/auth/refresh-token";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/retry-forgot-password";
@@ -95,9 +97,9 @@ query GetLeaveRequests($queryData: LeaveRequestQueryType) {
         """;
 
 const getLeaveRecordsDataQuery = r'''
-query GetLeaveRecordsForApp($optionData: OptionDataType) {
-  getLeaveRecordsForApp(optionData: $optionData) {
-    date
+query GetLeaveRecordsForApp($queryData: LeaveRecordsQueryInput, $optionData: OptionDataType) {
+  getLeaveRecordsForApp(queryData: $queryData, optionData: $optionData) {
+     date
     data {
       createdAt
       description
@@ -223,6 +225,7 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
   getOrganizationUserHistory(org_user_id: $orgUserId) {
+    join_date
     designation_histories {
       start_date
       end_date
@@ -261,9 +264,9 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
 }
 ''';
 
-const userLogHistoryQuery = '''
-query GeTimelogAndLeaveAvailabilityForApp {
-  geTimelogAndLeaveAvailabilityForApp {
+const userLogHistoryQuery = r'''
+query GeTimelogAndLeaveAvailabilityForApp($orgUserId: UUID) {
+  geTimelogAndLeaveAvailabilityForApp(org_user_id: $orgUserId) {
     total_logged
     total_schedule
     balance_leave
@@ -295,28 +298,20 @@ query GetProfileSummaryForDashboard {
   }
 }
 ''';
-const getOrgSubscriptionInfoQuery = '''
-query GetOrgSubscriptionInfo {
-  getOrgSubscriptionInfo {
-  status
-    plan {
-      active
-      nickname
-    }
-    subscribed_plan { 
-      name
-      is_free  
+const getOrgSubscriptionInfoQuery = r'''
+query GetAnOrganizationSubscription($queryData: OrganizationSubscriptionSingleQueryDataType) {
+  getAnOrganizationSubscription(queryData: $queryData) {
     status
-    plan_features {
-        id
-        is_enabled
+    plan {
+      plan_features {
         feature {
-          id
           identifier
           name
-          sub_feature_name
         }
-      }}}
+        is_enabled
+      }
+    }
+  }
 }
 ''';
 
@@ -614,12 +609,38 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
       designation {
         name
       }
+      department {
+        name
+      }
       user {
         id
         email
       }
       user_id
     }
+    metaData {
+      filteredRows
+    }
+  }
+}
+''';
+
+const getDepartment = '''
+query GetDepartments {
+  getDepartments {
+    data {
+      id
+      name
+    }
+  }
+}
+''';
+
+const getEmploymentStatus = '''
+query GetEmploymentsStatus {
+  getEmploymentsStatus {
+    id
+    name
   }
 }
 ''';
