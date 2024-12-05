@@ -101,6 +101,7 @@ dev_dependencies:
   hive_generator:
 
 
+
 flutter_launcher_icons:
   android: true
   ios: true
