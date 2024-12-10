@@ -85,6 +85,12 @@ class EmployeeScreen extends StatelessWidget {
           ),
           labelText: AppString.textFilters.tr,
           onTap: () {
+            if (!Get.find<EmploymentController>()
+                .isEmploymentHistoryApiCalled) {
+              Get.find<EmploymentController>()
+                ..getDepartments()
+                ..getEmploymentStatus();
+            }
             showFilterSelectionSheet();
           },
         ),
@@ -108,20 +114,18 @@ class EmployeeScreen extends StatelessWidget {
                 ..getEmployeesEmploymentInfo(orgUserId: employee?.id ?? "")
                 ..getUserLogHistory(orgUserId: employee?.id ?? "");
               Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
-
             },
             child: EmployeeListInfo(
-              employeeId: employee?.id ?? "",
-              name:
-                  "${employee?.profile?.firstName ?? "Unknown"} ${employee?.profile?.lastName ?? ""}",
-              departmentName:
-                  employee?.department?.name ?? "Unknown department",
+              firstName: employee?.profile?.firstName ?? "Unknown",
+              lastName: employee?.profile?.lastName ?? "",
               imgUrlKey: employee?.profile?.image ?? "",
-              statusText: employee?.employmentStatus?.name ?? "Unknown status",
-              statusColor: employee?.employmentStatus?.color == null
-                  ? Colors.transparent
-                  : Color(int.parse(
-                      "0xFF${employee?.employmentStatus?.color?.replaceAll("#", "")}")),
+
+              /// EmploymentStatus:::: its a common model for all
+              department: employee?.department ?? EmploymentStatus(),
+              employmentStatus:
+                  employee?.employmentStatus ?? EmploymentStatus(),
+              designation: employee?.designation ?? EmploymentStatus(),
+              joiningDate: employee?.joiningDate ?? "",
             ),
           );
         },

@@ -7,8 +7,35 @@ plugins {
 }
 
 
-android {
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
 
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+
+android {
     namespace "com.gainhq.payrun"
     compileSdk 34
     ndkVersion = "27.0.12077973"
@@ -21,8 +48,6 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17
     }
-
-}
 
 //example
     defaultConfig {
@@ -49,8 +74,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-
-    buildToolsVersion '35.0.0'
 }
 
 

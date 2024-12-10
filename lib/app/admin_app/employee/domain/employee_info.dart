@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-part 'employee_info.g.dart';
 
+part 'employee_info.g.dart';
 
 class EmployeeInfo {
   GetOrganizationUsers? getOrganizationUsers;
@@ -49,8 +49,6 @@ class MetaData {
   }
 }
 
-
-
 @HiveType(typeId: 0)
 class Data extends HiveObject {
   @HiveField(0)
@@ -74,19 +72,23 @@ class Data extends HiveObject {
   @HiveField(6)
   String? userId;
 
-  Data({
-    this.id,
-    this.profile,
-    this.employmentStatus,
-    this.designation,
-    this.department,
-    this.user,
-    this.userId,
-  });
+  @HiveField(7)
+  String? joiningDate;
+
+  Data(
+      {this.id,
+      this.profile,
+      this.employmentStatus,
+      this.designation,
+      this.department,
+      this.user,
+      this.userId,
+      this.joiningDate});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    profile = json['profile'] != null ? Profile.fromJson(json['profile']) : null;
+    profile =
+        json['profile'] != null ? Profile.fromJson(json['profile']) : null;
     employmentStatus = json['employment_status'] != null
         ? EmploymentStatus.fromJson(json['employment_status'])
         : null;
@@ -98,6 +100,7 @@ class Data extends HiveObject {
         : null;
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     userId = json['user_id'];
+    joiningDate = json['join_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -149,11 +152,15 @@ class EmploymentStatus extends HiveObject {
   @HiveField(1)
   String? color;
 
-  EmploymentStatus({this.name, this.color});
+  @HiveField(2)
+  String? id;
+
+  EmploymentStatus({this.name, this.color, this.id});
 
   EmploymentStatus.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     color = json['color'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {

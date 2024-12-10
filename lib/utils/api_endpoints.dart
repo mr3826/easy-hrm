@@ -9,7 +9,8 @@ class Api {
   static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
   static const CDN_KEY = String.fromEnvironment("CDN_KEY");
   static const String PRIVATE_URL = "$PUBLIC_URL/graphql";
-  static const String PUBLIC_IMAGE_URL_DOMAIN = String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
+  static const String PUBLIC_IMAGE_URL_DOMAIN =
+      String.fromEnvironment("PUBLIC_IMAGE_URL_DOMAIN");
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
   static const LOGOUT = "/auth/logout";
@@ -589,27 +590,31 @@ mutation MarkUnreadNotificationAsSeen($inputData: UnreadNotificationSeenInputTyp
 }
 ''';
 
-/// employyee info
+/// employee info
 ///
 
 const getEmployeeList = r'''
-query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
-  getOrganizationUsers(queryData: $queryData) {
+query GetOrganizationUsers($queryData: OrganizationUserQueryData, $optionData: OptionDataType) {
+  getOrganizationUsers(queryData: $queryData, optionData: $optionData) {
     data {
       id
+      join_date
       profile {
         first_name
         last_name
         image
       }
       employment_status {
+        id
         name
         color
       }
       designation {
+        id
         name
       }
       department {
+        id
         name
       }
       user {
@@ -617,6 +622,7 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
         email
       }
       user_id
+      
     }
     metaData {
       filteredRows
@@ -625,20 +631,29 @@ query GetOrganizationUsers($queryData: OrganizationUserQueryData) {
 }
 ''';
 
-const getDepartment = '''
-query GetDepartments {
-  getDepartments {
-    data {
-      id
-      name
-    }
+const getDepartmentInfo = '''
+query GetDepartmentsDropdown {
+  getDepartmentsDropdown {
+    id
+    name
   }
 }
 ''';
 
-const getEmploymentStatus = '''
-query GetEmploymentsStatus {
-  getEmploymentsStatus {
+
+const getEmploymentStatusInfo = '''
+query GetEmploymentStatusesDropdown {
+  getEmploymentStatusesDropdown {
+    id
+    name
+    color
+  }
+}
+''';
+
+const getEmploymentDesignationInfo='''
+query GetDesignationsDropdown {
+  getDesignationsDropdown {
     id
     name
   }

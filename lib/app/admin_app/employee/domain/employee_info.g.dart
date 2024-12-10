@@ -24,13 +24,14 @@ class DataAdapter extends TypeAdapter<Data> {
       department: fields[4] as EmploymentStatus?,
       user: fields[5] as User?,
       userId: fields[6] as String?,
+      joiningDate: fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Data obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class DataAdapter extends TypeAdapter<Data> {
       ..writeByte(5)
       ..write(obj.user)
       ..writeByte(6)
-      ..write(obj.userId);
+      ..write(obj.userId)
+      ..writeByte(7)
+      ..write(obj.joiningDate);
   }
 
   @override
@@ -111,17 +114,20 @@ class EmploymentStatusAdapter extends TypeAdapter<EmploymentStatus> {
     return EmploymentStatus(
       name: fields[0] as String?,
       color: fields[1] as String?,
+      id: fields[2] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, EmploymentStatus obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.color);
+      ..write(obj.color)
+      ..writeByte(2)
+      ..write(obj.id);
   }
 
   @override

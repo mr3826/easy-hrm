@@ -57,7 +57,7 @@ dependencies:
   device_info_plus: any
   intl: ^0.18.1
   graphql_flutter:
-  connectivity_plus:
+  connectivity_plus: ^6.1.0
   r_dotted_line_border: ^0.1.1
   lottie: ^2.6.0
   syncfusion_flutter_gauges: ^23.2.7

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/test_main_file.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../common/widget/custom_app_button.dart';
@@ -13,9 +14,11 @@ import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/timePicker/custom_time_picker_out_time.dart';
 import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../domain/user_work_info_dropdown.dart';
 import '../../../controller/employment_controller.dart';
 
 class EditEmployee extends GetView<EmploymentController> {
@@ -28,56 +31,7 @@ class EditEmployee extends GetView<EmploymentController> {
         title: AppString.textEditEmployee.tr,
         onPressAction: () => Get.back(),
       ),
-      body: controller.obx(
-          (state) => Padding(
-                padding: marginLayout,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      customSpacerHeight(height: 12),
-                      _userTextField(AppString.text_first_name.tr,
-                          controller.editFirstNameController),
-                      _userTextField(AppString.text_last_name.tr,
-                          controller.editLastNameController),
-                      _buildDropdownField(
-                        title: AppString.textEmployeeStatus.tr,
-                        isRequired: true,
-                        hint: 'Select status',
-                        items: controller.items,
-                        value: controller.employeeStatusValue.value,
-                        onChanged: (value) =>
-                            controller.employeeStatusValue.value = value ?? '',
-                      ),
-                      customSpacerHeight(height: 12),
-                      _buildDropdownField(
-                        title: AppString.text_designation.tr,
-                        hint: 'Select designation',
-                        items: controller.items,
-                        value: controller.employeeDesignationValue.value,
-                        onChanged: (value) => controller
-                            .employeeDesignationValue.value = value ?? '',
-                      ),
-                      customSpacerHeight(height: 12),
-                      _buildDropdownField(
-                        title: AppString.text_deparmtnet.tr,
-                        isRequired: true,
-                        hint: 'Select department',
-                        items: controller.items,
-                        value: controller.employeeDepartmentValue.value,
-                        onChanged: (value) => controller
-                            .employeeDepartmentValue.value = value ?? '',
-                      ),
-                      customSpacerHeight(height: 12),
-                      _buildTitleText(
-                          text: AppString.textJoiningDate.tr, isRequired: true),
-                      customSpacerHeight(height: 8),
-                      _buildJoiningDate(context),
-                      customSpacerHeight(height: 28),
-                      _buildButtons(),
-                    ],
-                  ),
-                ),
-              ),
+      body: controller.obx((state) => _body(context),
           onLoading: const LoadingIndicator()),
     );
   }
@@ -85,8 +39,8 @@ class EditEmployee extends GetView<EmploymentController> {
   Widget _buildDropdownField({
     required String title,
     required String hint,
-    required List<String> items,
-    String? value,
+    required List<DropdownItem> items,
+    required String initValue,
     bool isRequired = false,
     ValueChanged<String?>? onChanged,
   }) {
@@ -99,7 +53,7 @@ class EditEmployee extends GetView<EmploymentController> {
 
 
         DropdownButtonFormField2(
-          value: value?.isNotEmpty == true ? value : null,
+          value: initValue.isNotEmpty ? initValue : null,
           decoration: _buildDropdownDecoration(),
           isExpanded: true,
           hint: Text(
@@ -109,8 +63,8 @@ class EditEmployee extends GetView<EmploymentController> {
           ),
           items: items
               .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item, style: AppStyle.normal_text_black),
+                    value: item.id,
+                    child: Text(item.name, style: AppStyle.normal_text_black),
                   ))
               .toList(),
           onChanged: onChanged,
@@ -153,10 +107,10 @@ class EditEmployee extends GetView<EmploymentController> {
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: const Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  OutDatePicker(),
+                  CustomCalendarPicker(isRangeSelectionEnabled: false, weekendDays: Get.find<LeaveScreenController>().holidays, holidayDates: const [])
                 ],
               ),
             ),
@@ -244,9 +198,17 @@ class EditEmployee extends GetView<EmploymentController> {
                   fontSize: Dimensions.fontSizeDefault + 2,
                 ),
               ),
-              onPressed: () {},
-              buttonColor: AppColor.primaryColor,
-              borderColor: AppColor.primaryColor,
+              onPressed: controller.hasChangedProfileInfo.isFalse
+                  ? () {}
+                  : () {
+                      print("Clicked");
+                    },
+              buttonColor: controller.hasChangedProfileInfo.isFalse
+                  ? AppColor.primaryColor.withOpacity(.5)
+                  : AppColor.primaryColor,
+              borderColor: controller.hasChangedProfileInfo.isFalse
+                  ? AppColor.primaryColor.withOpacity(.5)
+                  : AppColor.primaryColor,
             ),
           ),
         ),
@@ -268,6 +230,54 @@ class EditEmployee extends GetView<EmploymentController> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
       borderSide: const BorderSide(color: AppColor.hintColor, width: 1),
+    );
+  }
+
+  Widget _body(BuildContext context) {
+    return Padding(
+      padding: marginLayout,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            customSpacerHeight(height: 12),
+            _userTextField(AppString.text_first_name.tr,
+                controller.editFirstNameController),
+            _userTextField(
+                AppString.text_last_name.tr, controller.editLastNameController),
+            _buildDropdownField(
+                title: AppString.textEmployeeStatus.tr,
+                isRequired: true,
+                hint: 'Select status',
+                items: controller.employmentStatuses?.statuses ?? [],
+                initValue: controller.initEmploymentStatusId ?? "",
+                onChanged: (value) {}),
+            customSpacerHeight(height: 12),
+            _buildDropdownField(
+                title: AppString.text_designation.tr,
+                hint: 'Select designation',
+                items: controller.designations?.designations ?? [],
+                initValue: controller.initDesignationId ?? "",
+                onChanged: (value) {}),
+            customSpacerHeight(height: 12),
+            _buildDropdownField(
+                title: AppString.text_deparmtnet.tr,
+                isRequired: true,
+                hint: 'Select department',
+                items: controller.departments?.departments ?? [],
+                initValue: controller.initDepartmentId ?? '',
+                onChanged: (value) {}),
+            customSpacerHeight(height: 12),
+            _buildTitleText(
+                text: AppString.textJoiningDate.tr, isRequired: true),
+            customSpacerHeight(height: 8),
+            _buildJoiningDate(context),
+            customSpacerHeight(height: 28),
+            Obx(
+              () => _buildButtons(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
