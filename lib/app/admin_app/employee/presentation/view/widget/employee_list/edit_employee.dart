@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/test_main_file.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../common/widget/custom_app_button.dart';
@@ -13,6 +14,7 @@ import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/timePicker/custom_time_picker_out_time.dart';
 import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/utils.dart';
@@ -97,10 +99,10 @@ class EditEmployee extends GetView<EmploymentController> {
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: const Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  OutDatePicker(),
+                  CustomCalendarPicker(isRangeSelectionEnabled: false, weekendDays: Get.find<LeaveScreenController>().holidays, holidayDates: const [])
                 ],
               ),
             ),
