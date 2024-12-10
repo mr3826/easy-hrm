@@ -7,15 +7,11 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../common/widget/custom_dialog.dart';
-import '../../../common/widget/custom_network_image.dart';
 import '../../../common/widget/custom_spacer.dart';
-import '../../../common/widget/loading_indicator.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
-import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../profile/controller/log_out_controller.dart';
-import '../../profile/controller/user_profile_controller.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key});
@@ -28,67 +24,12 @@ class SubscriptionScreen extends StatelessWidget {
         padding: marginLayout,
         child: Column(
           children: [
-            // customSpacerHeight(height: 46),
-            // _userInfoAppbarLayout(),
             _infoContactLayout()
           ],
         ),
       ),
     );
   }
-
-  _userInfoAppbarLayout() {
-    var controller = Get.find<DashboardController>();
-    return Row(
-      children: [
-        _userImageLayout(),
-        customSpacerWidth(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppString.text_welcome.tr,
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault),
-            ),
-            Text(
-              controller.profileSummaryForDashboard
-                      ?.getProfileSummaryForDashboard?.profile?.firstName ??
-                  "",
-              style: AppStyle.normal_text_grey.copyWith(
-                  color: AppColor.normalTextColor,
-                  fontSize: Dimensions.fontSizeMid),
-            ),
-          ],
-        )
-      ],
-    );
-  }
-
-  _userImageLayout() {
-    var controller = Get.find<DashboardController>();
-    return CustomNetworkImage(
-      height: 22,
-      errorText: (controller.profileSummaryForDashboard
-                      ?.getProfileSummaryForDashboard?.profile?.firstName !=
-                  null &&
-              controller
-                  .profileSummaryForDashboard!
-                  .getProfileSummaryForDashboard!
-                  .profile!
-                  .firstName!
-                  .isNotEmpty)
-          ? "${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.firstName?[0].toUpperCase() ?? ""}"
-              "${(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName != null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.profile!.lastName!.isNotEmpty) ? Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName![0].toUpperCase() ?? "" : ""}"
-          : "",
-      imgUrlKey: controller.profileSummaryForDashboard
-              ?.getProfileSummaryForDashboard?.profile?.image ??
-          "",
-      borderColor: Colors.transparent,
-    );
-  }
-
   _infoContactLayout() {
     return Expanded(
       child: Column(

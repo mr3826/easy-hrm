@@ -25,11 +25,9 @@ class HrLeaveController extends GetxController {
   RxBool isLoadingLeaveRecord = false.obs;
   RxBool isAvailableLeaveType = false.obs;
 
-
-  RxString selectedEmployeeInfo=AppString.textSearchEmployee.tr.obs;
-  RxString selectedEmployeeImgKey="".obs;
+  RxString selectedEmployeeInfo = AppString.textSearchEmployee.tr.obs;
+  RxString selectedEmployeeImgKey = "".obs;
   RxString calculateAllowanceOfLeave = ''.obs;
-
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getHrLeaveCalender({String? startDate, String? endDate}) async {
@@ -58,21 +56,22 @@ class HrLeaveController extends GetxController {
   /// Creates a [Task] object from a [LeaveRequests] object.
   Task _createTask(LeaveRequests leave) {
     return Task(
-        name: _getFirstUserName(leave),
-        role: _getUserRole(leave),
-        leaveType: "Leave Type", // Replace with actual leave type if needed.
-        status: _getStatus(leave), // Customize based on leave request status.
-        approvedCount: leave.totalApproved ?? 0,
-        pendingCount: leave.totalPending ?? 0,
-        rejectedCount: leave.totalRejected ?? 0,
-        takenCount: leave.totalTaken ?? 0,
-        cancelledCount: leave.totalCancelled ?? 0,
-        imageUrls: _getUserImages(leave),
-        isGroup: (leave.organizationUsers?.length ?? 0) > 1,
-        designation: _getUserDesignation(leave),
-        leaveId: _getLeaveId(leave),
-        formattedLeaveHours: leave.formattedLeaveHours,
-        leaveDate: leave.formattedDate);
+      name: _getFirstUserName(leave),
+      role: _getUserRole(leave),
+      leaveType: "Leave Type", // Replace with actual leave type if needed.
+      status: _getStatus(leave), // Customize based on leave request status.
+      approvedCount: leave.totalApproved ?? 0,
+      pendingCount: leave.totalPending ?? 0,
+      rejectedCount: leave.totalRejected ?? 0,
+      takenCount: leave.totalTaken ?? 0,
+      cancelledCount: leave.totalCancelled ?? 0,
+      imageUrls: _getUserImages(leave),
+      isGroup: (leave.organizationUsers?.length ?? 0) > 1,
+      designation: _getUserDesignation(leave),
+      leaveId: _getLeaveId(leave),
+      formattedLeaveHours: leave.formattedLeaveHours,
+      startDate: leave.formattedDate,
+    );
   }
 
   String _getLeaveId(LeaveRequests leave) {
@@ -162,19 +161,33 @@ class HrLeaveController extends GetxController {
     isDownloadLoading(false);
   }
 
+  /// Fetches employee leave record hr.
+  Future<void> getLeaveRecord(
+      {String? startDate, String? endDate, String? assignedLeaveId}) async {
+    // Default to the first day of the current month for startDate if null
+    String start = startDate ??
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
 
-  /// Fetches employee leave record hr .
-  Future<void> getLeaveRecord({String? startDate,String ?endDate, String? assignedLeaveId}) async {
+    // Default to the last day of the current month for endDate if null
+    String end = endDate ??
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0)}";
+
     isLoadingLeaveRecord(true);
-    leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(startDate: startDate,endDate: endDate,assignedLeaveId: assignedLeaveId);
+
+    leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(
+      startDate: start,
+      endDate: end,
+      assignedLeaveId: assignedLeaveId,
+    );
+
     isLoadingLeaveRecord(false);
   }
 
-
   /// Fetches leave type hr .
-  Future<void> getAvailableLeaveType({String? orgUserId,String ?year}) async {
+  Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
     isAvailableLeaveType(true);
-    availableLeaveType = await _leaveRemoteDataSource.getAvailableLeaveType(orgUserId: orgUserId,year:year );
+    availableLeaveType = await _leaveRemoteDataSource.getAvailableLeaveType(
+        orgUserId: orgUserId, year: year);
     isAvailableLeaveType(false);
   }
 
@@ -184,5 +197,4 @@ class HrLeaveController extends GetxController {
     getLeaveRecord();
     super.onInit();
   }
-
 }

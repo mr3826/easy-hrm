@@ -25,8 +25,9 @@ class TaskCard extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             Get.find<LeaveController>().tabLength(1);
-            Get.find<LeaveController>().currentDate.value = task.leaveDate  ?? "";
-             Get.find<HrLeaveController>().getLeaveRecord(startDate: task.leaveDate );
+            Get.find<LeaveController>().currentDate.value = task.startDate  ?? "";
+             Get.find<HrLeaveController>().getLeaveRecord(startDate: "${task.startDate}T00:00:00.000Z",endDate: "${task.startDate}T23:59:59.999Z"); ///task.startDate and endDate same ... click always single date for leave
+
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +155,7 @@ class Task {
   final String? leaveId;
   final String? role;
   final String? leaveType;
-  final String? leaveDate;
+  final String? startDate;
   final String? status;
   final String? designation;
   final String? formattedLeaveHours;
@@ -171,7 +172,7 @@ class Task {
     this.role,
     this.leaveType,
     this.leaveId,
-    this.leaveDate,
+    this.startDate,
     this.formattedLeaveHours,
     this.designation,
     this.status,

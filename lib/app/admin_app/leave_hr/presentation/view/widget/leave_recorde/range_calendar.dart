@@ -50,7 +50,10 @@ leaveRecodeFilterDialog() {
                       if (controller.dayList[index] == "Custom" &&
                           controller.listIndex.value == 6) {
                         calendarController.clearRange();
+
                         _showCustomDateRangeDialog(index);
+
+
                       } else {
                         Get.find<HrLeaveController>().getLeaveRecord(
                             startDate: "${calendarController.rangeStart}",
@@ -132,22 +135,31 @@ void _showCustomDateRangeDialog(int index) {
           mainAxisSize: MainAxisSize.min,
           children: [
             Obx(() => TableCalendar(
+
                   firstDay: DateTime.utc(2020, 1, 1),
                   lastDay: DateTime.utc(2030, 12, 31),
+
                   focusedDay: calendarController.focusedDay.value,
-                  rangeSelectionMode:
-                      calendarController.rangeSelectionMode.value,
+                  rangeSelectionMode: calendarController.rangeSelectionMode.value,
+
+
                   rangeStartDay: calendarController.rangeStart.value,
                   rangeEndDay: calendarController.rangeEnd.value,
+
+
+
                   onDaySelected: (selectedDay, focusedDay) {
                     calendarController.selectDay(selectedDay, focusedDay);
                   },
+
                   onRangeSelected: (start, end, focusedDay) {
                     calendarController.selectRange(start, end, focusedDay);
                   },
+
                   onPageChanged: (focusedDay) {
                     calendarController.updateFocusedDay(focusedDay);
                   },
+
                   selectedDayPredicate: (day) {
                     if (calendarController.rangeStart.value != null &&
                         calendarController.rangeEnd.value != null) {

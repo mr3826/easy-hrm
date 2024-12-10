@@ -36,6 +36,9 @@ class CalendarController {
     }
   }
 
+
+
+
   /// Selects a range of dates and updates the focused day.
   void selectRange(DateTime? start, DateTime? end, DateTime newFocusedDay) {
     rangeStart.value = start;
@@ -43,6 +46,8 @@ class CalendarController {
     focusedDay.value = newFocusedDay;
     rangeSelectionMode.value = RangeSelectionMode.toggledOn;
   }
+
+
 
   /// Updates the currently focused day.
   void updateFocusedDay(DateTime newFocusedDay) {

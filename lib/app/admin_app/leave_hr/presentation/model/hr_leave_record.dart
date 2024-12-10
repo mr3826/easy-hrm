@@ -27,7 +27,7 @@ class GetLeaveRequests {
   String? duration;
   String? endDate;
   String? totalDuration;
-  int? numberOfDays;
+  dynamic numberOfDays;
   String? id;
   LeaveType? leaveType;
   List<LeaveDetails>? leaveDetails;
@@ -122,6 +122,12 @@ class LeaveType {
   String? id;
   String? name;
   String? type;
+
+  @override
+  String toString() {
+    return 'LeaveType{id: $id, name: $name, type: $type, numberOfDays: $numberOfDays, numberOfApplications: $numberOfApplications, maxConsecutiveDays: $maxConsecutiveDays, isDefault: $isDefault, addNoteRequired: $addNoteRequired, applicationDate: $applicationDate, calculateAllowanceBy: $calculateAllowanceBy, organizationId: $organizationId, isEnable: $isEnable, isEarned: $isEarned, leaveStatuses: $leaveStatuses}';
+  }
+
   String? numberOfDays;
   String? numberOfApplications;
   String? maxConsecutiveDays;
@@ -196,10 +202,10 @@ class LeaveType {
 }
 
 class LeaveStatuses {
-  int? availableNumberOfDays;
-  int? earnedDays;
-  int? availableNumberOfApplications;
-  int? totalAvailable;
+  dynamic availableNumberOfDays;
+  dynamic earnedDays;
+  dynamic availableNumberOfApplications;
+  dynamic totalAvailable;
 
   LeaveStatuses(
       {this.availableNumberOfDays,
@@ -227,10 +233,9 @@ class LeaveStatuses {
 
 class LeaveDetails {
   String? date;
-  int? leaveSeconds;
-  int? scheduleSeconds;
-  String? leaveId
-  ;
+  dynamic leaveSeconds;
+  dynamic scheduleSeconds;
+  String? leaveId;
 
   LeaveDetails({this.date, this.leaveSeconds, this.scheduleSeconds,this.leaveId});
 
@@ -383,14 +388,14 @@ class Roles {
 
 class Profile {
   String? userId;
-  Null? personalNumber;
+  String? personalNumber;
   String? lastName;
-  Null? image;
+  String? image;
   String? id;
   String? firstName;
-  Null? emergencyNumber;
-  Null? address;
-  Null? about;
+  String? emergencyNumber;
+  String? address;
+  String? about;
 
   Profile(
       {this.userId,

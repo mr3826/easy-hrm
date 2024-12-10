@@ -126,23 +126,29 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-  Future<HrLeaveRecorde?> getLeaveRecord(
-      {String? startDate, String? endDate, String? assignedLeaveId}) async {
-    var start = DateTime(
-        DateTime.now().year, DateTime.now().month, 1); // Start of the month
-    var end = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
+  Future<HrLeaveRecorde?> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
+
+
+    print("getLeaveRecord :: sta ::: $startDate end :: $endDate");
+
     try {
       final response = await networkClient
           .graphRequest(queryString: getHrLeaveRecordeQuery,
           variables: {
         "queryData": {
-          "start_date": startDate ?? "$start",
-          "end_date": endDate ?? "$end",
+          "start_date": startDate,
+          "end_date": endDate,
            "assigned_to":assignedLeaveId !=null? [
             assignedLeaveId
           ]:[]
         },
-      });
+      }
+
+
+
+
+      );
+      print("getLeaveRecord_hr::: ${response.data}");
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
