@@ -717,6 +717,20 @@ query GET_AVAILABLE_LEAVES_TYPES($queryData: AvailableLeaveTypesInput!, $optionD
 '''
 ;
 
+const addAssignLeaveQuery = r'''
+mutation ASSIGN_LEAVE($inputData: CreateLeaveInputData) {
+  assignLeave(inputData: $inputData) {
+    id
+    leaveType {
+      id
+      name
+      type
+    }
+  }
+}
+'''
+;
+
 
 
 const getHrLeaveRecordeQuery = r'''

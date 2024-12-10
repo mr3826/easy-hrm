@@ -46,7 +46,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  Future<void> applyLeave({String? filePath}) async {
+  Future<void> applyLeave({String? filePath,String ?assignedId ,String ?status}) async {
     isAssignLeaveLoaderLoading(true);
 
     // Preparing the input data for the GraphQL mutation
@@ -60,10 +60,13 @@ class ApplyLeaveController extends GetxController with StateMixin {
           DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)
               .toUtc()
               .toString(),
-      "status": "pending",
+      "assigned_to": "adf6e570-4e8f-49b2-ae0e-87be69e34814", //todo
+      "status": status ?? "pending",
       "leave_type_id": leaveId,
       "files": _prepareFileData()
     };
+
+    print("inputData ::: ${inputData}");
 
     // Sending the GraphQL request using NetworkClient
     final bool response = await _leaveRemoteDataSource.applyLeave(inputData);

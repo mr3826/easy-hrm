@@ -191,6 +191,20 @@ class HrLeaveController extends GetxController {
     isAvailableLeaveType(false);
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   @override
   void onInit() {
     getHrLeaveCalender();

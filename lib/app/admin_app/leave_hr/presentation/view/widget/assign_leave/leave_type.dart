@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import '../../../../../../../modules/leave/presentation/controller/apply_leave_controller.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_layout.dart';
 import '../../../../../../../utils/app_string.dart';
@@ -56,13 +57,17 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
             );
           }).toList(),
           onChanged: (valueType) {
+            print(valueType);
             setState(() {
               dropDownValue = valueType as String;
             });
 
           type.GetAvailableLeaveTypes? getAvailableLeaveTypes= controller.availableLeaveType?.getAvailableLeaveTypes?.firstWhere((e)=>e.leaveTypeId==valueType.toString());
-             Get.find<HrLeaveController>().calculateAllowanceOfLeave.value =
-                 getAvailableLeaveTypes?.availableLeave ?? "0";
+
+             Get.find<HrLeaveController>().calculateAllowanceOfLeave.value = getAvailableLeaveTypes?.availableLeave ?? "0";
+            Get.find<ApplyLeaveController>().leaveId = valueType!;
+
+
           }),
     );
   }

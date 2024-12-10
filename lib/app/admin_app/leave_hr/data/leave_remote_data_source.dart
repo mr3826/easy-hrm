@@ -189,6 +189,42 @@ class HrLeaveRemoteDataSource {
     }
   }
 
+  Future<bool> assignLeave(Map<String, dynamic> inputData) async {
+
+    try {
+      final response = await networkClient.graphRequest(
+          queryString: assignLeaveQuery, variables:{
+        "inputData": {
+          "start_date": "2024-12-27T03:00:00.000Z",
+          "end_date": "2024-12-27T11:00:00.000Z",
+          "status": "pending",
+          "assigned_to": "adf6e570-4e8f-49b2-ae0e-87be69e34814",
+          "leave_type_id": "dfdcdb02-2147-4e41-92a0-179bf11e6707",
+          "files": [
+            {
+              "name": "13a464e11b7815f.png",
+              "key": "14656641e9d7ac0.png",
+              "size": 564947
+            }
+          ]
+        }
+      }
+      );
+
+      if (response.hasException) {
+        log(response.exception.toString());
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "assignLeave");
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      log('Error in assignLeave: $e');
+      return true;
+    }
+  }
+
 
 
 

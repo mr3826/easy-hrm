@@ -18,7 +18,12 @@ import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
+import '../../../../../../../common/widget/warning_message.dart';
 import '../../../../../../../modules/auth/presentation/view/otp_screen.dart';
+import '../../../../../../../modules/leave/presentation/controller/apply_leave_controller.dart';
+import '../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
+import '../../../../../../../modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';
+import '../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';
@@ -39,6 +44,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ApplyLeaveController()); //todo
     return Column(
       children: [
         /// Builds the header with a static date and day.
@@ -132,6 +138,29 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               _buildToDateWithTime(context),
               customSpacerHeight(height: 18),
 
+
+
+
+              Get.find<LeaveScreenController>().startTime != null
+                  ? CustomTimePickerInTime(
+                inTime: "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
+              )
+                  : const CustomTimePickerInTime(),
+
+              customSpacerHeight(height: 20),
+              customTitleText(
+                  text: AppString.text_to.tr, isRequired: true),
+              customSpacerHeight(height: 8),
+              Get.find<LeaveScreenController>().endTime != null
+                  ? CustomTimePickerOutTime(
+                outTime:
+                "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
+              )
+                  : const CustomTimePickerOutTime(),
+              customSpacerHeight(height: 12),
+              customSpacerHeight(height: 18),
+
+
               /// Displays the title and a note input field.
               _buildTitleText(text: AppString.text_note.tr),
               customSpacerHeight(height: 8),
@@ -140,17 +169,31 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
               /// Displays the title and an attachment input.
               _buildTitleText(text: AppString.text_document.tr),
-              const AddAttachmentFile(),
+              const AddAttachmentFile(
+                isFromApplyLeave: true,
+              ),
               customSpacerHeight(height: 30),
 
               /// Displays the action buttons.
-              CustomDoubleAppButton(
-                  onAction: () {},
-                  cancelAction: () {
-                    /// Clears the file upload path and navigates back.
-                    Get.find<LeaveFileUploadController>().path.value = "";
-                    Get.back(canPop: false);
-                  }),
+              CustomDoubleAppButton(onAction: () {
+                if (Get.find<HrLeaveController>()
+                        .calculateAllowanceOfLeave
+                        .value
+                        .isNotEmpty &&
+                    Get.find<HrLeaveController>()
+                            .calculateAllowanceOfLeave
+                            .value !=
+                        "0") {
+                  Get.find<ApplyLeaveController>().applyLeave();
+                } else {
+                  showWarningMessage(
+                      message: AppString.text_no_available_leave.tr);
+                }
+              }, cancelAction: () {
+                /// Clears the file upload path and navigates back.
+                Get.find<LeaveFileUploadController>().path.value = "";
+                Get.back(canPop: false);
+              }),
               customSpacerHeight(height: 100),
             ],
           ),
@@ -257,7 +300,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
   /// Builds the note input field.
   Widget _buildNote() {
     return InputNote(
-      controller: TextEditingController(),
+      controller: leaveNoteController,
       hintText: AppString.text_add_note.tr,
       borderColor: AppColor.hintColor.withOpacity(0.5),
       onChanged: (value) {},

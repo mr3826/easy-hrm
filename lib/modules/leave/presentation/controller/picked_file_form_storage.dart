@@ -62,7 +62,8 @@ class PickedFileFormStorage {
 
   /// Validates the file extension.
   bool _isValidFileExtension(String filePath) {
-    final validExtensions = [".png", ".jpg", ".jpeg", ".pdf"];
+    print("filePath :: $filePath");
+    final validExtensions = [".png", ".jpg", ".jpeg", ".pdf",".JPG",".PNG",".JPEG",".PDF"];
     return validExtensions.any((ext) => filePath.endsWith(ext));
   }
 
