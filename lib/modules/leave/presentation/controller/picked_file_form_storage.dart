@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/hr_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
 import '../../../../common/widget/error_message.dart';
 import '../../../../common/widget/success_message.dart';
@@ -21,7 +22,7 @@ class PickedFileFormStorage {
   /// Picks a file from the storage.
   /// If [isApplyLeave] is true, triggers the ApplyLeaveController,
   /// otherwise triggers the UpDateLeaveController to get the upload policy.
-  Future<void> pickFile({bool isApplyLeave = false}) async {
+  Future<void> pickFile({bool isApplyLeave = false,bool isAssignLeave = false}) async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
@@ -44,6 +45,9 @@ class PickedFileFormStorage {
           // Trigger the appropriate controller based on isApplyLeave.
           if (isApplyLeave) {
             Get.find<ApplyLeaveController>().getUploadPolicy(
+                fileName: filePath.value);
+          }else if (isAssignLeave) {
+            Get.find<HrLeaveController>().getUploadPolicy(
                 fileName: filePath.value);
           } else {
             Get.find<UpDateLeaveController>().getUploadPolicy(

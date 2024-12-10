@@ -230,6 +230,8 @@ class LeaveHrScreen extends StatelessWidget {
   _assignLeave(BuildContext context) {
     return  FloatingActionButton(
       onPressed: () {
+        Get.find<LeaveController>().leaveTypeSelectedIndex.value =
+        (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
         final userProfileController = Get.find<UserProfileController>();
         final userDetails = userProfileController.userDetails?.getOrganizationUserDetails?.profile;

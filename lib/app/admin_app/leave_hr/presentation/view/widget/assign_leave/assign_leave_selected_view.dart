@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/edit_leave_record/attachment.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../../common/widget/custom_double_app_button.dart';
@@ -11,44 +10,35 @@ import '../../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../../common/widget/input_note.dart';
 import '../../../../../../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../../../../../../common/widget/timePicker/custom_time_picker_out_time.dart';
-import '../../../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
+import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../common/widget/warning_message.dart';
 import '../../../../../../../modules/auth/presentation/view/otp_screen.dart';
-import '../../../../../../../modules/leave/presentation/controller/apply_leave_controller.dart';
 import '../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
-import '../../../../../../../modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';
 import '../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';
 import '../../../controller/leave_controller.dart';
-import '../../../controller/picked_file_from_stroage.dart';
-import '../leave_recorde/leave_recorde_details /leave_record_details.dart';
+import 'add_attachment_file.dart';
 import 'assign_leave.dart';
 import 'leave_type.dart';
 
 /// A widget that displays and edits leave record details.
 class AssignLeaveSelectedValue extends StatelessWidget {
-  /// The leave record details model containing information about a specific leave.
-  final LeaveRecordDetailsModel leaveRecordDetailsModel;
-
-  /// Constructor for the [AssignLeaveSelectedValue] widget.
-  const AssignLeaveSelectedValue(
-      {super.key, required this.leaveRecordDetailsModel});
+  const AssignLeaveSelectedValue({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ApplyLeaveController()); //todo
     return Column(
       children: [
         /// Builds the header with a static date and day.
-        _buildHeader(date: "26 March", day: "Thursday"),
+        _buildHeader(),
 
         /// Builds the list of text fields for various leave record details.
         Obx(
@@ -100,11 +90,16 @@ class AssignLeaveSelectedValue extends StatelessWidget {
                   text: AppString.textLeaveTimeline.tr, isRequired: true),
               const SizedBox(height: 6),
               _buildDropdownField(
-                items: controller.items,
-                value: controller.selectAssignLeave.value,
-                onChanged: (value) =>
-                    controller.selectAssignLeave.value = value ?? '',
-              ),
+                  items: controller.items,
+                  value: controller.selectAssignLeave.value,
+                  onChanged: (value) {
+                    controller.selectAssignLeave.value = value ?? '';
+                    String year = value == "This year"
+                        ? "${DateTime.now().year}"
+                        : "${DateTime.now().year + 1}";
+                    Get.find<HrLeaveController>()
+                        .getAvailableLeaveType(year: year);
+                  }),
               const SizedBox(height: 18),
 
               _buildTitleText(
@@ -126,40 +121,24 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
               customSpacerHeight(height: 18),
 
-              /// Displays the title and a date picker for the "From" date.
-              _buildTitleText(text: AppString.text_from.tr, isRequired: true),
-              customSpacerHeight(height: 8),
-              _buildFromDateWithTime(context),
-              customSpacerHeight(height: 18),
-
-              /// Displays the title and a date picker for the "To" date.
-              _buildTitleText(text: AppString.text_to.tr, isRequired: true),
-              customSpacerHeight(height: 8),
-              _buildToDateWithTime(context),
-              customSpacerHeight(height: 18),
-
-
-
-
               Get.find<LeaveScreenController>().startTime != null
                   ? CustomTimePickerInTime(
-                inTime: "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
-              )
+                      inTime:
+                          "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
+                    )
                   : const CustomTimePickerInTime(),
 
               customSpacerHeight(height: 20),
-              customTitleText(
-                  text: AppString.text_to.tr, isRequired: true),
+              customTitleText(text: AppString.text_to.tr, isRequired: true),
               customSpacerHeight(height: 8),
               Get.find<LeaveScreenController>().endTime != null
                   ? CustomTimePickerOutTime(
-                outTime:
-                "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
-              )
+                      outTime:
+                          "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
+                    )
                   : const CustomTimePickerOutTime(),
               customSpacerHeight(height: 12),
               customSpacerHeight(height: 18),
-
 
               /// Displays the title and a note input field.
               _buildTitleText(text: AppString.text_note.tr),
@@ -169,31 +148,13 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
               /// Displays the title and an attachment input.
               _buildTitleText(text: AppString.text_document.tr),
-              const AddAttachmentFile(
-                isFromApplyLeave: true,
-              ),
+              customSpacerHeight(height: 8),
+
+              const AttachmentFile(),
               customSpacerHeight(height: 30),
 
               /// Displays the action buttons.
-              CustomDoubleAppButton(onAction: () {
-                if (Get.find<HrLeaveController>()
-                        .calculateAllowanceOfLeave
-                        .value
-                        .isNotEmpty &&
-                    Get.find<HrLeaveController>()
-                            .calculateAllowanceOfLeave
-                            .value !=
-                        "0") {
-                  Get.find<ApplyLeaveController>().applyLeave();
-                } else {
-                  showWarningMessage(
-                      message: AppString.text_no_available_leave.tr);
-                }
-              }, cancelAction: () {
-                /// Clears the file upload path and navigates back.
-                Get.find<LeaveFileUploadController>().path.value = "";
-                Get.back(canPop: false);
-              }),
+            Obx(()=>  _buildButton(),),
               customSpacerHeight(height: 100),
             ],
           ),
@@ -316,247 +277,38 @@ class AssignLeaveSelectedValue extends StatelessWidget {
           letterSpacing: 4),
     );
   }
-}
 
-Widget _buildFromDateWithTime(BuildContext context) {
-  return Row(
-    children: [
-      Expanded(
-          child: GestureDetector(
-        onTap: () {
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => Dialog(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    InDatePicker(),
-                  ],
-                ),
-              ),
-            ),
-          );
+  _buildButton() {
+    if(Get.find<HrLeaveController>().isAssignLeaveLoaderLoading.isTrue){
+      return const Center(child: CupertinoActivityIndicator(color: AppColor.primaryColor,radius: 15,));
+    }
+
+    return CustomDoubleAppButton(
+        btnColor:
+            AppColor.primaryColor
+              ,
+        onAction: () {
+
+            if (Get.find<HrLeaveController>()
+                    .calculateAllowanceOfLeave
+                    .value
+                    .isNotEmpty &&
+                Get.find<HrLeaveController>().calculateAllowanceOfLeave.value !=
+                    "0") {
+              Get.find<HrLeaveController>().applyLeave(
+                  status:
+                      Get.find<LeaveController>().selectedStatusIndex.value == 0
+                          ? "pending"
+                          : "approved");
+            } else {
+              showWarningMessage(message: AppString.text_no_available_leave.tr);
+            }
+
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-                color: AppColor.hintColor.withOpacity(0.5), width: 1),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Obx(() => Text(
-                    DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                        Get.find<DateTimePickerController>().inDateTime.value)),
-                    style: const TextStyle(color: Colors.black, fontSize: 16),
-                  )),
-              const Icon(
-                CupertinoIcons.calendar,
-                color: Colors.grey,
-                size: 28,
-              ),
-            ],
-          ),
-        ),
-      )),
-      customSpacerWidth(width: 12),
-      _fromTimePicker(context)
-    ],
-  );
-}
-
-Widget _buildToDateWithTime(BuildContext context) {
-  return SizedBox(
-    child: Row(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => Dialog(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 20),
-                    child: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        OutDatePicker(),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                    color: AppColor.hintColor.withOpacity(0.5), width: 1),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Obx(() {
-                    final dateTime =
-                        Get.find<DateTimePickerController>().outDateTime.value;
-                    final parsedDate =
-                        DateTime.tryParse(dateTime) ?? DateTime.now();
-                    final formattedDate =
-                        DateFormat('yyyy-MM-dd').format(parsedDate);
-                    return Text(formattedDate,
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 16));
-                  }),
-                  const Icon(Icons.calendar_today_outlined,
-                      color: Colors.grey, size: 24),
-                ],
-              ),
-            ),
-          ),
-        ),
-        customSpacerWidth(width: 12),
-        _toTimePicker(context)
-      ],
-    ),
-  );
-}
-
-_fromTimePicker(BuildContext context) {
-  return Expanded(
-    child: Obx(() {
-      final inDateTime = Get.find<DateTimePickerController>().inDateTime.value;
-      final inDate = Get.find<DateTimePickerController>().inDate.value;
-      final outDate = Get.find<DateTimePickerController>().outDate.value;
-
-      return GestureDetector(
-        onTap: () {
-          if (inDate == outDate) {
-            showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => Dialog(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  child: const Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      InTimePicker(),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 11),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-                color: AppColor.hintColor.withOpacity(0.5), width: 1),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                DateFormat('HH:mm').format(DateTime.parse(inDateTime)),
-                style: TextStyle(
-                    color: inDate == outDate ? Colors.black : Colors.grey,
-                    fontSize: 16),
-              ),
-              const Icon(
-                CupertinoIcons.clock,
-                color: Colors.grey,
-                size: 25,
-              ),
-            ],
-          ),
-        ),
-      );
-    }),
-  );
-}
-
-_toTimePicker(BuildContext context) {
-  return Expanded(child: Obx(() {
-    final outDataTime = Get.find<DateTimePickerController>().outDateTime.value;
-    final inDate = Get.find<DateTimePickerController>().inDate.value;
-    final outDate = Get.find<DateTimePickerController>().outDate.value;
-    return GestureDetector(
-      onTap: () {
-        if (inDate == outDate) {
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => Dialog(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    OutTimePicker(),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          border:
-              Border.all(color: AppColor.hintColor.withOpacity(0.5), width: 1),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              DateFormat('HH:mm').format(DateTime.parse(outDataTime)),
-              style: TextStyle(
-                  color: inDate == outDate ? Colors.black : Colors.grey,
-                  fontSize: 16),
-            ),
-            const Icon(
-              CupertinoIcons.clock,
-              color: Colors.grey,
-              size: 28,
-            ),
-          ],
-        ),
-      ),
-    );
-  }));
+        cancelAction: () {
+          Get.back(canPop: false);
+        });
+  }
 }
 
 Widget _buildTitleText({required String text, bool isRequired = false}) {
@@ -582,8 +334,18 @@ Widget _buildTitleText({required String text, bool isRequired = false}) {
   );
 }
 
-Widget _buildHeader({String? date, String? day}) {
+Widget _buildHeader() {
   final screenHeight = MediaQuery.of(Get.context!).size.height;
+  final controller = Get.find<DateTimePickerController>();
+  // Parse and format date safely with null checks
+  final String inDateTimeValue = controller.inDateTime.value;
+  final DateTime? dateTime =
+      (inDateTimeValue.isNotEmpty) ? DateTime.tryParse(inDateTimeValue) : null;
+  final String formattedDate = dateTime != null
+      ? DateFormat("d MMM yyyy").format(dateTime)
+      : "Invalid Date";
+  final String formattedDay =
+      dateTime != null ? DateFormat("EEEE").format(dateTime) : "Unknown Day";
 
   return Container(
     height: screenHeight / 9,
@@ -596,12 +358,15 @@ Widget _buildHeader({String? date, String? day}) {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child:
-              Container(height: 4, width: 120, color: AppColor.backgroundColor),
+          child: Container(
+            height: 4,
+            width: 120,
+            color: AppColor.backgroundColor,
+          ),
         ),
         customSpacerHeight(height: 12),
         Text(
-          date ?? "",
+          formattedDate,
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
             fontWeight: FontWeight.w600,
@@ -609,7 +374,7 @@ Widget _buildHeader({String? date, String? day}) {
           ),
         ),
         Text(
-          day ?? "",
+          formattedDay,
           style: AppStyle.small_text_black.copyWith(
             color: AppColor.hintColor,
             fontSize: 12,
@@ -722,6 +487,7 @@ void _showEmployeeSelectionSheet() {
         );
         Get.back(canPop: false);
         print("value ::: $value");
+        controller.selectedEmployeeId = value;
       },
       userInfo: (name) {
         controller.selectedEmployeeInfo.value = name.name ?? "";

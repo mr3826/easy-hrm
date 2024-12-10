@@ -12,41 +12,37 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:payrun_mobile/utils/images.dart';
-import '../../../../../common/widget/custom_card_style.dart';
-import '../../../../../common/widget/custom_network_image.dart';
-import '../../../domain/leave_records.dart';
+import '../../../../../../../common/widget/custom_card_style.dart';
+import '../../../../../../../common/widget/custom_network_image.dart';
+import '../../../../../../../modules/leave/domain/leave_records.dart';
+import '../../../controller/hr_leave_controller.dart';
 
-class AddAttachmentFile extends StatelessWidget {
-  final bool? isFromApplyLeave;
-  final bool? isAssignLeave;
+class AttachmentFile extends StatelessWidget {
   final GetLeaveRecords? leaveRecords;
-
-  const AddAttachmentFile({this.isFromApplyLeave = false, super.key, this.leaveRecords,this.isAssignLeave});
-
+  const AttachmentFile({
+    super.key,
+    this.leaveRecords,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (Get.isRegistered()) {
-      Get.delete<ApplyLeaveController>();
+      Get.delete<HrLeaveController>();
     }
-    Get.put(ApplyLeaveController());
+    Get.put(HrLeaveController());
 
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             dottedCircleStyle(
-                isErrorOccurred: isFromApplyLeave == true || isAssignLeave ==true
-                    ? Get.find<ApplyLeaveController>().isErrorOccurred.value
-                    : Get.find<UpDateLeaveController>().isErrorOccurred.value,
+                isErrorOccurred:
+                    Get.find<HrLeaveController>().isErrorOccurred.value,
                 child: GestureDetector(onTap: () {
                   Get.find<FileUploadController>()
                       .storageForUpload
-                      .pickFile(isApplyLeave: isFromApplyLeave ?? false,isAssignLeave: isAssignLeave??false);
+                      .pickFile(isAssignLeave: true);
                 }, child: Obx(() {
-                  return isFromApplyLeave == true
-                      ? _documentLayout()
-                      : _updateDocumentLayout();
+                  return _documentLayout();
                 }))),
             customSpacerHeight(height: 8),
             _pathNameText(leaveRecords?.files != null &&
@@ -60,8 +56,8 @@ class AddAttachmentFile extends StatelessWidget {
   }
 
   Widget _documentLayout() {
-    if (Get.find<ApplyLeaveController>().isFileUploadedSuccessfully.isTrue &&
-        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+    if (Get.find<HrLeaveController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
       return Get.find<FileUploadController>()
               .storageForUpload
@@ -69,10 +65,10 @@ class AddAttachmentFile extends StatelessWidget {
               .endsWith(".pdf")
           ? _replaceFileLayout()
           : _selectedImageViewLayout();
-    } else if (Get.find<ApplyLeaveController>()
+    } else if (Get.find<HrLeaveController>()
             .isFileUploadedSuccessfully
             .isFalse &&
-        Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
+        Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
         /// initial stage
         return (leaveRecords?.files != null && leaveRecords!.files!.isNotEmpty)
@@ -89,8 +85,11 @@ class AddAttachmentFile extends StatelessWidget {
             : _emptyBox();
       } else {
         /// broken image
-        if (Get.find<ApplyLeaveController>().isUploadPolicyLoading.isFalse) {
-          return _brokenImageViewLayout();
+        if (Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
+          return const Center(
+              child: CupertinoActivityIndicator(
+            color: AppColor.primaryColor,
+          ));
         } else {
           return const Center(
               child: CupertinoActivityIndicator(
@@ -137,7 +136,10 @@ class AddAttachmentFile extends StatelessWidget {
       } else {
         /// broken image
         if (Get.find<UpDateLeaveController>().isUploadPolicyLoading.isFalse) {
-          return _brokenImageViewLayout();
+          return const Center(
+              child: CupertinoActivityIndicator(
+            color: AppColor.primaryColor,
+          ));
         } else {
           return const Center(
               child: CupertinoActivityIndicator(
@@ -255,19 +257,6 @@ _selectedImageViewLayout() {
                 .filePath
                 .value)
             .absolute),
-        fit: BoxFit.cover,
-      ),
-    ),
-  );
-}
-
-_brokenImageViewLayout() {
-  return Container(
-    height: AppLayout.getHeight(100),
-    decoration: BoxDecoration(
-      color: AppColor.disableColor.withOpacity(0.4),
-      image: DecorationImage(
-        image: AssetImage(Images.PLACEHOLDER),
         fit: BoxFit.cover,
       ),
     ),

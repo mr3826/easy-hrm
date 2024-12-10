@@ -19,6 +19,7 @@ import '../../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/images.dart';
+import '../../../controller/picked_file_from_stroage.dart';
 import '../leave_recorde/leave_recorde_details /leave_record_details.dart';
 import 'assign_leave_selected_view.dart';
 
@@ -34,45 +35,50 @@ class AssignLeave extends GetView<HrLeaveController> {
         // Bottom sheet header
         _buildBottomSheetHeader(),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildTitleText(AppString.textEmployees.tr),
-                  const SizedBox(height: 6),
-                  Obx(() => _buildSearchBar(context)),
-                  const SizedBox(height: 18),
-                  _buildTitleText(AppString.textLeaveTimeline.tr),
-                  const SizedBox(height: 6),
-                  _buildDropdownField(
-                    items: leaveController.items,
-                    value: leaveController.selectAssignLeave.value,
-                    onChanged: (value) {
-                      leaveController.selectAssignLeave.value = value ?? '';
-                      String year = value == "This year"
-                          ? "${DateTime.now().year}"
-                          : "${DateTime.now().year + 1}";
-                      controller.getAvailableLeaveType(year: year);
-                    },
+            child: Obx(
+          () => controller.isAvailableLeaveType.isTrue
+              ? const Center(
+                  child: CupertinoActivityIndicator(
+                  radius: 15,
+                  color: AppColor.primaryColor,
+                ))
+              : Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _buildTitleText(AppString.textEmployees.tr),
+                        const SizedBox(height: 6),
+                        Obx(() => _buildSearchBar(context)),
+                        const SizedBox(height: 18),
+                        _buildTitleText(AppString.textLeaveTimeline.tr),
+                        const SizedBox(height: 6),
+                        _buildDropdownField(
+                          items: leaveController.items,
+                          value: leaveController.selectAssignLeave.value,
+                          onChanged: (value) {
+                            leaveController.selectAssignLeave.value =
+                                value ?? '';
+                            String year = value == "This year"
+                                ? "${DateTime.now().year}"
+                                : "${DateTime.now().year + 1}";
+                            controller.getAvailableLeaveType(year: year);
+                          },
+                        ),
+                        const SizedBox(height: 18),
+                        _buildTitleText(AppString.textLeaveType.tr),
+                        const SizedBox(height: 6),
+                        _buildLeaveTypeGrid(controller),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 18),
-                  _buildTitleText(AppString.textLeaveType.tr),
-                  const SizedBox(height: 6),
-                  Obx(
-                    () => _buildLeaveTypeGrid(controller),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
+                ),
+        )),
         // Action buttons
         _buildButtonLayout(context),
       ],
     );
   }
-
 
   /// Builds the bottom sheet header widget with a given title.
   Widget _buildBottomSheetHeader() {
@@ -152,19 +158,21 @@ class AssignLeave extends GetView<HrLeaveController> {
   }
 
   _buildButtonLayout(BuildContext context) {
+    LeaveFileUploadController controller = Get.put(LeaveFileUploadController());
+
     return Padding(
       padding: const EdgeInsets.only(left: 18, bottom: 18, right: 18),
       child: Obx(() => CustomDoubleAppButton(
-          onAction: Get.find<LeaveController>().leaveTypeSelectedIndex.value >=
-                  0
-              ? () {
-                  customAntButtonSheet(
-                      height: MediaQuery.of(context).size.height / 1.2,
-                      context: context,
-                      child: AssignLeaveSelectedValue(
-                          leaveRecordDetailsModel: LeaveRecordDetailsModel()));
-                }
-              : () {},
+          onAction:
+              Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
+                  ? () {
+                      customAntButtonSheet(
+                          height: MediaQuery.of(context).size.height / 1.2,
+                          context: context,
+                          child: const AssignLeaveSelectedValue());
+                      controller.path.value = "";
+                    }
+                  : () {},
           buttonText: "Continue",
           btnColor:
               Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
@@ -225,11 +233,6 @@ OutlineInputBorder get outlineInputBorder {
 
 /// Builds a grid displaying different leave types.
 Widget _buildLeaveTypeGrid(HrLeaveController controller) {
-  // Show loader if leave types are being fetched
-  if (controller.isAvailableLeaveType.isTrue) {
-    return const Center(child: CupertinoActivityIndicator());
-  }
-
   // Handle null list of available leave types
   final leaveTypes =
       controller.availableLeaveType?.getAvailableLeaveTypes ?? [];
@@ -255,6 +258,9 @@ Widget _buildLeaveTypeGrid(HrLeaveController controller) {
         onTap: () {
           if (availableLeave != "0") {
             leaveTypeSelectedIndex.value = index;
+            controller.leaveTypeId = data.leaveTypeId;
+            Get.find<HrLeaveController>().calculateAllowanceOfLeave.value =
+                data.calculateAllowanceBy ?? "";
           }
         },
         child: Obx(() {
@@ -283,7 +289,7 @@ Widget _buildLeaveTypeGrid(HrLeaveController controller) {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: _buildLeaveTypeIcon(
                         data.name ?? "Unknown",
                         availableLeave,
@@ -345,7 +351,7 @@ Widget _buildLeaveTypeIcon(String? leaveName, String? availableLeave) {
 
   return customSvgImage(
     imageUrl: imageUrl,
-    height: 27,
+    height: 24,
     color: availableLeave != "0" ? AppColor.secondaryColor : AppColor.hintColor,
   );
 }
@@ -358,14 +364,15 @@ void _showEmployeeSelectionSheet() {
     child: SearchEmployeeList(
       onValueSelected: (value) {
         leaveController.tabLength.value = 1;
-        controller.getAvailableLeaveType(orgUserId: value,);
+        controller.getAvailableLeaveType(
+          orgUserId: value,
+        );
         Get.back(canPop: false);
         print("value ::: $value");
       },
-
       userInfo: (name) {
-         controller.selectedEmployeeInfo.value = name.name ?? "";
-         controller.selectedEmployeeImgKey.value = name.imgUrl ?? "";
+        controller.selectedEmployeeInfo.value = name.name ?? "";
+        controller.selectedEmployeeImgKey.value = name.imgUrl ?? "";
       },
       onClickRouteAction: () {},
     ),

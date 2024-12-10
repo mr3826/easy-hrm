@@ -10,6 +10,7 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
 import '../../../controller/hr_leave_controller.dart';
 import '../../../model/avaible_leave_type.dart'as type;
+import 'assign_leave_selected_view.dart';
 
 class LeaveTypeDropDown extends StatefulWidget {
   const LeaveTypeDropDown({super.key});
@@ -17,58 +18,66 @@ class LeaveTypeDropDown extends StatefulWidget {
   @override
   State<LeaveTypeDropDown> createState() => _LeaveTypeDropDownState();
 }
-
 class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
   String? dropDownValue;
 
   @override
+  void initState() {
+    super.initState();
+    // Get the controller instance
+    HrLeaveController controller = Get.find<HrLeaveController>();
+
+    // Set the default value if available
+    dropDownValue = controller.leaveTypeId!.isNotEmpty == true
+        ? controller.leaveTypeId
+        : null;
+  }
+
+  @override
   Widget build(BuildContext context) {
-   HrLeaveController controller= Get.find<HrLeaveController>();
+    HrLeaveController controller = Get.find<HrLeaveController>();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8)),
       child: DropdownButton(
-          value: dropDownValue,
-          hint: Text(
-            AppString.text_select_on_option.tr,
-            style: AppStyle.mid_large_text.copyWith(
-                color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault + 1),
-          ),
-          dropdownColor: AppColor.cardColor,
-          underline: const SizedBox.shrink(),
-          isExpanded: true,
-          items: controller.availableLeaveType?.getAvailableLeaveTypes!
-              .map((e) {
-            return DropdownMenuItem(
-              value: e.leaveTypeId,
-              child: SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    "${e.name.toString()} (${e.availableLeave.toString()})",
-                    style: AppStyle.normal_text_black.copyWith(color: AppColor.normalTextColor),
-                  ),
+        value: dropDownValue,
+        hint: Text(
+          AppString.text_select_on_option.tr,
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.hintColor,
+              fontSize: Dimensions.fontSizeDefault + 1),
+        ),
+        dropdownColor: AppColor.cardColor,
+        underline: const SizedBox.shrink(),
+        isExpanded: true,
+        items: controller.availableLeaveType?.getAvailableLeaveTypes?.map((e) {
+          return DropdownMenuItem(
+            value: e.leaveTypeId,
+            child: SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "${e.name.toString()} (${e.availableLeave.toString()})",
+                  style: AppStyle.normal_text_black.copyWith(color: AppColor.normalTextColor),
                 ),
               ),
-            );
-          }).toList(),
-          onChanged: (valueType) {
-            print(valueType);
-            setState(() {
-              dropDownValue = valueType as String;
-            });
+            ),
+          );
+        }).toList(),
+        onChanged: (valueType) {
+          print(valueType);
+          setState(() {
+            dropDownValue = valueType as String;
+          });
 
-          type.GetAvailableLeaveTypes? getAvailableLeaveTypes= controller.availableLeaveType?.getAvailableLeaveTypes?.firstWhere((e)=>e.leaveTypeId==valueType.toString());
-
-             Get.find<HrLeaveController>().calculateAllowanceOfLeave.value = getAvailableLeaveTypes?.availableLeave ?? "0";
-            Get.find<ApplyLeaveController>().leaveId = valueType!;
-
-
-          }),
+          type.GetAvailableLeaveTypes? getAvailableLeaveTypes = controller.availableLeaveType?.getAvailableLeaveTypes?.firstWhere((e) => e.leaveTypeId == valueType.toString());
+          Get.find<HrLeaveController>().calculateAllowanceOfLeave.value = getAvailableLeaveTypes?.availableLeave ?? "0";
+          Get.find<HrLeaveController>().leaveTypeId = valueType!;
+        },
+      ),
     );
   }
 }

@@ -1,18 +1,30 @@
+import 'dart:io';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/calendar/vertical_calendar/calendar_task_card_widget.dart';
 import 'package:payrun_mobile/enum.dart';
+import '../../../../../common/domain/upload_policy.dart';
 import '../../../../../common/widget/success_message.dart';
+import '../../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../../modules/leave/data/remote/leave_remote_data_source.dart';
+import '../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
+import '../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
+import '../../../../../network/exception_helper.dart';
+import '../../../../../network/network_client.dart';
+import '../../../../../utils/api_endpoints.dart';
 import '../../../../../utils/app_string.dart';
+import '../../../../../utils/utils.dart';
 import '../../data/leave_remote_data_source.dart';
 import '../model/avaible_leave_type.dart';
 import '../model/download_file.dart';
 import '../model/hr_leave_calender.dart';
 import '../model/hr_leave_record.dart';
 import '../model/leave_details_by_id.dart';
-import 'calender_controller.dart';
+
 
 class HrLeaveController extends GetxController {
-  final HrLeaveRemoteDataSource _leaveRemoteDataSource = Get.find();
+  final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
+  final LeaveRemoteDataSource _leaveRemoteDataSource= Get.find();
   HrLeaveCalender? hrLeaveCalender = HrLeaveCalender();
   LeaveDetailsById? leaveDetailsById = LeaveDetailsById();
   DownloadFile? downloadFile = DownloadFile();
@@ -27,12 +39,42 @@ class HrLeaveController extends GetxController {
 
   RxString selectedEmployeeInfo = AppString.textSearchEmployee.tr.obs;
   RxString selectedEmployeeImgKey = "".obs;
+  String selectedEmployeeId = "";
   RxString calculateAllowanceOfLeave = ''.obs;
+
+  final isAssignLeaveLoaderLoading = false.obs;
+  RxBool isNoteRequired = false.obs;
+  RxBool isDocumentRequired = false.obs;
+  RxString numberOfLeaves = ''.obs;
+  RxBool isErrorOccurred = false.obs;
+  final isUploadPolicyLoading = false.obs;
+  RxBool isFileUploadedSuccessfully = false.obs;
+   String? leaveTypeId;
+
+
+
+
+
+
+
+  UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
+
+
+
+
+
+
+
+
+
+
+
+
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getHrLeaveCalender({String? startDate, String? endDate}) async {
     isHrLeaveCalendarLoading(true);
-    hrLeaveCalender = await _leaveRemoteDataSource.getLeaveCalender(
+    hrLeaveCalender = await _hrLeaveRemoteDataSource.getLeaveCalender(
         startDate: startDate, endDate: endDate);
 
     isHrLeaveCalendarLoading(false);
@@ -134,7 +176,7 @@ class HrLeaveController extends GetxController {
   Future<void> updateLeave({required String leaveId, String? status}) async {
     print("leaveId ::: $leaveId");
     updateLeaveLoader(true);
-    final bool response = await _leaveRemoteDataSource.updateLeave(
+    final bool response = await _hrLeaveRemoteDataSource.updateLeave(
         leaveId: leaveId, status: status);
 
     if (response) {
@@ -150,14 +192,14 @@ class HrLeaveController extends GetxController {
   Future<void> getLeaveDetailsById({String? leaveId}) async {
     isHrLeaveDetailsByLoading(true);
     leaveDetailsById =
-        await _leaveRemoteDataSource.getLeaveDetailsById(leaveId);
+        await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
     isHrLeaveDetailsByLoading(false);
   }
 
   /// Fetches employee leave document download .
   Future<void> getLeaveDocumentDownloadByUrl({String? imageKey}) async {
     isDownloadLoading(true);
-    downloadFile = await _leaveRemoteDataSource.getFileSignUrl(imageKey);
+    downloadFile = await _hrLeaveRemoteDataSource.getFileSignUrl(imageKey);
     isDownloadLoading(false);
   }
 
@@ -174,7 +216,7 @@ class HrLeaveController extends GetxController {
 
     isLoadingLeaveRecord(true);
 
-    leaveRecorde = await _leaveRemoteDataSource.getLeaveRecord(
+    leaveRecorde = await _hrLeaveRemoteDataSource.getLeaveRecord(
       startDate: start,
       endDate: end,
       assignedLeaveId: assignedLeaveId,
@@ -186,10 +228,154 @@ class HrLeaveController extends GetxController {
   /// Fetches leave type hr .
   Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
     isAvailableLeaveType(true);
-    availableLeaveType = await _leaveRemoteDataSource.getAvailableLeaveType(
+    availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(
         orgUserId: orgUserId, year: year);
     isAvailableLeaveType(false);
   }
+
+
+  Future<void> applyLeave({String? filePath,String ?assignedId ,String ?status}) async {
+    isAssignLeaveLoaderLoading(true);
+
+
+
+    // Preparing the input data for the GraphQL mutation
+    final Map<String, dynamic> inputData = {
+      "description": leaveNoteController.text,
+      "end_date": DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).toUtc().toString(),
+      "start_date":
+      DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value).toUtc().toString(),
+      "assigned_to": selectedEmployeeId.isEmpty?"${GetStorage().read(AppString.ORGANIZATION_USER_ID)}":selectedEmployeeId,
+      "status": status ?? "pending",
+      "leave_type_id": leaveTypeId,
+      "files": _prepareFileData()
+    };
+
+
+    print("applyLeave ::: $inputData");
+
+    final bool response = await _leaveRemoteDataSource.applyLeave(inputData);
+
+    // Handling the response
+    if (response) {
+      _resetLeaveForm();
+      showSuccessMessage(message: AppString.leaveAddedSuccessMessage.tr);
+      updateData();
+      Get.back(canPop: false);
+      Get.back(canPop: false);
+    }
+
+    isAssignLeaveLoaderLoading(false);
+  }
+
+  /// Prepares the file data for the leave request.
+  List<Map<String, dynamic>>? _prepareFileData() {
+    final fileUploadController = Get.find<FileUploadController>();
+    if (fileUploadController.storageForUpload.filePath.isEmpty) {
+      return null;
+    }
+
+    String fileKey = uploadPolicyResponse.getUploadPolicy?.policyData
+        ?.firstWhere((PolicyData e) => e.name?.toLowerCase() == 'key',
+        orElse: () => PolicyData())
+        .value
+        ?.split("/")
+        .last ??
+        "";
+
+    return [
+      {
+        "size": int.parse(
+            fileUploadController.storageForUpload.fileSize.value.toString()),
+        "name": fileUploadController.storageForUpload.filePath.value
+            .split(".")
+            .last,
+        "key": fileKey,
+      }
+    ];
+  }
+
+  /// Resets the leave form after a successful leave application.
+  void _resetLeaveForm() {
+    leaveTypeId = '';
+    isNoteRequired.value = false;
+    isDocumentRequired.value = false;
+    numberOfLeaves.value = '';
+    isErrorOccurred.value = false;
+
+    final fileUploadController = Get.find<FileUploadController>();
+    fileUploadController.storageForUpload.fileSize.value = "";
+    fileUploadController.storageForUpload.filePath.value = "";
+
+    leaveNoteController.clear();
+    isFileUploadedSuccessfully(false);
+  }
+
+
+  getUploadPolicy({fileName}) async {
+    isUploadPolicyLoading(true);
+    final response = await NetworkClient().graphRequest(queryString: getUploadPolicyQuery, variables: {
+      "queryData": {
+        "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
+        "filename":
+        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "directive": "Files"
+      }
+    });
+
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
+    } else {
+      uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
+      uploadFile(
+          url: uploadPolicyResponse.getUploadPolicy?.url ?? "",
+          fileName: fileName,
+          list: uploadPolicyResponse.getUploadPolicy?.policyData);
+    }
+    isUploadPolicyLoading(false);
+  }
+
+  uploadFile(
+      {required String fileName,
+        List<PolicyData>? list,
+        required String url}) async {
+    if (list == null || url.isEmpty) return;
+    isUploadPolicyLoading(true);
+
+    FormData formData = FormData({});
+    for (var data in list) {
+      formData.fields.add(MapEntry(data.name!, data.value!));
+    }
+
+    formData.files.add(MapEntry(
+        "file",
+        MultipartFile(File(fileName),
+            filename:
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+
+    await NetworkClient().post(url, formData).then((value) {
+      isFileUploadedSuccessfully.value = true;
+    }, onError: (_) => isFileUploadedSuccessfully.value = false);
+    isUploadPolicyLoading(false);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -212,3 +398,7 @@ class HrLeaveController extends GetxController {
     super.onInit();
   }
 }
+
+
+
+
