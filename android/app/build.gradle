@@ -6,6 +6,7 @@ plugins {
     id "com.google.firebase.crashlytics" version "2.9.9" apply false
 }
 
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -37,12 +38,17 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "com.gainhq.payrun"
     compileSdk 34
-    ndkVersion flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+
 //example
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
