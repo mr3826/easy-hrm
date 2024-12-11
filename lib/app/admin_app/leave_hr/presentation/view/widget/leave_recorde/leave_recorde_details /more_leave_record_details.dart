@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/leave_details_by_id.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/see_documents/see_document_details.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -235,7 +236,6 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
   /// Builds a cancel option for approved leaves.
   Widget _buildActionCancel(BuildContext context, String leaveId) {
     return _buildActionOption(AppString.text_cancel.tr, () {
-      print("object");
       showRejectDialog(
           context,
           controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first
@@ -251,7 +251,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
     customAntButtonSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
-      child:  const EditLeaveRecordDetails(),
+      child:   EditLeaveRecordDetails(getLeaveDetailsById:GetLeaveDetailsById(files: controller.leaveDetailsById?.getLeaveDetailsById?.files??[])),
     );
   }
 
@@ -274,36 +274,25 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
 
 
 
-
-
-
-
-
-
-
     Get.find<LeaveController>().selectedStatusIndex.value = controller.leaveDetailsById?.getLeaveDetailsById?.status == "pending" ? 0 : 1;
 
-    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
-        .format(DateTime.parse(
-            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
-                DateTime.now().toString()));
-    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
-        .format(DateTime.parse(
-            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
-                DateTime.now().toString()));
+    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.startDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.startDate ?? DateTime.now().toString()));
 
-    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
-        .format(DateTime.parse(
-            controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
-                DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outDate.value =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(
-            controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
-                DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.endDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.endDate ?? DateTime.now().toString()));
+
     leaveNoteController.text = controller.leaveDetailsById?.getLeaveDetailsById?.description ?? "";
+
+    Get.find<DateTimePickerController>().getInDateTime();
+    Get.find<DateTimePickerController>().getOutDateTime();
+
 
   }
 }
+
+
+
 
 /// Shows a rejection dialog with custom alert and actions.
 void showRejectDialog(BuildContext context, String leaveData,

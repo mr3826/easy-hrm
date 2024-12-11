@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/leave_details_by_id.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../../common/widget/custom_card_style.dart';
@@ -15,8 +16,6 @@ import '../../../../../../../../../common/widget/timePicker/custom_time_picker_o
 import '../../../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../../../common/widget/warning_message.dart';
 import '../../../../../../../../../modules/auth/presentation/view/otp_screen.dart';
-import '../../../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
-import '../../../../../../../../../modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';
 import '../../../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_style.dart';
@@ -32,33 +31,29 @@ import '../../../assign_leave/leave_type.dart';
 
 /// A widget that displays and edits leave record details.
 class EditLeaveRecordDetails extends GetView<HrLeaveController> {
-
-   const EditLeaveRecordDetails({super.key});
+  final GetLeaveDetailsById? getLeaveDetailsById;
+  const EditLeaveRecordDetails({super.key, this.getLeaveDetailsById});
 
   @override
   Widget build(BuildContext context) {
-Get.put(HrUpdateLeaveController());
+    if (Get.isRegistered()) {
+      Get.delete<HrUpdateLeaveController>();
+    }
+    Get.put(HrUpdateLeaveController());
+
     return Column(
       children: [
-
         /// Builds the header with a static date and day.
-        Obx(()=>_buildHeader()),
+        Obx(() => _buildHeader()),
 
         /// Builds the list of text fields for various leave record details.
         Obx(() => _buildListOfTextField(context)),
-
-
       ],
     );
   }
 
   /// Builds a scrollable list of form fields for editing leave record details.
   Widget _buildListOfTextField(BuildContext context) {
-
-    print('''
-    controller.leaveTypeId  :: ${controller.leaveTypeId }'
-    controller.leaveId ::  ${controller.leaveId}
-    ''');
     if (Get.find<HrLeaveController>().isAvailableLeaveType.isTrue) {
       return const Padding(
         padding: EdgeInsets.only(top: 28.0),
@@ -80,19 +75,24 @@ Get.put(HrUpdateLeaveController());
               _spacer(18),
 
               /// Displays the title and a required leave type dropdown.
-              _buildTitleText(text: AppString.textEmployees.tr, isRequired: true),
+              _buildTitleText(
+                  text: AppString.textEmployees.tr, isRequired: true),
               _spacer(8),
               _buildSearchBar(context),
 
               _spacer(18),
-              _buildTitleText(text: AppString.textLeaveTimeline.tr, isRequired: true),
+              _buildTitleText(
+                  text: AppString.textLeaveTimeline.tr, isRequired: true),
 
               _spacer(8),
 
-              _buildLeaveTimeline(), ///Timeline [This year,Next year]
+              _buildLeaveTimeline(),
+
+              ///Timeline [This year,Next year]
 
               _spacer(18),
-              _buildTitleText(text: AppString.textLeaveType.tr, isRequired: true),
+              _buildTitleText(
+                  text: AppString.textLeaveType.tr, isRequired: true),
               _spacer(8), const LeaveTypeDropDown(),
               _spacer(18),
               _leaveCountStyleLayout(),
@@ -113,10 +113,9 @@ Get.put(HrUpdateLeaveController());
 
               _buildFromDateWithTime(),
 
-
-              _spacer( 20),
+              _spacer(20),
               customTitleText(text: AppString.text_to.tr, isRequired: true),
-              _spacer( 8),
+              _spacer(8),
 
               _buildToDateWithTime(),
 
@@ -134,29 +133,32 @@ Get.put(HrUpdateLeaveController());
               _buildTitleText(text: AppString.text_document.tr),
 
               _spacer(8),
-              const AttachmentFile(),
+
+              AttachmentFile(
+                getLeaveDetailsById: getLeaveDetailsById,
+              ),
               _spacer(18),
 
               /// Displays the action buttons.
-              CustomDoubleAppButton(
-                  onAction: () {
-                    if (Get.find<HrLeaveController>()
+              CustomDoubleAppButton(onAction: () {
+                if (Get.find<HrLeaveController>()
                         .calculateAllowanceOfLeave
                         .value
                         .isNotEmpty &&
-                        Get.find<HrLeaveController>().calculateAllowanceOfLeave.value !=
-                            "0") {
-                      _updateLeaveMethod();
-                    } else {
-                      showWarningMessage(message: AppString.text_no_available_leave.tr);
-                    }
-
-                  },
-                  cancelAction: () {
-                    /// Clears the file upload path and navigates back.
-                    Get.find<LeaveFileUploadController>().path.value = "";
-                    Get.back(canPop: false);
-                  }),
+                    Get.find<HrLeaveController>()
+                            .calculateAllowanceOfLeave
+                            .value !=
+                        "0") {
+                  _updateLeaveMethod();
+                } else {
+                  showWarningMessage(
+                      message: AppString.text_no_available_leave.tr);
+                }
+              }, cancelAction: () {
+                /// Clears the file upload path and navigates back.
+                Get.find<LeaveFileUploadController>().path.value = "";
+                Get.back(canPop: false);
+              }),
               _spacer(100),
             ],
           ),
@@ -165,46 +167,25 @@ Get.put(HrUpdateLeaveController());
     );
   }
 
-
-
   void _updateLeaveMethod() {
-    if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).difference(DateTime.parse(
-        Get.find<DateTimePickerController>().inDateTime.value))
+    if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
+        .difference(DateTime.parse(
+            Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
-
-
-
-      print('''
-    controller.leaveTypeId  :: ${controller.leaveTypeId }'
-    controller.leaveId ::  ${controller.leaveId}
-    ''');
-
-
       Get.find<HrUpdateLeaveController>().updateLeave(
         leaveId: controller.leaveId.toString(),
         leaveTypeId: controller.leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,
         endDate: Get.find<DateTimePickerController>().outDateTime.value,
-
         size: controller.fileSize.toString(),
-        name:controller.fileName.toString(),
+        name: controller.fileName.toString(),
         key: controller.fileKey.toString(),
-        id:controller.fileId.toString(),
-
+        id: controller.fileId.toString(),
       );
     } else {
       showWarningMessage(message: AppString.dateDifferenceIssueMessage.tr);
     }
   }
-
-
-
-
-
-
-
-
-
 
   /// Builds a horizontal tab selector for leave status options.
   Widget _buildStatusTabSelector() {
@@ -278,28 +259,18 @@ Get.put(HrUpdateLeaveController());
           String year = value == "This year"
               ? "${DateTime.now().year}"
               : "${DateTime.now().year + 1}";
-          Get.find<HrLeaveController>()
-              .getAvailableLeaveType(year: year);
+          Get.find<HrLeaveController>().getAvailableLeaveType(year: year);
         });
   }
 }
 
 Widget _buildFromDateWithTime() {
-  return  Get.find<LeaveScreenController>().startTime != null
-      ? CustomTimePickerInTime(
-    inTime:
-    "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
-  )
-      : const CustomTimePickerInTime();
+  return  const CustomTimePickerInTime();
 }
 
 Widget _buildToDateWithTime() {
-  return     Get.find<LeaveScreenController>().endTime != null
-      ? CustomTimePickerOutTime(
-    outTime:
-    "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
-  )
-      : const CustomTimePickerOutTime();
+
+  return  const CustomTimePickerOutTime();
 }
 
 Widget _buildTitleText({required String text, bool isRequired = false}) {
@@ -344,10 +315,13 @@ Widget _buildHeader() {
         ),
         customSpacerHeight(height: 12),
         Text(
-          DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value).day == DateTime.parse(Get.find<DateTimePickerController>().outDate.value).day
+          DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
+                      .day ==
+                  DateTime.parse(
+                          Get.find<DateTimePickerController>().outDate.value)
+                      .day
               ? DateFormat('d MMMM').format(DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value))
+                  Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
@@ -356,14 +330,13 @@ Widget _buildHeader() {
           ),
         ),
         Text(
-          DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value)
-              .day ==
-              DateTime.parse(
-                  Get.find<DateTimePickerController>().outDate.value)
-                  .day
+          DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
+                      .day ==
+                  DateTime.parse(
+                          Get.find<DateTimePickerController>().outDate.value)
+                      .day
               ? DateFormat('EEEE').format(DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value))
+                  Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.small_text_black.copyWith(
             color: AppColor.hintColor,
@@ -395,11 +368,9 @@ Widget _buildSearchBar(BuildContext context) {
       child: Row(
         children: [
           customSpacerWidth(width: 12),
-
-          const Icon(CupertinoIcons.search, color: AppColor.hintColor, size: 25),
-
+          const Icon(CupertinoIcons.search,
+              color: AppColor.hintColor, size: 25),
           customSpacerWidth(width: 8),
-
           if (controller.selectedEmployeeImgKey.isNotEmpty) ...[
             CustomNetworkImage(
               imgUrlKey: controller.selectedEmployeeImgKey.value,
@@ -411,7 +382,6 @@ Widget _buildSearchBar(BuildContext context) {
             ),
             customSpacerWidth(width: 6),
           ],
-
           Expanded(
             child: Text(
               controller.selectedEmployeeInfo.value,
@@ -421,7 +391,6 @@ Widget _buildSearchBar(BuildContext context) {
                   overflow: TextOverflow.ellipsis),
             ),
           ),
-
           customSpacerWidth(width: 12),
         ],
       ),

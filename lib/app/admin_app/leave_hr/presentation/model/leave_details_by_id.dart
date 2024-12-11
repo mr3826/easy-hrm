@@ -33,7 +33,7 @@ class GetLeaveDetailsById {
   String? duration;
   String? endDate;
   List<Files>? files;
-  int? numberOfDays;
+  dynamic numberOfDays;
   String? sTypename;
 
   GetLeaveDetailsById(

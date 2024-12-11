@@ -68,19 +68,18 @@ class UpdateLeave extends StatelessWidget {
   void _updateDateFromResponse() {
     Get.find<UpDateLeaveController>().leaveId = leaveRecords?.id ?? '';
     Get.find<UpDateLeaveController>().leaveTypeId = leaveRecords?.leaveType?.leaveId ?? "";
+
     Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
-        .format(DateTime.parse(
-            leaveRecords?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
-        .format(
-            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outDate.value =
-        DateFormat('yyyy-MM-dd').format(
-            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()));
+
+
+
+    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
+
     leaveNoteController.text = leaveRecords?.description ?? "";
     Get.find<UpDateLeaveController>().isNoteRequired.value = leaveRecords?.leaveType?.isAddNoteRequired ?? false;
 

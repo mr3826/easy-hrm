@@ -38,7 +38,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
     return Column(
       children: [
         /// Builds the header with a static date and day.
-        _buildHeader(),
+       Obx(()=> _buildHeader(),),
 
         /// Builds the list of text fields for various leave record details.
         Obx(
@@ -151,11 +151,15 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               _buildTitleText(text: AppString.text_document.tr),
               customSpacerHeight(height: 8),
 
-              const AttachmentFile(),
+              const AttachmentFile(
+                isAssignLeave: true,
+              ),
               customSpacerHeight(height: 30),
 
               /// Displays the action buttons.
-            Obx(()=>  _buildButton(),),
+              Obx(
+                () => _buildButton(),
+              ),
               customSpacerHeight(height: 100),
             ],
           ),
@@ -280,33 +284,40 @@ class AssignLeaveSelectedValue extends StatelessWidget {
   }
 
   _buildButton() {
-    if(Get.find<HrLeaveController>().isAssignLeaveLoaderLoading.isTrue){
-      return const Center(child: CupertinoActivityIndicator(color: AppColor.primaryColor,radius: 15,));
+    if (Get.find<HrLeaveController>().isAssignLeaveLoaderLoading.isTrue) {
+      return const Center(
+          child: CupertinoActivityIndicator(
+        color: AppColor.primaryColor,
+        radius: 15,
+      ));
     }
 
     return CustomDoubleAppButton(
         btnColor: AppColor.primaryColor,
         onAction: () {
-
+          if (!DateTime.parse(
+                  Get.find<DateTimePickerController>().outDateTime.value)
+              .difference(DateTime.parse(
+                  Get.find<DateTimePickerController>().inDateTime.value))
+              .isNegative) {
             if (Get.find<HrLeaveController>()
                     .calculateAllowanceOfLeave
                     .value
                     .isNotEmpty &&
                 Get.find<HrLeaveController>().calculateAllowanceOfLeave.value !=
                     "0") {
-
               Get.find<HrLeaveController>().applyLeave(
                   status:
                       Get.find<LeaveController>().selectedStatusIndex.value == 0
                           ? "pending"
                           : "approved");
-
-
-
             } else {
               showWarningMessage(message: AppString.text_no_available_leave.tr);
             }
-
+          } else {
+            showWarningMessage(
+                message: AppString.dateDifferenceIssueMessage.tr);
+          }
         },
         cancelAction: () {
           Get.back(canPop: false);
@@ -339,16 +350,6 @@ Widget _buildTitleText({required String text, bool isRequired = false}) {
 
 Widget _buildHeader() {
   final screenHeight = MediaQuery.of(Get.context!).size.height;
-  final controller = Get.find<DateTimePickerController>();
-  // Parse and format date safely with null checks
-  final String inDateTimeValue = controller.inDateTime.value;
-  final DateTime? dateTime =
-      (inDateTimeValue.isNotEmpty) ? DateTime.tryParse(inDateTimeValue) : null;
-  final String formattedDate = dateTime != null
-      ? DateFormat("d MMM yyyy").format(dateTime)
-      : "Invalid Date";
-  final String formattedDay =
-      dateTime != null ? DateFormat("EEEE").format(dateTime) : "Unknown Day";
 
   return Container(
     height: screenHeight / 9,
@@ -361,15 +362,19 @@ Widget _buildHeader() {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            height: 4,
-            width: 120,
-            color: AppColor.backgroundColor,
-          ),
+          child:
+          Container(height: 4, width: 120, color: AppColor.backgroundColor),
         ),
         customSpacerHeight(height: 12),
         Text(
-          formattedDate,
+          DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
+              .day ==
+              DateTime.parse(
+                  Get.find<DateTimePickerController>().outDate.value)
+                  .day
+              ? DateFormat('d MMMM').format(DateTime.parse(
+              Get.find<DateTimePickerController>().inDate.value))
+              : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
             fontWeight: FontWeight.w600,
@@ -377,7 +382,14 @@ Widget _buildHeader() {
           ),
         ),
         Text(
-          formattedDay,
+          DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
+              .day ==
+              DateTime.parse(
+                  Get.find<DateTimePickerController>().outDate.value)
+                  .day
+              ? DateFormat('EEEE').format(DateTime.parse(
+              Get.find<DateTimePickerController>().inDate.value))
+              : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.small_text_black.copyWith(
             color: AppColor.hintColor,
             fontSize: 12,
