@@ -36,11 +36,19 @@ class HrLeaveController extends GetxController {
   RxBool updateLeaveLoader = false.obs;
   RxBool isLoadingLeaveRecord = false.obs;
   RxBool isAvailableLeaveType = false.obs;
+  RxBool isUpdateLeaveLoading = false.obs;
 
   RxString selectedEmployeeInfo = AppString.textSearchEmployee.tr.obs;
   RxString selectedEmployeeImgKey = "".obs;
   String selectedEmployeeId = "";
   RxString calculateAllowanceOfLeave = ''.obs;
+
+
+
+
+
+
+
 
   final isAssignLeaveLoaderLoading = false.obs;
   RxBool isNoteRequired = false.obs;
@@ -50,7 +58,12 @@ class HrLeaveController extends GetxController {
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
    String? leaveTypeId;
+   String? leaveId;
 
+   String? fileName;
+   String? fileKey;
+   String? fileId;
+   String? fileSize;
 
 
 
@@ -268,6 +281,24 @@ class HrLeaveController extends GetxController {
     isAssignLeaveLoaderLoading(false);
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /// Prepares the file data for the leave request.
   List<Map<String, dynamic>>? _prepareFileData() {
     final fileUploadController = Get.find<FileUploadController>();
@@ -358,27 +389,6 @@ class HrLeaveController extends GetxController {
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

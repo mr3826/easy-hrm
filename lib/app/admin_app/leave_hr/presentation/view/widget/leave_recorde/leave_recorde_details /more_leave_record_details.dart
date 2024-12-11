@@ -11,6 +11,7 @@ import '../../../../../../../../common/widget/custom_dialog.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
@@ -19,12 +20,12 @@ import '../../../../../../../../utils/images.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
-import 'leave_record_details.dart';
+
 
 /// A widget that displays detailed information for a specific leave record,
 /// including options to approve, reject, edit, and view attached documents.
-///
 /// The actions displayed depend on the leave record's status.
+///
 class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
   final String? leaveId;
   const MoreLeaveRecordDetails({super.key, this.leaveId});
@@ -96,7 +97,9 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                       ],
                       _buildActionOption(
                           AppString.textSeeDocument.tr, _showBuildAttachedFile),
+
                       _divider(),
+
                       _buildActionOption(AppString.textViewLeaveRecord.tr, () {
                         controller.getLeaveRecord(
                             startDate: controller.leaveDetailsById
@@ -244,42 +247,61 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
 
   /// Shows a sheet to edit leave details.
   void _showEditLeaveDetails() {
-    HrLeaveController controller = Get.find<HrLeaveController>();
-
+    _updateDateFromResponse();
     customAntButtonSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
-      child: EditLeaveRecordDetails(
-        leaveRecordDetailsModel: LeaveRecordDetailsModel(
-          applicationDate:
-              controller.leaveDetailsById?.getLeaveDetailsById?.createdAt,
-          applicationStatus:
-              controller.leaveDetailsById?.getLeaveDetailsById?.status,
-          employeeName:
-              "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
-              "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
-          leaveDate: controller
-              .leaveDetailsById?.getLeaveDetailsById?.leaveDetails?[0].date,
-          leaveDuration: getLeaveDuration(
-              controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails
-                      ?.first.leaveSeconds
-                      ?.toString() ??
-                  "",
-              controller.leaveDetailsById?.getLeaveDetailsById?.numberOfDays
-                      ?.toString() ??
-                  ""),
-          typeOfLeave: controller
-                  .leaveDetailsById?.getLeaveDetailsById?.leaveType?.name ??
-              "",
-          leaveStatus: controller.leaveDetailsById?.getLeaveDetailsById?.status,
-          designation: controller.leaveDetailsById?.getLeaveDetailsById
-                  ?.organizationUser?.designation ??
-              "No designation",
-          imgUrl: controller.leaveDetailsById?.getLeaveDetailsById
-              ?.organizationUser?.profile?.image,
-        ),
-      ),
+      child:  const EditLeaveRecordDetails(),
     );
+  }
+
+  void _updateDateFromResponse() {
+
+    controller.getAvailableLeaveType();
+    controller.selectedEmployeeImgKey.value =  controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.image ?? "";
+    controller.selectedEmployeeInfo.value =  "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} ""${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}";
+    controller.leaveTypeId = controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.id ?? "";
+    controller.leaveId = controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first.leaveId ?? "";
+    controller.calculateAllowanceOfLeave.value=controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.calculateAllowanceBy.toString()??"";
+
+
+    if( controller.leaveDetailsById!.getLeaveDetailsById!.files!.isNotEmpty ){
+      controller.fileName =controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.name??"";
+      controller.fileKey =controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.key??"";
+      controller.fileId = controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.id??"";
+      controller.fileSize = controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.size??"";
+    }
+
+
+
+
+
+
+
+
+
+
+    Get.find<LeaveController>().selectedStatusIndex.value = controller.leaveDetailsById?.getLeaveDetailsById?.status == "pending" ? 0 : 1;
+
+    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
+        .format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
+                DateTime.now().toString()));
+    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
+        .format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
+                DateTime.now().toString()));
+
+    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
+        .format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
+                DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
+                DateTime.now().toString()));
+    leaveNoteController.text = controller.leaveDetailsById?.getLeaveDetailsById?.description ?? "";
+
   }
 }
 

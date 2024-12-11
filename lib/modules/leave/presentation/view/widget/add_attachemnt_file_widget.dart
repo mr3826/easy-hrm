@@ -19,10 +19,9 @@ import '../../../domain/leave_records.dart';
 
 class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;
-  final bool? isAssignLeave;
   final GetLeaveRecords? leaveRecords;
 
-  const AddAttachmentFile({this.isFromApplyLeave = false, super.key, this.leaveRecords,this.isAssignLeave});
+  const AddAttachmentFile({this.isFromApplyLeave = false, super.key, this.leaveRecords});
 
 
   @override
@@ -36,13 +35,13 @@ class AddAttachmentFile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             dottedCircleStyle(
-                isErrorOccurred: isFromApplyLeave == true || isAssignLeave ==true
+                isErrorOccurred: isFromApplyLeave == true
                     ? Get.find<ApplyLeaveController>().isErrorOccurred.value
                     : Get.find<UpDateLeaveController>().isErrorOccurred.value,
                 child: GestureDetector(onTap: () {
                   Get.find<FileUploadController>()
                       .storageForUpload
-                      .pickFile(isApplyLeave: isFromApplyLeave ?? false,isAssignLeave: isAssignLeave??false);
+                      .pickFile(isApplyLeave: isFromApplyLeave ?? false);
                 }, child: Obx(() {
                   return isFromApplyLeave == true
                       ? _documentLayout()

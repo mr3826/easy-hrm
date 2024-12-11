@@ -247,15 +247,19 @@ class LeaveType {
 }
 
 class LeaveDetails {
+  String?  id;
+  String?  leaveId;
   String? date;
   int? leaveSeconds;
   int? scheduleSeconds;
   String? sTypename;
 
   LeaveDetails(
-      {this.date, this.leaveSeconds, this.scheduleSeconds, this.sTypename});
+      {this.date, this.leaveSeconds, this.scheduleSeconds, this.sTypename,this.id,this.leaveId});
 
   LeaveDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    leaveId = json['leave_id'];
     date = json['date'];
     leaveSeconds = json['leave_seconds'];
     scheduleSeconds = json['schedule_seconds'];
@@ -264,6 +268,8 @@ class LeaveDetails {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['leave_id'] = this.leaveId;
     data['date'] = this.date;
     data['leave_seconds'] = this.leaveSeconds;
     data['schedule_seconds'] = this.scheduleSeconds;

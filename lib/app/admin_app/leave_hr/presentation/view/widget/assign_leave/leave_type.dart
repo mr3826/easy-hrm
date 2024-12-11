@@ -26,12 +26,12 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
     super.initState();
     // Get the controller instance
     HrLeaveController controller = Get.find<HrLeaveController>();
-
-    // Set the default value if available
-    dropDownValue = controller.leaveTypeId!.isNotEmpty == true
+    // Set the default value if available, with null checks
+    dropDownValue = (controller.leaveTypeId != null && controller.leaveTypeId!.isNotEmpty)
         ? controller.leaveTypeId
         : null;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,6 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
           );
         }).toList(),
         onChanged: (valueType) {
-          print(valueType);
           setState(() {
             dropDownValue = valueType as String;
           });

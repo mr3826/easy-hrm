@@ -891,6 +891,8 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
       __typename
     }
     leave_details {
+    id
+    leave_id
       date
       leave_seconds
       schedule_seconds

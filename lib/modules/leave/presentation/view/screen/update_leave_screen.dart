@@ -67,11 +67,8 @@ class UpdateLeave extends StatelessWidget {
 
   void _updateDateFromResponse() {
     Get.find<UpDateLeaveController>().leaveId = leaveRecords?.id ?? '';
-    Get.find<UpDateLeaveController>().leaveTypeId =
-        leaveRecords?.leaveType?.leaveId ?? "";
-    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
-        .format(DateTime.parse(
-            leaveRecords?.startDate ?? DateTime.now().toString()));
+    Get.find<UpDateLeaveController>().leaveTypeId = leaveRecords?.leaveType?.leaveId ?? "";
+    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()));
     Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
         .format(DateTime.parse(
             leaveRecords?.startDate ?? DateTime.now().toString()));
@@ -85,10 +82,9 @@ class UpdateLeave extends StatelessWidget {
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
     leaveNoteController.text = leaveRecords?.description ?? "";
-    Get.find<UpDateLeaveController>().isNoteRequired.value =
-        leaveRecords?.leaveType?.isAddNoteRequired ?? false;
-    Get.find<UpDateLeaveController>().isDocumentRequired.value =
-        leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
+    Get.find<UpDateLeaveController>().isNoteRequired.value = leaveRecords?.leaveType?.isAddNoteRequired ?? false;
+
+    Get.find<UpDateLeaveController>().isDocumentRequired.value = leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
   }
 }
 
@@ -111,8 +107,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      customTitleText(
-                          text: AppString.text_leave_name.tr, isRequired: true),
+                      customTitleText(text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
                       UpdateLeaveDropdown(
                           dropdownValue:
@@ -120,17 +115,23 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
                       customSpacerHeight(height: 20),
-                      customTitleText(
-                          text: AppString.text_from.tr, isRequired: true),
+                      customTitleText(text: AppString.text_from.tr, isRequired: true),
                       customSpacerHeight(height: 8),
+
                       const CustomTimePickerInTime(),
+
                       customSpacerHeight(height: 20),
-                      customTitleText(
-                          text: AppString.text_to.tr, isRequired: true),
+
+                      customTitleText(text: AppString.text_to.tr, isRequired: true),
+
                       customSpacerHeight(height: 8),
+
                       const CustomTimePickerOutTime(),
+
                       customSpacerHeight(height: 12),
+
                       customSpacerHeight(height: 20),
+
                       Obx(() => Row(
                             children: [
                               customTitleText(text: AppString.text_note.tr),
@@ -308,10 +309,10 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
   }
 
   void _updateLeaveMethod() {
-    if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
-        .difference(DateTime.parse(
+    if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
+
       Get.find<UpDateLeaveController>().updateLeave(
         leaveId: leaveRecords?.id ?? "",
         leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,

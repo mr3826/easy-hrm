@@ -20,7 +20,6 @@ import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/images.dart';
 import '../../../controller/picked_file_from_stroage.dart';
-import '../leave_recorde/leave_recorde_details /leave_record_details.dart';
 import 'assign_leave_selected_view.dart';
 
 class AssignLeave extends GetView<HrLeaveController> {
@@ -259,6 +258,7 @@ Widget _buildLeaveTypeGrid(HrLeaveController controller) {
           if (availableLeave != "0") {
             leaveTypeSelectedIndex.value = index;
             controller.leaveTypeId = data.leaveTypeId;
+
             Get.find<HrLeaveController>().calculateAllowanceOfLeave.value =
                 data.calculateAllowanceBy ?? "";
           }

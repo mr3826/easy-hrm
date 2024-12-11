@@ -76,7 +76,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
               /// Displays the title and a required leave type dropdown.
               _buildTitleText(
-                  text: AppString.text_leave_name.tr, isRequired: true),
+                  text: AppString.textEmployees.tr, isRequired: true),
               customSpacerHeight(height: 8),
 
               Obx(
@@ -137,6 +137,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
                           "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
                     )
                   : const CustomTimePickerOutTime(),
+
               customSpacerHeight(height: 12),
               customSpacerHeight(height: 18),
 
@@ -284,9 +285,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
     }
 
     return CustomDoubleAppButton(
-        btnColor:
-            AppColor.primaryColor
-              ,
+        btnColor: AppColor.primaryColor,
         onAction: () {
 
             if (Get.find<HrLeaveController>()
@@ -295,11 +294,15 @@ class AssignLeaveSelectedValue extends StatelessWidget {
                     .isNotEmpty &&
                 Get.find<HrLeaveController>().calculateAllowanceOfLeave.value !=
                     "0") {
+
               Get.find<HrLeaveController>().applyLeave(
                   status:
                       Get.find<LeaveController>().selectedStatusIndex.value == 0
                           ? "pending"
                           : "approved");
+
+
+
             } else {
               showWarningMessage(message: AppString.text_no_available_leave.tr);
             }
