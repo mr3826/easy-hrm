@@ -38,8 +38,10 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
   Widget build(BuildContext context) {
     if (Get.isRegistered()) {
       Get.delete<HrUpdateLeaveController>();
+      Get.delete<LeaveFileUploadController>();
     }
     Get.put(HrUpdateLeaveController());
+    Get.put(LeaveFileUploadController());
 
     return Column(
       children: [

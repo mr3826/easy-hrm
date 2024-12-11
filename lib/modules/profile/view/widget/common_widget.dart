@@ -85,6 +85,7 @@ userImageLayout({double? height}) {
     profileImageKey:
         "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
     imgUrlKey: '',
+    isPublic: true,
   );
 }
 

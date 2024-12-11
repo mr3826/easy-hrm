@@ -22,7 +22,7 @@ import '../../../../domain/user_work_info_dropdown.dart';
 import '../../../controller/employment_controller.dart';
 
 class EditEmployee extends GetView<EmploymentController> {
-  EditEmployee({super.key});
+  const EditEmployee({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class EditEmployee extends GetView<EmploymentController> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  CustomCalendarPicker(isRangeSelectionEnabled: false, weekendDays: Get.find<LeaveScreenController>().holidays, holidayDates: const [])
+                  //CustomCalendarPicker(isRangeSelectionEnabled: false, weekendDays: Get.find<LeaveScreenController>().holidays, holidayDates: const [])
                 ],
               ),
             ),

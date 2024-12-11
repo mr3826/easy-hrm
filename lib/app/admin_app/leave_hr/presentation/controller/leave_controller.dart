@@ -48,11 +48,18 @@ class LeaveController extends GetxController {
   /// The currently selected year index.
   RxInt selectedYearIndex = 0.obs;
 
-  /// List of years for the last 25 years.
-  final List<int> years = List.generate(
-    25,
-        (index) => DateTime.now().year - index,
-  );
+  // /// List of years for the last 25 years.
+  // final List<int> years = List.generate(
+  //   25,
+  //       (index) => DateTime.now().year - index,
+  // );
+
+  /// List of years starting with the current year,
+  /// including the last 24 years and the next 2 years.
+  final List<int> years = [
+    for (int i = 0; i < 25; i++) DateTime.now().year - i, // Current year and last 24 years
+    for (int i = 1; i <= 2; i++) DateTime.now().year + i, // Next 2 years
+  ];
 
   /// The currently selected month index.
   RxInt selectedMonthIndex = (DateTime.now().month - 1).obs;
