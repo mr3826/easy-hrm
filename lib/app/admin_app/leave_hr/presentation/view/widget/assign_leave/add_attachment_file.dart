@@ -6,7 +6,6 @@ import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/hr_
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/leave_details_by_id.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/file_upload_controller.dart';
-import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/dotted_circle_style.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -32,12 +31,10 @@ class AttachmentFile extends StatelessWidget {
     }
     Get.put(HrLeaveController());
 
-    return Obx(() => Column(
+    return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             dottedCircleStyle(
-                isErrorOccurred:
-                    Get.find<HrLeaveController>().isErrorOccurred.value,
                 child: GestureDetector(onTap: () {
                   Get.find<FileUploadController>().storageForUpload.pickFile(
                       isAssignLeave: isAssignLeave ?? false,
@@ -50,7 +47,7 @@ class AttachmentFile extends StatelessWidget {
             customSpacerHeight(height: 8),
             _pathNameText(getLeaveDetailsById?.files?.first.key ?? ""),
           ],
-        ));
+        );
   }
 
   Widget _documentLayout() {

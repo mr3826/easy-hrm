@@ -24,14 +24,11 @@ class HrLeaveRemoteDataSource {
         queryString: getHrLeaveCalendarList,
         variables: {
           "queryData": {
-            "startDate": startDate ?? _getDefaultStartDate(),
-            "endDate": endDate ?? _getDefaultEndDate(),
+            "startDate": startDate,
+            "endDate": endDate ,
           },
         },
       );
-
-      log("getLeaveCalender_response: ${response.data}");
-
       if (response.hasException) {
         final exceptionMessage = response.exception.toString();
         log("getLeaveCalender exception: $exceptionMessage");
@@ -51,15 +48,7 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-  String _getDefaultStartDate() {
-    final now = DateTime.now();
-    return "${DateTime(now.year, now.month, 1).toIso8601String().split('T')[0]}T00:00:00.000Z";
-  }
 
-  String _getDefaultEndDate() {
-    final now = DateTime.now();
-    return "${DateTime(now.year, now.month + 1, 0).toIso8601String().split('T')[0]}T23:59:59.999Z";
-  }
 
   Future<bool> updateLeave({required String leaveId, String? status}) async {
     try {
@@ -67,9 +56,6 @@ class HrLeaveRemoteDataSource {
           .graphRequest(queryString: updateLeaveQuery, variables: {
         "inputData": {"leave_id": leaveId, "status": status ?? "cancelled"}
       });
-
-      print("updateLeave :: ${response.data}");
-
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
@@ -90,7 +76,6 @@ class HrLeaveRemoteDataSource {
           .graphRequest(queryString: getLeaveDetailsByIdQuery, variables: {
         "queryData": {"leave_id": leaveId}
       });
-      print("getLeaveDetailsById :: ${response.data}");
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
@@ -104,6 +89,7 @@ class HrLeaveRemoteDataSource {
       return null;
     }
   }
+
 
   ///todo [Download link]
   Future<DownloadFile?> getFileSignUrl(String? fileKey) async {
@@ -128,9 +114,6 @@ class HrLeaveRemoteDataSource {
 
   Future<HrLeaveRecorde?> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
 
-
-    print("getLeaveRecord :: sta ::: $startDate end :: $endDate");
-
     try {
       final response = await networkClient
           .graphRequest(queryString: getHrLeaveRecordeQuery,
@@ -143,16 +126,9 @@ class HrLeaveRemoteDataSource {
           ]:[]
         },
       }
-
-
-
-
       );
-      print("getLeaveRecord_hr::: ${response.data}");
       if (response.hasException) {
-        log(response.exception.toString());
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "getLeaveRecord");
+        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getLeaveRecord");
         return null;
       }
       return HrLeaveRecorde.fromJson(response.data!);
@@ -164,7 +140,6 @@ class HrLeaveRemoteDataSource {
 
 
    Future<AvailableLeaveType?> getAvailableLeaveType({String? orgUserId,String ?year}) async {
-
     try {
       final response = await networkClient
           .graphRequest(queryString: getAvailableLeavesTypeQuery,
@@ -175,11 +150,8 @@ class HrLeaveRemoteDataSource {
             },
           });
 
-      print("getAvailableLeaveType:: ${response.data}");
       if (response.hasException) {
-        log(response.exception.toString());
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "getLeaveRecord");
+        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getLeaveRecord");
         return null;
       }
       return AvailableLeaveType.fromJson(response.data!);
@@ -188,43 +160,6 @@ class HrLeaveRemoteDataSource {
       return null;
     }
   }
-
-  Future<bool> assignLeave(Map<String, dynamic> inputData) async {
-
-    try {
-      final response = await networkClient.graphRequest(
-          queryString: assignLeaveQuery, variables:{
-        "inputData": {
-          "start_date": "2024-12-27T03:00:00.000Z",
-          "end_date": "2024-12-27T11:00:00.000Z",
-          "status": "pending",
-          "assigned_to": "adf6e570-4e8f-49b2-ae0e-87be69e34814",
-          "leave_type_id": "dfdcdb02-2147-4e41-92a0-179bf11e6707",
-          "files": [
-            {
-              "name": "13a464e11b7815f.png",
-              "key": "14656641e9d7ac0.png",
-              "size": 564947
-            }
-          ]
-        }
-      }
-      );
-
-      if (response.hasException) {
-        log(response.exception.toString());
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "assignLeave");
-        return false;
-      }
-
-      return true;
-    } catch (e) {
-      log('Error in assignLeave: $e');
-      return true;
-    }
-  }
-
 
 
 

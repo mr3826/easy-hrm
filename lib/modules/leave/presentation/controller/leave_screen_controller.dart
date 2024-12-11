@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/hr_leave_controller.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
@@ -115,10 +116,13 @@ class LeaveScreenController extends GetxController with StateMixin {
 
 /// Updates data across different controllers.
 void updateData() {
-  final HrLeaveController leaveController = Get.find<HrLeaveController>();
-  leaveController
-    ..getLeaveRecord()
-    ..getHrLeaveCalender();
+  final LeaveScreenController leaveScreenController = Get.find<LeaveScreenController>();
+  leaveScreenController
+    ..getLeaveSummaryForDashboard()
+    ..getLeaveDetailsByDate();
+
+  Get.find<LeaveRecordsController>().getLeaveRecordsData();
+  Get.find<DashboardController>().getUpComingInfoForDashboard();
   _updateTimelineData();
 }
 

@@ -139,26 +139,37 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               ),
               _spacer(18),
 
+
               /// Displays the action buttons.
-              CustomDoubleAppButton(onAction: () {
-                if (Get.find<HrLeaveController>()
-                        .calculateAllowanceOfLeave
-                        .value
-                        .isNotEmpty &&
-                    Get.find<HrLeaveController>()
-                            .calculateAllowanceOfLeave
-                            .value !=
-                        "0") {
-                  _updateLeaveMethod();
-                } else {
-                  showWarningMessage(
-                      message: AppString.text_no_available_leave.tr);
-                }
-              }, cancelAction: () {
-                /// Clears the file upload path and navigates back.
-                Get.find<LeaveFileUploadController>().path.value = "";
-                Get.back(canPop: false);
-              }),
+
+              Obx(
+                () => Get.find<HrUpdateLeaveController>()
+                        .isUpdateLeaveLoading
+                        .isTrue
+                    ? const CupertinoActivityIndicator(
+                        color: AppColor.primaryColor, radius: 15)
+                    : CustomDoubleAppButton(onAction: () {
+                        if (Get.find<HrLeaveController>()
+                                .calculateAllowanceOfLeave
+                                .value
+                                .isNotEmpty &&
+                            Get.find<HrLeaveController>()
+                                    .calculateAllowanceOfLeave
+                                    .value !=
+                                "0") {
+                          _updateLeaveMethod();
+                        } else {
+                          showWarningMessage(
+                              message: AppString.text_no_available_leave.tr);
+                        }
+                      }, cancelAction: () {
+                        /// Clears the file upload path and navigates back.
+                        Get.find<LeaveFileUploadController>().path.value = "";
+                        Get.back(canPop: false);
+                      }),
+              ),
+
+
               _spacer(100),
             ],
           ),
@@ -265,12 +276,11 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
 }
 
 Widget _buildFromDateWithTime() {
-  return  const CustomTimePickerInTime();
+  return const CustomTimePickerInTime();
 }
 
 Widget _buildToDateWithTime() {
-
-  return  const CustomTimePickerOutTime();
+  return const CustomTimePickerOutTime();
 }
 
 Widget _buildTitleText({required String text, bool isRequired = false}) {

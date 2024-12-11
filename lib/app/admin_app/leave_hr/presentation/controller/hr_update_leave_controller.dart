@@ -6,9 +6,11 @@ import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../common/domain/upload_policy.dart';
 import '../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
+import '../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../../../network/network_client.dart';
 import '../../../../../utils/api_endpoints.dart';
 import '../../../../../utils/utils.dart';
+import 'hr_leave_controller.dart';
 
 
 class HrUpdateLeaveController extends GetxController with StateMixin {
@@ -61,34 +63,15 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
             uploadPolicyResponse: uploadPolicyResponse)
       }
     });
-
-
-    print('''
-    
-     "leave_id": $leaveId,
-        "description": ${leaveNoteController.text},
-        "end_date": ${DateTime.parse(endDate).toUtc().toString()},
-        "start_date":${DateTime.parse(startDate).toUtc().toString()},
-        "leave_type_id": $leaveTypeId,
-        "files":"${ _getFileInfo(id: id, key: key, size: size, name: name, filePath: Get.find<FileUploadController>().storageForUpload.filePath.value,
-        uploadPolicyResponse: uploadPolicyResponse)}
-    
-    
-    
-    ''');
     if (response.hasException) {
       ExceptionHelper.errorHandler(
           exception: response.exception!, methodName: "updateLeave");
     } else {
-      leaveNoteController.clear();
-      Get.find<FileUploadController>().storageForUpload.filePath.value = "";
-      Get.find<FileUploadController>().storageForUpload.filePath.isEmpty;
       isUpdateLeaveLoading(false);
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
       isFileUploadedSuccessfully(false);
-      Get.back(canPop: false);
-      // Get.back(canPop: false);
-      //   updateData();
+
+      hrUpdateLeave();
     }
     isUpdateLeaveLoading(false);
   }
@@ -193,3 +176,22 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
         : null;
   }
 }
+
+
+
+
+
+
+
+hrUpdateLeave(){
+  HrLeaveController controller =Get.find<HrLeaveController>();
+  final fileUploadController = Get.find<FileUploadController>();
+  controller.getHrLeaveCalender();
+  controller.getLeaveRecord();
+  Get.back(canPop: false);
+  Get.back();
+  leaveNoteController.clear();
+  fileUploadController.storageForUpload.fileSize.value = "";
+  fileUploadController.storageForUpload.filePath.value = "";
+}
+
