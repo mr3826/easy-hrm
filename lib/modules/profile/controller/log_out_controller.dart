@@ -17,13 +17,6 @@ class LogoutController {
       await NetworkClient().postRequest(Api.LOGOUT, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
       });
-      Get.find<UserProfileController>()
-          .organizationInfo
-          ?.getUserOrganizations
-          ?.data
-          ?.forEach(
-            (element) => print("ele: ${element.organization?.id}"),
-      );
 
       removeTokenForOrg(Get.find<UserProfileController>()
           .organizationInfo
@@ -32,10 +25,10 @@ class LogoutController {
           ?.map((e) => e.organization?.id)
           .toList() ??
           []);
+
     } catch (e) {
       log(e.toString());
     } finally {
-
       _clearSession();
     }
     isLogoutLoading(false);
@@ -52,8 +45,7 @@ class LogoutController {
 
 void removeTokenForOrg(List<String?> orgIds) {
   GetStorage box = GetStorage();
-  if (orgIds.isEmpty) return;
-  for (String? element in orgIds) {
-    box.remove(element!);
-  }
+  orgIds.map(
+    (e) async => await box.remove(e ?? ""),
+  );
 }
