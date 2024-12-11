@@ -11,8 +11,8 @@ import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../controller/hr_leave_controller.dart';
-import 'leave_recorde_details /leave_record_details.dart';
-import 'leave_recorde_details /more_leave_record_details.dart';
+import 'leave_record_details/leave_record_details.dart';
+import 'leave_record_details/more_leave_record_details.dart';
 
 class LeaveRecordList extends GetView<HrLeaveController> {
   const LeaveRecordList({super.key});

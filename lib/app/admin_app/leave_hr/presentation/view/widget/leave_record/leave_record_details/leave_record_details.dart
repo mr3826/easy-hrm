@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/leave_details_button.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
@@ -12,6 +11,7 @@ import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
+import 'leave_details_button.dart';
 
 class LeaveRecordDetails extends GetView<HrLeaveController> {
   final String? leaveId;

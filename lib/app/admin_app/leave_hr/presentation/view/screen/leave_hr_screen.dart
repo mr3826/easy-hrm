@@ -21,8 +21,9 @@ import '../../controller/hr_leave_controller.dart';
 import '../../controller/leave_controller.dart';
 import '../widget/calendar/vertical_calendar/calendar_view.dart';
 import '../widget/calendar/month_navigate_widget.dart';
-import '../widget/leave_recorde/date_navigate_widget.dart';
-import '../widget/leave_recorde/leave_record_list.dart';
+import '../widget/leave_record/date_navigate_widget.dart';
+import '../widget/leave_record/leave_record_list.dart';
+
 
 class LeaveHrScreen extends StatelessWidget {
   const LeaveHrScreen({super.key});

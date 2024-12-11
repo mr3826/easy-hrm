@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/leave_details_by_id.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_recorde/leave_recorde_details%20/see_documents/see_document_details.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_record/leave_record_details/see_documents/see_document_details.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_app_button.dart';
@@ -21,6 +21,7 @@ import '../../../../../../../../utils/images.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
+
 
 
 /// A widget that displays detailed information for a specific leave record,
@@ -403,12 +404,14 @@ Widget _buildDialogActions(String leaveId) {
             children: [
               const Icon(Icons.done, color: AppColor.cardColor),
               customSpacerWidth(width: 8),
-              Text(
-                AppString.text_confirm.tr,
-                style: AppStyle.normal_text.copyWith(
-                  color: AppColor.cardColor,
-                  fontSize: Dimensions.fontSizeDefault + 1,
-                  overflow: TextOverflow.ellipsis,
+              Expanded(
+                child: Text(
+                  AppString.text_confirm.tr,
+                  style: AppStyle.normal_text.copyWith(
+                    color: AppColor.cardColor,
+                    fontSize: Dimensions.fontSizeDefault + 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
             ],

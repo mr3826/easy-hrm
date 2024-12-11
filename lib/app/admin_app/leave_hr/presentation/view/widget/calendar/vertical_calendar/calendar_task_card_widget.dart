@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_record/leave_record_details/leave_record_details.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_record/leave_record_details/more_leave_record_details.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../enum.dart';
@@ -7,9 +9,7 @@ import '../../../../../../../../modules/timeline/view/widget/timeline_calendar.d
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import '../../../../controller/leave_controller.dart';
-import '../../leave_recorde/leave_record_list.dart';
-import '../../leave_recorde/leave_recorde_details /leave_record_details.dart';
-import '../../leave_recorde/leave_recorde_details /more_leave_record_details.dart';
+import '../../leave_record/leave_record_list.dart';
 import 'calendar_widget.dart';
 
 class TaskCard extends StatelessWidget {
