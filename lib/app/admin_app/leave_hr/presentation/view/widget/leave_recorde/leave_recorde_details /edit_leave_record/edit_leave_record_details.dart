@@ -146,8 +146,10 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
                 () => Get.find<HrUpdateLeaveController>()
                         .isUpdateLeaveLoading
                         .isTrue
-                    ? const CupertinoActivityIndicator(
-                        color: AppColor.primaryColor, radius: 15)
+                    ? const Center(
+                      child: CupertinoActivityIndicator(
+                          color: AppColor.primaryColor, radius: 15),
+                    )
                     : CustomDoubleAppButton(onAction: () {
                         if (Get.find<HrLeaveController>()
                                 .calculateAllowanceOfLeave
