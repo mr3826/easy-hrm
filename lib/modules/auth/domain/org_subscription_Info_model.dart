@@ -1,36 +1,35 @@
 class OrgSubscriptionInfoModel {
-  GetOrgSubscriptionInfo? getOrgSubscriptionInfo;
+  GetAnOrganizationSubscription? getAnOrganizationSubscription;
 
-  OrgSubscriptionInfoModel({this.getOrgSubscriptionInfo});
+  OrgSubscriptionInfoModel({this.getAnOrganizationSubscription});
 
   OrgSubscriptionInfoModel.fromJson(Map<String, dynamic> json) {
-    getOrgSubscriptionInfo = json['getOrgSubscriptionInfo'] != null
-        ? new GetOrgSubscriptionInfo.fromJson(json['getOrgSubscriptionInfo'])
+    getAnOrganizationSubscription =
+    json['getAnOrganizationSubscription'] != null
+        ? new GetAnOrganizationSubscription.fromJson(
+        json['getAnOrganizationSubscription'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getOrgSubscriptionInfo != null) {
-      data['getOrgSubscriptionInfo'] = this.getOrgSubscriptionInfo!.toJson();
+    if (this.getAnOrganizationSubscription != null) {
+      data['getAnOrganizationSubscription'] =
+          this.getAnOrganizationSubscription!.toJson();
     }
     return data;
   }
 }
 
-class GetOrgSubscriptionInfo {
+class GetAnOrganizationSubscription {
   String? status;
   Plan? plan;
-  SubscribedPlan? subscribedPlan;
 
-  GetOrgSubscriptionInfo({this.status, this.plan, this.subscribedPlan});
+  GetAnOrganizationSubscription({this.status, this.plan});
 
-  GetOrgSubscriptionInfo.fromJson(Map<String, dynamic> json) {
+  GetAnOrganizationSubscription.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     plan = json['plan'] != null ? new Plan.fromJson(json['plan']) : null;
-    subscribedPlan = json['subscribed_plan'] != null
-        ? new SubscribedPlan.fromJson(json['subscribed_plan'])
-        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -39,44 +38,16 @@ class GetOrgSubscriptionInfo {
     if (this.plan != null) {
       data['plan'] = this.plan!.toJson();
     }
-    if (this.subscribedPlan != null) {
-      data['subscribed_plan'] = this.subscribedPlan!.toJson();
-    }
     return data;
   }
 }
 
 class Plan {
-  bool? active;
-  String? nickname;
-
-  Plan({this.active, this.nickname});
-
-  Plan.fromJson(Map<String, dynamic> json) {
-    active = json['active'];
-    nickname = json['nickname'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['active'] = this.active;
-    data['nickname'] = this.nickname;
-    return data;
-  }
-}
-
-class SubscribedPlan {
-  String? name;
-  bool? isFree;
-  String? status;
   List<PlanFeatures>? planFeatures;
 
-  SubscribedPlan({this.name, this.isFree, this.status, this.planFeatures});
+  Plan({this.planFeatures});
 
-  SubscribedPlan.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    isFree = json['is_free'];
-    status = json['status'];
+  Plan.fromJson(Map<String, dynamic> json) {
     if (json['plan_features'] != null) {
       planFeatures = <PlanFeatures>[];
       json['plan_features'].forEach((v) {
@@ -87,9 +58,6 @@ class SubscribedPlan {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['is_free'] = this.isFree;
-    data['status'] = this.status;
     if (this.planFeatures != null) {
       data['plan_features'] =
           this.planFeatures!.map((v) => v.toJson()).toList();
@@ -99,51 +67,42 @@ class SubscribedPlan {
 }
 
 class PlanFeatures {
-  String? id;
-  bool? isEnabled;
   Feature? feature;
+  bool? isEnabled;
 
-  PlanFeatures({this.id, this.isEnabled, this.feature});
+  PlanFeatures({this.feature, this.isEnabled});
 
   PlanFeatures.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    isEnabled = json['is_enabled'];
     feature =
     json['feature'] != null ? new Feature.fromJson(json['feature']) : null;
+    isEnabled = json['is_enabled'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['is_enabled'] = this.isEnabled;
     if (this.feature != null) {
       data['feature'] = this.feature!.toJson();
     }
+    data['is_enabled'] = this.isEnabled;
     return data;
   }
 }
 
 class Feature {
-  String? id;
   String? identifier;
   String? name;
-  String? subFeatureName;
 
-  Feature({this.id, this.identifier, this.name, this.subFeatureName});
+  Feature({this.identifier, this.name});
 
   Feature.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     identifier = json['identifier'];
     name = json['name'];
-    subFeatureName = json['sub_feature_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
     data['identifier'] = this.identifier;
     data['name'] = this.name;
-    data['sub_feature_name'] = this.subFeatureName;
     return data;
   }
 }

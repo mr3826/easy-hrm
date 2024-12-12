@@ -274,7 +274,7 @@ class DepartmentHistory extends StatelessWidget {
                 ),
               ),
               Text(
-                AppString.textManager.tr,
+                AppString.departmentHeaDText.tr,
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontSize: Dimensions.fontSizeDefault - 3),

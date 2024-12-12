@@ -295,28 +295,21 @@ query GetProfileSummaryForDashboard {
   }
 }
 ''';
-const getOrgSubscriptionInfoQuery = '''
-query GetOrgSubscriptionInfo {
-  getOrgSubscriptionInfo {
-  status
-    plan {
-      active
-      nickname
-    }
-    subscribed_plan { 
-      name
-      is_free  
+
+const getOrgSubscriptionInfoQuery = r'''
+query GetAnOrganizationSubscription($queryData: OrganizationSubscriptionSingleQueryDataType) {
+  getAnOrganizationSubscription(queryData: $queryData) {
     status
-    plan_features {
-        id
-        is_enabled
+    plan {
+      plan_features {
         feature {
-          id
           identifier
           name
-          sub_feature_name
         }
-      }}}
+        is_enabled
+      }
+    }
+  }
 }
 ''';
 
