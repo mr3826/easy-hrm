@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as di;
-import 'package:intl_phone_field/countries.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';

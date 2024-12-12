@@ -44,7 +44,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                 customSpacerHeight(height: 6),
 
                 ///User info section
-                 userInfoLayout(),
+                userInfoLayout(),
                 customSpacerHeight(height: 30),
 
                 ///Monthly layout
@@ -123,7 +123,9 @@ class ProfileScreen extends GetView<UserProfileController> {
             ?.getOrganizationUserHistory
             ?.designationHistories;
     if (designationHistory != null && designationHistory.isNotEmpty) {
-      return employeeStatusLayout(context: context, );
+      return employeeStatusLayout(
+        context: context,
+      );
     }
     return const SizedBox.shrink();
   }

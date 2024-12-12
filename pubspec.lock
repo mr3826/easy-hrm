@@ -229,10 +229,10 @@ packages:
     dependency: transitive
     description:
       name: equatable
-      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.7"
   fake_async:
     dependency: transitive
     description:
@@ -560,14 +560,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.1"
-  intl_phone_field:
-    dependency: "direct main"
-    description:
-      name: intl_phone_field
-      sha256: "73819d3dfcb68d2c85663606f6842597c3ddf6688ac777f051b17814fe767bbf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0"
   intl_phone_number_input:
     dependency: "direct main"
     description:
@@ -577,13 +569,13 @@ packages:
     source: hosted
     version: "0.7.4"
   js:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: js
-      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.6.7"
   json_annotation:
     dependency: transitive
     description:

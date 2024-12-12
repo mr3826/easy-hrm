@@ -273,30 +273,23 @@ void _addInputUserFirstName(Map<String, dynamic> inputData) {
   }
 }
 
-
 void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
-
-
   if (editPhoneController.text.isEmpty) {
     inputData["personal_phone_number"] = "";
-
-  }else{
-    inputData["personal_phone_number"] =  Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+  } else {
+    inputData["personal_phone_number"] =
+        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
   }
-
 }
 
 void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
-
   if (editEmergencyPhoneController.text.isEmpty) {
     inputData["emergency_phone_number"] = "";
-  }else{
-    inputData["emergency_phone_number"] =  Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+  } else {
+    inputData["emergency_phone_number"] =
+        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
   }
 }
-
-
-
 
 Widget _imageLayout() {
   if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue &&
@@ -370,6 +363,7 @@ _placeholderImage() {
             "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
         : "",
     height: 42,
+    isPublic: true,
     profileImageKey:
         "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
     imgUrlKey: '',

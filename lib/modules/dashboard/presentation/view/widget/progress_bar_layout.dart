@@ -282,6 +282,7 @@ _userImageLayout() {
             ?.getProfileSummaryForDashboard?.profile?.image ??
         "",
     imgUrlKey: '',
+    isPublic: true,
     borderColor: Colors.transparent,
   );
 }

@@ -462,33 +462,20 @@ employmentStatus() {
 }
 
 userImageLayout({double? height}) {
-  print(
-      "image key: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
+  String? firstName = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.profile
+      ?.firstName;
+  String? lastName = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.profile
+      ?.lastName;
+
   return CustomNetworkImage(
-    errorText: (Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.profile
-                        ?.firstName !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .userDetails!
-                    .getOrganizationUserDetails!
-                    .profile!
-                    .firstName!
-                    .isNotEmpty) &&
-            (Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.profile
-                        ?.lastName !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .userDetails!
-                    .getOrganizationUserDetails!
-                    .profile!
-                    .lastName!
-                    .isNotEmpty)
+    errorText: (firstName != null && firstName.isNotEmpty) &&
+            (lastName != null && lastName.isNotEmpty)
         ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
             "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
         : "",

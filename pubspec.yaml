@@ -71,11 +71,12 @@ dependencies:
   firebase_core:
   firebase_analytics:
   upgrader: ^10.3.0
-  dio: 
-  intl_phone_field:
-  intl_phone_number_input:
-  pushy_flutter: ^2.0.27
+  dio:
+  pushy_flutter: 2.0.27
+  intl_phone_number_input: ^0.7.4
 
+dependency_overrides:
+  js: ^0.6.7
 
 dev_dependencies:
   flutter_test:
