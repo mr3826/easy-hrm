@@ -4,6 +4,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -94,10 +95,9 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _buildProfileDivider() {
     // Display the divider only if the user's profile "about" section is not null or empty.
-    if (controller.userDetails?.getOrganizationUserDetails?.profile?.about !=
-            null &&
-        controller.userDetails!.getOrganizationUserDetails!.profile!.about!
-            .isNotEmpty) {
+    String? userAbout =
+        controller.userDetails?.getOrganizationUserDetails?.profile?.about;
+    if (userAbout != null && userAbout.isNotEmpty) {
       return horizontalDivider();
     }
     return const SizedBox.shrink();
@@ -105,16 +105,11 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _buildDepartmentLayout(context) {
     // Display department layout if the department histories exist and are not empty.
-    if (Get.find<UserProfileController>()
-                .employeeWorkHistory
-                ?.getOrganizationUserHistory
-                ?.deptHistories !=
-            null &&
-        Get.find<UserProfileController>()
-            .employeeWorkHistory!
-            .getOrganizationUserHistory!
-            .deptHistories!
-            .isNotEmpty) {
+    List<DeptHistories>? departmentHistory = Get.find<UserProfileController>()
+        .employeeWorkHistory
+        ?.getOrganizationUserHistory
+        ?.deptHistories;
+    if (departmentHistory != null && departmentHistory.isNotEmpty) {
       return departmentLayout(context);
     }
     return const SizedBox.shrink();
@@ -122,17 +117,13 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _buildDesignationHistoryLayout(context) {
     // Display employee status layout if the designation histories exist and are not empty.
-    if (Get.find<UserProfileController>()
-                .employeeWorkHistory
-                ?.getOrganizationUserHistory
-                ?.designationHistories !=
-            null &&
+    List<DesignationHistories>? designationHistory =
         Get.find<UserProfileController>()
-            .employeeWorkHistory!
-            .getOrganizationUserHistory!
-            .designationHistories!
-            .isNotEmpty) {
-      return employeeStatusLayout(context: context);
+            .employeeWorkHistory
+            ?.getOrganizationUserHistory
+            ?.designationHistories;
+    if (designationHistory != null && designationHistory.isNotEmpty) {
+      return employeeStatusLayout(context: context, );
     }
     return const SizedBox.shrink();
   }

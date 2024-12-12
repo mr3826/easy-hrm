@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/notification/data/remote/notification_remote_data_source.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
+import '../../../../main.dart';
 import '../../domain/notification.dart';
 
 class NotificationController extends GetxController with StateMixin {
@@ -152,6 +154,7 @@ class NotificationController extends GetxController with StateMixin {
 
   @override
   void onInit() {
+
     newNotificationScrollController = ScrollController()
       ..addListener(() {
         if (newNotificationScrollController.position.pixels ==

@@ -94,17 +94,13 @@ class MyApp extends StatelessWidget {
 void backgroundNotificationListener(Map<String, dynamic> data) {
   // Print notification payload data
   print('Received notification: $data');
-
   // Notification title
   String notificationTitle = 'Payrun';
-
   // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
-  String notificationText = data['message'] ?? 'Hello World!';
-
+  String notificationText = data['message'] ?? 'A new notification has come';
   // Android: Displays a system notification
   // iOS: Displays an alert dialog
   Pushy.notify(notificationTitle, notificationText, data);
-
   // Clear iOS app badge number
   Pushy.clearBadge();
 }

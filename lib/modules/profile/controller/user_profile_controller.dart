@@ -22,6 +22,7 @@ import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_contro
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 import '../../../common/controller/date_time_controller.dart';
 import '../../../common/domain/user_info.dart';
 import '../../../common/widget/custom_password_text_field.dart';
@@ -122,6 +123,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   getUserProfile() async {
     change(null, status: RxStatus.loading());
+    print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     final response = await _networkClient.graphRequest(
         queryString: getUserProfileQuery,
         variables: {
@@ -251,6 +253,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
+    print("ordId: $orgId");
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
@@ -325,6 +328,10 @@ class UserProfileController extends GetxController with StateMixin {
                               customSpacerWidth(width: 36),
                               InkWell(
                                   onTap: () async {
+                                    String deviceToken = "";
+                                    if (Platform.isAndroid) {
+                                      deviceToken = await Pushy.register();
+                                    }
                                     isNewOrganizationChangeLoading(true);
                                     try {
                                       if (passwordInputController
@@ -335,7 +342,13 @@ class UserProfileController extends GetxController with StateMixin {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
-                                          "orgId": orgId
+                                          "orgId": orgId,
+                                          "device_token": Platform.isIOS
+                                              ? GetStorage().read(
+                                                  AppString.IOS_DEVICE_TOKEN)
+                                              : deviceToken,
+                                          "push_notification_platform":
+                                              Platform.isIOS ? "apns" : "pushy"
                                         });
 
                                         if (response.statusCode == 200) {
@@ -440,10 +453,10 @@ class UserProfileController extends GetxController with StateMixin {
     );
   }
 
-  void _handleTokenInfo(di.Response response) {
-    GetStorage().write(AppString.ACCESS_TOKEN,
+  void _handleTokenInfo(di.Response response) async {
+    await GetStorage().write(AppString.ACCESS_TOKEN,
         SignInResponse.fromJson(response.data).data?.accessToken);
-    GetStorage().write(AppString.REFRESH_TOKEN,
+    await GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken);
   }
 

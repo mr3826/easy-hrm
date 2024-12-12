@@ -118,7 +118,10 @@ class DesignationLayout extends StatelessWidget {
                         Text(
                           employeeCurrentStatus,
                           style: baseTextStyle.copyWith(
-                            color: AppColor.primaryColor,
+                            color: employeeCurrentStatus ==
+                                AppString.textPresent.tr
+                                ? AppColor.primaryColor
+                                : AppColor.hintColor,
                           ),
                         ),
                         _divider(),

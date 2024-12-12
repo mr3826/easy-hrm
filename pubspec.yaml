@@ -74,6 +74,8 @@ dependencies:
   dio: 
   intl_phone_field:
   intl_phone_number_input:
+  pushy_flutter: ^2.0.27
+
 
 dev_dependencies:
   flutter_test:

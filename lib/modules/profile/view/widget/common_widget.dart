@@ -462,6 +462,8 @@ employmentStatus() {
 }
 
 userImageLayout({double? height}) {
+  print(
+      "image key: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
   return CustomNetworkImage(
     errorText: (Get.find<UserProfileController>()
                         .userDetails
@@ -491,6 +493,7 @@ userImageLayout({double? height}) {
             "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
         : "",
     height: height ?? 32,
+    isPublic: true,
     profileImageKey:
         "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
     imgUrlKey: '',
@@ -518,7 +521,8 @@ organisationLogoLayout() {
 endDrawer(BuildContext context) {
   return Drawer(
     clipBehavior: Clip.antiAliasWithSaveLayer,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(8))),
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(8))),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -618,9 +622,6 @@ Widget _userNameAndDptLayout() {
       .employeeWorkHistory
       ?.getOrganizationUserHistory
       ?.employmentHistories;
-
-
-
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
