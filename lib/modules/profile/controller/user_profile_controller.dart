@@ -120,6 +120,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   getUserProfile() async {
     change(null, status: RxStatus.loading());
+    print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     final response = await _networkClient.graphRequest(
         queryString: getUserProfileQuery,
         variables: {
