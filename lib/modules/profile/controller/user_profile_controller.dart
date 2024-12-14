@@ -99,7 +99,7 @@ class UserProfileController extends GetxController with StateMixin {
             .storageForUpload
             .filePath
             .value
-            .isNotEmpty;
+            .isNotEmpty ;
   }
 
   UserDetails? userDetails;
@@ -113,14 +113,16 @@ class UserProfileController extends GetxController with StateMixin {
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
   final resendOtpLoading = false.obs;
-
   var isOtpString = ''.obs;
+
+
 
   bool get isButtonEnabledForOTP {
     return isOtpString.isNotEmpty;
   }
 
   final passwordInputController = TextEditingController();
+  final editEmployeeIDController =TextEditingController();
 
   getUserProfile() async {
     change(null, status: RxStatus.loading());

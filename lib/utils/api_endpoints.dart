@@ -207,6 +207,7 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
       }
     }
     status
+    employee_id
     organization {
       organization_setting {
         logo_key
@@ -219,6 +220,9 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
   }
 }
 ''';
+
+
+
 
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {

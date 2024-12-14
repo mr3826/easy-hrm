@@ -146,6 +146,7 @@ Map<String, String> nn = {
   AppString.text_phone: "Telefon",
   AppString.text_personal_number: "Personnummer",
   AppString.text_emergency_number: "Nødnummer",
+  AppString.text_employee_Id: "Ansatt ID",
   AppString.text_please_valid_file: "Vennligst velg et gyldig dokument.",
   AppString.text_please_valid_photo: "Vennligst velg et gyldig profilbilde.",
   AppString.text_profile: "Profil",

@@ -16,12 +16,14 @@ class GetOrganizationUserDetails {
   User? user;
   Department? department;
   String? status;
+  String? employeeId;
   Organization? organization;
 
   GetOrganizationUserDetails(
       {this.profile,
       this.user,
       this.department,
+      this.employeeId,
       this.status,
       this.organization});
 
@@ -33,6 +35,7 @@ class GetOrganizationUserDetails {
         ? Department.fromJson(json['department'])
         : null;
     status = json['status'];
+    employeeId = json['employee_id'];
     organization = json['organization'] != null
         ? Organization.fromJson(json['organization'])
         : null;

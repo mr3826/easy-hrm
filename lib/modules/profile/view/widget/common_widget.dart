@@ -26,8 +26,6 @@ import '../widget/language_widget.dart';
 import '../widget/organization_widget.dart';
 
 userInfoLayout(BuildContext context) {
-print("Id :: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.id}");
-
   final user = Get.find<UserProfileController>()
       .userDetails
       ?.getOrganizationUserDetails
@@ -87,7 +85,7 @@ print("Id :: ${Get.find<UserProfileController>().userDetails?.getOrganizationUse
       ),
 
       Text(
-        "GS-1102305",
+        Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.employeeId??"",
         style: AppStyle.normal_text_black
             .copyWith(fontWeight: FontWeight.w300, color: AppColor.hintColor),
       ),
@@ -221,8 +219,6 @@ filterTextLengthLayout() {
           ?.profile
           ?.about ??
       '';
-  print("description ::: $drc");
-
   final wordCount = drc.split(' ').length;
   if (wordCount > 20) {
     return ExpandedText(

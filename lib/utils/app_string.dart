@@ -161,6 +161,7 @@ class AppString {
 
   static const String text_personal_number = "Personal number";
   static const String text_emergency_number = "Emergency number";
+  static const String text_employee_Id = "Employee ID";
 
   static const String text_please_valid_file = "Please selected valid document";
   static const String text_please_valid_photo = "Please selected valid profile image";

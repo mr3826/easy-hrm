@@ -45,13 +45,6 @@ Widget actionLayout({
           currentPasswordController.clear();
           newPasswordController.clear();
           confirmPasswordController.clear();
-          // customAntButtonSheet(
-          //   height: 600,
-          //   context: context,
-          //   child: ChangePasswordScreen(),
-          // );
-
-
           customAntButtonSheet(
               context: context, child: ChangeEmailScreen());
         },
@@ -110,6 +103,9 @@ void _setDataForUpdateChecker(Profile? userDetails) {
   editPhoneController.text = userDetails?.personalNumber ?? "";
   editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
   editBioController.text = userDetails?.about ?? "";
+
+  //todo
+  Get.find<UserProfileController>().editEmployeeIDController.text =  Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.employeeId??"";
 
 }
 
