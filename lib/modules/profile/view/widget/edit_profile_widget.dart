@@ -233,13 +233,6 @@ _employeeID() {
         isRequired: false,
         hintText: AppString.text_employee_Id.tr,
         titleText: AppString.text_employee_Id.tr,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return AppString.the_last_name_field_is_required.tr;
-          } else {
-            return null;
-          }
-        },
         controller: Get.find<UserProfileController>().editEmployeeIDController),
   );
 }
