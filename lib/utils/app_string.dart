@@ -158,6 +158,10 @@ class AppString {
   static const String text_pendding = "Pending";
   static const String text_pending = "Pending";
   static const String text_phone = "Phone";
+
+  static const String text_personal_number = "Personal number";
+  static const String text_emergency_number = "Emergency number";
+
   static const String text_please_valid_file = "Please selected valid document";
   static const String text_please_valid_photo = "Please selected valid profile image";
   static const String text_profile = "Profile";

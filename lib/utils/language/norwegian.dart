@@ -144,6 +144,8 @@ Map<String, String> nn = {
   AppString.text_pendding: "Ventende",
   AppString.text_pending: "Ventende",
   AppString.text_phone: "Telefon",
+  AppString.text_personal_number: "Personnummer",
+  AppString.text_emergency_number: "Nødnummer",
   AppString.text_please_valid_file: "Vennligst velg et gyldig dokument.",
   AppString.text_please_valid_photo: "Vennligst velg et gyldig profilbilde.",
   AppString.text_profile: "Profil",
