@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
-import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widget.dart';
-import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
 import '../../../../../common/widget/custom_drawer.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../utils/app_color.dart';
@@ -11,14 +8,16 @@ import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../auth/presentation/view/otp_screen.dart';
 import '../../widget/common_widget.dart';
+import 'department_with_emplyee_status/department_with_employee_status.dart';
 import 'final.dart';
 
 
 class ProfileScreen extends StatelessWidget {
 
  final UserInformation ?userInformation;
+ final List ?listOfTabBar;
 
-  const ProfileScreen({super.key,this.userInformation});
+  const ProfileScreen({super.key,this.userInformation,this.listOfTabBar});
 
   @override
   Widget build(BuildContext context) {
@@ -167,12 +166,13 @@ class ProfileScreen extends StatelessWidget {
                         customSpacerHeight(height: 15),
 
                         /// Department layout
-                        _buildDepartmentLayout(context),
+                        BuildDepartmentWithEmployeeStatus(userInformation: userInformation),
 
                         customSpacerHeight(height: 5),
 
                         /// Designation history
                         _buildDesignationHistoryLayout(context),
+
                         customSpacerHeight(height: 50),
                       ],
                     ),
@@ -212,14 +212,14 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDepartmentLayout(BuildContext context) {
+  Widget _buildDepartmentLayout(BuildContext context,UserInformation userInformation) {
     // List<DeptHistories>? departmentHistory = controller.employeeWorkHistory
     //     ?.getOrganizationUserHistory
     //     ?.deptHistories;
     // if (departmentHistory != null && departmentHistory.isNotEmpty) {
     //   return departmentLayout(context);
     // }
-    return const SizedBox.shrink();
+    return BuildDepartmentWithEmployeeStatus(userInformation: userInformation,);
   }
 
   Widget _buildDesignationHistoryLayout(BuildContext context) {
@@ -263,6 +263,33 @@ class UserInformation {
   String? loggedTime;
   String? departmentName;
   String? description;
+  DepartmentInfo? departmentInfo;
   List? employmentStatus = [];
-  UserInformation({this.userName, this.profileImgUrl, this.departmentName, this.employeeId,this.employmentStatus,this.leaveBalance,this.loggedTime,this.monthGoal,this.description,this.userEmail,this.personalPhoneNumber,this.userAddress,this.emergencyPhoneNumber});
+  UserInformation({this.userName, this.profileImgUrl,this.departmentInfo,this.departmentName, this.employeeId,this.employmentStatus,this.leaveBalance,this.loggedTime,this.monthGoal,this.description,this.userEmail,this.personalPhoneNumber,this.userAddress,this.emergencyPhoneNumber});
 }
+
+
+class DepartmentInfo {
+  final String departmentName;
+  final String? parentDepartmentName;
+  final String startDate;
+  final String workShiftStartTime;
+  final String workShiftName;
+  final String workShiftEndTime;
+  final List<Map<String, dynamic>> workingDays;
+
+  ///Using for department history
+  final Function onAction;
+
+  DepartmentInfo({
+    required this.departmentName,
+    this.parentDepartmentName,
+    required this.onAction,
+    required this.startDate,
+    required this.workShiftStartTime,
+    required this.workShiftName,
+    required this.workShiftEndTime,
+    required this.workingDays,
+  });
+}
+
