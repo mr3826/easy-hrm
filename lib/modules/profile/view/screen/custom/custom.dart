@@ -3,41 +3,44 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
-import '../../../../common/widget/custom_drawer.dart';
-import '../../../../common/widget/custom_spacer.dart';
-import '../../../../common/widget/loading_indicator.dart';
-import '../../../../utils/app_color.dart';
-import '../../../../utils/app_string.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
-import '../../../auth/presentation/view/otp_screen.dart';
-import '../../controller/user_profile_controller.dart';
-import '../widget/chnage_email_notify_layout.dart';
-import '../widget/common_widget.dart';
+import '../../../../../common/widget/custom_drawer.dart';
+import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_string.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../widget/common_widget.dart';
+import 'final.dart';
 
-class ProfileScreen extends GetView<UserProfileController> {
-  const ProfileScreen({super.key});
+
+class ProfileScreen extends StatelessWidget {
+
+ final UserInformation ?userInformation;
+
+  const ProfileScreen({super.key,this.userInformation});
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-
-    return  controller.obx((sate)=>Scaffold(
+    return Scaffold(
       backgroundColor: AppColor.primaryColor,
       body: Stack(
         children: [
-          _buildBackgroundContainer(context),
-          _buildProfileImage(screenHeight, screenWidth),
+
+          _buildBackgroundContainer(context,userInformation??UserInformation()),
+          _buildProfileImage(screenHeight, screenWidth,url: userInformation?.profileImgUrl??"",errorText: "Er"),
+
         ],
       ),
-    ),onLoading: const LoadingIndicator());
+    );
 
   }
 
   /// Background Container with Profile Layout
-  Widget _buildBackgroundContainer(BuildContext context) {
+  Widget _buildBackgroundContainer(BuildContext context,UserInformation userInformation) {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -53,19 +56,19 @@ class ProfileScreen extends GetView<UserProfileController> {
           children: [
             _buildHeader(context),
             const SizedBox(height: 10),
-            _buildContent(context),
+            _buildContent(context,userInformation),
           ],
         ),
       ),
     );
   }
   /// Positioned Profile Image
-  Widget _buildProfileImage(double screenHeight, double screenWidth) {
+  Widget _buildProfileImage(double screenHeight, double screenWidth,{String ?errorText,required String url }) {
     return Positioned(
       top: screenHeight * 0.11,
       left: screenWidth * 0.05,
       right: screenWidth * 0.05,
-      child: userImageLayout(),
+      child: buildUserImageLayout(errorText: errorText??"Er",url:url ),
     );
   }
 
@@ -110,7 +113,7 @@ class ProfileScreen extends GetView<UserProfileController> {
 
 
   /// Main Content Container
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContent(BuildContext context,UserInformation userInformation ) {
     return Expanded(
       child: Container(
         width: double.infinity,
@@ -125,10 +128,14 @@ class ProfileScreen extends GetView<UserProfileController> {
           padding: marginLayout,
           child: Column(
             children: [
+
               customSpacerHeight(height: 50),
 
+
               /// User info section
-              userInfoLayout(context),
+               ProfileUserInformation(userInformation:userInformation),
+
+
               customSpacerHeight(height: 30),
 
               /// RefreshIndicator with scrollable content
@@ -141,22 +148,23 @@ class ProfileScreen extends GetView<UserProfileController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// Monthly layout
-                        monthlyStatusLayout(),
+                        BuildMonthlyGoal(userInformation:userInformation),
 
                         customSpacerHeight(height: 25),
+
                         /// User description
-                        descriptionTextLayout(),
+                        BuildDescription(description: userInformation.description??"",),
 
                         customSpacerHeight(height: 8),
 
                         /// User email
-                        const BuildEmail(),
+                         BuildEmailWithCopied(email: userInformation.userEmail??"",),
 
                         /// Phone number
-                        _buildPhoneNumberSection(),
+                        _buildPhoneNumberSection(userInformation.personalPhoneNumber??"",userInformation.emergencyPhoneNumber??""),
 
                         /// Employee address
-                        addressText(),
+                        buildAddressText(address:  userInformation.userEmail??""),
                         customSpacerHeight(height: 15),
 
                         /// Department layout
@@ -182,24 +190,24 @@ class ProfileScreen extends GetView<UserProfileController> {
   /// Fetches the latest profile data from the server.
   Future<void> _fetchProfileData() async {
     try {
-      await controller.getUserProfile();
-      await controller.getEmploymentInfo();
-      await controller.getUserLogHistory();
-      await controller.getOrganizationInfo();
+      // await controller.getUserProfile();
+      // await controller.getEmploymentInfo();
+      // await controller.getUserLogHistory();
+      // await controller.getOrganizationInfo();
     } catch (e) {
       // Optionally handle errors or show a message
       Get.snackbar('Error', 'Failed to refresh data');
     }
   }
 
-  Widget _buildPhoneNumberSection() {
+  Widget _buildPhoneNumberSection(String personalNumber,emergencyPersonalNumber) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         customSpacerHeight(height: 15),
-        phoneNumberText(),
+        buildPhoneNumberText(personalNumber: personalNumber),
         customSpacerHeight(height: 15),
-        emergencyPhoneNumber(),
+        buildEmergencyPhoneNumber(emergencyPersonalNumber: emergencyPersonalNumber),
         customSpacerHeight(height: 15),
       ],
     );
@@ -230,3 +238,30 @@ class ProfileScreen extends GetView<UserProfileController> {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+class UserInformation {
+  String? profileImgUrl;
+  String? userName;
+  String? userEmail;
+  String? userAddress;
+  String? personalPhoneNumber;
+  String? emergencyPhoneNumber;
+  String? employeeId;
+  String? leaveBalance;
+  String? monthGoal;
+  String? loggedTime;
+  String? departmentName;
+  String? description;
+  List? employmentStatus = [];
+  UserInformation({this.userName, this.profileImgUrl, this.departmentName, this.employeeId,this.employmentStatus,this.leaveBalance,this.loggedTime,this.monthGoal,this.description,this.userEmail,this.personalPhoneNumber,this.userAddress,this.emergencyPhoneNumber});
+}

@@ -18,12 +18,13 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../../common/widget/custom_drawer.dart';
-import '../../../../utils/utils.dart';
-import '../widget/action_layout_widget.dart';
-import '../widget/expanded_text_layout.dart';
-import '../widget/language_widget.dart';
-import '../widget/organization_widget.dart';
+import '../../../../../common/widget/custom_drawer.dart';
+import '../../../../../utils/utils.dart';
+import '../../widget/action_layout_widget.dart';
+import '../../widget/expanded_text_layout.dart';
+import '../../widget/language_widget.dart';
+import '../../widget/organization_widget.dart';
+
 
 userInfoLayout(BuildContext context) {
   final user = Get.find<UserProfileController>()
@@ -31,10 +32,10 @@ userInfoLayout(BuildContext context) {
       ?.getOrganizationUserDetails
       ?.profile;
   final department = Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.department
-          ?.name ??
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.department
+      ?.name ??
       "";
   final employmentHistories = Get.find<UserProfileController>()
       .employeeWorkHistory
@@ -118,6 +119,32 @@ userInfoLayout(BuildContext context) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 monthlyStatusLayout() {
   var controller = Get.find<UserProfileController>();
   return Padding(
@@ -127,43 +154,25 @@ monthlyStatusLayout() {
       children: [
         infoTextLayout(
             dynamicText: formatToTwoDecimalPlaces(controller.userLogHistory
-                    ?.geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
+                ?.geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
                 ""),
             staticText: AppString.text_leave_balance.tr),
         _divider(),
         infoTextLayout(
             dynamicText: controller.userLogHistory
-                    ?.geTimelogAndLeaveAvailabilityForApp?.totalSchedule ??
+                ?.geTimelogAndLeaveAvailabilityForApp?.totalSchedule ??
                 "",
             staticText: AppString.text_monthly_goal.tr),
         _divider(),
         infoTextLayout(
             dynamicText: controller.userLogHistory
-                    ?.geTimelogAndLeaveAvailabilityForApp?.totalLogged ??
+                ?.geTimelogAndLeaveAvailabilityForApp?.totalLogged ??
                 "",
             staticText: AppString.text_logged_time.tr),
       ],
     ),
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 infoTextLayout({required dynamicText, required staticText}) {
   return Column(
@@ -200,12 +209,12 @@ actionBtnLayout(context) {
         child: actionLayout(
             context: context,
             userName:
-                "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
             departmentText: Get.find<UserProfileController>()
-                    .userDetails
-                    ?.getOrganizationUserDetails
-                    ?.department
-                    ?.name ??
+                .userDetails
+                ?.getOrganizationUserDetails
+                ?.department
+                ?.name ??
                 "",
             editAction: () {},
             changePassAction: () {})),
@@ -218,10 +227,10 @@ actionBtnLayout(context) {
       ),
       child: Center(
           child: Text(
-        AppString.text_action.tr,
-        style: AppStyle.mid_large_text
-            .copyWith(fontSize: Dimensions.fontSizeDefault + 3),
-      )),
+            AppString.text_action.tr,
+            style: AppStyle.mid_large_text
+                .copyWith(fontSize: Dimensions.fontSizeDefault + 3),
+          )),
     ),
   );
 }
@@ -232,10 +241,10 @@ descriptionTextLayout() {
 
 filterTextLengthLayout() {
   String drc = Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.profile
-          ?.about ??
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.profile
+      ?.about ??
       '';
   final wordCount = drc.split(' ').length;
   if (wordCount > 20) {
@@ -365,7 +374,7 @@ organisationLayout(context) {
               children: [
                 Text(
                   controller.userDetails?.getOrganizationUserDetails
-                          ?.organization?.orgName ??
+                      ?.organization?.orgName ??
                       "Not added yet",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
@@ -374,13 +383,13 @@ organisationLayout(context) {
                 ),
                 customSpacerHeight(height: 6),
                 if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                            ?.designationHistories !=
-                        null &&
+                    ?.designationHistories !=
+                    null &&
                     controller.employeeWorkHistory!.getOrganizationUserHistory!
                         .designationHistories!.isNotEmpty)
                   Text(
                     controller.employeeWorkHistory?.getOrganizationUserHistory
-                            ?.designationHistories?[0].designation?.name ??
+                        ?.designationHistories?[0].designation?.name ??
                         "",
                     style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
@@ -420,7 +429,7 @@ profileInfoDrawerLayout() {
       ),
       child: Padding(
         padding:
-            const EdgeInsets.only(top: 20.0, bottom: 20, left: 12, right: 12),
+        const EdgeInsets.only(top: 20.0, bottom: 20, left: 12, right: 12),
         child: Center(
           child: Column(
             children: [
@@ -435,8 +444,8 @@ profileInfoDrawerLayout() {
                         .copyWith(color: AppColor.normalTextColor),
                   ),
                   if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                              ?.designationHistories !=
-                          null &&
+                      ?.designationHistories !=
+                      null &&
                       controller
                           .employeeWorkHistory!
                           .getOrganizationUserHistory!
@@ -444,7 +453,7 @@ profileInfoDrawerLayout() {
                           .isNotEmpty)
                     Text(
                       controller.employeeWorkHistory?.getOrganizationUserHistory
-                              ?.designationHistories?[0].designation?.name ??
+                          ?.designationHistories?[0].designation?.name ??
                           "Not added yet",
                       style: AppStyle.normal_text_grey
                           .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
@@ -464,10 +473,10 @@ phoneNumberText() {
   return userInfoSectionLayout(
     staticText: AppString.text_personal_number.tr,
     dynamicText: Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.personalNumber ??
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.profile
+        ?.personalNumber ??
         "",
   );
 }
@@ -476,10 +485,10 @@ emergencyPhoneNumber() {
   return userInfoSectionLayout(
     staticText: AppString.text_emergency_number.tr,
     dynamicText: Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.emergencyNumber ??
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.profile
+        ?.emergencyNumber ??
         "",
   );
 }
@@ -488,10 +497,10 @@ addressText() {
   return userInfoSectionLayout(
       staticText: AppString.text_address.tr,
       dynamicText: Get.find<UserProfileController>()
-              .userDetails
-              ?.getOrganizationUserDetails
-              ?.profile
-              ?.address ??
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.profile
+          ?.address ??
           "");
 }
 
@@ -508,7 +517,7 @@ employmentContractStatus() {
     bgColor: Color(int.parse(colorsCode)).withOpacity(.2),
     textColor: Color(int.parse(colorsCode)),
     text: controller.employeeWorkHistory?.getOrganizationUserHistory
-            ?.employmentHistories?[0].employmentStatus?.name ??
+        ?.employmentHistories?[0].employmentStatus?.name ??
         "",
   );
 }
@@ -520,7 +529,7 @@ employmentStatus() {
   }
 
   if (controller.userDetails?.getOrganizationUserDetails?.status
-          ?.toLowerCase() ==
+      ?.toLowerCase() ==
       EmploymentStatus.active.name) {
     return CustomStatusButton(
       statusIcon: Icons.check_circle,
@@ -529,7 +538,7 @@ employmentStatus() {
       textColor: AppColor.successColor,
     );
   } else if (controller.userDetails?.getOrganizationUserDetails?.status
-          ?.toLowerCase() ==
+      ?.toLowerCase() ==
       EmploymentStatus.inactive.name) {
     return CustomStatusButton(
       statusIcon: Icons.stop_circle_outlined,
@@ -538,7 +547,7 @@ employmentStatus() {
       textColor: Colors.black87,
     );
   } else if (controller.userDetails?.getOrganizationUserDetails?.status
-          ?.toLowerCase() ==
+      ?.toLowerCase() ==
       EmploymentStatus.invited.name) {
     return CustomStatusButton(
       statusIcon: Icons.send,
@@ -565,14 +574,14 @@ userImageLayout({double? height}) {
 
   return CustomNetworkImage(
     errorText: (firstName != null && firstName.isNotEmpty) &&
-            (lastName != null && lastName.isNotEmpty)
+        (lastName != null && lastName.isNotEmpty)
         ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
+        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
         : "",
     height: height ?? 36,
     isPublic: true,
     profileImageKey:
-        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
+    "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
     imgUrlKey: '',
   );
 }
@@ -582,14 +591,14 @@ organisationLogoLayout() {
     height: AppLayout.getHeight(25),
     fileDir: "profile_images",
     errorText: getFirstTwoLetterFromWord(Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.organization!
-            .orgName ??
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.organization!
+        .orgName ??
         ""),
     isPublic: true,
     imgUrlKey:
-        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
+    "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
     borderColor: Colors.transparent,
     logoUrl: Images.ORG,
   );
@@ -619,14 +628,14 @@ endDrawer(BuildContext context) {
 logoutTextLayout() {
   return Get.find<LogoutController>().isLogoutLoading.value
       ? const CupertinoActivityIndicator(
-          color: AppColor.cardColor,
-        )
+    color: AppColor.cardColor,
+  )
       : Text(
-          AppString.text_log_out.tr,
-          style: AppStyle.normal_text_grey.copyWith(
-              fontSize: Dimensions.fontSizeDefault + 1,
-              color: AppColor.cardColor),
-        );
+    AppString.text_log_out.tr,
+    style: AppStyle.normal_text_grey.copyWith(
+        fontSize: Dimensions.fontSizeDefault + 1,
+        color: AppColor.cardColor),
+  );
 }
 
 void _customButtonSheet({context, child}) {
