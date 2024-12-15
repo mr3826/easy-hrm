@@ -223,3 +223,5 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 }
+
+

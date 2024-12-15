@@ -37,8 +37,7 @@ String urlBuilder({
 }
 
 
-Widget circleImageLayout(
-    {radius, required url, borderColor, required errorText}) {
+Widget circleImageLayout({radius, required url, borderColor, required errorText}) {
   return CircleAvatar(
     radius: radius + 2.1,
     backgroundColor: borderColor ?? AppColor.hintColor,
@@ -78,6 +77,23 @@ Widget _errorText(errorText) {
       style: AppStyle.normal_text_grey.copyWith(
           fontSize: Dimensions.fontSizeMid, color: AppColor.primaryColor));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Widget rectangleImageLayout({url}) {
   return CachedNetworkImage(
