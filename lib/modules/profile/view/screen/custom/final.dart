@@ -256,7 +256,6 @@ Widget buildAddressText({required String address}) {
 
 
 
-
 Widget buildUserImageLayout({double? height,required String errorText,required String url}) {
   return CustomNetworkImage(
     errorText:errorText,
@@ -269,7 +268,6 @@ Widget buildUserImageLayout({double? height,required String errorText,required S
 
 
 
-
 _divider() {
   return Container(
     width: 1,
@@ -277,3 +275,46 @@ _divider() {
     color: AppColor.disableColor.withOpacity(0.7),
   );
 }
+
+
+
+
+class BuildDepartmentWithEmployeeStatus extends StatelessWidget {
+
+  const BuildDepartmentWithEmployeeStatus({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+
+      ],
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

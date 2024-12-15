@@ -29,7 +29,6 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: AppColor.primaryColor,
       body: Stack(
         children: [
-
           _buildBackgroundContainer(context,userInformation??UserInformation()),
           _buildProfileImage(screenHeight, screenWidth,url: userInformation?.profileImgUrl??"",errorText: "Er"),
 
@@ -214,28 +213,30 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildDepartmentLayout(BuildContext context) {
-    List<DeptHistories>? departmentHistory = controller.employeeWorkHistory
-        ?.getOrganizationUserHistory
-        ?.deptHistories;
-    if (departmentHistory != null && departmentHistory.isNotEmpty) {
-      return departmentLayout(context);
-    }
+    // List<DeptHistories>? departmentHistory = controller.employeeWorkHistory
+    //     ?.getOrganizationUserHistory
+    //     ?.deptHistories;
+    // if (departmentHistory != null && departmentHistory.isNotEmpty) {
+    //   return departmentLayout(context);
+    // }
     return const SizedBox.shrink();
   }
 
   Widget _buildDesignationHistoryLayout(BuildContext context) {
-    List<DesignationHistories>? designationHistory = controller
-        .employeeWorkHistory
-        ?.getOrganizationUserHistory
-        ?.designationHistories;
-    if (designationHistory != null && designationHistory.isNotEmpty) {
-      return employeeStatusLayout(context: context);
-    }
+    // List<DesignationHistories>? designationHistory = controller
+    //     .employeeWorkHistory
+    //     ?.getOrganizationUserHistory
+    //     ?.designationHistories;
+    // if (designationHistory != null && designationHistory.isNotEmpty) {
+    //   return employeeStatusLayout(context: context);
+    // }
     return const SizedBox.shrink();
   }
+   // return employeeStatusLayout(context: context);
 
 
-}
+
+  }
 
 
 
