@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widget.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
 import '../../../../common/widget/custom_drawer.dart';
@@ -206,24 +205,17 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   Widget _buildDepartmentLayout(BuildContext context) {
-    List<DeptHistories>? departmentHistory = controller.employeeWorkHistory
-        ?.getOrganizationUserHistory
-        ?.deptHistories;
-    if (departmentHistory != null && departmentHistory.isNotEmpty) {
+    if (Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department?.name!=null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.department!.name!.isNotEmpty) {
       return departmentLayout(context);
     }
     return const SizedBox.shrink();
   }
 
+
+
+
   Widget _buildDesignationHistoryLayout(BuildContext context) {
-    List<DesignationHistories>? designationHistory = controller
-        .employeeWorkHistory
-        ?.getOrganizationUserHistory
-        ?.designationHistories;
-    if (designationHistory != null && designationHistory.isNotEmpty) {
       return employeeStatusLayout(context: context);
-    }
-    return const SizedBox.shrink();
   }
 
 

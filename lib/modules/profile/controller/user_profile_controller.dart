@@ -141,33 +141,25 @@ class UserProfileController extends GetxController with StateMixin {
   //   }
   //   change(null, status: RxStatus.success());
   // }
-  //
 
   UserProfileModel userProfileModel = UserProfileModel();
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
 
-
-
-  
   Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
-    userProfileModel =
-        (await _profileDataSource.getUserProfile()) ?? UserProfileModel();
-
+    userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
+    print(
+        "userDetails ::: ${userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""}");
     change(null, status: RxStatus.success());
   }
 
-
-
-
-
-
-
-
-
-
-
+  Future<void> getUserLogHistory() async {
+    change(null, status: RxStatus.loading());
+    userLogHistory =
+        (await _profileDataSource.getUserLogHistory()) ?? UserLogHistory();
+    change(null, status: RxStatus.success());
+  }
 
   getEmploymentInfo() async {
     change(null, status: RxStatus.loading());
@@ -179,24 +171,24 @@ class UserProfileController extends GetxController with StateMixin {
       ExceptionHelper.errorHandler(
           exception: response.exception!, methodName: "getEmploymentInfo");
     } else {
-      employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
+      //  employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
     }
 
     change(null, status: RxStatus.success());
   }
 
-  getUserLogHistory() async {
-    change(null, status: RxStatus.loading());
-    final response =
-        await _networkClient.graphRequest(queryString: userLogHistoryQuery);
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getUserLogHistory");
-    } else {
-      userLogHistory = UserLogHistory.fromJson(response.data!);
-    }
-    change(null, status: RxStatus.success());
-  }
+  // getUserLogHistory() async {
+  //   change(null, status: RxStatus.loading());
+  //   final response =
+  //       await _networkClient.graphRequest(queryString: userLogHistoryQuery);
+  //   if (response.hasException) {
+  //     ExceptionHelper.errorHandler(
+  //         exception: response.exception!, methodName: "getUserLogHistory");
+  //   } else {
+  //     userLogHistory = UserLogHistory.fromJson(response.data!);
+  //   }
+  //   change(null, status: RxStatus.success());
+  // }
 
   Future<bool> getPasswordVerification({required String password}) async {
     bool validation = false;

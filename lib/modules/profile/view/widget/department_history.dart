@@ -17,7 +17,6 @@ import '../../../../common/widget/custom_network_image.dart';
 
 class DepartmentHistory extends StatelessWidget {
   const DepartmentHistory({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Column(

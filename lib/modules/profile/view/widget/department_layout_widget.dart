@@ -47,6 +47,10 @@ Widget departmentLayout(BuildContext? context) {
 }
 
 _departmentHistoryInfo(context) {
+
+  Department? department =Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department;
+
+
   return GestureDetector(
     onTap: () {
       customAntButtonSheet(context: context, child: const DepartmentHistory());
@@ -56,32 +60,18 @@ _departmentHistoryInfo(context) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          Get.find<UserProfileController>()
-                  .userDetails
-                  ?.getOrganizationUserDetails
-                  ?.department
-                  ?.name ??
-              "",
-          style:
-              AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+          department?.name ?? "",
+          style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
         ),
         Row(
           children: [
             _parentDepartmentInfo(
                 parentDepartmentName: _getParentDepartmentName()),
-            if (Get.find<UserProfileController>()
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.employmentHistories !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .employeeWorkHistory!
-                    .getOrganizationUserHistory!
-                    .employmentHistories!
-                    .isNotEmpty)
+
+              if(department !=null)
               Expanded(
                 child: Text(
-                  "${AppString.text_from.tr} - ${getDateTimeFormat(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+                  "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.hintColor,
                       fontSize: Dimensions.fontSizeDefault - 1,
@@ -321,25 +311,9 @@ _workingDaySchedule(context) {
 }
 
 String _getParentDepartmentName() {
-  if (Get.find<UserProfileController>()
-              .employeeWorkHistory
-              ?.getOrganizationUserHistory
-              ?.deptHistories ==
-          null &&
-      Get.find<UserProfileController>()
-          .employeeWorkHistory!
-          .getOrganizationUserHistory!
-          .deptHistories!
-          .isEmpty) return "";
-
-  if (Get.find<UserProfileController>()
-          .employeeWorkHistory
-          ?.getOrganizationUserHistory
-          ?.deptHistories?[0]
-          .department
-          ?.parent !=
-      null) {
-    return "${AppString.text_child_of_deparmtnet.tr} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[0].department?.parent?.name ?? ""}";
+  Parent? parent =Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department?.parent;
+  if (parent != null) {
+    return "${AppString.text_child_of_deparmtnet.tr} ${parent.name ?? ""}";
   } else {
     return "";
   }

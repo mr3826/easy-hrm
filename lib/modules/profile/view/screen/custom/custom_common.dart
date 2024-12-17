@@ -1,701 +1,303 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/common/widget/custom_dialog.dart';
-import 'package:payrun_mobile/common/widget/custom_network_image.dart';
-import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_status_button.dart';
-import 'package:payrun_mobile/enum.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/profile/controller/log_out_controller.dart';
-import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
-import 'package:payrun_mobile/modules/profile/view/widget/user_info_section_layout.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
-import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:payrun_mobile/utils/images.dart';
-import '../../../../../common/widget/custom_drawer.dart';
-import '../../../../../utils/utils.dart';
-import '../../widget/action_layout_widget.dart';
-import '../../widget/expanded_text_layout.dart';
-import '../../widget/language_widget.dart';
-import '../../widget/organization_widget.dart';
+class UserDetails {
+  GetOrganizationUserDetails? getOrganizationUserDetails;
 
+  UserDetails({this.getOrganizationUserDetails});
 
-userInfoLayout(BuildContext context) {
-  final user = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.profile;
-  final department = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.department
-      ?.name ??
-      "";
-  final employmentHistories = Get.find<UserProfileController>()
-      .employeeWorkHistory
-      ?.getOrganizationUserHistory
-      ?.employmentHistories;
+  UserDetails.fromJson(Map<String, dynamic> json) {
+    getOrganizationUserDetails = json['getOrganizationUserDetails'] != null
+        ? new GetOrganizationUserDetails.fromJson(
+        json['getOrganizationUserDetails'])
+        : null;
+  }
 
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Text(
-              "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
-              maxLines: 2, // Replace with dynamic username
-              style: AppStyle.mid_large_text
-                  .copyWith(color: AppColor.secondaryColor),
-              overflow: TextOverflow.ellipsis, // Ensures long text is truncated
-            ),
-          ),
-          const SizedBox(width: 12),
-          SizedBox(
-            height: 17,
-            width: 17,
-            child: GestureDetector(
-              onTap: () {
-                customAntButtonSheet(
-                    context: context,
-                    child: actionLayout(
-                        context: context,
-                        userName:
-                        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-                        departmentText: Get.find<UserProfileController>()
-                            .userDetails
-                            ?.getOrganizationUserDetails
-                            ?.department
-                            ?.name ??
-                            "",
-                        editAction: () {},
-                        changePassAction: () {}));
-              },
-              child: Image.asset(Images.EDIT_ICON),
-
-            ),
-          ),
-        ],
-      ),
-
-      Text(
-        Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.employeeId??"",
-        style: AppStyle.normal_text_black
-            .copyWith(fontWeight: FontWeight.w300, color: AppColor.hintColor),
-      ),
-      Text(
-        department,
-        style: AppStyle.normal_text_black
-            .copyWith(fontWeight: FontWeight.w300, color: AppColor.hintColor),
-      ),
-
-      /// Status
-      if (employmentHistories != null && employmentHistories.isNotEmpty)
-        Wrap(
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: employmentContractStatus(),
-            ),
-            customSpacerWidth(width: 8),
-
-            /// Status
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: employmentStatus(),
-            ),
-          ],
-        ),
-    ],
-  );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-monthlyStatusLayout() {
-  var controller = Get.find<UserProfileController>();
-  return Padding(
-    padding: const EdgeInsets.only(left: 16.0, right: 16),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        infoTextLayout(
-            dynamicText: formatToTwoDecimalPlaces(controller.userLogHistory
-                ?.geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
-                ""),
-            staticText: AppString.text_leave_balance.tr),
-        _divider(),
-        infoTextLayout(
-            dynamicText: controller.userLogHistory
-                ?.geTimelogAndLeaveAvailabilityForApp?.totalSchedule ??
-                "",
-            staticText: AppString.text_monthly_goal.tr),
-        _divider(),
-        infoTextLayout(
-            dynamicText: controller.userLogHistory
-                ?.geTimelogAndLeaveAvailabilityForApp?.totalLogged ??
-                "",
-            staticText: AppString.text_logged_time.tr),
-      ],
-    ),
-  );
-}
-
-infoTextLayout({required dynamicText, required staticText}) {
-  return Column(
-    children: [
-      Text(
-        "$dynamicText",
-        style: AppStyle.normal_text_grey.copyWith(
-            color: AppColor.normalTextColor,
-            fontSize: Dimensions.fontSizeMid,
-            fontWeight: FontWeight.w400),
-      ),
-      Text(
-        "$staticText",
-        style: AppStyle.mid_large_text.copyWith(
-            fontSize: Dimensions.fontSizeDefault - 3,
-            color: AppColor.hintColor),
-      )
-    ],
-  );
-}
-
-_divider() {
-  return Container(
-    width: 1,
-    height: 30,
-    color: AppColor.disableColor.withOpacity(0.7),
-  );
-}
-
-actionBtnLayout(context) {
-  return GestureDetector(
-    onTap: () => customAntButtonSheet(
-        context: context,
-        child: actionLayout(
-            context: context,
-            userName:
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-            departmentText: Get.find<UserProfileController>()
-                .userDetails
-                ?.getOrganizationUserDetails
-                ?.department
-                ?.name ??
-                "",
-            editAction: () {},
-            changePassAction: () {})),
-    child: Container(
-      height: AppLayout.getHeight(44),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
-        color: AppColor.primaryColor,
-      ),
-      child: Center(
-          child: Text(
-            AppString.text_action.tr,
-            style: AppStyle.mid_large_text
-                .copyWith(fontSize: Dimensions.fontSizeDefault + 3),
-          )),
-    ),
-  );
-}
-
-descriptionTextLayout() {
-  return filterTextLengthLayout();
-}
-
-filterTextLengthLayout() {
-  String drc = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.profile
-      ?.about ??
-      '';
-  final wordCount = drc.split(' ').length;
-  if (wordCount > 20) {
-    return ExpandedText(
-      text: drc,
-    );
-  } else {
-    return Text(
-      drc,
-      style: AppStyle.mid_large_text.copyWith(
-          color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
-    );
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.getOrganizationUserDetails != null) {
+      data['getOrganizationUserDetails'] =
+          this.getOrganizationUserDetails!.toJson();
+    }
+    return data;
   }
 }
 
-logoutLayout(context) {
-  return GestureDetector(
-    onTap: () {
-      customDialog(
-          context: context,
-          saveBtnAction: () {
-            Get.find<LogoutController>().logout();
-          },
-          icon: Icons.logout,
-          titleText: AppString.text_are_you_sure.tr,
-          subText: "${AppString.text_if_you_do_this_etc.tr}.",
-          iconBgColor: AppColor.errorColorLight,
-          btnBgColor: AppColor.errorColorLight,
-          btnText: AppString.text_log_out.tr,
-          drcText: "",
-          drcFontSize: Dimensions.fontSizeDefault,
-          childForSaveBtn: Obx(() => logoutTextLayout()));
-    },
-    child: Container(
-      height: AppLayout.getHeight(80),
-      width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(color: AppColor.hintColor),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: marginLayout.copyWith(left: 20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Icon(
-                  Icons.logout_rounded,
-                  color: AppColor.cardColor,
-                  size: 28,
-                ),
-                customSpacerWidth(width: 12),
-                Text(
-                  AppString.text_log_out.tr,
-                  style: AppStyle.mid_large_text
-                      .copyWith(color: AppColor.cardColor),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+class GetOrganizationUserDetails {
+  String? employeeId;
+  String? status;
+  Profile? profile;
+  User? user;
+  Department? department;
+  Organization? organization;
+  Designation? designation;
+  Designation? employmentStatus;
 
-languageLayout(context) {
-  return InkWell(
-    onTap: () {
-      _customButtonSheet(context: context, child: LanguageLayout());
-    },
-    child: Container(
-      padding: marginLayout.copyWith(left: 8, right: 8),
-      child: Row(
-        children: [
-          SizedBox(height: 20, child: Image.asset(_getLanguageFlag())),
-          customSpacerWidth(width: 8),
-          Row(
-            children: [
-              Text(
-                AppString.text_language.tr,
-                style: AppStyle.mid_large_text.copyWith(
-                    fontSize: Dimensions.fontSizeDefault + 1,
-                    color: AppColor.hintColor),
-              ),
-              Text(
-                _getLanguageName(),
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
-                    fontSize: Dimensions.fontSizeDefault + 1),
-              )
-            ],
-          ),
-          const Spacer(),
-          const Icon(
-            Icons.arrow_forward_ios_sharp,
-            color: AppColor.hintColor,
-            size: 20,
-          )
-        ],
-      ),
-    ),
-  );
-}
+  GetOrganizationUserDetails(
+      {this.employeeId,
+        this.status,
+        this.profile,
+        this.user,
+        this.department,
+        this.organization,
+        this.designation,
+        this.employmentStatus});
 
-organisationLayout(context) {
-  var controller = Get.find<UserProfileController>();
-  return Padding(
-    padding: marginLayout,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppString.yourOrganizationText.tr,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor,
-              fontSize: Dimensions.fontSizeDefault,
-              letterSpacing: 3.5),
-        ),
-        customSpacerHeight(height: 12),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            organisationLogoLayout(),
-            customSpacerWidth(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  controller.userDetails?.getOrganizationUserDetails
-                      ?.organization?.orgName ??
-                      "Not added yet",
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.normalTextColor,
-                      fontWeight: FontWeight.w900,
-                      fontSize: Dimensions.fontSizeDefault + 1),
-                ),
-                customSpacerHeight(height: 6),
-                if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                    ?.designationHistories !=
-                    null &&
-                    controller.employeeWorkHistory!.getOrganizationUserHistory!
-                        .designationHistories!.isNotEmpty)
-                  Text(
-                    controller.employeeWorkHistory?.getOrganizationUserHistory
-                        ?.designationHistories?[0].designation?.name ??
-                        "",
-                    style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.normalTextColor,
-                      fontSize: Dimensions.fontSizeDefault,
-                    ),
-                  ),
-                customSpacerHeight(height: 6),
-                GestureDetector(
-                  onTap: () {
-                    _customButtonSheet(
-                        context: context, child: OrganisationView());
-                  },
-                  child: Text(
-                    AppString.text_swich_organisation.tr,
-                    style: AppStyle.normal_text_grey.copyWith(
-                        color: AppColor.secondaryColor,
-                        fontSize: Dimensions.fontSizeDefault - 1),
-                  ),
-                )
-              ],
-            )
-          ],
-        )
-      ],
-    ),
-  );
-}
-
-profileInfoDrawerLayout() {
-  var controller = Get.find<UserProfileController>();
-  return Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 1),
-        color: AppColor.bgColorWithPrimary.withOpacity(0.6),
-      ),
-      child: Padding(
-        padding:
-        const EdgeInsets.only(top: 20.0, bottom: 20, left: 12, right: 12),
-        child: Center(
-          child: Column(
-            children: [
-              userImageLayout(),
-              customSpacerHeight(height: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? "Not added yet"}",
-                    style: AppStyle.mid_large_text
-                        .copyWith(color: AppColor.normalTextColor),
-                  ),
-                  if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                      ?.designationHistories !=
-                      null &&
-                      controller
-                          .employeeWorkHistory!
-                          .getOrganizationUserHistory!
-                          .designationHistories!
-                          .isNotEmpty)
-                    Text(
-                      controller.employeeWorkHistory?.getOrganizationUserHistory
-                          ?.designationHistories?[0].designation?.name ??
-                          "Not added yet",
-                      style: AppStyle.normal_text_grey
-                          .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
-                    ),
-                  customSpacerHeight(height: 8),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-phoneNumberText() {
-  return userInfoSectionLayout(
-    staticText: AppString.text_personal_number.tr,
-    dynamicText: Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
-        ?.profile
-        ?.personalNumber ??
-        "",
-  );
-}
-
-emergencyPhoneNumber() {
-  return userInfoSectionLayout(
-    staticText: AppString.text_emergency_number.tr,
-    dynamicText: Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
-        ?.profile
-        ?.emergencyNumber ??
-        "",
-  );
-}
-
-addressText() {
-  return userInfoSectionLayout(
-      staticText: AppString.text_address.tr,
-      dynamicText: Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.profile
-          ?.address ??
-          "");
-}
-
-employmentContractStatus() {
-  var controller = Get.find<UserProfileController>();
-  if (controller.employeeWorkHistory?.getOrganizationUserHistory == null ||
-      controller.employeeWorkHistory!.getOrganizationUserHistory!
-          .employmentHistories!.isEmpty) {
-    return Container();
-  }
-  String? colorsCode =
-      "0xFF${controller.employeeWorkHistory?.getOrganizationUserHistory!.employmentHistories?[0].employmentStatus?.color?.replaceAll("#", "")}";
-  return CustomStatusButton(
-    bgColor: Color(int.parse(colorsCode)).withOpacity(.2),
-    textColor: Color(int.parse(colorsCode)),
-    text: controller.employeeWorkHistory?.getOrganizationUserHistory
-        ?.employmentHistories?[0].employmentStatus?.name ??
-        "",
-  );
-}
-
-employmentStatus() {
-  var controller = Get.find<UserProfileController>();
-  if (controller.userDetails?.getOrganizationUserDetails?.status == null) {
-    return Container();
+  GetOrganizationUserDetails.fromJson(Map<String, dynamic> json) {
+    employeeId = json['employee_id'];
+    status = json['status'];
+    profile =
+    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    department = json['department'] != null
+        ? new Department.fromJson(json['department'])
+        : null;
+    organization = json['organization'] != null
+        ? new Organization.fromJson(json['organization'])
+        : null;
+    designation = json['designation'] != null
+        ? new Designation.fromJson(json['designation'])
+        : null;
+    employmentStatus = json['employment_status'] != null
+        ? new Designation.fromJson(json['employment_status'])
+        : null;
   }
 
-  if (controller.userDetails?.getOrganizationUserDetails?.status
-      ?.toLowerCase() ==
-      EmploymentStatus.active.name) {
-    return CustomStatusButton(
-      statusIcon: Icons.check_circle,
-      text: EmploymentStatus.active.name.capitalizeFirst,
-      bgColor: AppColor.successColor.withOpacity(.2),
-      textColor: AppColor.successColor,
-    );
-  } else if (controller.userDetails?.getOrganizationUserDetails?.status
-      ?.toLowerCase() ==
-      EmploymentStatus.inactive.name) {
-    return CustomStatusButton(
-      statusIcon: Icons.stop_circle_outlined,
-      text: EmploymentStatus.inactive.name.capitalizeFirst,
-      bgColor: AppColor.disableColor.withOpacity(.2),
-      textColor: Colors.black87,
-    );
-  } else if (controller.userDetails?.getOrganizationUserDetails?.status
-      ?.toLowerCase() ==
-      EmploymentStatus.invited.name) {
-    return CustomStatusButton(
-      statusIcon: Icons.send,
-      text: EmploymentStatus.invited.name.capitalizeFirst,
-      bgColor: AppColor.pendingColor.withOpacity(.2),
-      textColor: AppColor.pendingColor,
-    );
-  } else {
-    return Container();
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['employee_id'] = this.employeeId;
+    data['status'] = this.status;
+    if (this.profile != null) {
+      data['profile'] = this.profile!.toJson();
+    }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.department != null) {
+      data['department'] = this.department!.toJson();
+    }
+    if (this.organization != null) {
+      data['organization'] = this.organization!.toJson();
+    }
+    if (this.designation != null) {
+      data['designation'] = this.designation!.toJson();
+    }
+    if (this.employmentStatus != null) {
+      data['employment_status'] = this.employmentStatus!.toJson();
+    }
+    return data;
   }
 }
 
-userImageLayout({double? height}) {
-  String? firstName = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.profile
-      ?.firstName;
-  String? lastName = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.profile
-      ?.lastName;
+class Profile {
+  String? id;
+  String? firstName;
+  String? lastName;
+  Null? image;
+  String? about;
+  String? address;
+  String? personalNumber;
+  String? emergencyNumber;
 
-  return CustomNetworkImage(
-    errorText: (firstName != null && firstName.isNotEmpty) &&
-        (lastName != null && lastName.isNotEmpty)
-        ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
-        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
-        : "",
-    height: height ?? 36,
-    isPublic: true,
-    profileImageKey:
-    "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
-    imgUrlKey: '',
-  );
+  Profile(
+      {this.id,
+        this.firstName,
+        this.lastName,
+        this.image,
+        this.about,
+        this.address,
+        this.personalNumber,
+        this.emergencyNumber});
+
+  Profile.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    image = json['image'];
+    about = json['about'];
+    address = json['address'];
+    personalNumber = json['personal_number'];
+    emergencyNumber = json['emergency_number'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    data['image'] = this.image;
+    data['about'] = this.about;
+    data['address'] = this.address;
+    data['personal_number'] = this.personalNumber;
+    data['emergency_number'] = this.emergencyNumber;
+    return data;
+  }
 }
 
-organisationLogoLayout() {
-  return CustomNetworkImage(
-    height: AppLayout.getHeight(25),
-    fileDir: "profile_images",
-    errorText: getFirstTwoLetterFromWord(Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
-        ?.organization!
-        .orgName ??
-        ""),
-    isPublic: true,
-    imgUrlKey:
-    "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
-    borderColor: Colors.transparent,
-    logoUrl: Images.ORG,
-  );
+class User {
+  String? id;
+  String? email;
+
+  User({this.id, this.email});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['email'] = this.email;
+    return data;
+  }
 }
 
-endDrawer(BuildContext context) {
-  return Drawer(
-    clipBehavior: Clip.antiAliasWithSaveLayer,
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(0))),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        customSpacerHeight(height: 40),
-        profileInfoDrawerLayout(),
-        customSpacerHeight(height: 40),
-        organisationLayout(context),
-        const Spacer(),
-        languageLayout(context),
-        customSpacerHeight(height: 30),
-        logoutLayout(context)
-      ],
-    ),
-  );
+class Department {
+  String? id;
+  String? name;
+  Null? parent;
+  WorkShift? workShift;
+
+  Department({this.id, this.name, this.parent, this.workShift});
+
+  Department.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    parent = json['parent'];
+    workShift = json['work_shift'] != null
+        ? new WorkShift.fromJson(json['work_shift'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['parent'] = this.parent;
+    if (this.workShift != null) {
+      data['work_shift'] = this.workShift!.toJson();
+    }
+    return data;
+  }
 }
 
-logoutTextLayout() {
-  return Get.find<LogoutController>().isLogoutLoading.value
-      ? const CupertinoActivityIndicator(
-    color: AppColor.cardColor,
-  )
-      : Text(
-    AppString.text_log_out.tr,
-    style: AppStyle.normal_text_grey.copyWith(
-        fontSize: Dimensions.fontSizeDefault + 1,
-        color: AppColor.cardColor),
-  );
-}
+class WorkShift {
+  String? name;
+  List<WorkSchedules>? workSchedules;
 
-void _customButtonSheet({context, child}) {
-  return showCustomAtmBtnSheet(
-      context: context,
-      child: Material(
-        color: AppColor.noColor,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid),
-                topLeft: Radius.circular(Dimensions.radiusMid)),
-            color: AppColor.cardColor,
-          ),
-          child: child,
-        ),
-      ));
-}
+  WorkShift({this.name, this.workSchedules});
 
-String _getLanguageName() {
-  if (GetStorage().read("languageCode") != null) {
-    switch (GetStorage().read("languageCode")) {
-      case "en":
-        {
-          return "English";
-        }
-      case "no":
-        {
-          return "Norwegian";
-        }
-      default:
-        return "English";
+  WorkShift.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    if (json['work_schedules'] != null) {
+      workSchedules = <WorkSchedules>[];
+      json['work_schedules'].forEach((v) {
+        workSchedules!.add(new WorkSchedules.fromJson(v));
+      });
     }
   }
-  return "English";
-}
 
-List languageFlagIndex = [Images.FLAG_PNG, Images.NOEWAYFLAG];
-
-String _getLanguageFlag() {
-  if (GetStorage().read("languageCode") != null) {
-    switch (GetStorage().read("languageCode")) {
-      case "en":
-        {
-          return Images.FLAG_PNG;
-        }
-      case "no":
-        {
-          return Images.NOEWAYFLAG;
-        }
-      default:
-        return Images.FLAG_PNG;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    if (this.workSchedules != null) {
+      data['work_schedules'] =
+          this.workSchedules!.map((v) => v.toJson()).toList();
     }
+    return data;
   }
-  return Images.FLAG_PNG;
 }
 
-horizontalDivider() {
-  return const Padding(
-    padding: EdgeInsets.only(top: 15.0, bottom: 15),
-    child: Divider(thickness: .6, color: AppColor.disableColor),
-  );
+class WorkSchedules {
+  String? day;
+  String? endTime;
+  String? startTime;
+  bool? isHoliday;
+
+  WorkSchedules({this.day, this.endTime, this.startTime, this.isHoliday});
+
+  WorkSchedules.fromJson(Map<String, dynamic> json) {
+    day = json['day'];
+    endTime = json['end_time'];
+    startTime = json['start_time'];
+    isHoliday = json['is_holiday'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['day'] = this.day;
+    data['end_time'] = this.endTime;
+    data['start_time'] = this.startTime;
+    data['is_holiday'] = this.isHoliday;
+    return data;
+  }
+}
+
+class Organization {
+  Null? organizationUser;
+  String? name;
+  String? id;
+  OrganizationSetting? organizationSetting;
+
+  Organization(
+      {this.organizationUser, this.name, this.id, this.organizationSetting});
+
+  Organization.fromJson(Map<String, dynamic> json) {
+    organizationUser = json['organization_user'];
+    name = json['name'];
+    id = json['id'];
+    organizationSetting = json['organization_setting'] != null
+        ? new OrganizationSetting.fromJson(json['organization_setting'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['organization_user'] = this.organizationUser;
+    data['name'] = this.name;
+    data['id'] = this.id;
+    if (this.organizationSetting != null) {
+      data['organization_setting'] = this.organizationSetting!.toJson();
+    }
+    return data;
+  }
+}
+
+class OrganizationSetting {
+  String? logoKey;
+  String? logoIconKey;
+  String? language;
+
+  OrganizationSetting({this.logoKey, this.logoIconKey, this.language});
+
+  OrganizationSetting.fromJson(Map<String, dynamic> json) {
+    logoKey = json['logo_key'];
+    logoIconKey = json['logo_icon_key'];
+    language = json['language'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['logo_key'] = this.logoKey;
+    data['logo_icon_key'] = this.logoIconKey;
+    data['language'] = this.language;
+    return data;
+  }
+}
+
+class Designation {
+  String? id;
+  String? name;
+
+  Designation({this.id, this.name});
+
+  Designation.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
+  }
 }

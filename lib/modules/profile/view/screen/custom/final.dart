@@ -84,7 +84,7 @@ class ProfileUserInformation extends StatelessWidget {
               /// Status
               FittedBox(
                 fit: BoxFit.scaleDown,
-                child: employmentStatus(),
+                child: buildEmploymentStatus(),
               ),
             ],
           ),
