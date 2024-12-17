@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
+import 'common/controller/profile_helper/profile_data_source.dart';
 import 'firebase_options.dart';
 
 Future<void> initApp() async {
@@ -50,6 +51,7 @@ Future<void> initApp() async {
   Get.put(NotificationRemoteDataSource(client), permanent: true);
 
   Get.put(LeaveRemoteDataSource(client), permanent: true);
+  Get.put(ProfileDataSource(client), permanent: true);
 
 
 

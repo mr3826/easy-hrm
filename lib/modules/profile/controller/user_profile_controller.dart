@@ -25,6 +25,7 @@ import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import '../../../common/controller/date_time_controller.dart';
+import '../../../common/controller/profile_helper/profile_data_source.dart';
 import '../../../common/domain/user_info.dart';
 import '../../../common/widget/custom_password_text_field.dart';
 import '../../../network/exception_helper.dart';
@@ -40,6 +41,8 @@ import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
 import '../model/user_profile.dart';
 import 'package:dio/dio.dart' as di;
+
+import '../model/user_profile_model.dart';
 
 class UserProfileController extends GetxController with StateMixin {
   @override
@@ -99,7 +102,7 @@ class UserProfileController extends GetxController with StateMixin {
             .storageForUpload
             .filePath
             .value
-            .isNotEmpty ;
+            .isNotEmpty;
   }
 
   UserDetails? userDetails;
@@ -115,31 +118,56 @@ class UserProfileController extends GetxController with StateMixin {
   final resendOtpLoading = false.obs;
   var isOtpString = ''.obs;
 
-
-
   bool get isButtonEnabledForOTP {
     return isOtpString.isNotEmpty;
   }
 
   final passwordInputController = TextEditingController();
-  final editEmployeeIDController =TextEditingController();
+  final editEmployeeIDController = TextEditingController();
 
-  getUserProfile() async {
+  // getUserProfile() async {
+  //   change(null, status: RxStatus.loading());
+  //   print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
+  //   final response = await _networkClient.graphRequest(
+  //       queryString: getUserProfileQuery,
+  //       variables: {
+  //         "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)
+  //       });
+  //   if (response.hasException) {
+  //     ExceptionHelper.errorHandler(
+  //         exception: response.exception!, methodName: "getUserProfile");
+  //   } else {
+  //     userDetails = UserDetails.fromJson(response.data!);
+  //   }
+  //   change(null, status: RxStatus.success());
+  // }
+  //
+
+  UserProfileModel userProfileModel = UserProfileModel();
+
+  final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
+
+
+
+  
+  Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
-    print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
-    final response = await _networkClient.graphRequest(
-        queryString: getUserProfileQuery,
-        variables: {
-          "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)
-        });
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getUserProfile");
-    } else {
-      userDetails = UserDetails.fromJson(response.data!);
-    }
+    userProfileModel =
+        (await _profileDataSource.getUserProfile()) ?? UserProfileModel();
+
     change(null, status: RxStatus.success());
   }
+
+
+
+
+
+
+
+
+
+
+
 
   getEmploymentInfo() async {
     change(null, status: RxStatus.loading());

@@ -172,54 +172,46 @@ query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
 // profile module
 
 const getUserProfileQuery = r'''
-query GetOrganizationUserDetails($orgUserId: UUID) {
-  getOrganizationUserDetails(org_user_id: $orgUserId) {
-    profile {
+query GetOrganizationUsers($queryData: OrganizationUserQueryData, $optionData: OptionDataType) {
+  getOrganizationUsers(queryData: $queryData, optionData: $optionData) {
+    data {
       id
-      about
-      address
-      emergency_number
-      first_name
-      image
-      last_name
-      personal_number
-    }
-    user {
-      email
-      id
-    }
-   
-    department {
-      name
-      id
-      parent {
+      join_date
+      employee_id
+      profile {
+        first_name
+        last_name
+        image
+      }
+      employment_status {
+        id
+        name
+        color
+      }
+      designation {
         id
         name
       }
-      work_shift {
+      department {
+        id
         name
-        work_schedules {
-          day
-          end_time
-          start_time
-          is_holiday
-        }
       }
+      user {
+        id
+        email
+      }
+      user_id
+      
     }
-    status
-    employee_id
-    organization {
-      organization_setting {
-        logo_key
-        logo_icon_key
-        language
-      }
-      name
-      id
+    
+    metaData {
+      filteredRows
     }
   }
 }
 ''';
+
+
 
 
 
