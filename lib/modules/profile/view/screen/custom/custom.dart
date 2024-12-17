@@ -12,24 +12,26 @@ import 'department_with_emplyee_status/department_with_employee_status.dart';
 import 'final.dart';
 
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen1 extends StatelessWidget {
 
  final UserInformation ?userInformation;
  final List ?listOfTabBar;
 
-  const ProfileScreen({super.key,this.userInformation,this.listOfTabBar});
+  const ProfileScreen1({super.key,this.userInformation,this.listOfTabBar});
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: Stack(
+    return Container(
+      color: AppColor.primaryColor,
+      child: Stack(
         children: [
+
           _buildBackgroundContainer(context,userInformation??UserInformation()),
           _buildProfileImage(screenHeight, screenWidth,url: userInformation?.profileImgUrl??"",errorText: "Er"),
+
 
         ],
       ),
@@ -135,6 +137,8 @@ class ProfileScreen extends StatelessWidget {
 
 
               customSpacerHeight(height: 30),
+
+              Divider(),
 
               /// RefreshIndicator with scrollable content
               Expanded(

@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_network_image.dart';
 import '../../../../../common/widget/custom_spacer.dart';
-import '../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../common/widget/success_message.dart';
 import '../../../../../utils/app_color.dart';
-import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
 import '../../../../../utils/utils.dart';
-import '../../../../auth/presentation/view/otp_screen.dart';
 import '../../../../timeline/view/widget/timeline_calendar.dart';
 import '../../widget/action_layout_widget.dart';
 import '../../widget/common_widget.dart';
@@ -35,7 +30,7 @@ class ProfileUserInformation extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                userInformation?.departmentName ?? "No added yet",
+                userInformation?.userName ?? "No added yet",
                 maxLines: 2, // Replace with dynamic username
                 style: AppStyle.mid_large_text
                     .copyWith(color: AppColor.secondaryColor),

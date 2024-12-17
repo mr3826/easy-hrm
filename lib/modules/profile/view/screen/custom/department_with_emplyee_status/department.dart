@@ -63,7 +63,7 @@ class DepartmentLayout extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (userInformation.departmentInfo!.departmentName.isNotEmpty)
+          if (userInformation.departmentInfo?.departmentName !=null)
             Text(
               userInformation.departmentInfo?.departmentName??"",
               style: AppStyle.mid_large_text
@@ -74,7 +74,7 @@ class DepartmentLayout extends StatelessWidget {
             children: [
               if (userInformation.departmentInfo?.parentDepartmentName != null)
                 _buildParentInfo(),
-              if (userInformation.departmentInfo!.startDate.isNotEmpty)
+              if (userInformation.departmentInfo?.startDate.isNotEmpty??false)
                 Expanded(
                   child: Text(
                     "${AppString.text_from.tr} - ${_formatDate(userInformation.departmentInfo!.startDate)}",
