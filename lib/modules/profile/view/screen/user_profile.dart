@@ -15,7 +15,8 @@ import '../widget/chnage_email_notify_layout.dart';
 import '../widget/common_widget.dart';
 
 class ProfileScreen extends GetView<UserProfileController> {
-  const ProfileScreen({super.key});
+  final List? profileTabView;
+  const ProfileScreen({super.key, this.profileTabView});
 
   @override
   Widget build(BuildContext context) {
@@ -117,77 +118,178 @@ class ProfileScreen extends GetView<UserProfileController> {
             topStart: Radius.circular(30),
           ),
         ),
-        child: Padding(
-          padding: marginLayout,
-          child: Column(
-            children: [
-              customSpacerHeight(height: 50),
+        child: Column(
+          children: [
+            customSpacerHeight(height: 50),
 
-              /// User info section
-              userInfoLayout(context),
-              customSpacerHeight(height: 30),
+            /// User info section
+            userInfoLayout(context),
+            customSpacerHeight(height: 30),
+            monthlyStatusLayout(),
 
-              /// RefreshIndicator with scrollable content
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _fetchProfileData, // Call the refresh method
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Monthly layout
-                        monthlyStatusLayout(),
+            const SizedBox(
+              height: 20,
+            ),
 
-                        customSpacerHeight(height: 25),
-
-                        /// User description
-                        descriptionTextLayout(),
-
-                        customSpacerHeight(height: 8),
-
-                        /// User email
-                        const BuildEmail(),
-
-                        /// Phone number
-                        _buildPhoneNumberSection(),
-
-                        /// Employee address
-                        addressText(),
-                        customSpacerHeight(height: 15),
-
-                        /// Department layout
-                        _buildDepartmentLayout(context),
-
-                        customSpacerHeight(height: 5),
-
-                        /// Designation history
-                        _buildDesignationHistoryLayout(context),
-                        customSpacerHeight(height: 50),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            if (profileTabView?.length != 3)
+            _buildProfileTabBar([
+              const BuildProfileOverView(),
+              Container(color: Colors.amber, height: 100, width: double.infinity),
+              Container(color: Colors.black, height: 100, width: double.infinity),
+            ])
+            else
+            const BuildProfileOverView()
+          ],
         ),
       ),
     );
   }
 
-  /// Fetches the latest profile data from the server.
-  Future<void> _fetchProfileData() async {
-    try {
-      await controller.getUserProfile();
-      await controller.getEmploymentInfo();
-      await controller.getUserLogHistory();
-      await controller.getOrganizationInfo();
-    } catch (e) {
-      // Optionally handle errors or show a message
-      Get.snackbar('Error', 'Failed to refresh data');
-    }
+
+// Method to build the profile tab bar
+  _buildProfileTabBar(List<Widget> profileTabView) {
+    // GetX Controller to manage the selected tab index
+    UserProfileController controller = Get.find<UserProfileController>();
+
+    return Expanded(
+      child: Column(
+        children: [
+          _tabBarList(controller), // Pass the controller to manage the selected index
+
+          // The content corresponding to the selected tab
+          Expanded(
+            child: Obx(
+                  () => profileTabView.isNotEmpty
+                  ? profileTabView[controller.profileTabIndex.value]
+                  : Container(), // Display content based on selected tab
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+// Tab bar widget (Horizontal List)
+  _tabBarList(UserProfileController controller) {
+    List<String> tabIndex = ["Overview", "Leave records", "Leave summary"];
+
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            offset: const Offset(0, 1),
+            blurRadius: 6,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Center(
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: tabIndex.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                controller.profileTabIndex.value = index; // Change the selected tab index
+              },
+              child: Obx(
+                    () => Center(
+                  child: Column(
+                    children: [
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0, right: 20),
+                        child: Text(
+                          tabIndex[index],
+                          style: TextStyle(
+                            color: controller.profileTabIndex.value == index
+                                ? Colors.blue // Active tab color
+                                : Colors.black.withOpacity(0.4),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      // Show underline for active tab
+                      if (controller.profileTabIndex.value == index)
+                        Container(
+                          width: 78,
+                          height: 2,
+                          color: Colors.blue, // Underline color
+                        )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+
+
+}
+
+class BuildProfileOverView extends GetView<UserProfileController> {
+  const BuildProfileOverView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+      return
+        /// RefreshIndicator with scrollable content
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _fetchProfileData, // Call the refresh method
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: marginLayout,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Monthly layout
+
+                    customSpacerHeight(height: 25),
+
+                    /// User description
+                    descriptionTextLayout(),
+
+                    customSpacerHeight(height: 8),
+
+                    /// User email
+                    const BuildEmail(),
+
+                    /// Phone number
+                    _buildPhoneNumberSection(),
+
+                    /// Employee address
+                    addressText(),
+                    customSpacerHeight(height: 15),
+
+                    /// Department layout
+                    _buildDepartmentLayout(context),
+
+                    customSpacerHeight(height: 5),
+
+                    /// Designation history
+                    _buildDesignationHistoryLayout(context),
+                    customSpacerHeight(height: 50),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+    }
+
+
 
   Widget _buildPhoneNumberSection() {
     return Column(
@@ -214,8 +316,23 @@ class ProfileScreen extends GetView<UserProfileController> {
     return const SizedBox.shrink();
   }
 
-
   Widget _buildDesignationHistoryLayout(BuildContext context) {
     return employeeStatusLayout(context: context);
   }
+
+  /// Fetches the latest profile data from the server.
+  Future<void> _fetchProfileData() async {
+    try {
+      await controller.getUserProfile();
+      await controller.getEmploymentInfo();
+      await controller.getUserLogHistory();
+      await controller.getOrganizationInfo();
+    } catch (e) {
+      // Optionally handle errors or show a message
+      Get.snackbar('Error', 'Failed to refresh data');
+    }
+  }
+
 }
+
+

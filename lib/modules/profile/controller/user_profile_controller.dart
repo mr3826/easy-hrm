@@ -59,6 +59,10 @@ class UserProfileController extends GetxController with StateMixin {
   RxBool isOTPProvided = false.obs;
   String otpCode = "";
 
+
+  RxInt profileTabIndex = 0.obs;
+
+
   final NetworkClient _networkClient = Get.find<NetworkClient>();
 
   void startTimer() {

@@ -35,8 +35,7 @@ Widget employeeStatusLayout({BuildContext? context}) {
           child: GestureDetector(
             onTap: () {
               Get.find<UserProfileController>().getEmploymentInfo();
-              customAntButtonSheet(
-                  child: const DesignationLayout(), context: context!);
+              customAntButtonSheet(child: const DesignationLayout(), context: context!);
             },
             child: SizedBox(
               child: Card(

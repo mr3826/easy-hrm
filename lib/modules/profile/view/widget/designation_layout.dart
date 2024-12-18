@@ -35,12 +35,19 @@ class DesignationLayout extends GetView<UserProfileController> {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: controller.employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?.length ??
+              itemCount: controller
+                      .employeeWorkHistory
+                      ?.getOrganizationUserHistory
+                      ?.designationHistories
+                      ?.length ??
                   0,
               itemBuilder: (context, index) {
-                final designationHistory = controller.employeeWorkHistory?.getOrganizationUserHistory?.designationHistories?[index];
+                final designationHistory = controller.employeeWorkHistory
+                    ?.getOrganizationUserHistory?.designationHistories?[index];
 
-                final designationHistories = Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory;
+                final designationHistories = Get.find<UserProfileController>()
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory;
 
                 bool isLastItem = (designationHistories != null &&
                         designationHistories.designationHistories != null &&

@@ -68,12 +68,11 @@ _departmentHistoryInfo(context) {
         ),
         Row(
           children: [
-            _parentDepartmentInfo(
-                parentDepartmentName: _getParentDepartmentName()),
+            _parentDepartmentInfo(parentDepartmentName: _getParentDepartmentName()),
             if (department != null)
               Expanded(
                 child: Text(
-                  "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
+                  "${AppString.text_from.tr} - ${getDateTimeFormat("")}",///todo [query]
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.hintColor,
                       fontSize: Dimensions.fontSizeDefault - 1,

@@ -42,93 +42,96 @@ userInfoLayout(BuildContext context) {
       ?.getOrganizationUserDetails
       ?.employmentStatus;
 
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Text(
-              "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
-              maxLines: 2, // Replace with dynamic username
-              style: AppStyle.mid_large_text
-                  .copyWith(color: AppColor.secondaryColor),
-              overflow: TextOverflow.ellipsis, // Ensures long text is truncated
-            ),
-          ),
-          const SizedBox(width: 12),
-          SizedBox(
-            height: 17,
-            width: 17,
-            child: GestureDetector(
-              onTap: () {
-                customAntButtonSheet(
-                    context: context,
-                    child: actionLayout(
-                        context: context,
-                        userName:
-                            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-                        departmentText: Get.find<UserProfileController>()
-                                .userDetails
-                                ?.getOrganizationUserDetails
-                                ?.department
-                                ?.name ??
-                            "",
-                        editAction: () {},
-                        changePassAction: () {}));
-              },
-              child: Image.asset(Images.EDIT_ICON),
-            ),
-          ),
-        ],
-      ),
-
-      if (Get.find<UserProfileController>()
-              .userDetails
-              ?.getOrganizationUserDetails
-              ?.employeeId !=
-          null)
-        Text(
-          Get.find<UserProfileController>()
-                  .userDetails
-                  ?.getOrganizationUserDetails
-                  ?.employeeId ??
-              "",
-          style: AppStyle.normal_text_black
-              .copyWith(fontWeight: FontWeight.w300, color: AppColor.hintColor),
-        ),
-      Text(
-        department,
-        style: AppStyle.normal_text_black
-            .copyWith(fontWeight: FontWeight.w300, color: AppColor.hintColor),
-      ),
-
-      /// Status
-      if (employmentStatusData != null)
-        Wrap(
+  return Padding(
+    padding: marginLayout,
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: employmentContractStatus(),
+            Flexible(
+              child: Text(
+                "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
+                maxLines: 2, // Replace with dynamic username
+                style: AppStyle.mid_large_text
+                    .copyWith(color: AppColor.secondaryColor),
+                overflow: TextOverflow.ellipsis, // Ensures long text is truncated
+              ),
             ),
-            customSpacerWidth(width: 8),
-
-            /// Status
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: buildEmploymentStatus(),
+            const SizedBox(width: 12),
+            SizedBox(
+              height: 17,
+              width: 17,
+              child: GestureDetector(
+                onTap: () {
+                  customAntButtonSheet(
+                      context: context,
+                      child: actionLayout(
+                          context: context,
+                          userName:
+                              "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+                          departmentText: Get.find<UserProfileController>()
+                                  .userDetails
+                                  ?.getOrganizationUserDetails
+                                  ?.department
+                                  ?.name ??
+                              "",
+                          editAction: () {},
+                          changePassAction: () {}));
+                },
+                child: Image.asset(Images.EDIT_ICON),
+              ),
             ),
           ],
         ),
-    ],
+
+        if (Get.find<UserProfileController>()
+                .userDetails
+                ?.getOrganizationUserDetails
+                ?.employeeId !=
+            null)
+          Text(
+            Get.find<UserProfileController>()
+                    .userDetails
+                    ?.getOrganizationUserDetails
+                    ?.employeeId ??
+                "",
+            style: AppStyle.normal_text_black
+                .copyWith(fontWeight: FontWeight.w300, color: AppColor.hintColor),
+          ),
+        Text(
+          department,
+          style: AppStyle.normal_text_black
+              .copyWith(fontWeight: FontWeight.w300, color: AppColor.hintColor),
+        ),
+
+        /// Status
+        if (employmentStatusData != null)
+          Wrap(
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: employmentContractStatus(),
+              ),
+              customSpacerWidth(width: 8),
+
+              /// Status
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: buildEmploymentStatus(),
+              ),
+            ],
+          ),
+      ],
+    ),
   );
 }
 
 monthlyStatusLayout() {
   var controller = Get.find<UserProfileController>();
   return Padding(
-    padding: const EdgeInsets.only(left: 16.0, right: 16),
+    padding: const EdgeInsets.only(left: 30.0, right: 30),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
