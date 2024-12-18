@@ -235,13 +235,17 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
       start_date
       end_date
       employment_status {
+        id
         name
         color
-        id
       }
     }
+    
     dept_histories {
+      start_date
+      end_date
       department {
+        id
         name
         manager {
           profile {
@@ -254,8 +258,6 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
           name
         }
       }
-      start_date
-      end_date
     }
   }
 }

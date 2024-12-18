@@ -71,12 +71,6 @@ class IndividualTimeLayout extends StatelessWidget {
     Color itemColor = index % 2 == 0
         ? AppColor.primaryColor.withOpacity(0.03)
         : Colors.transparent;
-
-    print(" date : ${Get.find<TimelineSummaryController>()
-        .timelogDetailsByMonth
-        ?.getDailyTimeEntries
-        ?.data?[index]
-        .entryDay  ??""} balance ::: ${Get.find<TimelineSummaryController>().timelogDetailsByMonth?.getDailyTimeEntries?.data?[index].balance ??""}");
     return Padding(
       padding: marginLayout,
       child: Card(

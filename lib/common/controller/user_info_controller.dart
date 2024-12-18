@@ -30,6 +30,7 @@ class UserInfoController {
             exception: response.exception!,
             methodName: "getOrgSubscriptionInfo");
       } else {
+        print("ORg Sub:: ${OrgSubscriptionInfoModel.fromJson(response.data!)}");
         _checkIfSubscription(OrgSubscriptionInfoModel.fromJson(response.data!));
       }
     } catch (ex) {

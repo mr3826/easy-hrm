@@ -122,7 +122,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   final passwordInputController = TextEditingController();
 
-  getUserProfile() async {
+  Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
     print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     final response = await _networkClient.graphRequest(
