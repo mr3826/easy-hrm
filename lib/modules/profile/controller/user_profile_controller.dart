@@ -48,7 +48,6 @@ class UserProfileController extends GetxController with StateMixin {
   @override
   void onInit() {
     getUserProfile();
-    getEmploymentInfo();
     getUserLogHistory();
     getOrganizationInfo();
     startTimer();
@@ -112,6 +111,7 @@ class UserProfileController extends GetxController with StateMixin {
   final isLoading = false.obs;
   final isLoadingChangeEmail = false.obs;
   final isOrganizationChangeLoading = false.obs;
+  final isEmployeeInfoLoading = false.obs;
   final isNewOrganizationChangeLoading = false.obs;
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
@@ -125,34 +125,18 @@ class UserProfileController extends GetxController with StateMixin {
   final passwordInputController = TextEditingController();
   final editEmployeeIDController = TextEditingController();
 
-  // getUserProfile() async {
-  //   change(null, status: RxStatus.loading());
-  //   print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
-  //   final response = await _networkClient.graphRequest(
-  //       queryString: getUserProfileQuery,
-  //       variables: {
-  //         "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)
-  //       });
-  //   if (response.hasException) {
-  //     ExceptionHelper.errorHandler(
-  //         exception: response.exception!, methodName: "getUserProfile");
-  //   } else {
-  //     userDetails = UserDetails.fromJson(response.data!);
-  //   }
-  //   change(null, status: RxStatus.success());
-  // }
-
-  UserProfileModel userProfileModel = UserProfileModel();
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
+
+
+
 
   Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
-    print(
-        "userDetails ::: ${userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""}");
     change(null, status: RxStatus.success());
   }
+
 
   Future<void> getUserLogHistory() async {
     change(null, status: RxStatus.loading());
@@ -161,34 +145,40 @@ class UserProfileController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  getEmploymentInfo() async {
-    change(null, status: RxStatus.loading());
-    final response = await _networkClient.graphRequest(
-      queryString: getEmploymentInfoQuery,
-    );
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getEmploymentInfo");
-    } else {
-      //  employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
-    }
-
-    change(null, status: RxStatus.success());
+  Future<void> getEmploymentInfo() async {
+    isEmployeeInfoLoading(true);
+    employeeWorkHistory =
+        (await _profileDataSource.getEmploymentInfo()) ?? EmployeeWorkHistory();
+    isEmployeeInfoLoading(false);
   }
 
-  // getUserLogHistory() async {
-  //   change(null, status: RxStatus.loading());
-  //   final response =
-  //       await _networkClient.graphRequest(queryString: userLogHistoryQuery);
-  //   if (response.hasException) {
-  //     ExceptionHelper.errorHandler(
-  //         exception: response.exception!, methodName: "getUserLogHistory");
-  //   } else {
-  //     userLogHistory = UserLogHistory.fromJson(response.data!);
-  //   }
-  //   change(null, status: RxStatus.success());
-  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   Future<bool> getPasswordVerification({required String password}) async {
     bool validation = false;

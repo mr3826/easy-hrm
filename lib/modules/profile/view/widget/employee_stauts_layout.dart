@@ -22,7 +22,7 @@ Widget employeeStatusLayout({BuildContext? context}) {
       ?.getOrganizationUserDetails
       ?.designation;
 
-  Designation? employmentStatus = Get.find<UserProfileController>()
+  EmploymentStatusData? employmentStatus = Get.find<UserProfileController>()
       .userDetails
       ?.getOrganizationUserDetails
       ?.employmentStatus;
@@ -30,12 +30,14 @@ Widget employeeStatusLayout({BuildContext? context}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-
       if (designation != null)
         Expanded(
           child: GestureDetector(
-            onTap: () => customAntButtonSheet(
-                child: const DesignationLayout(), context: context!),
+            onTap: () {
+              Get.find<UserProfileController>().getEmploymentInfo();
+              customAntButtonSheet(
+                  child: const DesignationLayout(), context: context!);
+            },
             child: SizedBox(
               child: Card(
                 elevation: 0,
@@ -64,8 +66,11 @@ Widget employeeStatusLayout({BuildContext? context}) {
         customSpacerWidth(width: 4),
         Expanded(
           child: GestureDetector(
-            onTap: () => customAntButtonSheet(
-                context: context!, child: const EmploymentLayout()),
+            onTap: () {
+              Get.find<UserProfileController>().getEmploymentInfo();
+              customAntButtonSheet(
+                  context: context!, child: const EmploymentLayout());
+            },
             child: SizedBox(
               child: Card(
                 elevation: 0,
@@ -93,66 +98,61 @@ Widget employeeStatusLayout({BuildContext? context}) {
   );
 }
 
-
 _employmentInfo() {
-  Designation? employmentStatus = Get.find<UserProfileController>()
+  EmploymentStatusData? employmentStatus = Get.find<UserProfileController>()
       .userDetails
       ?.getOrganizationUserDetails
       ?.employmentStatus;
-    return Wrap(
-      children: [
-
-        SizedBox(
-          height: 60,
-          child: Text(
-            employmentStatus?.name ?? "",
-            style: AppStyle.mid_large_text.copyWith(
-                color: AppColor.normalTextColor,
-                overflow: TextOverflow.ellipsis,
-                fontSize: Dimensions.fontSizeMid),
-            maxLines: 2,
-          ),
-        ),
-
-        Text(
-          "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
+  return Wrap(
+    children: [
+      SizedBox(
+        height: 60,
+        child: Text(
+          employmentStatus?.name ?? "",
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault - 1),
+              color: AppColor.normalTextColor,
+              overflow: TextOverflow.ellipsis,
+              fontSize: Dimensions.fontSizeMid),
+          maxLines: 2,
         ),
-
-      ],
-    );
+      ),
+      Text(
+        "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
+        style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.hintColor,
+            fontSize: Dimensions.fontSizeDefault - 1),
+      ),
+    ],
+  );
 }
 
 _designationInfo() {
-
   Designation? designation = Get.find<UserProfileController>()
       .userDetails
       ?.getOrganizationUserDetails
       ?.designation;
 
+  return Wrap(
+    children: [
+      SizedBox(
+        height: 60,
+        child: Text(
+          designation?.name ?? "",
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.normalTextColor,
+              overflow: TextOverflow.ellipsis,
+              fontSize: Dimensions.fontSizeMid),
+          maxLines: 2,
+        ),
+      ),
+      Text(
+        "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
 
-  return  Wrap(
-          children: [
-            SizedBox(
-              height: 60,
-              child: Text(
-                designation?.name ?? "",
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: Dimensions.fontSizeMid),
-                maxLines: 2,
-              ),
-            ),
-            Text(
-              "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault - 1),
-            ),
-          ],
-        );
-
+        ///todo [api query]
+        style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.hintColor,
+            fontSize: Dimensions.fontSizeDefault - 1),
+      ),
+    ],
+  );
 }

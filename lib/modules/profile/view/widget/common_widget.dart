@@ -37,7 +37,7 @@ userInfoLayout(BuildContext context) {
           ?.department
           ?.name ??
       "";
-  Designation? employmentStatusData = Get.find<UserProfileController>()
+  EmploymentStatusData? employmentStatusData = Get.find<UserProfileController>()
       .userDetails
       ?.getOrganizationUserDetails
       ?.employmentStatus;
@@ -482,7 +482,7 @@ addressText() {
 }
 
 employmentContractStatus() {
-  Designation? designation = Get.find<UserProfileController>()
+  EmploymentStatusData? employmentStatus = Get.find<UserProfileController>()
       .userDetails
       ?.getOrganizationUserDetails
       ?.employmentStatus;
@@ -493,12 +493,12 @@ employmentContractStatus() {
       ?.employmentStatus?.color}");
 
 
-  if (designation != null) {
-    String? colorsCode = "0xFF${designation.color?.replaceAll("#", "")}";
+  if (employmentStatus != null) {
+    String? colorsCode = "0xFF${employmentStatus.color?.replaceAll("#", "")}";
     return CustomStatusButton(
       bgColor: Color(int.parse(colorsCode)).withOpacity(.2),
       textColor: Color(int.parse(colorsCode)),
-      text: designation.name ?? "",
+      text: employmentStatus.name ?? "",
     );
   }
 }

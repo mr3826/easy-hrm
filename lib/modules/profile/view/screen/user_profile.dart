@@ -22,17 +22,17 @@ class ProfileScreen extends GetView<UserProfileController> {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-
-    return  controller.obx((sate)=>Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: Stack(
-        children: [
-          _buildBackgroundContainer(context),
-          _buildProfileImage(screenHeight, screenWidth),
-        ],
-      ),
-    ),onLoading: const LoadingIndicator());
-
+    return controller.obx(
+        (sate) => Scaffold(
+              backgroundColor: AppColor.primaryColor,
+              body: Stack(
+                children: [
+                  _buildBackgroundContainer(context),
+                  _buildProfileImage(screenHeight, screenWidth),
+                ],
+              ),
+            ),
+        onLoading: const LoadingIndicator());
   }
 
   /// Background Container with Profile Layout
@@ -58,6 +58,7 @@ class ProfileScreen extends GetView<UserProfileController> {
       ),
     );
   }
+
   /// Positioned Profile Image
   Widget _buildProfileImage(double screenHeight, double screenWidth) {
     return Positioned(
@@ -67,8 +68,6 @@ class ProfileScreen extends GetView<UserProfileController> {
       child: userImageLayout(),
     );
   }
-
-
 
   /// Profile Header with Title and Menu Button
   Widget _buildHeader(BuildContext context) {
@@ -106,8 +105,6 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-
-
   /// Main Content Container
   Widget _buildContent(BuildContext context) {
     return Expanded(
@@ -143,6 +140,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                         monthlyStatusLayout(),
 
                         customSpacerHeight(height: 25),
+
                         /// User description
                         descriptionTextLayout(),
 
@@ -205,21 +203,19 @@ class ProfileScreen extends GetView<UserProfileController> {
   }
 
   Widget _buildDepartmentLayout(BuildContext context) {
-    if (Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department?.name!=null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.department!.name!.isNotEmpty) {
+    String? department = Get.find<UserProfileController>()
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.department
+        ?.name;
+    if (department != null) {
       return departmentLayout(context);
     }
     return const SizedBox.shrink();
   }
 
 
-
-
   Widget _buildDesignationHistoryLayout(BuildContext context) {
-      return employeeStatusLayout(context: context);
+    return employeeStatusLayout(context: context);
   }
-
-
 }
-
-
-

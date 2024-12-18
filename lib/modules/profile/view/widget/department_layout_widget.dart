@@ -47,12 +47,14 @@ Widget departmentLayout(BuildContext? context) {
 }
 
 _departmentHistoryInfo(context) {
-
-  Department? department =Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department;
-
+  Department? department = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.department;
 
   return GestureDetector(
     onTap: () {
+      Get.find<UserProfileController>().getEmploymentInfo();
       customAntButtonSheet(context: context, child: const DepartmentHistory());
     },
     child: Column(
@@ -61,14 +63,14 @@ _departmentHistoryInfo(context) {
       children: [
         Text(
           department?.name ?? "",
-          style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+          style:
+              AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
         ),
         Row(
           children: [
             _parentDepartmentInfo(
                 parentDepartmentName: _getParentDepartmentName()),
-
-              if(department !=null)
+            if (department != null)
               Expanded(
                 child: Text(
                   "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
@@ -85,8 +87,8 @@ _departmentHistoryInfo(context) {
   );
 }
 
-getDateTimeFormat(dateString){
-  if(dateString.isEmpty) return"";
+getDateTimeFormat(dateString) {
+  if (dateString.isEmpty) return "";
   DateTime dateTime = DateTime.parse(dateString);
   // Format the DateTime to "dd, MMM"
   return DateFormat('dd MMM, yyyy').format(dateTime);
@@ -163,13 +165,11 @@ _workShiftDetailsLayout() {
       .map((e) => e)
       .toList();
 
-
   bool? allTimesSame = workSchedules?.every((schedule) {
     // Check if start_time and end_time are the same for each item
     return schedule.startTime == workSchedules[0].startTime &&
         schedule.endTime == workSchedules[0].endTime;
   });
-
 
   return Row(
     children: [
@@ -311,7 +311,11 @@ _workingDaySchedule(context) {
 }
 
 String _getParentDepartmentName() {
-  Parent? parent =Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.department?.parent;
+  var parent = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.department
+      ?.parent;
   if (parent != null) {
     return "${AppString.text_child_of_deparmtnet.tr} ${parent.name ?? ""}";
   } else {
