@@ -49,6 +49,11 @@ class MyApp extends StatelessWidget {
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         onInit: () {
+
+
+          
+
+
           if (Platform.isAndroid) {
             Pushy.setNotificationIcon(Images.appLogo);
             Pushy.listen();
