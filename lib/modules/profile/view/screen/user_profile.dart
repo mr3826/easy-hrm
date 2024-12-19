@@ -133,13 +133,9 @@ class ProfileScreen extends GetView<UserProfileController> {
 
             if (profileTabView?.length != 3)
               _buildProfileTabBar([
-               const BuildProfileOverView(),
+                const BuildProfileOverView(),
                 const Expanded(child: BuildLeaveRecord()),
-                
                 const Expanded(child: BuildProfileLeaveSummary())
-
-
-
               ])
             else
               const BuildProfileOverView()
@@ -156,16 +152,15 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Expanded(
       child: Column(
         children: [
-          _tabBarList(controller), // Pass the controller to manage the selected index
+          _tabBarList(
+              controller), // Pass the controller to manage the selected index
           Obx(() => profileTabView.isNotEmpty
               ? profileTabView[controller.profileTabIndex.value]
               : Container()),
         ],
       ),
     );
-
   }
-
 
   _tabBarList(UserProfileController controller) {
     List<String> tabIndex = ["Overview", "Leave records", "Leave summary"];
@@ -190,17 +185,22 @@ class ProfileScreen extends GetView<UserProfileController> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                controller.profileTabIndex.value = index; // Change the selected tab index
-                if(controller.profileTabIndex.value==1){
-                  controller.getLeaveRecordsData();
-                }else if(controller.profileTabIndex.value==2){
-                  controller.getLeaveSummary();
-
-
+                controller.profileTabIndex.value =
+                    index; // Change the selected tab index
+                if (controller.profileTabIndex.value == 1) {
+                  if (controller.leaveRecordList == null) {
+                    controller.getLeaveRecordsData();
+                  }
+                } else if (controller.profileTabIndex.value == 2) {
+                  if (controller
+                          .leaveSummary?.getOrganizationUsersLeaveSummary ==
+                      null) {
+                    controller.getLeaveSummary();
+                  }
                 }
               },
               child: Obx(
-                    () => Center(
+                () => Center(
                   child: Column(
                     children: [
                       const Spacer(),
@@ -221,10 +221,12 @@ class ProfileScreen extends GetView<UserProfileController> {
                       // Show underline for active tab with dynamic width
                       if (controller.profileTabIndex.value == index)
                         Container(
-                          width: _calculateTextWidth(tabIndex[index], const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          )),
+                          width: _calculateTextWidth(
+                              tabIndex[index],
+                              const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
                           height: 2,
                           color: AppColor.primaryColor, // Underline color
                         )
@@ -248,5 +250,4 @@ class ProfileScreen extends GetView<UserProfileController> {
     )..layout();
     return textPainter.width;
   }
-
 }

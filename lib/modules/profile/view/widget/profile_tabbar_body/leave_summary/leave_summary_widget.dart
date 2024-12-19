@@ -26,8 +26,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
       }
       if (controller.leaveSummary?.getOrganizationUsersLeaveSummary == null ||
               controller
-                  .leaveSummary!.getOrganizationUsersLeaveSummary!.isEmpty ??
-          false) {
+                  .leaveSummary!.getOrganizationUsersLeaveSummary!.isEmpty) {
         return Center(
             child: Text(
           "No leave summary!",

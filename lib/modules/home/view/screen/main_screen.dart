@@ -114,7 +114,8 @@ class _MainScreenState extends State<MainScreen> {
       const LeaveScreen(),
       const Dashboard(),
       const NotificationScreen(),
-       const ProfileScreen(),
+      const ProfileScreen(),
+
     ];
   }
 
