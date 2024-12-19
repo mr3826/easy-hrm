@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
 import '../../../modules/profile/model/employee_work_history.dart';
+import '../../../modules/profile/model/organization_info.dart';
 import '../../../modules/profile/model/user_log_history.dart';
 import '../../../modules/profile/model/user_profile.dart';
 import '../../../network/exception_helper.dart';
@@ -62,6 +63,20 @@ class ProfileDataSource {
       }
     } catch (e) {
       log(e.toString());
+    }
+    return null;
+  }
+
+
+
+
+ Future<OrganizationInfoDetails?> getOrganizationInfo() async {
+    final response = await networkClient.graphRequest(queryString: organizationInfoQuery);
+    if (response.hasException) {
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getOrganizationInfo");
+    } else {
+      return OrganizationInfoDetails.fromJson(response.data!);
     }
     return null;
   }

@@ -11,6 +11,7 @@ class BuildProfileLeaveRecord  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     List<Map<String, String>> data = [
       {"type": "Sick leave", "status": "approved"},
       {"type": "Sick leave", "status": "pending"},
@@ -28,7 +29,7 @@ class BuildProfileLeaveRecord  extends StatelessWidget {
         itemCount: data.length,
         padding:EdgeInsets.zero,
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+       // physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final leaveType = data[index]["type"]!;
           final leaveStatus = data[index]["status"]!;

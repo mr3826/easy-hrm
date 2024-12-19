@@ -382,6 +382,7 @@ organisationLayout(context) {
                 customSpacerHeight(height: 6),
                 GestureDetector(
                   onTap: () {
+                    Get.find<UserProfileController>().getOrganizationInfo();
                     _customButtonSheet(
                         context: context, child: OrganisationView());
                   },

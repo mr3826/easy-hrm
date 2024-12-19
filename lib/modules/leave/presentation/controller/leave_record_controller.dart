@@ -20,7 +20,6 @@ class LeaveRecordsController extends GetxController with StateMixin {
   //do pagination
   getLeaveRecordsData() async {
     change(null, status: RxStatus.loading());
-
     leaveRecordList = await _remoteDataSource.getLeaveRecordList(
         limit: limit, offset: offset.value);
 

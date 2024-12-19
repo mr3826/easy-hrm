@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({Key? key}) : super(key: key);
+  final double? radius;
+  const LoadingIndicator({Key? key, this.radius}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,8 @@ class LoadingIndicator extends StatelessWidget {
         height: AppLayout.getSize(context).height,
         width: AppLayout.getSize(context).width,
         color: Colors.white,
-        child: const CupertinoActivityIndicator(
-            radius: 20, color: Colors.blueAccent),
+        child: CupertinoActivityIndicator(
+            radius: radius ?? 20, color: Colors.blueAccent),
       ),
     );
   }

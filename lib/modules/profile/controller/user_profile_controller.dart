@@ -36,6 +36,8 @@ import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
 import '../../auth/domain/signin_res.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../leave/data/remote/leave_remote_data_source.dart';
+import '../../leave/domain/leave_record_response.dart';
 import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
@@ -49,7 +51,7 @@ class UserProfileController extends GetxController with StateMixin {
   void onInit() {
     getUserProfile();
     getUserLogHistory();
-    getOrganizationInfo();
+   // getOrganizationInfo();
     startTimer();
     super.onInit();
   }
@@ -117,6 +119,10 @@ class UserProfileController extends GetxController with StateMixin {
   final isOrganizationChangeLoading = false.obs;
   final isEmployeeInfoLoading = false.obs;
   final isNewOrganizationChangeLoading = false.obs;
+  final isViewOrganizationLoading = false.obs;
+  final isViewLeaveRecordLoading = false.obs;
+
+
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
   final resendOtpLoading = false.obs;
@@ -131,7 +137,7 @@ class UserProfileController extends GetxController with StateMixin {
 
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
-
+  final LeaveRemoteDataSource _remoteDataSource = Get.find<LeaveRemoteDataSource>();
 
 
 
@@ -157,25 +163,26 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
 
+  Future<void> getOrganizationInfo() async {
+    isViewOrganizationLoading(true);
+    organizationInfo = (await _profileDataSource.getOrganizationInfo()) ?? OrganizationInfoDetails();
+    isViewOrganizationLoading(false);
+  }
 
 
 
 
+  List<GetLeaveRecordsForApp>? leaveRecordList;
+  RxInt offset = 0.obs;
+  int limit = 30;
 
+  getLeaveRecordsData() async {
+    isViewLeaveRecordLoading(true);
+    leaveRecordList = await _remoteDataSource.getLeaveRecordList(
+        limit: limit, offset: offset.value);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    isViewLeaveRecordLoading(false);
+  }
 
 
 
@@ -256,18 +263,7 @@ class UserProfileController extends GetxController with StateMixin {
     resendOtpLoading(false);
   }
 
-  getOrganizationInfo() async {
-    change(null, status: RxStatus.loading());
-    final response =
-        await _networkClient.graphRequest(queryString: organizationInfoQuery);
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getOrganizationInfo");
-    } else {
-      organizationInfo = OrganizationInfoDetails.fromJson(response.data!);
-    }
-    change(null, status: RxStatus.success());
-  }
+
 
   switchOrganization({required String orgId, required String email}) async {
     print("ordId: $orgId");

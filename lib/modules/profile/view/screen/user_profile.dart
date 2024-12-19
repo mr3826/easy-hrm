@@ -10,8 +10,8 @@ import '../../../../utils/dimensions.dart';
 import '../../controller/employment_controller.dart';
 import '../../controller/user_profile_controller.dart';
 import '../widget/common_widget.dart';
-import '../widget/profile_tabbar_body/build_profile_leave_record.dart';
 import '../widget/profile_tabbar_body/build_profile_overview.dart';
+import '../widget/profile_tabbar_body/golobal_leave_record.dart';
 import '../widget/profile_tabbar_body/leave_summary/leave_summary_widget.dart';
 
 class ProfileScreen extends GetView<UserProfileController> {
@@ -129,24 +129,21 @@ class ProfileScreen extends GetView<UserProfileController> {
             customSpacerHeight(height: 30),
             monthlyStatusLayout(),
 
-            const SizedBox(
-              height: 20,
-            ),
+            customSpacerHeight(height: 20),
 
             if (profileTabView?.length != 3)
-            _buildProfileTabBar([
-              const BuildProfileOverView(),
-              const BuildProfileLeaveRecord(),
-              const BuildProfileLeaveSummary()
-            ])
+              _buildProfileTabBar([
+                const BuildProfileOverView(),
+                const BuildLeaveRecord(),
+                const BuildProfileLeaveSummary()
+              ])
             else
-            const BuildProfileOverView()
+              const BuildProfileOverView()
           ],
         ),
       ),
     );
   }
-
 
 // Method to build the profile tab bar
   _buildProfileTabBar(List<Widget> profileTabView) {
@@ -156,12 +153,13 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Expanded(
       child: Column(
         children: [
-          _tabBarList(controller), // Pass the controller to manage the selected index
+          _tabBarList(
+              controller), // Pass the controller to manage the selected index
 
           // The content corresponding to the selected tab
           Expanded(
             child: Obx(
-                  () => profileTabView.isNotEmpty
+              () => profileTabView.isNotEmpty
                   ? profileTabView[controller.profileTabIndex.value]
                   : Container(), // Display content based on selected tab
             ),
@@ -171,7 +169,6 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-// Tab bar widget (Horizontal List)
   _tabBarList(UserProfileController controller) {
     List<String> tabIndex = ["Overview", "Leave records", "Leave summary"];
 
@@ -196,6 +193,12 @@ class ProfileScreen extends GetView<UserProfileController> {
             return GestureDetector(
               onTap: () {
                 controller.profileTabIndex.value = index; // Change the selected tab index
+                if(controller.profileTabIndex.value==1){
+                  controller.getLeaveRecordsData();
+                }else if(controller.profileTabIndex.value==2){
+
+
+                }
               },
               child: Obx(
                     () => Center(
@@ -203,12 +206,12 @@ class ProfileScreen extends GetView<UserProfileController> {
                     children: [
                       const Spacer(),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
                           tabIndex[index],
                           style: TextStyle(
                             color: controller.profileTabIndex.value == index
-                                ? Colors.blue // Active tab color
+                                ? AppColor.primaryColor // Active tab color
                                 : Colors.black.withOpacity(0.4),
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -216,12 +219,15 @@ class ProfileScreen extends GetView<UserProfileController> {
                         ),
                       ),
                       const Spacer(),
-                      // Show underline for active tab
+                      // Show underline for active tab with dynamic width
                       if (controller.profileTabIndex.value == index)
                         Container(
-                          width: 78,
+                          width: _calculateTextWidth(tabIndex[index], const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          )),
                           height: 2,
-                          color: Colors.blue, // Underline color
+                          color: AppColor.primaryColor, // Underline color
                         )
                     ],
                   ),
@@ -234,10 +240,14 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-
+// Function to calculate text width
+  double _calculateTextWidth(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    return textPainter.width;
+  }
 
 }
-
-
-
-
