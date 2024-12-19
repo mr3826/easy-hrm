@@ -124,6 +124,7 @@ class UserProfileController extends GetxController with StateMixin {
   final isNewOrganizationChangeLoading = false.obs;
   final isViewOrganizationLoading = false.obs;
   final isViewLeaveRecordLoading = false.obs;
+  final isViewLeaveSummaryLoading = false.obs;
 
 
   final isVerificationApiLoading = false.obs;
@@ -191,14 +192,10 @@ class UserProfileController extends GetxController with StateMixin {
 
 
   getLeaveSummary() async {
-    isViewLeaveRecordLoading(true);
+    isViewLeaveSummaryLoading(true);
     leaveSummary = await _leaveDataSource.getLeaveSummary();
-    isViewLeaveRecordLoading(false);
+    isViewLeaveSummaryLoading(false);
   }
-
-
-
-
 
 
 

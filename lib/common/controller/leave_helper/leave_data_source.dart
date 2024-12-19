@@ -15,8 +15,12 @@ class LeaveDataSource{
     try {
       final response = await networkClient
           .graphRequest(queryString: getLeaveSummaryQuery, variables: {
-        "orgUserId": orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID)
-      });
+        "queryData": {
+          "org_user_id": orgId??GetStorage().read(AppString.ORGANIZATION_USER_ID),
+          "start_year": "2024"
+        }
+      }
+      );
       if (response.hasException) {
         ExceptionHelper.errorHandler(
             exception: response.exception!, methodName: "getUserProfile");

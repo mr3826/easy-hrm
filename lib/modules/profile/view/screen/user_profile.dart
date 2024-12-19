@@ -133,9 +133,13 @@ class ProfileScreen extends GetView<UserProfileController> {
 
             if (profileTabView?.length != 3)
               _buildProfileTabBar([
-                const BuildProfileOverView(),
-                const BuildLeaveRecord(),
-                const BuildProfileLeaveSummary()
+               const BuildProfileOverView(),
+                const Expanded(child: BuildLeaveRecord()),
+                
+                const Expanded(child: BuildProfileLeaveSummary())
+
+
+
               ])
             else
               const BuildProfileOverView()
@@ -145,7 +149,6 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-// Method to build the profile tab bar
   _buildProfileTabBar(List<Widget> profileTabView) {
     // GetX Controller to manage the selected tab index
     UserProfileController controller = Get.find<UserProfileController>();
@@ -153,21 +156,16 @@ class ProfileScreen extends GetView<UserProfileController> {
     return Expanded(
       child: Column(
         children: [
-          _tabBarList(
-              controller), // Pass the controller to manage the selected index
-
-          // The content corresponding to the selected tab
-          Expanded(
-            child: Obx(
-              () => profileTabView.isNotEmpty
-                  ? profileTabView[controller.profileTabIndex.value]
-                  : Container(), // Display content based on selected tab
-            ),
-          ),
+          _tabBarList(controller), // Pass the controller to manage the selected index
+          Obx(() => profileTabView.isNotEmpty
+              ? profileTabView[controller.profileTabIndex.value]
+              : Container()),
         ],
       ),
     );
+
   }
+
 
   _tabBarList(UserProfileController controller) {
     List<String> tabIndex = ["Overview", "Leave records", "Leave summary"];
@@ -196,6 +194,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                 if(controller.profileTabIndex.value==1){
                   controller.getLeaveRecordsData();
                 }else if(controller.profileTabIndex.value==2){
+                  controller.getLeaveSummary();
 
 
                 }

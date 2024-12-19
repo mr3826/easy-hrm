@@ -27,6 +27,11 @@ class BuildLeaveRecord extends GetView<UserProfileController> {
           radius: 18,
         );
       }
+
+
+      if(controller.leaveRecordList ==null || controller.leaveRecordList!.isEmpty){
+        return Center(child: Text("No leave record!",style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),));
+      }
       return RefreshIndicator(
         backgroundColor: AppColor.cardColor,
         color: AppColor.primaryColor,
@@ -34,9 +39,7 @@ class BuildLeaveRecord extends GetView<UserProfileController> {
         child: SingleChildScrollView(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),
-          child: controller.leaveRecordList != null &&
-              controller.leaveRecordList!.isNotEmpty
-              ? ListView.builder(
+          child:  ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -45,11 +48,6 @@ class BuildLeaveRecord extends GetView<UserProfileController> {
               _dateTextLayout(date: controller.leaveRecordList?[index].date),
               _leaveRecordViewLayout(index)
             ]),
-          )
-              : Text(
-            "No leave record!",
-            style: AppStyle.normal_text_black
-                .copyWith(color: AppColor.hintColor),
           ),
         ),
       );

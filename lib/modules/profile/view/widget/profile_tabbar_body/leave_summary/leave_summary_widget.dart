@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/model/leave_summary.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/custom_card_style.dart';
@@ -11,52 +14,88 @@ import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../auth/presentation/view/otp_screen.dart';
 import 'leave_allowance/leave_allowance.dart';
 
-class BuildProfileLeaveSummary extends StatelessWidget {
+class BuildProfileLeaveSummary extends GetView<UserProfileController> {
   const BuildProfileLeaveSummary({super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: marginLayout.copyWith(top: 20),
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) {
-        return SizedBox(
-          height: AppLayout.getHeight(175),
-          width: double.infinity,
-          child: Card(
-            elevation: 0,
-            color: AppColor.leaveRecordCardColor,
-            shape: roundedRectangleBorder.copyWith(
-              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  customSpacerHeight(height: 12),
-
-                  _buildLeaveDetailsRow(staticText1: "Allowance: ",dynamicText1:  "20",staticText2:  "Earned: ", dynamicText2: "-", staticText3: "Taken: ",dynamicText3:  "6"),
-
-                  customSpacerHeight(height: 8),
-
-                  _buildLeaveDetailsRow(staticText1: "Approved: ", dynamicText1: "6", staticText2: "Available: ", dynamicText2: "14"),
-
-                  customSpacerHeight(height: 8),
-                  _buildPendingRequest(),
-                ],
-              ),
-            ),
-          ),
+    return Obx(() {
+      if (controller.isViewLeaveSummaryLoading.isTrue) {
+        return const LoadingIndicator(
+          radius: 18,
         );
-      },),
-    );
+      }
+      if (controller.leaveSummary?.getOrganizationUsersLeaveSummary == null ||
+              controller
+                  .leaveSummary!.getOrganizationUsersLeaveSummary!.isEmpty ??
+          false) {
+        return Center(
+            child: Text(
+          "No leave summary!",
+          style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+        ));
+      }
+      return Padding(
+        padding: marginLayout.copyWith(top: 20),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          itemCount: controller
+                  .leaveSummary?.getOrganizationUsersLeaveSummary?.length ??
+              0,
+          itemBuilder: (context, index) {
+            GetOrganizationUsersLeaveSummary? leaveSummary = controller
+                .leaveSummary?.getOrganizationUsersLeaveSummary?[index];
+
+            return SizedBox(
+              height: AppLayout.getHeight(175),
+              width: double.infinity,
+              child: Card(
+                elevation: 0,
+                color: AppColor.leaveRecordCardColor,
+                shape: roundedRectangleBorder.copyWith(
+                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(
+                          leaveSummary ?? GetOrganizationUsersLeaveSummary()),
+                      customSpacerHeight(height: 12),
+                      _buildLeaveDetailsRow(
+                          staticText1: "Allowance: ",
+                          dynamicText1:
+                              leaveSummary?.allocated.toString() ?? "",
+                          staticText2: "Earned: ",
+                          dynamicText2:
+                              leaveSummary?.earnedDays.toString() ?? "",
+                          staticText3: "Taken: ",
+                          dynamicText3: leaveSummary?.taken??"0"),
+                      customSpacerHeight(height: 8),
+                      _buildLeaveDetailsRow(
+                          staticText1: "Approved: ",
+                          dynamicText1: leaveSummary?.approved.toString() ?? "",
+                          staticText2: "Available: ",
+                          dynamicText2:
+                              leaveSummary?.availableNumberOfDays.toString() ??
+                                  ""),
+                      customSpacerHeight(height: 8),
+                      _buildPendingRequest(
+                          leaveSummary ?? GetOrganizationUsersLeaveSummary()),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    });
   }
 
-
   // Build header with title and more button
-  Widget _buildHeader() {
+  Widget _buildHeader(GetOrganizationUsersLeaveSummary leaveSummary) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -64,7 +103,7 @@ class BuildProfileLeaveSummary extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Self declaration",
+              leaveSummary.name ?? "",
               style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.secondaryColor,
                 fontSize: Dimensions.fontSizeDefault,
@@ -73,7 +112,7 @@ class BuildProfileLeaveSummary extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             Text(
-              "Sick leave",
+              leaveSummary.type ?? "",
               style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.hintColor,
                 fontSize: Dimensions.fontSizeSmall + 1,
@@ -83,7 +122,9 @@ class BuildProfileLeaveSummary extends StatelessWidget {
           ],
         ),
         IconButton(
-          onPressed: () {showAddAllowance();},
+          onPressed: () {
+            showAddAllowance();
+          },
           icon: Icon(
             Icons.more_horiz,
             size: 25,
@@ -118,7 +159,7 @@ class BuildProfileLeaveSummary extends StatelessWidget {
   }
 
   // Build the pending request widget
-  Widget _buildPendingRequest() {
+  Widget _buildPendingRequest(GetOrganizationUsersLeaveSummary leaveSummary) {
     return _buildSubText(
       label: "Pending Req: ",
       widget: Card(
@@ -127,7 +168,7 @@ class BuildProfileLeaveSummary extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
-            "2",
+            leaveSummary.pendingReq.toString() ?? "",
             style: AppStyle.normal_text.copyWith(color: AppColor.pendingColor),
           ),
         ),
@@ -147,20 +188,29 @@ class BuildProfileLeaveSummary extends StatelessWidget {
           ),
           overflow: TextOverflow.ellipsis,
         ),
-        widget ?? Text(
-          value!,
-          style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.normalTextColor.withOpacity(0.7),
-            fontSize: Dimensions.fontSizeSmall + 1,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
+        widget ??
+            Text(
+              _checkNullableValue(value),
+              style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.normalTextColor.withOpacity(0.7),
+                fontSize: Dimensions.fontSizeSmall + 1,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
       ],
     );
   }
-}
-void showAddAllowance() {
 
+
+  String _checkNullableValue(String? value) {
+    if(value==null|| value=="null"){
+      return "0";
+    }
+    return value;
+  }
+}
+
+void showAddAllowance() {
   customButtonSheet(
     context: Get.context!,
     child: Column(
@@ -173,7 +223,7 @@ void showAddAllowance() {
             onTap: () {
               customButtonSheet(
                 context: Get.context!,
-                child:  LeaveAllowance(),
+                child: LeaveAllowance(),
                 height: 0.7,
               );
             },
@@ -203,11 +253,10 @@ Widget _buildHeader() {
   return Container(
     decoration: const BoxDecoration(
         color: AppColor.leaveRecordCardColor,
-
-        borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
-    ),
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), topLeft: Radius.circular(20))),
     height: 130,
-    child:  Center(
+    child: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -232,4 +281,3 @@ Widget _buildHeader() {
     ),
   );
 }
-
