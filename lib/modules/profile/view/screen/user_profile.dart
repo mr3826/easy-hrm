@@ -10,8 +10,8 @@ import '../../../../utils/dimensions.dart';
 import '../../controller/employment_controller.dart';
 import '../../controller/user_profile_controller.dart';
 import '../widget/common_widget.dart';
+import '../widget/profile_tabbar_body/build_profile_leave_record.dart';
 import '../widget/profile_tabbar_body/build_profile_overview.dart';
-import '../widget/profile_tabbar_body/golobal_leave_record.dart';
 import '../widget/profile_tabbar_body/leave_summary/leave_summary_widget.dart';
 
 class ProfileScreen extends GetView<UserProfileController> {

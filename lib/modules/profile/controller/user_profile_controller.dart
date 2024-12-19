@@ -17,6 +17,7 @@ import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen
 import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
+import 'package:payrun_mobile/modules/profile/model/leave_summary.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
@@ -25,6 +26,7 @@ import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import '../../../common/controller/date_time_controller.dart';
+import '../../../common/controller/leave_helper/leave_data_source.dart';
 import '../../../common/controller/profile_helper/profile_data_source.dart';
 import '../../../common/domain/user_info.dart';
 import '../../../common/widget/custom_password_text_field.dart';
@@ -114,6 +116,7 @@ class UserProfileController extends GetxController with StateMixin {
   EmployeeWorkHistory? employeeWorkHistory;
   UserLogHistory? userLogHistory;
   OrganizationInfoDetails? organizationInfo;
+  LeaveSummary? leaveSummary;
   final isLoading = false.obs;
   final isLoadingChangeEmail = false.obs;
   final isOrganizationChangeLoading = false.obs;
@@ -138,6 +141,12 @@ class UserProfileController extends GetxController with StateMixin {
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
   final LeaveRemoteDataSource _remoteDataSource = Get.find<LeaveRemoteDataSource>();
+  final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
+
+  List<GetLeaveRecordsForApp>? leaveRecordList;
+  RxInt offset = 0.obs;
+  int limit = 30;
+
 
 
 
@@ -171,16 +180,19 @@ class UserProfileController extends GetxController with StateMixin {
 
 
 
-
-  List<GetLeaveRecordsForApp>? leaveRecordList;
-  RxInt offset = 0.obs;
-  int limit = 30;
-
   getLeaveRecordsData() async {
     isViewLeaveRecordLoading(true);
     leaveRecordList = await _remoteDataSource.getLeaveRecordList(
         limit: limit, offset: offset.value);
 
+    isViewLeaveRecordLoading(false);
+  }
+
+
+
+  getLeaveSummary() async {
+    isViewLeaveRecordLoading(true);
+    leaveSummary = await _leaveDataSource.getLeaveSummary();
     isViewLeaveRecordLoading(false);
   }
 

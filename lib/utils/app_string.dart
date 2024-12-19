@@ -274,5 +274,6 @@ class AppString {
   static String textAllowanceBalance = "Leave allowance balance";
   static String textApplicationBalance = "Leave application balance";
   static String textMaxConsecutiveBalance = "Leave consecutive balance";
+  static String textCancelled = "Cancelled";
 
 }

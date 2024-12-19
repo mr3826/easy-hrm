@@ -237,6 +237,29 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
 ''';
 
 
+const getLeaveSummaryQuery = r'''
+query GET_ORGANIZATION_USER_SUMMARY($queryData: OrganizationUserLeaveStatusQuery!, $optionData: OptionDataType) {
+  getOrganizationUsersLeaveSummary(queryData: $queryData, optionData: $optionData) {
+    allocated
+    approved
+    available_number_of_applications
+    available_number_of_days
+    calculate_allowance_by
+    earned_days
+    is_earned
+    leave_status_id
+    leave_type_id
+    maximum_consecutive_days
+    name
+    org_user_id
+    pending_req
+    taken
+    type
+  }
+}
+''';
+
+
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
   getOrganizationUserHistory(org_user_id: $orgUserId) {
@@ -287,6 +310,7 @@ query GeTimelogAndLeaveAvailabilityForApp {
   }
 }
 ''';
+
 
 const updateUserProfileMutation = r'''
 mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
