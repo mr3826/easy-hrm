@@ -42,11 +42,10 @@ class LeaveAllowance extends GetView<UserProfileController> {
         
         
         
-        
-        
+
                   customSpacerHeight(height: 20),
         
-                  _buildAllowanceCounterLayout(),
+                Obx(()=>  _buildAllowanceCounterLayout(),),
         
                   customSpacerHeight(height: 12),
                  _alertMessageLayout(),
@@ -203,6 +202,8 @@ class LeaveAllowance extends GetView<UserProfileController> {
 
 
   Widget _buildAllowanceCounterNumberOfDays() { ///Number of days
+    print("employmentController.daysCount : ${employmentController.daysCount}");
+
     return Card(
       shape: roundedRectangleBorder.copyWith(
         side: BorderSide(
@@ -323,8 +324,7 @@ class LeaveAllowance extends GetView<UserProfileController> {
   }
 
   _buildAllowanceCounterLayout() {
-    String data ="No_of_applications";
-    if(data=="No_of_applications"){
+    if( Get.find<UserProfileController>().calculateAllowanceBy.value=="No_of_applications"){
       return _numberOfApplication();
     }else {
       return _numberOfDays();

@@ -172,7 +172,6 @@ query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
 // profile module
 
 
-
 const getUserProfileQuery = r'''
 query GetOrganizationUserDetails($orgUserId: UUID) {
   getOrganizationUserDetails(org_user_id: $orgUserId) {

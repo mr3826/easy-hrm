@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/modules/profile/controller/employment_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_layout.dart';
-import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
 import '../../../../../../leave/domain/leave_type.dart';
-import '../../../../../../leave/presentation/controller/apply_leave_controller.dart';
 
 
 class LeaveTypeDropDown extends StatefulWidget {
@@ -22,6 +22,17 @@ class LeaveTypeDropDown extends StatefulWidget {
 
 class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
   String? dropDownValue;
+  @override
+  void initState() {
+    super.initState();
+    // Get the controller instance
+    UserProfileController controller = Get.find<UserProfileController>();
+    // Set the default value if available, with null checks
+    dropDownValue = (controller.leaveTypeId.isNotEmpty)
+        ? controller.leaveTypeId
+        : null;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +44,7 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
       child: DropdownButton(
           value: dropDownValue,
           hint: Text(
-            Get.find<UserProfileController>().isSelectLeaveType.value,
+            AppString.text_select_option.tr,
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.hintColor,
                 fontSize: Dimensions.fontSizeDefault + 1),
@@ -41,10 +52,7 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
           dropdownColor: AppColor.cardColor,
           underline: const SizedBox.shrink(),
           isExpanded: true,
-          items: Get.find<UserProfileController>()
-              .leaveTypeDropdown
-              ?.getAvailableLeaveTypes!
-              .map((e) {
+          items: Get.find<UserProfileController>().leaveTypeDropdown?.getAvailableLeaveTypes!.map((e) {
             return DropdownMenuItem(
               value: e.leaveTypeId,
               child: SizedBox(
@@ -78,25 +86,41 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
           onChanged: (valueType) {
             setState(() {
               dropDownValue = valueType as String;
-              Get.find<UserProfileController>().isSelectLeaveType.value =
+              Get.find<UserProfileController>().leaveTypeId =
                   valueType;
             });
+
+
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
+
             Get.find<UserProfileController>()
                 .leaveTypeDropdown
                 ?.getAvailableLeaveTypes
                 ?.firstWhere((element) => element.leaveTypeId == valueType);
 
-            //
-            // Get.find<ApplyLeaveController>().numberOfLeaves.value =
-            //     getLeaveTypesDropdown?.availableLeave ?? "0";
-            // Get.find<ApplyLeaveController>().calculateAllowanceOfLeave.value =
-            //     getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
-            // Get.find<ApplyLeaveController>().leaveId = valueType!;
-            // Get.find<ApplyLeaveController>().isDocumentRequired.value =
-            //     getLeaveTypesDropdown?.attachDocumentRequired ?? false;
-            // Get.find<ApplyLeaveController>().isNoteRequired.value =
-            //     getLeaveTypesDropdown?.addNoteRequired ?? false;
+            Get.find<UserProfileController>().calculateAllowanceBy.value=getLeaveTypesDropdown?.calculateAllowanceBy??"";
+            Get.find<UserProfileController>().availableLeave.value=getLeaveTypesDropdown?.availableLeave??"";
+
+           // employmentController.daysCount
+
+            Get.find<EmploymentController>().daysCount.value=int.parse(getLeaveTypesDropdown?.availableLeave??"");
+
+
+            print('''
+            ${getLeaveTypesDropdown?.calculateAllowanceBy??""}
+            ${getLeaveTypesDropdown?.type??""}
+            ${getLeaveTypesDropdown?.name??""}  
+            
+              ${getLeaveTypesDropdown?.availableLeave??""}
+         
+            
+            
+            
+            
+            
+            ''');
+
+
 
 
           }),

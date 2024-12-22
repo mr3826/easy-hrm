@@ -54,7 +54,7 @@ class UserProfileController extends GetxController with StateMixin {
   void onInit() {
     getUserProfile();
     getUserLogHistory();
-   // getOrganizationInfo();
+    // getOrganizationInfo();
     startTimer();
     super.onInit();
   }
@@ -63,9 +63,11 @@ class UserProfileController extends GetxController with StateMixin {
   RxBool timerActive = false.obs;
   RxBool isOTPProvided = false.obs;
   String otpCode = "";
-  var isSelectLeaveType = AppString.text_select_on_option.tr.obs;
+  String isSelectLeaveType = "";
+  String leaveTypeId = "";
+  RxString calculateAllowanceBy = "".obs;
+  RxString availableLeave = "".obs;
   RxInt profileTabIndex = 0.obs;
-
 
   final NetworkClient _networkClient = Get.find<NetworkClient>();
 
@@ -127,7 +129,6 @@ class UserProfileController extends GetxController with StateMixin {
   final isViewLeaveSummaryLoading = false.obs;
   final isLeaveTypeLoading = false.obs;
 
-
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
   final resendOtpLoading = false.obs;
@@ -140,11 +141,12 @@ class UserProfileController extends GetxController with StateMixin {
   final passwordInputController = TextEditingController();
   final editEmployeeIDController = TextEditingController();
 
-
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
-  final LeaveRemoteDataSource _remoteDataSource = Get.find<LeaveRemoteDataSource>();
+  final LeaveRemoteDataSource _remoteDataSource =
+      Get.find<LeaveRemoteDataSource>();
   final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
-  final LeaveRemoteDataSource _leaveRemoteDataSource = Get.find<LeaveRemoteDataSource>();
+  final LeaveRemoteDataSource _leaveRemoteDataSource =
+      Get.find<LeaveRemoteDataSource>();
 
   List<GetLeaveRecordsForApp>? leaveRecordList;
   LeaveTypeDropdown? leaveTypeDropdown;
@@ -152,15 +154,11 @@ class UserProfileController extends GetxController with StateMixin {
   RxInt offset = 0.obs;
   int limit = 30;
 
-
-
-
   Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
     change(null, status: RxStatus.success());
   }
-
 
   Future<void> getUserLogHistory() async {
     change(null, status: RxStatus.loading());
@@ -176,14 +174,12 @@ class UserProfileController extends GetxController with StateMixin {
     isEmployeeInfoLoading(false);
   }
 
-
   Future<void> getOrganizationInfo() async {
     isViewOrganizationLoading(true);
-    organizationInfo = (await _profileDataSource.getOrganizationInfo()) ?? OrganizationInfoDetails();
+    organizationInfo = (await _profileDataSource.getOrganizationInfo()) ??
+        OrganizationInfoDetails();
     isViewOrganizationLoading(false);
   }
-
-
 
   getLeaveRecordsData() async {
     isViewLeaveRecordLoading(true);
@@ -192,8 +188,6 @@ class UserProfileController extends GetxController with StateMixin {
 
     isViewLeaveRecordLoading(false);
   }
-
-
 
   getLeaveSummary() async {
     isViewLeaveSummaryLoading(true);
@@ -204,11 +198,10 @@ class UserProfileController extends GetxController with StateMixin {
   getLeaveTypeDropdown() async {
     isLeaveTypeLoading(true);
     leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
+    leaveTypeId =
+        leaveTypeDropdown?.getAvailableLeaveTypes?.first.leaveTypeId ?? "";
     isLeaveTypeLoading(false);
   }
-
-
-
 
   Future<bool> getPasswordVerification({required String password}) async {
     bool validation = false;
@@ -281,8 +274,6 @@ class UserProfileController extends GetxController with StateMixin {
     }
     resendOtpLoading(false);
   }
-
-
 
   switchOrganization({required String orgId, required String email}) async {
     print("ordId: $orgId");

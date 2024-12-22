@@ -19,18 +19,17 @@ class LeaveRemoteDataSource {
 
   LeaveRemoteDataSource(this.networkClient);
 
-  Future<List<GetLeaveRecordsForApp>?> getLeaveRecordList(
-      {required int limit, required int offset}) async {
-
-    log(GetStorage().read(AppString.ORGANIZATION_USER_ID));
-    log(GetStorage().read(AppString.ORGANIZATION_ID));
-
+  Future<List<GetLeaveRecordsForApp>?> getLeaveRecordList({required int limit, required int offset}) async {
     try {
       final response = await networkClient.graphRequest(
         queryString: getLeaveRecordsDataQuery,
         variables: {
-          "optionData": {"limit": limit, "offset": offset}
-        },
+          "queryData": {
+            "assigned_to":GetStorage().read(AppString.ORGANIZATION_USER_ID),
+            "optionData": {"limit": limit, "offset": offset}
+          }
+        }
+
       );
 
       if (response.hasException) {

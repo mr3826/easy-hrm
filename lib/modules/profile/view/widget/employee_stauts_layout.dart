@@ -35,7 +35,8 @@ Widget employeeStatusLayout({BuildContext? context}) {
           child: GestureDetector(
             onTap: () {
               Get.find<UserProfileController>().getEmploymentInfo();
-              customAntButtonSheet(child: const DesignationLayout(), context: context!);
+              customAntButtonSheet(
+                  child: const DesignationLayout(), context: context!);
             },
             child: SizedBox(
               child: Card(
@@ -102,19 +103,21 @@ _employmentInfo() {
       .userDetails
       ?.getOrganizationUserDetails
       ?.employmentStatus;
-  return Wrap(
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       SizedBox(
-        height: 60,
+        height: 40,
         child: Text(
           employmentStatus?.name ?? "",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor,
               overflow: TextOverflow.ellipsis,
               fontSize: Dimensions.fontSizeMid),
-          maxLines: 2,
+          maxLines: 1,
         ),
       ),
+      customSpacerWidth(width: 4),
       Text(
         "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
         style: AppStyle.mid_large_text.copyWith(
@@ -131,17 +134,18 @@ _designationInfo() {
       ?.getOrganizationUserDetails
       ?.designation;
 
-  return Wrap(
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       SizedBox(
-        height: 60,
+        height: 40,
         child: Text(
           designation?.name ?? "",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor,
               overflow: TextOverflow.ellipsis,
               fontSize: Dimensions.fontSizeMid),
-          maxLines: 2,
+          maxLines: 1,
         ),
       ),
       Text(
