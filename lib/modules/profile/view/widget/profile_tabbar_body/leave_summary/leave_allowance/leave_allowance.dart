@@ -68,7 +68,7 @@ class LeaveAllowance extends GetView<UserProfileController> {
     return Card(
       elevation: 0,
       shape: roundedRectangleBorder,
-      color: AppColor.pendingColor.withOpacity(0.08),
+      color: AppColor.pendingColor.withOpacity(0.1),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -202,8 +202,6 @@ class LeaveAllowance extends GetView<UserProfileController> {
 
 
   Widget _buildAllowanceCounterNumberOfDays() { ///Number of days
-    print("employmentController.daysCount : ${employmentController.daysCount}");
-
     return Card(
       shape: roundedRectangleBorder.copyWith(
         side: BorderSide(
@@ -324,7 +322,7 @@ class LeaveAllowance extends GetView<UserProfileController> {
   }
 
   _buildAllowanceCounterLayout() {
-    if( Get.find<UserProfileController>().calculateAllowanceBy.value=="No_of_applications"){
+    if( Get.find<UserProfileController>().calculateAllowanceBy.value=="no_of_application"){
       return _numberOfApplication();
     }else {
       return _numberOfDays();

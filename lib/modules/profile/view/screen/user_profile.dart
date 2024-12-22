@@ -192,9 +192,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                     controller.getLeaveRecordsData();
                   }
                 } else if (controller.profileTabIndex.value == 2) {
-                  if (controller
-                          .leaveSummary?.getOrganizationUsersLeaveSummary ==
-                      null) {
+                  if (controller.leaveSummary?.getOrganizationUsersLeaveSummary == null) {
                     controller.getLeaveSummary();
                   }
                 }

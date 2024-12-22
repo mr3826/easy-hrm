@@ -12,7 +12,6 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
 import '../../../../../../leave/domain/leave_type.dart';
 
-
 class LeaveTypeDropDown extends StatefulWidget {
   const LeaveTypeDropDown({super.key});
 
@@ -28,11 +27,9 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
     // Get the controller instance
     UserProfileController controller = Get.find<UserProfileController>();
     // Set the default value if available, with null checks
-    dropDownValue = (controller.leaveTypeId.isNotEmpty)
-        ? controller.leaveTypeId
-        : null;
+    dropDownValue =
+        (controller.leaveTypeId.isNotEmpty) ? controller.leaveTypeId : null;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,35 +47,49 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
                 fontSize: Dimensions.fontSizeDefault + 1),
           ),
           dropdownColor: AppColor.cardColor,
+          icon: const SizedBox.shrink(),
           underline: const SizedBox.shrink(),
           isExpanded: true,
-          items: Get.find<UserProfileController>().leaveTypeDropdown?.getAvailableLeaveTypes!.map((e) {
+          items: Get.find<UserProfileController>()
+              .leaveTypeDropdown
+              ?.getAvailableLeaveTypes!
+              .map((e) {
             return DropdownMenuItem(
               value: e.leaveTypeId,
               child: SizedBox(
                 width: double.infinity,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    getIconAccordingToLeaveType(e.name),
-                    customSpacerWidth(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            e.name.toString(),
-                            style: AppStyle.normal_text_grey.copyWith(color: Colors.black),
-                          ),
-                          Text(
-                            e.type.toString(),
-                            style:  AppStyle.normal_text_grey.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeSmall),
-
-                          ),
-                        ],
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      customSpacerWidth(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              e.name.toString(),
+                              style: AppStyle.normal_text_grey
+                                  .copyWith(color: Colors.black),
+                            ),
+                            Text(
+                              e.type.toString(),
+                              style: AppStyle.normal_text_grey.copyWith(
+                                  color: AppColor.hintColor,
+                                  fontSize: Dimensions.fontSizeSmall),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      if (e.leaveTypeId ==
+                          Get.find<UserProfileController>().leaveTypeId)
+                        const Icon(
+                          Icons.done,
+                          color: AppColor.secondaryColor,
+                        ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -86,32 +97,31 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
           onChanged: (valueType) {
             setState(() {
               dropDownValue = valueType as String;
-              Get.find<UserProfileController>().leaveTypeId =
-                  valueType;
+              Get.find<UserProfileController>().leaveTypeId = valueType;
             });
 
-
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
+                Get.find<UserProfileController>()
+                    .leaveTypeDropdown
+                    ?.getAvailableLeaveTypes
+                    ?.firstWhere((element) => element.leaveTypeId == valueType);
 
-            Get.find<UserProfileController>()
-                .leaveTypeDropdown
-                ?.getAvailableLeaveTypes
-                ?.firstWhere((element) => element.leaveTypeId == valueType);
+            Get.find<UserProfileController>().calculateAllowanceBy.value =
+                getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
+            Get.find<UserProfileController>().availableLeave.value =
+                getLeaveTypesDropdown?.availableLeave ?? "";
 
-            Get.find<UserProfileController>().calculateAllowanceBy.value=getLeaveTypesDropdown?.calculateAllowanceBy??"";
-            Get.find<UserProfileController>().availableLeave.value=getLeaveTypesDropdown?.availableLeave??"";
+            // employmentController.daysCount
 
-           // employmentController.daysCount
-
-            Get.find<EmploymentController>().daysCount.value=int.parse(getLeaveTypesDropdown?.availableLeave??"");
-
+            Get.find<EmploymentController>().daysCount.value =
+                int.parse(getLeaveTypesDropdown?.availableLeave ?? "");
 
             print('''
-            ${getLeaveTypesDropdown?.calculateAllowanceBy??""}
-            ${getLeaveTypesDropdown?.type??""}
-            ${getLeaveTypesDropdown?.name??""}  
+            ${getLeaveTypesDropdown?.calculateAllowanceBy ?? ""}
+            ${getLeaveTypesDropdown?.type ?? ""}
+            ${getLeaveTypesDropdown?.name ?? ""}  
             
-              ${getLeaveTypesDropdown?.availableLeave??""}
+              ${getLeaveTypesDropdown?.availableLeave ?? ""}
          
             
             
@@ -119,10 +129,6 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
             
             
             ''');
-
-
-
-
           }),
     );
   }

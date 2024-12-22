@@ -258,6 +258,15 @@ query GET_ORGANIZATION_USER_SUMMARY($queryData: OrganizationUserLeaveStatusQuery
 }
 ''';
 
+const updateOrgUserLeaveAvailabilityQuery = r'''
+mutation UPDATE_ORG_USER_LEAVE_AVAILABILITY($inputData: OrganizationUserLeaveAvailabilityInput) {
+  updateOrgUserLeaveAvailability(inputData: $inputData) {
+    leave_type_id
+    org_user_id
+    }
+}
+''';
+
 
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {

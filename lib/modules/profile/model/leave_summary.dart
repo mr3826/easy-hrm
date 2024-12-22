@@ -26,16 +26,16 @@ class LeaveSummary {
 }
 
 class GetOrganizationUsersLeaveSummary {
-  int? allocated;
+  dynamic allocated;
   String? approved;
-  int? availableNumberOfApplications;
+  dynamic availableNumberOfApplications;
   String? availableNumberOfDays;
   String? calculateAllowanceBy;
   String? earnedDays;
   bool? isEarned;
   String? leaveStatusId;
   String? leaveTypeId;
-  int? maximumConsecutiveDays;
+  dynamic maximumConsecutiveDays;
   String? name;
   dynamic orgUserId;
   String? pendingReq;

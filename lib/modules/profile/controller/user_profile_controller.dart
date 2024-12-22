@@ -203,6 +203,44 @@ class UserProfileController extends GetxController with StateMixin {
     isLeaveTypeLoading(false);
   }
 
+
+  getLeaveTypeDropdown() async {
+
+    // Preparing the input data for the GraphQL mutation
+    final Map<String, dynamic> inputData = {
+      "description": leaveNoteController.text,
+      "end_date":
+      DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
+          .toUtc()
+          .toString(),
+      "start_date":
+      DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)
+          .toUtc()
+          .toString(),
+      "status": "pending",
+      "leave_type_id": leaveId,
+      "files": _prepareFileData()
+    };
+    isLeaveTypeLoading(true);
+    leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
+    leaveTypeId =
+        leaveTypeDropdown?.getAvailableLeaveTypes?.first.leaveTypeId ?? "";
+    isLeaveTypeLoading(false);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Future<bool> getPasswordVerification({required String password}) async {
     bool validation = false;
     isLoading(true);
