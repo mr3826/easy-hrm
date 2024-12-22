@@ -25,8 +25,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
         );
       }
       if (controller.leaveSummary?.getOrganizationUsersLeaveSummary == null ||
-              controller
-                  .leaveSummary!.getOrganizationUsersLeaveSummary!.isEmpty) {
+          controller.leaveSummary!.getOrganizationUsersLeaveSummary!.isEmpty) {
         return Center(
             child: Text(
           "No leave summary!",
@@ -70,15 +69,13 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
                           dynamicText2:
                               leaveSummary?.earnedDays.toString() ?? "",
                           staticText3: "Taken: ",
-                          dynamicText3: leaveSummary?.taken??"0"),
+                          dynamicText3: leaveSummary?.taken ?? "0"),
                       customSpacerHeight(height: 8),
                       _buildLeaveDetailsRow(
                           staticText1: "Approved: ",
                           dynamicText1: leaveSummary?.approved.toString() ?? "",
                           staticText2: "Available: ",
-                          dynamicText2:
-                              leaveSummary?.availableNumberOfDays.toString() ??
-                                  ""),
+                          dynamicText2: _getAvailable(leaveSummary)),
                       customSpacerHeight(height: 8),
                       _buildPendingRequest(
                           leaveSummary ?? GetOrganizationUsersLeaveSummary()),
@@ -167,7 +164,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
-            leaveSummary.pendingReq.toString() ?? "",
+            leaveSummary.pendingReq.toString(),
             style: AppStyle.normal_text.copyWith(color: AppColor.pendingColor),
           ),
         ),
@@ -200,12 +197,27 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
     );
   }
 
-
   String _checkNullableValue(String? value) {
-    if(value==null|| value=="null"){
+    if (value == null || value == "null") {
       return "0";
     }
     return value;
+  }
+
+  _getAvailable(GetOrganizationUsersLeaveSummary? leaveSummary) {
+    if (leaveSummary == null) return null;
+
+    if (leaveSummary.availableNumberOfDays == "no_of_application") {
+      final availableDays =
+          double.tryParse(leaveSummary.availableNumberOfDays ?? "0") ?? 0;
+      final maxConsecutiveDays =
+          double.tryParse(leaveSummary.maximumConsecutiveDays.toString()) ?? 0;
+      return availableDays * maxConsecutiveDays;
+    } else {
+      return leaveSummary.isEarned == true
+          ? leaveSummary.earnedDays
+          : leaveSummary.availableNumberOfDays ?? "0";
+    }
   }
 }
 

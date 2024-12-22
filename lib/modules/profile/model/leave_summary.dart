@@ -37,7 +37,7 @@ class GetOrganizationUsersLeaveSummary {
   String? leaveTypeId;
   int? maximumConsecutiveDays;
   String? name;
-  Null? orgUserId;
+  dynamic orgUserId;
   String? pendingReq;
   String? taken;
   String? type;
