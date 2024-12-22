@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/modules/profile/controller/employment_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -9,7 +8,6 @@ import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_layout.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../../../../utils/images.dart';
 import '../../../../../../leave/domain/leave_type.dart';
 
 class LeaveTypeDropDown extends StatefulWidget {
@@ -110,49 +108,9 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
                 getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
             Get.find<UserProfileController>().availableLeave.value =
                 getLeaveTypesDropdown?.availableLeave ?? "";
-
-            // employmentController.daysCount
-
-            Get.find<EmploymentController>().daysCount.value =
-                int.parse(getLeaveTypesDropdown?.availableLeave ?? "");
-
-            print('''
-            ${getLeaveTypesDropdown?.calculateAllowanceBy ?? ""}
-            ${getLeaveTypesDropdown?.type ?? ""}
-            ${getLeaveTypesDropdown?.name ?? ""}  
-            
-              ${getLeaveTypesDropdown?.availableLeave ?? ""}
-         
-            
-            
-            
-            
-            
-            ''');
+            Get.find<UserProfileController>().leaveStatusId = getLeaveTypesDropdown?.leaveStatusId ?? "";
+            Get.find<EmploymentController>().daysCount.value = int.parse(getLeaveTypesDropdown?.availableLeave ?? "");
           }),
     );
-  }
-}
-
-getIconAccordingToLeaveType(String? leaveName) {
-  switch (leaveName) {
-    case "Vacationing":
-      return customSvgImage(imageUrl: Images.leaveImage7);
-    case "Paternity":
-      return customSvgImage(imageUrl: Images.leaveImage6);
-    case "Maternity":
-      return customSvgImage(imageUrl: Images.leaveImage5);
-    case "School closed":
-      return customSvgImage(imageUrl: Images.leaveImage4);
-    case "Children-minder illness":
-      return customSvgImage(imageUrl: Images.leaveImage3);
-    case "Children illness":
-      return customSvgImage(imageUrl: Images.leaveImage2);
-    case "Doctor declaration":
-      return customSvgImage(imageUrl: Images.leaveImage1);
-    case "Self declaration":
-      return customSvgImage(imageUrl: Images.leaveImage);
-    default:
-      return customSvgImage(imageUrl: Images.leaveImage8);
   }
 }

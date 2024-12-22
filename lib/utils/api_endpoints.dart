@@ -164,6 +164,7 @@ query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
     is_default
     is_enable
     leave_type_id
+    leave_status_id
     name
     type
   }

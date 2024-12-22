@@ -35,33 +35,20 @@ class LeaveDataSource {
 
 
 
-  Future<bool> applyLeave(Map<String, dynamic> inputData) async {
+  Future<bool> updateORGLeaveAvailability(Map<String, dynamic> inputData) async {
     try {
-      final response = await networkClient
-          .graphRequest(queryString: updateOrgUserLeaveAvailabilityQuery, variables:inputData
-
-      // {
-      //   "inputData": {
-      //     "leave_status_id": "61acc2da-670c-4d0f-9c2b-e284105bc5cc",
-      //     "available_number_of_days": 1,
-      //     "available_number_of_applications": "",
-      //     "maximum_consecutive_days": "",
-      //   }
-      // }
-      //
-
-      );
+      final response = await networkClient.graphRequest(queryString: updateOrgUserLeaveAvailabilityQuery, variables:inputData);
 
       if (response.hasException) {
         log(response.exception.toString());
         ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "applyLeave");
+            exception: response.exception!, methodName: "updateORGLeaveAvailability");
         return false;
       }
 
       return true;
     } catch (e) {
-      log('Error in applyLeave: $e');
+      log('Error in updateORGLeaveAvailability: $e');
       return true;
     }
   }

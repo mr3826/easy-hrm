@@ -135,7 +135,7 @@ class ProfileScreen extends GetView<UserProfileController> {
               _buildProfileTabBar([
                 const BuildProfileOverView(),
                 const Expanded(child: BuildLeaveRecord()),
-                const Expanded(child: BuildProfileLeaveSummary())
+                 const Expanded(child: BuildProfileLeaveSummary())
               ])
             else
               const BuildProfileOverView()

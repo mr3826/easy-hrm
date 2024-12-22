@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -13,18 +12,19 @@ import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../controller/employment_controller.dart';
 import 'leave_type.dart';
 
-
 class LeaveAllowance extends GetView<UserProfileController> {
   LeaveAllowance({super.key});
 
-  final EmploymentController employmentController = Get.find<EmploymentController>();
+  final EmploymentController employmentController =
+      Get.find<EmploymentController>();
 
   @override
   Widget build(BuildContext context) {
-    return Obx((){
-
-      if(controller.isLeaveTypeLoading.isTrue){
-        return const LoadingIndicator(radius: 16,);
+    return Obx(() {
+      if (controller.isLeaveTypeLoading.isTrue) {
+        return const LoadingIndicator(
+          radius: 16,
+        );
       }
 
       return SingleChildScrollView(
@@ -37,18 +37,16 @@ class LeaveAllowance extends GetView<UserProfileController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-        
                   const LeaveTypeDropDown(),
-        
-        
-        
 
                   customSpacerHeight(height: 20),
-        
-                Obx(()=>  _buildAllowanceCounterLayout(),),
-        
+
+                  Obx(
+                    () => _buildAllowanceCounterLayout(),
+                  ),
+
                   customSpacerHeight(height: 12),
-                 _alertMessageLayout(),
+                  _alertMessageLayout(),
 
                   customSpacerHeight(height: 50),
 
@@ -60,7 +58,6 @@ class LeaveAllowance extends GetView<UserProfileController> {
           ],
         ),
       );
-
     });
   }
 
@@ -119,7 +116,7 @@ class LeaveAllowance extends GetView<UserProfileController> {
   // Text for the Allowance Balance
   Widget _buildAllowanceBalanceText(text) {
     return Text(
-     text,
+      text,
       style: AppStyle.mid_large_text.copyWith(
         color: AppColor.normalTextColor,
         fontSize: Dimensions.fontSizeDefault,
@@ -129,11 +126,9 @@ class LeaveAllowance extends GetView<UserProfileController> {
     );
   }
 
-
-
-
-    // Counter for Allowance using increment and decrement
-  Widget _applicationBalance() { ///Number of application
+  // Counter for Allowance using increment and decrement
+  Widget _applicationBalance() {
+    ///Number of application
     return Card(
       shape: roundedRectangleBorder.copyWith(
         side: BorderSide(
@@ -147,7 +142,8 @@ class LeaveAllowance extends GetView<UserProfileController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildIconButton(Icons.remove, employmentController.applicationBalanceDecrement),
+            _buildIconButton(
+                Icons.remove, employmentController.applicationBalanceDecrement),
             const SizedBox(width: 20),
             Obx(
               () => Text(
@@ -158,14 +154,18 @@ class LeaveAllowance extends GetView<UserProfileController> {
               ),
             ),
             const SizedBox(width: 20),
-            _buildIconButton(Icons.add, employmentController.applicationBalanceIncrement),
+            _buildIconButton(
+                Icons.add, employmentController.applicationBalanceIncrement),
           ],
         ),
       ),
     );
-  }///Number of application
+  }
 
-  Widget _maxConsecutiveDays() { ///Number of application
+  ///Number of application
+
+  Widget _maxConsecutiveDays() {
+    ///Number of application
     return Card(
       shape: roundedRectangleBorder.copyWith(
         side: BorderSide(
@@ -179,7 +179,8 @@ class LeaveAllowance extends GetView<UserProfileController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildIconButton(Icons.remove, employmentController.applicationMaxDayDecrement),
+            _buildIconButton(
+                Icons.remove, employmentController.applicationMaxDayDecrement),
             const SizedBox(width: 20),
             Obx(
               () => Text(
@@ -190,18 +191,16 @@ class LeaveAllowance extends GetView<UserProfileController> {
               ),
             ),
             const SizedBox(width: 20),
-            _buildIconButton(Icons.add, employmentController.applicationMaxDayIncrement),
+            _buildIconButton(
+                Icons.add, employmentController.applicationMaxDayIncrement),
           ],
         ),
       ),
     );
   }
 
-
-
-
-
-  Widget _buildAllowanceCounterNumberOfDays() { ///Number of days
+  Widget _buildAllowanceCounterNumberOfDays() {
+    ///Number of days
     return Card(
       shape: roundedRectangleBorder.copyWith(
         side: BorderSide(
@@ -232,20 +231,6 @@ class LeaveAllowance extends GetView<UserProfileController> {
       ),
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // Reusable method for IconButton
   Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
@@ -310,7 +295,20 @@ class LeaveAllowance extends GetView<UserProfileController> {
                     ),
                   ],
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Get.find<UserProfileController>().updateORGLeaveAvailability(
+                      maximumConsecutiveDays: Get.find<EmploymentController>()
+                          .applicationMaxDaysCount
+                          .value,
+                      numberOfApplication: Get.find<EmploymentController>()
+                          .applicationBalanceCount
+                          .value,
+                      numberOfDays:
+                          Get.find<EmploymentController>().daysCount.value,
+                      calculateAllowanceBy: Get.find<UserProfileController>()
+                          .calculateAllowanceBy
+                          .value);
+                },
                 buttonColor: AppColor.primaryColor,
                 borderColor: AppColor.primaryColor,
               ),
@@ -322,38 +320,38 @@ class LeaveAllowance extends GetView<UserProfileController> {
   }
 
   _buildAllowanceCounterLayout() {
-    if( Get.find<UserProfileController>().calculateAllowanceBy.value=="no_of_application"){
+    print(
+        "test : ${Get.find<UserProfileController>().calculateAllowanceBy.value}");
+    if (Get.find<UserProfileController>().calculateAllowanceBy.value ==
+        "no_of_application") {
       return _numberOfApplication();
-    }else {
+    } else {
       return _numberOfDays();
     }
   }
 
-
-  _numberOfDays(){
+  _numberOfDays() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildAllowanceBalanceText( AppString.textAllowanceBalance.tr),
+        _buildAllowanceBalanceText(AppString.textAllowanceBalance.tr),
         customSpacerHeight(height: 4),
         _buildAllowanceCounterNumberOfDays(),
       ],
     );
   }
-  _numberOfApplication(){
+
+  _numberOfApplication() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildAllowanceBalanceText( AppString.textApplicationBalance.tr),
+        _buildAllowanceBalanceText(AppString.textApplicationBalance.tr),
         customSpacerHeight(height: 4),
         _applicationBalance(),
         customSpacerHeight(height: 20),
-
-        _buildAllowanceBalanceText( AppString.textMaxConsecutiveBalance.tr),
+        _buildAllowanceBalanceText(AppString.textMaxConsecutiveBalance.tr),
         customSpacerHeight(height: 4),
-
         _maxConsecutiveDays(),
-
       ],
     );
   }

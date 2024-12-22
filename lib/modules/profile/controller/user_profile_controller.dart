@@ -65,6 +65,7 @@ class UserProfileController extends GetxController with StateMixin {
   String otpCode = "";
   String isSelectLeaveType = "";
   String leaveTypeId = "";
+  String leaveStatusId = "";
   RxString calculateAllowanceBy = "".obs;
   RxString availableLeave = "".obs;
   RxInt profileTabIndex = 0.obs;
@@ -198,45 +199,49 @@ class UserProfileController extends GetxController with StateMixin {
   getLeaveTypeDropdown() async {
     isLeaveTypeLoading(true);
     leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
-    leaveTypeId =
-        leaveTypeDropdown?.getAvailableLeaveTypes?.first.leaveTypeId ?? "";
     isLeaveTypeLoading(false);
   }
 
 
-  getLeaveTypeDropdown() async {
 
-    // Preparing the input data for the GraphQL mutation
-    final Map<String, dynamic> inputData = {
-      "description": leaveNoteController.text,
-      "end_date":
-      DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
-          .toUtc()
-          .toString(),
-      "start_date":
-      DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)
-          .toUtc()
-          .toString(),
-      "status": "pending",
-      "leave_type_id": leaveId,
-      "files": _prepareFileData()
+  Future<void> updateORGLeaveAvailability({
+    int? numberOfDays,
+    int? numberOfApplication,
+    int? maximumConsecutiveDays,
+    String? calculateAllowanceBy,
+  }) async {
+    // Prepare input data based on the allowance calculation type
+    Map<String, dynamic> inputData = {
+      "inputData": {
+        "leave_status_id": leaveStatusId,
+        if (calculateAllowanceBy == "no_of_application") ...{
+          "available_number_of_applications": numberOfApplication,
+          "maximum_consecutive_days": maximumConsecutiveDays,
+        } else ...{
+          "available_number_of_days": numberOfDays,
+        },
+      }
     };
+
     isLeaveTypeLoading(true);
-    leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
-    leaveTypeId =
-        leaveTypeDropdown?.getAvailableLeaveTypes?.first.leaveTypeId ?? "";
-    isLeaveTypeLoading(false);
+    try {
+      // Call the data source with the prepared input data
+      bool response = await _leaveDataSource.updateORGLeaveAvailability(inputData);
+      // Handle response
+      if (response) {
+        showSuccessMessage(message: "Leave allowance has been added successfully!");
+        Get.back(); // Close current screen
+        Get.back(canPop: false); // Close another screen
+        getLeaveSummary(); // Refresh leave summary
+      } else {
+        showErrorMessage(message: "Failed to update leave allowance. Please try again.");
+      }
+    } catch (e) {
+      showErrorMessage(message: "An error occurred: ${e.toString()}");
+    } finally {
+      isLeaveTypeLoading(false);
+    }
   }
-
-
-
-
-
-
-
-
-
-
 
 
 

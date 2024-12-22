@@ -4,7 +4,6 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/leave_summary.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../../utils/app_color.dart';
@@ -12,6 +11,7 @@ import '../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../controller/employment_controller.dart';
 import 'leave_allowance/leave_allowance.dart';
 
 class BuildProfileLeaveSummary extends GetView<UserProfileController> {
@@ -43,42 +43,37 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
             GetOrganizationUsersLeaveSummary? leaveSummary = controller
                 .leaveSummary?.getOrganizationUsersLeaveSummary?[index];
 
-            return SizedBox(
-              height: AppLayout.getHeight(175),
-              width: double.infinity,
-              child: Card(
-                elevation: 0,
-                color: AppColor.leaveRecordCardColor,
-                shape: roundedRectangleBorder.copyWith(
-                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeader(leaveSummary ?? GetOrganizationUsersLeaveSummary()),
-                      customSpacerHeight(height: 12),
-                      _buildLeaveDetailsRow(
-                          staticText1: "Allowance: ",
-                          dynamicText1:
-                              leaveSummary?.allocated.toString() ?? "",
-                          staticText2: "Earned: ",
-                          dynamicText2:
-                              leaveSummary?.earnedDays.toString() ?? "",
-                          staticText3: "Taken: ",
-                          dynamicText3: leaveSummary?.taken ?? "0"),
-                      customSpacerHeight(height: 8),
-                      _buildLeaveDetailsRow(
-                          staticText1: "Approved: ",
-                          dynamicText1: leaveSummary?.approved.toString() ?? "",
-                          staticText2: "Available: ",
-                          dynamicText2: _getAvailable(leaveSummary)),
-                      customSpacerHeight(height: 8),
-                      _buildPendingRequest(leaveSummary ?? GetOrganizationUsersLeaveSummary()),
-                    ],
-                  ),
+            return Card(
+              elevation: 0,
+              color: AppColor.leaveRecordCardColor,
+              shape: roundedRectangleBorder.copyWith(
+                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 12.0),
+                child: Wrap(
+                  children: [
+                    _buildHeader(
+                        leaveSummary ?? GetOrganizationUsersLeaveSummary()),
+                    customSpacerHeight(height: 12),
+                    _buildLeaveDetailsRow(
+                        staticText1: "Allowance: ",
+                        dynamicText1: _getAllowance(leaveSummary),
+                        staticText2: "Earned: ",
+                        dynamicText2: _getEarnedDays(leaveSummary),
+                        staticText3: "Taken: ",
+                        dynamicText3: leaveSummary?.taken ?? "0"),
+                    customSpacerHeight(height: 8),
+                    _buildLeaveDetailsRow(
+                        staticText1: "Approved: ",
+                        dynamicText1: leaveSummary?.approved.toString() ?? "",
+                        staticText2: "Available: ",
+                        dynamicText2: _getAvailable(leaveSummary)),
+                    customSpacerHeight(height: 8),
+                    _buildPendingRequest(
+                        leaveSummary ?? GetOrganizationUsersLeaveSummary()),
+                  ],
                 ),
               ),
             );
@@ -117,7 +112,14 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
         ),
         IconButton(
           onPressed: () {
-            showAddAllowance();
+            Get.find<UserProfileController>().leaveTypeId =
+                leaveSummary.leaveTypeId ?? "";
+            Get.find<UserProfileController>().leaveStatusId =
+                leaveSummary.leaveStatusId ?? "";
+            Get.find<UserProfileController>().calculateAllowanceBy.value =
+                leaveSummary.calculateAllowanceBy ?? "";
+            showAddAllowance(
+                headerText: leaveSummary.name, subText: leaveSummary.type);
           },
           icon: Icon(
             Icons.more_horiz,
@@ -137,7 +139,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
       String? dynamicText2,
       String? staticText3,
       String? dynamicText3}) {
-    return Row(
+    return Wrap(
       children: [
         _buildSubText(label: staticText1, value: dynamicText1),
         if (staticText2 != null) ...[
@@ -172,26 +174,29 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
 
   // Build a subtext with a label and either dynamic text or a custom widget
   Widget _buildSubText({required String label, String? value, Widget? widget}) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.hintColor,
-            fontSize: Dimensions.fontSizeSmall + 1,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-        widget ??
-            Text(
-              _checkNullableValue(value),
-              style: AppStyle.mid_large_text.copyWith(
-                color: AppColor.normalTextColor.withOpacity(0.7),
-                fontSize: Dimensions.fontSizeSmall + 1,
-              ),
-              overflow: TextOverflow.ellipsis,
+    return Padding(
+      padding: const EdgeInsets.only(top: 2.0),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.hintColor,
+              fontSize: Dimensions.fontSizeSmall + 1,
             ),
-      ],
+            overflow: TextOverflow.ellipsis,
+          ),
+          widget ??
+              Text(
+                _checkNullableValue(value),
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor.withOpacity(0.7),
+                    fontSize: Dimensions.fontSizeSmall + 1,
+                    overflow: TextOverflow.ellipsis),
+                overflow: TextOverflow.ellipsis,
+              ),
+        ],
+      ),
     );
   }
 
@@ -202,36 +207,70 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
     return value;
   }
 
-  _getAvailable(GetOrganizationUsersLeaveSummary? leaveSummary) {
-    if (leaveSummary == null) return null;
+  String _getAllowance(GetOrganizationUsersLeaveSummary? leaveSummary) {
+    if (leaveSummary == null) return "-";
 
-    if (leaveSummary.availableNumberOfDays == "no_of_application") {
-      final availableDays =
-          double.tryParse(leaveSummary.availableNumberOfDays ?? "0") ?? 0;
-      final maxConsecutiveDays =
-          double.tryParse(leaveSummary.maximumConsecutiveDays.toString()) ?? 0;
-      return availableDays * maxConsecutiveDays;
+    if (leaveSummary.calculateAllowanceBy == "no_of_application") {
+      return "${_roundToTwoDecimals(leaveSummary.allocated)} x ${_roundToTwoDecimals(leaveSummary.maximumConsecutiveDays)}";
     } else {
-      return leaveSummary.isEarned == true
-          ? leaveSummary.earnedDays
-          : leaveSummary.availableNumberOfDays ?? "0";
+      return _roundToTwoDecimals(leaveSummary.allocated);
+    }
+  }
+
+  _roundToTwoDecimals(dynamic input) {
+    if (input == null) return "Undefined";
+    // Try converting the input to a double
+    double value = 0.0;
+    // Check if the input is already a number or can be parsed as a number
+    if (input is num) {
+      value = input.toDouble(); // If input is already a num (int or double), convert to double
+    } else if (input is String) {
+      value = double.tryParse(input) ?? 0.0; // Try parsing a string as a double, default to 0.0 if failed
+    }
+    // Round the value to two decimal places and return it
+    return double.parse(value.toStringAsFixed(2)).toString();
+  }
+
+  String _getEarnedDays(GetOrganizationUsersLeaveSummary? leaveSummary) {
+    if (leaveSummary == null) return "-";
+    if (leaveSummary.calculateAllowanceBy == "no_of_application") {
+      return "${_roundToTwoDecimals(leaveSummary.earnedDays)} x ${_roundToTwoDecimals(leaveSummary.maximumConsecutiveDays)}";
+    } else if (leaveSummary.calculateAllowanceBy == "no_of_days") {
+      return _roundToTwoDecimals(leaveSummary.earnedDays);
+    } else {
+      return _roundToTwoDecimals(leaveSummary.earnedDays);
+    }
+  }
+
+  _getAvailable(GetOrganizationUsersLeaveSummary? leaveSummary) {
+    if (leaveSummary == null) return "-";
+    if (leaveSummary.calculateAllowanceBy == "no_of_application") {
+      return "${_roundToTwoDecimals(leaveSummary.availableNumberOfApplications) ?? "Undefined"} x ${_roundToTwoDecimals(leaveSummary.maximumConsecutiveDays)}";
+    } else if (leaveSummary.isEarned == true) {
+      return _roundToTwoDecimals(leaveSummary.earnedDays);
+    } else {
+      return _roundToTwoDecimals(leaveSummary.availableNumberOfDays);
     }
   }
 }
 
-void showAddAllowance() {
+void showAddAllowance({String? headerText, String? subText}) {
   customButtonSheet(
     context: Get.context!,
     child: Column(
       children: [
-        _buildHeader(),
+        _buildHeader(headerText ?? "", subText ?? ""),
         customSpacerHeight(height: 20),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: GestureDetector(
             onTap: () {
               Get.find<UserProfileController>().getLeaveTypeDropdown();
-
+              Get.find<EmploymentController>().applicationMaxDaysCount.value =
+                  0;
+              Get.find<EmploymentController>().applicationBalanceCount.value =
+                  0;
+              Get.find<EmploymentController>().daysCount.value = 0;
               customButtonSheet(
                 context: Get.context!,
                 child: LeaveAllowance(),
@@ -260,7 +299,7 @@ void showAddAllowance() {
   );
 }
 
-Widget _buildHeader() {
+Widget _buildHeader(String headerText, String subText) {
   return Container(
     decoration: const BoxDecoration(
         color: AppColor.leaveRecordCardColor,
@@ -272,7 +311,7 @@ Widget _buildHeader() {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Self Declaration",
+            headerText,
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor,
               fontWeight: FontWeight.w600,
@@ -280,7 +319,7 @@ Widget _buildHeader() {
             ),
           ),
           Text(
-            "Sick Leave",
+            subText,
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor.withOpacity(0.5),
               fontSize: Dimensions.fontSizeSmall + 1,
