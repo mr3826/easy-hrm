@@ -223,9 +223,11 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
     double value = 0.0;
     // Check if the input is already a number or can be parsed as a number
     if (input is num) {
-      value = input.toDouble(); // If input is already a num (int or double), convert to double
+      value = input
+          .toDouble(); // If input is already a num (int or double), convert to double
     } else if (input is String) {
-      value = double.tryParse(input) ?? 0.0; // Try parsing a string as a double, default to 0.0 if failed
+      value = double.tryParse(input) ??
+          0.0; // Try parsing a string as a double, default to 0.0 if failed
     }
     // Round the value to two decimal places and return it
     return double.parse(value.toStringAsFixed(2)).toString();
