@@ -58,8 +58,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildHeader(
-                          leaveSummary ?? GetOrganizationUsersLeaveSummary()),
+                      _buildHeader(leaveSummary ?? GetOrganizationUsersLeaveSummary()),
                       customSpacerHeight(height: 12),
                       _buildLeaveDetailsRow(
                           staticText1: "Allowance: ",
@@ -77,8 +76,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
                           staticText2: "Available: ",
                           dynamicText2: _getAvailable(leaveSummary)),
                       customSpacerHeight(height: 8),
-                      _buildPendingRequest(
-                          leaveSummary ?? GetOrganizationUsersLeaveSummary()),
+                      _buildPendingRequest(leaveSummary ?? GetOrganizationUsersLeaveSummary()),
                     ],
                   ),
                 ),
@@ -232,6 +230,8 @@ void showAddAllowance() {
           padding: const EdgeInsets.all(20.0),
           child: GestureDetector(
             onTap: () {
+              Get.find<UserProfileController>().getLeaveTypeDropdown();
+
               customButtonSheet(
                 context: Get.context!,
                 child: LeaveAllowance(),

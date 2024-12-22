@@ -40,6 +40,7 @@ import '../../auth/domain/signin_res.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../leave/data/remote/leave_remote_data_source.dart';
 import '../../leave/domain/leave_record_response.dart';
+import '../../leave/domain/leave_type.dart';
 import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
@@ -62,8 +63,7 @@ class UserProfileController extends GetxController with StateMixin {
   RxBool timerActive = false.obs;
   RxBool isOTPProvided = false.obs;
   String otpCode = "";
-
-
+  var isSelectLeaveType = AppString.text_select_on_option.tr.obs;
   RxInt profileTabIndex = 0.obs;
 
 
@@ -125,6 +125,7 @@ class UserProfileController extends GetxController with StateMixin {
   final isViewOrganizationLoading = false.obs;
   final isViewLeaveRecordLoading = false.obs;
   final isViewLeaveSummaryLoading = false.obs;
+  final isLeaveTypeLoading = false.obs;
 
 
   final isVerificationApiLoading = false.obs;
@@ -143,8 +144,11 @@ class UserProfileController extends GetxController with StateMixin {
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
   final LeaveRemoteDataSource _remoteDataSource = Get.find<LeaveRemoteDataSource>();
   final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
+  final LeaveRemoteDataSource _leaveRemoteDataSource = Get.find<LeaveRemoteDataSource>();
 
   List<GetLeaveRecordsForApp>? leaveRecordList;
+  LeaveTypeDropdown? leaveTypeDropdown;
+
   RxInt offset = 0.obs;
   int limit = 30;
 
@@ -195,6 +199,12 @@ class UserProfileController extends GetxController with StateMixin {
     isViewLeaveSummaryLoading(true);
     leaveSummary = await _leaveDataSource.getLeaveSummary();
     isViewLeaveSummaryLoading(false);
+  }
+
+  getLeaveTypeDropdown() async {
+    isLeaveTypeLoading(true);
+    leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
+    isLeaveTypeLoading(false);
   }
 
 

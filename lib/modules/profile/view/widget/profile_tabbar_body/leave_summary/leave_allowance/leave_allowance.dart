@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../../../../common/widget/custom_app_button.dart';
 import '../../../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../../../common/widget/custom_spacer.dart';
@@ -8,44 +11,58 @@ import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../controller/employment_controller.dart';
+import 'leave_type.dart';
 
 
-class LeaveAllowance extends StatelessWidget {
+class LeaveAllowance extends GetView<UserProfileController> {
   LeaveAllowance({super.key});
 
-  final EmploymentController controller = Get.find<EmploymentController>();
+  final EmploymentController employmentController = Get.find<EmploymentController>();
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              //  const SelectedLeaveType(),
-                customSpacerHeight(height: 20),
+    return Obx((){
 
-                _buildAllowanceCounterLayout(),
+      if(controller.isLeaveTypeLoading.isTrue){
+        return const LoadingIndicator(radius: 16,);
+      }
 
-                customSpacerHeight(height: 12),
-                _alertMessageLayout(),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 4.6,
-                ),
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+        
+                  const LeaveTypeDropDown(),
+        
+        
+        
+        
+        
+                  customSpacerHeight(height: 20),
+        
+                  _buildAllowanceCounterLayout(),
+        
+                  customSpacerHeight(height: 12),
+                 _alertMessageLayout(),
 
-                _buildButtons(), // Buttons at the bottom
-              ],
+                  customSpacerHeight(height: 50),
+
+                  _buildButtons(), // Buttons at the bottom
+                ],
+              ),
             ),
-          ),
-          customSpacerHeight(height: 200),
-        ],
-      ),
-    );
+            customSpacerHeight(height: 200),
+          ],
+        ),
+      );
+
+    });
   }
 
   _alertMessageLayout() {
@@ -131,18 +148,18 @@ class LeaveAllowance extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildIconButton(Icons.remove, controller.applicationBalanceDecrement),
+            _buildIconButton(Icons.remove, employmentController.applicationBalanceDecrement),
             const SizedBox(width: 20),
             Obx(
               () => Text(
-                '${controller.applicationBalanceCount}',
+                '${employmentController.applicationBalanceCount}',
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontSize: Dimensions.fontSizeMid),
               ),
             ),
             const SizedBox(width: 20),
-            _buildIconButton(Icons.add, controller.applicationBalanceIncrement),
+            _buildIconButton(Icons.add, employmentController.applicationBalanceIncrement),
           ],
         ),
       ),
@@ -163,18 +180,18 @@ class LeaveAllowance extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildIconButton(Icons.remove, controller.applicationMaxDayDecrement),
+            _buildIconButton(Icons.remove, employmentController.applicationMaxDayDecrement),
             const SizedBox(width: 20),
             Obx(
               () => Text(
-                '${controller.applicationMaxDaysCount}',
+                '${employmentController.applicationMaxDaysCount}',
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontSize: Dimensions.fontSizeMid),
               ),
             ),
             const SizedBox(width: 20),
-            _buildIconButton(Icons.add, controller.applicationMaxDayIncrement),
+            _buildIconButton(Icons.add, employmentController.applicationMaxDayIncrement),
           ],
         ),
       ),
@@ -199,18 +216,18 @@ class LeaveAllowance extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildIconButton(Icons.remove, controller.dayDecrement),
+            _buildIconButton(Icons.remove, employmentController.dayDecrement),
             const SizedBox(width: 20),
             Obx(
               () => Text(
-                '${controller.daysCount}',
+                '${employmentController.daysCount}',
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontSize: Dimensions.fontSizeMid),
               ),
             ),
             const SizedBox(width: 20),
-            _buildIconButton(Icons.add, controller.dayIncrement),
+            _buildIconButton(Icons.add, employmentController.dayIncrement),
           ],
         ),
       ),
@@ -251,7 +268,7 @@ class LeaveAllowance extends StatelessWidget {
               height: 45,
               child: CustomAppButton(
                 borderRadius: Dimensions.radiusDefault,
-                isButtonExpanded: true,
+                isButtonExpanded: false,
                 buttonText: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
