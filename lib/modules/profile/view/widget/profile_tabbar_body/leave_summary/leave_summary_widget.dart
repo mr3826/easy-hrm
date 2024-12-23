@@ -116,8 +116,6 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
                 leaveSummary.leaveTypeId ?? "";
             Get.find<UserProfileController>().leaveStatusId =
                 leaveSummary.leaveStatusId ?? "";
-            Get.find<UserProfileController>().calculateAllowanceBy.value =
-                leaveSummary.calculateAllowanceBy ?? "";
             showAddAllowance(
                 headerText: leaveSummary.name, subText: leaveSummary.type);
           },

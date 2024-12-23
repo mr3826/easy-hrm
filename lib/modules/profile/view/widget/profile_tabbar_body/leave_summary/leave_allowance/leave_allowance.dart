@@ -242,6 +242,12 @@ class LeaveAllowance extends GetView<UserProfileController> {
 
   // Optimized button layout for scrolling and responsiveness
   Widget _buildButtons() {
+    EmploymentController controller = Get.find<EmploymentController>();
+
+    bool isClicked = controller.applicationBalanceCount.value > 0 ||
+        controller.applicationMaxDaysCount.value > 0 ||
+        controller.daysCount > 0;
+
     return Padding(
       padding: const EdgeInsets.only(
           bottom: 20.0), // Adds padding for responsiveness
@@ -276,41 +282,51 @@ class LeaveAllowance extends GetView<UserProfileController> {
           ),
           customSpacerWidth(width: 14),
           Expanded(
-            child: SizedBox(
-              height: 45,
-              child: CustomAppButton(
-                isButtonExpanded: false,
-                borderRadius: Dimensions.radiusDefault,
-                buttonText: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.done, color: AppColor.cardColor, size: 23),
-                    customSpacerWidth(width: 8),
-                    Text(
-                      AppString.text_save.tr,
-                      style: AppStyle.normal_text.copyWith(
-                        color: AppColor.cardColor,
-                        fontSize: Dimensions.fontSizeDefault + 2,
-                      ),
+            child: IgnorePointer(
+              ignoring: !isClicked,
+              child: SizedBox(
+                height: 45,
+                child: CustomAppButton(
+                    isButtonExpanded: false,
+                    borderRadius: Dimensions.radiusDefault,
+                    buttonText: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.done,
+                            color: AppColor.cardColor, size: 23),
+                        customSpacerWidth(width: 8),
+                        Text(
+                          AppString.text_save.tr,
+                          style: AppStyle.normal_text.copyWith(
+                            color: AppColor.cardColor,
+                            fontSize: Dimensions.fontSizeDefault + 2,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                onPressed: () {
-                  Get.find<UserProfileController>().updateORGLeaveAvailability(
-                      maximumConsecutiveDays: Get.find<EmploymentController>()
-                          .applicationMaxDaysCount
-                          .value,
-                      numberOfApplication: Get.find<EmploymentController>()
-                          .applicationBalanceCount
-                          .value,
-                      numberOfDays:
-                          Get.find<EmploymentController>().daysCount.value,
-                      calculateAllowanceBy: Get.find<UserProfileController>()
-                          .calculateAllowanceBy
-                          .value);
-                },
-                buttonColor: AppColor.primaryColor,
-                borderColor: AppColor.primaryColor,
+                    onPressed: () {
+                      Get.find<UserProfileController>()
+                          .updateORGLeaveAvailability(
+                              maximumConsecutiveDays:
+                                  Get.find<EmploymentController>()
+                                      .applicationMaxDaysCount
+                                      .value,
+                              numberOfApplication:
+                                  Get.find<EmploymentController>()
+                                      .applicationBalanceCount
+                                      .value,
+                              numberOfDays: Get.find<EmploymentController>()
+                                  .daysCount
+                                  .value,
+                              calculateAllowanceBy:
+                                  Get.find<UserProfileController>()
+                                      .calculateAllowanceBy
+                                      .value);
+                    },
+                    buttonColor: !isClicked
+                        ? AppColor.primaryColor.withOpacity(0.5)
+                        : AppColor.primaryColor,
+                    borderColor: Colors.transparent),
               ),
             ),
           ),
@@ -320,8 +336,6 @@ class LeaveAllowance extends GetView<UserProfileController> {
   }
 
   _buildAllowanceCounterLayout() {
-    print(
-        "test : ${Get.find<UserProfileController>().calculateAllowanceBy.value}");
     if (Get.find<UserProfileController>().calculateAllowanceBy.value ==
         "no_of_application") {
       return _numberOfApplication();
