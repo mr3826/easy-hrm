@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../../../../../../common/widget/custom_network_image.dart';
-import '../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../modules/dashboard/controller/dashbpard_controller.dart';
-import '../../../../../../modules/profile/controller/user_profile_controller.dart';
-import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/app_string.dart';
-import '../../../../../../utils/app_style.dart';
-import '../../../../../../utils/dimensions.dart';
-
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/modules/leave/presentation/view/widget/custom_title_text_widget.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/dimensions.dart';
+import '../widget/build_employee_overview.dart';
+import '../widget/build_job_opening.dart';
+import '../widget/deshboard_widget.dart';
 
 class HrDashboardScreen extends StatelessWidget {
   const HrDashboardScreen({super.key});
@@ -16,73 +14,58 @@ class HrDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _userInfoAppbarLayout()
+      body: Padding(
+        padding: marginLayout.copyWith(left: 16, right: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-        ],
+
+            userInfoAppbarLayout(),
+
+            customSpacerHeight(height: 30),
+
+            _buildTitleText("Employee overview"),
+
+            const BuildEmployeeOverview(),
+
+            customSpacerHeight(height: 24),
+
+            _buildJobTitleText(value: "3"),
+
+            const BuildJobOpening(),
+
+
+
+
+
+
+
+
+
+          ],
+        ),
       ),
     );
   }
 
+  _buildTitleText(String labelText) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: customTitleText(text: labelText, fontSize: Dimensions.fontSizeMid),
+    );
+  }
 
-  _userInfoAppbarLayout() {
-    var controller = Get.find<DashboardController>();
+  _buildJobTitleText({String? value}) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _userImageLayout(),
-        customSpacerWidth(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppString.text_welcome.tr,
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault),
-            ),
-            Text(
-              controller.profileSummaryForDashboard?.getProfileSummaryForDashboard
-                  ?.profile?.firstName ??
-                  "",
-              style: AppStyle.normal_text_grey.copyWith(
-                  color: AppColor.normalTextColor,
-                  fontSize: Dimensions.fontSizeMid),
-            ),
-          ],
+        _buildTitleText("Job openings ($value)"),
+        Icon(
+          Icons.arrow_forward,
+          color: AppColor.normalTextColor.withOpacity(0.8),
         )
       ],
     );
   }
-
-  _userImageLayout() {
-    var controller = Get.find<DashboardController>();
-
-    return CustomNetworkImage(
-      height: 22.4,
-      errorText: (controller.profileSummaryForDashboard
-          ?.getProfileSummaryForDashboard?.profile?.firstName !=
-          null &&
-          controller.profileSummaryForDashboard!
-              .getProfileSummaryForDashboard!.profile!.firstName!.isNotEmpty)
-          ? "${controller.profileSummaryForDashboard?.getProfileSummaryForDashboard?.profile?.firstName?[0].toUpperCase() ?? ""}"
-          "${(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName != null && Get.find<UserProfileController>().userDetails!.getOrganizationUserDetails!.profile!.lastName!.isNotEmpty) ? Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName![0].toUpperCase() ?? "" : ""}"
-          : "",
-      profileImageKey: controller.profileSummaryForDashboard
-          ?.getProfileSummaryForDashboard?.profile?.image ??
-          "",
-      imgUrlKey: '',
-      borderColor: Colors.transparent,
-    );
-  }
-
-  _decorationStyle() {
-    return BoxDecoration(
-        color: AppColor.bgColorWithPrimary,
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(Dimensions.radiusExtraLarge - 10),
-            bottomRight: Radius.circular(Dimensions.radiusExtraLarge - 10)));
-  }
-
 }

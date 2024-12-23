@@ -4,7 +4,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-Widget customTitleText({required String text, bool isRequired = false}) {
+Widget customTitleText({required String text, bool isRequired = false,double ?fontSize}) {
   return Row(
     children: [
       Text(
@@ -12,7 +12,7 @@ Widget customTitleText({required String text, bool isRequired = false}) {
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.normalTextColor,
             fontWeight: FontWeight.w500,
-            fontSize: Dimensions.fontSizeDefault + 2),
+            fontSize:fontSize?? Dimensions.fontSizeDefault + 2),
       ),
       customSpacerWidth(width: 4),
       isRequired != false

@@ -53,3 +53,6 @@ class CustomNetworkImage extends StatelessWidget {
         : rectangleImageLayout(url: url);
   }
 }
+
+
+
