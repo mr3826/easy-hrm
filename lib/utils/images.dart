@@ -83,12 +83,20 @@ class Images {
   static String EMAIL_ICON = "assets/images/email_icon.png";
 
   static String EMPLOYEE_STATUS = "assets/images/employee_status.svg";
+
+
+  static String INTERVIEW_CANDIDATES = "assets/images/interview_candidates.svg";
+  static String LEAVE_REQ = "assets/images/leave_req.svg";
+  static String TIMELOG_REQ = "assets/images/timelog_req.svg";
+
+
+
+
   static String FLAG = "assets/images/flag.svg";
   static String FLAG_PNG = "assets/images/flag.png";
   static String EDIT_ICON = "assets/images/edit_icon.png";
   static String KEY_ICON = "assets/images/key.png";
   static String ORG = "assets/images/org.png";
   static String timer_animation = "assets/json/timer.json";
-  static String timer_stop_line_animation =
-      "assets/json/timer_stop_horizontal_line.json";
+  static String timer_stop_line_animation = "assets/json/timer_stop_horizontal_line.json";
 }

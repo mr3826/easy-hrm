@@ -15,55 +15,71 @@ class BuildJobOpening extends StatelessWidget {
   Widget build(BuildContext context) {
     final HrDashBoardController controller = Get.put(HrDashBoardController());
 
-    return Column(
-      children: [
-        SizedBox(
-          height: 200,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: controller.jobIndex.length,
-            controller: controller.scrollController,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Container(
-                  width: 340,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        width: 1.5, color: AppColor.hintColor.withOpacity(0.2)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildImage(""),
-                      _buildJobDescription(jobName: controller.jobIndex[index])
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double containerWidth = constraints.maxWidth * 0.85;
+        double imageHeight = constraints.maxWidth * 0.25;
+
+        return Column(
+          children: [
+            SizedBox(
+              height: imageHeight + 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.jobIndex.length,
+                controller: controller.scrollController,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Container(
+                      width: containerWidth,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          width: 1.5,
+                          color: AppColor.hintColor.withOpacity(0.2),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildImage(imageHeight),
+                          _buildJobDescription(
+                            jobName: controller.jobIndex[index],
+                            containerWidth: containerWidth,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            _buildDottedBorderLayout(controller),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildImage(double height) {
+    return SizedBox(
+      width: double.infinity,
+      height: height,
+      child: const CustomNetworkImage(
+        imageRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          topRight: Radius.circular(8),
         ),
-        _buildDottedBorderLayout(controller)
-      ],
+        imageUrl:
+            "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+      ),
     );
   }
 
-  _buildImage(String url) {
-    return const SizedBox(
-      width: 340,
-      height: 100,
-      child: CustomNetworkImage(
-          imageRadius: BorderRadius.only(
-              topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-          imageUrl:
-              "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg="),
-    );
-  }
-
-  _buildJobDescription({required String jobName}) {
+  Widget _buildJobDescription(
+      {required String jobName, required double containerWidth}) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, top: 6, right: 12),
       child: Row(
@@ -74,47 +90,55 @@ class BuildJobOpening extends StatelessWidget {
               children: [
                 customSpacerHeight(height: 8),
                 customTitleText(
-                    text: jobName, fontSize: Dimensions.fontSizeMid),
+                    text: jobName,
+                    textStyle: AppStyle.mid_large_text.copyWith(
+                        color: AppColor.secondaryColor,
+                        fontSize: Dimensions.fontSizeMid)),
                 customSpacerHeight(height: 8),
                 _buildInnerDescriptionText(
-                    "${"Full time"} • ${"Dhaka, Bangladesh"}"),
+                  "${"Full time"} • ${"Dhaka, Bangladesh"}",
+                ),
                 customSpacerHeight(height: 2),
                 _buildInnerDescriptionText("24 June,2022"),
               ],
             ),
           ),
           SizedBox(
+            width: containerWidth * 0.19,
             child: Container(
               decoration: BoxDecoration(
-                color: AppColor.primaryColor.withOpacity(0.1),
+                color: AppColor.timeLogRequestColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16, top: 8, bottom: 8),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
                 child: Column(
                   children: [
                     Text(
                       "23",
-                      style: AppStyle.mid_large_text
-                          .copyWith(color: AppColor.primaryColor),
+                      style: AppStyle.mid_large_text.copyWith(
+                          color: AppColor.primaryColor,
+                          fontWeight: FontWeight.w800,
+                          fontSize: Dimensions.fontSizeMid + 3),
                     ),
                     Text(
                       "New",
-                      style: AppStyle.normal_text
-                          .copyWith(color: AppColor.normalTextColor),
-                    )
+                      style: AppStyle.normal_text.copyWith(
+                          color: AppColor.normalTextColor,
+                          fontSize: Dimensions.fontSizeSmall),
+                    ),
                   ],
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  _buildInnerDescriptionText(label) {
+  Widget _buildInnerDescriptionText(String label) {
     return Text(
       label,
       style: AppStyle.mid_large_text.copyWith(
@@ -122,7 +146,7 @@ class BuildJobOpening extends StatelessWidget {
         fontSize: Dimensions.fontSizeSmall + 1,
         overflow: TextOverflow.ellipsis,
       ),
-      maxLines: 1, // Ensures ellipsis is applied for overflow
+      maxLines: 1,
     );
   }
 
@@ -131,7 +155,7 @@ class BuildJobOpening extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        height: isActive ? 12 : 9, // Change size when active
+        height: isActive ? 12 : 9,
         width: isActive ? 12 : 9,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -141,7 +165,7 @@ class BuildJobOpening extends StatelessWidget {
     );
   }
 
-  _buildDottedBorderLayout(HrDashBoardController controller) {
+  Widget _buildDottedBorderLayout(HrDashBoardController controller) {
     return Center(
       child: SizedBox(
         height: 40,
