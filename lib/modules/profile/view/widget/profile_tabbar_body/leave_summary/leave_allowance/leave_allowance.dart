@@ -240,101 +240,101 @@ class LeaveAllowance extends GetView<UserProfileController> {
     );
   }
 
-  // Optimized button layout for scrolling and responsiveness
   Widget _buildButtons() {
-    EmploymentController controller = Get.find<EmploymentController>();
+    final EmploymentController employmentController = Get.find<EmploymentController>();
+    final UserProfileController userProfileController = Get.find<UserProfileController>();
 
-    bool isClicked = controller.applicationBalanceCount.value > 0 ||
-        controller.applicationMaxDaysCount.value > 0 ||
-        controller.daysCount > 0;
+    // Determine if the Save button should be enabled
+    final bool isSaveEnabled = employmentController.applicationBalanceCount.value > 0 ||
+        employmentController.applicationMaxDaysCount.value > 0 ||
+        employmentController.daysCount > 0;
+
+
 
     return Padding(
-      padding: const EdgeInsets.only(
-          bottom: 20.0), // Adds padding for responsiveness
+      padding: const EdgeInsets.only(bottom: 20.0),
       child: Row(
         children: [
           Expanded(
-            child: SizedBox(
-              height: 45,
-              child: CustomAppButton(
-                borderRadius: Dimensions.radiusDefault,
-                isButtonExpanded: false,
-                buttonText: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.close,
-                        color: AppColor.hintColor, size: 23),
-                    customSpacerWidth(width: 8),
-                    Text(
-                      AppString.text_cancel.tr,
-                      style: AppStyle.normal_text.copyWith(
-                        color: AppColor.hintColor,
-                        fontSize: Dimensions.fontSizeDefault + 2,
-                      ),
-                    ),
-                  ],
-                ),
-                onPressed: () => Get.back(),
-                buttonColor: AppColor.cardColor,
-                borderColor: AppColor.hintColor.withOpacity(0.5),
-              ),
+            child: _buildButtonLayout(
+              icon: Icons.close,
+              text: AppString.text_cancel.tr,
+              textColor: AppColor.hintColor,
+              buttonColor: AppColor.cardColor,
+              borderColor: AppColor.hintColor.withOpacity(0.5),
+              onPressed: () => Get.back(),
             ),
           ),
           customSpacerWidth(width: 14),
           Expanded(
-            child: IgnorePointer(
-              ignoring: !isClicked,
-              child: SizedBox(
-                height: 45,
-                child: CustomAppButton(
-                    isButtonExpanded: false,
-                    borderRadius: Dimensions.radiusDefault,
-                    buttonText: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.done,
-                            color: AppColor.cardColor, size: 23),
-                        customSpacerWidth(width: 8),
-                        Text(
-                          AppString.text_save.tr,
-                          style: AppStyle.normal_text.copyWith(
-                            color: AppColor.cardColor,
-                            fontSize: Dimensions.fontSizeDefault + 2,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      Get.find<UserProfileController>()
-                          .updateORGLeaveAvailability(
-                              maximumConsecutiveDays:
-                                  Get.find<EmploymentController>()
-                                      .applicationMaxDaysCount
-                                      .value,
-                              numberOfApplication:
-                                  Get.find<EmploymentController>()
-                                      .applicationBalanceCount
-                                      .value,
-                              numberOfDays: Get.find<EmploymentController>()
-                                  .daysCount
-                                  .value,
-                              calculateAllowanceBy:
-                                  Get.find<UserProfileController>()
-                                      .calculateAllowanceBy
-                                      .value);
-                    },
-                    buttonColor: !isClicked
-                        ? AppColor.primaryColor.withOpacity(0.5)
-                        : AppColor.primaryColor,
-                    borderColor: Colors.transparent),
-              ),
+            child: _buildButtonLayout(
+              icon: Icons.done,
+              text: AppString.text_save.tr,
+              textColor: AppColor.cardColor,
+              buttonColor: isSaveEnabled
+                  ? AppColor.primaryColor
+                  : AppColor.primaryColor.withOpacity(0.5),
+              onPressed: () {
+                if (isSaveEnabled) {
+                  userProfileController.updateORGLeaveAvailability(
+                    maximumConsecutiveDays:
+                    employmentController.applicationMaxDaysCount.value,
+                    numberOfApplication:
+                    employmentController.applicationBalanceCount.value,
+                    numberOfDays: employmentController.daysCount.value,
+                    calculateAllowanceBy:
+                    userProfileController.calculateAllowanceBy.value,
+                  );
+                }
+              },
+              isEnabled: isSaveEnabled,
             ),
           ),
         ],
       ),
     );
+
+
   }
 
+  // Button styles
+  Widget _buildButtonLayout({
+    required IconData icon,
+    required String text,
+    required Color textColor,
+    required Color buttonColor,
+    Color borderColor = Colors.transparent,
+    required VoidCallback onPressed,
+    bool isEnabled = true,
+  }) {
+    return IgnorePointer(
+      ignoring: !isEnabled,
+      child: SizedBox(
+        height: 45,
+        child: CustomAppButton(
+          isButtonExpanded: false,
+          borderRadius: Dimensions.radiusDefault,
+          buttonText: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: textColor, size: 23),
+              customSpacerWidth(width: 8),
+              Text(
+                text,
+                style: AppStyle.normal_text.copyWith(
+                  color: textColor,
+                  fontSize: Dimensions.fontSizeDefault + 2,
+                ),
+              ),
+            ],
+          ),
+          onPressed: onPressed,
+          buttonColor: buttonColor,
+          borderColor: borderColor,
+        ),
+      ),
+    );
+  }
   _buildAllowanceCounterLayout() {
     if (Get.find<UserProfileController>().calculateAllowanceBy.value ==
         "no_of_application") {
