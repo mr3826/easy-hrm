@@ -28,33 +28,31 @@ class GetLeaveRequests {
   String? endDate;
   String? totalDuration;
   dynamic numberOfDays;
-  String? id;
+  dynamic id;
   LeaveType? leaveType;
   List<LeaveDetails>? leaveDetails;
   String? startDate;
   String? status;
   String? type;
-  String? userId;
+  dynamic userId;
   List<Files>? files;
   OrganizationUser? organizationUser;
-  String? sTypename;
 
   GetLeaveRequests(
       {this.description,
-        this.duration,
-        this.endDate,
-        this.totalDuration,
-        this.numberOfDays,
-        this.id,
-        this.leaveType,
-        this.leaveDetails,
-        this.startDate,
-        this.status,
-        this.type,
-        this.userId,
-        this.files,
-        this.organizationUser,
-        this.sTypename});
+      this.duration,
+      this.endDate,
+      this.totalDuration,
+      this.numberOfDays,
+      this.id,
+      this.leaveType,
+      this.leaveDetails,
+      this.startDate,
+      this.status,
+      this.type,
+      this.userId,
+      this.files,
+      this.organizationUser});
 
   GetLeaveRequests.fromJson(Map<String, dynamic> json) {
     description = json['description'];
@@ -85,7 +83,6 @@ class GetLeaveRequests {
     organizationUser = json['organization_user'] != null
         ? new OrganizationUser.fromJson(json['organization_user'])
         : null;
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -113,28 +110,27 @@ class GetLeaveRequests {
     if (this.organizationUser != null) {
       data['organization_user'] = this.organizationUser!.toJson();
     }
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
 
 class LeaveType {
-  String? id;
-  String? name;
-  String? type;
+  dynamic id;
+  dynamic name;
+  dynamic type;
 
   @override
   String toString() {
     return 'LeaveType{id: $id, name: $name, type: $type, numberOfDays: $numberOfDays, numberOfApplications: $numberOfApplications, maxConsecutiveDays: $maxConsecutiveDays, isDefault: $isDefault, addNoteRequired: $addNoteRequired, applicationDate: $applicationDate, calculateAllowanceBy: $calculateAllowanceBy, organizationId: $organizationId, isEnable: $isEnable, isEarned: $isEarned, leaveStatuses: $leaveStatuses}';
   }
 
-  String? numberOfDays;
-  String? numberOfApplications;
-  String? maxConsecutiveDays;
+  dynamic numberOfDays;
+  dynamic numberOfApplications;
+  dynamic maxConsecutiveDays;
   bool? isDefault;
   bool? addNoteRequired;
-  String? applicationDate;
-  String? calculateAllowanceBy;
+  dynamic applicationDate;
+  dynamic calculateAllowanceBy;
   String? organizationId;
   String? isEnable;
   bool? isEarned;
@@ -142,19 +138,19 @@ class LeaveType {
 
   LeaveType(
       {this.id,
-        this.name,
-        this.type,
-        this.numberOfDays,
-        this.numberOfApplications,
-        this.maxConsecutiveDays,
-        this.isDefault,
-        this.addNoteRequired,
-        this.applicationDate,
-        this.calculateAllowanceBy,
-        this.organizationId,
-        this.isEnable,
-        this.isEarned,
-        this.leaveStatuses});
+      this.name,
+      this.type,
+      this.numberOfDays,
+      this.numberOfApplications,
+      this.maxConsecutiveDays,
+      this.isDefault,
+      this.addNoteRequired,
+      this.applicationDate,
+      this.calculateAllowanceBy,
+      this.organizationId,
+      this.isEnable,
+      this.isEarned,
+      this.leaveStatuses});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -209,9 +205,9 @@ class LeaveStatuses {
 
   LeaveStatuses(
       {this.availableNumberOfDays,
-        this.earnedDays,
-        this.availableNumberOfApplications,
-        this.totalAvailable});
+      this.earnedDays,
+      this.availableNumberOfApplications,
+      this.totalAvailable});
 
   LeaveStatuses.fromJson(Map<String, dynamic> json) {
     availableNumberOfDays = json['available_number_of_days'];
@@ -237,7 +233,8 @@ class LeaveDetails {
   dynamic scheduleSeconds;
   String? leaveId;
 
-  LeaveDetails({this.date, this.leaveSeconds, this.scheduleSeconds,this.leaveId});
+  LeaveDetails(
+      {this.date, this.leaveSeconds, this.scheduleSeconds, this.leaveId});
 
   LeaveDetails.fromJson(Map<String, dynamic> json) {
     date = json['date'];
@@ -267,12 +264,12 @@ class Files {
 
   Files(
       {this.size,
-        this.organizationId,
-        this.name,
-        this.key,
-        this.id,
-        this.createdAt,
-        this.context});
+      this.organizationId,
+      this.name,
+      this.key,
+      this.id,
+      this.createdAt,
+      this.context});
 
   Files.fromJson(Map<String, dynamic> json) {
     size = json['size'];
@@ -311,15 +308,15 @@ class OrganizationUser {
 
   OrganizationUser(
       {this.userPosition,
-        this.userId,
-        this.user,
-        this.status,
-        this.roles,
-        this.profile,
-        this.organizationId,
-        this.id,
-        this.designation,
-        this.department});
+      this.userId,
+      this.user,
+      this.status,
+      this.roles,
+      this.profile,
+      this.organizationId,
+      this.id,
+      this.designation,
+      this.department});
 
   OrganizationUser.fromJson(Map<String, dynamic> json) {
     userPosition = json['user_position'];
@@ -333,7 +330,7 @@ class OrganizationUser {
       });
     }
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+        json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
     organizationId = json['organization_id'];
     id = json['id'];
     designation = json['designation'];
@@ -399,14 +396,14 @@ class Profile {
 
   Profile(
       {this.userId,
-        this.personalNumber,
-        this.lastName,
-        this.image,
-        this.id,
-        this.firstName,
-        this.emergencyNumber,
-        this.address,
-        this.about});
+      this.personalNumber,
+      this.lastName,
+      this.image,
+      this.id,
+      this.firstName,
+      this.emergencyNumber,
+      this.address,
+      this.about});
 
   Profile.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
