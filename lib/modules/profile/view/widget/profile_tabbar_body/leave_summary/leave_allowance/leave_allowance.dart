@@ -241,15 +241,16 @@ class LeaveAllowance extends GetView<UserProfileController> {
   }
 
   Widget _buildButtons() {
-    final EmploymentController employmentController = Get.find<EmploymentController>();
-    final UserProfileController userProfileController = Get.find<UserProfileController>();
+    final EmploymentController employmentController =
+        Get.find<EmploymentController>();
+    final UserProfileController userProfileController =
+        Get.find<UserProfileController>();
 
     // Determine if the Save button should be enabled
-    final bool isSaveEnabled = employmentController.applicationBalanceCount.value > 0 ||
-        employmentController.applicationMaxDaysCount.value > 0 ||
-        employmentController.daysCount > 0;
-
-
+    final bool isSaveEnabled =
+        employmentController.applicationBalanceCount.value > 0 ||
+            employmentController.applicationMaxDaysCount.value > 0 ||
+            employmentController.daysCount > 0;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
@@ -278,12 +279,12 @@ class LeaveAllowance extends GetView<UserProfileController> {
                 if (isSaveEnabled) {
                   userProfileController.updateORGLeaveAvailability(
                     maximumConsecutiveDays:
-                    employmentController.applicationMaxDaysCount.value,
+                        employmentController.applicationMaxDaysCount.value,
                     numberOfApplication:
-                    employmentController.applicationBalanceCount.value,
+                        employmentController.applicationBalanceCount.value,
                     numberOfDays: employmentController.daysCount.value,
                     calculateAllowanceBy:
-                    userProfileController.calculateAllowanceBy.value,
+                        userProfileController.calculateAllowanceBy.value,
                   );
                 }
               },
@@ -293,8 +294,6 @@ class LeaveAllowance extends GetView<UserProfileController> {
         ],
       ),
     );
-
-
   }
 
   // Button styles
@@ -335,6 +334,7 @@ class LeaveAllowance extends GetView<UserProfileController> {
       ),
     );
   }
+
   _buildAllowanceCounterLayout() {
     if (Get.find<UserProfileController>().calculateAllowanceBy.value ==
         "no_of_application") {
