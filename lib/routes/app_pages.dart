@@ -12,6 +12,7 @@ import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart
 import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../app/admin_app/employee/presentation/view/screen/employee_profile_view_screen.dart';
 import '../app/admin_app/employee/presentation/view/widget/employee_list/edit_employee.dart';
+import '../app/admin_app/hr_dashboard/presentation/view/screen/all_candidates_screen.dart';
 import '../app/home/view/screen/main_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
@@ -120,10 +121,18 @@ class AppPages {
       page: () => const EmployeeProfileViewScreen(),
     ),
 
+
     GetPage(
       name: _Paths.EDIT_EMPOLYEE_VIEW,
       transition: Transition.size,
       page: () =>  EditEmployee(),
+
+    ),
+
+  GetPage(
+      name: _Paths.ALL_CANDIDATES,
+      transition: Transition.size,
+      page: () =>  const AllCandidatesScreen(),
 
     ),
 

@@ -17,6 +17,8 @@ import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../controller/employment_controller.dart';
 
+
+
 class SearchEmployeeList extends StatelessWidget {
   final Function(String)? onValueSelected;
   final Function(UserInfo)? userInfo;
@@ -53,9 +55,7 @@ class SearchEmployeeList extends StatelessWidget {
                         /// Current user section (You)
                         GestureDetector(
                           onTap: () {
-                            onValueSelected?.call(gs.GetStorage()
-                                    .read(AppString.ORGANIZATION_USER_ID) ??
-                                "");
+                            onValueSelected?.call(gs.GetStorage().read(AppString.ORGANIZATION_USER_ID) ??"");
                             userInfo?.call(UserInfo("${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""} (You)", Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image ?? "")
 
 

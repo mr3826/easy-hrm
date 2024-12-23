@@ -78,8 +78,7 @@ class BuildJobOpening extends StatelessWidget {
     );
   }
 
-  Widget _buildJobDescription(
-      {required String jobName, required double containerWidth}) {
+  Widget _buildJobDescription({required String jobName, required double containerWidth}) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, top: 6, right: 12),
       child: Row(
