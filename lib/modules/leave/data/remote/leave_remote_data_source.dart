@@ -19,21 +19,21 @@ class LeaveRemoteDataSource {
 
   LeaveRemoteDataSource(this.networkClient);
 
-  Future<List<GetLeaveRecordsForApp>?> getLeaveRecordList({required int limit, required int offset}) async {
+  Future<List<GetLeaveRecordsForApp>?> getLeaveRecordList(
+      {required int limit, required int offset, String? orgId}) async {
     try {
-      final response = await networkClient.graphRequest(
-        queryString: getLeaveRecordsDataQuery,
-        variables: {
-          "queryData": {
-            "assigned_to":GetStorage().read(AppString.ORGANIZATION_USER_ID),
-            "optionData": {"limit": limit, "offset": offset}
-          }
+      final response = await networkClient
+          .graphRequest(queryString: getLeaveRecordsDataQuery, variables: {
+        "queryData": {
+          "assigned_to":
+              orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
+          "optionData": {"limit": limit, "offset": offset}
         }
-
-      );
+      });
 
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveRecordList");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveRecordList");
         return null;
       }
 
@@ -50,9 +50,11 @@ class LeaveRemoteDataSource {
         queryString: getLeaveSummaryForDashboardQuery,
       );
 
-      if (response.hasException)   {
+      if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveSummaryForDashboard");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!,
+            methodName: "getLeaveSummaryForDashboard");
         return null;
       }
 
@@ -76,12 +78,12 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveRecordByDate");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveRecordByDate");
         return null;
       }
 
       return LeaveDetailsByDate.fromJson(response.data!);
-
     } catch (e) {
       log('Error in getLeaveRecordByDate: $e');
       return null;
@@ -99,7 +101,8 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getWorkShift");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getWorkShift");
         return null;
       }
 
@@ -119,7 +122,8 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "cancelLeave");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "cancelLeave");
         return false;
       }
 
@@ -139,7 +143,8 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "removeLeave");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "removeLeave");
         return false;
       }
 
@@ -162,7 +167,8 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getLeaveTypeDropdown");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveTypeDropdown");
         return null;
       }
       return LeaveTypeDropdown.fromJson(response.data!);
@@ -179,7 +185,8 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "applyLeave");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "applyLeave");
         return false;
       }
 
@@ -199,7 +206,8 @@ class LeaveRemoteDataSource {
 
       if (response.hasException) {
         log(response.exception.toString());
-        ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getUploadPolicy");
         return false;
       }
 
