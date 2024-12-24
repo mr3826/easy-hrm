@@ -85,8 +85,7 @@ class EmploymentController extends GetxController with StateMixin {
     isEmployeesInfoLoading(true);
 
     List<String> departmentIds = getSelectedCheckBoxValues(departmentList);
-    List<String> employmentStatusIds =
-        getSelectedCheckBoxValues(employmentStatusList);
+    List<String> employmentStatusIds = getSelectedCheckBoxValues(employmentStatusList);
     List<String> userStatusIds = getSelectedCheckBoxValues(userStatusList);
     List<String> attendanceIds = getSelectedCheckBoxValues(attendanceList);
 

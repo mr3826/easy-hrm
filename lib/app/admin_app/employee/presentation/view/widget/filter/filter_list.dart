@@ -143,6 +143,7 @@ class _EmployeeFilterSectionState extends State<EmployeeFilterSection> {
       itemsList: list,
       onSelectionChanged: (List<CheckBoxModel> list) async {
         Get.find<EmploymentController>().getEmployees();
+        print("$list");
       },
     );
   }

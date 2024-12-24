@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/admin_app/employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import 'check_box.dart';
 
 class CandidateFilterSection extends StatefulWidget {
@@ -41,7 +41,6 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
       AppString.text_rating.tr
     ];
 
-
     return sectionTitles.map((title) {
       return Column(
         children: [
@@ -61,32 +60,33 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
   }
 
   Widget _buildHeader() {
-  return LayoutBuilder(builder: (context, constraints) {
-
-    return buildBottomSheetHeader(
-      height:    constraints.constrainHeight(76),
-      customWidget: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          const Spacer(flex: 2),
-          Center(
-            child: Text(
-              AppString.textFilters.tr,
-              style: AppStyle.mid_large_text.copyWith(
-                color: AppColor.normalTextColor,
-                fontWeight: FontWeight.w600,
-                fontSize: Dimensions.fontSizeMid,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return buildBottomSheetHeader(
+          height: constraints.constrainHeight(76),
+          customWidget: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Spacer(flex: 2),
+              Center(
+                child: Text(
+                  AppString.textFilters.tr,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: Dimensions.fontSizeMid,
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(width: 20),
+              const Spacer(),
+              _buildResetButton(),
+              const SizedBox(width: 20),
+            ],
           ),
-          const SizedBox(width: 20),
-          const Spacer(),
-          _buildResetButton(),
-          const SizedBox(width: 20),
-        ],
-      ),
+        );
+      },
     );
-  },);
   }
 
   Widget _buildResetButton() {
@@ -112,20 +112,23 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
   }
 
   Widget _statusCheckBox(String title) {
-    List<CheckBoxModel> list = [
-      CheckBoxModel(checkBoxName: 'Laravel developer', checkBoxNameValue: '1'),
-      CheckBoxModel(checkBoxName: 'UI/UX developer', checkBoxNameValue: '1'),
+    List<CheckBoxModel> list = [];
 
-    ];
-
-    if (title == AppString.text_deparmtnet.tr) {
-   //   list = Get.find<EmploymentController>().departmentList;
-    } else if (title == AppString.textEmployeeStatus.tr) {
-    //  list = Get.find<EmploymentController>().employmentStatusList;
-    } else if (title == AppString.textUserStatus.tr) {
-  //    list = Get.find<EmploymentController>().userStatusList;
+    if (title == AppString.text_rating.tr) {
+      list = [
+        CheckBoxModel(checkBoxName: 'No rating', checkBoxNameValue: 'No rating'),
+        CheckBoxModel(checkBoxName: '1 start', checkBoxNameValue: '1 start'),
+        CheckBoxModel(checkBoxName: '2 start', checkBoxNameValue: '2 start'),
+        CheckBoxModel(checkBoxName: '3 start', checkBoxNameValue: '3 start'),
+        CheckBoxModel(checkBoxName: '4 start', checkBoxNameValue: '4 start'),
+        CheckBoxModel(checkBoxName: '5 start', checkBoxNameValue: '5 start'),
+      ];
     } else {
-  //    list = Get.find<EmploymentController>().attendanceList;
+      list = [
+        CheckBoxModel(
+            checkBoxName: 'Laravel developer', checkBoxNameValue: '1'),
+        CheckBoxModel(checkBoxName: 'UI/UX developer', checkBoxNameValue: '1'),
+      ];
     }
 
     return GSMultiCheckbox(
@@ -135,7 +138,7 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
       ),
       itemsList: list,
       onSelectionChanged: (List<CheckBoxModel> list) async {
-     //   Get.find<EmploymentController>().getEmployees();
+        print(list);
       },
     );
   }

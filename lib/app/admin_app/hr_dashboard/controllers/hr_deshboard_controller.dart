@@ -1,15 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../employee/presentation/view/widget/filter/check_box.dart';
+
 class HrDashBoardController extends GetxController {
   final RxInt currentIndex = 0.obs;
   final ScrollController scrollController = ScrollController();
 
   List jobIndex = ["Job 1", "Job 2", "Job 3", "Job 4"]; // Example data
 
-  TextEditingController candidateEmail =TextEditingController();
-  TextEditingController candidateFirstName =TextEditingController();
-  TextEditingController candidateLastName =TextEditingController();
+  TextEditingController candidateEmail = TextEditingController();
+  TextEditingController candidateFirstName = TextEditingController();
+  TextEditingController candidateLastName = TextEditingController();
+
 
 
   @override
