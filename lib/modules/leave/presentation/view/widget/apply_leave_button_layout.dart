@@ -11,7 +11,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/widget/custom_title_text_widget.dart';
+import 'package:payrun_mobile/common/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';

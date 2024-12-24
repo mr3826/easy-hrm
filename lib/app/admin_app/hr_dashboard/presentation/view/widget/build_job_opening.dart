@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../controller/hr_deshboard_controller.dart';

@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../common/widget/custom_title_text_widget.dart';
 
 class TaskViewLayout extends StatelessWidget {
   const TaskViewLayout({super.key});

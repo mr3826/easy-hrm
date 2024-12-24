@@ -20,7 +20,7 @@ import '../../../../../../../common/widget/timePicker/date_time_picker_controlle
 import '../../../../../../../common/widget/warning_message.dart';
 import '../../../../../../../modules/auth/presentation/view/otp_screen.dart';
 import '../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
-import '../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';

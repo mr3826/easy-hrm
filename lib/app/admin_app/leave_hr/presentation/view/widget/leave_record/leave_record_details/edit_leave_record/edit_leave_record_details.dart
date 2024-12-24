@@ -16,7 +16,7 @@ import '../../../../../../../../../common/widget/timePicker/custom_time_picker_o
 import '../../../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../../../common/widget/warning_message.dart';
 import '../../../../../../../../../modules/auth/presentation/view/otp_screen.dart';
-import '../../../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';

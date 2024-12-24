@@ -56,7 +56,9 @@ Widget customButtonSheetAppbar(
   return isLeave != false
       ? _leaveBtnAppbarLayout(text, subtext, status ?? "", duration)
       : Container(
-          color: AppColor.primaryColor.withOpacity(0.05),
+          decoration: const BoxDecoration(
+              color: AppColor.leaveRecordCardColor,
+              borderRadius: BorderRadius.only(topRight:  Radius.circular(18),topLeft: Radius.circular(18))),
           height: 100,
           width: double.infinity,
           child: Column(

@@ -9,7 +9,7 @@ import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/images.dart';
 import '../../../../employee/presentation/view/screen/employee_screen.dart';
 import '../../../../employee/presentation/view/widget/employee_list/search_with_filter.dart';
-import '../widget/build_all_candidates.dart';
+import '../widget/candidates/build_all_candidates.dart';
 
 
 class AllCandidatesScreen extends StatelessWidget {

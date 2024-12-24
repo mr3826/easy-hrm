@@ -8,7 +8,6 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 
 
-
 userInfoAppbarLayout() {
   return Padding(
     padding: const EdgeInsets.only(top: 46.0),

@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/widget/custom_password_text_field.dart';
-import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../common/widget/custom_title_text_widget.dart';
 import '../../../timeline/view/widget/timeline_calendar.dart';
 import '../widget/change_email_widget.dart';
 

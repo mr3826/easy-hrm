@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import '../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
-import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/app_style.dart';
-import '../../../../../../utils/dimensions.dart';
+import '../../../../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../../../../common/widget/custom_title_text_widget.dart';
+import '../../../../../../../utils/app_color.dart';
+import '../../../../../../../utils/app_style.dart';
+import '../../../../../../../utils/dimensions.dart';
+
 
 class BuildAllCandidates extends StatelessWidget {
   const BuildAllCandidates({super.key});
@@ -101,7 +104,11 @@ class BuildAllCandidates extends StatelessWidget {
         ),
         customSpacerWidth(width: 4),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            customButtonSheet(
+                height: .5,
+                context: Get.context!, child: _buildMoreView());
+          },
           child: Icon(
             Icons.more_horiz,
             color: AppColor.normalTextColor.withOpacity(0.5),
@@ -126,6 +133,24 @@ class BuildAllCandidates extends StatelessWidget {
             color: AppColor.interViewCandidatesColor,
           ),
         ),
+      ),
+    );
+  }
+
+
+
+
+
+  Widget _buildMoreView(){
+    return Container(
+      child: Column(
+        children: [
+          customButtonSheetAppbar(
+            text: "Agens Nelison",
+            subtext: "email@gmail.com",
+          ),
+          
+        ],
       ),
     );
   }

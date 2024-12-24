@@ -22,7 +22,7 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
-import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../common/widget/custom_title_text_widget.dart';
 import '../../../leave/presentation/view/widget/status_btn_widget.dart';
 import '../../../leave/presentation/view/widget/timmer_text_field_dob.dart';
 import '../../../starting/view/splash_screen.dart';
