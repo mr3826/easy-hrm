@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
-import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/images.dart';
@@ -18,7 +16,7 @@ class AllCandidatesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppbar(),
+      appBar: customAppbar(title: AppString.text_candidate.tr),
       body:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,29 +27,8 @@ class AllCandidatesScreen extends StatelessWidget {
 
 
 
-
         ],
       ),
-    );
-  }
-
-  _buildAppbar() {
-    return AppBar(
-      title: Text(
-        "Candidates",
-        style: AppStyle.large_text.copyWith(
-            color: AppColor.normalTextColor,
-            fontWeight: FontWeight.w500,
-            fontSize: Dimensions.fontSizeMid + 1),
-      ),
-      centerTitle: true,
-      leading: IconButton(
-          onPressed: ()=>Get.back(canPop: false),
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColor.hintColor,
-            size: 19,
-          )),
     );
   }
 

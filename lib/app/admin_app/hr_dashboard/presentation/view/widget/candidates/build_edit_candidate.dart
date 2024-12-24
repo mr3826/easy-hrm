@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
+import '../../../../../../../common/widget/custom_appbar.dart';
+import '../../../../../../../common/widget/custom_spacer.dart';
+import '../../../../../../../common/widget/custom_text_field.dart';
+import '../../../../../../../common/widget/custom_title_text_widget.dart';
+import '../../../../../../../utils/app_style.dart';
+import '../../../controller/hr_deshboard_controller.dart';
+
+class BuildEditCandidate extends StatelessWidget {
+  const BuildEditCandidate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    HrDashBoardController controller = Get.put(HrDashBoardController());
+
+    return Scaffold(
+      appBar: customAppbar(title: AppString.text_edit_candidate.tr),
+      body: Padding(
+        padding: marginLayout,
+        child: Column(
+          children: [
+            _userTextFieldLayout(
+                titleText: "Email",
+                controller: controller.candidateEmail,
+                hintText: "Enter email address"),
+            _userTextFieldLayout(
+                titleText: AppString.text_first_name,
+                controller: controller.candidateFirstName,
+                hintText: "Enter first name"),
+            _userTextFieldLayout(
+                titleText: AppString.text_last_name,
+                controller: controller.candidateLastName,
+                hintText: "Enter last name"),
+            customSpacerHeight(height: 26),
+            _buildButton()
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildButton() {
+
+    return CustomDoubleAppButton(
+        onAction: () {},
+        cancelAction: () {
+         _clear();
+        });
+  }
+
+  void _clear() {
+    HrDashBoardController controller = Get.put(HrDashBoardController());
+    Get.back(canPop: false);
+    controller.candidateLastName.clear();
+    controller.candidateFirstName.clear();
+    controller.candidateEmail.clear();
+  }
+}
+
+_userTextFieldLayout(
+    {required String titleText,
+    required TextEditingController controller,
+    required String hintText,
+    final String? Function(String?)? onChanged,
+    validator}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      customTitleText(text: titleText),
+      customSpacerHeight(height: 12),
+      CustomInputField(
+        hint: hintText,
+        hintStyle:
+            AppStyle.normal_text_grey.copyWith(fontWeight: FontWeight.w500),
+        controller: controller,
+        validator: validator,
+        onChanged: onChanged,
+      ),
+      customSpacerHeight(height: 12),
+    ],
+  );
+}

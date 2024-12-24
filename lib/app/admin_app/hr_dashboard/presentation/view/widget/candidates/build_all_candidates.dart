@@ -3,12 +3,13 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-
 
 class BuildAllCandidates extends StatelessWidget {
   const BuildAllCandidates({super.key});
@@ -106,8 +107,7 @@ class BuildAllCandidates extends StatelessWidget {
         GestureDetector(
           onTap: () {
             customButtonSheet(
-                height: .5,
-                context: Get.context!, child: _buildMoreView());
+                height: .5, context: Get.context!, child: _buildMoreView());
           },
           child: Icon(
             Icons.more_horiz,
@@ -137,19 +137,59 @@ class BuildAllCandidates extends StatelessWidget {
     );
   }
 
+  Widget _buildMoreView() {
+    return Column(
+      children: [
+        customButtonSheetAppbar(text: "Agens Nelson", subtext: "email@gmail.com"),
+
+        _buildActionOption(text: "Edit",onTap: ()=>Get.toNamed(Routes.EDIT_CANDIDATES),trailing: Image.asset(Images.EDIT_ICON)),
+
+        _buildActionOption(text: "Share",onTap: (){},trailing:  Icon(Icons.share,color: AppColor.normalTextColor.withOpacity(0.4),size: 24,)),
+
+        _buildActionOption(text: "Remove",onTap: (){},trailing:  Icon(Icons.delete_outline,color: AppColor.normalTextColor.withOpacity(0.4),size: 30,)),
 
 
+      ],
+    );
+  }
 
-
-  Widget _buildMoreView(){
-    return Container(
+  /// Builds an action button for various leave options like Approve, Reject, Edit.
+  Widget _buildActionOption({required String text, required VoidCallback onTap, Widget? trailing}) {
+    return GestureDetector(
+      onTap: onTap,
       child: Column(
         children: [
-          customButtonSheetAppbar(
-            text: "Agens Nelison",
-            subtext: "email@gmail.com",
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 6),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    color: AppColor.cardColor,
+                    width: double.infinity,
+                    height: 54,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      text,
+                      style: AppStyle.normal_text_black.copyWith(
+                        color: AppColor.normalTextColor.withOpacity(0.8),
+                        fontSize: Dimensions.fontSizeDefault + 1,
+                      ),
+                    ),
+                  ),
+                ),
+                if (trailing != null) Container(child: trailing)
+              ],
+            ),
           ),
-          
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6),
+            child: Container(
+              height: .8,
+              width: double.infinity,
+              color: AppColor.disableColor,
+            ),
+          )
         ],
       ),
     );

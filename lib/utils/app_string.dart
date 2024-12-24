@@ -372,4 +372,26 @@ class AppString {
   static const String text_we_have_sent_a_verification_etc =
       "text_we_have_sent_a_verification_etc";
   static String text_time_entry = "Add time entry";
+
+
+
+  ///hr dash-board string
+
+static String text_candidate="Candidates";
+static String text_edit_candidate="Edit Candidates";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

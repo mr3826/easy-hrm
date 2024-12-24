@@ -7,6 +7,11 @@ class HrDashBoardController extends GetxController {
 
   List jobIndex = ["Job 1", "Job 2", "Job 3", "Job 4"]; // Example data
 
+  TextEditingController candidateEmail =TextEditingController();
+  TextEditingController candidateFirstName =TextEditingController();
+  TextEditingController candidateLastName =TextEditingController();
+
+
   @override
   void onInit() {
     super.onInit();
@@ -20,6 +25,9 @@ class HrDashBoardController extends GetxController {
   @override
   void onClose() {
     scrollController.dispose();
+    candidateEmail.dispose();
+    candidateFirstName.dispose();
+    candidateLastName.dispose();
     super.onClose();
   }
 }

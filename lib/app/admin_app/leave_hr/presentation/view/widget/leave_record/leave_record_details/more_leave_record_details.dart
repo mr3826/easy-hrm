@@ -60,15 +60,9 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///Conditional actions based on application status
-                      if (controller.leaveDetailsById?.getLeaveDetailsById
-                                  ?.status ==
-                              LeaveStatus.pending.name ||
-                          controller.leaveDetailsById?.getLeaveDetailsById
-                                  ?.status ==
-                              LeaveStatus.approved.name) ...[
-                        if (controller.leaveDetailsById?.getLeaveDetailsById
-                                ?.status ==
-                            LeaveStatus.pending.name) ...[
+                      if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name || controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.approved.name) ...[
+
+                        if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name) ...[
                           Obx(
                             () => Get.find<HrLeaveController>()
                                     .updateLeaveLoader
@@ -77,6 +71,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                                     child: CupertinoActivityIndicator())
                                 : _buildActionOption(AppString.textApprove.tr,
                                     () {
+
                                     Get.find<HrLeaveController>().updateLeave(
                                         leaveId: leaveId ?? "",
                                         status: "approved");
@@ -97,8 +92,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                           _divider(),
                         ],
                       ],
-                      _buildActionOption(
-                          AppString.textSeeDocument.tr, _showBuildAttachedFile),
+                      _buildActionOption(AppString.textSeeDocument.tr, _showBuildAttachedFile),
 
                       _divider(),
 

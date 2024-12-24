@@ -69,8 +69,7 @@ class CustomInputField extends StatelessWidget {
             ),
         suffixIcon: weight,
         border: OutlineInputBorder(
-          borderSide:
-              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderSide: const BorderSide(width: 0.0, color: AppColor.primaryColor),
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault-2),
         ),
         focusColor: AppColor.primaryColor,

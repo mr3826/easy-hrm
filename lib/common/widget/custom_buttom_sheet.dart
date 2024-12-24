@@ -11,6 +11,143 @@ import '../../enum.dart';
 import '../../utils/images.dart';
 import '../../utils/utils.dart';
 
+Widget customButtonSheetAppbar({required String text, String? subtext, bool isLeave = false, String? status, String? duration,TextStyle ?subTextStyle}) {
+  if (isLeave) {
+    return _leaveBtnAppbarLayout(
+      text: text,
+      subtext: subtext,
+      status: status,
+      duration: duration,
+    );
+  } else {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColor.leaveRecordCardColor,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(18),
+          topLeft: Radius.circular(18),
+        ),
+      ),
+      height: 100,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            text,
+            style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.secondaryColor,
+              fontWeight: FontWeight.w700,
+              fontSize: Dimensions.fontSizeDefault+3,
+
+            ),
+          ),
+          if (subtext != null) ...[
+            Text(
+              subtext,
+              style: subTextStyle ?? AppStyle.mid_large_text.copyWith(
+                color:AppColor.hintColor,
+                fontSize: Dimensions.fontSizeDefault,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+Widget _leaveBtnAppbarLayout({
+  required String text,
+  String? subtext,
+  String? status,
+  String? duration,
+}) {
+  return Stack(
+    children: [
+      _transformDashLayout(status),
+      Positioned(
+        top: 30,
+        left: 30,
+        bottom: 30,
+        right: 30,
+        child: Column(
+          children: [
+            if (subtext?.isNotEmpty ?? false)
+              Center(
+                child: Text(
+                  subtext!,
+                  style: AppStyle.normal_text_black.copyWith(
+                    color: AppColor.normalTextColor,
+                  ),
+                ),
+              )
+            else
+              Center(
+                child: Text(
+                  formatLeaveDate(text),
+                  style: AppStyle.normal_text_black.copyWith(
+                    color: AppColor.normalTextColor,
+                  ),
+                ),
+              ),
+            customSpacerHeight(height: 12),
+            Text(
+              AppString.text_duration.tr,
+              style: AppStyle.normal_text_black.copyWith(fontSize: 12),
+            ),
+            Center(
+              child: Text(
+                _getDuration(duration),
+                style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Positioned(
+        top: 8,
+        left: 9,
+        right: 9,
+        child: Center(
+          child: Container(
+            height: 4,
+            width: 140,
+            decoration: BoxDecoration(
+              color: AppColor.backgroundColor,
+              borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+String _getDuration(String? duration) {
+  if (duration == null || duration.isEmpty) {
+    return "No duration";
+  }
+  return duration == "1 day" ? "Full day" : duration;
+}
+
+_transformDashLayout(status) {
+  return SizedBox(
+    height: 135,
+    width: double.infinity,
+    child: SvgPicture.asset(
+      _getStatusButton(status),
+      fit: BoxFit.fill,
+    ),
+  );
+}
+
+
+
+
 Future customButtonSheet(
     {context,
     double height = 0.9,
@@ -47,125 +184,7 @@ Future customButtonSheet(
   );
 }
 
-Widget customButtonSheetAppbar(
-    {required text,
-    subtext,
-    bool isLeave = false,
-    String? status,
-    String? duration}) {
-  return isLeave != false
-      ? _leaveBtnAppbarLayout(text, subtext, status ?? "", duration)
-      : Container(
-          decoration: const BoxDecoration(
-              color: AppColor.leaveRecordCardColor,
-              borderRadius: BorderRadius.only(topRight:  Radius.circular(18),topLeft: Radius.circular(18))),
-          height: 100,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                  child: Text(
-                text ?? "",
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
-                    fontWeight: FontWeight.w700),
-              )),
-              if (subtext != null) customSpacerHeight(height: 5),
-              if (subtext != null)
-                Center(
-                    child: Text(
-                  subtext ?? "",
-                  style: AppStyle.mid_large_text.copyWith(
-                      color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault + 2),
-                )),
-            ],
-          ),
-        );
-}
 
-_leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
-
-
-
-
-
-  return Stack(
-    children: [
-      transformDashLayout(status),
-      Positioned(
-          top: 30,
-          left: 30,
-          bottom: 30,
-          right: 30,
-          child: Column(
-            children: [
-              if (subtext.isNotEmpty)
-                Center(
-                    child: Text(
-                // "${abbreviateDayOfWeek(subtext)}, ${formatLeaveDate(text)}",
-                      subtext,
-                  style: AppStyle.normal_text_black
-                      .copyWith(color: AppColor.normalTextColor),
-                )),
-              if (subtext.isEmpty)
-                Center(
-                    child: Text(
-                  formatLeaveDate(text),
-                  style: AppStyle.normal_text_black
-                      .copyWith(color: AppColor.normalTextColor),
-                )),
-              customSpacerHeight(height: 12),
-              Text(
-                AppString.text_duration.tr,
-                style: AppStyle.normal_text_black.copyWith(fontSize: 12),
-              ),
-              Center(
-                  child: Text(
-                 getDuration(duration),
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
-                    fontWeight: FontWeight.w700),
-              )),
-            ],
-          )),
-      Positioned(
-          top: 8,
-          right: 9,
-          left: 9,
-          child: Center(
-            child: Container(
-              height: 4,
-              width: 140,
-              decoration: BoxDecoration(
-                  color: AppColor.backgroundColor,
-                  borderRadius:
-                      BorderRadius.circular(Dimensions.radiusExtraLarge)),
-            ),
-          ))
-    ],
-  );
-}
-
-String getDuration(duration) {
-  if(duration=="1 day"){
-    return "Full day";
-  }else{
-    return duration;
-  }
-}
-
-transformDashLayout(status) {
-  return SizedBox(
-    height: 135,
-    width: double.infinity,
-    child: SvgPicture.asset(
-      _getStatusButton(status),
-      fit: BoxFit.fill,
-    ),
-  );
-}
 
 _getStatusButton(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
