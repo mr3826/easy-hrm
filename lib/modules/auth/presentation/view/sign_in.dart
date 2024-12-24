@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../app/global/controller/exit_app_controller.dart';
 import '../../../../common/widget/custom_password_text_field.dart';
 import '../../../../utils/utils.dart';
 import '../../../../app/modules/onboard/view/onboarding_screen.dart';
@@ -22,13 +23,12 @@ class SignInScreen extends GetView<SignInController> {
   SignInScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
-  final ExitAppController _controller = Get.put(ExitAppController());
 
   @override
   Widget build(BuildContext context) {
     Get.put(SignInController());
     return WillPopScope(
-      onWillPop: () => _controller.willPop(),
+      onWillPop: () => Get.find<ExitAppController>().willPop(),
       child: Scaffold(
         backgroundColor: AppColor.backgroundColor,
         body: _body(context),

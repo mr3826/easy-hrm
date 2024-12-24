@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/controller/exit_app_controller.dart';
 
 import '../config/dio_config.dart';
 import '../services/api_service.dart';
@@ -7,9 +8,10 @@ import '../services/graphQL_service.dart';
 import '../services/rest_service.dart';
 import '../services/webSocket_service.dart';
 
-class GlobalBindings extends Bindings{
+class GlobalBindings extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut(() => ExitAppController());
     Get.put<AuthService>(AuthService());
 
     final dio = DioConfig.createDio(Get.find<AuthService>());

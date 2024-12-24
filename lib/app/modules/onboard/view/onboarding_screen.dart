@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/global/controller/exit_app_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/utils.dart';
@@ -30,12 +31,11 @@ class _OnboardScreenState extends State<OnboardScreen> {
   }
 
   int _currentIndex = 0;
-  final ExitAppController _controller = Get.put(ExitAppController());
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _controller.willPop(),
+      onWillPop: () => Get.find<ExitAppController>().willPop(),
       child: Scaffold(
           body: PageView.builder(
         controller: _pageController,
@@ -215,17 +215,3 @@ Widget _onboardByImage({required imageUrl}) {
   );
 }
 
-class ExitAppController extends GetxController {
-  Future<bool> willPop() async {
-    if (Platform.isAndroid) {
-      SystemNavigator.pop();
-    } else if (Platform.isIOS) {
-      exit(0);
-    }
-    return false;
-  }
-
-  Future<bool> willPopForTimeLog() async {
-    return false;
-  }
-}

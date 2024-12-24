@@ -7,6 +7,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
+import '../../../../app/global/controller/exit_app_controller.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../common/widget/custom_spacer.dart';
@@ -23,9 +24,8 @@ class AddToTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ExitAppController exitAppController = Get.put(ExitAppController());
     return WillPopScope(
-      onWillPop: () => exitAppController.willPopForTimeLog(),
+      onWillPop: () => Get.find<ExitAppController>().willPopForTimeLog(),
       child: Padding(
         padding: marginLayout.copyWith(top: 30),
         child: SingleChildScrollView(
