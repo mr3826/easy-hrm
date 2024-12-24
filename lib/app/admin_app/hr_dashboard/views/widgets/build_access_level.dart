@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import '../../../../../../common/widget/custom_svg_image.dart';
-import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/app_style.dart';
-import '../../../../../../utils/dimensions.dart';
+import '../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
 
 class BuildAccessLevel extends StatelessWidget {
   final String labelText;

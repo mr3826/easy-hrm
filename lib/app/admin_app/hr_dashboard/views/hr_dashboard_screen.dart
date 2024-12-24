@@ -8,10 +8,10 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../widget/build_access_level.dart';
-import '../widget/build_employee_overview.dart';
-import '../widget/build_job_opening.dart';
-import '../widget/deshboard_widget.dart';
+import 'widgets/build_access_level.dart';
+import 'widgets/build_employee_overview.dart';
+import 'widgets/build_job_opening.dart';
+import 'widgets/deshboard_widget.dart';
 
 class HrDashboardScreen extends StatelessWidget {
   const HrDashboardScreen({super.key});

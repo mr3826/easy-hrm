@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/app_style.dart';
-import '../../../../../../utils/dimensions.dart';
+import 'package:get/get.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../controllers/hr_deshboard_controller.dart';
 
 class BuildEmployeeOverview extends StatelessWidget {
   const BuildEmployeeOverview({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    if (Get.isRegistered()) {
+      Get.delete<HrDashBoardController>();
+    }
+    Get.put(HrDashBoardController());
+
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final itemWidth = constraints.maxWidth / 3 - 24; // Dynamic width for each item

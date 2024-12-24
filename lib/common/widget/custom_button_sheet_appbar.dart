@@ -4,9 +4,9 @@ import '../../utils/app_color.dart';
 import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
 
-Widget buildBottomSheetHeader({Widget? customWidget, String? text}) {
+Widget buildBottomSheetHeader({Widget? customWidget, String? text,double? height}) {
   return Container(
-    height: MediaQuery.of(Get.context!).size.height / 8.8,
+    height:height?? MediaQuery.of(Get.context!).size.height / 8.8,
     width: double.infinity,
     decoration: const BoxDecoration(
       color: AppColor.bgColorWithTimeline,

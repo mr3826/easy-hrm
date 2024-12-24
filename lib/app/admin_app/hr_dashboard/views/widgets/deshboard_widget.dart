@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
-import '../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/app_string.dart';
-import '../../../../../../utils/app_style.dart';
-import '../../../../../../utils/dimensions.dart';
+import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_string.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
 
 
 userInfoAppbarLayout() {

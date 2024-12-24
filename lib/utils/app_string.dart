@@ -382,6 +382,14 @@ static String text_edit_candidate="Edit Candidates";
 static String text_remove_candidate="Remove candidate";
 
 static String text_share="Share";
+
+
+static String text_job_post="Job post";
+static String text_stage="Stage";
+static String text_department="Department";
+static String text_rating="Rating";
+
+
 static String text_only_admin_and_etc="Only admin and the hiring team members can view this candidate";
 
 

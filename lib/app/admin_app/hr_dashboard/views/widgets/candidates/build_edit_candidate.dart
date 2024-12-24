@@ -9,14 +9,14 @@ import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../init_ app.dart';
 import '../../../../../../../utils/app_style.dart';
-import '../../../controller/hr_deshboard_controller.dart';
+import '../../../controllers/hr_deshboard_controller.dart';
 
 class BuildEditCandidate extends StatelessWidget {
   BuildEditCandidate({super.key});
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    HrDashBoardController controller = Get.put(HrDashBoardController());
+    HrDashBoardController controller = Get.find<HrDashBoardController>();
     return Scaffold(
       appBar: customAppbar(title: AppString.text_edit_candidate.tr),
       body: Form(

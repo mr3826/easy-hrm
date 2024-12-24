@@ -23,7 +23,7 @@ import '../../../../modules/subscription/view/subscription_screen.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
 import '../../../../modules/timeline/view/screen/timeline.dart';
-import '../../../admin_app/hr_dashboard/presentation/view/screen/hr_dashboard_screen.dart';
+import '../../../admin_app/hr_dashboard/views/hr_dashboard_screen.dart';
 import '../../../admin_app/leave_hr/presentation/controller/hr_leave_controller.dart';
 import '../../../admin_app/leave_hr/presentation/view/screen/leave_hr_screen.dart';
 

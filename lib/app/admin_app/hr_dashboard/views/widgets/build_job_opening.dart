@@ -3,17 +3,17 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../../../common/widget/custom_title_text_widget.dart';
-import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/app_style.dart';
-import '../../controller/hr_deshboard_controller.dart';
+import '../../../../../common/widget/custom_title_text_widget.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_style.dart';
+import '../../controllers/hr_deshboard_controller.dart';
 
 class BuildJobOpening extends StatelessWidget {
   const BuildJobOpening({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final HrDashBoardController controller = Get.put(HrDashBoardController());
+    final HrDashBoardController controller = Get.find<HrDashBoardController>();
 
     return LayoutBuilder(
       builder: (context, constraints) {

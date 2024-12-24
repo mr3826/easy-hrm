@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -12,8 +14,9 @@ import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart
 import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../app/admin_app/employee/presentation/view/screen/employee_profile_view_screen.dart';
 import '../app/admin_app/employee/presentation/view/widget/employee_list/edit_employee.dart';
-import '../app/admin_app/hr_dashboard/presentation/view/screen/all_candidates_screen.dart';
-import '../app/admin_app/hr_dashboard/presentation/view/widget/candidates/build_edit_candidate.dart';
+import '../app/admin_app/hr_dashboard/controllers/hr_deshboard_controller.dart';
+import '../app/admin_app/hr_dashboard/views/all_candidates_screen.dart';
+import '../app/admin_app/hr_dashboard/views/widgets/candidates/build_edit_candidate.dart';
 import '../app/home/view/screen/main_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
@@ -115,33 +118,31 @@ class AppPages {
       transition: Transition.size,
       page: () => const NewEntryScreen(),
     ),
-
     GetPage(
       name: _Paths.EMPOLYEE_VIEW_PROFILE,
       transition: Transition.size,
       page: () => const EmployeeProfileViewScreen(),
     ),
-
-
     GetPage(
       name: _Paths.EDIT_EMPOLYEE_VIEW,
       transition: Transition.size,
-      page: () =>  EditEmployee(),
-
+      page: () => EditEmployee(),
     ),
-
-  GetPage(
+    GetPage(
       name: _Paths.ALL_CANDIDATES,
       transition: Transition.size,
-      page: () =>  const AllCandidatesScreen(),
-
+      page: () => const AllCandidatesScreen(),
     ),
-  GetPage(
+
+
+    GetPage(
       name: _Paths.EDIT_CANDIDATES,
       transition: Transition.size,
-      page: () =>   BuildEditCandidate(),
-
+      page: () => BuildEditCandidate(),
     ),
+
+
+
 
 
   ];
