@@ -88,6 +88,14 @@ class Images {
   static String INTERVIEW_CANDIDATES = "assets/images/interview_candidates.svg";
   static String LEAVE_REQ = "assets/images/leave_req.svg";
   static String TIMELOG_REQ = "assets/images/timelog_req.svg";
+  static String SHEAR_JOB_ICON = "assets/images/share_job.svg";
+
+  static String WHATS_APPS_ICON = "assets/images/whats_app.svg";
+  static String SLACK_ICON = "assets/images/slack_icon.svg";
+  static String MESSENGER_ICON = "assets/images/messengers.svg";
+  static String COPY_ICON = "assets/images/copy_icon.svg";
+  static String LINKDIN = "assets/images/linkdin.svg";
+  static String REMOVE_ICON = "assets/images/remove_icon.svg";
 
 
 

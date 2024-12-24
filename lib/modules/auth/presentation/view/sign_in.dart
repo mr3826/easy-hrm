@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_password_text_field.dart';
+import '../../../../init_ app.dart';
 import '../../../../utils/utils.dart';
 import '../../../starting/view/onboarding_screen.dart';
 import '../controller/signin_controller.dart';
@@ -134,7 +135,7 @@ class SignInScreen extends GetView<SignInController> {
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_email_field_is_required.tr;
-        } else if (value.isEmpty || !RegExp(emailExp()).hasMatch(value)) {
+        } else if (value.isEmpty || !RegExp(emailValidExp()).hasMatch(value)) {
           return AppString.please_insert_a_valid_email_address.tr;
         } else {
           return null;
@@ -191,12 +192,3 @@ class SignInScreen extends GetView<SignInController> {
   }
 }
 
-emailExp() {
-  const pattern =
-      r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$';
-  return pattern;
-}
-
-passwordExp() {
-  return r"(?=.*\d)(?=.*[a-z])(?=.*\W)";
-}

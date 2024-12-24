@@ -90,3 +90,9 @@ Future<void> checkAppVersion(Box<String> box) async {
     await box.put('appVersion', currentVersion);
   }
 }
+
+emailValidExp() {
+  const pattern =
+      r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$';
+  return pattern;
+}

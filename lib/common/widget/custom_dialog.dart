@@ -98,3 +98,131 @@ import 'package:payrun_mobile/utils/dimensions.dart';
     ),
   );
 }
+
+
+
+
+
+
+void displayCustomDialog({
+  required BuildContext context,
+  IconData? icon,
+  Widget? customIconWidget,
+  Widget? customTitleWidget,
+  Widget? customDescriptionWidget,
+  double? descriptionFontSize,
+  String? titleText,
+  String? descriptionText,
+  double horizontalPadding = 20.0,
+  double verticalPadding = 20.0,
+  double buttonSpacing = 25.0,
+  Function()? onConfirmAction,
+  String? confirmButtonText,
+  Widget? confirmButtonChild,
+  String? additionalInfoText,
+  Widget? customActionButtons,
+  Color?iconBackgroundColor,
+  Color ?confirmButtonColor,
+  Color? cancelButtonColor, // Custom cancel button color
+}) {
+  showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+          vertical: verticalPadding,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon Section
+            customIconWidget ??
+                CircleAvatar(
+                  backgroundColor: iconBackgroundColor?.withOpacity(0.2),
+                  radius: 32,
+                  child: Icon(
+                    icon,
+                    size: 40,
+                    color: confirmButtonColor,
+                  ),
+                ),
+            const SizedBox(height: 12),
+
+            // Title Section
+            customTitleWidget ??
+                Text(
+                  titleText ?? "",
+                  textAlign: TextAlign.center,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.normalTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: Dimensions.fontSizeMid - 2,
+                  ),
+                ),
+            const SizedBox(height: 12),
+
+            // Description Section
+            customDescriptionWidget ??
+                Text(
+                  descriptionText ?? "",
+                  textAlign: TextAlign.center,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: descriptionFontSize ?? Dimensions.fontSizeSmall ,
+                  ),
+                ),
+
+            // Additional Info Section
+            if (additionalInfoText != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  additionalInfoText,
+                  textAlign: TextAlign.center,
+                  style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault - 3,
+                  ),
+                ),
+              ),
+            SizedBox(height: buttonSpacing),
+
+            // Action Buttons Section
+            customActionButtons ??
+                CustomDoubleAppButton(
+                  buttonText: confirmButtonText,
+                  onAction: onConfirmAction??(){},
+                  cancelAction: () => Navigator.of(context).pop(),
+                  btnColor: confirmButtonColor??Colors.blue,
+                  saveBtn: confirmButtonChild,
+                  cancelBtnColor: cancelButtonColor,
+                ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

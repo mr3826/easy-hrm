@@ -139,7 +139,7 @@ class AppPages {
   GetPage(
       name: _Paths.EDIT_CANDIDATES,
       transition: Transition.size,
-      page: () =>  const BuildEditCandidate(),
+      page: () =>   BuildEditCandidate(),
 
     ),
 

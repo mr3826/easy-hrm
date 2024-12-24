@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../../../../common/widget/custom_dialog.dart';
 import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
@@ -24,7 +29,6 @@ class BuildAllCandidates extends StatelessWidget {
             builder: (context, constraints) {
               double imageSize = constraints.maxWidth * 0.15;
               double paddingSize = constraints.maxWidth * 0.04;
-
               return Padding(
                 padding: _getPadding(), // Use a dedicated method for padding
                 child: Row(
@@ -51,8 +55,7 @@ class BuildAllCandidates extends StatelessWidget {
     return CustomNetworkImage(
       isCircleImage: true,
       radius: size / 2,
-      imageUrl:
-          "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+      imageUrl: "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
     );
   }
 
@@ -106,8 +109,7 @@ class BuildAllCandidates extends StatelessWidget {
         customSpacerWidth(width: 4),
         GestureDetector(
           onTap: () {
-            customButtonSheet(
-                height: .5, context: Get.context!, child: _buildMoreView());
+            customButtonSheet(height: .5, context: Get.context!, child: _buildMoreView());
           },
           child: Icon(
             Icons.more_horiz,
@@ -140,27 +142,45 @@ class BuildAllCandidates extends StatelessWidget {
   Widget _buildMoreView() {
     return Column(
       children: [
-        customButtonSheetAppbar(text: "Agens Nelson", subtext: "email@gmail.com"),
-
-        _buildActionOption(text: "Edit",onTap: ()=>Get.toNamed(Routes.EDIT_CANDIDATES),trailing: Image.asset(Images.EDIT_ICON)),
-
-        _buildActionOption(text: "Share",onTap: (){},trailing:  Icon(Icons.share,color: AppColor.normalTextColor.withOpacity(0.4),size: 24,)),
-
-        _buildActionOption(text: "Remove",onTap: (){},trailing:  Icon(Icons.delete_outline,color: AppColor.normalTextColor.withOpacity(0.4),size: 30,)),
-
-
+        customButtonSheetAppbar(
+            text: "Agens Nelson", subtext: "email@gmail.com"),
+        _buildActionOption(
+            text: AppString.text_edit.tr,
+            onTap: () => Get.toNamed(Routes.EDIT_CANDIDATES),
+            trailing: Image.asset(Images.EDIT_ICON)),
+        _buildActionOption(
+            text: AppString.text_share.tr,
+            onTap: () {
+              _showShareDialog();
+            },
+            trailing: Icon(
+              Icons.share,
+              color: AppColor.normalTextColor.withOpacity(0.4),
+              size: 24,
+            )),
+        _buildActionOption(
+            text: AppString.text_remove.tr,
+            onTap: () {
+              _showRemoveDialog();
+            },
+            trailing: Icon(
+              Icons.delete_outline,
+              color: AppColor.normalTextColor.withOpacity(0.4),
+              size: 30,
+            )),
       ],
     );
   }
 
   /// Builds an action button for various leave options like Approve, Reject, Edit.
-  Widget _buildActionOption({required String text, required VoidCallback onTap, Widget? trailing}) {
+  Widget _buildActionOption(
+      {required String text, required VoidCallback onTap, Widget? trailing}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6),
             child: Row(
               children: [
                 Expanded(
@@ -193,5 +213,125 @@ class BuildAllCandidates extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _showShareDialog() {
+    displayCustomDialog(
+      context: Get.context!,
+      customIconWidget: SizedBox(
+        height: 65,
+        width: 65,
+        child: customSvgImage(imageUrl: Images.SHEAR_JOB_ICON),
+      ),
+      customTitleWidget: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildDialogTitle("${AppString.text_share.tr} ", AppColor.normalTextColor),
+          _buildDialogTitle(AppString.text_candidate.replaceAll("s", ""), AppColor.secondaryColor),
+        ],
+      ),
+      customDescriptionWidget: Column(
+        children: [
+          Center(
+            child: Text(
+              AppString.text_only_admin_and_etc.tr,
+              textAlign: TextAlign.center,
+              style: AppStyle.normal_text.copyWith(
+                color: AppColor.hintColor,
+                fontSize: Dimensions.fontSizeSmall - 1,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildShareOption(Images.COPY_ICON, () {}),
+                _buildShareOption(Images.WHATS_APPS_ICON, () {}),
+                _buildShareOption(Images.SLACK_ICON, () {}),
+                _buildShareOption(Images.LINKDIN, () {}),
+                _buildShareOption(Images.MESSENGER_ICON, () {},
+                    height: 33, width: 33),
+              ],
+            ),
+          )
+        ],
+      ),
+      customActionButtons: _buildCancelAction(),
+    );
+  }
+
+  Widget _buildDialogTitle(String text, Color color) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: AppStyle.mid_large_text.copyWith(
+        color: color,
+        fontSize: Dimensions.fontSizeDefault + 1,
+      ),
+    );
+  }
+
+  Widget _buildShareOption(String imgUrl, VoidCallback onClick,
+      {double? height, double? width}) {
+    return GestureDetector(
+      onTap: onClick,
+      child: SizedBox(
+        height: height ?? 40,
+        width: width ?? 40,
+        child: customSvgImage(imageUrl: imgUrl),
+      ),
+    );
+  }
+
+  Widget _buildCancelAction() {
+    return GestureDetector(
+      onTap: () => Get.back(canPop: false),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 25.0),
+        child: Container(
+          height: AppLayout.getHeight(40),
+          width: AppLayout.getWidth(140),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            border: Border.all(
+              width: 1,
+              color: AppColor.hintColor.withOpacity(0.4),
+            ),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35.0),
+              child: Text(
+                AppString.text_cancel.tr,
+                textAlign: TextAlign.center,
+                style: AppStyle.normal_text.copyWith(
+                  color: AppColor.normalTextColor.withOpacity(0.7),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showRemoveDialog() {
+    return displayCustomDialog(
+        context: Get.context!,
+        customIconWidget: SizedBox(
+            height: 65,
+            width: 65,
+            child: customSvgImage(imageUrl: Images.REMOVE_ICON)),
+        titleText: AppString.text_remove_candidate.tr,
+        descriptionText:
+            AppString.text_are_you_sure_deleted_candidate.tr,
+        customActionButtons: CustomDoubleAppButton(
+          onAction: () {},
+          cancelAction: () => Get.back(canPop: false),
+          btnColor: AppColor.errorColorLight,
+          buttonText: AppString.text_remove.tr,
+        ));
   }
 }

@@ -379,6 +379,14 @@ class AppString {
 
 static String text_candidate="Candidates";
 static String text_edit_candidate="Edit Candidates";
+static String text_remove_candidate="Remove candidate";
+
+static String text_share="Share";
+static String text_only_admin_and_etc="Only admin and the hiring team members can view this candidate";
+
+
+
+static String text_are_you_sure_deleted_candidate="Are you sure want to delete this candidate? Once deleted, this action cannot be undone.";
 
 
 

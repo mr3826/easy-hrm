@@ -9,7 +9,6 @@ import '../../../../employee/presentation/view/screen/employee_screen.dart';
 import '../../../../employee/presentation/view/widget/employee_list/search_with_filter.dart';
 import '../widget/candidates/build_all_candidates.dart';
 
-
 class AllCandidatesScreen extends StatelessWidget {
   const AllCandidatesScreen({super.key});
 
@@ -17,21 +16,16 @@ class AllCandidatesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppbar(title: AppString.text_candidate.tr),
-      body:  Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customSpacerHeight(height: 8),
           _buildSearchWithFilters(),
-
           const BuildAllCandidates()
-
-
-
         ],
       ),
     );
   }
-
 
   Widget _buildSearchWithFilters() {
     return Row(
@@ -59,5 +53,4 @@ class AllCandidatesScreen extends StatelessWidget {
       ],
     );
   }
-
 }

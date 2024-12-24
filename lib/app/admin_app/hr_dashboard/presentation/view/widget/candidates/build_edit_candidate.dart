@@ -7,49 +7,62 @@ import '../../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/custom_title_text_widget.dart';
+import '../../../../../../../init_ app.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../controller/hr_deshboard_controller.dart';
 
 class BuildEditCandidate extends StatelessWidget {
-  const BuildEditCandidate({super.key});
-
+  BuildEditCandidate({super.key});
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     HrDashBoardController controller = Get.put(HrDashBoardController());
-
     return Scaffold(
       appBar: customAppbar(title: AppString.text_edit_candidate.tr),
-      body: Padding(
-        padding: marginLayout,
-        child: Column(
-          children: [
-            _userTextFieldLayout(
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: marginLayout,
+          child: Column(
+            children: [
+              _userTextFieldLayout(
                 titleText: "Email",
                 controller: controller.candidateEmail,
-                hintText: "Enter email address"),
-            _userTextFieldLayout(
-                titleText: AppString.text_first_name,
-                controller: controller.candidateFirstName,
-                hintText: "Enter first name"),
-            _userTextFieldLayout(
-                titleText: AppString.text_last_name,
-                controller: controller.candidateLastName,
-                hintText: "Enter last name"),
-            customSpacerHeight(height: 26),
-            _buildButton()
-          ],
+                hintText: "Enter email address",
+                validator: (value) {
+                  if (value.isEmpty ||
+                      !RegExp(emailValidExp()).hasMatch(value)) {
+                    return AppString.please_insert_a_valid_email_address.tr;
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              _userTextFieldLayout(
+                  titleText: AppString.text_first_name,
+                  controller: controller.candidateFirstName,
+                  hintText: "Enter first name"),
+              _userTextFieldLayout(
+                  titleText: AppString.text_last_name,
+                  controller: controller.candidateLastName,
+                  hintText: "Enter last name"),
+              customSpacerHeight(height: 26),
+              _buildButton(context)
+            ],
+          ),
         ),
       ),
     );
   }
 
-  _buildButton() {
+  _buildButton(context) {
+    return CustomDoubleAppButton(onAction: () {
+      FocusScope.of(context).requestFocus(FocusNode());
 
-    return CustomDoubleAppButton(
-        onAction: () {},
-        cancelAction: () {
-         _clear();
-        });
+      if (_formKey.currentState!.validate()) {}
+    }, cancelAction: () {
+      _clear();
+    });
   }
 
   void _clear() {
