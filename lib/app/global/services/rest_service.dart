@@ -5,19 +5,26 @@ class RestService {
 
   RestService(this._dio);
 
-  Future<Response> get(String path) async {
+  Future<Response?> get(String path) async {
     try {
       return await _dio.get(path);
-    } catch (e) {
-      rethrow; // You can handle error more gracefully here
+    } on DioError catch (e) {
+      _handleError(e);
+      return null;
     }
   }
 
-  Future<Response> post(String path, dynamic data) async {
+  Future<Response?> post(String path, dynamic data) async {
     try {
       return await _dio.post(path, data: data);
-    } catch (e) {
-      rethrow; // You can handle error more gracefully here
+    } on DioError catch (e) {
+      _handleError(e);
+      return null;
     }
+  }
+
+  void _handleError(DioError e) {
+    final errorMessage = e.response?.data['message'] ?? e.message;
+    print('API call failed: ${e.response?.statusCode}, $errorMessage');
   }
 }

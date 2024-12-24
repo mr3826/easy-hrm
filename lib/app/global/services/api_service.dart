@@ -1,40 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:payrun_mobile/app/global/services/rest_service.dart';
-import 'package:payrun_mobile/app/global/services/webSocket_service.dart';
 import 'graphQL_service.dart';
 
 class ApiService {
   final RestService _restService;
   final GraphQLService _graphQLService;
-  final WebSocketService _webSocketService;
 
   ApiService({
     required RestService restService,
     required GraphQLService graphQLService,
-    required WebSocketService webSocketService,
   })  : _restService = restService,
-        _graphQLService = graphQLService,
-        _webSocketService = webSocketService;
+        _graphQLService = graphQLService;
 
   // Method for making a REST API call # GET
-  Future<Response?> makeGetApiCall(String endpoint) async {
-    try {
-      return await _restService.get(endpoint);
-    } catch (e) {
-      print('Error in API call: $e');
-    }
-    return null;
-  }
+  Future<Response?> makeGetApiCall(String endpoint) async =>
+      await _restService.get(endpoint);
 
   // Method for making a REST API call # POST
-  Future<Response?> makePostApiCall(String endpoint, dynamic data) async {
-    try {
-      return await _restService.post(endpoint, data);
-    } catch (e) {
-      print('Error in API call: $e');
-    }
-    return null;
-  }
+  Future<Response?> makePostApiCall(String endpoint, dynamic data) async =>
+      await _restService.post(endpoint, data);
 
   // Method for making a GraphQL query
   Future<void> makeGraphQLQuery(String query) async {
@@ -62,13 +46,6 @@ class ApiService {
     } catch (e) {
       print('Error in GraphQL mutation: $e');
     }
-  }
-
-  // Method for subscribing to WebSocket updates
-  void subscribeToWebSocket(String subscription) {
-    _webSocketService.subscribe(subscription).listen((data) {
-      print('WebSocket Data: $data');
-    });
   }
 }
 

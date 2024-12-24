@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/domain/user_info.dart';
 import 'package:payrun_mobile/network/network_client.dart';
-import '../../modules/auth/domain/org_subscription_Info_model.dart';
-import '../../network/exception_helper.dart';
-import '../../utils/api_endpoints.dart';
+import '../../../modules/auth/domain/org_subscription_Info_model.dart';
+import '../../../network/exception_helper.dart';
+import '../../../utils/api_endpoints.dart';
 
 class UserInfoController {
   final NetworkClient _networkClient = Get.find<NetworkClient>();

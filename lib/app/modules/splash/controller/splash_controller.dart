@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:payrun_mobile/common/controller/user_info_controller.dart';
+import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';

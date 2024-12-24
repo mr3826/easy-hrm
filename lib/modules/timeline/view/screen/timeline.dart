@@ -14,9 +14,9 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
-import '../../../../common/controller/user_info_controller.dart';
+import '../../../../app/global/controller/user_info_controller.dart';
 import '../../../../utils/app_style.dart';
-import '../../../auth/presentation/controller/signin_controller.dart';
+import '../../../../app/modules/auth/controller/signin_controller.dart';
 import '../../../dashboard/presentation/view/widget/entry_time_widget.dart';
 import '../widget/custom_timeline_calendar.dart';
 

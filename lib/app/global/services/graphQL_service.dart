@@ -1,11 +1,11 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../services/auth_service.dart';
+import '../services/auth_token_service.dart';
 import '../config/graphql_config.dart';
 
 class GraphQLService {
   final GraphQLClient _client;
 
-  GraphQLService(AuthService authService)
+  GraphQLService(AuthTokenService authService)
       : _client = GraphQLConfig.client(authService);
 
   Future<QueryResult> query(String query,

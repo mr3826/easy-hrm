@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:dio/dio.dart' as di;
-import 'package:payrun_mobile/common/controller/user_info_controller.dart';
+import 'package:payrun_mobile/app/global/services/api_service.dart';
+import 'package:payrun_mobile/app/global/services/local_storage_service.dart';
+import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import 'package:payrun_mobile/common/domain/last_input_model.dart';
 import 'package:payrun_mobile/common/domain/user_info.dart';
 import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
@@ -68,7 +70,8 @@ class SignInController extends GetxController with StateMixin {
     isSignInLoading(true); // Start loading
     try {
       // API call to perform login
-      di.Response response = await _networkClient.postRequest(Api.LOGIN, {
+      di.Response? response =
+          await Get.find<ApiService>().makePostApiCall(Api.LOGIN, {
         "email": email,
         "password": password,
         "device_token": Platform.isIOS
@@ -76,7 +79,7 @@ class SignInController extends GetxController with StateMixin {
             : deviceToken,
         "push_notification_platform": Platform.isIOS ? "apns" : "pushy"
       });
-      if (response.statusCode == 200) {
+      if (response != null) {
         _handleTokenInfo(response);
         final userInfoResponse =
             await Get.find<UserInfoController>().getUserInfo();
@@ -124,10 +127,11 @@ class SignInController extends GetxController with StateMixin {
   }
 
   void _handleTokenInfo(di.Response response) {
-    GetStorage().write(AppString.ACCESS_TOKEN,
-        SignInResponse.fromJson(response.data).data?.accessToken);
-    GetStorage().write(AppString.REFRESH_TOKEN,
-        SignInResponse.fromJson(response.data).data?.refreshToken);
+    Get.find<LocalStoreService>()
+      ..write(AppString.ACCESS_TOKEN,
+          SignInResponse.fromJson(response.data).data?.accessToken)
+      ..write(AppString.REFRESH_TOKEN,
+          SignInResponse.fromJson(response.data).data?.refreshToken);
   }
 
   Future<void> _initializeDeviceToken() async {

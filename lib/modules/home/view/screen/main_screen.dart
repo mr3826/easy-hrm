@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/common/controller/user_info_controller.dart';
+import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import 'package:payrun_mobile/modules/home/view/widget/main_screen_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';

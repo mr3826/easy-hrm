@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
-import '../services/auth_service.dart';
+import 'package:get/get.dart';
+import '../../../utils/api_endpoints.dart';
+import '../services/auth_token_service.dart';
+import '../services/token_refresh_service.dart';
 
 class DioConfig {
-  static Dio createDio(AuthService authService) {
+  static Dio createDio(AuthTokenService authService) {
     final dio = Dio();
-    dio.options.baseUrl = 'https://api.example.com';
+    dio.options.baseUrl = Api.PUBLIC_URL;
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['User-Agent'] = 'getx-client';
 
@@ -18,7 +21,7 @@ class DioConfig {
       },
       onError: (error, handler) async {
         if (error.response?.statusCode == 401) {
-          final newToken = await authService.refreshAccessToken();
+          final newToken = await Get.find<TokenRefreshService>().refreshAccessToken();
           if (newToken != null) {
             error.requestOptions.headers['Authorization'] = newToken;
             final retryResponse = await dio.request(
@@ -31,6 +34,11 @@ class DioConfig {
               queryParameters: error.requestOptions.queryParameters,
             );
             return handler.resolve(retryResponse);
+          } else {
+            return handler.reject(DioError(
+              requestOptions: error.requestOptions,
+              error: 'Failed to refresh token',
+            ));
           }
         }
         return handler.next(error);
