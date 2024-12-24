@@ -16,7 +16,7 @@ import '../../../../utils/dimensions.dart';
 import '../../../../utils/utils.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../../leave/presentation/view/widget/status_btn_widget.dart';
-import '../../../starting/view/onboarding_screen.dart';
+import '../../../../app/modules/onboard/view/onboarding_screen.dart';
 
 class AddToTaskScreen extends StatelessWidget {
   const AddToTaskScreen({super.key});

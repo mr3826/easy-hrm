@@ -15,7 +15,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_password_text_field.dart';
 import '../../../../utils/utils.dart';
-import '../../../starting/view/onboarding_screen.dart';
+import '../../../../app/modules/onboard/view/onboarding_screen.dart';
 import '../controller/signin_controller.dart';
 
 class SignInScreen extends GetView<SignInController> {

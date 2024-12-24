@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:calendar_view/calendar_view.dart';
 import 'package:payrun_mobile/init_%20app.dart';
-import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
+import 'package:payrun_mobile/app/modules/splash/controller/splash_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/language/internationalization.dart';

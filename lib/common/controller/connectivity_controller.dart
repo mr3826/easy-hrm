@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/modules/starting/controller/splash_controller.dart';
+import 'package:payrun_mobile/app/modules/splash/controller/splash_controller.dart';
 import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_layout.dart';

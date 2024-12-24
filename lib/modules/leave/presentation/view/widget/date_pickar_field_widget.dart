@@ -4,7 +4,7 @@ import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../starting/view/splash_screen.dart';
+import '../../../../../app/modules/splash/view/splash_screen.dart';
 
 Widget dateLayoutField({required onAction,required date}) {
   DateTime originalDate = DateTime.parse(date);
