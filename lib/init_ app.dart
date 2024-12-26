@@ -13,6 +13,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'firebase_options.dart';
 
+const MethodChannel _channel =
+MethodChannel('com.gainhq.easydesk/notifications_badge');
+
 Future<void> initApp() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
