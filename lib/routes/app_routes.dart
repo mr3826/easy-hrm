@@ -25,6 +25,7 @@ abstract class Routes {
   static const EDIT_EMPOLYEE_VIEW = _Paths.EDIT_EMPOLYEE_VIEW;
   static const ALL_CANDIDATES = _Paths.ALL_CANDIDATES;
   static const EDIT_CANDIDATES = _Paths.EDIT_CANDIDATES;
+  static const JOB_DETAILS = _Paths.JOB_DETAILS;
 }
 
 abstract class _Paths {
@@ -52,4 +53,5 @@ abstract class _Paths {
   static const EDIT_EMPOLYEE_VIEW = '/edit_employee_view_screen';
   static const ALL_CANDIDATES = '/all_candidates_view_screen';
   static const EDIT_CANDIDATES = '/edit_candidates_screen';
+  static const JOB_DETAILS = '/job_details_screen';
 }

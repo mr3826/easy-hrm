@@ -11,10 +11,18 @@ import '../../enum.dart';
 import '../../utils/images.dart';
 import '../../utils/utils.dart';
 
-Widget customButtonSheetAppbar({required String text, String? subtext, bool isLeave = false, String? status, String? duration,TextStyle ?subTextStyle}) {
+Widget customButtonSheetAppbar(
+    {double? height,
+    String? text,
+    Widget? titleWidget,
+    String? subtext,
+    bool isLeave = false,
+    String? status,
+    String? duration,
+    TextStyle? subTextStyle}) {
   if (isLeave) {
     return _leaveBtnAppbarLayout(
-      text: text,
+      text: text ?? "No title",
       subtext: subtext,
       status: status,
       duration: duration,
@@ -28,27 +36,28 @@ Widget customButtonSheetAppbar({required String text, String? subtext, bool isLe
           topLeft: Radius.circular(18),
         ),
       ),
-      height: 100,
+      height: height ?? 100,
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            text,
-            style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.secondaryColor,
-              fontWeight: FontWeight.w700,
-              fontSize: Dimensions.fontSizeDefault+3,
-
-            ),
-          ),
+          titleWidget ??
+              Text(
+                text ?? "No title",
+                style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.secondaryColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: Dimensions.fontSizeDefault + 3,
+                ),
+              ),
           if (subtext != null) ...[
             Text(
               subtext,
-              style: subTextStyle ?? AppStyle.mid_large_text.copyWith(
-                color:AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault,
-              ),
+              style: subTextStyle ??
+                  AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault,
+                  ),
             ),
           ],
         ],
@@ -145,9 +154,6 @@ _transformDashLayout(status) {
   );
 }
 
-
-
-
 Future customButtonSheet(
     {context,
     double height = 0.9,
@@ -183,8 +189,6 @@ Future customButtonSheet(
     },
   );
 }
-
-
 
 _getStatusButton(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {

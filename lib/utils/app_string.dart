@@ -378,6 +378,7 @@ class AppString {
   ///hr dash-board string
 
 static String text_candidate="Candidates";
+static String text_job_details="Job details";
 static String text_edit_candidate="Edit Candidates";
 static String text_remove_candidate="Remove candidate";
 
@@ -388,6 +389,9 @@ static String text_job_post="Job post";
 static String text_stage="Stage";
 static String text_department="Department";
 static String text_rating="Rating";
+
+static String text_move_to_the_next="Move to the next";
+static String text_move_anywhere="Move anywhere";
 
 
 static String text_only_admin_and_etc="Only admin and the hiring team members can view this candidate";

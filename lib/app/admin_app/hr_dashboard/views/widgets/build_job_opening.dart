@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../utils/app_color.dart';
@@ -30,26 +31,29 @@ class BuildJobOpening extends StatelessWidget {
                 controller: controller.scrollController,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Container(
-                      width: containerWidth,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          width: 1.5,
-                          color: AppColor.hintColor.withOpacity(0.2),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildImage(imageHeight),
-                          _buildJobDescription(
-                            jobName: controller.jobIndex[index],
-                            containerWidth: containerWidth,
+                  return GestureDetector(
+                    onTap: ()=>Get.toNamed(Routes.JOB_DETAILS),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Container(
+                        width: containerWidth,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            width: 1.5,
+                            color: AppColor.hintColor.withOpacity(0.2),
                           ),
-                        ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildImage(imageHeight),
+                            _buildJobDescription(
+                              jobName: controller.jobIndex[index],
+                              containerWidth: containerWidth,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

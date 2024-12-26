@@ -4,6 +4,7 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
+import 'package:payrun_mobile/common/widget/hr_deshboard/more_info_text_divider.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -139,16 +140,18 @@ class BuildAllCandidates extends StatelessWidget {
     );
   }
 
+
+
   Widget _buildMoreView() {
     return Column(
       children: [
         customButtonSheetAppbar(
             text: "Agens Nelson", subtext: "email@gmail.com"),
-        _buildActionOption(
+        customMoreInfoTextWithDiver(
             text: AppString.text_edit.tr,
             onTap: () => Get.toNamed(Routes.EDIT_CANDIDATES),
             trailing: Image.asset(Images.EDIT_ICON)),
-        _buildActionOption(
+        customMoreInfoTextWithDiver(
             text: AppString.text_share.tr,
             onTap: () {
               _showShareDialog();
@@ -158,7 +161,7 @@ class BuildAllCandidates extends StatelessWidget {
               color: AppColor.normalTextColor.withOpacity(0.4),
               size: 24,
             )),
-        _buildActionOption(
+        customMoreInfoTextWithDiver(
             text: AppString.text_remove.tr,
             onTap: () {
               _showRemoveDialog();
@@ -172,48 +175,6 @@ class BuildAllCandidates extends StatelessWidget {
     );
   }
 
-  /// Builds an action button for various leave options like Approve, Reject, Edit.
-  Widget _buildActionOption(
-      {required String text, required VoidCallback onTap, Widget? trailing}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    color: AppColor.cardColor,
-                    width: double.infinity,
-                    height: 54,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      text,
-                      style: AppStyle.normal_text_black.copyWith(
-                        color: AppColor.normalTextColor.withOpacity(0.8),
-                        fontSize: Dimensions.fontSizeDefault + 1,
-                      ),
-                    ),
-                  ),
-                ),
-                if (trailing != null) Container(child: trailing)
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6),
-            child: Container(
-              height: .8,
-              width: double.infinity,
-              color: AppColor.disableColor,
-            ),
-          )
-        ],
-      ),
-    );
-  }
 
   void _showShareDialog() {
     displayCustomDialog(

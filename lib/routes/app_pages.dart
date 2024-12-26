@@ -16,6 +16,7 @@ import '../app/admin_app/employee/presentation/view/screen/employee_profile_view
 import '../app/admin_app/employee/presentation/view/widget/employee_list/edit_employee.dart';
 import '../app/admin_app/hr_dashboard/controllers/hr_deshboard_controller.dart';
 import '../app/admin_app/hr_dashboard/views/all_candidates_screen.dart';
+import '../app/admin_app/hr_dashboard/views/job_details_screen.dart';
 import '../app/admin_app/hr_dashboard/views/widgets/candidates/build_edit_candidate.dart';
 import '../app/home/view/screen/main_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
@@ -139,6 +140,11 @@ class AppPages {
       name: _Paths.EDIT_CANDIDATES,
       transition: Transition.size,
       page: () => BuildEditCandidate(),
+    ),
+    GetPage(
+      name: _Paths.JOB_DETAILS,
+      transition: Transition.size,
+      page: () => const JobDetailsScreen(),
     ),
 
 

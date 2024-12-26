@@ -105,6 +105,7 @@ class Images {
   static String EDIT_ICON = "assets/images/edit_icon.png";
   static String KEY_ICON = "assets/images/key.png";
   static String ORG = "assets/images/org.png";
+  static String MOVE_ANY_WHERE_ICON = "assets/images/move_any_where_icon.png";
   static String timer_animation = "assets/json/timer.json";
   static String timer_stop_line_animation = "assets/json/timer_stop_horizontal_line.json";
 }

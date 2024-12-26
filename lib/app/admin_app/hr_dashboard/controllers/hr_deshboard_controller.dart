@@ -5,6 +5,7 @@ import '../../employee/presentation/view/widget/filter/check_box.dart';
 
 class HrDashBoardController extends GetxController {
   final RxInt currentIndex = 0.obs;
+  final RxInt jobTabCurrentIndex = 0.obs;
   final ScrollController scrollController = ScrollController();
 
   List jobIndex = ["Job 1", "Job 2", "Job 3", "Job 4"]; // Example data

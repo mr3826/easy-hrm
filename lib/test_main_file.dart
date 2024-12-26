@@ -1,72 +1,63 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: YearList(),
-  ));
-}
+void main() => runApp(MyApp());
 
-class YearList extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _YearListState createState() => _YearListState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DynamicTabBar(),
+    );
+  }
 }
 
-class _YearListState extends State<YearList> {
-  List<int> years = [];
-  int currentYear = DateTime.now().year;
+class DynamicTabBar extends StatefulWidget {
+  @override
+  _DynamicTabBarState createState() => _DynamicTabBarState();
+}
+
+class _DynamicTabBarState extends State<DynamicTabBar> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  List<String> tabNames = ["New", "Rejected", "Dynamic","Dynamic","New", "Rejected", "Dynamic","Dynamic",];
+
+
+  List<List<String>> tabContents = [
+    ["Agens Neilson", "Peter Doppler", "Urichc Neilson"],
+    ["John Doe", "Jane Smith", "Alice Johnson"],
+    ["Tom Hanks", "Emma Watson", "Robert Downey Jr."]
+  ];
 
   @override
   void initState() {
     super.initState();
-    _generateInitialYears(); // Load the initial years
-  }
-
-  /// Generate the initial list of years
-  void _generateInitialYears() {
-    years = [
-      for (int i = 0; i < 25; i++) currentYear - i, // Current and last 24 years
-      for (int i = 1; i <= 2; i++) currentYear + i, // Next 2 years
-    ];
-    setState(() {});
-  }
-
-  /// Load more future years when scrolling upwards
-  void _loadMoreYears() {
-    final lastYear = years.first; // Get the earliest year in the list
-    final newYears = [for (int i = 1; i <= 2; i++) lastYear + i]; // Next 2 years
-    years.insertAll(0, newYears); // Add at the start of the list
-    setState(() {});
+    _tabController = TabController(length: tabNames.length, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dynamic Year List'),
-        centerTitle: true,
+        title: Text("Dynamic TabBar Example"),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: tabNames
+              .map((name) => Tab(text: name))
+              .toList(),
+        ),
       ),
-      body: ListView.builder(
-        reverse: true, // Display years in descending order (most recent at bottom)
-        itemCount: years.length + 1, // Add extra space for the loading indicator
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            // Show loading indicator when at the top of the list
-            _loadMoreYears();
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CircularProgressIndicator(),
-              ),
+      body: TabBarView(
+        controller: _tabController,
+        children: tabContents
+            .map((content) => ListView.builder(
+          itemCount: content.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(content[index]),
+              subtitle: Text('email@demo.com'),
             );
-          }
-          return ListTile(
-            title: Text(
-              years[index - 1].toString(), // Adjust index for the loader
-              style: TextStyle(fontSize: 18),
-            ),
-          );
-        },
+          },
+        ))
+            .toList(),
       ),
     );
   }
