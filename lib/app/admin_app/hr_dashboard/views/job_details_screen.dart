@@ -27,8 +27,7 @@ class JobDetailsScreen extends StatelessWidget {
           customSpacerHeight(height: 4),
 
           const TabBarWidget(),
-          BuildTabBarBody()
-
+          const BuildTabBarBody()
 
 
           //_tabBarList()

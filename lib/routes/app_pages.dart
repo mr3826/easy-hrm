@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/candidate_details_screen.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
@@ -141,10 +142,16 @@ class AppPages {
       transition: Transition.size,
       page: () => BuildEditCandidate(),
     ),
+
     GetPage(
       name: _Paths.JOB_DETAILS,
       transition: Transition.size,
       page: () => const JobDetailsScreen(),
+    ),
+   GetPage(
+      name: _Paths.CANDIDATES_DETAILS,
+      transition: Transition.size,
+      page: () => const CandidateDetailsScreen(),
     ),
 
 

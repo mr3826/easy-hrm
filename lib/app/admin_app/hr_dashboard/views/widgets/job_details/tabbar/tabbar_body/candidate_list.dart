@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
 import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
 import '../../../../../../../../utils/app_color.dart';
@@ -21,27 +22,30 @@ class CandidateList extends StatelessWidget {
       child: ListView.builder(
         itemCount: 5,
         itemBuilder: (context, index) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              double imageSize = constraints.maxWidth * 0.15;
-              double paddingSize = constraints.maxWidth * 0.03;
-              return Padding(
-                padding: _getPadding(), // Use a dedicated method for padding
-                child: Container(
-                  decoration: _containerStyle(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        _buildProfileImage(imageSize),
-                        SizedBox(width: paddingSize),
-                        _buildCandidateInfo(context),
-                      ],
+          return GestureDetector(
+            onTap: ()=>Get.toNamed(Routes.CANDIDATES_DETAILS),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                double imageSize = constraints.maxWidth * 0.15;
+                double paddingSize = constraints.maxWidth * 0.03;
+                return Padding(
+                  padding: _getPadding(), // Use a dedicated method for padding
+                  child: Container(
+                    decoration: _containerStyle(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          _buildProfileImage(imageSize),
+                          SizedBox(width: paddingSize),
+                          _buildCandidateInfo(context),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),
@@ -57,8 +61,7 @@ class CandidateList extends StatelessWidget {
       isCircleImage: true,
       radius: size / 2.7,
       borderColor: Colors.transparent,
-      imageUrl:
-          "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+      imageUrl: "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
     );
   }
 
