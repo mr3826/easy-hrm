@@ -22,10 +22,9 @@ import '../model/hr_leave_record.dart';
 import '../model/leave_details_by_id.dart';
 import 'hr_update_leave_controller.dart';
 
-
 class HrLeaveController extends GetxController {
   final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
-  final LeaveRemoteDataSource _leaveRemoteDataSource= Get.find();
+  final LeaveRemoteDataSource _leaveRemoteDataSource = Get.find();
   HrLeaveCalender? hrLeaveCalender = HrLeaveCalender();
   LeaveDetailsById? leaveDetailsById = LeaveDetailsById();
   DownloadFile? downloadFile = DownloadFile();
@@ -45,19 +44,18 @@ class HrLeaveController extends GetxController {
   RxString selectedEmployeeImgKey = "".obs;
   String selectedEmployeeId = "";
   RxString calculateAllowanceOfLeave = ''.obs;
-   String? leaveTypeId;
-   String? leaveId;
-   String? fileName;
-   String? fileKey;
-   String? fileId;
-   String? fileSize;
+  String? leaveTypeId;
+  String? leaveId;
+  String? fileName;
+  String? fileKey;
+  String? fileId;
+  String? fileSize;
 
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
-
-
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getHrLeaveCalender({String? startDate, String? endDate,String?assignedId}) async {
+  Future<void> getHrLeaveCalender(
+      {String? startDate, String? endDate, String? assignedId}) async {
     String getDefaultStartDate() {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month, 1).toIso8601String().split('T')[0]}T00:00:00.000Z";
@@ -68,18 +66,24 @@ class HrLeaveController extends GetxController {
       return "${DateTime(now.year, now.month + 1, 0).toIso8601String().split('T')[0]}T23:59:59.999Z";
     }
 
-    print("startDate :: ${getDefaultEndDate()} end_date : ${getDefaultEndDate()}");
+
+    Map<String, Map<String, Object>> queryMap = {"queryData": {}};
+
+    queryMap["queryData"]?["startDate"] = startDate ?? getDefaultStartDate();
+
+    queryMap["queryData"]?["endDate"] = endDate ?? getDefaultEndDate();
+
+    if (assignedId != null) {
+      queryMap["queryData"]?["assigned_to"] = assignedId;
+    }
 
     isHrLeaveCalendarLoading(true);
-    hrLeaveCalender = await _hrLeaveRemoteDataSource.getLeaveCalender(
-        startDate: startDate??getDefaultStartDate(), endDate: endDate??getDefaultEndDate(),assignedId:assignedId );
+
+    hrLeaveCalender =
+        await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
 
     isHrLeaveCalendarLoading(false);
   }
-
-
-
-
 
   /// Constructs and returns a map of tasks grouped by date.
   /// Each task corresponds to a leave request.
@@ -173,17 +177,6 @@ class HrLeaveController extends GetxController {
         [];
   }
 
-
-
-
-
-
-
-
-
-
-
-
   /// update a leave and updates the relevant data if successful.
   Future<void> updateLeave({required String leaveId, String? status}) async {
     updateLeaveLoader(true);
@@ -199,7 +192,6 @@ class HrLeaveController extends GetxController {
     updateLeaveLoader(false);
   }
 
-
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getLeaveDetailsById({String? leaveId}) async {
     isHrLeaveDetailsByLoading(true);
@@ -208,7 +200,6 @@ class HrLeaveController extends GetxController {
     isHrLeaveDetailsByLoading(false);
   }
 
-
   /// Fetches employee leave document download .
   Future<void> getLeaveDocumentDownloadByUrl({String? imageKey}) async {
     isDownloadLoading(true);
@@ -216,14 +207,16 @@ class HrLeaveController extends GetxController {
     isDownloadLoading(false);
   }
 
-
   /// Fetches employee leave record hr.
-  Future<void> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
+  Future<void> getLeaveRecord(
+      {String? startDate, String? endDate, String? assignedLeaveId}) async {
     // Default to the first day of the current month for startDate if null
-    String start = startDate ?? "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
+    String start = startDate ??
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
 
     // Default to the last day of the current month for endDate if null
-    String end = endDate ?? "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0)}";
+    String end = endDate ??
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0)}";
 
     isLoadingLeaveRecord(true);
     leaveRecorde = await _hrLeaveRemoteDataSource.getLeaveRecord(
@@ -243,37 +236,40 @@ class HrLeaveController extends GetxController {
     isAvailableLeaveType(false);
   }
 
-
-  Future<void> applyLeave({String? filePath,String ?assignedId ,String ?status}) async {
+  Future<void> applyLeave(
+      {String? filePath, String? assignedId, String? status}) async {
     isAssignLeaveLoaderLoading(true);
 
     // Preparing the input data for the GraphQL mutation
     final Map<String, dynamic> inputData = {
       "description": leaveNoteController.text,
-      "end_date": DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).toUtc().toString(),
-      "start_date": DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value).toUtc().toString(),
-      "assigned_to": selectedEmployeeId.isEmpty?"${GetStorage().read(AppString.ORGANIZATION_USER_ID)}":selectedEmployeeId,
+      "end_date":
+          DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
+              .toUtc()
+              .toString(),
+      "start_date":
+          DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)
+              .toUtc()
+              .toString(),
+      "assigned_to": selectedEmployeeId.isEmpty
+          ? "${GetStorage().read(AppString.ORGANIZATION_USER_ID)}"
+          : selectedEmployeeId,
       "status": status ?? "pending",
       "leave_type_id": leaveTypeId,
       "files": _prepareFileData()
     };
 
-
     final bool response = await _leaveRemoteDataSource.applyLeave(inputData);
 
     // Handling the response
     if (response) {
-
       leaveTypeId = '';
       isFileUploadedSuccessfully(false);
       showSuccessMessage(message: AppString.leaveAddedSuccessMessage.tr);
       hrUpdateLeave();
-
     }
     isAssignLeaveLoaderLoading(false);
   }
-
-
 
   /// Prepares the file data for the leave request.
   List<Map<String, dynamic>>? _prepareFileData() {
@@ -283,11 +279,11 @@ class HrLeaveController extends GetxController {
     }
 
     String fileKey = uploadPolicyResponse.getUploadPolicy?.policyData
-        ?.firstWhere((PolicyData e) => e.name?.toLowerCase() == 'key',
-        orElse: () => PolicyData())
-        .value
-        ?.split("/")
-        .last ??
+            ?.firstWhere((PolicyData e) => e.name?.toLowerCase() == 'key',
+                orElse: () => PolicyData())
+            .value
+            ?.split("/")
+            .last ??
         "";
 
     return [
@@ -302,21 +298,21 @@ class HrLeaveController extends GetxController {
     ];
   }
 
-
-
   getUploadPolicy({fileName}) async {
     isUploadPolicyLoading(true);
-    final response = await NetworkClient().graphRequest(queryString: getUploadPolicyQuery, variables: {
+    final response = await NetworkClient()
+        .graphRequest(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
         "filename":
-        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getUploadPolicy");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getUploadPolicy");
     } else {
       uploadPolicyResponse = UploadPolicyResponse.fromJson(response.data!);
       uploadFile(
@@ -329,8 +325,8 @@ class HrLeaveController extends GetxController {
 
   uploadFile(
       {required String fileName,
-        List<PolicyData>? list,
-        required String url}) async {
+      List<PolicyData>? list,
+      required String url}) async {
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 
@@ -343,15 +339,13 @@ class HrLeaveController extends GetxController {
         "file",
         MultipartFile(File(fileName),
             filename:
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+                "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
       isFileUploadedSuccessfully.value = true;
     }, onError: (_) => isFileUploadedSuccessfully.value = false);
     isUploadPolicyLoading(false);
   }
-
-
 
   @override
   void onInit() {
@@ -360,7 +354,3 @@ class HrLeaveController extends GetxController {
     super.onInit();
   }
 }
-
-
-
-

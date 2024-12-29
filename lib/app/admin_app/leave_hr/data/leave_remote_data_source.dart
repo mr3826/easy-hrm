@@ -15,25 +15,11 @@ class HrLeaveRemoteDataSource {
 
   HrLeaveRemoteDataSource(this.networkClient);
 
-  Future<HrLeaveCalender?> getLeaveCalender(
-      {String? startDate, String? endDate, String? assignedId}) async {
+  Future<HrLeaveCalender?> getLeaveCalender({required Map<String, Map<String, Object>> queryMap}) async {
     try {
       final response = await networkClient.graphRequest(
         queryString: getHrLeaveCalendarList,
-        variables: assignedId == null
-            ? {
-                "queryData": {
-                  "startDate": startDate,
-                  "endDate": endDate,
-                },
-              }
-            : {
-                "queryData": {
-                  "startDate": startDate,
-                  "endDate": endDate,
-                  "assigned_to": assignedId
-                },
-              },
+        variables: queryMap,
       );
       if (response.hasException) {
         final exceptionMessage = response.exception.toString();
