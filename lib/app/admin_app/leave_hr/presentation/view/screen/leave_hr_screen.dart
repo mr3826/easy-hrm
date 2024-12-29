@@ -11,6 +11,7 @@ import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
+import '../../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
 import '../../../../../../modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
@@ -248,10 +249,7 @@ class LeaveHrScreen extends StatelessWidget {
               1.2, // Using a fraction for clarity
           context: context,
           onClose: () {
-            Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-                (-1); //clear selection index.
-            Get.find<HrLeaveController>().selectedEmployeeInfo.value =
-                AppString.textSearchEmployee.tr;
+            _clear();
           },
           child: const AssignLeave(),
         );
@@ -268,6 +266,15 @@ class LeaveHrScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
       child: const Icon(Icons.add, size: 28),
     );
+  }
+
+  void _clear() {
+    Get.find<LeaveController>().leaveTypeSelectedIndex.value =
+        (-1); //clear selection index
+    Get.find<HrLeaveController>().selectedEmployeeInfo.value =
+        AppString.textSearchEmployee.tr;
+    Get.find<FileUploadController>().storageForUpload.filePath.value = "";
+    Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
   }
 }
 

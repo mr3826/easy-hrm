@@ -20,7 +20,6 @@ import '../../../../../../../modules/leave/presentation/controller/file_upload_c
 import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/images.dart';
-import '../../../controller/hr_update_leave_controller.dart';
 import '../../../controller/picked_file_from_stroage.dart';
 import 'assign_leave_selected_view.dart';
 
@@ -161,33 +160,37 @@ class AssignLeave extends GetView<HrLeaveController> {
     LeaveFileUploadController controller = Get.put(LeaveFileUploadController());
 
     return Padding(
-      padding: const EdgeInsets.only(left: 18, bottom: 18, right: 18),
-      child: Obx(() => CustomDoubleAppButton(
-          onAction:
-              Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
-                  ? () {
-                      customAntButtonSheet(
-                          height: MediaQuery.of(context).size.height / 1.2,
-                          context: context,
-                          child: const AssignLeaveSelectedValue());
-                      controller.path.value = "";
-                    }
-                  : () {},
-          buttonText: "Continue",
-          btnColor:
-              Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
-                  ? AppColor.primaryColor
-                  : AppColor.primaryColor.withOpacity(0.5),
-          cancelAction: () {
+        padding: const EdgeInsets.only(left: 18, bottom: 18, right: 18),
+        child: Obx(() => CustomDoubleAppButton(
+            onAction:
+                Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
+                    ? () {
+                        customAntButtonSheet(
+                            height: MediaQuery.of(context).size.height / 1.2,
+                            context: context,
+                            child: const AssignLeaveSelectedValue());
+                        controller.path.value = "";
+                      }
+                    : () {},
+            buttonText: "Continue",
+            btnColor:
+                Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
+                    ? AppColor.primaryColor
+                    : AppColor.primaryColor.withOpacity(0.5),
+            cancelAction: () {
+            _clear();
+            })));
+  }
 
-            Get.back(canPop: false);
-            Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1); //clear selection index.
-            Get.find<HrLeaveController>().selectedEmployeeInfo.value=AppString.textSearchEmployee.tr;
-            Get.find<FileUploadController>().storageForUpload.filePath.value="";
-            Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
-
-          }))
-    );
+  void _clear() {
+    Get.back(canPop: false);
+    Get.find<LeaveController>().leaveTypeSelectedIndex.value =
+    (-1); //clear selection index.
+    Get.find<HrLeaveController>().selectedEmployeeInfo.value =
+        AppString.textSearchEmployee.tr;
+    Get.find<FileUploadController>().storageForUpload.filePath.value =
+    "";
+    Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
   }
 }
 

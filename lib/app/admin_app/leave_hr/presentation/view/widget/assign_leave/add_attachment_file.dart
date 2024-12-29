@@ -44,14 +44,12 @@ class AttachmentFile extends StatelessWidget {
               : _updateDocumentLayout();
         }))),
         customSpacerHeight(height: 8),
-        //_pathNameText(getLeaveDetailsById?.files?.first.key.toString() ?? ""),
+        _pathNameText(getLeaveDetailsById?.files?.first.key.toString() ?? ""),
       ],
     );
   }
 
   Widget _documentLayout() {
-    print("_documentLayout_object");
-
     if (Get.find<HrLeaveController>().isFileUploadedSuccessfully.isTrue && Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
       return Get.find<FileUploadController>()
@@ -102,66 +100,13 @@ class AttachmentFile extends StatelessWidget {
     }
   }
 
-  // Widget _updateDocumentLayout() {
-  //   if (Get.find<HrUpdateLeaveController>().isFileUploadedSuccessfully.isTrue &&
-  //       Get.find<HrUpdateLeaveController>().isUploadPolicyLoading.isFalse) {
-  //     /// file image
-  //     return Get.find<FileUploadController>()
-  //             .storageForUpload
-  //             .filePath
-  //             .endsWith(".pdf")
-  //         ? _replaceFileLayout()
-  //         : _selectedImageViewLayout();
-  //   } else if (Get.find<HrUpdateLeaveController>()
-  //           .isFileUploadedSuccessfully
-  //           .isFalse &&
-  //       Get.find<HrUpdateLeaveController>().isUploadPolicyLoading.isFalse) {
-  //     if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
-  //       print("getLeaveDetailsById!.files : ${getLeaveDetailsById!.files}");
-  //
-  //       if (getLeaveDetailsById?.files?.isEmpty ?? false) {
-  //         return _emptyBox();
-  //       } else {
-  //         if (getLeaveDetailsById?.files?.first.key == null) {
-  //           return _emptyBox();
-  //         } else if (getLeaveDetailsById!.files!.first.key!.endsWith(".pdf")) {
-  //           return _replaceFileLayout();
-  //         } else {
-  //           return CustomNetworkImage(
-  //             imgUrlKey: getLeaveDetailsById?.files?.first.key ?? "",
-  //             isDocumentLayout: true,
-  //             errorText: "",
-  //           );
-  //         }
-  //       }
-  //     } else {
-  //       /// broken image
-  //       if (Get.find<HrUpdateLeaveController>().isUploadPolicyLoading.isFalse) {
-  //         return const Center(
-  //             child: CupertinoActivityIndicator(
-  //           color: AppColor.primaryColor,
-  //         ));
-  //       } else {
-  //         return const Center(
-  //             child: CupertinoActivityIndicator(
-  //           color: AppColor.primaryColor,
-  //         ));
-  //       }
-  //     }
-  //   } else {
-  //     return const Center(
-  //         child: CupertinoActivityIndicator(
-  //       color: AppColor.primaryColor,
-  //     ));
-  //   }
-  // }
+
+
+
 
 
 
   Widget _updateDocumentLayout() {
-
-    print("_updateDocumentLayout_object");
-
     final hrUpdateLeaveController = Get.find<HrUpdateLeaveController>();
     final fileUploadController = Get.find<FileUploadController>();
 
@@ -179,6 +124,7 @@ class AttachmentFile extends StatelessWidget {
     }
 
     if (!isFileUploaded && isUploadLoading) {
+
       if (uploadedFilePath.isEmpty) {
         if (leaveFiles?.isEmpty ?? true) {
           return _emptyBox();
@@ -209,15 +155,6 @@ class AttachmentFile extends StatelessWidget {
       child: CupertinoActivityIndicator(color: AppColor.primaryColor),
     );
   }
-
-
-
-
-
-
-
-
-
 }
 
 _replaceFileLayout() {
