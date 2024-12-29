@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:intl/intl.dart';
 
+import '../common/widget/custom_svg_image.dart';
 import '../common/widget/error_message.dart';
 
 //global items here
@@ -434,4 +435,28 @@ String formatDate({required String date, String? format}) {
 
   // Format the parsed date
   return DateFormat(dateFormat).format(parsedDate);
+}
+
+
+getIconAccordingToLeaveType(String? leaveName) {
+  switch (leaveName) {
+    case "Vacationing":
+      return customSvgImage(imageUrl: Images.leaveImage7);
+    case "Paternity":
+      return customSvgImage(imageUrl: Images.leaveImage6);
+    case "Maternity":
+      return customSvgImage(imageUrl: Images.leaveImage5);
+    case "School closed":
+      return customSvgImage(imageUrl: Images.leaveImage4);
+    case "Children-minder illness":
+      return customSvgImage(imageUrl: Images.leaveImage3);
+    case "Children illness":
+      return customSvgImage(imageUrl: Images.leaveImage2);
+    case "Doctor declaration":
+      return customSvgImage(imageUrl: Images.leaveImage1);
+    case "Self declaration":
+      return customSvgImage(imageUrl: Images.leaveImage);
+    default:
+      return customSvgImage(imageUrl: Images.leaveImage8);
+  }
 }

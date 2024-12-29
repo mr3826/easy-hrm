@@ -844,7 +844,6 @@ query GET_LEAVE_REQUESTS($queryData: LeaveRequestQueryType, $optionData: OptionD
       }
 
     }
-    __typename
   }
 }
 '''

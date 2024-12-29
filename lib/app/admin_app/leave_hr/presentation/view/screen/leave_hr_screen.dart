@@ -231,8 +231,7 @@ class LeaveHrScreen extends StatelessWidget {
   _assignLeave(BuildContext context) {
     return  FloatingActionButton(
       onPressed: () {
-        Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-        (-1);
+        Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
         final userProfileController = Get.find<UserProfileController>();
         final userDetails = userProfileController.userDetails?.getOrganizationUserDetails?.profile;
@@ -248,8 +247,7 @@ class LeaveHrScreen extends StatelessWidget {
         );
 
         // Set selected employee info
-        hrLeaveController.selectedEmployeeInfo.value =
-        "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
+        hrLeaveController.selectedEmployeeInfo.value = "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
 
         // Set selected employee image key
         hrLeaveController.selectedEmployeeImgKey.value = userDetails?.image ?? "";

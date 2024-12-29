@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../modules/leave/presentation/controller/apply_leave_controller.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_layout.dart';
@@ -31,8 +32,6 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
         ? controller.leaveTypeId
         : null;
   }
-
-
   @override
   Widget build(BuildContext context) {
     HrLeaveController controller = Get.find<HrLeaveController>();
@@ -58,10 +57,29 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
             child: SizedBox(
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Text(
-                  "${e.name.toString()} (${e.availableLeave.toString()})",
-                  style: AppStyle.normal_text_black.copyWith(color: AppColor.normalTextColor),
+                padding: const EdgeInsets.only(left: 8.0,top: 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    getIconAccordingToLeaveType(e.name),
+                    customSpacerWidth(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.name.toString(),
+                            style: AppStyle.normal_text_grey.copyWith(color: Colors.black),
+                          ),
+                          Text(
+                            e.type.toString(),
+                            style:  AppStyle.normal_text_grey.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeSmall),
+
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

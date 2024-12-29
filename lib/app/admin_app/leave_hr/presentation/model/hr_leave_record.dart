@@ -28,13 +28,13 @@ class GetLeaveRequests {
   String? endDate;
   String? totalDuration;
   dynamic numberOfDays;
-  dynamic id;
+  String? id;
   LeaveType? leaveType;
   List<LeaveDetails>? leaveDetails;
   String? startDate;
   String? status;
   String? type;
-  dynamic userId;
+  String? userId;
   List<Files>? files;
   OrganizationUser? organizationUser;
 
@@ -115,21 +115,21 @@ class GetLeaveRequests {
 }
 
 class LeaveType {
-  dynamic id;
-  dynamic name;
-  dynamic type;
+  String? id;
+  String? name;
+  String? type;
 
   @override
   String toString() {
     return 'LeaveType{id: $id, name: $name, type: $type, numberOfDays: $numberOfDays, numberOfApplications: $numberOfApplications, maxConsecutiveDays: $maxConsecutiveDays, isDefault: $isDefault, addNoteRequired: $addNoteRequired, applicationDate: $applicationDate, calculateAllowanceBy: $calculateAllowanceBy, organizationId: $organizationId, isEnable: $isEnable, isEarned: $isEarned, leaveStatuses: $leaveStatuses}';
   }
 
-  dynamic numberOfDays;
-  dynamic numberOfApplications;
-  dynamic maxConsecutiveDays;
+  String? numberOfDays;
+  String? numberOfApplications;
+  String? maxConsecutiveDays;
   bool? isDefault;
   bool? addNoteRequired;
-  dynamic applicationDate;
+  String? applicationDate;
   dynamic calculateAllowanceBy;
   String? organizationId;
   String? isEnable;
@@ -231,7 +231,7 @@ class LeaveDetails {
   String? date;
   dynamic leaveSeconds;
   dynamic scheduleSeconds;
-  String? leaveId;
+  dynamic? leaveId;
 
   LeaveDetails(
       {this.date, this.leaveSeconds, this.scheduleSeconds, this.leaveId});
@@ -254,7 +254,7 @@ class LeaveDetails {
 }
 
 class Files {
-  String? size;
+  dynamic size;
   String? organizationId;
   String? name;
   String? key;
