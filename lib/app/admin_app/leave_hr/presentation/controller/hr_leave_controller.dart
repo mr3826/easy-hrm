@@ -8,7 +8,6 @@ import '../../../../../common/widget/success_message.dart';
 import '../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../modules/leave/data/remote/leave_remote_data_source.dart';
 import '../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
-import '../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../../../network/exception_helper.dart';
 import '../../../../../network/network_client.dart';
 import '../../../../../utils/api_endpoints.dart';
@@ -221,7 +220,6 @@ class HrLeaveController extends GetxController {
   }
 
 
-
   /// Fetches leave type hr .
   Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
     isAvailableLeaveType(true);
@@ -344,7 +342,6 @@ class HrLeaveController extends GetxController {
   @override
   void onInit() {
     getHrLeaveCalender();
-    getLeaveRecord();
     super.onInit();
   }
 }

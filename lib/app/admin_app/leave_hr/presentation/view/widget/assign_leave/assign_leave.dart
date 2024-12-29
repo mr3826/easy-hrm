@@ -28,9 +28,6 @@ class AssignLeave extends GetView<HrLeaveController> {
   @override
   Widget build(BuildContext context) {
     final LeaveController leaveController = Get.put(LeaveController());
-
-    //hrLeaveController.selectedEmployeeInfo.value
-
     return Column(
       children: [
         // Bottom sheet header
@@ -181,9 +178,9 @@ class AssignLeave extends GetView<HrLeaveController> {
                   : AppColor.primaryColor.withOpacity(0.5),
           cancelAction: () {
             Get.back(canPop: false);
-            Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-                (-1); //clear selection index.
-          })),
+            Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1); //clear selection index.
+            Get.find<HrLeaveController>().selectedEmployeeInfo.value=AppString.textSearchEmployee.tr;
+          }))
     );
   }
 }

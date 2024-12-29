@@ -8,10 +8,10 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
 import '../../../../../../modules/profile/controller/user_profile_controller.dart';
-import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
@@ -243,10 +243,16 @@ class LeaveHrScreen extends StatelessWidget {
         hrLeaveController.getAvailableLeaveType();
 
         // Show custom bottom sheet
-        customAntButtonSheet(
+        _customAntButtonSheet(
           height: MediaQuery.of(context).size.height /
               1.2, // Using a fraction for clarity
           context: context,
+          onClose: () {
+            Get.find<LeaveController>().leaveTypeSelectedIndex.value =
+                (-1); //clear selection index.
+            Get.find<HrLeaveController>().selectedEmployeeInfo.value =
+                AppString.textSearchEmployee.tr;
+          },
           child: const AssignLeave(),
         );
 
@@ -279,7 +285,6 @@ void _showEmployeeSelectionSheet() {
         }
 
         Get.back(canPop: false);
-        print("value ::: $value");
       },
       userInfo: (name) {
         controller.selectedEmployeeInfo.value = name.name ?? "";
@@ -289,4 +294,48 @@ void _showEmployeeSelectionSheet() {
     ),
     height: 0.8,
   );
+}
+
+_customAntButtonSheet({
+  required BuildContext context,
+  required Widget child,
+  double? height,
+  VoidCallback? onClose,
+}) {
+  final computedHeight = height ?? _modelHeightAccordingScreenSize(context);
+
+  // Display the custom bottom sheet
+  showCustomAtmBtnSheet(
+    height: computedHeight,
+    onClose: onClose,
+    context: context,
+    child: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Material(
+          color: AppColor.noColor,
+          child: Container(
+            height:
+                computedHeight, // Ensure the height matches the bottom sheet's height
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(Dimensions.radiusMid),
+                topLeft: Radius.circular(Dimensions.radiusMid),
+              ),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        );
+      },
+    ),
+  );
+}
+
+double _modelHeightAccordingScreenSize(BuildContext context) {
+  final width = MediaQuery.of(context).size.width;
+  if (width <= 360.0) {
+    return 480.0;
+  } else {
+    return 500.0;
+  }
 }
