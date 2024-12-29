@@ -869,16 +869,12 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
         image
         id
         first_name
-        
-        __typename
       }
       roles {
         name
-        __typename
       }
       designation {
         name
-        __typename
       }
       __typename
     }
@@ -887,7 +883,6 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
       name
       type
       calculate_allowance_by
-      __typename
     }
     leave_details {
     id
@@ -895,7 +890,6 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
       date
       leave_seconds
       schedule_seconds
-      __typename
     }
     duration
     end_date
@@ -904,10 +898,8 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
       key
       id
       size
-      __typename
     }
     number_of_days
-    __typename
   }
 }
 ''';

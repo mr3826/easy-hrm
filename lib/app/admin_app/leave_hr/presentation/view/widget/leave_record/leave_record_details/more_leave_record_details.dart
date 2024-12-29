@@ -270,7 +270,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
       controller.fileName =controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.name??"";
       controller.fileKey =controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.key??"";
       controller.fileId = controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.id??"";
-      controller.fileSize = controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.size??"";
+      controller.fileSize = controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.size.toString()??"";
     }
 
 

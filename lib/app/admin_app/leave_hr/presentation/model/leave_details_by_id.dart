@@ -21,20 +21,19 @@ class LeaveDetailsById {
 class GetLeaveDetailsById {
   String? id;
   String? createdAt;
-  String? type;
+  dynamic type;
   String? description;
   String? totalDuration;
-  String? totalLeaveMinutes;
+  dynamic totalLeaveMinutes;
   String? status;
   String? startDate;
   OrganizationUser? organizationUser;
   LeaveType? leaveType;
   List<LeaveDetails>? leaveDetails;
-  String? duration;
+  dynamic duration;
   String? endDate;
   List<Files>? files;
-  dynamic numberOfDays;
-  String? sTypename;
+  double? numberOfDays;
 
   GetLeaveDetailsById(
       {this.id,
@@ -51,8 +50,7 @@ class GetLeaveDetailsById {
         this.duration,
         this.endDate,
         this.files,
-        this.numberOfDays,
-        this.sTypename});
+        this.numberOfDays});
 
   GetLeaveDetailsById.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -84,7 +82,6 @@ class GetLeaveDetailsById {
       });
     }
     numberOfDays = json['number_of_days'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -113,7 +110,6 @@ class GetLeaveDetailsById {
       data['files'] = this.files!.map((v) => v.toJson()).toList();
     }
     data['number_of_days'] = this.numberOfDays;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
@@ -122,11 +118,10 @@ class OrganizationUser {
   String? id;
   Profile? profile;
   List<Roles>? roles;
-  String? designation;
-  String? sTypename;
+  Roles? designation;
 
   OrganizationUser(
-      {this.id, this.profile, this.roles, this.designation, this.sTypename});
+      {this.id, this.profile, this.roles, this.designation});
 
   OrganizationUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -138,8 +133,9 @@ class OrganizationUser {
         roles!.add(new Roles.fromJson(v));
       });
     }
-    designation = json['designation'];
-    sTypename = json['__typename'];
+    designation = json['designation'] != null
+        ? new Roles.fromJson(json['designation'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -151,27 +147,21 @@ class OrganizationUser {
     if (this.roles != null) {
       data['roles'] = this.roles!.map((v) => v.toJson()).toList();
     }
-    data['designation'] = this.designation;
-    data['__typename'] = this.sTypename;
+    if (this.designation != null) {
+      data['designation'] = this.designation!.toJson();
+    }
     return data;
   }
 }
 
 class Profile {
-  String? userId;
+  dynamic userId;
   String? lastName;
   String? image;
   String? id;
   String? firstName;
-  String? sTypename;
 
-  Profile(
-      {this.userId,
-        this.lastName,
-        this.image,
-        this.id,
-        this.firstName,
-        this.sTypename});
+  Profile({this.userId, this.lastName, this.image, this.id, this.firstName});
 
   Profile.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -179,7 +169,6 @@ class Profile {
     image = json['image'];
     id = json['id'];
     firstName = json['first_name'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -189,26 +178,22 @@ class Profile {
     data['image'] = this.image;
     data['id'] = this.id;
     data['first_name'] = this.firstName;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
 
 class Roles {
   String? name;
-  String? sTypename;
 
-  Roles({this.name, this.sTypename});
+  Roles({this.name});
 
   Roles.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
@@ -217,22 +202,15 @@ class LeaveType {
   String? id;
   String? name;
   String? type;
-  String? calculateAllowanceBy;
-  String? sTypename;
+  dynamic calculateAllowanceBy;
 
-  LeaveType(
-      {this.id,
-        this.name,
-        this.type,
-        this.calculateAllowanceBy,
-        this.sTypename});
+  LeaveType({this.id, this.name, this.type, this.calculateAllowanceBy});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     type = json['type'];
     calculateAllowanceBy = json['calculate_allowance_by'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -241,21 +219,23 @@ class LeaveType {
     data['name'] = this.name;
     data['type'] = this.type;
     data['calculate_allowance_by'] = this.calculateAllowanceBy;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
 
 class LeaveDetails {
-  String?  id;
-  String?  leaveId;
+  String? id;
+  String? leaveId;
   String? date;
   int? leaveSeconds;
   int? scheduleSeconds;
-  String? sTypename;
 
   LeaveDetails(
-      {this.date, this.leaveSeconds, this.scheduleSeconds, this.sTypename,this.id,this.leaveId});
+      {this.id,
+        this.leaveId,
+        this.date,
+        this.leaveSeconds,
+        this.scheduleSeconds});
 
   LeaveDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -263,7 +243,6 @@ class LeaveDetails {
     date = json['date'];
     leaveSeconds = json['leave_seconds'];
     scheduleSeconds = json['schedule_seconds'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -273,7 +252,6 @@ class LeaveDetails {
     data['date'] = this.date;
     data['leave_seconds'] = this.leaveSeconds;
     data['schedule_seconds'] = this.scheduleSeconds;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }
@@ -282,17 +260,15 @@ class Files {
   String? name;
   String? key;
   String? id;
-  String? size;
-  String? sTypename;
+  int? size;
 
-  Files({this.name, this.key, this.id, this.size, this.sTypename});
+  Files({this.name, this.key, this.id, this.size});
 
   Files.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     key = json['key'];
     id = json['id'];
     size = json['size'];
-    sTypename = json['__typename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -301,7 +277,6 @@ class Files {
     data['key'] = this.key;
     data['id'] = this.id;
     data['size'] = this.size;
-    data['__typename'] = this.sTypename;
     return data;
   }
 }

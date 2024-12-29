@@ -37,7 +37,7 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
                       "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
                       "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
                   designation: controller.leaveDetailsById?.getLeaveDetailsById
-                          ?.organizationUser?.designation ??
+                          ?.organizationUser?.designation.toString() ??
                       "No designation"),
               customSpacerHeight(height: 12),
               _buildRow(
