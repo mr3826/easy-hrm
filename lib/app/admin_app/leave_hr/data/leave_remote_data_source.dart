@@ -15,19 +15,25 @@ class HrLeaveRemoteDataSource {
 
   HrLeaveRemoteDataSource(this.networkClient);
 
-  Future<HrLeaveCalender?> getLeaveCalender({
-    String? startDate,
-    String? endDate,
-  }) async {
+  Future<HrLeaveCalender?> getLeaveCalender(
+      {String? startDate, String? endDate, String? assignedId}) async {
     try {
       final response = await networkClient.graphRequest(
         queryString: getHrLeaveCalendarList,
-        variables: {
-          "queryData": {
-            "startDate": startDate,
-            "endDate": endDate ,
-          },
-        },
+        variables: assignedId == null
+            ? {
+                "queryData": {
+                  "startDate": startDate,
+                  "endDate": endDate,
+                },
+              }
+            : {
+                "queryData": {
+                  "startDate": startDate,
+                  "endDate": endDate,
+                  "assigned_to": assignedId
+                },
+              },
       );
       if (response.hasException) {
         final exceptionMessage = response.exception.toString();
@@ -47,8 +53,6 @@ class HrLeaveRemoteDataSource {
       return null;
     }
   }
-
-
 
   Future<bool> updateLeave({required String leaveId, String? status}) async {
     try {
@@ -90,7 +94,6 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-
   ///todo [Download link]
   Future<DownloadFile?> getFileSignUrl(String? fileKey) async {
     final urlPath =
@@ -112,23 +115,20 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-  Future<HrLeaveRecorde?> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
-
+  Future<HrLeaveRecorde?> getLeaveRecord(
+      {String? startDate, String? endDate, String? assignedLeaveId}) async {
     try {
       final response = await networkClient
-          .graphRequest(queryString: getHrLeaveRecordeQuery,
-          variables: {
+          .graphRequest(queryString: getHrLeaveRecordeQuery, variables: {
         "queryData": {
           "start_date": startDate,
           "end_date": endDate,
-           "assigned_to":assignedLeaveId !=null? [
-            assignedLeaveId
-          ]:[]
+          "assigned_to": assignedLeaveId != null ? [assignedLeaveId] : []
         },
-      }
-      );
+      });
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getLeaveRecord");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveRecord");
         return null;
       }
       return HrLeaveRecorde.fromJson(response.data!);
@@ -138,20 +138,21 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-
-   Future<AvailableLeaveType?> getAvailableLeaveType({String? orgUserId,String ?year}) async {
+  Future<AvailableLeaveType?> getAvailableLeaveType(
+      {String? orgUserId, String? year}) async {
     try {
       final response = await networkClient
-          .graphRequest(queryString: getAvailableLeavesTypeQuery,
-          variables: {
-            "queryData": {
-              "org_user_id": orgUserId?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
-              "start_year": year??"${DateTime.now().year}"
-            },
-          });
+          .graphRequest(queryString: getAvailableLeavesTypeQuery, variables: {
+        "queryData": {
+          "org_user_id":
+              orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
+          "start_year": year ?? "${DateTime.now().year}"
+        },
+      });
 
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getLeaveRecord");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveRecord");
         return null;
       }
       return AvailableLeaveType.fromJson(response.data!);
@@ -160,8 +161,4 @@ class HrLeaveRemoteDataSource {
       return null;
     }
   }
-
-
-
-
 }

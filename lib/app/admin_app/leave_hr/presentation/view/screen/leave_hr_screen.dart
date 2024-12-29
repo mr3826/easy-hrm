@@ -24,7 +24,6 @@ import '../widget/calendar/month_navigate_widget.dart';
 import '../widget/leave_record/date_navigate_widget.dart';
 import '../widget/leave_record/leave_record_list.dart';
 
-
 class LeaveHrScreen extends StatelessWidget {
   const LeaveHrScreen({super.key});
 
@@ -32,8 +31,7 @@ class LeaveHrScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      floatingActionButton:_assignLeave(context),
-
+      floatingActionButton: _assignLeave(context),
       body: Padding(
         padding: marginLayout.copyWith(left: 8, right: 8),
         child: Column(
@@ -163,7 +161,7 @@ class LeaveHrScreen extends StatelessWidget {
   // Search bar method renamed and optimized
   Widget _buildSearchBar(BuildContext context, {required Function onSearch}) {
     HrLeaveController controller = Get.put(HrLeaveController());
-
+    LeaveController leaveController = Get.put(LeaveController());
     return GestureDetector(
       onTap: () => onSearch(),
       child: Padding(
@@ -214,7 +212,11 @@ class LeaveHrScreen extends StatelessWidget {
                       controller.selectedEmployeeInfo.value =
                           AppString.textSearchEmployee.tr;
                       controller.selectedEmployeeImgKey.value = "";
-                      controller.getLeaveRecord();
+                      if (leaveController.tabLength.value == 0) {
+                        controller.getHrLeaveCalender();
+                      } else {
+                        controller.getLeaveRecord();
+                      }
                     },
                     child: const Icon(CupertinoIcons.clear,
                         color: AppColor.hintColor, size: 23),
@@ -229,28 +231,32 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   _assignLeave(BuildContext context) {
-    return  FloatingActionButton(
+    return FloatingActionButton(
       onPressed: () {
         Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
         final userProfileController = Get.find<UserProfileController>();
-        final userDetails = userProfileController.userDetails?.getOrganizationUserDetails?.profile;
+        final userDetails = userProfileController
+            .userDetails?.getOrganizationUserDetails?.profile;
 
         // Fetch available leave types
         hrLeaveController.getAvailableLeaveType();
 
         // Show custom bottom sheet
         customAntButtonSheet(
-          height: MediaQuery.of(context).size.height/1.2, // Using a fraction for clarity
+          height: MediaQuery.of(context).size.height /
+              1.2, // Using a fraction for clarity
           context: context,
           child: const AssignLeave(),
         );
 
         // Set selected employee info
-        hrLeaveController.selectedEmployeeInfo.value = "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
+        hrLeaveController.selectedEmployeeInfo.value =
+            "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
 
         // Set selected employee image key
-        hrLeaveController.selectedEmployeeImgKey.value = userDetails?.image ?? "";
+        hrLeaveController.selectedEmployeeImgKey.value =
+            userDetails?.image ?? "";
       },
       backgroundColor: AppColor.primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
@@ -266,8 +272,12 @@ void _showEmployeeSelectionSheet() {
     context: Get.context!,
     child: SearchEmployeeList(
       onValueSelected: (value) {
-        leaveController.tabLength.value = 1;
-        controller.getLeaveRecord(assignedLeaveId: value);
+        if (leaveController.tabLength.value == 0) {
+          controller.getHrLeaveCalender(assignedId: value);
+        } else {
+          controller.getLeaveRecord(assignedLeaveId: value);
+        }
+
         Get.back(canPop: false);
         print("value ::: $value");
       },

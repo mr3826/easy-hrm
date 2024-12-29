@@ -57,7 +57,7 @@ class HrLeaveController extends GetxController {
 
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getHrLeaveCalender({String? startDate, String? endDate}) async {
+  Future<void> getHrLeaveCalender({String? startDate, String? endDate,String?assignedId}) async {
     String getDefaultStartDate() {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month, 1).toIso8601String().split('T')[0]}T00:00:00.000Z";
@@ -67,9 +67,12 @@ class HrLeaveController extends GetxController {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month + 1, 0).toIso8601String().split('T')[0]}T23:59:59.999Z";
     }
+
+    print("startDate :: ${getDefaultEndDate()} end_date : ${getDefaultEndDate()}");
+
     isHrLeaveCalendarLoading(true);
     hrLeaveCalender = await _hrLeaveRemoteDataSource.getLeaveCalender(
-        startDate: startDate??getDefaultStartDate(), endDate: endDate??getDefaultEndDate());
+        startDate: startDate??getDefaultStartDate(), endDate: endDate??getDefaultEndDate(),assignedId:assignedId );
 
     isHrLeaveCalendarLoading(false);
   }
