@@ -16,9 +16,11 @@ import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
 import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/images.dart';
+import '../../../controller/hr_update_leave_controller.dart';
 import '../../../controller/picked_file_from_stroage.dart';
 import 'assign_leave_selected_view.dart';
 
@@ -177,9 +179,13 @@ class AssignLeave extends GetView<HrLeaveController> {
                   ? AppColor.primaryColor
                   : AppColor.primaryColor.withOpacity(0.5),
           cancelAction: () {
+
             Get.back(canPop: false);
             Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1); //clear selection index.
             Get.find<HrLeaveController>().selectedEmployeeInfo.value=AppString.textSearchEmployee.tr;
+            Get.find<FileUploadController>().storageForUpload.filePath.value="";
+            Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
+
           }))
     );
   }
