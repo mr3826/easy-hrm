@@ -103,15 +103,20 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                       _divider(),
 
                       _buildActionOption(AppString.textViewLeaveRecord.tr, () {
+
                         controller.getLeaveRecord(
                             startDate: controller.leaveDetailsById
                                 ?.getLeaveDetailsById?.startDate,
                             endDate: controller
                                 .leaveDetailsById?.getLeaveDetailsById?.endDate,
-                            assignedLeaveId: controller.leaveDetailsById
-                                ?.getLeaveDetailsById?.organizationUser?.id);
+                            assignedLeaveId: controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.id);
+
+print("object");
+
                         leaveController.tabLength(1);
                         Get.back(canPop: false);
+
+
                       }),
                     ],
                   ),

@@ -101,17 +101,10 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-  Future<HrLeaveRecorde?> getLeaveRecord(
-      {String? startDate, String? endDate, String? assignedLeaveId}) async {
+  Future<HrLeaveRecorde?> getLeaveRecord(Map<String, Map<String, Object>> queryMap) async {
     try {
       final response = await networkClient
-          .graphRequest(queryString: getHrLeaveRecordeQuery, variables: {
-        "queryData": {
-          "start_date": startDate,
-          "end_date": endDate,
-          "assigned_to": assignedLeaveId != null ? [assignedLeaveId] : []
-        },
-      });
+          .graphRequest(queryString: getHrLeaveRecordeQuery, variables:queryMap);
       if (response.hasException) {
         ExceptionHelper.errorHandler(
             exception: response.exception!, methodName: "getLeaveRecord");

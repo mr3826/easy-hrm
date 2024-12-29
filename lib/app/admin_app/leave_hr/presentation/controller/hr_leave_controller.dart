@@ -54,8 +54,7 @@ class HrLeaveController extends GetxController {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getHrLeaveCalender(
-      {String? startDate, String? endDate, String? assignedId}) async {
+  Future<void> getHrLeaveCalender({String? startDate, String? endDate, String? assignedId}) async {
     String getDefaultStartDate() {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month, 1).toIso8601String().split('T')[0]}T00:00:00.000Z";
@@ -79,8 +78,7 @@ class HrLeaveController extends GetxController {
 
     isHrLeaveCalendarLoading(true);
 
-    hrLeaveCalender =
-        await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
+    hrLeaveCalender = await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
 
     isHrLeaveCalendarLoading(false);
   }
@@ -122,12 +120,8 @@ class HrLeaveController extends GetxController {
   }
 
   String _getLeaveId(LeaveRequests leave) {
-    var data =
-        leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ??
-            "";
-
+    var data = leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ?? "";
     leave.organizationUsers?.forEach((v) {});
-
     return data;
   }
 
@@ -208,25 +202,25 @@ class HrLeaveController extends GetxController {
   }
 
   /// Fetches employee leave record hr.
-  Future<void> getLeaveRecord(
-      {String? startDate, String? endDate, String? assignedLeaveId}) async {
-    // Default to the first day of the current month for startDate if null
-    String start = startDate ??
-        "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
+  Future<void> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
 
-    // Default to the last day of the current month for endDate if null
-    String end = endDate ??
-        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0)}";
+    Map<String, Map<String, Object>> queryMap = {"queryData": {}};
+
+    queryMap["queryData"]?["start_date"] = startDate ?? "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
+
+    queryMap["queryData"]?["end_date"] = endDate ?? "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0)}";
+
+    if (assignedLeaveId != null) {
+      queryMap["queryData"]?["assigned_to"] = assignedLeaveId;
+    }
 
     isLoadingLeaveRecord(true);
-    leaveRecorde = await _hrLeaveRemoteDataSource.getLeaveRecord(
-      startDate: start,
-      endDate: end,
-      assignedLeaveId: assignedLeaveId,
-    );
+    leaveRecorde = await _hrLeaveRemoteDataSource.getLeaveRecord(queryMap);
 
     isLoadingLeaveRecord(false);
   }
+
+
 
   /// Fetches leave type hr .
   Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
