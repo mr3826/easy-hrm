@@ -33,7 +33,7 @@ class GetLeaveDetailsById {
   dynamic duration;
   String? endDate;
   List<Files>? files;
-  double? numberOfDays;
+  dynamic numberOfDays;
 
   GetLeaveDetailsById(
       {this.id,

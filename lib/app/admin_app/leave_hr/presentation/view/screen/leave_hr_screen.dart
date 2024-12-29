@@ -101,7 +101,13 @@ class LeaveHrScreen extends StatelessWidget {
                   onTap: () {
                     controller.tabLength.value = index;
                     controller.currentDate.value = "This month";
-                    Get.find<HrLeaveController>().getLeaveRecord();
+                    Get.find<HrLeaveController>().getLeaveRecord(
+                        startDate: DateTime(
+                                DateTime.now().year, DateTime.now().month, 1)
+                            .toString(),
+                        endDate: DateTime(DateTime.now().year,
+                                DateTime.now().month + 1, 0)
+                            .toString());
                   },
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 2.2,

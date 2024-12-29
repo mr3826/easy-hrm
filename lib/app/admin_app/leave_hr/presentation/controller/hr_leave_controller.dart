@@ -203,6 +203,10 @@ class HrLeaveController extends GetxController {
   /// Fetches employee leave record hr.
   Future<void> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
 
+    print('''
+    start_date : $startDate
+    endDate : $endDate
+    ''');
     Map<String, Map<String, Object>> queryMap = {"queryData": {}};
 
     queryMap["queryData"]?["start_date"] = startDate ?? "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
