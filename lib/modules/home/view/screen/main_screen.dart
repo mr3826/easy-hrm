@@ -41,8 +41,12 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
+
+
     /// initialController controller
 
     if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
@@ -95,6 +99,14 @@ class _MainScreenState extends State<MainScreen> {
         ),
       )),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    print('didChangeDependencies');
+    super.didChangeDependencies();
+
+
   }
 
   void _initialController() async {

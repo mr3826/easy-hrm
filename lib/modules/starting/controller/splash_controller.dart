@@ -22,27 +22,7 @@ class SplashController extends GetxController {
       Get.to(const NetworkErrorPage());
       Get.find<ConnectivityController>().isDialogIsOpened(true);
     } else {
-      if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
-        if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
-          _getNewToken().then((value) => value == true
-              ? Future.delayed(const Duration(milliseconds: 2500), () async {
-                  await Get.find<UserInfoController>().getOrgSubscriptionInfo();
-                  // Navigate to the main screen
-                  Get.offNamed(Routes.MAIN_SCREEN);
-                })
-              : Future.delayed(const Duration(milliseconds: 2500),
-                  () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
-        } else {
-          Future.delayed(const Duration(milliseconds: 2500), () async {
-            await Get.find<UserInfoController>().getOrgSubscriptionInfo();
-            // Navigate to the main screen
-            Get.offNamed(Routes.MAIN_SCREEN);
-          });
-        }
-      } else {
-        Future.delayed(const Duration(milliseconds: 2500), () => _chooseRoute());
-      }
-
+      _routingProcess();
       super.onReady();
     }
   }
@@ -73,8 +53,8 @@ class SplashController extends GetxController {
 
   Future<bool> _getNewToken() async {
     try {
-      di.Response response = await Get.find<NetworkClient>()
-          .postRequest(Api.REFRESH_TOKEN, {
+      di.Response response =
+          await Get.find<NetworkClient>().postRequest(Api.REFRESH_TOKEN, {
         "refreshToken": GetStorage().read(AppString.REFRESH_TOKEN),
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN),
       });
@@ -96,5 +76,28 @@ class SplashController extends GetxController {
         SignInResponse.fromJson(response.data).data?.accessToken ?? "");
     GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken ?? "");
+  }
+
+  _routingProcess() {
+    if (GetStorage().read(AppString.ACCESS_TOKEN) != null) {
+      if (checkTokenExpiration().isNegative || checkTokenExpiration() < 1) {
+        _getNewToken().then((value) => value == true
+            ? Future.delayed(const Duration(milliseconds: 2500), () async {
+                await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+                // Navigate to the main screen
+                Get.offNamed(Routes.MAIN_SCREEN);
+              })
+            : Future.delayed(const Duration(milliseconds: 2500),
+                () => Get.offAndToNamed(Routes.SIGN_IN_SCREEN)));
+      } else {
+        Future.delayed(const Duration(milliseconds: 2500), () async {
+          await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+          // Navigate to the main screen
+          Get.offNamed(Routes.MAIN_SCREEN);
+        });
+      }
+    } else {
+      Future.delayed(const Duration(milliseconds: 2500), () => _chooseRoute());
+    }
   }
 }

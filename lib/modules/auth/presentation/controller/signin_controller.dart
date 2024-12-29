@@ -21,7 +21,8 @@ import '../../../../utils/utils.dart';
 /// including handling login, subscription status, and last input data.
 class SignInController extends GetxController with StateMixin {
   static const MethodChannel _platform =
-      MethodChannel('com.gainhq.payrun/deviceToken');
+      MethodChannel('com.gainhq.mobile.payrun/deviceToken');
+
 
   // Observable variables to track the state
   RxString organizationAvailabilityMessage = "".obs;
@@ -136,11 +137,8 @@ class SignInController extends GetxController with StateMixin {
       _platform.setMethodCallHandler((MethodCall call) async {
         if (call.method == 'deviceToken') {
           final String token = call.arguments ?? ""; // Ensure token is not null
+          print("token: $token");
           GetStorage().write(AppString.IOS_DEVICE_TOKEN, token);
-          print('''
-          token: $token
-          saved token: ${GetStorage().read(AppString.IOS_DEVICE_TOKEN)}
-          ''');
         }
       });
     } catch (e) {

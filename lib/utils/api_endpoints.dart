@@ -456,7 +456,7 @@ query CheckStartOrStopTimeline {
 ''';
 
 const getTimelineSummaryByDateQuery = r'''
-query GetSummaryForTimelines($queryData: SummaryForTimelinesQueryData) {
+query GetSummaryForTimelines($queryData: TimelinesQueryDataInputType) {
   getSummaryForTimelines(queryData: $queryData) {
     total_scheduled_seconds
     logged_total_seconds
