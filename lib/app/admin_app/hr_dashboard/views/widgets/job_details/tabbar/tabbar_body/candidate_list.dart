@@ -23,7 +23,7 @@ class CandidateList extends StatelessWidget {
         itemCount: 5,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: ()=>Get.toNamed(Routes.CANDIDATES_DETAILS),
+            onTap: () => Get.toNamed(Routes.CANDIDATES_DETAILS),
             child: LayoutBuilder(
               builder: (context, constraints) {
                 double imageSize = constraints.maxWidth * 0.15;
@@ -61,7 +61,8 @@ class CandidateList extends StatelessWidget {
       isCircleImage: true,
       radius: size / 2.7,
       borderColor: Colors.transparent,
-      imageUrl: "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+      imageUrl:
+          "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
     );
   }
 
@@ -131,8 +132,6 @@ class CandidateList extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-
-
           _buildHeaderSection(),
           _buildMoreInfoSection(
             text: AppString.text_move_to_the_next.tr,
@@ -144,7 +143,8 @@ class CandidateList extends StatelessWidget {
                 color: AppColor.normalTextColor.withOpacity(0.4),
                 size: 24,
               ),
-            ),          ),
+            ),
+          ),
           _buildMoreInfoSection(
             text: AppString.text_move_anywhere.tr,
             onTap: () {},
@@ -182,7 +182,7 @@ class CandidateList extends StatelessWidget {
               radius: 30,
               borderColor: Colors.transparent,
               imageUrl:
-              "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+                  "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
             ),
           ),
           customSpacerHeight(height: 4),
@@ -209,10 +209,7 @@ class CandidateList extends StatelessWidget {
     return customMoreInfoTextWithDiver(
       text: text,
       onTap: onTap,
-
       trailing: trailing,
-
     );
   }
-
 }

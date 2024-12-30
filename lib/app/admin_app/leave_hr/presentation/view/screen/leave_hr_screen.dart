@@ -96,8 +96,10 @@ class LeaveHrScreen extends StatelessWidget {
         height: 50,
         width: MediaQuery.of(context).size.width,
         child: ListView.builder(
+
           itemCount: controller.tabList.length,
           scrollDirection: Axis.horizontal,
+
           itemBuilder: (context, index) {
             return Obx(() => GestureDetector(
                   onTap: () {

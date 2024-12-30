@@ -4,6 +4,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_style.dart';
@@ -71,13 +72,12 @@ class BuildJobOpening extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: height,
-      child: const CustomNetworkImage(
+      child:  CustomNetworkImage(
         imageRadius: BorderRadius.only(
           topLeft: Radius.circular(8),
           topRight: Radius.circular(8),
         ),
-        imageUrl:
-            "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+        imageUrl:Images.demoImage
       ),
     );
   }
