@@ -48,11 +48,6 @@ class LeaveController extends GetxController {
   /// The currently selected year index.
   RxInt selectedYearIndex = 0.obs;
 
-  // /// List of years for the last 25 years.
-  // final List<int> years = List.generate(
-  //   25,
-  //       (index) => DateTime.now().year - index,
-  // );
 
   /// List of years starting with the current year,
   /// including the last 24 years and the next 2 years.
@@ -72,6 +67,8 @@ class LeaveController extends GetxController {
 
   /// Returns the DateTime for the selected month in the selected year.
   Rx<DateTime> get selectedMonthDate => DateTime(years[selectedYearIndex.value], selectedMonthIndex.value + 1).obs;
+
+  Rx<DateTime> get selectedYearDate => DateTime(years[selectedYearIndex.value]).obs;
 
   /// Current date in a formatted string (optional, can be removed if not needed).
   RxString currentDate = "This month".obs;

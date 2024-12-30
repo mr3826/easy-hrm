@@ -209,6 +209,10 @@ class LeaveHrScreen extends StatelessWidget {
                     maxLines: 1,
                     style: AppStyle.normal_text_black.copyWith(
                         fontSize: Dimensions.fontSizeMid - 3,
+                        color: controller.selectedEmployeeInfo.value ==
+                                AppString.textSearchEmployee
+                            ? AppColor.hintColor
+                            : AppColor.normalTextColor,
                         overflow: TextOverflow.ellipsis),
                   ),
                 ),

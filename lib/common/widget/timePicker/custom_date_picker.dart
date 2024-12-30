@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../utils/app_color.dart';
 
+
 class CustomCalendarPicker extends StatefulWidget {
   final bool isRangeSelectionEnabled;
   final List<int> weekendDays;
@@ -9,13 +10,18 @@ class CustomCalendarPicker extends StatefulWidget {
   final String? cancelText;
   final String? selectionText;
   final String? clearText;
-
+  final TextStyle? cancelTextStyle;
+  final TextStyle? saveTextStyle;
+  final Color? baseColor;
   CustomCalendarPicker({
     Key? key,
     required this.isRangeSelectionEnabled,
     required this.weekendDays,
     required this.holidayDates,
     this.cancelText,
+    this.baseColor,
+    this.cancelTextStyle,
+    this.saveTextStyle,
     this.selectionText,
     this.clearText,
   })  : assert(weekendDays.isNotEmpty, 'Weekend days cannot be empty.'),
@@ -48,7 +54,7 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
   void initState() {
     super.initState();
     _cancelText = widget.cancelText ?? 'Cancel';
-    _selectionText = widget.selectionText ?? 'Select';
+    _selectionText = widget.selectionText ?? 'Apply';
     _clearText = widget.clearText ?? 'Clear';
     parsedHolidays = widget.holidayDates.map((holiday) {
       return DateTime.parse(holiday);
@@ -86,17 +92,19 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
                       color: AppColor.hintColor.withOpacity(.1)),
                   weekendTextStyle: TextStyle(
                       fontSize: 14, color: AppColor.hintColor.withOpacity(.5)),
-                  selectedDecoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.blueAccent),
+                  selectedDecoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: widget.baseColor ?? Colors.blueAccent),
                   todayDecoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.transparent),
-                  todayTextStyle: const TextStyle(
+                  todayTextStyle: TextStyle(
                       fontSize: 18,
-                      color: Colors.blueAccent,
+                      color: widget.baseColor ?? Colors.blueAccent,
                       fontWeight: FontWeight.bold),
                   holidayDecoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.blueAccent.withOpacity(.25))),
+                      color: widget.baseColor ??
+                          Colors.blueAccent.withOpacity(.25))),
               calendarFormat: CalendarFormat.month,
 
               rangeSelectionMode: widget.isRangeSelectionEnabled
@@ -129,23 +137,27 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
               },
               weekendDays: widget.weekendDays,
             ),
-            const SizedBox(height: 8),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _rangeStart = null;
-                      _rangeEnd = null;
-                      isRangeSelected = false;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(_cancelText),
-                ),
-                if (isFullRangeSelected) // Show "Clear" button only if a full range is selected
+                if (widget.isRangeSelectionEnabled == false)
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _rangeStart = null;
+                        _rangeEnd = null;
+                        isRangeSelected = false;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(_cancelText,
+                        style: widget.cancelTextStyle ??
+                            const TextStyle(
+                                color: Colors.black54, fontSize: 15)),
+                  ),
+                if (widget
+                    .isRangeSelectionEnabled) // Show "Clear" button only if a full range is selected
                   TextButton(
                     onPressed: () {
                       setState(() {
@@ -154,28 +166,64 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
                         isRangeSelected = false;
                       });
                     },
-                    child: Text(_clearText),
+                    child: Text(
+                      _clearText,
+                      style: widget.cancelTextStyle ??
+                          const TextStyle(color: Colors.black54, fontSize: 15),
+                    ),
                   ),
-                TextButton(
-                  onPressed: () {
-                    if (widget.isRangeSelectionEnabled == true) {
-                      if (_rangeEnd !=null) {
+                const Spacer(),
+                GestureDetector(
+                    onTap: () {
+                      if (widget.isRangeSelectionEnabled) {
+                        if (_rangeEnd != null) {
+                          Navigator.of(context).pop({
+                            "start": _rangeStart,
+                            "end": _rangeEnd,
+                          });
+                        }
+                      } else if (!widget.isRangeSelectionEnabled) {
                         Navigator.of(context).pop({
                           "start": _rangeStart,
                           "end": _rangeEnd,
                         });
                       }
-                    } else if (widget.isRangeSelectionEnabled == false) {
-                      Navigator.of(context).pop({
-                        "start": _rangeStart,
-                        "end": _rangeEnd,
-                      });
-                    }
-                  },
-                  child: Text(_selectionText),
-                ),
+                    },
+                    child: _buildSaveButton()),
               ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColor.primaryColor, borderRadius: BorderRadius.circular(6)),
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 18.0, right: 18, bottom: 9, top: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.done,
+              color: AppColor.cardColor,
+              size: 19,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Text(
+              _selectionText,
+              style: widget.saveTextStyle ??
+                  const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+            )
           ],
         ),
       ),

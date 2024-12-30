@@ -44,13 +44,15 @@ class AttachmentFile extends StatelessWidget {
               : _updateDocumentLayout();
         }))),
         customSpacerHeight(height: 8),
-        _pathNameText(getLeaveDetailsById?.files?.first.key.toString() ?? ""),
+        if (getLeaveDetailsById?.files?.isNotEmpty ?? false)
+          _pathNameText(getLeaveDetailsById?.files?.first.key.toString() ?? ""),
       ],
     );
   }
 
   Widget _documentLayout() {
-    if (Get.find<HrLeaveController>().isFileUploadedSuccessfully.isTrue && Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
+    if (Get.find<HrLeaveController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
       return Get.find<FileUploadController>()
               .storageForUpload
@@ -100,19 +102,15 @@ class AttachmentFile extends StatelessWidget {
     }
   }
 
-
-
-
-
-
-
   Widget _updateDocumentLayout() {
     final hrUpdateLeaveController = Get.find<HrUpdateLeaveController>();
     final fileUploadController = Get.find<FileUploadController>();
 
     // Extract flags for better readability
-    final isFileUploaded = hrUpdateLeaveController.isFileUploadedSuccessfully.isTrue;
-    final isUploadLoading = hrUpdateLeaveController.isUploadPolicyLoading.isFalse;
+    final isFileUploaded =
+        hrUpdateLeaveController.isFileUploadedSuccessfully.isTrue;
+    final isUploadLoading =
+        hrUpdateLeaveController.isUploadPolicyLoading.isFalse;
     final uploadedFilePath = fileUploadController.storageForUpload.filePath;
     final leaveFiles = getLeaveDetailsById?.files;
 
@@ -124,7 +122,6 @@ class AttachmentFile extends StatelessWidget {
     }
 
     if (!isFileUploaded && isUploadLoading) {
-
       if (uploadedFilePath.isEmpty) {
         if (leaveFiles?.isEmpty ?? true) {
           return _emptyBox();
@@ -138,10 +135,10 @@ class AttachmentFile extends StatelessWidget {
         return firstFileKey.endsWith(".pdf")
             ? _replaceFileLayout()
             : CustomNetworkImage(
-          imgUrlKey: firstFileKey,
-          isDocumentLayout: true,
-          errorText: "",
-        );
+                imgUrlKey: firstFileKey,
+                isDocumentLayout: true,
+                errorText: "",
+              );
       }
 
       // Show loading indicator for broken image

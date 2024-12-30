@@ -38,6 +38,15 @@ class MonthNavigateWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    Text(
+                      formatDate(
+                          date: controller.selectedYearDate.value.toString(),
+                          format: "yyyy"),
+                      style: AppStyle.mid_large_text.copyWith(
+                        color: AppColor.hintColor,
+                        fontSize: Dimensions.fontSizeSmall,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -111,8 +120,7 @@ Widget _buildYearDropdown(LeaveController controller) {
             }).toList(),
             onChanged: (int? newYear) {
               if (newYear != null) {
-                controller.selectedYearIndex.value =
-                    controller.years.indexOf(newYear);
+                controller.selectedYearIndex.value = controller.years.indexOf(newYear);
               }
             },
             dropdownStyleData: DropdownStyleData(
@@ -194,12 +202,14 @@ Widget _buildDialogActions(LeaveController controller) {
           onTap: () {
             int selectedYear =
                 controller.years[controller.selectedYearIndex.value];
+
             int selectedMonthIndex = controller.selectedMonthIndex.value + 1;
-            DateTime selectedDateTime = DateTime(selectedYear, selectedMonthIndex);
+            DateTime selectedDateTime =
+                DateTime(selectedYear, selectedMonthIndex);
             print("Selected DateTime: $selectedDateTime");
 
-
-            Get.find<HrLeaveController>().getHrLeaveCalender(startDate:selectedDateTime.toString());
+            Get.find<HrLeaveController>()
+                .getHrLeaveCalender(startDate: selectedDateTime.toString());
             Get.back(canPop: false);
           },
           child: Text(
