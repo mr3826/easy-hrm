@@ -3,6 +3,7 @@ import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../../enum.dart';
+import '../../../../../../../../utils/utils.dart';
 
 class VerticalDottedDivider extends StatelessWidget {
   final double height;
@@ -144,17 +145,3 @@ class OverlappingAvatars extends StatelessWidget {
   }
 }
 
-String getInitials(String fullName) {
-  if (fullName.isEmpty) return "";
-
-  // Split the name into words
-  final words = fullName.trim().split(' ');
-
-  // Get the first letter of the first word
-  final firstInitial = words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
-
-  // Get the first letter of the last word
-  final lastInitial = words.last.isNotEmpty ? words.last[0].toUpperCase() : '';
-  // Combine the initials
-  return '$firstInitial$lastInitial';
-}

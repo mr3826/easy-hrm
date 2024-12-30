@@ -460,3 +460,18 @@ getIconAccordingToLeaveType(String? leaveName) {
       return customSvgImage(imageUrl: Images.leaveImage8);
   }
 }
+
+String getInitials(String fullName) {
+  if (fullName.isEmpty) return "Er";
+
+  // Split the name into words
+  final words = fullName.trim().split(' ');
+
+  // Get the first letter of the first word
+  final firstInitial = words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
+
+  // Get the first letter of the last word
+  final lastInitial = words.last.isNotEmpty ? words.last[0].toUpperCase() : '';
+  // Combine the initials
+  return '$firstInitial$lastInitial';
+}

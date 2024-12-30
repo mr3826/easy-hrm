@@ -83,7 +83,7 @@ class LeaveRecordList extends GetView<HrLeaveController> {
         children: [
           CustomNetworkImage(
             imgUrlKey: leaveRecordDetailsModel.imgUrl ?? "",
-            errorText: "Er",
+            errorText: getInitials(leaveRecordDetailsModel.employeeName??""),
             height: 20,
           ),
           const SizedBox(width: 14),
