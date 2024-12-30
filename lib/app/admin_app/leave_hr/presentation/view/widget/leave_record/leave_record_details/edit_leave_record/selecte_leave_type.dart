@@ -9,7 +9,6 @@ import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../../utils/images.dart';
 
-
 class SelectedLeaveType extends StatefulWidget {
   const SelectedLeaveType({super.key});
 
@@ -26,7 +25,11 @@ class _SelectedLeaveTypeState extends State<SelectedLeaveType> {
     {"leaveTypeId": "2", "name": "Paternity", "type": "Paid Leave"},
     {"leaveTypeId": "3", "name": "Maternity", "type": "Paid Leave"},
     {"leaveTypeId": "4", "name": "School closed", "type": "Unpaid Leave"},
-    {"leaveTypeId": "5", "name": "Children-minder illness", "type": "Paid Leave"},
+    {
+      "leaveTypeId": "5",
+      "name": "Children-minder illness",
+      "type": "Paid Leave"
+    },
     {"leaveTypeId": "6", "name": "Children illness", "type": "Paid Leave"},
     {"leaveTypeId": "7", "name": "Doctor declaration", "type": "Sick Leave"},
     {"leaveTypeId": "8", "name": "Self declaration", "type": "Sick Leave"},
@@ -35,7 +38,8 @@ class _SelectedLeaveTypeState extends State<SelectedLeaveType> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10),vertical: 2),
+      padding:
+          EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10), vertical: 2),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8)),
@@ -67,7 +71,8 @@ class _SelectedLeaveTypeState extends State<SelectedLeaveType> {
                         children: [
                           Text(
                             leaveType['name'].toString(),
-                            style: AppStyle.normal_text_grey.copyWith(color: Colors.black),
+                            style: AppStyle.normal_text_grey
+                                .copyWith(color: Colors.black),
                           ),
                           Text(
                             leaveType['type'].toString(),
@@ -92,8 +97,6 @@ class _SelectedLeaveTypeState extends State<SelectedLeaveType> {
   }
 }
 
-
-
 getIconAccordingToLeaveType(String? leaveName) {
   switch (leaveName) {
     case "Vacationing":
@@ -116,4 +119,3 @@ getIconAccordingToLeaveType(String? leaveName) {
       return customSvgImage(imageUrl: Images.leaveImage8);
   }
 }
-

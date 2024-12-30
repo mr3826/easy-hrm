@@ -1,17 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:imgix_core_dart/url_builder.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../../../../../../../../common/widget/custom_image_network_widget.dart';
-import '../../../../../../../../../utils/api_endpoints.dart';
 import '../../../../../../../../../utils/utils.dart';
 import '../../../../../controller/hr_leave_controller.dart';
 import 'document_view.dart';
@@ -32,9 +27,8 @@ class SeeDocumentDetails extends GetView<HrLeaveController> {
           ),
           Center(
               child: Text(
-            "No Files!",
-            style:
-                AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+            "No document!",
+            style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
           )),
         ],
       );
@@ -52,11 +46,11 @@ class SeeDocumentDetails extends GetView<HrLeaveController> {
               itemBuilder: (context, index) {
                 final file = files[index];
                 return _buildDocumentCard(
-                  fileName: file?.name ?? "Unknown File",
+                  fileName: file.name ?? "Unknown File",
                   date: controller.leaveDetailsById?.getLeaveDetailsById
                           ?.leaveDetails?.first.date ??
                       "",
-                  imgUrl: file?.key ?? "",
+                  imgUrl: file.key ?? "",
                   context: context,
                 );
               },

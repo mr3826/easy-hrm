@@ -14,7 +14,6 @@ class DocumentView extends StatelessWidget {
   Widget build(BuildContext context) {
     // Check file extension
     if (url.endsWith(".pdf")) {
-
       print(_urlBuilder(imgKey: url));
 
       // Handle PDF

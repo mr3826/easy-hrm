@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../../modules/leave/presentation/controller/apply_leave_controller.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_layout.dart';
 import '../../../../../../../utils/app_string.dart';
@@ -10,8 +9,7 @@ import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
 import '../../../controller/hr_leave_controller.dart';
-import '../../../model/avaible_leave_type.dart'as type;
-import 'assign_leave_selected_view.dart';
+import '../../../model/avaible_leave_type.dart' as type;
 
 class LeaveTypeDropDown extends StatefulWidget {
   const LeaveTypeDropDown({super.key});
@@ -19,6 +17,7 @@ class LeaveTypeDropDown extends StatefulWidget {
   @override
   State<LeaveTypeDropDown> createState() => _LeaveTypeDropDownState();
 }
+
 class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
   String? dropDownValue;
 
@@ -28,10 +27,12 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
     // Get the controller instance
     HrLeaveController controller = Get.find<HrLeaveController>();
     // Set the default value if available, with null checks
-    dropDownValue = (controller.leaveTypeId != null && controller.leaveTypeId!.isNotEmpty)
-        ? controller.leaveTypeId
-        : null;
+    dropDownValue =
+        (controller.leaveTypeId != null && controller.leaveTypeId!.isNotEmpty)
+            ? controller.leaveTypeId
+            : null;
   }
+
   @override
   Widget build(BuildContext context) {
     HrLeaveController controller = Get.find<HrLeaveController>();
@@ -57,7 +58,7 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
             child: SizedBox(
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0,top: 4),
+                padding: const EdgeInsets.only(left: 8.0, top: 4),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -69,12 +70,14 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
                         children: [
                           Text(
                             e.name.toString(),
-                            style: AppStyle.normal_text_grey.copyWith(color: Colors.black),
+                            style: AppStyle.normal_text_grey
+                                .copyWith(color: Colors.black),
                           ),
                           Text(
                             e.type.toString(),
-                            style:  AppStyle.normal_text_grey.copyWith(color: AppColor.hintColor,fontSize: Dimensions.fontSizeSmall),
-
+                            style: AppStyle.normal_text_grey.copyWith(
+                                color: AppColor.hintColor,
+                                fontSize: Dimensions.fontSizeSmall),
                           ),
                         ],
                       ),
@@ -90,8 +93,11 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
             dropDownValue = valueType as String;
           });
 
-          type.GetAvailableLeaveTypes? getAvailableLeaveTypes = controller.availableLeaveType?.getAvailableLeaveTypes?.firstWhere((e) => e.leaveTypeId == valueType.toString());
-          Get.find<HrLeaveController>().calculateAllowanceOfLeave.value = getAvailableLeaveTypes?.availableLeave ?? "0";
+          type.GetAvailableLeaveTypes? getAvailableLeaveTypes = controller
+              .availableLeaveType?.getAvailableLeaveTypes
+              ?.firstWhere((e) => e.leaveTypeId == valueType.toString());
+          Get.find<HrLeaveController>().calculateAllowanceOfLeave.value =
+              getAvailableLeaveTypes?.availableLeave ?? "0";
           Get.find<HrLeaveController>().leaveTypeId = valueType!;
         },
       ),

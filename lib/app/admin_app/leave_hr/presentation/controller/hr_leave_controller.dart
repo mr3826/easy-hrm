@@ -53,7 +53,8 @@ class HrLeaveController extends GetxController {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getHrLeaveCalender({String? startDate, String? endDate, String? assignedId}) async {
+  Future<void> getHrLeaveCalender(
+      {String? startDate, String? endDate, String? assignedId}) async {
     String getDefaultStartDate() {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month, 1).toIso8601String().split('T')[0]}T00:00:00.000Z";
@@ -63,7 +64,6 @@ class HrLeaveController extends GetxController {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month + 1, 0).toIso8601String().split('T')[0]}T23:59:59.999Z";
     }
-
 
     Map<String, Map<String, Object>> queryMap = {"queryData": {}};
 
@@ -77,7 +77,8 @@ class HrLeaveController extends GetxController {
 
     isHrLeaveCalendarLoading(true);
 
-    hrLeaveCalender = await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
+    hrLeaveCalender =
+        await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
 
     isHrLeaveCalendarLoading(false);
   }
@@ -119,7 +120,9 @@ class HrLeaveController extends GetxController {
   }
 
   String _getLeaveId(LeaveRequests leave) {
-    var data = leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ?? "";
+    var data =
+        leave.organizationUsers?.firstWhere((v) => v.leaveId != null).leaveId ??
+            "";
     leave.organizationUsers?.forEach((v) {});
     return data;
   }
@@ -201,17 +204,19 @@ class HrLeaveController extends GetxController {
   }
 
   /// Fetches employee leave record hr.
-  Future<void> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
-
+  Future<void> getLeaveRecord(
+      {String? startDate, String? endDate, String? assignedLeaveId}) async {
     print('''
     start_date : $startDate
     endDate : $endDate
     ''');
     Map<String, Map<String, Object>> queryMap = {"queryData": {}};
 
-    queryMap["queryData"]?["start_date"] = startDate ?? "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
+    queryMap["queryData"]?["start_date"] = startDate ??
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
 
-    queryMap["queryData"]?["end_date"] = endDate ?? "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0)}";
+    queryMap["queryData"]?["end_date"] = endDate ??
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0)}";
 
     if (assignedLeaveId != null) {
       queryMap["queryData"]?["assigned_to"] = assignedLeaveId;
@@ -222,7 +227,6 @@ class HrLeaveController extends GetxController {
 
     isLoadingLeaveRecord(false);
   }
-
 
   /// Fetches leave type hr .
   Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {

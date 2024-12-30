@@ -178,18 +178,17 @@ class AssignLeave extends GetView<HrLeaveController> {
                     ? AppColor.primaryColor
                     : AppColor.primaryColor.withOpacity(0.5),
             cancelAction: () {
-            _clear();
+              _clear();
             })));
   }
 
   void _clear() {
     Get.back(canPop: false);
     Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-    (-1); //clear selection index.
+        (-1); //clear selection index.
     Get.find<HrLeaveController>().selectedEmployeeInfo.value =
         AppString.textSearchEmployee.tr;
-    Get.find<FileUploadController>().storageForUpload.filePath.value =
-    "";
+    Get.find<FileUploadController>().storageForUpload.filePath.value = "";
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
   }
 }

@@ -36,9 +36,6 @@ class CalendarController {
     }
   }
 
-
-
-
   /// Selects a range of dates and updates the focused day.
   void selectRange(DateTime? start, DateTime? end, DateTime newFocusedDay) {
     rangeStart.value = start;
@@ -46,8 +43,6 @@ class CalendarController {
     focusedDay.value = newFocusedDay;
     rangeSelectionMode.value = RangeSelectionMode.toggledOn;
   }
-
-
 
   /// Updates the currently focused day.
   void updateFocusedDay(DateTime newFocusedDay) {
@@ -63,7 +58,6 @@ class CalendarController {
   }
 
   /// Handles selection of predefined date ranges.
-
 
   void onDaySelected(String day) {
     final now = DateTime.now();
@@ -81,30 +75,34 @@ class CalendarController {
         end = start; // End same as start for Yesterday
         break;
 
-      case "2"://This week
-        start = now.subtract(Duration(days: now.weekday - 1)); // Start of the current week
+      case "2": //This week
+        start = now.subtract(
+            Duration(days: now.weekday - 1)); // Start of the current week
         end = start.add(const Duration(days: 6)); // End of the current week
         break;
 
-      case "3"://Last week
-        end = now.subtract(Duration(days: now.weekday)); // End of last week (Sunday)
-        start = end.subtract(const Duration(days: 6)); // Start of last week (Monday)
+      case "3": //Last week
+        end = now
+            .subtract(Duration(days: now.weekday)); // End of last week (Sunday)
+        start = end
+            .subtract(const Duration(days: 6)); // Start of last week (Monday)
         break;
 
-      case "4"://This month
+      case "4": //This month
         start = DateTime(now.year, now.month, 1); // Start of the month
-        end = DateTime(now.year, now.month + 1, 0); // Last day of the current month
+        end = DateTime(
+            now.year, now.month + 1, 0); // Last day of the current month
         break;
 
-      case "5"://Last month
+      case "5": //Last month
         start = DateTime(now.year, now.month - 1, 1); // Start of last month
         end = DateTime(now.year, now.month, 0); // Last day of last month
         break;
 
-      case "6"://Custom
-      // Handle custom date selection if needed
+      case "6": //Custom
+        // Handle custom date selection if needed
         start = DateTime.now(); // Placeholder for custom start
-        end = DateTime.now();   // Placeholder for custom end
+        end = DateTime.now(); // Placeholder for custom end
         print("Custom date selection");
         break;
 
@@ -120,6 +118,4 @@ class CalendarController {
     // Print the selected range
     print("Selected range: ${rangeStart.value} to ${rangeEnd.value}");
   }
-
-
 }

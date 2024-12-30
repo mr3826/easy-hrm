@@ -141,7 +141,6 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               ),
               _spacer(18),
 
-
               /// Displays the action buttons.
 
               Obx(
@@ -149,9 +148,9 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
                         .isUpdateLeaveLoading
                         .isTrue
                     ? const Center(
-                      child: CupertinoActivityIndicator(
-                          color: AppColor.primaryColor, radius: 15),
-                    )
+                        child: CupertinoActivityIndicator(
+                            color: AppColor.primaryColor, radius: 15),
+                      )
                     : CustomDoubleAppButton(onAction: () {
                         if (Get.find<HrLeaveController>()
                                 .calculateAllowanceOfLeave
@@ -172,7 +171,6 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
                         Get.back(canPop: false);
                       }),
               ),
-
 
               _spacer(100),
             ],

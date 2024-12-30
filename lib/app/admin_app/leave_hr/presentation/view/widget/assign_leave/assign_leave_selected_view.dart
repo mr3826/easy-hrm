@@ -38,7 +38,9 @@ class AssignLeaveSelectedValue extends StatelessWidget {
     return Column(
       children: [
         /// Builds the header with a static date and day.
-       Obx(()=> _buildHeader(),),
+        Obx(
+          () => _buildHeader(),
+        ),
 
         /// Builds the list of text fields for various leave record details.
         Obx(
@@ -363,17 +365,17 @@ Widget _buildHeader() {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child:
-          Container(height: 4, width: 120, color: AppColor.backgroundColor),
+              Container(height: 4, width: 120, color: AppColor.backgroundColor),
         ),
         customSpacerHeight(height: 12),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-              .day ==
-              DateTime.parse(
-                  Get.find<DateTimePickerController>().outDate.value)
-                  .day
+                      .day ==
+                  DateTime.parse(
+                          Get.find<DateTimePickerController>().outDate.value)
+                      .day
               ? DateFormat('d MMMM').format(DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value))
+                  Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
@@ -383,12 +385,12 @@ Widget _buildHeader() {
         ),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-              .day ==
-              DateTime.parse(
-                  Get.find<DateTimePickerController>().outDate.value)
-                  .day
+                      .day ==
+                  DateTime.parse(
+                          Get.find<DateTimePickerController>().outDate.value)
+                      .day
               ? DateFormat('EEEE').format(DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value))
+                  Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.small_text_black.copyWith(
             color: AppColor.hintColor,

@@ -120,9 +120,10 @@ void _showCustomDateRangeDialog(int index, context) async {
     builder: (BuildContext context) => CustomCalendarPicker(
         isRangeSelectionEnabled: true,
         weekendDays: weekendDays,
-        cancelTextStyle: AppStyle.normal_text.copyWith(color: AppColor.secondaryColor,fontSize: Dimensions.fontSizeDefault+1),
+        cancelTextStyle: AppStyle.normal_text.copyWith(
+            color: AppColor.secondaryColor,
+            fontSize: Dimensions.fontSizeDefault + 1),
         baseColor: AppColor.primaryColor,
-
         holidayDates: const []),
   );
   if (selectedRange != null) {
