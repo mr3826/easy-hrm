@@ -11,7 +11,6 @@ import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
-import '../../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
 import '../../../../../../modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
@@ -42,10 +41,15 @@ class LeaveHrScreen extends StatelessWidget {
             customSpacerHeight(height: 12),
 
             ///build search employee list
-            Obx(() => _buildSearchBar(context, onSearch: () {_showEmployeeSelectionSheet();})),
+            Obx(() => _buildSearchBar(context, onSearch: () {
+                  _showEmployeeSelectionSheet();
+                })),
 
             ///Tab-bar view according to index
-            Obx(() => Get.find<LeaveController>().tabLength.value == 0 ? _buildCalendar() : _leaveRecordeList(),
+            Obx(
+              () => Get.find<LeaveController>().tabLength.value == 0
+                  ? _buildCalendar()
+                  : _leaveRecordeList(),
             ),
           ],
         ),
@@ -88,7 +92,7 @@ class LeaveHrScreen extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Obx(() => GestureDetector(
-                  onTap: ()=>_updatedTabIndex(controller,index),
+                  onTap: () => _updatedTabIndex(controller, index),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 2.2,
                     child: Card(
@@ -200,7 +204,8 @@ class LeaveHrScreen extends StatelessWidget {
                     AppString.textSearchEmployee)
                   InkWell(
                     onTap: () {
-                      controller.selectedEmployeeInfo.value = AppString.textSearchEmployee.tr;
+                      controller.selectedEmployeeInfo.value =
+                          AppString.textSearchEmployee.tr;
                       controller.selectedEmployeeImgKey.value = "";
                       if (leaveController.tabLength.value == 0) {
                         controller.getHrLeaveCalender();
@@ -226,7 +231,8 @@ class LeaveHrScreen extends StatelessWidget {
         Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
         final userProfileController = Get.find<UserProfileController>();
-        final userDetails = userProfileController.userDetails?.getOrganizationUserDetails?.profile;
+        final userDetails = userProfileController
+            .userDetails?.getOrganizationUserDetails?.profile;
 
         // Fetch available leave types
         hrLeaveController.getAvailableLeaveType();
@@ -257,17 +263,22 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   void _clear() {
-    Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1); //clear selection index
-    Get.find<HrLeaveController>().selectedEmployeeInfo.value = AppString.textSearchEmployee.tr;
+    Get.find<LeaveController>().leaveTypeSelectedIndex.value =
+        (-1); //clear selection index
+    Get.find<HrLeaveController>().selectedEmployeeInfo.value =
+        AppString.textSearchEmployee.tr;
     Get.find<HrLeaveController>().storageForUpload.filePath.value = "";
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
   }
 
-  _updatedTabIndex(LeaveController controller,index) {
+  _updatedTabIndex(LeaveController controller, index) {
     controller.tabLength.value = index;
     controller.currentDate.value = "This month";
-    Get.find<HrLeaveController>().getLeaveRecord(startDate: DateTime(DateTime.now().year, DateTime.now().month, 1).toString(),
-        endDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 0).toString());
+    Get.find<HrLeaveController>().getLeaveRecord(
+        startDate:
+            DateTime(DateTime.now().year, DateTime.now().month, 1).toString(),
+        endDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
+            .toString());
   }
 }
 
@@ -313,7 +324,8 @@ _customAntButtonSheet({
         return Material(
           color: AppColor.noColor,
           child: Container(
-            height: computedHeight, // Ensure the height matches the bottom sheet's height
+            height:
+                computedHeight, // Ensure the height matches the bottom sheet's height
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(Dimensions.radiusMid),

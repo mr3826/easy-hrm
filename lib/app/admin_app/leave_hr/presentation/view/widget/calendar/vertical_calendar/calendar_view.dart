@@ -11,20 +11,19 @@ class CalendarView extends StatelessWidget {
 
   // Generate a list of all dates in the current month
   List<DateTime> _generateDatesForCurrentMonth() {
-    DateTime now = DateTime.parse(Get.find<LeaveController>().selectedMonthDate.toString());
+    DateTime now = DateTime.parse(
+        Get.find<LeaveController>().selectedMonthDate.toString());
 
     int daysInMonth = DateTime(now.year, now.month + 1, 0).day;
     return List.generate(
         daysInMonth, (index) => DateTime(now.year, now.month, index + 1));
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     List<DateTime> monthDates = _generateDatesForCurrentMonth();
-    Map<String, List<Task>> taskData =Get.find<HrLeaveController>().getTaskDataFromLeaves();
-
+    Map<String, List<Task>> taskData =
+        Get.find<HrLeaveController>().getTaskDataFromLeaves();
 
     return ListView.builder(
       itemCount: monthDates.length,
@@ -61,7 +60,7 @@ class CalendarView extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize:
-                              MediaQuery.of(context).size.width * 0.05,
+                                  MediaQuery.of(context).size.width * 0.05,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -70,7 +69,7 @@ class CalendarView extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize:
-                                MediaQuery.of(context).size.width * 0.03)),
+                                    MediaQuery.of(context).size.width * 0.03)),
                       ],
                     ),
                   ),
@@ -81,14 +80,14 @@ class CalendarView extends StatelessWidget {
                     children: tasks.isEmpty
                         ? [const VerticalDottedDivider()]
                         : tasks
-                        .map((task) => Padding(
-                      padding: const EdgeInsets.only(
-                          left: 12, right: 12),
-                      child: TaskCard(
-                        task: task,
-                      ),
-                    ))
-                        .toList(),
+                            .map((task) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 12, right: 12),
+                                  child: TaskCard(
+                                    task: task,
+                                  ),
+                                ))
+                            .toList(),
                   ),
                 ),
               ],

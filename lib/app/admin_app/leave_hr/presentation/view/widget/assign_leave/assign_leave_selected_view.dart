@@ -152,8 +152,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               /// Displays the title and an attachment input.
               _buildTitleText(text: AppString.text_document.tr),
               customSpacerHeight(height: 8),
-
-               AttachmentFile(
+               const AttachmentFile(
                 isAssignLeave: true,
               ),
               customSpacerHeight(height: 30),
@@ -271,7 +270,6 @@ class AssignLeaveSelectedValue extends StatelessWidget {
       controller: leaveNoteController,
       hintText: AppString.text_add_note.tr,
       borderColor: AppColor.hintColor.withOpacity(0.5),
-      onChanged: (value) {},
     );
   }
 
