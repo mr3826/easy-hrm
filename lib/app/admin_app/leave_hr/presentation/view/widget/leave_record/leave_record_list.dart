@@ -35,61 +35,68 @@ class LeaveRecordList extends GetView<HrLeaveController> {
             : Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ListView.builder(
-                    itemCount:
-                        controller.leaveRecorde?.getLeaveRequests?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      var data =
-                          controller.leaveRecorde?.getLeaveRequests?[index];
+                  child: RefreshIndicator(
+                    onRefresh: _refreshScreen,
+                    child: ListView.builder(
+                      itemCount:
+                          controller.leaveRecorde?.getLeaveRequests?.length ??
+                              0,
+                      itemBuilder: (context, index) {
+                        var data =
+                            controller.leaveRecorde?.getLeaveRequests?[index];
 
-                      if (data == null) {
-                        return const SizedBox.shrink();
-                      }
+                        if (data == null) {
+                          return const SizedBox.shrink();
+                        }
 
-                      return SizedBox(
-                        width: double.infinity,
-                        child: Card(
-                          elevation: 0,
-                          shape: roundedRectangleBorder,
-                          color: AppColor.leaveRecordCardColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildLeaveCard(
-                                  LeaveRecordDetailsModel(
-                                    employeeName:
-                                        "${data.organizationUser?.profile?.firstName ?? "No added yet"} ${data.organizationUser?.profile?.lastName ?? ""}",
-                                    applicationStatus: data.status ?? "Unknown",
-                                    designation:
-                                        data.organizationUser?.designation ??
-                                            "No designation",
-                                    typeOfLeave: data.leaveType?.name ?? "N/A",
-                                    leaveStatus: data.leaveType?.type ?? "N/A",
-                                    imgUrl:
-                                        data.organizationUser?.profile?.image ??
-                                            "",
-                                    leaveDate: _formatLeaveDate(
-                                        data.startDate, data.endDate),
-                                    leaveDuration: getLeaveDuration(
-                                      data.leaveDetails?.first.leaveSeconds
-                                              ?.toString() ??
-                                          "0",
-                                      data.leaveType?.numberOfDays ?? "0",
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Card(
+                            elevation: 0,
+                            shape: roundedRectangleBorder,
+                            color: AppColor.leaveRecordCardColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _buildLeaveCard(
+                                    LeaveRecordDetailsModel(
+                                      employeeName:
+                                          "${data.organizationUser?.profile?.firstName ?? "No added yet"} ${data.organizationUser?.profile?.lastName ?? ""}",
+                                      applicationStatus:
+                                          data.status ?? "Unknown",
+                                      designation:
+                                          data.organizationUser?.designation ??
+                                              "No designation",
+                                      typeOfLeave:
+                                          data.leaveType?.name ?? "N/A",
+                                      leaveStatus:
+                                          data.leaveType?.type ?? "N/A",
+                                      imgUrl: data.organizationUser?.profile
+                                              ?.image ??
+                                          "",
+                                      leaveDate: _formatLeaveDate(
+                                          data.startDate, data.endDate),
+                                      leaveDuration: getLeaveDuration(
+                                        data.leaveDetails?.first.leaveSeconds
+                                                ?.toString() ??
+                                            "0",
+                                        data.leaveType?.numberOfDays ?? "0",
+                                      ),
+                                      applicationDate:
+                                          data.leaveType?.applicationDate ??
+                                              "N/A",
                                     ),
-                                    applicationDate:
-                                        data.leaveType?.applicationDate ??
-                                            "N/A",
+                                    data.leaveDetails?.first.leaveId ?? "",
                                   ),
-                                  data.leaveDetails?.first.leaveId ?? "",
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ));
@@ -232,4 +239,20 @@ Widget showStatusButton(String leaveStatus) {
     default:
       return Container();
   }
+}
+
+
+Future<void> _refreshScreen() async {
+  final leaveController = Get.find<HrLeaveController>();
+  final now = DateTime.now();
+
+  final startDate = leaveController.selectedRangeStartDate.isEmpty
+      ? DateTime(now.year, now.month, 1).toIso8601String()
+      : leaveController.selectedRangeStartDate;
+
+  final endDate = leaveController.selectedRangeEndDate.isEmpty
+      ? DateTime(now.year, now.month + 1, 0).toIso8601String()
+      : leaveController.selectedRangeEndDate;
+
+  leaveController.getLeaveRecord(startDate: startDate, endDate: endDate);
 }

@@ -139,7 +139,7 @@ class LeaveHrScreen extends StatelessWidget {
         radius: 17,
       ));
     }
-    return const Expanded(
+    return  const Expanded(
       child: Column(
         children: [
           MonthNavigateWidget(),
@@ -148,6 +148,9 @@ class LeaveHrScreen extends StatelessWidget {
       ),
     );
   }
+
+
+
 
   // Search bar method renamed and optimized
   Widget _buildSearchBar(BuildContext context, {required Function onSearch}) {
@@ -274,11 +277,6 @@ class LeaveHrScreen extends StatelessWidget {
   _updatedTabIndex(LeaveController controller, index) {
     controller.tabLength.value = index;
     controller.currentDate.value = "This month";
-    Get.find<HrLeaveController>().getLeaveRecord(
-        startDate:
-            DateTime(DateTime.now().year, DateTime.now().month, 1).toString(),
-        endDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
-            .toString());
   }
 }
 
