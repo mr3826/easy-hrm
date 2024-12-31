@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/hr_update_leave_controller.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/leave_controller.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/leave_details_by_id.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_record/leave_record_details/see_documents/see_document_details.dart';
@@ -9,11 +10,11 @@ import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_app_button.dart';
 import '../../../../../../../../common/widget/custom_dialog.dart';
+import '../../../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
-import '../../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
@@ -21,8 +22,6 @@ import '../../../../../../../../utils/images.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
-
-
 
 /// A widget that displays detailed information for a specific leave record,
 /// including options to approve, reject, edit, and view attached documents.
@@ -103,20 +102,15 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                       _divider(),
 
                       _buildActionOption(AppString.textViewLeaveRecord.tr, () {
-
                         controller.getLeaveRecord(
                             startDate: controller.leaveDetailsById
                                 ?.getLeaveDetailsById?.startDate,
                             endDate: controller
                                 .leaveDetailsById?.getLeaveDetailsById?.endDate,
-                            assignedLeaveId: controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.id);
-
-print("object");
-
+                            assignedLeaveId: controller.leaveDetailsById
+                                ?.getLeaveDetailsById?.organizationUser?.id);
                         leaveController.tabLength(1);
                         Get.back(canPop: false);
-
-
                       }),
                     ],
                   ),
@@ -202,7 +196,7 @@ print("object");
 
   /// Displays a sheet with attached files for viewing.
   void _showBuildAttachedFile() {
-    customAntButtonSheet(
+    _customAntButtonSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
       child: const SeeDocumentDetails(),
@@ -254,51 +248,90 @@ print("object");
   /// Shows a sheet to edit leave details.
   void _showEditLeaveDetails() {
     _updateDateFromResponse();
-    customAntButtonSheet(
+    _customAntButtonSheet(
       context: Get.context!,
+      onClose: _clear,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
-      child:   EditLeaveRecordDetails(getLeaveDetailsById:GetLeaveDetailsById(files: controller.leaveDetailsById?.getLeaveDetailsById?.files??[])),
+      child: EditLeaveRecordDetails(
+          getLeaveDetailsById: GetLeaveDetailsById(
+              files: controller.leaveDetailsById?.getLeaveDetailsById?.files ??
+                  [])),
     );
   }
 
+  void _clear() {
+    Get.find<HrLeaveController>().selectedEmployeeInfo.value =
+        AppString.textSearchEmployee.tr;
+    Get.find<HrUpdateLeaveController>().storageForUpload.filePath.value = "";
+    Get.find<HrUpdateLeaveController>().isFileUploadedSuccessfully(false);
+  }
+
   void _updateDateFromResponse() {
-
     controller.getAvailableLeaveType();
-    controller.selectedEmployeeImgKey.value =  controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.image ?? "";
-    controller.selectedEmployeeInfo.value =  "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} ""${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}";
-    controller.leaveTypeId = controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.id ?? "";
-    controller.leaveId = controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first.leaveId ?? "";
-    controller.calculateAllowanceOfLeave.value=controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.calculateAllowanceBy.toString()??"";
+    controller.selectedEmployeeImgKey.value = controller.leaveDetailsById
+            ?.getLeaveDetailsById?.organizationUser?.profile?.image ??
+        "";
+    controller.selectedEmployeeInfo.value =
+        "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
+        "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}";
+    controller.leaveTypeId =
+        controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.id ?? "";
+    controller.leaveId = controller.leaveDetailsById?.getLeaveDetailsById
+            ?.leaveDetails?.first.leaveId ??
+        "";
+    controller.calculateAllowanceOfLeave.value = controller.leaveDetailsById
+            ?.getLeaveDetailsById?.leaveType?.calculateAllowanceBy
+            .toString() ??
+        "";
+    controller.storageForUpload.filePath.value = "";
+    controller.isFileUploadedSuccessfully(false);
 
-
-    if( controller.leaveDetailsById!.getLeaveDetailsById!.files!.isNotEmpty ){
-      controller.fileName =controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.name??"";
-      controller.fileKey =controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.key??"";
-      controller.fileId = controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.id??"";
-      controller.fileSize = controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.size.toString()??"";
+    if (controller.leaveDetailsById!.getLeaveDetailsById!.files!.isNotEmpty) {
+      controller.fileName =
+          controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.name ??
+              "";
+      controller.fileKey =
+          controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.key ??
+              "";
+      controller.fileId =
+          controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.id ??
+              "";
+      controller.fileSize = controller
+              .leaveDetailsById?.getLeaveDetailsById?.files?.first.size
+              .toString() ??
+          "";
     }
 
+    Get.find<LeaveController>().selectedStatusIndex.value =
+        controller.leaveDetailsById?.getLeaveDetailsById?.status == "pending"
+            ? 0
+            : 1;
 
+    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
+        .format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
+                DateTime.now().toString()));
+    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
+        .format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
+                DateTime.now().toString()));
 
-    Get.find<LeaveController>().selectedStatusIndex.value = controller.leaveDetailsById?.getLeaveDetailsById?.status == "pending" ? 0 : 1;
+    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
+        .format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
+                DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(
+            controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
+                DateTime.now().toString()));
 
-    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.startDate ?? DateTime.now().toString()));
-
-    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.endDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.endDate ?? DateTime.now().toString()));
-
-    leaveNoteController.text = controller.leaveDetailsById?.getLeaveDetailsById?.description ?? "";
+    leaveNoteController.text =
+        controller.leaveDetailsById?.getLeaveDetailsById?.description ?? "";
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
-
-
   }
 }
-
-
-
 
 /// Shows a rejection dialog with custom alert and actions.
 void showRejectDialog(BuildContext context, String leaveData,
@@ -434,4 +467,47 @@ Widget _buildDialogActions(String leaveId) {
       ],
     ),
   );
+}
+
+_customAntButtonSheet({
+  required BuildContext context,
+  required Widget child,
+  double? height,
+  VoidCallback? onClose,
+}) {
+  final computedHeight = height ?? _modelHeightAccordingScreenSize(context);
+  // Display the custom bottom sheet
+  showCustomAtmBtnSheet(
+    height: computedHeight,
+    onClose: onClose,
+    context: context,
+    child: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Material(
+          color: AppColor.noColor,
+          child: Container(
+            height:
+                computedHeight, // Ensure the height matches the bottom sheet's height
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(Dimensions.radiusMid),
+                topLeft: Radius.circular(Dimensions.radiusMid),
+              ),
+              color: AppColor.cardColor,
+            ),
+            child: child,
+          ),
+        );
+      },
+    ),
+  );
+}
+
+double _modelHeightAccordingScreenSize(BuildContext context) {
+  final width = MediaQuery.of(context).size.width;
+  if (width <= 360.0) {
+    return 480.0;
+  } else {
+    return 500.0;
+  }
 }

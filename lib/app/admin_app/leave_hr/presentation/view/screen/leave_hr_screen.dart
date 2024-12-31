@@ -226,8 +226,7 @@ class LeaveHrScreen extends StatelessWidget {
         Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
         final userProfileController = Get.find<UserProfileController>();
-        final userDetails = userProfileController
-            .userDetails?.getOrganizationUserDetails?.profile;
+        final userDetails = userProfileController.userDetails?.getOrganizationUserDetails?.profile;
 
         // Fetch available leave types
         hrLeaveController.getAvailableLeaveType();
@@ -260,7 +259,7 @@ class LeaveHrScreen extends StatelessWidget {
   void _clear() {
     Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1); //clear selection index
     Get.find<HrLeaveController>().selectedEmployeeInfo.value = AppString.textSearchEmployee.tr;
-    Get.find<FileUploadController>().storageForUpload.filePath.value = "";
+    Get.find<HrLeaveController>().storageForUpload.filePath.value = "";
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
   }
 

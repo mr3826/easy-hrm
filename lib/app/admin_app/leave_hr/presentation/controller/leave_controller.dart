@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+
 import '../../../../../utils/app_string.dart';
 
-/// Controller for managing the leave data and UI states in the leave management screen.
 class LeaveController extends GetxController {
   /// The total number of tabs in the leave management UI.
   RxInt tabLength = 0.obs;
-
-
 
   RxInt leaveTypeSelectedIndex = (-1).obs;  // Default to -1, indicating no selection
 
@@ -35,9 +33,6 @@ class LeaveController extends GetxController {
   /// The selected date range for filtering leave records.
   final selectedDateRange = "".obs;
 
-  /// A flag indicating whether individual filtering is enabled.
-
-
   var selectAssignLeave = 'This year'.obs;
 
   final List<String> items = [
@@ -47,7 +42,6 @@ class LeaveController extends GetxController {
 
   /// The currently selected year index.
   RxInt selectedYearIndex = 0.obs;
-
 
   /// List of years starting with the current year,
   /// including the last 24 years and the next 2 years.
@@ -72,4 +66,17 @@ class LeaveController extends GetxController {
 
   /// Current date in a formatted string (optional, can be removed if not needed).
   RxString currentDate = "This month".obs;
+
+  /// Method to get the start date of the selected month and year
+  DateTime get startDate {
+    // First day of the selected month
+    return DateTime(years[selectedYearIndex.value], selectedMonthIndex.value + 1, 1);
+  }
+
+  /// Method to get the end date of the selected month and year
+  DateTime get endDate {
+    // Last day of the selected month
+    DateTime firstDayNextMonth = DateTime(years[selectedYearIndex.value], selectedMonthIndex.value + 1 + 1, 1);
+    return firstDayNextMonth.subtract(const Duration(days: 1));
+  }
 }

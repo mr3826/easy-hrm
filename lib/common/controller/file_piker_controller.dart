@@ -21,6 +21,7 @@ class PickedFileFormStorage {
   Future<void> pickFile<T extends GetxController>({
     required T controller,
   }) async {
+    print("called");
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 

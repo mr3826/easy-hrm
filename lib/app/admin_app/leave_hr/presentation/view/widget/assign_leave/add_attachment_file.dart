@@ -5,14 +5,12 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/hr_update_leave_controller.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/model/leave_details_by_id.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/leave/presentation/controller/file_upload_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/dotted_circle_style.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../../../../common/controller/file_piker_controller.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../controller/hr_leave_controller.dart';
@@ -21,7 +19,8 @@ class AttachmentFile extends StatelessWidget {
   final bool? isAssignLeave;
   final GetLeaveDetailsById? getLeaveDetailsById;
 
-  const AttachmentFile({super.key, this.getLeaveDetailsById, this.isAssignLeave});
+  const AttachmentFile(
+      {super.key, this.getLeaveDetailsById, this.isAssignLeave});
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +32,18 @@ class AttachmentFile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        dottedCircleStyle(child: GestureDetector(onTap: () {
-
-          Get.find<FileUploadController>().storageForUpload.pickFile(
-              isAssignLeave: isAssignLeave ?? false,
-              isUpdateLeave: isAssignLeave == true ? false : true);
-
-       //   PickedFileFormStorage().pickFile(controller: Get.find<HrLeaveController>());
-
-
-
-
-
-        },
-            child: Obx(() {
+        dottedCircleStyle(
+            child: GestureDetector(onTap: () {
+          if (isAssignLeave == true) {
+            Get.find<HrLeaveController>()
+                .storageForUpload
+                .pickFile(controller: Get.find<HrLeaveController>());
+          } else {
+            Get.find<HrUpdateLeaveController>()
+                .storageForUpload
+                .pickFile(controller: Get.find<HrUpdateLeaveController>());
+          }
+        }, child: Obx(() {
           return isAssignLeave == true
               ? _documentLayout()
               : _updateDocumentLayout();
@@ -62,17 +59,18 @@ class AttachmentFile extends StatelessWidget {
     if (Get.find<HrLeaveController>().isFileUploadedSuccessfully.isTrue &&
         Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
-      return Get.find<FileUploadController>()
+      return Get.find<HrLeaveController>()
               .storageForUpload
               .filePath
               .endsWith(".pdf")
           ? _replaceFileLayout()
-          : _selectedImageViewLayout();
+          : _selectedImageViewLayout(
+              Get.find<HrLeaveController>().storageForUpload.filePath.value);
     } else if (Get.find<HrLeaveController>()
             .isFileUploadedSuccessfully
             .isFalse &&
         Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
-      if (Get.find<FileUploadController>().storageForUpload.filePath.isEmpty) {
+      if (Get.find<HrLeaveController>().storageForUpload.filePath.isEmpty) {
         if (getLeaveDetailsById?.files != null) {
           if (getLeaveDetailsById?.files?.first.key == null) {
             return _emptyBox();
@@ -112,21 +110,20 @@ class AttachmentFile extends StatelessWidget {
 
   Widget _updateDocumentLayout() {
     final hrUpdateLeaveController = Get.find<HrUpdateLeaveController>();
-    final fileUploadController = Get.find<FileUploadController>();
 
     // Extract flags for better readability
     final isFileUploaded =
         hrUpdateLeaveController.isFileUploadedSuccessfully.isTrue;
     final isUploadLoading =
         hrUpdateLeaveController.isUploadPolicyLoading.isFalse;
-    final uploadedFilePath = fileUploadController.storageForUpload.filePath;
+    final uploadedFilePath = hrUpdateLeaveController.storageForUpload.filePath;
     final leaveFiles = getLeaveDetailsById?.files;
 
     if (isFileUploaded && isUploadLoading) {
       // Handle uploaded file
       return uploadedFilePath.endsWith(".pdf")
           ? _replaceFileLayout()
-          : _selectedImageViewLayout();
+          : _selectedImageViewLayout(uploadedFilePath.value);
     }
 
     if (!isFileUploaded && isUploadLoading) {
@@ -148,13 +145,11 @@ class AttachmentFile extends StatelessWidget {
                 errorText: "",
               );
       }
-
       // Show loading indicator for broken image
       return const Center(
         child: CupertinoActivityIndicator(color: AppColor.primaryColor),
       );
     }
-
     // Default fallback: Show loading indicator
     return const Center(
       child: CupertinoActivityIndicator(color: AppColor.primaryColor),
@@ -231,13 +226,13 @@ _emptyBox() {
 
 _pathNameText(String remoteUrl) {
   return remoteUrl.isEmpty ||
-          Get.find<FileUploadController>()
+          Get.find<HrLeaveController>()
               .storageForUpload
               .filePath
               .value
               .isNotEmpty
       ? Obx(() => Text(
-          Get.find<FileUploadController>()
+          Get.find<HrLeaveController>()
               .storageForUpload
               .filePath
               .value
@@ -252,19 +247,16 @@ _pathNameText(String remoteUrl) {
               fontSize: Dimensions.fontSizeDefault - 2));
 }
 
-_selectedImageViewLayout() {
+_selectedImageViewLayout(String path) {
   return Container(
     height: AppLayout.getHeight(100),
     decoration: BoxDecoration(
       color: AppColor.disableColor.withOpacity(0.4),
       image: DecorationImage(
-        image: FileImage(File(Get.find<FileUploadController>()
-                .storageForUpload
-                .filePath
-                .value)
-            .absolute),
+        image: FileImage(File(path).absolute),
         fit: BoxFit.cover,
       ),
     ),
   );
 }
+

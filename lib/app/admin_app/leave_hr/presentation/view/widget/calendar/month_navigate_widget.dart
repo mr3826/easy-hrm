@@ -200,17 +200,9 @@ Widget _buildDialogActions(LeaveController controller) {
         const SizedBox(width: 30),
         GestureDetector(
           onTap: () {
-            int selectedYear =
-                controller.years[controller.selectedYearIndex.value];
-
-            int selectedMonthIndex = controller.selectedMonthIndex.value + 1;
-            DateTime selectedDateTime =
-                DateTime(selectedYear, selectedMonthIndex);
-            print("Selected DateTime: $selectedDateTime");
-
-            Get.find<HrLeaveController>()
-                .getHrLeaveCalender(startDate: selectedDateTime.toString());
+           Get.find<HrLeaveController>().getHrLeaveCalender(startDate: controller.startDate.toString(),endDate: controller.endDate.toString());
             Get.back(canPop: false);
+
           },
           child: Text(
             AppString.text_ok.tr,

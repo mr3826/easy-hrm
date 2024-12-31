@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/calendar/vertical_calendar/calendar_task_card_widget.dart';
 import 'package:payrun_mobile/enum.dart';
+import '../../../../../common/controller/file_piker_controller.dart';
 import '../../../../../common/domain/upload_policy.dart';
 import '../../../../../common/widget/success_message.dart';
 import '../../../../../common/widget/timePicker/date_time_picker_controller.dart';
@@ -41,6 +43,10 @@ class HrLeaveController extends GetxController {
 
   RxString selectedEmployeeInfo = AppString.textSearchEmployee.tr.obs;
   RxString selectedEmployeeImgKey = "".obs;
+
+  String selectedRangeStartDate = "";
+  String selectedRangeEndDate = "";
+
   String selectedEmployeeId = "";
   RxString calculateAllowanceOfLeave = ''.obs;
   String? leaveTypeId;
@@ -51,6 +57,8 @@ class HrLeaveController extends GetxController {
   String? fileSize;
 
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
+  PickedFileFormStorage storageForUpload = PickedFileFormStorage();
+
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getHrLeaveCalender({String? startDate, String? endDate, String? assignedId}) async {
@@ -63,7 +71,6 @@ class HrLeaveController extends GetxController {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month + 1, 0).toIso8601String().split('T')[0]}T23:59:59.999Z";
     }
-
     Map<String, Map<String, Object>> queryMap = {"queryData": {}};
 
     queryMap["queryData"]?["startDate"] = startDate ?? getDefaultStartDate();
@@ -228,30 +235,31 @@ class HrLeaveController extends GetxController {
     // Preparing the input data for the GraphQL mutation
     final Map<String, dynamic> inputData = {
       "description": leaveNoteController.text,
-      "end_date": DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).toUtc().toString(),
       "start_date": DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value).toUtc().toString(),
+      "end_date": DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).toUtc().toString(),
       "assigned_to": selectedEmployeeId.isEmpty ? "${GetStorage().read(AppString.ORGANIZATION_USER_ID)}" : selectedEmployeeId,
       "status": status ?? "pending",
       "leave_type_id": leaveTypeId,
       "files": _prepareFileData()
     };
-
     final bool response = await _leaveRemoteDataSource.applyLeave(inputData);
+
 
     // Handling the response
     if (response) {
       leaveTypeId = '';
       isFileUploadedSuccessfully(false);
       showSuccessMessage(message: AppString.leaveAddedSuccessMessage.tr);
-      hrUpdateLeave();
+      hrUpdateLeave(storageForUpload);
+     isFileUploadedSuccessfully(false);
+
     }
     isAssignLeaveLoaderLoading(false);
   }
 
   /// Prepares the file data for the leave request.
   List<Map<String, dynamic>>? _prepareFileData() {
-    final fileUploadController = Get.find<FileUploadController>();
-    if (fileUploadController.storageForUpload.filePath.isEmpty) {
+    if (storageForUpload.filePath.isEmpty) {
       return null;
     }
 
@@ -265,9 +273,8 @@ class HrLeaveController extends GetxController {
 
     return [
       {
-        "size": int.parse(
-            fileUploadController.storageForUpload.fileSize.value.toString()),
-        "name": fileUploadController.storageForUpload.filePath.value
+        "size": int.parse(storageForUpload.fileSize.value.toString()),
+        "name": storageForUpload.filePath.value
             .split(".")
             .last,
         "key": fileKey,
@@ -281,12 +288,10 @@ class HrLeaveController extends GetxController {
         .graphRequest(queryString: getUploadPolicyQuery, variables: {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
-        "filename":
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "filename": "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });
-
     if (response.hasException) {
       ExceptionHelper.errorHandler(
           exception: response.exception!, methodName: "getUploadPolicy");

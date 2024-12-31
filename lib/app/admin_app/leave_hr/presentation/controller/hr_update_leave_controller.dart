@@ -4,12 +4,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import '../../../../../common/controller/file_piker_controller.dart';
 import '../../../../../common/domain/upload_policy.dart';
-import '../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
 import '../../../../../network/network_client.dart';
 import '../../../../../utils/api_endpoints.dart';
 import '../../../../../utils/utils.dart';
 import 'hr_leave_controller.dart';
+import 'leave_controller.dart';
 
 class HrUpdateLeaveController extends GetxController with StateMixin {
   RxBool isUpdateLeaveLoading = false.obs;
@@ -17,6 +18,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
+  PickedFileFormStorage storageForUpload = PickedFileFormStorage();
 
   var isSelectLeaveType = ''.obs;
   var noteValue = ''.obs;
@@ -26,7 +28,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
   bool get isButtonEnabledForUpdateLeave {
     return isSelectLeaveType.isNotEmpty ||
         noteValue.isNotEmpty ||
-        Get.find<FileUploadController>().storageForUpload.filePath.isNotEmpty ||
+        storageForUpload.filePath.isNotEmpty ||
         isSelectDate.isNotEmpty;
   }
 
@@ -53,10 +55,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
             key: key,
             size: size,
             name: name,
-            filePath: Get.find<FileUploadController>()
-                .storageForUpload
-                .filePath
-                .value,
+            filePath: storageForUpload.filePath.value,
             uploadPolicyResponse: uploadPolicyResponse)
       }
     });
@@ -67,8 +66,8 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
       isUpdateLeaveLoading(false);
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
       isFileUploadedSuccessfully(false);
-
-      hrUpdateLeave();
+      hrUpdateLeave(storageForUpload);
+      isFileUploadedSuccessfully(false);
     }
     isUpdateLeaveLoading(false);
   }
@@ -134,15 +133,9 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
             "addData": filePath.isNotEmpty
                 ? [
                     {
-                      "size": int.parse(Get.find<FileUploadController>()
-                          .storageForUpload
-                          .fileSize
-                          .value
-                          .toString()),
-                      "name": Get.find<FileUploadController>()
-                          .storageForUpload
-                          .filePath
-                          .value
+                      "size":
+                          int.parse(storageForUpload.fileSize.value.toString()),
+                      "name": storageForUpload.filePath.value
                           .split(".")
                           .last
                           .toString(),
@@ -163,14 +156,20 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
   }
 }
 
-hrUpdateLeave() {
+hrUpdateLeave(PickedFileFormStorage storageForUpload) {
   HrLeaveController controller = Get.find<HrLeaveController>();
-  final fileUploadController = Get.find<FileUploadController>();
-  controller.getHrLeaveCalender();
-  controller.getLeaveRecord();
+  LeaveController leaveController = Get.find<LeaveController>();
+
+  controller.getHrLeaveCalender(
+      startDate: leaveController.startDate.toString(),
+      endDate: leaveController.endDate.toString());
+  controller.getLeaveRecord(
+      startDate: controller.selectedRangeStartDate,
+      endDate: controller.selectedRangeEndDate);
+
   Get.back(canPop: false);
   Get.back();
   leaveNoteController.clear();
-  fileUploadController.storageForUpload.fileSize.value = "";
-  fileUploadController.storageForUpload.filePath.value = "";
+  storageForUpload.fileSize.value = "";
+  storageForUpload.filePath.value = "";
 }

@@ -130,12 +130,16 @@ void _showCustomDateRangeDialog(int index, context) async {
     var startDate = selectedRange["start"];
     var endDate = selectedRange["end"];
 
+
     if (endDate != null) {
       Get.find<HrLeaveController>().getLeaveRecord(
         startDate: startDate.toString(),
         endDate: endDate.toString(),
       );
       Get.back(canPop: false);
+      Get.find<HrLeaveController>().selectedRangeStartDate = selectedRange["start"].toString();
+      Get.find<HrLeaveController>().selectedRangeEndDate = selectedRange["end"].toString();
+
     }
   }
 }

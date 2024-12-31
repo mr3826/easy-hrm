@@ -153,7 +153,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               _buildTitleText(text: AppString.text_document.tr),
               customSpacerHeight(height: 8),
 
-              const AttachmentFile(
+               AttachmentFile(
                 isAssignLeave: true,
               ),
               customSpacerHeight(height: 30),
@@ -297,25 +297,23 @@ class AssignLeaveSelectedValue extends StatelessWidget {
     return CustomDoubleAppButton(
         btnColor: AppColor.primaryColor,
         onAction: () {
-          if (!DateTime.parse(
-                  Get.find<DateTimePickerController>().outDateTime.value)
-              .difference(DateTime.parse(
-                  Get.find<DateTimePickerController>().inDateTime.value))
-              .isNegative) {
+          if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).difference(DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)).isNegative) {
+
             if (Get.find<HrLeaveController>()
                     .calculateAllowanceOfLeave
                     .value
                     .isNotEmpty &&
                 Get.find<HrLeaveController>().calculateAllowanceOfLeave.value !=
                     "0") {
+
               Get.find<HrLeaveController>().applyLeave(
-                  status:
-                      Get.find<LeaveController>().selectedStatusIndex.value == 0
+                  status: Get.find<LeaveController>().selectedStatusIndex.value == 0
                           ? "pending"
                           : "approved");
             } else {
               showWarningMessage(message: AppString.text_no_available_leave.tr);
             }
+
           } else {
             showWarningMessage(
                 message: AppString.dateDifferenceIssueMessage.tr);
