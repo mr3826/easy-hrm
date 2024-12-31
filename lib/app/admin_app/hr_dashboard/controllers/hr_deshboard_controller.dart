@@ -6,6 +6,8 @@ import '../../employee/presentation/view/widget/filter/check_box.dart';
 class HrDashBoardController extends GetxController {
   final RxInt currentIndex = 0.obs;
   final RxInt jobTabCurrentIndex = 0.obs;
+  int activeStarIndex = -1;
+
   final ScrollController scrollController = ScrollController();
 
   List jobIndex = ["Job 1", "Job 2", "Job 3", "Job 4"]; // Example data
@@ -13,6 +15,7 @@ class HrDashBoardController extends GetxController {
   TextEditingController candidateEmail = TextEditingController();
   TextEditingController candidateFirstName = TextEditingController();
   TextEditingController candidateLastName = TextEditingController();
+  TextEditingController createReviewMessage = TextEditingController();
 
 
 
@@ -32,6 +35,7 @@ class HrDashBoardController extends GetxController {
     candidateEmail.dispose();
     candidateFirstName.dispose();
     candidateLastName.dispose();
+    createReviewMessage.dispose();
     super.onClose();
   }
 }

@@ -108,7 +108,7 @@ _buildPortfolio() {
       'file': "https://test-owner-org.dev.payrun.app/hiring/applications",
     },
     {
-      'label': "cover letter:",
+      'label': "Cover letter:",
       'file': "https://github.com/GainHQ/Mobile.App.Payrun",
     },
     {

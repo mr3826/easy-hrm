@@ -6,6 +6,7 @@ import '../../../../../../../../utils/dimensions.dart';
 import '../../../../controllers/hr_deshboard_controller.dart';
 import 'build_tab_activities.dart';
 import 'build_tab_details.dart';
+import 'build_tab_reviews.dart';
 
 class CandidateDetailsTabbar extends StatelessWidget {
   CandidateDetailsTabbar({super.key});
@@ -23,7 +24,8 @@ class CandidateDetailsTabbar extends StatelessWidget {
             } else if (controller.jobTabCurrentIndex.value == 1) {
               return const Expanded(child: BuildTabActivities());
             } else {
-              return  Container();
+              return  const Expanded(child: BuildTabReviews());
+
             }
           }),
         ],
