@@ -20,6 +20,7 @@ import '../model/hr_leave_calender.dart';
 import '../model/hr_leave_record.dart';
 import '../model/leave_details_by_id.dart';
 import 'hr_update_leave_controller.dart';
+import 'leave_controller.dart';
 
 class HrLeaveController extends GetxController {
   final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
@@ -184,8 +185,7 @@ class HrLeaveController extends GetxController {
       showSuccessMessage(
           message: AppString.leaveUpdatedSuccessMessage
               .replaceAll("updated", status ?? "updated"));
-      getHrLeaveCalender();
-      getHrLeaveCalender();
+      _updateLeaveData();
       Get.back(canPop: false);
     }
     updateLeaveLoader(false);
@@ -350,4 +350,22 @@ class HrLeaveController extends GetxController {
     getLeaveRecord();
     super.onInit();
   }
+}
+
+_updateLeaveData() {
+  LeaveController leaveController = Get.find<LeaveController>();
+  HrLeaveController controller = Get.find<HrLeaveController>();
+  final now = DateTime.now();
+  final startDate = controller.selectedRangeStartDate.isEmpty
+      ? DateTime(now.year, now.month, 1).toIso8601String()
+      : controller.selectedRangeStartDate;
+
+  final endDate = controller.selectedRangeEndDate.isEmpty
+      ? DateTime(now.year, now.month + 1, 0).toIso8601String()
+      : controller.selectedRangeEndDate;
+  controller.getLeaveRecord(startDate: startDate, endDate: endDate);
+
+  controller.getHrLeaveCalender(
+      startDate: leaveController.startDate.toString(),
+      endDate: leaveController.endDate.toString());
 }

@@ -45,11 +45,15 @@ leaveRecodeFilterDialog() {
                           controller.listIndex.value == 6) {
                         calendarController.clearRange();
                         _showCustomDateRangeDialog(index, context);
-
                       } else {
                         Get.find<HrLeaveController>().getLeaveRecord(
-                            startDate: "${calendarController.rangeStart}",
-                            endDate: "${calendarController.rangeEnd}");
+                            startDate: calendarController.rangeStart.toString(),
+                            endDate: calendarController.rangeEnd.toString());
+
+                        Get.find<HrLeaveController>().selectedRangeStartDate =
+                            calendarController.rangeStart.toString();
+                        Get.find<HrLeaveController>().selectedRangeEndDate =
+                            calendarController.rangeEnd.toString();
 
                         Navigator.pop(context);
                       }
@@ -130,16 +134,16 @@ void _showCustomDateRangeDialog(int index, context) async {
     var startDate = selectedRange["start"];
     var endDate = selectedRange["end"];
 
-
     if (endDate != null) {
       Get.find<HrLeaveController>().getLeaveRecord(
         startDate: startDate.toString(),
         endDate: endDate.toString(),
       );
       Get.back(canPop: false);
-      Get.find<HrLeaveController>().selectedRangeStartDate = selectedRange["start"].toString();
-      Get.find<HrLeaveController>().selectedRangeEndDate = selectedRange["end"].toString();
-
+      Get.find<HrLeaveController>().selectedRangeStartDate =
+          selectedRange["start"].toString();
+      Get.find<HrLeaveController>().selectedRangeEndDate =
+          selectedRange["end"].toString();
     }
   }
 }
