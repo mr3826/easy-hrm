@@ -3,14 +3,10 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/hr_leave_controller.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/controller/hr_update_leave_controller.dart';
-import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
 import '../../../../common/widget/error_message.dart';
 import '../../../../common/widget/success_message.dart';
 import '../../../../common/widget/warning_message.dart';
 import '../../../../utils/app_string.dart';
-import 'apply_leave_controller.dart';
 
 class PickedFileFormStorage {
   final box = GetStorage();
@@ -21,9 +17,10 @@ class PickedFileFormStorage {
   final isLoading = false.obs;
 
   /// Picks a file from the storage.
-  /// If [isApplyLeave] is true, triggers the ApplyLeaveController,
-  /// otherwise triggers the UpDateLeaveController to get the upload policy.
-  Future<void> pickFile({bool isApplyLeave = false,bool isAssignLeave = false,bool isUpdateLeave=false}) async {
+  /// [controller] is the specific controller to handle the upload policy.
+  Future<void> pickFile<T extends GetxController>({
+    required T controller,
+  }) async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
@@ -43,17 +40,9 @@ class PickedFileFormStorage {
           int size = await file.length();
           fileSize.value = size.toString();
 
-          // Trigger the appropriate controller based on isApplyLeave.
-          if (isApplyLeave) {
-            Get.find<ApplyLeaveController>().getUploadPolicy(fileName: filePath.value);
-          }else if (isAssignLeave) {
-            Get.find<HrLeaveController>().getUploadPolicy(fileName: filePath.value);
-          }else if (isUpdateLeave) {
-
-            Get.find<HrUpdateLeaveController>().getUploadPolicy(fileName: filePath.value);
-          } else {
-            Get.find<UpDateLeaveController>().getUploadPolicy(fileName: filePath.value);
-          }
+          // Call the common method for getting upload policy.
+          (controller as dynamic).getUploadPolicy(fileName: filePath.value);
+          print("HrLeaveController: $controller");
         } else {
           showWarningMessage(message: AppString.text_please_valid_file);
           filePath.value = "";
@@ -67,8 +56,7 @@ class PickedFileFormStorage {
 
   /// Validates the file extension.
   bool _isValidFileExtension(String filePath) {
-    print("filePath :: $filePath");
-    final validExtensions = [".png", ".jpg", ".jpeg", ".pdf",".JPG",".PNG",".JPEG",".PDF"];
+    final validExtensions = [".png", ".jpg", ".jpeg", ".pdf", ".JPG", ".PNG", ".JPEG", ".PDF"];
     return validExtensions.any((ext) => filePath.endsWith(ext));
   }
 

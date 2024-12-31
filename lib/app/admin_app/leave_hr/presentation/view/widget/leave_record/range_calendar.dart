@@ -44,8 +44,8 @@ leaveRecodeFilterDialog() {
                       if (controller.dayList[index] == "Custom" &&
                           controller.listIndex.value == 6) {
                         calendarController.clearRange();
-
                         _showCustomDateRangeDialog(index, context);
+
                       } else {
                         Get.find<HrLeaveController>().getLeaveRecord(
                             startDate: "${calendarController.rangeStart}",

@@ -27,7 +27,6 @@ import '../widget/leave_record/leave_record_list.dart';
 
 class LeaveHrScreen extends StatelessWidget {
   const LeaveHrScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,18 +42,10 @@ class LeaveHrScreen extends StatelessWidget {
             customSpacerHeight(height: 12),
 
             ///build search employee list
-
-            Obx(
-              () => _buildSearchBar(context, onSearch: () {
-                _showEmployeeSelectionSheet();
-              }),
-            ),
+            Obx(() => _buildSearchBar(context, onSearch: () {_showEmployeeSelectionSheet();})),
 
             ///Tab-bar view according to index
-            Obx(
-              () => Get.find<LeaveController>().tabLength.value == 0
-                  ? _buildCalendar()
-                  : _leaveRecordeList(),
+            Obx(() => Get.find<LeaveController>().tabLength.value == 0 ? _buildCalendar() : _leaveRecordeList(),
             ),
           ],
         ),
@@ -87,7 +78,6 @@ class LeaveHrScreen extends StatelessWidget {
   // Tab bar method renamed and optimized
   Widget _buildTabBar(BuildContext context) {
     final controller = Get.put(LeaveController());
-
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8),
       child: SizedBox(
@@ -98,17 +88,7 @@ class LeaveHrScreen extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Obx(() => GestureDetector(
-                  onTap: () {
-                    controller.tabLength.value = index;
-                    controller.currentDate.value = "This month";
-                    Get.find<HrLeaveController>().getLeaveRecord(
-                        startDate: DateTime(
-                                DateTime.now().year, DateTime.now().month, 1)
-                            .toString(),
-                        endDate: DateTime(DateTime.now().year,
-                                DateTime.now().month + 1, 0)
-                            .toString());
-                  },
+                  onTap: ()=>_updatedTabIndex(controller,index),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 2.2,
                     child: Card(
@@ -220,8 +200,7 @@ class LeaveHrScreen extends StatelessWidget {
                     AppString.textSearchEmployee)
                   InkWell(
                     onTap: () {
-                      controller.selectedEmployeeInfo.value =
-                          AppString.textSearchEmployee.tr;
+                      controller.selectedEmployeeInfo.value = AppString.textSearchEmployee.tr;
                       controller.selectedEmployeeImgKey.value = "";
                       if (leaveController.tabLength.value == 0) {
                         controller.getHrLeaveCalender();
@@ -279,12 +258,17 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   void _clear() {
-    Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-        (-1); //clear selection index
-    Get.find<HrLeaveController>().selectedEmployeeInfo.value =
-        AppString.textSearchEmployee.tr;
+    Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1); //clear selection index
+    Get.find<HrLeaveController>().selectedEmployeeInfo.value = AppString.textSearchEmployee.tr;
     Get.find<FileUploadController>().storageForUpload.filePath.value = "";
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
+  }
+
+  _updatedTabIndex(LeaveController controller,index) {
+    controller.tabLength.value = index;
+    controller.currentDate.value = "This month";
+    Get.find<HrLeaveController>().getLeaveRecord(startDate: DateTime(DateTime.now().year, DateTime.now().month, 1).toString(),
+        endDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 0).toString());
   }
 }
 
@@ -320,7 +304,6 @@ _customAntButtonSheet({
   VoidCallback? onClose,
 }) {
   final computedHeight = height ?? _modelHeightAccordingScreenSize(context);
-
   // Display the custom bottom sheet
   showCustomAtmBtnSheet(
     height: computedHeight,
@@ -331,8 +314,7 @@ _customAntButtonSheet({
         return Material(
           color: AppColor.noColor,
           child: Container(
-            height:
-                computedHeight, // Ensure the height matches the bottom sheet's height
+            height: computedHeight, // Ensure the height matches the bottom sheet's height
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(Dimensions.radiusMid),

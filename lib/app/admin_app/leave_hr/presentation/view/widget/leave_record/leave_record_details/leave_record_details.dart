@@ -15,7 +15,6 @@ import 'leave_details_button.dart';
 
 class LeaveRecordDetails extends GetView<HrLeaveController> {
   final String? leaveId;
-
   const LeaveRecordDetails({super.key, required this.leaveId});
 
   @override
@@ -37,8 +36,8 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
                       "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
                       "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
                   designation: controller.leaveDetailsById?.getLeaveDetailsById
-                          ?.organizationUser?.designation.toString() ??
-                      "No designation"),
+                      ?.organizationUser?.designation
+                      .toString()),
               customSpacerHeight(height: 12),
               _buildRow(
                 label: AppString.textType.tr,
@@ -156,7 +155,9 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
             ),
           ),
           Text(
-            designation ?? "",
+            (designation == null || designation == "null")
+                ? "No designation"
+                : designation,
             style: subTextFieldTitleStyle.copyWith(
               color: AppColor.hintColor,
               fontSize: 12,

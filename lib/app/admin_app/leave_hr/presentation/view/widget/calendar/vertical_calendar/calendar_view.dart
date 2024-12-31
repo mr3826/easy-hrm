@@ -23,7 +23,7 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<DateTime> monthDates = _generateDatesForCurrentMonth();
-    Map<String, List<Task>> taskData =Get.find<HrLeaveController>().getMockedTaskData();
+    Map<String, List<Task>> taskData =Get.find<HrLeaveController>().getTaskDataFromLeaves();
 
 
     return ListView.builder(

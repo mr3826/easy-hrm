@@ -12,6 +12,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../../../common/controller/file_piker_controller.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../controller/hr_leave_controller.dart';
@@ -20,8 +21,7 @@ class AttachmentFile extends StatelessWidget {
   final bool? isAssignLeave;
   final GetLeaveDetailsById? getLeaveDetailsById;
 
-  const AttachmentFile(
-      {super.key, this.getLeaveDetailsById, this.isAssignLeave});
+  const AttachmentFile({super.key, this.getLeaveDetailsById, this.isAssignLeave});
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +33,20 @@ class AttachmentFile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        dottedCircleStyle(
-            child: GestureDetector(onTap: () {
+        dottedCircleStyle(child: GestureDetector(onTap: () {
+
           Get.find<FileUploadController>().storageForUpload.pickFile(
               isAssignLeave: isAssignLeave ?? false,
               isUpdateLeave: isAssignLeave == true ? false : true);
-        }, child: Obx(() {
+
+       //   PickedFileFormStorage().pickFile(controller: Get.find<HrLeaveController>());
+
+
+
+
+
+        },
+            child: Obx(() {
           return isAssignLeave == true
               ? _documentLayout()
               : _updateDocumentLayout();

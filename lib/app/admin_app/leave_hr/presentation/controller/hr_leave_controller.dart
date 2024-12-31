@@ -53,8 +53,7 @@ class HrLeaveController extends GetxController {
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getHrLeaveCalender(
-      {String? startDate, String? endDate, String? assignedId}) async {
+  Future<void> getHrLeaveCalender({String? startDate, String? endDate, String? assignedId}) async {
     String getDefaultStartDate() {
       final now = DateTime.now();
       return "${DateTime(now.year, now.month, 1).toIso8601String().split('T')[0]}T00:00:00.000Z";
@@ -74,22 +73,16 @@ class HrLeaveController extends GetxController {
     if (assignedId != null) {
       queryMap["queryData"]?["assigned_to"] = assignedId;
     }
-
     isHrLeaveCalendarLoading(true);
-
-    hrLeaveCalender =
-        await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
-
+    hrLeaveCalender = await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
     isHrLeaveCalendarLoading(false);
   }
 
   /// Constructs and returns a map of tasks grouped by date.
   /// Each task corresponds to a leave request.
-  Map<String, List<Task>> getMockedTaskData() {
-    final leaveRequests =
-        hrLeaveCalender?.getLeavesCalendar?.leaveRequests ?? [];
+  Map<String, List<Task>> getTaskDataFromLeaves() {
+    final leaveRequests = hrLeaveCalender?.getLeavesCalendar?.leaveRequests ?? [];
     final taskData = <String, List<Task>>{};
-
     for (var leave in leaveRequests) {
       final date = leave.formattedDate ?? "Unknown Date";
       taskData.putIfAbsent(date, () => []).add(_createTask(leave));
@@ -177,10 +170,10 @@ class HrLeaveController extends GetxController {
   Future<void> updateLeave({required String leaveId, String? status}) async {
     updateLeaveLoader(true);
     final bool response = await _hrLeaveRemoteDataSource.updateLeave(
-        leaveId: leaveId, status: status);
+        leaveId: leaveId, status: status ?? "cancelled");
 
     if (response) {
-      showSuccessMessage(message: AppString.leaveCanceledSuccessMessage.tr);
+      showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.replaceAll("updated", status ?? "updated"));
       getHrLeaveCalender();
       getHrLeaveCalender();
       Get.back(canPop: false);
@@ -189,10 +182,9 @@ class HrLeaveController extends GetxController {
   }
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
-  Future<void> getLeaveDetailsById({String? leaveId}) async {
+  Future<void> getLeaveDetailsById({required String leaveId}) async {
     isHrLeaveDetailsByLoading(true);
-    leaveDetailsById =
-        await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
+    leaveDetailsById = await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
     isHrLeaveDetailsByLoading(false);
   }
 
@@ -204,14 +196,8 @@ class HrLeaveController extends GetxController {
   }
 
   /// Fetches employee leave record hr.
-  Future<void> getLeaveRecord(
-      {String? startDate, String? endDate, String? assignedLeaveId}) async {
-    print('''
-    start_date : $startDate
-    endDate : $endDate
-    ''');
+  Future<void> getLeaveRecord({String? startDate, String? endDate, String? assignedLeaveId}) async {
     Map<String, Map<String, Object>> queryMap = {"queryData": {}};
-
     queryMap["queryData"]?["start_date"] = startDate ??
         "${DateTime(DateTime.now().year, DateTime.now().month, 1)}";
 
@@ -232,28 +218,19 @@ class HrLeaveController extends GetxController {
   Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
     isAvailableLeaveType(true);
     availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(
-        orgUserId: orgUserId, year: year);
+        orgUserId: orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
+        year: year ?? "${DateTime.now().year}");
     isAvailableLeaveType(false);
   }
 
-  Future<void> applyLeave(
-      {String? filePath, String? assignedId, String? status}) async {
+  Future<void> applyLeave({String? filePath, String? assignedId, String? status}) async {
     isAssignLeaveLoaderLoading(true);
-
     // Preparing the input data for the GraphQL mutation
     final Map<String, dynamic> inputData = {
       "description": leaveNoteController.text,
-      "end_date":
-          DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
-              .toUtc()
-              .toString(),
-      "start_date":
-          DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)
-              .toUtc()
-              .toString(),
-      "assigned_to": selectedEmployeeId.isEmpty
-          ? "${GetStorage().read(AppString.ORGANIZATION_USER_ID)}"
-          : selectedEmployeeId,
+      "end_date": DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).toUtc().toString(),
+      "start_date": DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value).toUtc().toString(),
+      "assigned_to": selectedEmployeeId.isEmpty ? "${GetStorage().read(AppString.ORGANIZATION_USER_ID)}" : selectedEmployeeId,
       "status": status ?? "pending",
       "leave_type_id": leaveTypeId,
       "files": _prepareFileData()

@@ -876,7 +876,6 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
       designation {
         name
       }
-      __typename
     }
     leaveType {
       id
