@@ -9,10 +9,13 @@ import '../../../../../common/domain/upload_policy.dart';
 import '../../../../../network/network_client.dart';
 import '../../../../../utils/api_endpoints.dart';
 import '../../../../../utils/utils.dart';
+import '../../data/apply_and_update_leave_date_source.dart';
 import 'hr_leave_controller.dart';
 import 'leave_controller.dart';
 
 class HrUpdateLeaveController extends GetxController with StateMixin {
+  final ApplyAndUpdateLeaveDateSource _updateLeaveDateSource = Get.find();
+
   RxBool isUpdateLeaveLoading = false.obs;
   RxBool isErrorOccurred = false.obs;
   final isUploadPolicyLoading = false.obs;
@@ -24,15 +27,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
   var noteValue = ''.obs;
   var isSelectDate = ''.obs;
 
-  // Method to check if the button should be enabled
-  bool get isButtonEnabledForUpdateLeave {
-    return isSelectLeaveType.isNotEmpty ||
-        noteValue.isNotEmpty ||
-        storageForUpload.filePath.isNotEmpty ||
-        isSelectDate.isNotEmpty;
-  }
-
-  void updateLeave(
+  Future<void> updateAssignLeave(
       {required String leaveId,
       required String startDate,
       required String endDate,
@@ -42,8 +37,9 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
       required String id,
       required String? leaveTypeId}) async {
     isUpdateLeaveLoading(true);
-    final response = await NetworkClient()
-        .graphRequest(queryString: cancelLeaveQuery, variables: {
+
+    // Preparing the input data for the GraphQL mutation
+    final Map<String, dynamic> inputData = {
       "inputData": {
         "leave_id": leaveId,
         "description": leaveNoteController.text,
@@ -58,17 +54,21 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
             filePath: storageForUpload.filePath.value,
             uploadPolicyResponse: uploadPolicyResponse)
       }
-    });
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "updateLeave");
-    } else {
+    };
+
+    // Sending the GraphQL request using NetworkClient
+    final bool response =
+        await _updateLeaveDateSource.updateAssignLeave(inputData);
+
+    // Handling the response
+    if (response) {
       isUpdateLeaveLoading(false);
       showSuccessMessage(message: AppString.leaveUpdatedSuccessMessage.tr);
       isFileUploadedSuccessfully(false);
       hrUpdateLeave(storageForUpload);
       isFileUploadedSuccessfully(false);
     }
+
     isUpdateLeaveLoading(false);
   }
 
@@ -160,12 +160,15 @@ hrUpdateLeave(PickedFileFormStorage storageForUpload) {
   HrLeaveController controller = Get.find<HrLeaveController>();
   LeaveController leaveController = Get.find<LeaveController>();
 
-  controller.getHrLeaveCalender(
-      startDate: leaveController.startDate.toString(),
-      endDate: leaveController.endDate.toString());
-  controller.getLeaveRecord(
-      startDate: controller.selectedRangeStartDate,
-      endDate: controller.selectedRangeEndDate);
+  if (Get.find<LeaveController>().tabLength.value == 0) {
+    controller.getHrLeaveCalender(
+        startDate: leaveController.startDate.toString(),
+        endDate: leaveController.endDate.toString());
+  } else {
+    controller.getLeaveRecord(
+        startDate: controller.selectedRangeStartDate,
+        endDate: controller.selectedRangeEndDate);
+  }
 
   Get.back(canPop: false);
   Get.back();

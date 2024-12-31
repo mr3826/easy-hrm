@@ -16,6 +16,7 @@ import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../controller/hr_leave_controller.dart';
 import '../../controller/leave_controller.dart';
@@ -139,7 +140,7 @@ class LeaveHrScreen extends StatelessWidget {
         radius: 17,
       ));
     }
-    return  const Expanded(
+    return const Expanded(
       child: Column(
         children: [
           MonthNavigateWidget(),
@@ -148,9 +149,6 @@ class LeaveHrScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
 
   // Search bar method renamed and optimized
   Widget _buildSearchBar(BuildContext context, {required Function onSearch}) {
@@ -234,8 +232,10 @@ class LeaveHrScreen extends StatelessWidget {
         Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
         final userProfileController = Get.find<UserProfileController>();
+
         final userDetails = userProfileController
             .userDetails?.getOrganizationUserDetails?.profile;
+        leaveNoteController.clear();
 
         // Fetch available leave types
         hrLeaveController.getAvailableLeaveType();

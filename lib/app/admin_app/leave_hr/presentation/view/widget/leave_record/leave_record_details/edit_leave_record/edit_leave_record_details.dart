@@ -185,7 +185,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
         .difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
-      Get.find<HrUpdateLeaveController>().updateLeave(
+      Get.find<HrUpdateLeaveController>().updateAssignLeave(
         leaveId: controller.leaveId.toString(),
         leaveTypeId: controller.leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,

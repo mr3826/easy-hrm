@@ -142,7 +142,7 @@ mutation AssignLeave($inputData: CreateLeaveInputData) {
 }
 ''';
 
-const cancelLeaveQuery = r'''
+const updatedLeaveQuery = r'''
 mutation UpdateLeave($inputData: UpdateLeaveInputData) {
   updateLeave(inputData: $inputData) {
     id

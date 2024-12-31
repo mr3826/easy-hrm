@@ -52,7 +52,7 @@ class UpDateLeaveController extends GetxController with StateMixin {
       required String? leaveTypeId}) async {
     isUpdateLeaveLoading(true);
     final response = await NetworkClient()
-        .graphRequest(queryString: cancelLeaveQuery, variables: {
+        .graphRequest(queryString: updatedLeaveQuery, variables: {
       "inputData": {
         "leave_id": leaveId,
         "description": leaveNoteController.text,
