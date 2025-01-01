@@ -25,7 +25,7 @@ class AppString {
   static const String textSearch = "Search";
   static const String textFilters = "Filters";
   static const String textEmployees = "Employees";
-  static const String textLeaveTimeline = "Leave timeline";
+ static const String textLeaveYear = "Leave year";
   static const String textEmployeeStatus = "Employees status";
   static const String textUserStatus = "User status";
   static const String textJoiningDate = "Joining date";
@@ -374,4 +374,5 @@ class AppString {
   static const String text_we_have_sent_a_verification_etc =
       "text_we_have_sent_a_verification_etc";
   static String text_time_entry = "Add time entry";
+  static String text_employee_type = "Employee & type";
 }

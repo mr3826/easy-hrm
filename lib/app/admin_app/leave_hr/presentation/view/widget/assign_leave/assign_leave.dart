@@ -49,7 +49,7 @@ class AssignLeave extends GetView<HrLeaveController> {
                         const SizedBox(height: 6),
                         Obx(() => _buildSearchBar(context)),
                         const SizedBox(height: 18),
-                        _buildTitleText(AppString.textLeaveTimeline.tr),
+                        _buildTitleText(AppString.textLeaveYear.tr),
                         const SizedBox(height: 6),
                         _buildDropdownField(
                           items: leaveController.items,
@@ -374,7 +374,6 @@ void _showEmployeeSelectionSheet() {
           orgUserId: value,
         );
         Get.back(canPop: false);
-        print("value ::: $value");
       },
       userInfo: (name) {
         controller.selectedEmployeeInfo.value = name.name ?? "";

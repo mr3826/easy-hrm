@@ -79,21 +79,17 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               _spacer(18),
 
               /// Displays the title and a required leave type dropdown.
-              _buildTitleText(
-                  text: AppString.textEmployees.tr, isRequired: true),
+              _buildTitleText(text: AppString.textEmployees.tr, isRequired: true),
               _spacer(8),
               _buildSearchBar(context),
 
               _spacer(18),
-              _buildTitleText(
-                  text: AppString.textLeaveTimeline.tr, isRequired: true),
+              _buildTitleText(text: AppString.textLeaveYear.tr, isRequired: true),
 
               _spacer(8),
 
-              _buildLeaveTimeline(),
-
+              _buildLeaveYear(),
               ///Timeline [This year,Next year]
-
               _spacer(18),
               _buildTitleText(
                   text: AppString.textLeaveType.tr, isRequired: true),
@@ -264,7 +260,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
     return customSpacerHeight(height: i);
   }
 
-  _buildLeaveTimeline() {
+  _buildLeaveYear() {
     final LeaveController controller = Get.put(LeaveController());
     return _buildDropdownField(
         items: controller.items,

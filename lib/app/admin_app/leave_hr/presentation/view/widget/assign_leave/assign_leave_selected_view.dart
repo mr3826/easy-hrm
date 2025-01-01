@@ -69,7 +69,8 @@ class AssignLeaveSelectedValue extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildText("Employee & type"),
+              _buildText(AppString.text_employee_type
+              ),
               customSpacerHeight(height: 18),
 
               /// Displays the title and a required leave type dropdown.
@@ -85,7 +86,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               const SizedBox(height: 18),
 
               _buildTitleText(
-                  text: AppString.textLeaveTimeline.tr, isRequired: true),
+                  text: AppString.textLeaveYear.tr, isRequired: true),
               const SizedBox(height: 6),
               _buildDropdownField(
                   items: controller.items,
