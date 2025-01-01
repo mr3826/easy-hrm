@@ -200,9 +200,7 @@ class EditEmployee extends GetView<EmploymentController> {
               ),
               onPressed: controller.hasChangedProfileInfo.isFalse
                   ? () {}
-                  : () {
-                      print("Clicked");
-                    },
+                  : () {},
               buttonColor: controller.hasChangedProfileInfo.isFalse
                   ? AppColor.primaryColor.withOpacity(.5)
                   : AppColor.primaryColor,

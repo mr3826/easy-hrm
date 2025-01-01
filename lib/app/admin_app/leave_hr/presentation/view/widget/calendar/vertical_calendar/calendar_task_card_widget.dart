@@ -28,7 +28,6 @@ class TaskCard extends StatelessWidget {
             Get.find<LeaveController>().tabLength(1);
             Get.find<LeaveController>().currentDate.value = task.startDate  ?? "";
              Get.find<HrLeaveController>().getLeaveRecord(startDate: "${task.startDate}T00:00:00.000Z",endDate: "${task.startDate}T23:59:59.999Z"); ///task.startDate and endDate same ... click always single date for leave
-
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

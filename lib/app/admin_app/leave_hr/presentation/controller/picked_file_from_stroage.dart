@@ -8,16 +8,6 @@ import '../../../../../common/widget/success_message.dart';
 import '../../../../../common/widget/warning_message.dart';
 import '../../../../../utils/app_string.dart';
 
-import 'dart:developer';
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../../../../../common/widget/error_message.dart';
-import '../../../../../common/widget/success_message.dart';
-import '../../../../../common/widget/warning_message.dart';
-import '../../../../../utils/app_string.dart';
-
 class LeaveFileUploadController extends GetxController {
   final box = GetStorage();
 
@@ -56,7 +46,7 @@ class LeaveFileUploadController extends GetxController {
 
 
   bool _isSupportedExtension(String filePath) {
-    const supportedExtensions = [".png", ".jpg", ".jpeg", ".pdf"];
+    final supportedExtensions = [".png", ".jpg", ".jpeg", ".pdf", ".JPG", ".PNG", ".JPEG", ".PDF"];
     return supportedExtensions.any(filePath.endsWith);
   }
 

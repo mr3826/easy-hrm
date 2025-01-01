@@ -19,8 +19,7 @@ class AttachmentFile extends StatelessWidget {
   final bool? isAssignLeave;
   final GetLeaveDetailsById? getLeaveDetailsById;
 
-  const AttachmentFile(
-      {super.key, this.getLeaveDetailsById, this.isAssignLeave});
+  const AttachmentFile({super.key, this.getLeaveDetailsById, this.isAssignLeave});
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +34,9 @@ class AttachmentFile extends StatelessWidget {
         dottedCircleStyle(
             child: GestureDetector(onTap: () {
           if (isAssignLeave == true) {
-            Get.find<HrLeaveController>()
-                .storageForUpload
-                .pickFile(controller: Get.find<HrLeaveController>());
+            Get.find<HrLeaveController>().storageForUpload.pickFile(controller: Get.find<HrLeaveController>());
           } else {
-            Get.find<HrUpdateLeaveController>()
-                .storageForUpload
-                .pickFile(controller: Get.find<HrUpdateLeaveController>());
+            Get.find<HrUpdateLeaveController>().storageForUpload.pickFile(controller: Get.find<HrUpdateLeaveController>());
           }
         }, child: Obx(() {
           return isAssignLeave == true

@@ -38,14 +38,10 @@ class AssignLeaveSelectedValue extends StatelessWidget {
     return Column(
       children: [
         /// Builds the header with a static date and day.
-        Obx(
-          () => _buildHeader(),
-        ),
+        Obx(() => _buildHeader()),
 
         /// Builds the list of text fields for various leave record details.
-        Obx(
-          () => _buildListOfTextField(context),
-        )
+        Obx(() => _buildListOfTextField(context))
       ],
     );
   }
@@ -236,8 +232,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
           itemBuilder: (context, index) {
             return Obx(() {
               // Checks if the current index is selected.
-              final isSelected =
-                  index == leaveController.selectedStatusIndex.value;
+              final isSelected = index == leaveController.selectedStatusIndex.value;
               return GestureDetector(
                 onTap: () => leaveController.selectedStatusIndex.value = index,
                 child: Container(

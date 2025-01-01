@@ -183,8 +183,7 @@ class LeaveHrScreen extends StatelessWidget {
                     errorText: "Er",
                     height: 12,
                     borderColor: Colors.transparent,
-                    errorTextStyle: AppStyle.normal_text_black
-                        .copyWith(fontSize: 14, color: AppColor.secondaryColor),
+                    errorTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 14, color: AppColor.secondaryColor),
                   ),
                   customSpacerWidth(width: 6),
                 ],
