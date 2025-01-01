@@ -24,7 +24,7 @@ class CandidateDetailsTabbar extends StatelessWidget {
             } else if (controller.jobTabCurrentIndex.value == 1) {
               return const Expanded(child: BuildTabActivities());
             } else {
-              return  const Expanded(child: BuildTabReviews());
+              return  const Expanded(child: ReviewTab());
 
             }
           }),

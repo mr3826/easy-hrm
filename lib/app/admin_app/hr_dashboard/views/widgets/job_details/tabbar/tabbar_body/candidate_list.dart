@@ -122,11 +122,14 @@ class CandidateList extends StatelessWidget {
     );
   }
 
+
+
   _containerStyle() {
     return BoxDecoration(
         border: Border.all(width: 1, color: AppColor.disableColor),
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
   }
+
 
   Widget _buildMoreView() {
     return SingleChildScrollView(

@@ -392,6 +392,8 @@ static String text_department="Department";
 static String text_rating="Rating";
 
 static String text_move_to_the_next="Move to the next";
+static String text_edit_this_review="Edit this review";
+static String text_remove_this_review="Remove this review";
 static String text_move_anywhere="Move anywhere";
 
 

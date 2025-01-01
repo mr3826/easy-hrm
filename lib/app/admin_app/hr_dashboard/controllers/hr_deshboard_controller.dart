@@ -7,6 +7,8 @@ class HrDashBoardController extends GetxController {
   final RxInt currentIndex = 0.obs;
   final RxInt jobTabCurrentIndex = 0.obs;
   int activeStarIndex = -1;
+  RxString reviewerInputValue="".obs;
+
 
   final ScrollController scrollController = ScrollController();
 

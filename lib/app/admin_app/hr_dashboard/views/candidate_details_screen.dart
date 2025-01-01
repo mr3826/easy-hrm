@@ -15,8 +15,7 @@ class CandidateDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppbar(
-          title: "${AppString.text_candidate.tr} ${AppString.text_details.tr}"),
+      appBar: customAppbar(title: "${AppString.text_candidate.tr} ${AppString.text_details.tr}"),
       body: Column(
         children: [
           _buildCandidateInfo(),

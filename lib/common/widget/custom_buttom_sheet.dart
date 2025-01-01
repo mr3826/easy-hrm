@@ -15,6 +15,7 @@ Widget customButtonSheetAppbar(
     {double? height,
     String? text,
     Widget? titleWidget,
+    Widget? subtextWidget,
     String? subtext,
     bool isLeave = false,
     String? status,
@@ -59,7 +60,7 @@ Widget customButtonSheetAppbar(
                     fontSize: Dimensions.fontSizeDefault,
                   ),
             ),
-          ],
+          ]else Container(child: subtextWidget)
         ],
       ),
     );
