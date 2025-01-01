@@ -159,15 +159,21 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
 hrUpdateLeave(PickedFileFormStorage storageForUpload) {
   HrLeaveController controller = Get.find<HrLeaveController>();
   LeaveController leaveController = Get.find<LeaveController>();
+  final now = DateTime.now();
 
   if (Get.find<LeaveController>().tabLength.value == 0) {
     controller.getHrLeaveCalender(
         startDate: leaveController.startDate.toString(),
         endDate: leaveController.endDate.toString());
   } else {
-    controller.getLeaveRecord(
-        startDate: controller.selectedRangeStartDate,
-        endDate: controller.selectedRangeEndDate);
+    final startDate = controller.selectedRangeStartDate.isEmpty
+        ? DateTime(now.year, now.month, 1).toIso8601String()
+        : controller.selectedRangeStartDate;
+
+    final endDate = controller.selectedRangeEndDate.isEmpty
+        ? DateTime(now.year, now.month + 1, 0).toIso8601String()
+        : controller.selectedRangeEndDate;
+    controller.getLeaveRecord(startDate: startDate, endDate: endDate);
   }
 
   Get.back(canPop: false);

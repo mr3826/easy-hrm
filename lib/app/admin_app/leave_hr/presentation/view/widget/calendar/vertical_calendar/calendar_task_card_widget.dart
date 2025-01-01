@@ -147,7 +147,7 @@ void _showLeaveRecodeDetails(String leaveId) {
   final controller = Get.find<HrLeaveController>();
   // Fetch data and wait for completion
   controller.getLeaveDetailsById(leaveId: leaveId);
-  customButtonSheeted(
+  showCustomBottomSheet(
     context: Get.context!,
     height: MediaQuery.of(Get.context!).size.height / 1.7,
     child: LeaveRecordDetails(
@@ -196,7 +196,7 @@ void _showLeaveRecordDetailsSheet(String leaveId) {
   final controller = Get.find<HrLeaveController>();
   // Fetch data and wait for completion
   controller.getLeaveDetailsById(leaveId: leaveId);
-  customButtonSheeted(
+  showCustomBottomSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
       child: MoreLeaveRecordDetails(leaveId: leaveId));

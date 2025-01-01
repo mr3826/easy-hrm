@@ -640,7 +640,6 @@ query GetDepartmentsDropdown {
 }
 ''';
 
-
 const getEmploymentStatusInfo = '''
 query GetEmploymentStatusesDropdown {
   getEmploymentStatusesDropdown {
@@ -651,7 +650,7 @@ query GetEmploymentStatusesDropdown {
 }
 ''';
 
-const getEmploymentDesignationInfo='''
+const getEmploymentDesignationInfo = '''
 query GetDesignationsDropdown {
   getDesignationsDropdown {
     id
@@ -660,10 +659,7 @@ query GetDesignationsDropdown {
 }
 ''';
 
-
-
 //Hr_leave
-
 
 const getHrLeaveCalendarList = r'''
 query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDataType) {
@@ -696,7 +692,6 @@ query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDa
 }
 ''';
 
-
 const updateLeaveQuery = r'''
 mutation UPDATE_LEAVE($inputData: UpdateLeaveInputData) {
   updateLeave(inputData: $inputData) {
@@ -706,15 +701,11 @@ mutation UPDATE_LEAVE($inputData: UpdateLeaveInputData) {
 }
 ''';
 
-
-
-
 const getFileSignUrlQuery = r'''
 query GET_FILE_SIGNED_URL($fileKey: String!, $isDownload: Boolean) {
    getFileSignedUrl(fileKey: $fileKey, isDownload: $isDownload)
     }
-'''
-;
+''';
 const getAvailableLeavesTypeQuery = r'''
 query GET_AVAILABLE_LEAVES_TYPES($queryData: AvailableLeaveTypesInput!, $optionData: OptionDataType) {
   getAvailableLeaveTypes(queryData: $queryData, optionData: $optionData) {
@@ -729,8 +720,7 @@ query GET_AVAILABLE_LEAVES_TYPES($queryData: AvailableLeaveTypesInput!, $optionD
     type
   }
 }
-'''
-;
+''';
 
 const addAssignLeaveQuery = r'''
 mutation ASSIGN_LEAVE($inputData: CreateLeaveInputData) {
@@ -743,112 +733,55 @@ mutation ASSIGN_LEAVE($inputData: CreateLeaveInputData) {
     }
   }
 }
-'''
-;
-
-
+''';
 
 const getHrLeaveRecordeQuery = r'''
 query GET_LEAVE_REQUESTS($queryData: LeaveRequestQueryType, $optionData: OptionDataType) {
   getLeaveRequests(queryData: $queryData, optionData: $optionData) {
-    description
-    duration
+    id
     start_date
     end_date
-    total_duration
-    number_of_days
-    id
+    description
+    status
     leaveType {
       id
       name
       type
       number_of_days
       number_of_applications
-      max_consecutive_days
-      is_default
-      id
-      add_note_required
       application_date
-      calculate_allowance_by
-      organization_id
-      is_enable
-      is_earned
-      leave_statuses {
-        available_number_of_days
-        earned_days
-        available_number_of_applications
-        total_available
-      }
-
+     
     }
     leave_details {
-      date
       leave_id
       leave_seconds
-      schedule_seconds
-
     }
-    start_date
-    status
-    type
-    user_id
     files {
-      size
-      organization_id
-      name
-      key
       id
-      createdAt
-      context
-
+      name
+      size
+      key
     }
     organization_user {
-      user_position
-      user_id
-      user {
-        id
-        email
-
-      }
-      status
-      roles {
-        user_id
-        name
-        id
-  
-      }
-      profile {
-        user_id
-        personal_number
-        last_name
-        image
-        id
-        first_name
-        emergency_number
-        address
-        about
- 
-      }
-      organization_id
-      id
       designation {
         name
-        isDefault
+      }
+      status
+      profile {
         id
-        description
-     
+        first_name
+        last_name
+        image
+  
       }
       department {
+        id
         name
-   
       }
-
     }
   }
 }
-'''
-;
-
+''';
 
 const getLeaveDetailsByIdQuery = r'''
 query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
@@ -902,5 +835,3 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
   }
 }
 ''';
-
-

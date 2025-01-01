@@ -6,7 +6,6 @@ import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/employee/status_button_helper.dart';
-import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
@@ -197,24 +196,18 @@ class LeaveRecordList extends GetView<HrLeaveController> {
   void _showLeaveRecodeDetails(String leaveId) {
     final controller = Get.find<HrLeaveController>();
     controller.getLeaveDetailsById(leaveId: leaveId);
-
-
-    customButtonSheeted(
+    showCustomBottomSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.8,
       child: LeaveRecordDetails(leaveId: leaveId),
     );
-
   }
-
-
-
 
   void _showLeaveRecordDetailsSheet(String leaveId) {
     final controller = Get.find<HrLeaveController>();
     controller.getLeaveDetailsById(leaveId: leaveId);
 
-    customButtonSheeted(
+    showCustomBottomSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
       child: MoreLeaveRecordDetails(leaveId: leaveId),
@@ -249,7 +242,6 @@ Widget showStatusButton(String leaveStatus) {
       return Container();
   }
 }
-
 
 Future<void> _refreshScreen() async {
   final leaveController = Get.find<HrLeaveController>();

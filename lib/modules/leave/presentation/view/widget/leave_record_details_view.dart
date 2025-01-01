@@ -31,7 +31,7 @@ class LeaveRecordDetails extends StatelessWidget {
   dynamic leaveDate;
   dynamic leaveWeekday;
 
-   LeaveRecordDetails({super.key, this.status, this.leaveRecords});
+  LeaveRecordDetails({super.key, this.status, this.leaveRecords});
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +176,8 @@ class LeaveRecordDetails extends StatelessWidget {
                     )),
               iconData: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_leave.tr,
-              descriptionText: AppString.text_sure_you_want_to_deleted_this_leave.tr,
+              descriptionText:
+                  AppString.text_sure_you_want_to_deleted_this_leave.tr,
               extraInfoText: "",
               iconBackgroundColor: AppColor.errorColorLight,
               confirmButtonColor: AppColor.errorColorLight,
@@ -314,5 +315,3 @@ class LeaveRecordDetails extends StatelessWidget {
     }
   }
 }
-
-

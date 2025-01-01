@@ -85,11 +85,6 @@ Widget customButtonSheetAppbar(
 }
 
 _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
-
-
-
-
-
   return Stack(
     children: [
       transformDashLayout(status),
@@ -103,8 +98,7 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
               if (subtext.isNotEmpty)
                 Center(
                     child: Text(
-                // "${abbreviateDayOfWeek(subtext)}, ${formatLeaveDate(text)}",
-                      subtext,
+                  subtext,
                   style: AppStyle.normal_text_black
                       .copyWith(color: AppColor.normalTextColor),
                 )),
@@ -122,7 +116,7 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
               ),
               Center(
                   child: Text(
-                 getDuration(duration),
+                getDuration(duration),
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.normalTextColor,
                     fontWeight: FontWeight.w700),
@@ -148,9 +142,9 @@ _leaveBtnAppbarLayout(String text, String subtext, String status, duration) {
 }
 
 String getDuration(duration) {
-  if(duration=="1 day"){
+  if (duration == "1 day") {
     return "Full day";
-  }else{
+  } else {
     return duration;
   }
 }
@@ -182,7 +176,7 @@ _getStatusButton(String leaveStatus) {
   }
 }
 
-customButtonSheeted({
+showCustomBottomSheet({
   required BuildContext context,
   required Widget child,
   double? height,
@@ -200,14 +194,16 @@ customButtonSheeted({
   );
 }
 
-Widget _buildSheetContent(BuildContext context, double computedHeight, Widget child) {
+Widget _buildSheetContent(
+    BuildContext context, double computedHeight, Widget child) {
   return Material(
     color: AppColor.noColor,
     child: Container(
       height: computedHeight,
       decoration: BoxDecoration(
         color: AppColor.cardColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(Dimensions.radiusMid)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(Dimensions.radiusMid)),
       ),
       child: child,
     ),

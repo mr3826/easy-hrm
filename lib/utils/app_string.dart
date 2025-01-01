@@ -97,9 +97,12 @@ class AppString {
       "Invalid verification code provided";
   static const String leaveAddedSuccessMessage = "Leave Added Successfully";
   static const String leaveApprover = "Time log approver";
-  static const String leaveCanceledSuccessMessage = "Leave has been canceled successfully";
-  static const String leaveRemovedSuccessMessage = "leave has been removed successfully";
-  static const String leaveUpdatedSuccessMessage = "Leave has been updated successfully.";
+  static const String leaveCanceledSuccessMessage =
+      "Leave has been canceled successfully";
+  static const String leaveRemovedSuccessMessage =
+      "leave has been removed successfully";
+  static const String leaveUpdatedSuccessMessage =
+      "Leave has been updated successfully.";
   static const String newUserJoined = "A new user has joined";
   static const String no_event_found_text = "No events for today!";
   static const String no_internet_subtitle_text =

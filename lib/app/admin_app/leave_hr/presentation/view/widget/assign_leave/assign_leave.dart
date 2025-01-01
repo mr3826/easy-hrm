@@ -164,7 +164,7 @@ class AssignLeave extends GetView<HrLeaveController> {
             onAction:
                 Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
                     ? () {
-                  customButtonSheeted(
+                  showCustomBottomSheet(
                       context: Get.context!,
                       height: MediaQuery.of(Get.context!).size.height / 1.2,
                       child: const AssignLeaveSelectedValue());

@@ -15,14 +15,16 @@ class HrLeaveRemoteDataSource {
 
   HrLeaveRemoteDataSource(this.networkClient);
 
-  Future<HrLeaveCalender?> getLeaveCalender({required Map<String, Map<String, Object>> queryMap}) async {
+  Future<HrLeaveCalender?> getLeaveCalender(
+      {required Map<String, Map<String, Object>> queryMap}) async {
     try {
       final response = await networkClient.graphRequest(
         queryString: getHrLeaveCalendarList,
         variables: queryMap,
       );
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getLeaveCalender");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveCalender");
         return null;
       }
       return HrLeaveCalender.fromJson(response.data!);
@@ -32,13 +34,16 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-  Future<bool> updateLeave({required String leaveId, required String status}) async {
+  Future<bool> updateLeave(
+      {required String leaveId, required String status}) async {
     try {
-      final response = await networkClient.graphRequest(queryString: updateLeaveQuery, variables: {
+      final response = await networkClient
+          .graphRequest(queryString: updateLeaveQuery, variables: {
         "inputData": {"leave_id": leaveId, "status": status}
       });
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "updateLeave");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "updateLeave");
         return false;
       }
       return true;
@@ -50,11 +55,13 @@ class HrLeaveRemoteDataSource {
 
   Future<LeaveDetailsById?> getLeaveDetailsById(String leaveId) async {
     try {
-      final response = await networkClient.graphRequest(queryString: getLeaveDetailsByIdQuery, variables: {
+      final response = await networkClient
+          .graphRequest(queryString: getLeaveDetailsByIdQuery, variables: {
         "queryData": {"leave_id": leaveId}
       });
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getLeaveDetailsById");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveDetailsById");
         return null;
       }
       return LeaveDetailsById.fromJson(response.data!);
@@ -73,7 +80,8 @@ class HrLeaveRemoteDataSource {
           queryString: getFileSignUrlQuery,
           variables: {"fileKey": urlPath, "isDownload": true});
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getFileSignUrl");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getFileSignUrl");
         return null;
       }
       return DownloadFile.fromJson(response.data!);
@@ -83,11 +91,14 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-  Future<HrLeaveRecorde?> getLeaveRecord(Map<String, Map<String, Object>> queryMap) async {
+  Future<HrLeaveRecorde?> getLeaveRecord(
+      Map<String, Map<String, Object>> queryMap) async {
     try {
-      var response = await networkClient.graphRequest(queryString: getHrLeaveRecordeQuery, variables:queryMap);
+      var response = await networkClient.graphRequest(
+          queryString: getHrLeaveRecordeQuery, variables: queryMap);
       if (response.hasException) {
-        ExceptionHelper.errorHandler(exception: response.exception!, methodName: "getLeaveRecord");
+        ExceptionHelper.errorHandler(
+            exception: response.exception!, methodName: "getLeaveRecord");
         return null;
       }
       return HrLeaveRecorde.fromJson(response.data!);
@@ -97,14 +108,12 @@ class HrLeaveRemoteDataSource {
     }
   }
 
-  Future<AvailableLeaveType?> getAvailableLeaveType({required String orgUserId, String? year}) async {
+  Future<AvailableLeaveType?> getAvailableLeaveType(
+      {required String orgUserId, String? year}) async {
     try {
       final response = await networkClient
           .graphRequest(queryString: getAvailableLeavesTypeQuery, variables: {
-        "queryData": {
-          "org_user_id": orgUserId,
-          "start_year": year
-        },
+        "queryData": {"org_user_id": orgUserId, "start_year": year},
       });
 
       if (response.hasException) {

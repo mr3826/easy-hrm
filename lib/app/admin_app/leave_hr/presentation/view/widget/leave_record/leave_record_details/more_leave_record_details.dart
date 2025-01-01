@@ -193,7 +193,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
 
   /// Displays a sheet with attached files for viewing.
   void _showBuildAttachedFile() {
-    customButtonSheeted(
+    showCustomBottomSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
       child: const SeeDocumentDetails(),
@@ -245,7 +245,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
   /// Shows a sheet to edit leave details.
   void _showEditLeaveDetails() {
     _updateDateFromResponse();
-    customButtonSheeted(
+    showCustomBottomSheet(
       context: Get.context!,
       onClose: _clear,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
