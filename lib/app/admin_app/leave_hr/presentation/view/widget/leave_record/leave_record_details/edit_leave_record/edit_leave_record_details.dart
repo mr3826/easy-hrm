@@ -29,6 +29,8 @@ import '../../../assign_leave/add_attachment_file.dart';
 import '../../../assign_leave/assign_leave.dart';
 import '../../../assign_leave/leave_type.dart';
 
+
+
 /// A widget that displays and edits leave record details.
 class EditLeaveRecordDetails extends GetView<HrLeaveController> {
   final GetLeaveDetailsById? getLeaveDetailsById;

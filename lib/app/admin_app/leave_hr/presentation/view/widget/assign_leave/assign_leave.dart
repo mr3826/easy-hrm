@@ -17,7 +17,6 @@ import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
-import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/images.dart';
 import '../../../controller/picked_file_from_stroage.dart';
@@ -165,14 +164,14 @@ class AssignLeave extends GetView<HrLeaveController> {
             onAction:
                 Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
                     ? () {
-                        customAntButtonSheet(
-                            height: MediaQuery.of(context).size.height / 1.2,
-                            context: context,
-                            child: const AssignLeaveSelectedValue());
+                  customButtonSheeted(
+                      context: Get.context!,
+                      height: MediaQuery.of(Get.context!).size.height / 1.2,
+                      child: const AssignLeaveSelectedValue());
                         controller.path.value = "";
                       }
                     : () {},
-            buttonText: "Continue",
+            buttonText: AppString.text_continue.tr,
             btnColor:
                 Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
                     ? AppColor.primaryColor

@@ -9,8 +9,8 @@ import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/le
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_app_button.dart';
+import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/custom_dialog.dart';
-import '../../../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../common/widget/custom_svg_image.dart';
@@ -59,15 +59,12 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///Conditional actions based on application status
-                      if (controller.leaveDetailsById?.getLeaveDetailsById
-                                  ?.status ==
-                              LeaveStatus.pending.name ||
+                      if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name ||
                           controller.leaveDetailsById?.getLeaveDetailsById
                                   ?.status ==
                               LeaveStatus.approved.name) ...[
-                        if (controller.leaveDetailsById?.getLeaveDetailsById
-                                ?.status ==
-                            LeaveStatus.pending.name) ...[
+
+                        if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name) ...[
                           Obx(
                             () => Get.find<HrLeaveController>()
                                     .updateLeaveLoader
@@ -196,7 +193,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
 
   /// Displays a sheet with attached files for viewing.
   void _showBuildAttachedFile() {
-    _customAntButtonSheet(
+    customButtonSheeted(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
       child: const SeeDocumentDetails(),
@@ -248,7 +245,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
   /// Shows a sheet to edit leave details.
   void _showEditLeaveDetails() {
     _updateDateFromResponse();
-    _customAntButtonSheet(
+    customButtonSheeted(
       context: Get.context!,
       onClose: _clear,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
@@ -469,45 +466,4 @@ Widget _buildDialogActions(String leaveId) {
   );
 }
 
-_customAntButtonSheet({
-  required BuildContext context,
-  required Widget child,
-  double? height,
-  VoidCallback? onClose,
-}) {
-  final computedHeight = height ?? _modelHeightAccordingScreenSize(context);
-  // Display the custom bottom sheet
-  showCustomAtmBtnSheet(
-    height: computedHeight,
-    onClose: onClose,
-    context: context,
-    child: LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return Material(
-          color: AppColor.noColor,
-          child: Container(
-            height:
-                computedHeight, // Ensure the height matches the bottom sheet's height
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid),
-                topLeft: Radius.circular(Dimensions.radiusMid),
-              ),
-              color: AppColor.cardColor,
-            ),
-            child: child,
-          ),
-        );
-      },
-    ),
-  );
-}
 
-double _modelHeightAccordingScreenSize(BuildContext context) {
-  final width = MediaQuery.of(context).size.width;
-  if (width <= 360.0) {
-    return 480.0;
-  } else {
-    return 500.0;
-  }
-}

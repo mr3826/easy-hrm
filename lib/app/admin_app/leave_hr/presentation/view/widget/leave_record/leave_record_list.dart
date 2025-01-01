@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/employee/status_button_helper.dart';
@@ -196,16 +197,24 @@ class LeaveRecordList extends GetView<HrLeaveController> {
   void _showLeaveRecodeDetails(String leaveId) {
     final controller = Get.find<HrLeaveController>();
     controller.getLeaveDetailsById(leaveId: leaveId);
-    customAntButtonSheet(
+
+
+    customButtonSheeted(
       context: Get.context!,
+      height: MediaQuery.of(Get.context!).size.height / 1.8,
       child: LeaveRecordDetails(leaveId: leaveId),
     );
+
   }
+
+
+
 
   void _showLeaveRecordDetailsSheet(String leaveId) {
     final controller = Get.find<HrLeaveController>();
     controller.getLeaveDetailsById(leaveId: leaveId);
-    customAntButtonSheet(
+
+    customButtonSheeted(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
       child: MoreLeaveRecordDetails(leaveId: leaveId),

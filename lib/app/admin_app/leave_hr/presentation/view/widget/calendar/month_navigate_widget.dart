@@ -11,7 +11,6 @@ import '../../../controller/hr_leave_controller.dart';
 
 class MonthNavigateWidget extends StatelessWidget {
   const MonthNavigateWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
     final LeaveController controller = Get.put(LeaveController());
@@ -155,7 +154,6 @@ Widget _buildMonthGrid(LeaveController controller) {
       return Obx(() => GestureDetector(
             onTap: () {
               controller.selectedMonthIndex.value = index;
-              print("Selected DateTime: ${controller.selectedMonthDate}");
             },
             child: Center(
               child: Container(

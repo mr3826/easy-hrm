@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_record/leave_record_details/leave_record_details.dart';
 import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/leave_record/leave_record_details/more_leave_record_details.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../enum.dart';
-import '../../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
@@ -26,8 +26,13 @@ class TaskCard extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             Get.find<LeaveController>().tabLength(1);
-            Get.find<LeaveController>().currentDate.value = task.startDate  ?? "";
-             Get.find<HrLeaveController>().getLeaveRecord(startDate: "${task.startDate}T00:00:00.000Z",endDate: "${task.startDate}T23:59:59.999Z"); ///task.startDate and endDate same ... click always single date for leave
+            Get.find<LeaveController>().currentDate.value =
+                task.startDate ?? "";
+            Get.find<HrLeaveController>().getLeaveRecord(
+                startDate: "${task.startDate}T00:00:00.000Z",
+                endDate: "${task.startDate}T23:59:59.999Z");
+
+            ///task.startDate and endDate same ... click always single date for leave
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,12 +143,13 @@ class TaskCard extends StatelessWidget {
   }
 }
 
-void _showLeaveRecodeDetails(String leaveId)  {
+void _showLeaveRecodeDetails(String leaveId) {
   final controller = Get.find<HrLeaveController>();
   // Fetch data and wait for completion
-   controller.getLeaveDetailsById(leaveId: leaveId);
-  customAntButtonSheet(
+  controller.getLeaveDetailsById(leaveId: leaveId);
+  customButtonSheeted(
     context: Get.context!,
+    height: MediaQuery.of(Get.context!).size.height / 1.7,
     child: LeaveRecordDetails(
       leaveId: leaveId,
     ),
@@ -190,9 +196,8 @@ void _showLeaveRecordDetailsSheet(String leaveId) {
   final controller = Get.find<HrLeaveController>();
   // Fetch data and wait for completion
   controller.getLeaveDetailsById(leaveId: leaveId);
-  customAntButtonSheet(
+  customButtonSheeted(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
-
-      child:  MoreLeaveRecordDetails(leaveId: leaveId));
+      child: MoreLeaveRecordDetails(leaveId: leaveId));
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_drawer.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -179,4 +180,41 @@ _getStatusButton(String leaveStatus) {
   } else {
     return Images.LEAVE_APPROVED;
   }
+}
+
+customButtonSheeted({
+  required BuildContext context,
+  required Widget child,
+  double? height,
+  VoidCallback? onClose,
+}) {
+  // Determine the height based on the screen size or provided value
+  final computedHeight = height ?? _getBottomSheetHeight(context);
+
+  // Show the custom bottom sheet
+  showCustomAtmBtnSheet(
+    context: context,
+    height: computedHeight,
+    onClose: onClose,
+    child: _buildSheetContent(context, computedHeight, child),
+  );
+}
+
+Widget _buildSheetContent(BuildContext context, double computedHeight, Widget child) {
+  return Material(
+    color: AppColor.noColor,
+    child: Container(
+      height: computedHeight,
+      decoration: BoxDecoration(
+        color: AppColor.cardColor,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(Dimensions.radiusMid)),
+      ),
+      child: child,
+    ),
+  );
+}
+
+double _getBottomSheetHeight(BuildContext context) {
+  final width = MediaQuery.of(context).size.width;
+  return width <= 360.0 ? 480.0 : 500.0;
 }
