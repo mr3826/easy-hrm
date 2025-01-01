@@ -24,6 +24,7 @@ import '../widget/calendar/vertical_calendar/calendar_view.dart';
 import '../widget/calendar/month_navigate_widget.dart';
 import '../widget/leave_record/date_navigate_widget.dart';
 import '../widget/leave_record/leave_record_list.dart';
+import '../widget/leave_tabbar_body/leave_tabbar_widget.dart';
 
 class LeaveHrScreen extends StatelessWidget {
   const LeaveHrScreen({super.key});
@@ -38,7 +39,7 @@ class LeaveHrScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ///Tab-bar layout
-            _buildTabBar(context),
+            const BuildTabBar(),
             customSpacerHeight(height: 12),
 
             ///build search employee list
@@ -77,50 +78,6 @@ class LeaveHrScreen extends StatelessWidget {
         ),
         const SizedBox(width: 12),
       ],
-    );
-  }
-
-  // Tab bar method renamed and optimized
-  Widget _buildTabBar(BuildContext context) {
-    final controller = Get.put(LeaveController());
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8),
-      child: SizedBox(
-        height: 50,
-        width: MediaQuery.of(context).size.width,
-        child: ListView.builder(
-          itemCount: controller.tabList.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return Obx(() => GestureDetector(
-                  onTap: () => _updatedTabIndex(controller, index),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.2,
-                    child: Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      color: controller.tabLength.value == index
-                          ? AppColor.primaryColor
-                          : AppColor.hintColor.withOpacity(0.1),
-                      child: Center(
-                        child: Text(
-                          controller.tabList[index],
-                          style: AppStyle.normal_text.copyWith(
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: controller.tabLength.value == index
-                                ? AppColor.cardColor
-                                : AppColor.normalTextColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ));
-          },
-        ),
-      ),
     );
   }
 
@@ -183,7 +140,8 @@ class LeaveHrScreen extends StatelessWidget {
                     errorText: "Er",
                     height: 12,
                     borderColor: Colors.transparent,
-                    errorTextStyle: AppStyle.normal_text_black.copyWith(fontSize: 14, color: AppColor.secondaryColor),
+                    errorTextStyle: AppStyle.normal_text_black
+                        .copyWith(fontSize: 14, color: AppColor.secondaryColor),
                   ),
                   customSpacerWidth(width: 6),
                 ],
@@ -271,11 +229,6 @@ class LeaveHrScreen extends StatelessWidget {
         AppString.textSearchEmployee.tr;
     Get.find<HrLeaveController>().storageForUpload.filePath.value = "";
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
-  }
-
-  _updatedTabIndex(LeaveController controller, index) {
-    controller.tabLength.value = index;
-    controller.currentDate.value = "This month";
   }
 }
 
