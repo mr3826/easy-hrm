@@ -672,6 +672,8 @@ query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDa
       total_cancelled
       total_taken
       formatted_leave_hours
+      leave_type_name
+      leave_type_category
       organization_users {
         profile {
           first_name
@@ -681,7 +683,6 @@ query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDa
         roles {
           name
         }
-
         designation {
           description
         }

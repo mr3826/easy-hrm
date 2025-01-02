@@ -50,6 +50,8 @@ class LeaveRequests {
   int? totalCancelled;
   int? totalTaken;
   String? formattedLeaveHours;
+  String? leaveTypeName;
+  String? leaveTypeCategory;
   List<OrganizationUsers>? organizationUsers;
 
   LeaveRequests(
@@ -60,6 +62,8 @@ class LeaveRequests {
         this.totalCancelled,
         this.totalTaken,
         this.formattedLeaveHours,
+        this.leaveTypeName,
+        this.leaveTypeCategory,
         this.organizationUsers});
 
   LeaveRequests.fromJson(Map<String, dynamic> json) {
@@ -69,6 +73,8 @@ class LeaveRequests {
     totalRejected = json['total_rejected'];
     totalCancelled = json['total_cancelled'];
     totalTaken = json['total_taken'];
+    leaveTypeName = json['leave_type_name'];
+    leaveTypeCategory = json['leave_type_category'];
     formattedLeaveHours = json['formatted_leave_hours'];
     if (json['organization_users'] != null) {
       organizationUsers = <OrganizationUsers>[];
@@ -87,6 +93,8 @@ class LeaveRequests {
     data['total_cancelled'] = this.totalCancelled;
     data['total_taken'] = this.totalTaken;
     data['formatted_leave_hours'] = this.formattedLeaveHours;
+    data['leave_type_name'] = this.leaveTypeName;
+    data['leave_type_category'] = this.leaveTypeCategory;
     if (this.organizationUsers != null) {
       data['organization_users'] =
           this.organizationUsers!.map((v) => v.toJson()).toList();
@@ -98,7 +106,7 @@ class LeaveRequests {
 class OrganizationUsers {
   Profile? profile;
   List<Roles>? roles;
-  Null? designation;
+  dynamic? designation;
   String? leaveId;
 
   OrganizationUsers({this.profile, this.roles, this.designation, this.leaveId});
