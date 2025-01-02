@@ -105,7 +105,8 @@ class HrLeaveController extends GetxController {
     return Task(
       name: _getFirstUserName(leave),
       role: _getUserRole(leave),
-      leaveType: "${leave.leaveTypeName}: ${leave.leaveTypeCategory}", // Replace with actual leave type if needed.
+      leaveType:
+          "${leave.leaveTypeName}: ${leave.leaveTypeCategory}", // Replace with actual leave type if needed.
       status: _getStatus(leave), // Customize based on leave request status.
       approvedCount: leave.totalApproved ?? 0,
       pendingCount: leave.totalPending ?? 0,
