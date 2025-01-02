@@ -396,6 +396,9 @@ static String text_edit_this_review="Edit this review";
 static String text_remove_this_review="Remove this review";
 static String text_move_anywhere="Move anywhere";
 
+static String text_interrview="Interview";
+
+
 
 static String text_only_admin_and_etc="Only admin and the hiring team members can view this candidate";
 
