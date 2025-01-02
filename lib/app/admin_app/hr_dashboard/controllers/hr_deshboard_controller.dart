@@ -6,6 +6,15 @@ import '../../employee/presentation/view/widget/filter/check_box.dart';
 class HrDashBoardController extends GetxController {
   final RxInt currentIndex = 0.obs;
   final RxInt jobTabCurrentIndex = 0.obs;
+
+  RxString selectedHiringStage="".obs;
+
+
+
+
+
+
+
   int activeStarIndex = -1;
   RxString reviewerInputValue="".obs;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/hr_dashboard/controllers/hr_deshboard_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
@@ -18,9 +19,25 @@ class CandidateList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RxList tabBarUserList = [
+      {"text": "Agens Neilson", "value": "03", "id": "1","status":"New"},
+      {"text": "Rejected", "value": "04", "id": "2","status":"Rejected"},
+
+    ].obs;
+
+
+    final tabBarList = [
+      {"text": "New", "value": "03","id":"1"},
+      {"text": "Rejected", "value": "04","id":"2"},
+      {"text": "Interview", "value": "07","id":"3"},
+      {"text": "Task assigned", "value": "08","id":"4"},
+      {"text": "Hired", "value": "09","id":"5"},
+      {"text": "Offer", "value": "01","id":"6"},
+    ];
+
     return Expanded(
       child: ListView.builder(
-        itemCount: 5,
+        itemCount: tabBarUserList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => Get.toNamed(Routes.CANDIDATES_DETAILS),
@@ -28,22 +45,47 @@ class CandidateList extends StatelessWidget {
               builder: (context, constraints) {
                 double imageSize = constraints.maxWidth * 0.15;
                 double paddingSize = constraints.maxWidth * 0.03;
-                return Padding(
-                  padding: _getPadding(), // Use a dedicated method for padding
-                  child: Container(
-                    decoration: _containerStyle(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          _buildProfileImage(imageSize),
-                          SizedBox(width: paddingSize),
-                          _buildCandidateInfo(context),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().selectedHiringStage.value == tabBarUserList[index]["id"];
+
+
+                
+                if(tabBarUserList[index]["id"]==Get.find<HrDashBoardController>().selectedHiringStage.value){
+                  
+                  return Obx(()=>Text(tabBarUserList[index]["text"].toString()??""));
+                  
+                }else{
+                  return const SizedBox.shrink();
+                }
+                
+                
+                
+                
+                //
+                // if(tabBarUserList[index]["id"]==Get.find<HrDashBoardController>().selectedHiringStage){
+                //   return Padding(
+                //     padding: _getPadding(), // Use a dedicated method for padding
+                //     child: Container(
+                //       decoration: _containerStyle(hasAnyWhereSelected),
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(8.0),
+                //         child: Row(
+                //           children: [
+                //             _buildProfileImage(imageSize),
+                //             SizedBox(width: paddingSize),
+                //             _buildCandidateInfo(
+                //                 context: context,
+                //                 name: tabBarUserList[index]["text"] ?? ""),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   );
+                // }else{
+                //   return Text("data");
+                // }
+
+
               },
             ),
           );
@@ -66,7 +108,8 @@ class CandidateList extends StatelessWidget {
     );
   }
 
-  Widget _buildCandidateInfo(context) {
+  Widget _buildCandidateInfo(
+      {required String name, required BuildContext context}) {
     return Expanded(
       child: Row(
         children: [
@@ -122,14 +165,18 @@ class CandidateList extends StatelessWidget {
     );
   }
 
-
-
-  _containerStyle() {
+  _containerStyle([bool? isSelected]) {
     return BoxDecoration(
-        border: Border.all(width: 1, color: AppColor.disableColor),
+        border: Border.all(
+            width: 1,
+            color: isSelected == true
+                ? AppColor.primaryColor
+                : AppColor.disableColor),
+        color: isSelected == true
+            ? AppColor.primaryColor.withOpacity(0.1)
+            : AppColor.cardColor,
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
   }
-
 
   Widget _buildMoreView() {
     return SingleChildScrollView(

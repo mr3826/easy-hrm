@@ -35,7 +35,7 @@ class CandidateDetailsScreen extends StatelessWidget {
         const Center(
           child: CustomNetworkImage(
             imageUrl:
-            "https://thumbs.dreamstime.com/b/stylish-cat-sunglasses-poses-confidently-rocky-beach-capturing-unique-blend-humor-charm-warm-glow-sunset-349482060.jpg",
+                "https://thumbs.dreamstime.com/b/stylish-cat-sunglasses-poses-confidently-rocky-beach-capturing-unique-blend-humor-charm-warm-glow-sunset-349482060.jpg",
             isCircleImage: true,
             radius: 32,
           ),
@@ -49,7 +49,7 @@ class CandidateDetailsScreen extends StatelessWidget {
         customSpacerHeight(height: 12),
         _buildCandidateStatusButton(context),
         customSpacerHeight(height: 14),
-         CandidateDetailsTabbar(),
+        CandidateDetailsTabbar(),
       ],
     );
   }
@@ -124,8 +124,7 @@ class CandidateDetailsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
           child: Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -190,7 +189,7 @@ class CandidateDetailsScreen extends StatelessWidget {
               radius: 30,
               borderColor: AppColor.primaryColor,
               imageUrl:
-              "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+                  "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
             ),
           ),
           customSpacerHeight(height: 8),

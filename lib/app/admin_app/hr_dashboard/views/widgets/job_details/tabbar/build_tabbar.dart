@@ -11,12 +11,12 @@ class TabBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabBarList = [
-      {"text": "New", "value": "03"},
-      {"text": "Rejected", "value": "04"},
-      {"text": "Interview", "value": "07"},
-      {"text": "Task assigned", "value": "08"},
-      {"text": "Hired", "value": "09"},
-      {"text": "Offer", "value": "01"},
+      {"text": "New", "value": "03","id":"1"},
+      {"text": "Rejected", "value": "04","id":"2"},
+      {"text": "Interview", "value": "07","id":"3"},
+      {"text": "Task assigned", "value": "08","id":"4"},
+      {"text": "Hired", "value": "09","id":"5"},
+      {"text": "Offer", "value": "01","id":"6"},
     ];
 
     final controller = Get.find<HrDashBoardController>();
@@ -47,65 +47,70 @@ class TabBarWidget extends StatelessWidget {
                   ? AppColor.primaryColor.withOpacity(0.1)
                   : AppColor.disableColor.withOpacity(0.5);
 
-              return Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 4),
-                child: GestureDetector(
-                  onTap: () {
-                    controller.jobTabCurrentIndex.value = index;
-                  },
-                  child: Column(
-                    children: [
-                      const Spacer(),
-                      Row(
-                        children: [
-                          // Tab Text
-                          Text(
-                            tabBarList[index]["text"]!,
-                            style: AppStyle.normal_text_black.copyWith(
-                              color: textColor,
-                              fontSize: Dimensions.fontSizeExtraDefault-.5,
+              return GestureDetector(
+                onTap: () {
+                  controller.jobTabCurrentIndex.value = index;
+                  controller.selectedHiringStage.value=tabBarList[index]["id"]??""; ///Add id when will be api intricate
+                  print(controller.selectedHiringStage);
+                },
+                child: Container(
+                  height: 50,
+                  color: AppColor.cardColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 18.0, right: 4),
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        Row(
+                          children: [
+                            // Tab Text
+                            Text(
+                              tabBarList[index]["text"]!,
+                              style: AppStyle.normal_text_black.copyWith(
+                                color: textColor,
+                                fontSize: Dimensions.fontSizeExtraDefault - .5,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 6),
-                          // Value Badge
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            elevation: 0,
-                            color: badgeColor,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6.0, vertical: 2.0),
-                              child: Text(
-                                tabBarList[index]["value"]!,
-                                style: AppStyle.normal_text.copyWith(
-                                  color: isSelected
-                                      ? AppColor.primaryColor
-                                      : AppColor.hintColor,
-                                  fontSize: Dimensions.fontSizeSmall - 1,
+                            const SizedBox(width: 6),
+                            // Value Badge
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              elevation: 0,
+                              color: badgeColor,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6.0, vertical: 2.0),
+                                child: Text(
+                                  tabBarList[index]["value"]!,
+                                  style: AppStyle.normal_text.copyWith(
+                                    color: isSelected
+                                        ? AppColor.primaryColor
+                                        : AppColor.hintColor,
+                                    fontSize: Dimensions.fontSizeSmall - 1,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-
-
-                      // Show underline for active tab with dynamic width
-                      if (isSelected)
-                        Container(
-                          width: _calculateTextWidth(
-                              "${tabBarList[index]["text"]!} ${tabBarList[index]["value"]!}",
-                              const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          height: 2.4,
-                          color: AppColor.primaryColor, // Underline color
+                          ],
                         ),
-                    ],
+                        const Spacer(),
+
+                        // Show underline for active tab with dynamic width
+                        if (isSelected)
+                          Container(
+                            width: _calculateTextWidth(
+                                "${tabBarList[index]["text"]!} ${tabBarList[index]["value"]!}",
+                                const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            height: 2.4,
+                            color: AppColor.primaryColor, // Underline color
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               );
