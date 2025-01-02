@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -13,16 +14,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:payrun_mobile/utils/images.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 import 'firebase_options.dart';
 
 Future<void> initApp() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
-
-  ForegroundPushNotificationService.initialize();
-  PushNotificationServiceForIOS.listenForNotifications();
-
+  initNotification();
   NetworkClient client = Get.put(NetworkClient());
 
 
@@ -55,9 +54,19 @@ Future<void> initApp() async {
 
   Get.put(LeaveRemoteDataSource(client), permanent: true);
 
+}
 
-
-
+void initNotification() {
+  if(Platform.isIOS){
+    ForegroundPushNotificationService.initialize();
+    PushNotificationServiceForIOS.listenForNotifications();
+  }else{
+    Pushy.setNotificationIcon(Images.appLogo);
+    Pushy.listen();
+    Pushy.toggleInAppBanner(true);
+    Pushy.setNotificationListener(backgroundNotificationListener);
+    Pushy.setNotificationClickListener((data) {});
+  }
 }
 
 
@@ -102,7 +111,6 @@ class ForegroundPushNotificationService {
   static void initialize() {
     const InitializationSettings initializationSettings =
     InitializationSettings(
-      android: AndroidInitializationSettings('app_icon'),
       iOS: DarwinInitializationSettings(),
     );
 
@@ -112,13 +120,6 @@ class ForegroundPushNotificationService {
   static Future<void> showNotification(
       Map<String, dynamic> notificationData) async {
     const NotificationDetails notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'your_channel_id',
-        'your_channel_name',
-        channelDescription: 'your_channel_description',
-        importance: Importance.high,
-        priority: Priority.high,
-      ),
       iOS: DarwinNotificationDetails(),
     );
 
@@ -130,4 +131,23 @@ class ForegroundPushNotificationService {
       payload: notificationData.toString(),
     );
   }
+}
+
+@pragma('vm:entry-point')
+void backgroundNotificationListener(Map<String, dynamic> data) {
+  // Print notification payload data
+  print('Received notification: $data');
+
+  // Notification title
+  String notificationTitle = 'Payrun';
+
+  // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
+  String notificationText = data['message'] ?? 'Hello World!';
+
+  // Android: Displays a system notification
+  // iOS: Displays an alert dialog
+  Pushy.notify(notificationTitle, notificationText, data);
+
+  // Clear iOS app badge number
+  Pushy.clearBadge();
 }

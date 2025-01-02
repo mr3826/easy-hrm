@@ -25,6 +25,8 @@ class UserInfoController {
       final response = await _networkClient.graphRequest(
           queryString: getOrgSubscriptionInfoQuery);
 
+      print("getOrgSubscriptionInfoQuery:: ${response.data}");
+
       if (response.hasException) {
         ExceptionHelper.errorHandler(
             exception: response.exception!,
@@ -51,9 +53,14 @@ class UserInfoController {
     final GetAnOrganizationSubscription? orgSubscriptionInfo =
         data.getAnOrganizationSubscription;
 
+    print("isSubscriptionExpired: ${orgSubscriptionInfo!.status}");
+
     // Check if subscription is expired (paused or canceled)
     try {
-      if (!orgSubscriptionInfo!.status!.contains("active")) {
+
+
+
+      if (!orgSubscriptionInfo.status!.contains("active") && !orgSubscriptionInfo.status!.contains("trialing")) {
         isSubscriptionExpired(true);
       } else {
         // Check if "time_tracking" feature is enabled

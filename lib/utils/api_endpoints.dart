@@ -299,16 +299,17 @@ query GetProfileSummaryForDashboard {
 ''';
 
 const getOrgSubscriptionInfoQuery = r'''
-query GetAnOrganizationSubscription($queryData: OrganizationSubscriptionSingleQueryDataType) {
-  getAnOrganizationSubscription(queryData: $queryData) {
+query GetAnOrganizationSubscription {
+  getAnOrganizationSubscription {
     status
     plan {
+      id
       plan_features {
-        feature {
-          identifier
-          name
-        }
         is_enabled
+        feature {
+          id
+          identifier
+        }
       }
     }
   }
@@ -474,8 +475,7 @@ query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: Op
       total_scheduled_seconds
       logged_total_seconds
       total_leaves_seconds
-      balance
-    
+      balance  
     }
   }
 }
