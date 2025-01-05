@@ -125,7 +125,6 @@ class TabBarWidget extends StatelessWidget {
                 final textColor = isSelected
                     ? AppColor.primaryColor
                     : AppColor.normalTextColor.withOpacity(0.5);
-
                 return GestureDetector(
                   onTap: () {
                     controller.jobDetailsSelectedIndex.value = index;

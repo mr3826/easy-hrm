@@ -382,8 +382,11 @@ static String text_applied="Applied for";
 static String text_job_details="Job details";
 static String text_edit_candidate="Edit Candidates";
 static String text_remove_candidate="Remove candidate";
+static String text_unpublish_job="Unpublish Job";
+static String text_you_are_going_to_unpublish_this_job_etc="You are going to unpublish this job. You can publish this job again by login from web browser.";
 
 static String text_share="Share";
+static String text_unpublish="Unpublish";
 
 
 static String text_job_post="Job post";
@@ -397,6 +400,7 @@ static String text_remove_this_review="Remove this review";
 static String text_move_anywhere="Move anywhere";
 
 static String text_interrview="Interview";
+static String text_this_is_visible_to_everyone_etc="This jobs is visible to everyone. All interested candidates can view and apply for this job";
 
 
 

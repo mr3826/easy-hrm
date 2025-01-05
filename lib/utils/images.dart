@@ -98,6 +98,7 @@ class Images {
   static String COPY_ICON = "assets/images/copy_icon.svg";
   static String LINKDIN = "assets/images/linkdin.svg";
   static String REMOVE_ICON = "assets/images/remove_icon.svg";
+  static String UNPUBLISH_ICON = "assets/images/unpublish_icon.svg";
 
 
 

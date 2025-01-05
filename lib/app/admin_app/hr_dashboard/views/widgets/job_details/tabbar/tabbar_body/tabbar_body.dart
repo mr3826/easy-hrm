@@ -47,9 +47,6 @@ class BuildTabBarBody extends StatelessWidget {
               double paddingSize = constraints.maxWidth * 0.03;
               final user = filteredList[index];
 
-
-
-
               return Obx(() {
                 bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
                         .selectedCandidateId
@@ -190,8 +187,10 @@ class BuildTabBarBody extends StatelessWidget {
           _buildMoreInfoSection(
             text: AppString.text_move_anywhere.tr,
             onTap: () {
-              Get.find<HrDashBoardController>().selectedCandidateId.value = candidateId;
-              Get.find<HrDashBoardController>().isCandidateSelected.value=true;
+              Get.find<HrDashBoardController>().selectedCandidateId.value =
+                  candidateId;
+              Get.find<HrDashBoardController>().isCandidateSelected.value =
+                  true;
               Get.back(canPop: false);
             },
             trailing: Padding(

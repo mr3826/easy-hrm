@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/widgets/deshboard_widget.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
@@ -7,7 +8,6 @@ import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart
 import 'package:payrun_mobile/common/widget/hr_deshboard/more_info_text_divider.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
@@ -56,7 +56,8 @@ class BuildAllCandidates extends StatelessWidget {
     return CustomNetworkImage(
       isCircleImage: true,
       radius: size / 2,
-      imageUrl: "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+      imageUrl:
+          "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
     );
   }
 
@@ -110,7 +111,8 @@ class BuildAllCandidates extends StatelessWidget {
         customSpacerWidth(width: 4),
         GestureDetector(
           onTap: () {
-            customButtonSheet(height: .5, context: Get.context!, child: _buildMoreView());
+            customButtonSheet(
+                height: .5, context: Get.context!, child: _buildMoreView());
           },
           child: Icon(
             Icons.more_horiz,
@@ -140,8 +142,6 @@ class BuildAllCandidates extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildMoreView() {
     return Column(
       children: [
@@ -154,7 +154,14 @@ class BuildAllCandidates extends StatelessWidget {
         customMoreInfoTextWithDiver(
             text: AppString.text_share.tr,
             onTap: () {
-              _showShareDialog();
+              showShareDialog(
+                  titleText: AppString.text_candidate.replaceAll("s", ""),
+                  description: AppString.text_only_admin_and_etc.tr,
+                  linkDinAction: () {},
+                  messengerAction: () {},
+                  slackAction: () {},
+                  whatAppAction: () {},
+                  copyAction: () {});
             },
             trailing: Icon(
               Icons.share,
@@ -175,109 +182,6 @@ class BuildAllCandidates extends StatelessWidget {
     );
   }
 
-
-  void _showShareDialog() {
-    displayCustomDialog(
-      context: Get.context!,
-      customIconWidget: SizedBox(
-        height: 65,
-        width: 65,
-        child: customSvgImage(imageUrl: Images.SHEAR_JOB_ICON),
-      ),
-      customTitleWidget: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildDialogTitle("${AppString.text_share.tr} ", AppColor.normalTextColor),
-          _buildDialogTitle(AppString.text_candidate.replaceAll("s", ""), AppColor.secondaryColor),
-        ],
-      ),
-      customDescriptionWidget: Column(
-        children: [
-          Center(
-            child: Text(
-              AppString.text_only_admin_and_etc.tr,
-              textAlign: TextAlign.center,
-              style: AppStyle.normal_text.copyWith(
-                color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeSmall - 1,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildShareOption(Images.COPY_ICON, () {}),
-                _buildShareOption(Images.WHATS_APPS_ICON, () {}),
-                _buildShareOption(Images.SLACK_ICON, () {}),
-                _buildShareOption(Images.LINKDIN, () {}),
-                _buildShareOption(Images.MESSENGER_ICON, () {},
-                    height: 33, width: 33),
-              ],
-            ),
-          )
-        ],
-      ),
-      customActionButtons: _buildCancelAction(),
-    );
-  }
-
-  Widget _buildDialogTitle(String text, Color color) {
-    return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: AppStyle.mid_large_text.copyWith(
-        color: color,
-        fontSize: Dimensions.fontSizeDefault + 1,
-      ),
-    );
-  }
-
-  Widget _buildShareOption(String imgUrl, VoidCallback onClick,
-      {double? height, double? width}) {
-    return GestureDetector(
-      onTap: onClick,
-      child: SizedBox(
-        height: height ?? 40,
-        width: width ?? 40,
-        child: customSvgImage(imageUrl: imgUrl),
-      ),
-    );
-  }
-
-  Widget _buildCancelAction() {
-    return GestureDetector(
-      onTap: () => Get.back(canPop: false),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 25.0),
-        child: Container(
-          height: AppLayout.getHeight(40),
-          width: AppLayout.getWidth(140),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            border: Border.all(
-              width: 1,
-              color: AppColor.hintColor.withOpacity(0.4),
-            ),
-          ),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35.0),
-              child: Text(
-                AppString.text_cancel.tr,
-                textAlign: TextAlign.center,
-                style: AppStyle.normal_text.copyWith(
-                  color: AppColor.normalTextColor.withOpacity(0.7),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showRemoveDialog() {
     return displayCustomDialog(
         context: Get.context!,
@@ -286,8 +190,7 @@ class BuildAllCandidates extends StatelessWidget {
             width: 65,
             child: customSvgImage(imageUrl: Images.REMOVE_ICON)),
         titleText: AppString.text_remove_candidate.tr,
-        descriptionText:
-            AppString.text_are_you_sure_deleted_candidate.tr,
+        descriptionText: AppString.text_are_you_sure_deleted_candidate.tr,
         customActionButtons: CustomDoubleAppButton(
           onAction: () {},
           cancelAction: () => Get.back(canPop: false),
