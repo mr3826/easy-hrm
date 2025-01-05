@@ -49,41 +49,41 @@ class CandidateList extends StatelessWidget {
                 bool hasAnyWhereSelected = Get.find<HrDashBoardController>().selectedHiringStage.value == tabBarUserList[index]["id"];
 
 
-                
+
                 if(tabBarUserList[index]["id"]==Get.find<HrDashBoardController>().selectedHiringStage.value){
-                  
+
                   return Obx(()=>Text(tabBarUserList[index]["text"].toString()??""));
-                  
+
                 }else{
                   return const SizedBox.shrink();
                 }
-                
-                
-                
-                
-                //
-                // if(tabBarUserList[index]["id"]==Get.find<HrDashBoardController>().selectedHiringStage){
-                //   return Padding(
-                //     padding: _getPadding(), // Use a dedicated method for padding
-                //     child: Container(
-                //       decoration: _containerStyle(hasAnyWhereSelected),
-                //       child: Padding(
-                //         padding: const EdgeInsets.all(8.0),
-                //         child: Row(
-                //           children: [
-                //             _buildProfileImage(imageSize),
-                //             SizedBox(width: paddingSize),
-                //             _buildCandidateInfo(
-                //                 context: context,
-                //                 name: tabBarUserList[index]["text"] ?? ""),
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //   );
-                // }else{
-                //   return Text("data");
-                // }
+
+
+
+
+
+                if(tabBarUserList[index]["id"]==Get.find<HrDashBoardController>().selectedHiringStage){
+                  return Padding(
+                    padding: _getPadding(), // Use a dedicated method for padding
+                    child: Container(
+                      decoration: _containerStyle(hasAnyWhereSelected),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            _buildProfileImage(imageSize),
+                            SizedBox(width: paddingSize),
+                            _buildCandidateInfo(
+                                context: context,
+                                name: tabBarUserList[index]["text"] ?? ""),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }else{
+                  return Text("data");
+                }
 
 
               },

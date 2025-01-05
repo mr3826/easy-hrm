@@ -1,11 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../employee/presentation/view/widget/filter/check_box.dart';
 
 class HrDashBoardController extends GetxController {
   final RxInt currentIndex = 0.obs;
   final RxInt jobTabCurrentIndex = 0.obs;
+
+  RxInt selectedIndex = 0.obs; // Track the selected tab index
+  late PageController pageController; // For smooth scrolling
+
+
+
+
 
   RxString selectedHiringStage="".obs;
 
@@ -33,6 +39,8 @@ class HrDashBoardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    pageController = PageController(initialPage: selectedIndex.value, viewportFraction: 0.9); // Set viewportFraction for smooth swipe
+
     scrollController.addListener(() {
       final double offset = scrollController.offset;
       final int index = (offset / 340).round(); // Assuming item width is 340
@@ -47,6 +55,12 @@ class HrDashBoardController extends GetxController {
     candidateFirstName.dispose();
     candidateLastName.dispose();
     createReviewMessage.dispose();
+    pageController.dispose();
+
     super.onClose();
   }
+
+
+
+
 }
