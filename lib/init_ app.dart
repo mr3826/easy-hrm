@@ -14,10 +14,12 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'firebase_options.dart';
 
 Future<void> initApp() async {
-  await GetStorage.init();
+
+  // Ensure Flutter widgets are properly initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-
+  // Initialize GetStorage
+  await GetStorage.init();
 
   NetworkClient client = Get.put(NetworkClient());
 

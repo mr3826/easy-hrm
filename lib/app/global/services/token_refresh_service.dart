@@ -1,51 +1,31 @@
-import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/global/services/api_service.dart';
-import '../../../utils/api_endpoints.dart';
-import '../../../utils/app_string.dart';
 import 'auth_token_service.dart';
-import 'local_storage_service.dart';  // Import AuthService to store the new token
+import '../../../utils/api_endpoints.dart';
 
 class TokenRefreshService {
-  final ApiService _apiService = Get.find<ApiService>();
-  final LocalStoreService _localStoreService = Get.find<LocalStoreService>();
-  final AuthTokenService _authService = Get.find<AuthTokenService>();
+  final AuthTokenService _authTokenService = Get.find<AuthTokenService>();
+  final Dio _dio = Dio();
 
-  Completer<String?>? _refreshCompleter;
-
-  /// Refresh the access token and store it securely.
+  /// Attempt to refresh the access token
   Future<String?> refreshAccessToken() async {
-    if (_refreshCompleter != null) return _refreshCompleter!.future;
-
-    _refreshCompleter = Completer();
-
     try {
-      final refreshToken = await _localStoreService.read(AppString.REFRESH_TOKEN);
+      final refreshToken = await _authTokenService.getRefreshToken();
       if (refreshToken == null) {
-        _refreshCompleter!.completeError('No refresh token found');
         return null;
       }
 
-      final response = await _apiService.makePostApiCall(
-          Api.REFRESH_TOKEN, {'refresh_token': refreshToken}
+      final response = await _dio.post(
+        Api.REFRESH_TOKEN,
+        data: {'refresh_token': refreshToken},
       );
 
-      final newToken = response?.data['access_token'];
-
-      if (newToken != null) {
-        await _authService.storeAccessToken(newToken);  // Store the new token
-        _refreshCompleter!.complete(newToken);
-        return newToken;
-      }
-
-      _refreshCompleter!.completeError('Failed to refresh token');
-      return null;
+      final newAccessToken = response.data['access_token'];
+      await _authTokenService.storeAccessToken(newAccessToken);
+      return newAccessToken;
     } catch (e) {
-      _refreshCompleter!.completeError(e);
-      await _authService.deleteAccessToken(); // Clear tokens on failure
+      print('Error refreshing token: $e');
       return null;
-    } finally {
-      _refreshCompleter = null;
     }
   }
 }

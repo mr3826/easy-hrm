@@ -126,6 +126,7 @@ class SignInScreen extends GetView<SignInController> {
           )),
     );
   }
+
   _emailAddressLayout() {
     return CustomInputField(
       hint: AppString.text_email.tr,
@@ -159,9 +160,13 @@ class SignInScreen extends GetView<SignInController> {
       onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
-
-          await controller.login(
+          bool value = await controller.loginWithCredentials(
               email: emailController.text, password: passwordController.text);
+          if (value) {
+            print("Login Successful");
+          } else {
+            print("Login Unsuccessful");
+          }
         }
       },
       buttonColor: AppColor.primaryColor,
