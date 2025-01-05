@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../common/widget/hr_deshboard/custom_network_img.dart';
@@ -34,7 +35,7 @@ class BuildTabBarBody extends StatelessWidget {
           tabBarUserList.where((user) => user["id"] == tabId).toList();
 
       if (filteredList.isEmpty) {
-        return const Center(child: Text("No candidate available here!"));
+        return _buildNoCandidate();
       }
 
       return ListView.builder(
@@ -255,6 +256,27 @@ class BuildTabBarBody extends StatelessWidget {
       text: text,
       onTap: onTap,
       trailing: trailing,
+    );
+  }
+
+  Widget _buildNoCandidate() {
+    return Column(
+      mainAxisAlignment:
+          MainAxisAlignment.center, // Aligns the children in the center
+      children: [
+        customSvgImage(
+          imageUrl: Images.NOT_ADDED_YET,
+          width: 80,
+          height: 80,
+        ),
+        Text(
+          AppString.text_no_one_addded_yet.tr,
+          style: AppStyle.normal_text.copyWith(color: AppColor.hintColor),
+        ),
+        const SizedBox(
+          height: 150,
+        )
+      ],
     );
   }
 }

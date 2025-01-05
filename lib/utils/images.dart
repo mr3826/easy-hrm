@@ -99,6 +99,7 @@ class Images {
   static String LINKDIN = "assets/images/linkdin.svg";
   static String REMOVE_ICON = "assets/images/remove_icon.svg";
   static String UNPUBLISH_ICON = "assets/images/unpublish_icon.svg";
+  static String NOT_ADDED_YET = "assets/images/not_added_yet.svg";
 
 
 

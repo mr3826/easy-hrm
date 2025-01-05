@@ -378,6 +378,7 @@ class AppString {
   ///hr dash-board string
 
 static String text_candidate="Candidates";
+static String text_no_one_addded_yet ="No one added yet.";
 static String text_applied="Applied for";
 static String text_job_details="Job details";
 static String text_edit_candidate="Edit Candidates";
