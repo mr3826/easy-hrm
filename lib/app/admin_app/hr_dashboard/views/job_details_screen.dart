@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/widgets/job_details/tabbar/build_tabbar.dart';
-import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/widgets/job_details/tabbar/tabbar_body/tabbar_body.dart';
+import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../common/widget/custom_appbar.dart';
@@ -18,6 +17,7 @@ class JobDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppbar(title: AppString.text_job_details.tr),
+      floatingActionButton: _buildPasteButton(),
       body: Column(
         children: [
           customSpacerHeight(height: 18),
@@ -25,28 +25,7 @@ class JobDetailsScreen extends StatelessWidget {
           customSpacerHeight(height: 12),
           _buildTimeAddressWithDate(),
           customSpacerHeight(height: 4),
-
           TabBarWidget(),
-       //const BuildTabBarBody()
-
-
-
-          //_tabBarList()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         ],
       ),
     );
@@ -125,11 +104,33 @@ class JobDetailsScreen extends StatelessWidget {
     );
   }
 
+  _buildPasteButton() {
+    return Obx(() {
+      bool isCandidateSelected =
+          Get.find<HrDashBoardController>().isPasteButtonActive.isTrue;
 
-
-
-
+      return AnimatedOpacity(
+        opacity: isCandidateSelected
+            ? 1.0
+            : 0.0, // Fully visible when selected, hidden otherwise
+        duration:
+            const Duration(milliseconds: 400), // Duration of the fade in/out
+        child: isCandidateSelected
+            ? Padding(
+                padding: const EdgeInsets.only(left: 30.0),
+                child: CustomAppButton(
+                  buttonText: Text(
+                    "Paste here",
+                    style: AppStyle.normal_text_grey
+                        .copyWith(color: AppColor.cardColor, fontSize: 15),
+                  ),
+                  onPressed: () {},
+                  buttonColor: AppColor.primaryColor,
+                  borderRadius: 35,
+                ),
+              )
+            : const SizedBox.shrink(), // Empty widget when not selected
+      );
+    });
+  }
 }
-
-
-

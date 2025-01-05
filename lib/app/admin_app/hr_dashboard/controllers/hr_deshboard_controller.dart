@@ -6,15 +6,17 @@ class HrDashBoardController extends GetxController {
   final RxInt currentIndex = 0.obs;
   final RxInt jobTabCurrentIndex = 0.obs;
 
-  RxInt selectedIndex = 0.obs; // Track the selected tab index
+  RxInt jobDetailsSelectedIndex = 0.obs; // Track the selected tab index
   late PageController pageController; // For smooth scrolling
 
 
 
+  RxBool isCandidateSelected=false.obs;// Check if a candidate is selected
+
+  RxBool isPasteButtonActive = false.obs; // Track if the paste button should be active
 
 
-  RxString selectedHiringStage="".obs;
-
+  RxString selectedCandidateId = ''.obs; // Ensure it's reactive
 
 
 
@@ -39,7 +41,7 @@ class HrDashBoardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    pageController = PageController(initialPage: selectedIndex.value, viewportFraction: 0.9); // Set viewportFraction for smooth swipe
+    pageController = PageController(initialPage: jobDetailsSelectedIndex.value, viewportFraction: 0.9); // Set viewportFraction for smooth swipe
 
     scrollController.addListener(() {
       final double offset = scrollController.offset;

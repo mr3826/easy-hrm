@@ -34,26 +34,43 @@ class TabBarWidget extends StatelessWidget {
       child: Column(
         children: [
           _buildTabBar(),
-          Expanded(
-            child: PageView.builder(
-              controller: controller.pageController,
-              itemCount: tabs.length,
-              onPageChanged: (index) {
-                controller.selectedIndex.value = index; // Update selected tab
+        Expanded(
+          child: PageView.builder(
+            controller: controller.pageController,
+            itemCount: tabs.length,
+            onPageChanged: (index) {
+              // Update the selected tab index
+              controller.jobDetailsSelectedIndex.value = index;
 
-                // Check if we need to auto-scroll based on index
-                _autoScrollTabs(index, context);
-              },
-              itemBuilder: (context, index) {
-                return CandidateListView(tabId: tabs[index]["id"] ?? "");
-              },
-            ),
+              // Access HrDashBoardController once and use it
+              final hrController = Get.find<HrDashBoardController>();
+
+              if (hrController.isCandidateSelected.value) {
+                _updateCandidateSelectionState(index, hrController);
+              }
+
+              // Check if we need to auto-scroll based on index
+              _autoScrollTabs(index, context);
+            },
+            itemBuilder: (context, index) {
+              return BuildTabBarBody(tabId: tabs[index]["id"] ?? "");
+            },
           ),
-        ],
+        ),
+
+
+
+    ],
       ),
     );
   }
-
+// Helper method to update the candidate selection state
+  void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
+    final selectedTabId = tabs[index]["id"].toString();
+    final selectedCandidateId = hrController.selectedCandidateId.value;
+    // Check if the selected candidate matches the current tab's id
+    hrController.isPasteButtonActive.value = selectedTabId != selectedCandidateId;
+  }
   // Function to handle the auto-scroll logic
   void _autoScrollTabs(int index, context) {
     double tabWidth = 150; // Adjust this according to your tab width
@@ -104,14 +121,14 @@ class TabBarWidget extends StatelessWidget {
             controller: tabsScrollController, // Attach the controller
             child: Row(
               children: List.generate(tabs.length, (index) {
-                final isSelected = controller.selectedIndex.value == index;
+                final isSelected = controller.jobDetailsSelectedIndex.value == index;
                 final textColor = isSelected
                     ? AppColor.primaryColor
                     : AppColor.normalTextColor.withOpacity(0.5);
 
                 return GestureDetector(
                   onTap: () {
-                    controller.selectedIndex.value = index;
+                    controller.jobDetailsSelectedIndex.value = index;
                     controller.pageController.animateToPage(
                       index,
                       duration: const Duration(milliseconds: 800),

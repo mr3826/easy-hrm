@@ -13,21 +13,11 @@ import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
 import '../../../../../controllers/hr_deshboard_controller.dart';
-import 'candidate_list.dart';
 
 class BuildTabBarBody extends StatelessWidget {
-  const BuildTabBarBody({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CandidateList();
-  }
-}
-
-class CandidateListView extends StatelessWidget {
   final String tabId;
 
-  const CandidateListView({super.key, required this.tabId});
+  const BuildTabBarBody({super.key, required this.tabId});
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +32,11 @@ class CandidateListView extends StatelessWidget {
       // Filter the list based on the tabId
       final filteredList =
           tabBarUserList.where((user) => user["id"] == tabId).toList();
+
+      if (filteredList.isEmpty) {
+        return const Center(child: Text("No candidate available here!"));
+      }
+
       return ListView.builder(
         itemCount: filteredList.length,
         itemBuilder: (context, index) {
@@ -50,72 +45,45 @@ class CandidateListView extends StatelessWidget {
             child: LayoutBuilder(builder: (context, constraints) {
               double imageSize = constraints.maxWidth * 0.15;
               double paddingSize = constraints.maxWidth * 0.03;
+              final user = filteredList[index];
 
-              bool hasAnyWhereSelected =
-                  Get.find<HrDashBoardController>().selectedHiringStage.value ==
-                      tabBarUserList[index]["id"];
 
-              return Padding(
-                padding: _getPadding(), // Use a dedicated method for padding
-                child: Container(
-                  decoration: _containerStyle(hasAnyWhereSelected),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        _buildProfileImage(imageSize),
-                        SizedBox(width: paddingSize),
-                        _buildCandidateInfo(
-                            context: context,
-                            name: filteredList[index]["text"] ?? ""),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+
+
+              return Obx(() {
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
+                        .selectedCandidateId
+                        .value ==
+                    user["id"];
+
+                return Padding(
+                  padding: _getPadding(), // Use a dedicated method for padding
+                  child: Container(
+                      decoration: _containerStyle(hasAnyWhereSelected),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            _buildProfileImage(imageSize),
+                            SizedBox(width: paddingSize),
+                            _buildCandidateInfo(
+                                context: context,
+                                name: user["text"] ?? "",
+                                candidateId: user["id"].toString()),
+                          ],
+                        ),
+                      )),
+                );
+              });
             }),
           );
         },
       );
-
-      // return ListView.builder(
-      //   itemCount: filteredList.length,
-      //   itemBuilder: (context, index) {
-      //     final user = filteredList[index];
-      //
-      //     return Padding(
-      //       padding: _getPadding(), // Use a dedicated method for padding
-      //       child: Container(
-      //         decoration: _containerStyle(hasAnyWhereSelected),
-      //         child: Padding(
-      //           padding: const EdgeInsets.all(8.0),
-      //           child: Row(
-      //             children: [
-      //               _buildProfileImage(imageSize),
-      //               SizedBox(width: paddingSize),
-      //               _buildCandidateInfo(
-      //                   context: context,
-      //                   name: tabBarUserList[index]["text"] ?? ""),
-      //             ],
-      //           ),
-      //         ),
-      //       ),
-      //     );
-      //
-      //     //
-      //     // return ListTile(
-      //     //   title: Text(user["text"] ?? ""),
-      //     //   subtitle: Text(user["status"] ?? ""),
-      //     //   onTap: () =>
-      //     //       Get.snackbar("Candidate", "Details for ${user['text']}"),
-      //     // );
-      //   },
-      // );
     });
   }
 
   EdgeInsets _getPadding() {
-    return marginLayout.copyWith(top: 15);
+    return marginLayout.copyWith(top: 15, left: 12, right: 12);
   }
 
   Widget _buildProfileImage(double size) {
@@ -129,7 +97,9 @@ class CandidateListView extends StatelessWidget {
   }
 
   Widget _buildCandidateInfo(
-      {required String name, required BuildContext context}) {
+      {required String name,
+      required BuildContext context,
+      required String candidateId}) {
     return Expanded(
       child: Row(
         children: [
@@ -137,7 +107,7 @@ class CandidateListView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTitleText(),
+                _buildTitleText(name),
                 const SizedBox(height: 2),
                 _buildEmailText(),
               ],
@@ -147,7 +117,9 @@ class CandidateListView extends StatelessWidget {
           GestureDetector(
             onTap: () {
               customButtonSheet(
-                  height: .5, context: context!, child: _buildMoreView());
+                  height: .5,
+                  context: context,
+                  child: _buildMoreView(candidateId));
             },
             child: Icon(
               Icons.more_horiz,
@@ -161,9 +133,9 @@ class CandidateListView extends StatelessWidget {
   }
 
   // Method to build candidate title text
-  Widget _buildTitleText() {
+  Widget _buildTitleText(String name) {
     return Text(
-      "Agens Neilson",
+      name,
       maxLines: 2,
       style: AppStyle.mid_large_text.copyWith(
         color: AppColor.secondaryColor,
@@ -198,7 +170,7 @@ class CandidateListView extends StatelessWidget {
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
   }
 
-  Widget _buildMoreView() {
+  Widget _buildMoreView(candidateId) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -217,7 +189,11 @@ class CandidateListView extends StatelessWidget {
           ),
           _buildMoreInfoSection(
             text: AppString.text_move_anywhere.tr,
-            onTap: () {},
+            onTap: () {
+              Get.find<HrDashBoardController>().selectedCandidateId.value = candidateId;
+              Get.find<HrDashBoardController>().isCandidateSelected.value=true;
+              Get.back(canPop: false);
+            },
             trailing: Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Image.asset(Images.MOVE_ANY_WHERE_ICON),
