@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/global/controller/exit_app_controller.dart';
+import 'package:payrun_mobile/app/global/services/local_store_service.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/utils.dart';
@@ -94,7 +95,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                               });
 
                               if (_currentIndex == 2) {
-                                GetStorage().write(
+                                Get.find<LocalStoreService>().write(
                                     AppString.IS_LOGGED_IN_FIRST_TIME, false);
                                 Get.offAndToNamed(Routes.SIGN_IN_SCREEN);
                               }
@@ -116,7 +117,8 @@ class _OnboardScreenState extends State<OnboardScreen> {
 Widget _skipButton({context}) {
   return TextButton(
     onPressed: () async {
-      await GetStorage().write(AppString.IS_LOGGED_IN_FIRST_TIME, false);
+      Get.find<LocalStoreService>()
+          .write(AppString.IS_LOGGED_IN_FIRST_TIME, false);
       Get.toNamed(Routes.SIGN_IN_SCREEN);
     },
     child: Text(
@@ -157,6 +159,7 @@ Widget _buttonLayout({context, onAction, int index = 0}) {
 
 class ActiveDot extends StatelessWidget {
   final bool isActive;
+
   const ActiveDot({super.key, this.isActive = false});
 
   @override
@@ -214,4 +217,3 @@ Widget _onboardByImage({required imageUrl}) {
     ),
   );
 }
-

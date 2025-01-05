@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:payrun_mobile/app/modules/auth/bindings/signin_binding.dart';
 import 'package:payrun_mobile/app/modules/splash/bindings/splash_bingings.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
@@ -19,7 +20,6 @@ import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart'
 import '../modules/notification/presentation/view/screen/notification.dart';
 import '../app/modules/onboard/view/onboarding_screen.dart';
 import '../modules/timeline/view/screen/new_entry.dart';
-
 part 'app_routes.dart';
 
 class AppPages {
@@ -37,12 +37,12 @@ class AppPages {
       page: () => const OnboardScreen(),
     ),
     GetPage(
+        name: _Paths.SIGN_IN_SCREEN,
+        page: () => SignInScreen(),
+        binding: SignInBinding()),
+    GetPage(
       name: _Paths.TIMER_SCREEN,
       page: () => const TimerScreen(),
-    ),
-    GetPage(
-      name: _Paths.SIGN_IN_SCREEN,
-      page: () => SignInScreen(),
     ),
     GetPage(
       name: _Paths.FIRGIR_PASSWORD_SCREEN,

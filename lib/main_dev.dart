@@ -59,9 +59,6 @@ class MyApp extends StatelessWidget {
             Pushy.setNotificationClickListener((data) {});
           }
 
-
-          Get.lazyPut(() => SignInController(), fenix: true);
-
           Get.lazyPut(() => ConnectivityController(), fenix: true);
 
           Get.lazyPut(() => LanguageController(), fenix: true);

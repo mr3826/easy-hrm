@@ -17,7 +17,6 @@ import '../../../../app/global/controller/exit_app_controller.dart';
 import '../../../../app/global/controller/user_info_controller.dart';
 import '../../../../common/widget/custom_password_text_field.dart';
 import '../../../../utils/utils.dart';
-import '../../../../app/modules/onboard/view/onboarding_screen.dart';
 import '../../../../app/modules/auth/controller/signin_controller.dart';
 
 class SignInScreen extends GetView<SignInController> {
@@ -27,7 +26,6 @@ class SignInScreen extends GetView<SignInController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SignInController());
     return WillPopScope(
       onWillPop: () => Get.find<ExitAppController>().willPop(),
       child: Scaffold(
@@ -62,8 +60,6 @@ class SignInScreen extends GetView<SignInController> {
                           ///App logo
                           _logoLayout(context),
                           customSpacerHeight(height: 70),
-                          Obx(() => _organizationNameErrorLayout()),
-                          customSpacerHeight(height: 20),
 
                           ///Email address
                           _emailAddressLayout(),
@@ -195,15 +191,6 @@ class SignInScreen extends GetView<SignInController> {
         fit: BoxFit.fitHeight,
       ),
     );
-  }
-
-  _organizationNameErrorLayout() {
-    return controller.organizationAvailabilityMessage.value.isNotEmpty
-        ? Text(controller.organizationAvailabilityMessage.value,
-            style: AppStyle.normal_text_black.copyWith(
-                color: AppColor.errorColor,
-                fontSize: Dimensions.fontSizeDefault - 2))
-        : Container();
   }
 }
 

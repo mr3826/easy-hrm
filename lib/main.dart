@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:calendar_view/calendar_view.dart';
+import 'package:payrun_mobile/app/global/bindings/global_bindings.dart';
 import 'package:payrun_mobile/init_%20app.dart';
 import 'package:payrun_mobile/app/modules/splash/controller/splash_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: appTheme,
+        initialBinding: GlobalBindings(),
         translations: Internationalization(),
         locale: GetStorage().read("languageCode") != null
             ? Locale(GetStorage().read("languageCode"),
@@ -49,11 +51,6 @@ class MyApp extends StatelessWidget {
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         onInit: () {
-
-
-          
-
-
           if (Platform.isAndroid) {
             Pushy.setNotificationIcon(Images.appLogo);
             Pushy.listen();
@@ -61,10 +58,6 @@ class MyApp extends StatelessWidget {
             Pushy.setNotificationListener(backgroundNotificationListener);
             Pushy.setNotificationClickListener((data) {});
           }
-
-          Get.put(SplashController());
-
-          Get.lazyPut(() => SignInController(), fenix: true);
 
           Get.lazyPut(() => ConnectivityController(), fenix: true);
 
