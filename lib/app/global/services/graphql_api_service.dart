@@ -51,7 +51,7 @@ class GraphQLApiService {
       (client) => client.query(
         QueryOptions(
           document: gql(query),
-          fetchPolicy: FetchPolicy.noCache,
+          fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       ),
     );

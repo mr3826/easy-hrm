@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../app/global/controller/exit_app_controller.dart';
+import '../../../../app/global/controller/user_info_controller.dart';
 import '../../../../common/widget/custom_password_text_field.dart';
 import '../../../../utils/utils.dart';
 import '../../../../app/modules/onboard/view/onboarding_screen.dart';
@@ -160,10 +161,19 @@ class SignInScreen extends GetView<SignInController> {
       onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
+          // Attempt login
           bool value = await controller.loginWithCredentials(
               email: emailController.text, password: passwordController.text);
+
+          // Handle login success or failure
           if (value) {
             print("Login Successful");
+            // Get subscription info only if login is successful
+            bool isSubscriptionExpired =
+                await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+            print(isSubscriptionExpired
+                ? "Go to Sub expire screen"
+                : "Go to Main Screen");
           } else {
             print("Login Unsuccessful");
           }

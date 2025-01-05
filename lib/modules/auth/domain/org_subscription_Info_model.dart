@@ -19,6 +19,7 @@ class OrgSubscriptionInfoModel {
     }
     return data;
   }
+
 }
 
 class GetAnOrganizationSubscription {

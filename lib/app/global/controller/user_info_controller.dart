@@ -1,40 +1,34 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/common/domain/user_info.dart';
-import 'package:payrun_mobile/network/network_client.dart';
 import '../../../modules/auth/domain/org_subscription_Info_model.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
+import 'package:dio/dio.dart' as dio;
 
 class UserInfoController {
-  final NetworkClient _networkClient = Get.find<NetworkClient>();
-
   RxBool isSubscriptionExpired = false.obs;
   RxBool isSubscriptionTimeTrackingIsAllow = true.obs;
 
   Future<UserInfo?> getUserInfo() async {
-    final response = await _networkClient.getRequest(Api.USER_INFO);
-    if (response.statusCode != 200) return null;
-    return UserInfo.fromJson(response.data);
+    final dio.Response? response =
+        await Get.find<ApiService>().get(Api.USER_INFO);
+    return UserInfo.fromJson(response?.data);
   }
 
   /// Fetches the organization subscription information
   /// and checks the subscription status.
-  Future<void> getOrgSubscriptionInfo() async {
+  Future<bool> getOrgSubscriptionInfo() async {
     try {
-      final response = await _networkClient.graphRequest(
-          queryString: getOrgSubscriptionInfoQuery);
+      final response =
+          await Get.find<ApiService>().query(getOrgSubscriptionInfoQuery);
 
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!,
-            methodName: "getOrgSubscriptionInfo");
-      } else {
-        print("ORg Sub:: ${OrgSubscriptionInfoModel.fromJson(response.data!)}");
-        _checkIfSubscription(OrgSubscriptionInfoModel.fromJson(response.data!));
-      }
+      return _checkIfSubscription(
+          OrgSubscriptionInfoModel.fromJson(response.data!));
     } catch (ex) {
       log("getOrgSubscriptionInfo: $ex");
+      return true;
     }
   }
 
@@ -47,7 +41,7 @@ class UserInfoController {
   /// Finally, it navigates to the MAIN_SCREEN route.
   ///
   /// [data] - The organization's subscription information.
-  void _checkIfSubscription(OrgSubscriptionInfoModel data) {
+  bool _checkIfSubscription(OrgSubscriptionInfoModel data) {
     final GetAnOrganizationSubscription? orgSubscriptionInfo =
         data.getAnOrganizationSubscription;
 
@@ -55,6 +49,7 @@ class UserInfoController {
     try {
       if (!orgSubscriptionInfo!.status!.contains("active")) {
         isSubscriptionExpired(true);
+        return true;
       } else {
         // Check if "time_tracking" feature is enabled
         orgSubscriptionInfo.plan?.planFeatures?.forEach((feature) {
@@ -63,9 +58,11 @@ class UserInfoController {
           }
         });
       }
+      return false;
     } catch (e) {
       isSubscriptionExpired(true);
       log("_checkIfSubscription: $e");
+      return true;
     }
   }
 }
