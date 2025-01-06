@@ -49,13 +49,6 @@ class MyApp extends StatelessWidget {
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         onInit: () {
-          if (Platform.isAndroid) {
-            Pushy.setNotificationIcon(Images.appLogo);
-            Pushy.listen();
-            Pushy.toggleInAppBanner(true);
-            Pushy.setNotificationListener(backgroundNotificationListener);
-            Pushy.setNotificationClickListener((data) {});
-          }
 
           Get.lazyPut(() => LanguageController(), fenix: true);
 
@@ -81,21 +74,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-@pragma('vm:entry-point')
-void backgroundNotificationListener(Map<String, dynamic> data) {
-  // Print notification payload data
-  print('Received notification: $data');
-
-  // Notification title
-  String notificationTitle = 'Payrun';
-
-  // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
-  String notificationText = data['message'] ?? 'Hello World!';
-
-  // Android: Displays a system notification
-  // iOS: Displays an alert dialog
-  Pushy.notify(notificationTitle, notificationText, data);
-
-  // Clear iOS app badge number
-  Pushy.clearBadge();
-}
