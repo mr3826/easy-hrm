@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import '../../../../../app/admin_app/leave_hr/presentation/view/widget/assign_leave/leave_type.dart';
+import '../../../../../app/modules/leave_hr/presentation/view/widget/assign_leave/leave_type.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';

@@ -41,12 +41,7 @@ Future<bool> _onWillPop() async {
 }
 
 List<PersistentBottomNavBarItem> _navBarsItems() {
-  bool isEmployee = Get.find<UserInfoController>()
-          .userInfo
-          .user
-          ?.roles
-          ?.contains("org_employee") ??
-      false;
+  bool isEmployee = true;
   return [
     _navbarIcon(
         activeIcon: Images.timelineIconNav,

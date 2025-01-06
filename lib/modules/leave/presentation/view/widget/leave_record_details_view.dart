@@ -27,11 +27,12 @@ import '../../../../../utils/utils.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
   dynamic status;
+
   final GetLeaveRecords? leaveRecords;
   dynamic leaveDate;
   dynamic leaveWeekday;
 
-  LeaveRecordDetails({super.key, this.status, this.leaveRecords});
+  LeaveRecordDetails({super.key, this.status, this.leaveRecords, required String leaveId});
 
   @override
   Widget build(BuildContext context) {

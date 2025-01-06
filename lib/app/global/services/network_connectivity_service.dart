@@ -3,9 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/global/view/newtwork_error_screen.dart';
-import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
-
-import '../../../main_dev.dart';
+import '../../home/view/screen/main_screen.dart';
 
 class NetworkDebouncer {
   final Connectivity _connectivity = Connectivity();

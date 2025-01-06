@@ -168,7 +168,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
         context: context,
         child: LeaveRecordDetails(
           status: leaveRecord.status ?? "",
-          leaveRecords: leaveRecord,
+          leaveRecords: leaveRecord, leaveId: '',
         ),
       ),
       child: Card(

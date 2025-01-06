@@ -137,7 +137,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
                               )
                             : LeaveDetails()
                       ],
-                    ),
+                    ), leaveId: '',
                   ),
                 ),
                 child: Card(

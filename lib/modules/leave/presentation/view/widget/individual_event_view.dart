@@ -259,7 +259,7 @@ class IndividualEventView extends StatelessWidget {
                           .leaveDetailsByDate
                           ?.getLeaveRequests?[index]
                           .id,
-                    ),
+                    ), leaveId: '',
                   ),
                 );
               },
