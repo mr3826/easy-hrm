@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -52,8 +51,5 @@ Future<void> initApp() async {
   Get.put(NotificationRemoteDataSource(client), permanent: true);
 
   Get.put(LeaveRemoteDataSource(client), permanent: true);
-
-
-
 
 }

@@ -12,10 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
-import 'common/controller/connectivity_controller.dart';
 import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
-import 'app/modules/auth/controller/signin_controller.dart';
 import 'modules/auth/presentation/controller/forgot_password_controller.dart';
 import 'modules/auth/presentation/controller/otp_controller.dart';
 import 'modules/leave/presentation/controller/calendar_date_controller.dart';
@@ -58,8 +56,6 @@ class MyApp extends StatelessWidget {
             Pushy.setNotificationListener(backgroundNotificationListener);
             Pushy.setNotificationClickListener((data) {});
           }
-
-          Get.lazyPut(() => ConnectivityController(), fenix: true);
 
           Get.lazyPut(() => LanguageController(), fenix: true);
 
