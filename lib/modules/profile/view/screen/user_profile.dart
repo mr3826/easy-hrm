@@ -9,9 +9,11 @@ import 'package:payrun_mobile/modules/profile/view/widget/department_layout_widg
 import 'package:payrun_mobile/modules/profile/view/widget/employee_stauts_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../common/widget/custom_drawer.dart';
+import '../../../../utils/app_string.dart';
 import '../widget/chnage_email_notify_layout.dart';
 import '../widget/common_widget.dart';
 import '../widget/profile_appbar.dart';
+import '../widget/user_info_section_layout.dart';
 
 class ProfileScreen extends GetView<UserProfileController> {
   const ProfileScreen({super.key});
@@ -21,8 +23,7 @@ class ProfileScreen extends GetView<UserProfileController> {
     return controller.obx(
       (state) => Scaffold(
         backgroundColor: AppColor.backgroundColor,
-        appBar: profileAppbar(
-          onAction: () {
+        appBar: profileAppbar(onAction: () {
             /// Displays a custom drawer when the action is triggered.
             showCustomDrawer(
               context: context,
@@ -32,8 +33,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                 child: endDrawer(context),
               ),
             );
-          },
-        ),
+          }),
         body: Padding(
           padding: marginLayout,
           child: RefreshIndicator(
@@ -142,4 +142,27 @@ class ProfileScreen extends GetView<UserProfileController> {
       ],
     );
   }
+}
+phoneNumberText() {
+  return userInfoSectionLayout(
+    staticText: AppString.text_phone.tr,
+    dynamicText: Get.find<UserProfileController>()
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.profile
+        ?.personalNumber ??
+        "",
+  );
+}
+
+emergencyPhoneNumber() {
+  return userInfoSectionLayout(
+    staticText: AppString.text_emergency_phone.tr,
+    dynamicText: Get.find<UserProfileController>()
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.profile
+        ?.emergencyNumber ??
+        "",
+  );
 }

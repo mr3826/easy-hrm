@@ -31,13 +31,12 @@ class EditProfileScreen extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Scaffold(
-        appBar: customInsideAppbar(
-            title: AppString.text_edit_profile.tr,
-            onPressAction: () {
+        appBar: customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
               _clearInputField();
               Get.back();
               Get.back();
             }),
+
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
             : Padding(
@@ -55,6 +54,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               )),
+
       ),
     );
   }
@@ -152,9 +152,9 @@ class EditProfileScreen extends StatelessWidget {
     if ((storageFilePath.isNotEmpty || _isProfileImageValid(profileImage))) {
       return GestureDetector(
         onTap: () {
-          customDialog(
+          showCustomAlertDialog(
             context: context,
-            saveBtnAction: () {
+            onConfirm: () {
               pikedProfileImgController.storageForUpload.filePath.value = "";
 
               if (_isProfileInfoValid()) {
@@ -172,13 +172,13 @@ class EditProfileScreen extends StatelessWidget {
                 Get.back();
               }
             },
-            icon: Icons.delete_outline_outlined,
+            iconData: Icons.delete_outline_outlined,
             titleText: AppString.text_remove_photo.tr,
-            subText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
-            iconBgColor: AppColor.errorColorLight,
-            btnBgColor: AppColor.errorColorLight,
-            btnText: AppString.text_remove.tr,
-            drcText: "",
+            descriptionText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
+            iconBackgroundColor: AppColor.errorColorLight,
+            confirmButtonColor: AppColor.errorColorLight,
+            confirmButtonText: AppString.text_remove.tr,
+            extraInfoText: "",
           );
         },
         child: Text(

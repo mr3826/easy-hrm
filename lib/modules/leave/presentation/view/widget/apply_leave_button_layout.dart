@@ -45,14 +45,17 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
                       customSpacerHeight(height: 20),
-                      customTitleText(
-                          text: AppString.text_from.tr, isRequired: true),
+
+                      customTitleText(text: AppString.text_from.tr, isRequired: true),
+
                       customSpacerHeight(height: 8),
+
                       Get.find<LeaveScreenController>().startTime != null
                           ? CustomTimePickerInTime(
                               inTime: "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
+
                       customSpacerHeight(height: 20),
                       customTitleText(
                           text: AppString.text_to.tr, isRequired: true),
@@ -78,6 +81,8 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                           )),
                       customSpacerHeight(height: 8),
                       _noteTextField(),
+                      customSpacerHeight(height: 20),
+
                       Obx(() => Row(
                             children: [
                               customTitleText(text: AppString.text_document.tr),

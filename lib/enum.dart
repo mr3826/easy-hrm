@@ -1,4 +1,4 @@
-enum LeaveStatus { approved, pending, rejected, taken, cancelled }
+enum LeaveStatus { approved, pending, rejected, taken, cancelled ,reject,cancel}
 
 enum EmploymentStatus { active, inactive, invited }
 

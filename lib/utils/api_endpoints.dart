@@ -1,5 +1,9 @@
 class Api {
-  Api._();
+  static final Api _instance = Api._internal();
+
+  factory Api() => _instance;
+
+  Api._internal();
 
   static const String PUBLIC_URL = String.fromEnvironment("PUBLIC_URL");
   static const CDN_DOMAIN = String.fromEnvironment("CDN_DOMAIN");
@@ -10,7 +14,6 @@ class Api {
   static const COMPANY_DOMAIN = "/organization";
   static const LOGIN = "/auth/login";
   static const LOGOUT = "/auth/logout";
-
   static const REFRESH_TOKEN = "/auth/refresh-token";
   static const FORGOT_PASSWORD = "/auth/forgot-password";
   static const RESEND_OTP = "/auth/retry-forgot-password";
@@ -95,9 +98,9 @@ query GetLeaveRequests($queryData: LeaveRequestQueryType) {
         """;
 
 const getLeaveRecordsDataQuery = r'''
-query GetLeaveRecordsForApp($optionData: OptionDataType) {
-  getLeaveRecordsForApp(optionData: $optionData) {
-    date
+query GetLeaveRecordsForApp($queryData: LeaveRecordsQueryInput, $optionData: OptionDataType) {
+  getLeaveRecordsForApp(queryData: $queryData, optionData: $optionData) {
+     date
     data {
       createdAt
       description
@@ -139,7 +142,7 @@ mutation AssignLeave($inputData: CreateLeaveInputData) {
 }
 ''';
 
-const cancelLeaveQuery = r'''
+const updatedLeaveQuery = r'''
 mutation UpdateLeave($inputData: UpdateLeaveInputData) {
   updateLeave(inputData: $inputData) {
     id
@@ -223,6 +226,7 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
   getOrganizationUserHistory(org_user_id: $orgUserId) {
+    join_date
     designation_histories {
       start_date
       end_date
@@ -263,9 +267,9 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
 }
 ''';
 
-const userLogHistoryQuery = '''
-query GeTimelogAndLeaveAvailabilityForApp {
-  geTimelogAndLeaveAvailabilityForApp {
+const userLogHistoryQuery = r'''
+query GeTimelogAndLeaveAvailabilityForApp($orgUserId: UUID) {
+  geTimelogAndLeaveAvailabilityForApp(org_user_id: $orgUserId) {
     total_logged
     total_schedule
     balance_leave
@@ -585,6 +589,253 @@ const markAsSeenNotificationQuery = r'''
 mutation MarkUnreadNotificationAsSeen($inputData: UnreadNotificationSeenInputType!) {
   markUnreadNotificationAsSeen(inputData: $inputData) {
     result
+  }
+}
+''';
+
+/// employee info
+///
+
+const getEmployeeList = r'''
+query GetOrganizationUsers($queryData: OrganizationUserQueryData, $optionData: OptionDataType) {
+  getOrganizationUsers(queryData: $queryData, optionData: $optionData) {
+    data {
+      id
+      join_date
+      profile {
+        first_name
+        last_name
+        image
+      }
+      employment_status {
+        id
+        name
+        color
+      }
+      designation {
+        id
+        name
+      }
+      department {
+        id
+        name
+      }
+      user {
+        id
+        email
+      }
+      user_id
+      
+    }
+    metaData {
+      filteredRows
+    }
+  }
+}
+''';
+
+const getDepartmentInfo = '''
+query GetDepartmentsDropdown {
+  getDepartmentsDropdown {
+    id
+    name
+  }
+}
+''';
+
+const getEmploymentStatusInfo = '''
+query GetEmploymentStatusesDropdown {
+  getEmploymentStatusesDropdown {
+    id
+    name
+    color
+  }
+}
+''';
+
+const getEmploymentDesignationInfo = '''
+query GetDesignationsDropdown {
+  getDesignationsDropdown {
+    id
+    name
+  }
+}
+''';
+
+//Hr_leave
+
+const getHrLeaveCalendarList = r'''
+query GET_LEAVES_CALENDAR($queryData: LeaveCalenderInput!, $optionData: OptionDataType) {
+  getLeavesCalendar(queryData: $queryData, optionData: $optionData) {
+    leave_requests {
+      formatted_date
+      total_approved
+      total_pending
+      total_rejected
+      total_cancelled
+      total_taken
+      formatted_leave_hours
+      leave_type_name
+      leave_type_category
+      organization_users {
+        profile {
+          first_name
+          last_name
+          image
+        }
+        roles {
+          name
+        }
+        designation {
+          description
+        }
+        leave_id
+      }
+    }
+  }
+}
+''';
+
+const updateLeaveQuery = r'''
+mutation UPDATE_LEAVE($inputData: UpdateLeaveInputData) {
+  updateLeave(inputData: $inputData) {
+  id
+  }
+  
+}
+''';
+
+const getFileSignUrlQuery = r'''
+query GET_FILE_SIGNED_URL($fileKey: String!, $isDownload: Boolean) {
+   getFileSignedUrl(fileKey: $fileKey, isDownload: $isDownload)
+    }
+''';
+const getAvailableLeavesTypeQuery = r'''
+query GET_AVAILABLE_LEAVES_TYPES($queryData: AvailableLeaveTypesInput!, $optionData: OptionDataType) {
+  getAvailableLeaveTypes(queryData: $queryData, optionData: $optionData) {
+    add_note_required
+    attach_document_required
+    availableLeave
+    calculate_allowance_by
+    is_default
+    is_enable
+    leave_type_id
+    name
+    type
+  }
+}
+''';
+
+const addAssignLeaveQuery = r'''
+mutation ASSIGN_LEAVE($inputData: CreateLeaveInputData) {
+  assignLeave(inputData: $inputData) {
+    id
+    leaveType {
+      id
+      name
+      type
+    }
+  }
+}
+''';
+
+const getHrLeaveRecordeQuery = r'''
+query GET_LEAVE_REQUESTS($queryData: LeaveRequestQueryType, $optionData: OptionDataType) {
+  getLeaveRequests(queryData: $queryData, optionData: $optionData) {
+    id
+    start_date
+    end_date
+    description
+    status
+    leaveType {
+      id
+      name
+      type
+      number_of_days
+      number_of_applications
+      application_date
+     
+    }
+    leave_details {
+      leave_id
+      leave_seconds
+    }
+    files {
+      id
+      name
+      size
+      key
+    }
+    organization_user {
+      designation {
+        name
+      }
+      status
+      profile {
+        id
+        first_name
+        last_name
+        image
+  
+      }
+      department {
+        id
+        name
+      }
+    }
+  }
+}
+''';
+
+const getLeaveDetailsByIdQuery = r'''
+query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
+  getLeaveDetailsById(queryData: $queryData) {
+    id
+    createdAt
+    type
+    description
+    total_duration
+    totalLeaveMinutes
+    status
+    start_date
+    organization_user {
+      id
+      profile {
+        user_id
+        last_name
+        image
+        id
+        first_name
+      }
+      roles {
+        name
+      }
+      designation {
+        name
+      }
+    }
+    leaveType {
+      id
+      name
+      type
+      calculate_allowance_by
+    }
+    leave_details {
+    id
+    leave_id
+      date
+      leave_seconds
+      schedule_seconds
+    }
+    duration
+    end_date
+    files {
+      name
+      key
+      id
+      size
+    }
+    number_of_days
   }
 }
 ''';

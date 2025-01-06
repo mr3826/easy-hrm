@@ -162,11 +162,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     );
   }
 
-  _infoLayoutView({
-    required BuildContext context,
-    required GetLeaveRecords leaveRecord,
-    Color? cardBgColor,
-  }) {
+  _infoLayoutView({required BuildContext context, required GetLeaveRecords leaveRecord, Color? cardBgColor}) {
     return GestureDetector(
       onTap: () => customAntButtonSheet(
         context: context,

@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
 import '../model/timer_status_response.dart';
 
-class TimeCounterController extends GetxController {
+class TimeCounterController extends SuperController {
   @override
   void onInit() {
     timerStatus();
@@ -25,11 +26,17 @@ class TimeCounterController extends GetxController {
   RxBool isContainerGrowing = true.obs;
   RxDouble containerSize = 20.0.obs;
 
+  // Key for storing the start timestamp
+  final String savedStartTimeKey = 'start_time';
+
+  final _storage = GetStorage(); //
+
   Timer get timer => _timer;
 
   Timer get animationTimer => _aniTimer;
 
   void start() {
+    if (_timer.isActive) return;
     isRunning.value = true;
     _timer = Timer.periodic(const Duration(seconds: 1), _updateTimer);
     startAnimation();
@@ -50,6 +57,7 @@ class TimeCounterController extends GetxController {
     isRunning.value = false;
     isTotalCount(false);
     _timer.cancel();
+    _clearStoredTime();
     _aniTimer.cancel();
   }
 
@@ -57,6 +65,7 @@ class TimeCounterController extends GetxController {
     isRunning.value = false;
     if (_timer.isActive) {
       _timer.cancel();
+      _clearStoredTime();
     }
     if (_aniTimer.isActive) {
       _aniTimer.cancel();
@@ -82,10 +91,12 @@ class TimeCounterController extends GetxController {
 
   timerStatus() async {
     isLoading(true);
-    final response = await NetworkClient().graphRequest(queryString: timerStatusQuery);
+    final response =
+        await NetworkClient().graphRequest(queryString: timerStatusQuery);
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "timerStatus");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "timerStatus");
     } else {
       TimerResponse timerResponse = TimerResponse.fromJson(response.data!);
       if (timerResponse.checkStartOrStopTimeline != null) {
@@ -113,4 +124,58 @@ class TimeCounterController extends GetxController {
       elapsedTime.value = '${_twoDigits(hours)}h : ${_twoDigits(minutes)}m';
     }
   }
+
+  // Save the current time when the app goes to background
+  void saveElapsedTime() {
+    if (isRunning.value) {
+      _storage.write(savedStartTimeKey, DateTime.now().toIso8601String());
+    }
+  }
+
+  // Restore the saved time when the app resumes
+  void restoreElapsedTime() {
+    String? savedTimeString = _storage.read(savedStartTimeKey);
+    if (savedTimeString != null) {
+      DateTime savedTime = DateTime.parse(savedTimeString);
+      Duration timeDiff = DateTime.now().difference(savedTime);
+
+      // Add the time difference to the timer
+      _seconds += timeDiff.inSeconds;
+    }
+  }
+
+  // Clear the stored timer data
+  void _clearStoredTime() {
+    _storage.remove(savedStartTimeKey); // Remove the saved start time
+  }
+
+  @override
+  void onDetached() {
+    // TODO: implement onDetached
+  }
+
+  @override
+  void onHidden() {
+    // TODO: implement onHidden
+  }
+
+  @override
+  void onInactive() {
+    // TODO: implement onInactive
+  }
+
+  @override
+  void onPaused() {
+    print("onPaused called");
+    // Save the current time when the app goes to background
+    saveElapsedTime();
+  }
+
+  @override
+  void onResumed() {
+    print("onResumed called");
+    // Restore the time when the app comes back to the foreground
+    restoreElapsedTime();
+  }
 }
+

@@ -20,27 +20,33 @@ List<PersistentBottomNavBarItem> get iconList => _navBarsItems();
 Future<bool> get appExitChecker => _onWillPop();
 
 Future<bool> _onWillPop() async {
-  return customDialog(
+  return showCustomAlertDialog(
     context: Get.context!,
-    saveBtnAction: () {
+    onConfirm: () {
       if (Platform.isAndroid) {
         SystemNavigator.pop();
       } else if (Platform.isIOS) {
         exit(0);
       }
     },
-    icon: Icons.logout,
+    iconData: Icons.logout,
     titleText: AppString.text_are_you_sure.tr,
-    subText: "${AppString.text_are_you_sure_want_to_exit_from_app.tr}.",
-    iconBgColor: AppColor.secondaryColor,
-    btnBgColor: AppColor.secondaryColor,
-    btnText: AppString.text_yes.tr,
-    drcText: "",
-    drcFontSize: Dimensions.fontSizeDefault,
+    descriptionText: "${AppString.text_are_you_sure_want_to_exit_from_app.tr}.",
+    iconBackgroundColor: AppColor.secondaryColor,
+    confirmButtonColor: AppColor.secondaryColor,
+    confirmButtonText: AppString.text_yes.tr,
+    extraInfoText: "",
+    descriptionFontSize: Dimensions.fontSizeDefault,
   );
 }
 
 List<PersistentBottomNavBarItem> _navBarsItems() {
+  bool isEmployee = Get.find<UserInfoController>()
+          .userInfo
+          .user
+          ?.roles
+          ?.contains("org_employee") ??
+      false;
   return [
     _navbarIcon(
         activeIcon: Images.timelineIconNav,
@@ -57,9 +63,14 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
           customSvgImage(imageUrl: Images.home, height: 25, width: 25),
     ),
     _navbarIcon(
-        activeIcon: Images.notificationIconNav,
-        text: AppString.text_notication.tr,
-        imgUrl: Images.notificationIconNavOutLine),
+        activeIcon:
+            isEmployee ? Images.notificationIconNav : Images.employees_active,
+        text: isEmployee
+            ? AppString.text_notication.tr
+            : AppString.text_employees.tr,
+        imgUrl: isEmployee
+            ? Images.notificationIconNavOutLine
+            : Images.employees_inactive),
     _navbarIcon(
         activeIcon: Images.profileIconNav,
         text: AppString.text_profile.tr,

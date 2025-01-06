@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:imgix_core_dart/url_builder.dart';
@@ -20,9 +19,11 @@ String urlBuilder({
   String? orgId,
   bool isPublic = false,
 }) {
+
   final cdmKey = isPublic
       ? Api.CDN_DOMAIN.replaceAll("private", "public")
       : Api.CDN_DOMAIN;
+
 
   final client = URLBuilder(
     domain: cdmKey,
@@ -31,14 +32,17 @@ String urlBuilder({
   );
 
   final urlPath = profileImageKey ??
-      '${fileDir ?? "files"}/${orgId??GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey';
+      '${fileDir ?? "files"}/${orgId ?? GetStorage().read(AppString.ORGANIZATION_ID)}/$imgUrlKey';
 
   return client.createURLString(urlPath);
 }
 
 
+
+
+
 Widget circleImageLayout(
-    {radius, required url, borderColor, required errorText}) {
+    {radius, required url, borderColor, required errorText,TextStyle ?errorTextStyle}) {
   return CircleAvatar(
     radius: radius + 2.1,
     backgroundColor: borderColor ?? AppColor.hintColor,
@@ -54,7 +58,7 @@ Widget circleImageLayout(
           errorWidget: (context, url, error) => CircleAvatar(
             radius: radius,
             backgroundColor: AppColor.bgColorWithPrimary,
-            child: _errorText(errorText),
+            child: _errorText(errorText,errorTextStyle),
           ),
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
@@ -73,9 +77,9 @@ Widget circleImageLayout(
   );
 }
 
-Widget _errorText(errorText) {
+Widget _errorText(errorText,TextStyle ?errorTextStyle) {
   return Text("$errorText",
-      style: AppStyle.normal_text_grey.copyWith(
+      style: errorTextStyle?? AppStyle.normal_text_grey.copyWith(
           fontSize: Dimensions.fontSizeMid, color: AppColor.primaryColor));
 }
 

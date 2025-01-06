@@ -55,7 +55,7 @@ class TimelineScreen extends GetView<TimelineController> {
     return Padding(
       padding: EdgeInsets.only(
           left: 35.0,
-          bottom: Platform.isAndroid ? 18 : 0,
+          bottom: Platform.isAndroid ? 18 : 4,
           top: Platform.isAndroid ? 0 : 40),
       child: Row(
         children: [

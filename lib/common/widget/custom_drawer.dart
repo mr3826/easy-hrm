@@ -41,8 +41,12 @@ void showCustomDrawer({required BuildContext context, required Widget child}) {
   );
 }
 
-void showCustomAtmBtnSheet(
-    {required BuildContext context, required child, double height = 500}) {
+void showCustomAtmBtnSheet({
+  required BuildContext context,
+  required Widget child,
+  double height = 500,
+  VoidCallback? onClose,
+}) {
   showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -52,20 +56,16 @@ void showCustomAtmBtnSheet(
     pageBuilder: (_, __, ___) {
       return Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-        margin:
-            EdgeInsets.only(top: MediaQuery.of(context).size.height - height),
+        margin: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height - height,
+        ),
         child: Center(
           child: child,
         ),
       );
     },
     transitionBuilder: (_, anim, __, child) {
-      Tween<Offset> tween;
-      if (anim.status == AnimationStatus.reverse) {
-        tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
-      } else {
-        tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
-      }
+      final tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
       return SlideTransition(
         position: tween.animate(anim),
         child: FadeTransition(
@@ -74,5 +74,10 @@ void showCustomAtmBtnSheet(
         ),
       );
     },
-  );
+  ).then((value) {
+    if (onClose != null) {
+      onClose();
+    }
+  });
 }
+

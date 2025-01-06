@@ -8,19 +8,23 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:upgrader/upgrader.dart';
-import '../../../dashboard/presentation/controller/dashbpard_controller.dart';
-import '../../../dashboard/presentation/view/screen/dashboard.dart';
-import '../../../leave/presentation/controller/leave_record_controller.dart';
-import '../../../leave/presentation/controller/update_leave_controller.dart';
-import '../../../leave/presentation/view/screen/leave_screen.dart';
-import '../../../notification/presentation/controller/notification_controller.dart';
-import '../../../notification/presentation/view/screen/notification.dart';
-import '../../../profile/controller/user_profile_controller.dart';
-import '../../../profile/view/screen/user_profile.dart';
-import '../../../subscription/view/subscription_screen.dart';
-import '../../../timeline/controller/timeline_controller.dart';
-import '../../../timeline/controller/timelog_summary_controller.dart';
-import '../../../timeline/view/screen/timeline.dart';
+import '../../../../app/admin_app/employee/presentation/controller/employment_controller.dart';
+import '../../../../app/admin_app/employee/presentation/view/screen/employee_screen.dart';
+import '../../../../modules/dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../../../modules/dashboard/presentation/view/screen/dashboard.dart';
+import '../../../../modules/leave/presentation/controller/leave_record_controller.dart';
+import '../../../../modules/leave/presentation/controller/update_leave_controller.dart';
+import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
+import '../../../../modules/notification/presentation/controller/notification_controller.dart';
+import '../../../../modules/notification/presentation/view/screen/notification.dart';
+import '../../../../modules/profile/controller/user_profile_controller.dart';
+import '../../../../modules/profile/view/screen/user_profile.dart';
+import '../../../../modules/subscription/view/subscription_screen.dart';
+import '../../../../modules/timeline/controller/timeline_controller.dart';
+import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
+import '../../../../modules/timeline/view/screen/timeline.dart';
+import '../../../admin_app/leave_hr/presentation/controller/hr_leave_controller.dart';
+import '../../../admin_app/leave_hr/presentation/view/screen/leave_hr_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
@@ -101,15 +105,13 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  @override
-  void didChangeDependencies() {
-    print('didChangeDependencies');
-    super.didChangeDependencies();
-
-
-  }
-
   void _initialController() async {
+    bool isEmployee = Get.find<UserInfoController>()
+            .userInfo
+            .user
+            ?.roles
+            ?.contains("org_employee") ??
+        false;
     Get.put(DashboardController());
     Get.put(TimelineController());
     Get.put(NotificationController());
@@ -117,15 +119,25 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
     Get.put(UserProfileController());
+    if (!isEmployee) {
+      Get.put(EmploymentController());
+      Get.put(HrLeaveController());
+    }
     Get.put(UpDateLeaveController());
   }
 
   _screenListLayout() {
+    bool isEmployee = Get.find<UserInfoController>()
+            .userInfo
+            .user
+            ?.roles
+            ?.contains("org_employee") ??
+        false;
     return [
       const TimelineScreen(),
-      const LeaveScreen(),
+      isEmployee ? const LeaveScreen() : const LeaveHrScreen(),
       const Dashboard(),
-      const NotificationScreen(),
+      isEmployee ? const NotificationScreen() : const EmployeeScreen(),
       const ProfileScreen(),
     ];
   }

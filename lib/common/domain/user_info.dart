@@ -27,7 +27,7 @@ class User {
   String? orgUserId;
   String? organizationId;
   bool? isRootDeptHead;
-  int? topDeptHeadLevel;
+  dynamic topDeptHeadLevel;
   List<String>? role;
 
   User(

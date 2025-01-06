@@ -9,15 +9,24 @@ import 'package:payrun_mobile/modules/notification/data/remote/notification_remo
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:get_storage/get_storage.dart' as get_storage;
 import 'package:payrun_mobile/network/network_client.dart';
+import 'app/admin_app/employee/data/employee_remote_data_source.dart';
+import 'app/admin_app/leave_hr/data/apply_and_update_leave_date_source.dart';
+import 'app/admin_app/leave_hr/data/leave_remote_data_source.dart';
+import 'app/admin_app/employee/domain/employee_info.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import 'firebase_options.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 Future<void> initApp() async {
 
   // Ensure Flutter widgets are properly initialized
+  initializeHive();
+
+  await get_storage.GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize GetStorage
@@ -52,6 +61,7 @@ Future<void> initApp() async {
   Get.put(UserInfoController(), permanent: true);
 
   Get.put(DashboardRemoteDataSource(client), permanent: true);
+
   Get.put(NotificationRemoteDataSource(client), permanent: true);
 
   Get.put(LeaveRemoteDataSource(client), permanent: true);
@@ -109,7 +119,30 @@ class PushNotificationServiceForIOS {
 class ForegroundPushNotificationService {
   static final FlutterLocalNotificationsPlugin
   _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  Get.put(EmployeeRemoteDataSource(client), permanent: true);
 
+  Get.put(HrLeaveRemoteDataSource(client), permanent: true);
+  Get.put(ApplyAndUpdateLeaveDateSource(client), permanent: true);
+}
+
+Future<void> initializeHive() async {
+  await Hive.initFlutter();
+  registerAdapters();
+  await openBoxes();
+}
+
+void registerAdapters() {
+  Hive.registerAdapter(DataAdapter());
+  Hive.registerAdapter(ProfileAdapter());
+  Hive.registerAdapter(EmploymentStatusAdapter());
+  Hive.registerAdapter(UserAdapter());
+}
+
+Future<void> openBoxes() async {
+  Box<String> settingsBox = await Hive.openBox<String>('settingsBox');
+  await checkAppVersion(settingsBox);
+  await Hive.openBox<Data>('dataBox');
+}
   static void initialize() {
     const InitializationSettings initializationSettings =
     InitializationSettings(
@@ -119,6 +152,9 @@ class ForegroundPushNotificationService {
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
+Future<void> checkAppVersion(Box<String> box) async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  String currentVersion = packageInfo.version;
   static Future<void> showNotification(
       Map<String, dynamic> notificationData) async {
     const NotificationDetails notificationDetails = NotificationDetails(
@@ -132,6 +168,15 @@ class ForegroundPushNotificationService {
       notificationDetails,
       payload: notificationData.toString(),
     );
+  }
+  String? storedVersion = box.get('appVersion');
+
+  if (storedVersion == null || storedVersion != currentVersion) {
+    // Clear the data box if the version has changed
+    Box<Data> dataBox = await Hive.openBox<Data>('dataBox');
+    await dataBox.clear();
+    // Store the new version
+    await box.put('appVersion', currentVersion);
   }
 }
 
