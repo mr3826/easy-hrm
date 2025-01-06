@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../common/widget/custom_spacer.dart';
-import '../../../utils/app_color.dart';
 import '../../../utils/app_layout.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/app_style.dart';
@@ -39,16 +38,16 @@ class NetworkErrorPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             customSpacerHeight(height: 40),
-            GestureDetector(
-              onTap: onRetry,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppColor.primaryColor,
-                    borderRadius: BorderRadius.circular(8)),
-                padding: EdgeInsets.symmetric(vertical: AppLayout.getHeight(8)),
-              ),
-            )
+            // GestureDetector(
+            //   onTap: onRetry,
+            //   child: Container(
+            //     width: double.infinity,
+            //     decoration: BoxDecoration(
+            //         color: AppColor.primaryColor,
+            //         borderRadius: BorderRadius.circular(8)),
+            //     padding: EdgeInsets.symmetric(vertical: AppLayout.getHeight(8)),
+            //   ),
+            // )
           ],
         ),
       ),

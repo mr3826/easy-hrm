@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:payrun_mobile/app/global/services/network_connectivity_service.dart';
 import 'package:payrun_mobile/app/modules/auth/bindings/signin_binding.dart';
 import 'package:payrun_mobile/app/modules/splash/bindings/splash_bingings.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
@@ -20,6 +21,7 @@ import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart'
 import '../modules/notification/presentation/view/screen/notification.dart';
 import '../app/modules/onboard/view/onboarding_screen.dart';
 import '../modules/timeline/view/screen/new_entry.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -72,7 +74,7 @@ class AppPages {
     GetPage(
       name: _Paths.MAIN_SCREEN,
       transition: Transition.size,
-      page: () => const MainScreen(),
+      page: () => const NetworkListener(child: MainScreen()),
     ),
     GetPage(
       name: _Paths.LEAVE_SCREEN,

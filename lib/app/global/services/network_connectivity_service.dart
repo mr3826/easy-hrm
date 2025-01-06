@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/view/newtwork_error_screen.dart';
+import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
 
-import '../../../main.dart';
+import '../../../main_dev.dart';
 
 class NetworkDebouncer {
   final Connectivity _connectivity = Connectivity();
@@ -11,7 +13,8 @@ class NetworkDebouncer {
   late StreamSubscription _subscription;
   Timer? _debounceTimer;
 
-  void listenForConnectivityChanges(Function(List<ConnectivityResult>) onChange) {
+  void listenForConnectivityChanges(
+      Function(List<ConnectivityResult>) onChange) {
     _subscription = _connectivity.onConnectivityChanged.listen((result) {
       _debounceTimer?.cancel();
       _debounceTimer = Timer(_debounceDuration, () {
@@ -26,7 +29,6 @@ class NetworkDebouncer {
   }
 }
 
-
 class NetworkListener extends StatefulWidget {
   final Widget child;
 
@@ -38,7 +40,6 @@ class NetworkListener extends StatefulWidget {
 
 class _NetworkListenerState extends State<NetworkListener> {
   late Stream<List<ConnectivityResult>> _connectivityStream;
-  bool _hasNetwork = true;
 
   @override
   void initState() {
@@ -49,24 +50,16 @@ class _NetworkListenerState extends State<NetworkListener> {
 
   void _listenToConnectivityChanges() {
     _connectivityStream.listen((result) {
-      if (result.contains(ConnectivityResult.none) ) {
-        // No network connection
-        setState(() {
-          _hasNetwork = false;
-        });
-        Get.to(() => (onRetry: _restartApp));
-      } else if (!_hasNetwork) {
-        // Regained network connection
-        setState(() {
-          _hasNetwork = true;
-        });
+      if (result.contains(ConnectivityResult.none)) {
+        Get.offAll(() => NetworkErrorPage(onRetry: () {}));
+      } else {
         _restartApp();
       }
     });
   }
 
   void _restartApp() {
-    Get.offAll(() => const MyApp());
+    Get.to(() => const MainScreen());
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import '../../../modules/auth/domain/signin_res.dart';
 import 'auth_token_service.dart';
 import '../../../utils/api_endpoints.dart';
 
@@ -10,18 +11,21 @@ class TokenRefreshService {
   /// Attempt to refresh the access token
   Future<String?> refreshAccessToken() async {
     try {
+      final accessToken = await _authTokenService.getAccessToken();
       final refreshToken = await _authTokenService.getRefreshToken();
       if (refreshToken == null) {
         return null;
       }
 
       final response = await _dio.post(
-        Api.REFRESH_TOKEN,
-        data: {'refresh_token': refreshToken},
+        Api.PUBLIC_URL + Api.REFRESH_TOKEN,
+        data: {"refreshToken": refreshToken, "accessToken": accessToken},
       );
 
-      final newAccessToken = response.data['access_token'];
+      final data = SignInResponse.fromJson(response.data).data;
+      final newAccessToken = data?.accessToken ?? "";
       await _authTokenService.storeAccessToken(newAccessToken);
+      await _authTokenService.storeRefreshToken(data?.refreshToken ?? "");
       return newAccessToken;
     } catch (e) {
       print('Error refreshing token: $e');

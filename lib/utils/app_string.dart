@@ -40,7 +40,7 @@ class AppString {
   static const String leaveUpdatedSuccessMessage = "Leave updated successfully";
   static const String newUserJoined = "A new user has joined";
   static const String no_event_found_text = "No events for today!";
-  static const String no_internet_subtitle_text = "Make sure your Wi-Fi or cellular data is turned on and then try again";
+  static const String no_internet_subtitle_text = "Make sure your Wi-Fi or cellular data is turned on";
   static const String no_internet_title_text = "No internet!!";
   static const String organizationNotFoundMessage = "Organization not found. Try Another organization";
   static const String password_not_matched = "Password not matched";

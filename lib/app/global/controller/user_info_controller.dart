@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:graphql/src/core/query_result.dart';
 import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/common/domain/user_info.dart';
 import '../../../modules/auth/domain/org_subscription_Info_model.dart';
@@ -21,11 +22,13 @@ class UserInfoController {
   /// and checks the subscription status.
   Future<bool> getOrgSubscriptionInfo() async {
     try {
-      final response =
+      final QueryResult<Object?> response =
           await Get.find<ApiService>().query(getOrgSubscriptionInfoQuery);
-
-      return _checkIfSubscription(
-          OrgSubscriptionInfoModel.fromJson(response.data!));
+      if (response.data != null) {
+        return _checkIfSubscription(
+            OrgSubscriptionInfoModel.fromJson(response.data!));
+      }
+      return true;
     } catch (ex) {
       log("getOrgSubscriptionInfo: $ex");
       return true;
