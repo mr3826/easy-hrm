@@ -1,12 +1,14 @@
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:payrun_mobile/app/global/services/network_connectivity_service.dart';
+import 'package:payrun_mobile/app/modules/auth/bindings/forgot_password_binding.dart';
+import 'package:payrun_mobile/app/modules/auth/bindings/otp_screen_bindings.dart';
 import 'package:payrun_mobile/app/modules/auth/bindings/signin_binding.dart';
 import 'package:payrun_mobile/app/modules/splash/bindings/splash_bingings.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/forgot_password.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/password_update.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/reset_password.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/sign_in.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/forgot_password.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/password_update.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/reset_password.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/sign_in.dart';
 import 'package:payrun_mobile/modules/home/view/screen/main_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
@@ -43,19 +45,15 @@ class AppPages {
         page: () => SignInScreen(),
         binding: SignInBinding()),
     GetPage(
-      name: _Paths.TIMER_SCREEN,
-      page: () => const TimerScreen(),
-    ),
+        name: _Paths.FIRGIR_PASSWORD_SCREEN,
+        transition: Transition.size,
+        page: () => ForgotScreen(),
+        binding: ForgotPasswordBindings()),
     GetPage(
-      name: _Paths.FIRGIR_PASSWORD_SCREEN,
-      transition: Transition.size,
-      page: () => ForgotScreen(),
-    ),
-    GetPage(
-      name: _Paths.OTP,
-      transition: Transition.size,
-      page: () => const OTPScreen(),
-    ),
+        name: _Paths.OTP,
+        transition: Transition.size,
+        page: () => const OTPScreen(),
+        binding: OtpScreenBindings()),
     GetPage(
       name: _Paths.RESET_PASSWORD,
       transition: Transition.size,
@@ -65,6 +63,10 @@ class AppPages {
       name: _Paths.PASSWORD_UPDATE_SCRREN,
       transition: Transition.size,
       page: () => const PasswordUpdateScreen(),
+    ),
+    GetPage(
+      name: _Paths.TIMER_SCREEN,
+      page: () => const TimerScreen(),
     ),
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,

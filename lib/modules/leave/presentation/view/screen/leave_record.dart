@@ -4,7 +4,7 @@ import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
 import 'package:payrun_mobile/utils/app_color.dart';

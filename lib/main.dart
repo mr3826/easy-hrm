@@ -14,8 +14,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
-import 'modules/auth/presentation/controller/forgot_password_controller.dart';
-import 'modules/auth/presentation/controller/otp_controller.dart';
+import 'app/modules/auth/controller/forgot_password_controller.dart';
+import 'app/modules/auth/controller/otp_controller.dart';
 import 'modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'modules/leave/presentation/controller/file_upload_controller.dart';
 import 'modules/leave/presentation/controller/picked_file_form_storage.dart';
@@ -59,9 +59,6 @@ class MyApp extends StatelessWidget {
 
           Get.lazyPut(() => LanguageController(), fenix: true);
 
-          Get.lazyPut(() => ForgotPasswordController(), fenix: true);
-
-          Get.lazyPut(() => OtpController(), fenix: true);
 
           Get.put(FileUploadController());
 

@@ -7,7 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/global/controller/exit_app_controller.dart';
 import 'package:payrun_mobile/app/global/services/local_store_service.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../utils/app_color.dart';

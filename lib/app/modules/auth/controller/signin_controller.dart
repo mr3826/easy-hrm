@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:payrun_mobile/common/domain/user_info.dart';
-import 'package:payrun_mobile/modules/auth/domain/signin_res.dart';
+import 'package:payrun_mobile/app/modules/auth/models/signin_res.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import '../../../../common/domain/token_model.dart';
 import '../../../../utils/api_endpoints.dart';

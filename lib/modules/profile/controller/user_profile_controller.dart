@@ -33,7 +33,7 @@ import '../../../utils/app_string.dart';
 import '../../../utils/dimensions.dart';
 import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
-import '../../auth/domain/signin_res.dart';
+import '../../../app/modules/auth/models/signin_res.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';

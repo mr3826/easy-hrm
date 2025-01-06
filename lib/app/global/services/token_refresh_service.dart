@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import '../../../modules/auth/domain/signin_res.dart';
+import '../../modules/auth/models/signin_res.dart';
 import 'auth_token_service.dart';
 import '../../../utils/api_endpoints.dart';
 

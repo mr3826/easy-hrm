@@ -13,11 +13,11 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../../app/global/controller/exit_app_controller.dart';
-import '../../../../app/global/controller/user_info_controller.dart';
-import '../../../../common/widget/custom_password_text_field.dart';
-import '../../../../utils/utils.dart';
-import '../../../../app/modules/auth/controller/signin_controller.dart';
+import '../../../../global/controller/exit_app_controller.dart';
+import '../../../../global/controller/user_info_controller.dart';
+import '../../../../../common/widget/custom_password_text_field.dart';
+import '../../../../../utils/utils.dart';
+import '../../controller/signin_controller.dart';
 
 class SignInScreen extends GetView<SignInController> {
   SignInScreen({Key? key}) : super(key: key);

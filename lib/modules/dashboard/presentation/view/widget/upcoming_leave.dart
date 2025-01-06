@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../utils/app_color.dart';
-import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_spacer.dart';

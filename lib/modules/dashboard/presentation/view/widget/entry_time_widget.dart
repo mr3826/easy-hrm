@@ -14,7 +14,7 @@ import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
 import '../../../../../app/modules/auth/controller/signin_controller.dart';
-import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../timeline/controller/timer_controller.dart';
 
 
