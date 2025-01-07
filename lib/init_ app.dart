@@ -1,10 +1,4 @@
-
-
 import 'dart:io';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -19,7 +13,6 @@ import 'app/modules/employee/data/employee_remote_data_source.dart';
 import 'app/modules/employee/domain/employee_info.dart';
 import 'app/modules/leave_hr/data/apply_and_update_leave_date_source.dart';
 import 'app/modules/leave_hr/data/leave_remote_data_source.dart';
-import 'firebase_options.dart';
 import 'modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'modules/leave/data/remote/leave_remote_data_source.dart';
 import 'modules/notification/data/remote/notification_remote_data_source.dart';
@@ -33,24 +26,6 @@ Future<void> initApp() async {
   initializeHive();
 
   NetworkClient client = Get.put(NetworkClient());
-
-
-  if (!kDebugMode) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    // Pass all uncaught "fatal" errors from the framework to Crashlytics
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-    FlutterError.onError = (errorDetails) {
-      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-    };
-    // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
-  }
 
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
