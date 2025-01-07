@@ -1,21 +1,14 @@
-import 'dart:io';
-
 import 'package:calendar_view/calendar_view.dart';
 import 'package:payrun_mobile/app/global/bindings/global_bindings.dart';
 import 'package:payrun_mobile/init_%20app.dart';
-import 'package:payrun_mobile/app/modules/splash/controller/splash_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
-import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/language/internationalization.dart';
 import 'package:payrun_mobile/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:pushy_flutter/pushy_flutter.dart';
 import 'common/controller/date_time_controller.dart';
 import 'common/controller/language_controller.dart';
-import 'app/modules/auth/controller/forgot_password_controller.dart';
-import 'app/modules/auth/controller/otp_controller.dart';
 import 'modules/leave/presentation/controller/calendar_date_controller.dart';
 import 'modules/leave/presentation/controller/file_upload_controller.dart';
 import 'modules/leave/presentation/controller/picked_file_form_storage.dart';

@@ -16,13 +16,11 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../app/global/controller/user_info_controller.dart';
 import '../../../../utils/app_style.dart';
-import '../../../../app/modules/auth/controller/signin_controller.dart';
 import '../../../dashboard/presentation/view/widget/entry_time_widget.dart';
 import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     if (Get.isRegistered()) {
