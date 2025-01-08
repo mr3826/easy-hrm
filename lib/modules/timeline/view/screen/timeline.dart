@@ -124,6 +124,7 @@ class TimelineScreen extends GetView<TimelineController> {
   }
 }
 
+
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
     expandedHeight: AppLayout.getHeight(284),
@@ -154,6 +155,16 @@ SliverAppBar get sliverAppBar {
   );
 }
 
+SliverList get sliverList {
+  return SliverList(
+    delegate: SliverChildListDelegate([
+      const CustomTimelineCalendar()
+      // Add more content here if needed
+    ]),
+  );
+}
+
+
 _timelineText() {
   return Text(
     AppString.text_time_line.tr,
@@ -179,11 +190,3 @@ _buttonRadiusLayout() {
   );
 }
 
-SliverList get sliverList {
-  return SliverList(
-    delegate: SliverChildListDelegate([
-      const CustomTimelineCalendar()
-      // Add more content here if needed
-    ]),
-  );
-}

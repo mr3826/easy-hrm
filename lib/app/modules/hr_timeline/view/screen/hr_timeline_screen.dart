@@ -7,8 +7,11 @@ import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../common/widget/hr_timeline/floating_timmer_button.dart';
+import '../../../../../modules/timeline/view/widget/custom_timeline_calendar.dart';
+import '../../../../../modules/timeline/view/widget/timeline_widget.dart';
 import '../../../../../routes/app_pages.dart';
 import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
@@ -24,22 +27,13 @@ class HrTimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(StartTimerController());
+
+    bool isEmployee=false;
     return  Scaffold(
-
-      appBar: _buildAppbar(),
+      appBar: isEmployee==true? null:_buildAppbar(),
       floatingActionButton: _timerBtnLayout(context),
+      body:isEmployee==true? _isEmployeeView():_buildTabBarWithSearchSection(),
 
-      body: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12),
-        child: Column(
-          children: [
-
-            _buildTabBarWithSearchSection(context),
-
-          ],
-        ),
-
-      ),
     );
   }
 
@@ -65,15 +59,87 @@ class HrTimelineScreen extends StatelessWidget {
   }
 }
 
+_isEmployeeView(){
+  return CustomScrollView(
+    slivers: [
+      sliverAppBar,
+      sliverList,
+    ],
+  );
+
+}
+
+
+SliverAppBar get sliverAppBar {
+  return SliverAppBar(
+    expandedHeight: AppLayout.getHeight(284),
+    elevation: 0,
+    bottom: _buttonRadiusLayout(),
+    pinned: true,
+    backgroundColor: AppColor.primaryColor,
+    flexibleSpace: FlexibleSpaceBar(
+      background: Padding(
+        padding: const EdgeInsets.only(left: 20,right: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customSpacerHeight(height: 45),
+                _timelineText(),
+                customSpacerHeight(height: 12),
+                timelineLayout(),
+                customSpacerHeight(height: 6),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+SliverList get sliverList {
+  return SliverList(
+    delegate: SliverChildListDelegate([
+      const ISEmployeeTimelineCalendar()
+    ]
+    ),
+  );
+}
+
+
+_buttonRadiusLayout() {
+  return PreferredSize(
+    preferredSize: const Size.fromHeight(26),
+    child: Container(
+      decoration: BoxDecoration(
+          color: AppColor.backgroundColor,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(Dimensions.radiusMid + 15),
+              topLeft: Radius.circular(Dimensions.radiusMid + 15))),
+      width: double.maxFinite,
+      padding: const EdgeInsets.only(top: 12, bottom: 5),
+      child: Obx(() => dateCalendarLayout()),
+    ),
+  );
+}
+
+
+_timelineText() {
+  return Text(
+    AppString.text_time_line.tr,
+    style: AppStyle.mid_large_text.copyWith(fontSize: 20),
+  );
+}
 
 
 
 
-
-
-Widget _buildTabBarWithSearchSection(context) {
+Widget _buildTabBarWithSearchSection() {
   List<TabItem> tabs = [
-    TabItem(label: AppString.textCalendar.tr, body: const HrTimelineCalendar()),
+    TabItem(label: AppString.textCalendar.tr, body: const ISAdminTimelineCalendar()),
     TabItem(label: AppString.text_time_sheet.tr, body: const BuildTimeSheet()),
   ];
   return TabBarWidget(
@@ -83,7 +149,6 @@ Widget _buildTabBarWithSearchSection(context) {
     },
   );
 }
-
 
 
 _timerBtnLayout(BuildContext context) {
