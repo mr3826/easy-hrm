@@ -156,8 +156,7 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
                             const TextStyle(
                                 color: Colors.black54, fontSize: 15)),
                   ),
-                if (widget
-                    .isRangeSelectionEnabled) // Show "Clear" button only if a full range is selected
+                if (widget.isRangeSelectionEnabled) // Show "Clear" button only if a full range is selected
                   TextButton(
                     onPressed: () {
                       setState(() {
@@ -165,6 +164,7 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
                         _rangeEnd = null;
                         isRangeSelected = false;
                       });
+                      Navigator.of(context).pop();
                     },
                     child: Text(
                       _clearText,

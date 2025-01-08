@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/build_hr_timeline_calendar.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/build_time_sheet.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/build_time_sheet.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../../common/widget/custom_appbar.dart';
-import '../../../../common/widget/custom_svg_image.dart';
-import '../../../../utils/app_style.dart';
-import '../../../../utils/dimensions.dart';
-import '../../../../utils/images.dart';
-import '../../../global/view/custom_tabbar_with_search.dart';
+import '../../../../../common/widget/custom_appbar.dart';
+import '../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../../../../utils/images.dart';
+import '../../../../global/view/custom_tabbar_with_search.dart';
+import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
 
 class HrTimelineScreen extends StatelessWidget {
   const HrTimelineScreen({super.key});
@@ -21,9 +21,7 @@ class HrTimelineScreen extends StatelessWidget {
         padding: const EdgeInsets.only(left: 12, right: 12),
         child: Column(
           children: [
-
             _buildTabBarWithSearchSection(context),
-
 
           ],
         ),

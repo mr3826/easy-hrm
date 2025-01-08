@@ -13,7 +13,7 @@ class MonthNavigateWidget extends StatelessWidget {
   const MonthNavigateWidget({super.key});
   @override
   Widget build(BuildContext context) {
-    final LeaveController controller = Get.put(LeaveController());
+   final LeaveController controller = Get.put(LeaveController());
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 12, right: 10),
       child: GestureDetector(

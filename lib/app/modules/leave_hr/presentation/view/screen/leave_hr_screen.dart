@@ -60,7 +60,7 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   // App bar method renamed and optimized for readability
-  PreferredSizeWidget _buildAppBar() {
+  _buildAppBar() {
     return customAppbar(
       leadingIcon: Text(
         AppString.text_leave.tr,

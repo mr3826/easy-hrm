@@ -1,40 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../../../common/controller/date_time_controller.dart';
-import '../../../../../modules/leave/presentation/view/widget/single_date_picker_calendar.dart';
-import '../../../../../modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
-import '../../../../../utils/app_color.dart';
-import '../../../../../utils/app_style.dart';
-import '../../../../../utils/dimensions.dart';
+import '../../../../../../common/controller/date_time_controller.dart';
+import '../../../../../../modules/leave/presentation/view/widget/single_date_picker_calendar.dart';
+import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
+import '../../../../../../modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
+import '../../../../../../utils/app_color.dart';
+import '../../../../../../utils/app_style.dart';
+import '../../../../../../utils/dimensions.dart';
 
 class HrTimelineCalendar extends StatelessWidget {
   const HrTimelineCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Obx(
-          () => _dateCalendarLayout(),
-        ),
-        _summaryLayout(),
+
+
+        const TimeLineCalendar(),
+
+
+
+        // Obx(
+        //       () => _dateCalendarLayout(),
+        // ),
+
+
+
+       _summaryLayout(),
       ],
     );
   }
 }
 
 Widget _summaryLayout() {
-  return Container(
-    color: AppColor.cardColor,
-    width: MediaQuery.of(Get.context!).size.width,
-    child: workingScheduleLayout(
-        schedule: "12",
-        balanceTime: "!2",
-        loggedTime: "3423",
-        paidLeave: "5423"),
+  return Positioned(
+    top: 0,
+    child: Container(
+      color: AppColor.cardColor,
+      width: MediaQuery.of(Get.context!).size.width,
+      child: workingScheduleLayout(
+          schedule: "12",
+          balanceTime: "!2",
+          loggedTime: "3423",
+          paidLeave: "5423"),
+    ),
   );
 }
+
+
 
 Widget _dateCalendarLayout() {
   return Card(
@@ -122,3 +137,6 @@ Widget _dateCalendarLayout() {
     ),
   );
 }
+
+
+

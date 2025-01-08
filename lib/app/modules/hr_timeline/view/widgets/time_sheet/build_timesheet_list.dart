@@ -1,68 +1,65 @@
-import 'package:flutter/material.dart';
-import 'package:payrun_mobile/common/widget/hr_timeline/custom_network_image.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_style.dart';
-import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:flutter/cupertino.dart';
+import '../../../../../../common/widget/hr_timeline/custom_network_image.dart';
+import '../../../../../../utils/app_color.dart';
+import '../../../../../../utils/app_style.dart';
+import '../../../../../../utils/dimensions.dart';
 
-class BuildTimeSheet extends StatelessWidget {
-  const BuildTimeSheet({super.key});
+class BuildTimesheetList extends StatelessWidget {
+  const BuildTimesheetList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return Expanded(
+
+      child: ListView.builder(itemBuilder: (context, index) {
+        return _timeSheetDetailsCard();
+      },),
+    );
+  }
+
+  _timeSheetDetailsCard() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-
-          _TimeSheetDetailsCard()
-
-        ],
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: AppColor.leaveRecordCardColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _profileInfo(),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 10.0, // Horizontal space between items
+                  runSpacing: 12.0, // Vertical space between rows
+                  children: [
+                    _buildDetailRow('Date:', 'Today (10:15 am - 08:15 pm)'),
+                    Row(
+                      children: [
+                        Flexible(child: _buildDetailRow('Scheduled:', '9h')),
+                        const SizedBox(width: 12),
+                        Flexible(child: _buildDetailRow('Logged:', '8h 12m')),
+                      ],
+                    ),
+                    _buildBalanceRow(),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
 
 
-
-class _TimeSheetDetailsCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: AppColor.leaveRecordCardColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _profileInfo(),
-              const SizedBox(height: 16),
-              Wrap(
-                spacing: 10.0, // Horizontal space between items
-                runSpacing: 12.0, // Vertical space between rows
-                children: [
-                  _buildDetailRow('Date:', 'Today (10:15 am - 08:15 pm)'),
-                  Row(
-                    children: [
-                      Flexible(child: _buildDetailRow('Scheduled:', '9h')),
-                      const SizedBox(width: 12),
-                      Flexible(child: _buildDetailRow('Logged:', '8h 12m')),
-                    ],
-                  ),
-                  _buildBalanceRow(),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   // Helper method for individual rows
   Widget _buildDetailRow(String label, String value) {
@@ -157,6 +154,3 @@ class _TimeSheetDetailsCard extends StatelessWidget {
       ],
     );
   }
-}
-
-

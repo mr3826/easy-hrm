@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/view/hr_timeline_screen.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/hr_timeline_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
