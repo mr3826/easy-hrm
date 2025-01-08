@@ -10,8 +10,9 @@ class BuildTimesheetList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-
-      child: ListView.builder(itemBuilder: (context, index) {
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
         return _timeSheetDetailsCard();
       },),
     );

@@ -32,61 +32,59 @@ class _TabBarWidgetState extends State<TabBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: SizedBox(
-              height: 40,
-              width: MediaQuery.of(context).size.width,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(widget.tabs.length, (index) {
-                    return GestureDetector(
-                      onTap: () => _onTabSelect(index),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 2.3,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 0.0, right: 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: selectedTabIndex == index
-                                  ? AppColor.primaryColor
-                                  : AppColor.leaveRecordCardColor,
-                            ),
-                            child: Center(
-                              child: Text(
-                                widget.tabs[index].label,
-                                style: AppStyle.normal_text.copyWith(
-                                  fontSize: Dimensions.fontSizeDefault + 1,
-                                  color: selectedTabIndex == index
-                                      ? AppColor.cardColor
-                                      : AppColor.normalTextColor,
-                                ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: SizedBox(
+            height: 40,
+            width: MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(widget.tabs.length, (index) {
+                  return GestureDetector(
+                    onTap: () => _onTabSelect(index),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 2.3,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 0.0, right: 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: selectedTabIndex == index
+                                ? AppColor.primaryColor
+                                : AppColor.leaveRecordCardColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              widget.tabs[index].label,
+                              style: AppStyle.normal_text.copyWith(
+                                fontSize: Dimensions.fontSizeDefault + 1,
+                                color: selectedTabIndex == index
+                                    ? AppColor.cardColor
+                                    : AppColor.normalTextColor,
                               ),
                             ),
                           ),
                         ),
                       ),
-                    );
-                  }),
-                ),
+                    ),
+                  );
+                }),
               ),
             ),
           ),
-          const SizedBox(height: 18),
-           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: SizedBox(height: 50, child: CustomSearchBar()),
-          ),
-          const SizedBox(height: 8),
-          // Display the body of the selected tab
-          Expanded(child: widget.tabs[selectedTabIndex].body),
-        ],
-      ),
+        ),
+        const SizedBox(height: 18),
+         const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: SizedBox(height: 50, child: CustomSearchBar()),
+        ),
+        const SizedBox(height: 8),
+        // Display the body of the selected tab
+        Expanded(child: widget.tabs[selectedTabIndex].body),
+      ],
     );
   }
 }

@@ -31,17 +31,20 @@ class ISAdminTimelineCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 70.0,bottom: 70),
-          child: TimeLineCalendar(),
-        ),
-        Positioned(top: 58,child: _summaryLayout(context)),
-        Obx(()=>_dateCalendarLayout(context))
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 70.0),
+            child: TimeLineCalendar(),
+          ),
+
+          Obx(()=>_dateCalendarLayout(context)),
+          Positioned(top: 58,child: _summaryLayout(context))
 
 
-      ],
+        ],
+      ),
     );
   }
 }
