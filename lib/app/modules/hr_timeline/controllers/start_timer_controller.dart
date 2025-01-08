@@ -8,8 +8,6 @@ import '../../../../utils/api_endpoints.dart';
 
 
 class StartTimerController extends SuperController {
-
-
   var elapsedTime = 'Start'.obs;
   var starTimeDashboard = '00:00:00'.obs;
   var totalTime = ''.obs;

@@ -49,14 +49,14 @@ class BuildNewEntryTextField extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSpacerHeight(height: 12),
+
+
+                _employeeSearch(),
+                customSpacerHeight(height: 20),
+
                 customAppTitleText(
                     text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
-
-                _employeeSearch(),
-
-                customSpacerHeight(height: 18),
-
                 Obx(() => _dateLayoutField()),
                 customSpacerHeight(height: 8),
                 _dayScheduleLayout(),

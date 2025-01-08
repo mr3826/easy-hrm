@@ -28,7 +28,7 @@ class TimeLineCalendar extends StatelessWidget {
         : SizedBox(
             height: MediaQuery.of(context).size.height + 2500,
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 14, right: 14),
+              padding: const EdgeInsets.only(top: 80.0, left: 14, right: 14,bottom: 36),
               child: DayView(
                 showVerticalLine: false,
                 minDay: DateTime(2021),
