@@ -36,8 +36,10 @@ class TimelineScreen extends GetView<TimelineController> {
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
+
                     sliverAppBar,
                     sliverList,
+
                   ],
                 ),
               ),
@@ -157,10 +159,17 @@ SliverAppBar get sliverAppBar {
 
 SliverList get sliverList {
   return SliverList(
-    delegate: SliverChildListDelegate([
+    delegate: SliverChildListDelegate(
+
+
+
+        [
       const CustomTimelineCalendar()
       // Add more content here if needed
-    ]),
+    ]
+
+
+    ),
   );
 }
 

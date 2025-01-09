@@ -52,12 +52,6 @@ class ISAdminTimelineCalendar extends StatelessWidget {
 
 
 
-
-
-
-
-
-
 Widget _summaryLayout(BuildContext context) {
   return Container(
     color: AppColor.cardColor,
@@ -82,8 +76,9 @@ Widget _dateCalendarLayout(BuildContext context) {
         elevation: 0,
         child: GestureDetector(
           onTap: () {
+
             showDialog(
-              context: Get.context!,
+              context: context,
               builder: (context) {
                 return const Dialog(
                     child: SingleDatePicker(
@@ -91,6 +86,8 @@ Widget _dateCalendarLayout(BuildContext context) {
                     ));
               },
             );
+
+
           },
           child: Padding(
             padding: const EdgeInsets.only(top: 8, left: 25, right: 25),

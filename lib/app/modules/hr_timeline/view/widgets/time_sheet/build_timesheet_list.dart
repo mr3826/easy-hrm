@@ -9,13 +9,14 @@ class BuildTimesheetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-        return _timeSheetDetailsCard();
-      },),
-    );
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 15,
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, index) {
+      return _timeSheetDetailsCard();
+    },);
   }
 
   _timeSheetDetailsCard() {

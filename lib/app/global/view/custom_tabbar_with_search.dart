@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:payrun_mobile/app/modules/employee/presentation/view/screen/employee_screen.dart';
 import 'package:payrun_mobile/app/modules/employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
@@ -9,6 +8,9 @@ import '../../../../common/widget/custom_card_style.dart';
 import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../common/widget/custom_buttom_sheet.dart';
+
+
+
 
 class TabBarWidget extends StatefulWidget {
   final List<TabItem> tabs;
@@ -32,6 +34,8 @@ class _TabBarWidgetState extends State<TabBarWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Column(
       children: [
         Padding(
@@ -76,12 +80,16 @@ class _TabBarWidgetState extends State<TabBarWidget> {
             ),
           ),
         ),
+
+
+
         const SizedBox(height: 18),
          const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: SizedBox(height: 50, child: CustomSearchBar()),
         ),
         const SizedBox(height: 8),
+
         // Display the body of the selected tab
         Expanded(child: widget.tabs[selectedTabIndex].body),
       ],
