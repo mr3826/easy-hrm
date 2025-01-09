@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_card_style.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
+import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:payrun_mobile/utils/utils.dart';
+import '../../../controllers/timeline_controller.dart';
+
+Widget buildTimelineShortSummary() {
+  return SizedBox(
+    height: AppLayout.getHeight(118),
+    width: double.infinity,
+    child: Padding(
+      padding: EdgeInsets.only(left: AppLayout.getHeight(0)),
+      child: Card(
+        elevation: 0,
+        shape: roundedRectangleBorder.copyWith(
+            borderRadius: BorderRadius.circular(8)),
+        color: AppColor.cardColor.withOpacity(0.2),
+        child: Padding(
+          padding: marginLayout.copyWith(top: 12, bottom: 12),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _countLayout(
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<HrTimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.totalScheduledSeconds.toString() ??
+                              ""),
+                      staticText: AppString.text_schedule.tr),
+                  const Spacer(),
+                  _divider(),
+                  const Spacer(),
+                  _countLayout(
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<HrTimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.loggedTotalSeconds.toString() ??
+                              ""),
+                      staticText: AppString.text_logged.tr),
+                  const Spacer(),
+                  _divider(),
+                  const Spacer(),
+                  _countLayout(
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<HrTimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.totalLeavesSeconds.toString() ??
+                              ""),
+                      staticText: AppString.text_paid_leave.tr),
+                  const Spacer(),
+                  _divider(),
+                  const Spacer(),
+                  _countLayout(
+                      dynamicText: getConvertSecondsToHours(
+                          Get.find<HrTimelineController>()
+                              .timelineSummaryByMonth
+                              ?.getTimelogSummaryForApp
+                              ?.balance.toString() ??
+                              ""),
+                      staticText: AppString.text_balance.tr),
+                ],
+              ),
+              const Spacer(),
+              _tabToViewTimeLogSummery()
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+_tabToViewTimeLogSummery() {
+  return GestureDetector(
+    onTap: () => Get.toNamed(Routes.TIME_LOG_SUMMARY),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(
+          child: Text(
+            AppString.text_tab_to_view_timelog_summary.tr,
+            style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.cardColor,
+              overflow: TextOverflow.ellipsis,
+              decorationColor: AppColor.cardColor,
+              decoration: TextDecoration.underline,
+              fontSize: Dimensions.fontSizeDefault,
+            ),
+          ),
+        ),
+        customSpacerWidth(width: 10),
+        const Icon(
+          Icons.arrow_forward,
+          color: AppColor.cardColor,
+          size: 18,
+        ),
+      ],
+    ),
+  );
+}
+
+_countLayout({required String dynamicText, required String staticText}) {
+  return Column(
+    children: [
+      Text(
+        dynamicText,
+        style: AppStyle.normal_text_black.copyWith(
+            color: AppColor.cardColor,
+            fontWeight: FontWeight.bold,
+            fontSize: Dimensions.fontSizeDefault + 1),
+      ),
+      Text(
+        staticText,
+        style: AppStyle.normal_text_black.copyWith(
+            color: AppColor.cardColor.withOpacity(0.9),
+            fontSize: Dimensions.fontSizeDefault - 3),
+      ),
+    ],
+  );
+}
+
+_divider() {
+  return Container(
+    width: 0.8,
+    height: AppLayout.getHeight(25),
+    color: AppColor.cardColor,
+  );
+}

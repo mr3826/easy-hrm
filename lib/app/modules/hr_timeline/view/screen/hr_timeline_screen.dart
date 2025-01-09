@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/build_time_sheet.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../common/widget/hr_timeline/floating_timmer_button.dart';
-import '../../../../../modules/timeline/view/widget/custom_timeline_calendar.dart';
-import '../../../../../modules/timeline/view/widget/timeline_widget.dart';
 import '../../../../../routes/app_pages.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
@@ -19,9 +19,10 @@ import '../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
 import '../../controllers/start_timer_controller.dart';
 import '../widgets/time_sheet/build_select_month.dart';
+import '../widgets/timeline_calender/buid_timeline_short_summury.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
 
-bool isEmployee = false;
+bool isEmployee = true;
 
 class HrTimelineScreen extends StatefulWidget {
   const HrTimelineScreen({super.key});
@@ -55,6 +56,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   @override
   Widget build(BuildContext context) {
     Get.put(StartTimerController());
+    Get.put(HrTimelineController());
 
     return DefaultTabController(
       length: 2, // Number of tabs
@@ -78,7 +80,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       foregroundColor: AppColor.cardColor,
       floating: true,
       pinned: true,
-      expandedHeight: 248,
+      expandedHeight: AppLayout.getHeight(248),
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
@@ -124,10 +126,11 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
   SliverAppBar get _isEmployeeSilverAppbar {
     return SliverAppBar(
-      expandedHeight: AppLayout.getHeight(284),
+      expandedHeight: AppLayout.getHeight(276),
       elevation: 0,
-      bottom: _buttonRadiusLayout(),
+      bottom: _bottomLayout(),
       pinned: true,
+      floating: true,
       backgroundColor: AppColor.primaryColor,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
@@ -141,7 +144,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                   customSpacerHeight(height: 45),
                   _timelineText(),
                   customSpacerHeight(height: 12),
-                  timelineLayout(),
+                  buildTimelineShortSummary(),
                   customSpacerHeight(height: 6),
                 ],
               ),
@@ -156,10 +159,10 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     return SliverList(
       delegate: SliverChildListDelegate([
         if (isEmployee)
-          const ISEmployeeTimelineCalendar()
+          const TimelineCalendar()
         else
           tabController.index == 0
-              ? const ISEmployeeTimelineCalendar()
+              ? const TimelineCalendar()
               : const BuildTimeSheet(),
       ]),
     );
@@ -187,9 +190,9 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 
-  _bottomLayout(int tabIndex) {
+  _bottomLayout([int? tabIndex]) {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(80),
+      preferredSize: const Size.fromHeight(86),
       child: Container(
         decoration: BoxDecoration(
             color: AppColor.backgroundColor,
@@ -197,9 +200,12 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                 topRight: Radius.circular(Dimensions.radiusMid + 15),
                 topLeft: Radius.circular(Dimensions.radiusMid + 15))),
         width: double.maxFinite,
-        child: tabIndex == 0
-            ? Obx(() => dateCalendarLayout())
-            : const BuildSelectMonth(),
+        padding: const EdgeInsets.only(top: 12, bottom: 15),
+        child: isEmployee == true
+            ? const BuildSelectDateLayout()
+            : tabIndex == 0
+                ? const BuildSelectDateLayout()
+                : const BuildSelectMonth(),
       ),
     );
   }
@@ -253,22 +259,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         bgBtnColor: AppColor.secondaryColor,
         onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
         btnText: time.toString());
-  }
-
-  _buttonRadiusLayout() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(26),
-      child: Container(
-        decoration: BoxDecoration(
-            color: AppColor.backgroundColor,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(Dimensions.radiusMid + 15),
-                topLeft: Radius.circular(Dimensions.radiusMid + 15))),
-        width: double.maxFinite,
-        padding: const EdgeInsets.only(top: 12, bottom: 5),
-        child: Obx(() => dateCalendarLayout()),
-      ),
-    );
   }
 
   _timelineText() {
