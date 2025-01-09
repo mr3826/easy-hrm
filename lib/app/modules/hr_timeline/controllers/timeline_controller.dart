@@ -25,9 +25,15 @@ import '../../../../modules/dashboard/controller/dashbpard_controller.dart';
 import '../../../../modules/timeline/model/calendar_timeline.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../home/view/screen/main_screen.dart';
+import '../repositories/timline_repository.dart';
 
 
 class HrTimelineController extends GetxController with StateMixin {
+
+
+
+  TimelineRepository timelineRepository = Get.find<TimelineRepoImpl>();
+
   final isLoading = false.obs;
   final isManualEntryLoading = false.obs;
   final isTimelineCalendarByDateLoading = false.obs;
@@ -434,11 +440,31 @@ class HrTimelineController extends GetxController with StateMixin {
     }
   }
 
-  getTimelineSummaryByMonth(
-      {required String? startDate, required String? endDate}) async {
-    print(
-        "getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  getTimelineSummaryByMonth({required String startDate, required String endDate}) async {
+
+    print("getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
+
     change(null, status: RxStatus.loading());
+
+
+
+
+
+
     final response = await NetworkClient()
         .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
@@ -454,27 +480,33 @@ class HrTimelineController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  getTimelineSummaryByDate(
-      {required String? startDate, String? endDate}) async {
+
+
+
+
+
+
+
+
+
+
+
+  getTimelineSummaryByDate({required String startDate, required String endDate}) async {
     isTimelineSummaryByDateLoading(true);
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
-
-    final response = await NetworkClient()
-        .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
-      "queryData": {
-        "start_date": "$startDate",
-        "end_date": "$endDate",
-      }
-    });
-    log("getTimelineSummaryByDate ==> $response");
-    if (response.hasException) {
-      log("getTimelineByDate:: ${response.exception.toString()}");
-    } else {
-      timelineSummaryByDate = TimelineSummaryByDate.fromJson(response.data!);
-      log("balance time ==> ${TimelineSummaryByDate.fromJson(response.data!).getTimelogSummaryForApp?.balance}");
-    }
+    timelineSummaryByDate= await timelineRepository.getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
     isTimelineSummaryByDateLoading(false);
   }
+
+
+
+
+
+
+
+
+
+
 
   DateTime _createEndDateForTimeLine(
       {required String startDate, String? endDate}) {
@@ -513,7 +545,9 @@ class HrTimelineController extends GetxController with StateMixin {
 
     updateDataTime = Timer(Duration.zero, () {});
     updateDataAfterTwoMinutes();
+
     _refreshTimeline();
+
     super.onInit();
   }
 
@@ -529,6 +563,7 @@ class HrTimelineController extends GetxController with StateMixin {
         "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
         "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+
     await getTimelineSummaryByDate(
         startDate:
         "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",

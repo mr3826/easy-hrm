@@ -15,9 +15,12 @@ import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
 import '../../../../global/controller/user_info_controller.dart';
+import '../../../../global/services/api_service.dart';
 import '../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
+import '../../bindings/timeline_bindings.dart';
 import '../../controllers/start_timer_controller.dart';
+import '../../repositories/timline_repository.dart';
 import '../widgets/time_sheet/build_select_month.dart';
 import '../widgets/timeline_calender/buid_timeline_short_summury.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
@@ -25,7 +28,8 @@ import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
 bool isEmployee = true;
 
 class HrTimelineScreen extends StatefulWidget {
-  const HrTimelineScreen({super.key});
+   HrTimelineScreen({super.key});
+
 
   @override
   State<HrTimelineScreen> createState() => _HrTimelineScreenState();
@@ -37,7 +41,9 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
   @override
   void initState() {
-    super.initState();
+
+    TimelineBindings.initTimelineBindings();
+
     _tabController =
         TabController(length: isEmployee == true ? 1 : 2, vsync: this);
     _tabController.addListener(() {
@@ -45,6 +51,8 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         setState(() {}); // Rebuild the widget when the tab changes
       }
     });
+
+    super.initState();
   }
 
   @override
@@ -53,10 +61,11 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     Get.put(StartTimerController());
-    Get.put(HrTimelineController());
 
     return DefaultTabController(
       length: 2, // Number of tabs
