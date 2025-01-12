@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../app/modules/auth/view/screens/otp_screen.dart';
+import '../../../app/global/view/widget/app_margin.dart';
 import '../../../modules/profile/view/widget/common_widget.dart';
 import '../custom_network_image.dart';
 import '../custom_spacer.dart';

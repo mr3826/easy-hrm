@@ -24,7 +24,6 @@ class TimelineRepoImpl implements TimelineRepository {
 }
 
 
-
 class TimelineApiServices {
   ApiService apiService;
   TimelineApiServices(this.apiService);

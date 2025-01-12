@@ -6,7 +6,6 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/app/modules/auth/controller/forgot_password_controller.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/forgot_password.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/auth/presentation/view/widget/common_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -15,6 +14,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../common/widget/custom_password_text_field.dart';
 import '../../../../../utils/utils.dart';
+import '../../../../global/view/widget/app_margin.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});

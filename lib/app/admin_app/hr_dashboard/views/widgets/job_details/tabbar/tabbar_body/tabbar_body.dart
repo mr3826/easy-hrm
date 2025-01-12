@@ -6,13 +6,13 @@ import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../common/widget/hr_deshboard/custom_network_img.dart';
 import '../../../../../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
-import '../../../../../../../../modules/auth/presentation/view/otp_screen.dart';
 import '../../../../../../../../routes/app_pages.dart';
 import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
+import '../../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../controllers/hr_deshboard_controller.dart';
 
 class BuildTabBarBody extends StatelessWidget {

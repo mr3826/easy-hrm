@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../common/widget/custom_spacer.dart';
 import '../../../utils/app_layout.dart';
 import '../../../utils/app_string.dart';

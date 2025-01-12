@@ -5,7 +5,7 @@ import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../employee/presentation/view/widget/filter/section_expansion_tile.dart';
+import '../../../../../modules/employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import 'check_box.dart';
 
 class CandidateFilterSection extends StatefulWidget {

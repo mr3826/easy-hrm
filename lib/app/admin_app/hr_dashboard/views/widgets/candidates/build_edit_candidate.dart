@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
@@ -9,6 +8,7 @@ import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../init_ app.dart';
 import '../../../../../../../utils/app_style.dart';
+import '../../../../../global/view/widget/app_margin.dart';
 import '../../../controllers/hr_deshboard_controller.dart';
 
 class BuildEditCandidate extends StatelessWidget {

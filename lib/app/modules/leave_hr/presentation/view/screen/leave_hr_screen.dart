@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/admin_app/leave_hr/presentation/view/widget/assign_leave/assign_leave.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -10,15 +9,13 @@ import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
-import '../../../../../../modules/auth/presentation/view/otp_screen.dart';
 import '../../../../../../modules/profile/controller/user_profile_controller.dart';
-import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../../../../../utils/utils.dart';
-import '../../../../../modules/auth/view/screens/otp_screen.dart';
+import '../../../../../global/view/widget/app_margin.dart';
 import '../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../controller/hr_leave_controller.dart';
 import '../../controller/leave_controller.dart';
@@ -220,7 +217,7 @@ class LeaveHrScreen extends StatelessWidget {
                       controller.selectedEmployeeInfo.value =
                           AppString.textSearchEmployee.tr;
                       controller.selectedEmployeeImgKey.value = "";
-                      if (leaveController.tabLength.value == 0) {
+                      if (Get.find<LeaveController>().tabLength.value == 0) {
                         controller.getHrLeaveCalender();
                       } else {
                         controller.getLeaveRecord();

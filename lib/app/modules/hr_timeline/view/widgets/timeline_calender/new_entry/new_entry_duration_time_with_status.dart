@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../../../common/widget/custom_status_button.dart';
 import '../../../../../../../enum.dart';
 import '../../../../../../../utils/app_string.dart';
+import '../../../../../../global/view/widget/app_margin.dart';
 
 Widget newEntryDurationTime({String? status}) {
   return SizedBox(

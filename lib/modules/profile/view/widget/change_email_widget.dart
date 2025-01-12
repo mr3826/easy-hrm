@@ -10,6 +10,7 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/modules/profile/view/widget/email_verification_otp.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../app/global/view/widget/app_margin.dart';
 import 'edit_profile_widget.dart';
 
 class ChangEmailFieldLayout extends StatelessWidget {

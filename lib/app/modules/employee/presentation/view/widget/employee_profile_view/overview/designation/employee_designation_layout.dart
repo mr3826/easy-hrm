@@ -9,7 +9,7 @@ import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../../utils/images.dart';
-import '../../../../../../../../modules/auth/view/screens/otp_screen.dart';
+import '../../../../../../../../global/view/widget/app_margin.dart';
 
 /// A stateless widget that displays the employee status with a designated
 /// image, title, and date.

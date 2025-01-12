@@ -6,7 +6,6 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/more_info_text_divider.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
@@ -16,6 +15,7 @@ import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../../global/view/widget/app_margin.dart';
 
 class BuildAllCandidates extends StatelessWidget {
   const BuildAllCandidates({super.key});

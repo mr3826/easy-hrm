@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import '../../../../../../global/view/widget/app_margin.dart';
 import 'build_rating_section.dart';
 import 'build_reviewer_list.dart';
 

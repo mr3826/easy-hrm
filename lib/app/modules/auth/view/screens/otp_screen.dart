@@ -15,6 +15,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../../common/widget/warning_message.dart';
+import '../../../../global/view/widget/app_margin.dart';
 import '../../controller/forgot_password_controller.dart';
 import '../../controller/otp_controller.dart';
 
@@ -238,9 +239,4 @@ class _OTPScreenState extends State<OTPScreen> {
       activeFillColor: Colors.white,
     );
   }
-}
-
-EdgeInsets get marginLayout {
-  return EdgeInsets.only(
-      left: AppLayout.getHeight(20), right: AppLayout.getWidth(20));
 }

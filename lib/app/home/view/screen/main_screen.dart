@@ -8,8 +8,6 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:upgrader/upgrader.dart';
-import '../../../../app/admin_app/employee/presentation/controller/employment_controller.dart';
-import '../../../../app/admin_app/employee/presentation/view/screen/employee_screen.dart';
 import '../../../../modules/dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../../../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../../../../modules/leave/presentation/controller/leave_record_controller.dart';
@@ -24,8 +22,12 @@ import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
 import '../../../../modules/timeline/view/screen/timeline.dart';
 import '../../../admin_app/hr_dashboard/views/hr_dashboard_screen.dart';
-import '../../../admin_app/leave_hr/presentation/controller/hr_leave_controller.dart';
-import '../../../admin_app/leave_hr/presentation/view/screen/leave_hr_screen.dart';
+import '../../../modules/employee/presentation/controller/employment_controller.dart';
+import '../../../modules/employee/presentation/view/screen/employee_screen.dart';
+import '../../../modules/leave_hr/presentation/controller/hr_leave_controller.dart';
+import '../../../modules/leave_hr/presentation/view/screen/leave_hr_screen.dart';
+import '../widget/main_screen_widget.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
@@ -103,12 +105,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _initialController() async {
-    bool isEmployee = Get.find<UserInfoController>()
-            .userInfo
-            .user
-            ?.roles
-            ?.contains("org_employee") ??
-        false;
+    bool isEmployee = false;
     Get.put(DashboardController());
     Get.put(TimelineController());
     Get.put(NotificationController());
@@ -124,12 +121,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _screenListLayout() {
-    bool isEmployee = Get.find<UserInfoController>()
-            .userInfo
-            .user
-            ?.roles
-            ?.contains("org_employee") ??
-        false;
+    bool isEmployee = false;
     return [
       isEmployee ? const TimelineScreen(): HrTimelineScreen(),
       isEmployee ? const LeaveScreen() : const LeaveHrScreen(),

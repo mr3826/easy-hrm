@@ -10,8 +10,6 @@ import '../../../../common/widget/custom_spacer.dart';
 import '../../../common/widget/custom_buttom_sheet.dart';
 
 
-
-
 class TabBarWidget extends StatefulWidget {
   final List<TabItem> tabs;
   final ValueChanged<int> onTabSelect;

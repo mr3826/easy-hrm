@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../../common/widget/employee/dottend_style_layout.dart';
-import '../../../../../../../../modules/auth/view/screens/otp_screen.dart';
+import '../../../../../../../../global/view/widget/app_margin.dart';
 
 /// Displays the department history for an employee.
 class DepartmentHistoryForEmployee extends StatelessWidget {
