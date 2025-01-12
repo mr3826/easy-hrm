@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:payrun_mobile/common/controller/user_info_controller.dart';
+import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import 'package:payrun_mobile/common/domain/token_model.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -15,6 +15,7 @@ import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
+import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
@@ -22,8 +23,8 @@ import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_contro
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 import '../../../common/controller/date_time_controller.dart';
-import '../../../common/domain/error_model.dart';
 import '../../../common/domain/user_info.dart';
 import '../../../common/widget/custom_password_text_field.dart';
 import '../../../network/exception_helper.dart';
@@ -32,7 +33,7 @@ import '../../../utils/app_string.dart';
 import '../../../utils/dimensions.dart';
 import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
-import '../../auth/domain/signin_res.dart';
+import '../../../app/modules/auth/models/signin_res.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';
@@ -79,16 +80,20 @@ class UserProfileController extends GetxController with StateMixin {
   var firstName = "".obs;
   var lastName = "".obs;
   var address = "".obs;
-  var phone = "".obs;
-  var emergencyNumber = "".obs;
   var description = "".obs;
 
   bool get isEnableEditButton {
     return firstName.isNotEmpty ||
         lastName.isNotEmpty ||
         address.isNotEmpty ||
-        phone.isNotEmpty ||
-        emergencyNumber.isNotEmpty ||
+        Get.find<UpdateProfileController>()
+            .initialEmergencyPhoneNumber
+            .value
+            .isNotEmpty ||
+        Get.find<UpdateProfileController>()
+            .initialPersonalPhoneNumber
+            .value
+            .isNotEmpty ||
         description.isNotEmpty ||
         Get.find<PikedProfileImgController>()
             .storageForUpload
@@ -118,8 +123,9 @@ class UserProfileController extends GetxController with StateMixin {
 
   final passwordInputController = TextEditingController();
 
-  getUserProfile() async {
+  Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
+    print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
     final response = await _networkClient.graphRequest(
         queryString: getUserProfileQuery,
         variables: {
@@ -249,6 +255,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
+    print("ordId: $orgId");
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
@@ -323,6 +330,10 @@ class UserProfileController extends GetxController with StateMixin {
                               customSpacerWidth(width: 36),
                               InkWell(
                                   onTap: () async {
+                                    String deviceToken = "";
+                                    if (Platform.isAndroid) {
+                                      deviceToken = await Pushy.register();
+                                    }
                                     isNewOrganizationChangeLoading(true);
                                     try {
                                       if (passwordInputController
@@ -333,7 +344,13 @@ class UserProfileController extends GetxController with StateMixin {
                                           "email": email,
                                           "password":
                                               passwordInputController.text,
-                                          "orgId": orgId
+                                          "orgId": orgId,
+                                          "device_token": Platform.isIOS
+                                              ? GetStorage().read(
+                                                  AppString.IOS_DEVICE_TOKEN)
+                                              : deviceToken,
+                                          "push_notification_platform":
+                                              Platform.isIOS ? "apns" : "pushy"
                                         });
 
                                         if (response.statusCode == 200) {
@@ -438,10 +455,10 @@ class UserProfileController extends GetxController with StateMixin {
     );
   }
 
-  void _handleTokenInfo(di.Response response) {
-    GetStorage().write(AppString.ACCESS_TOKEN,
+  void _handleTokenInfo(di.Response response) async {
+    await GetStorage().write(AppString.ACCESS_TOKEN,
         SignInResponse.fromJson(response.data).data?.accessToken);
-    GetStorage().write(AppString.REFRESH_TOKEN,
+    await GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken);
   }
 
@@ -466,9 +483,11 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   void _handleUserInfo(UserInfo? userInfo) {
-    GetStorage().write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
     // Store the organization user ID in GetStorage.
-    GetStorage().write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
   }
 
   void _handleResponseSuccess() {

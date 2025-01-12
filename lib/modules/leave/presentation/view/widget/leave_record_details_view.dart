@@ -10,7 +10,7 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/enum.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
@@ -27,11 +27,12 @@ import '../../../../../utils/utils.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
   dynamic status;
+
   final GetLeaveRecords? leaveRecords;
   dynamic leaveDate;
   dynamic leaveWeekday;
 
-   LeaveRecordDetails({super.key, this.status, this.leaveRecords});
+  LeaveRecordDetails({super.key, this.status, this.leaveRecords, required String leaveId});
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +177,8 @@ class LeaveRecordDetails extends StatelessWidget {
                     )),
               iconData: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_leave.tr,
-              descriptionText: AppString.text_sure_you_want_to_deleted_this_leave.tr,
+              descriptionText:
+                  AppString.text_sure_you_want_to_deleted_this_leave.tr,
               extraInfoText: "",
               iconBackgroundColor: AppColor.errorColorLight,
               confirmButtonColor: AppColor.errorColorLight,
@@ -314,5 +316,3 @@ class LeaveRecordDetails extends StatelessWidget {
     }
   }
 }
-
-

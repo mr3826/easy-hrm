@@ -11,6 +11,11 @@ class OrgSubscriptionInfoModel {
         : null;
   }
 
+  @override
+  String toString() {
+    return 'OrgSubscriptionInfoModel{getAnOrganizationSubscription: $getAnOrganizationSubscription}';
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.getAnOrganizationSubscription != null) {
@@ -19,11 +24,18 @@ class OrgSubscriptionInfoModel {
     }
     return data;
   }
+
 }
 
 class GetAnOrganizationSubscription {
   String? status;
   Plan? plan;
+
+
+  @override
+  String toString() {
+    return 'GetAnOrganizationSubscription{status: $status, plan: $plan}';
+  }
 
   GetAnOrganizationSubscription({this.status, this.plan});
 
@@ -43,6 +55,7 @@ class GetAnOrganizationSubscription {
 }
 
 class Plan {
+
   List<PlanFeatures>? planFeatures;
 
   Plan({this.planFeatures});
@@ -64,11 +77,22 @@ class Plan {
     }
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Plan{planFeatures: $planFeatures}';
+  }
 }
 
 class PlanFeatures {
   Feature? feature;
   bool? isEnabled;
+
+
+  @override
+  String toString() {
+    return 'PlanFeatures{feature: $feature, isEnabled: $isEnabled}';
+  }
 
   PlanFeatures({this.feature, this.isEnabled});
 
@@ -91,6 +115,12 @@ class PlanFeatures {
 class Feature {
   String? identifier;
   String? name;
+
+
+  @override
+  String toString() {
+    return 'Feature{identifier: $identifier, name: $name}';
+  }
 
   Feature({this.identifier, this.name});
 

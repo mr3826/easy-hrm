@@ -15,8 +15,7 @@ import '../../domain/leave_type.dart';
 import 'file_upload_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
-  final LeaveRemoteDataSource _leaveRemoteDataSource =
-      Get.find<LeaveRemoteDataSource>();
+  final LeaveRemoteDataSource _leaveRemoteDataSource = Get.find<LeaveRemoteDataSource>();
 
   LeaveTypeDropdown? leaveTypeDropdown;
 

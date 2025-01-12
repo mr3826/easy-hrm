@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -27,12 +27,11 @@ class TaskViewLayout extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              customTitleText(
-                  text: AppString.text_project_task.tr,
-                  isRequired: true
-              ),
+              customTitleText(text: AppString.text_project_task.tr, isRequired: true),
               customSpacerHeight(height: 8),
+
              const TaskSearchInputField(),
+
               customSpacerHeight(height: 12),
               Obx(() {
                 if (Get.find<TimelineController>().isLoading.isTrue) {
@@ -40,6 +39,7 @@ class TaskViewLayout extends StatelessWidget {
                 }
 
                 final projectDropDownResponse = Get.find<TimelineController>().projectDropDownResponse;
+
                 if (projectDropDownResponse?.getProjectsDropdown?.isEmpty ?? true) {
                   return Center(
                     child: Text(
@@ -47,8 +47,8 @@ class TaskViewLayout extends StatelessWidget {
                       style: AppStyle.normal_text_black.copyWith(color: AppColor.normalTextColor.withOpacity(0.4)),
                     ),
                   );
-                }
 
+                }
 
                 return ListView.builder(
                   itemCount: projectDropDownResponse?.getProjectsDropdown?.length??0,

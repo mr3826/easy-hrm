@@ -7,7 +7,7 @@ import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_in_tim
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_time.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';

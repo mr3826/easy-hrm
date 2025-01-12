@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/controller/convart_color_code_controller.dart';
 import '../../../../utils/utils.dart';
-import '../../../auth/presentation/view/otp_screen.dart';
+import '../../../../app/modules/auth/view/screens/otp_screen.dart';
 import 'department_layout_widget.dart';
 
 class EmploymentLayout extends StatelessWidget {
@@ -38,28 +38,31 @@ class EmploymentLayout extends StatelessWidget {
                   ?.length ??
               0,
           itemBuilder: (context, index) {
-
-
             final employmentHistories = Get.find<UserProfileController>()
                 .employeeWorkHistory
                 ?.getOrganizationUserHistory
                 ?.employmentHistories;
 
-            bool isLastItem = (employmentHistories != null && employmentHistories.isNotEmpty)
-                ? index == employmentHistories.length - 1
-                : false;
+            bool isLastItem =
+                (employmentHistories != null && employmentHistories.isNotEmpty)
+                    ? index == employmentHistories.length - 1
+                    : false;
 
             return EmployeeStatusInfoLayout(
               isLastItem: isLastItem,
-              developerStatus: employmentHistories?[index].employmentStatus?.name ?? '',
-              date: getDateTimeFormat(employmentHistories?[index].startDate ?? ""),
+              developerStatus:
+                  employmentHistories?[index].employmentStatus?.name ?? '',
+              date: getDateTimeFormat(
+                  employmentHistories?[index].startDate ?? ""),
               durationText:
-                  "${employmentHistories?[index].endDate != null ? "" : AppString.text_form_last.tr} ${workingTimeSinceFormString(employmentHistories?[index].startDate ?? "",employmentHistories?[index].endDate ?? "")}",
+                  "${employmentHistories?[index].endDate != null ? "" : AppString.text_form_last.tr} ${workingTimeSinceFormString(employmentHistories?[index].startDate ?? "", employmentHistories?[index].endDate ?? "")}",
               employeeCurrentStatus: employmentHistories?[index].endDate == null
                   ? AppString.textPresent.tr
-                  : dateMonthYearFormatFromDatetime(employmentHistories?[index].endDate ?? ""),
-              statusColor:
-                  HexColor(employmentHistories?[index].employmentStatus?.color ?? "#8F99AD"),
+                  : dateMonthYearFormatFromDatetime(
+                      employmentHistories?[index].endDate ?? ""),
+              statusColor: HexColor(
+                  employmentHistories?[index].employmentStatus?.color ??
+                      "#8F99AD"),
             );
           },
         ))
@@ -144,7 +147,10 @@ class EmployeeStatusInfoLayout extends StatelessWidget {
                         Text(
                           employeeCurrentStatus,
                           style: baseTextStyle.copyWith(
-                            color: AppColor.primaryColor,
+                            color: employeeCurrentStatus ==
+                                    AppString.textPresent.tr
+                                ? AppColor.primaryColor
+                                : AppColor.hintColor,
                           ),
                         ),
                         const Divider(),
@@ -162,13 +168,14 @@ class EmployeeStatusInfoLayout extends StatelessWidget {
             ],
           ),
         ),
-        isLastItem==true?const SizedBox.shrink():
-        Positioned(
-          top: 55,
-          left: 1,
-          bottom: 0,
-          child: dottedStyleLayout(height: 46),
-        ),
+        isLastItem == true
+            ? const SizedBox.shrink()
+            : Positioned(
+                top: 55,
+                left: 1,
+                bottom: 0,
+                child: dottedStyleLayout(height: 46),
+              ),
       ],
     );
   }

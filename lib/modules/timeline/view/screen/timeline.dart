@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/floating_btn_layout.dart';
@@ -14,15 +14,13 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/controller/date_time_controller.dart';
-import '../../../../common/controller/user_info_controller.dart';
+import '../../../../app/global/controller/user_info_controller.dart';
 import '../../../../utils/app_style.dart';
-import '../../../auth/presentation/controller/signin_controller.dart';
 import '../../../dashboard/presentation/view/widget/entry_time_widget.dart';
 import '../widget/custom_timeline_calendar.dart';
 
 class TimelineScreen extends GetView<TimelineController> {
   const TimelineScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     if (Get.isRegistered()) {
@@ -38,8 +36,10 @@ class TimelineScreen extends GetView<TimelineController> {
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
+
                     sliverAppBar,
                     sliverList,
+
                   ],
                 ),
               ),
@@ -126,6 +126,7 @@ class TimelineScreen extends GetView<TimelineController> {
   }
 }
 
+
 SliverAppBar get sliverAppBar {
   return SliverAppBar(
     expandedHeight: AppLayout.getHeight(284),
@@ -156,6 +157,23 @@ SliverAppBar get sliverAppBar {
   );
 }
 
+SliverList get sliverList {
+  return SliverList(
+    delegate: SliverChildListDelegate(
+
+
+
+        [
+      const CustomTimelineCalendar()
+      // Add more content here if needed
+    ]
+
+
+    ),
+  );
+}
+
+
 _timelineText() {
   return Text(
     AppString.text_time_line.tr,
@@ -181,11 +199,3 @@ _buttonRadiusLayout() {
   );
 }
 
-SliverList get sliverList {
-  return SliverList(
-    delegate: SliverChildListDelegate([
-      const CustomTimelineCalendar()
-      // Add more content here if needed
-    ]),
-  );
-}

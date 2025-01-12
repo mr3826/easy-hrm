@@ -7,7 +7,7 @@ import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/enum.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/log_out_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/user_info_section_layout.dart';
@@ -651,6 +651,57 @@ String _getLanguageFlag() {
   }
   return Images.FLAG_PNG;
 }
+
+// Widget _userNameAndDptLayout() {
+//   final user = Get.find<UserProfileController>()
+//       .userDetails
+//       ?.getOrganizationUserDetails
+//       ?.profile;
+//   final department = Get.find<UserProfileController>()
+//           .userDetails
+//           ?.getOrganizationUserDetails
+//           ?.department
+//           ?.name ??
+//       "";
+//   final employmentHistories = Get.find<UserProfileController>()
+//       .employeeWorkHistory
+//       ?.getOrganizationUserHistory
+//       ?.employmentHistories;
+//
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       Text(
+//         "${user?.firstName ?? "Not added yet"} ${user?.lastName ?? ""}",
+//         style:
+//             AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+//       ),
+//       Text(
+//         department,
+//         style: AppStyle.normal_text_grey,
+//       ),
+//       customSpacerHeight(height: 6),
+//
+//       /// Status
+//       if (employmentHistories != null && employmentHistories.isNotEmpty)
+//         Wrap(
+//           children: [
+//             FittedBox(
+//               fit: BoxFit.scaleDown,
+//               child: employmentContractStatus(),
+//             ),
+//             customSpacerWidth(width: 12),
+//
+//             /// Status
+//             FittedBox(
+//               fit: BoxFit.scaleDown,
+//               child: employmentStatus(),
+//             ),
+//           ],
+//         ),
+//     ],
+//   );
+// }
 
 horizontalDivider() {
   return const Padding(

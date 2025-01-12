@@ -15,6 +15,7 @@ class AppString {
   static const String REFRESH_TOKEN = "refresh_token";
   static const String ORGANIZATION_USER_ID = "org_user_id";
   static const String LOGGED_IN = "loggedIn";
+  static const String IOS_DEVICE_TOKEN = "ios_device_token";
 
   ///String for Employee module v2
   static const String textViewProfile = "View profile";
@@ -25,7 +26,7 @@ class AppString {
   static const String textSearch = "Search";
   static const String textFilters = "Filters";
   static const String textEmployees = "Employees";
-  static const String textLeaveTimeline = "Leave timeline";
+ static const String textLeaveYear = "Leave year";
   static const String textEmployeeStatus = "Employees status";
   static const String textUserStatus = "User status";
   static const String textJoiningDate = "Joining date";
@@ -98,13 +99,14 @@ class AppString {
   static const String leaveAddedSuccessMessage = "Leave Added Successfully";
   static const String leaveApprover = "Time log approver";
   static const String leaveCanceledSuccessMessage =
-      "Leave canceled successfully";
-  static const String leaveRemovedSuccessMessage = "Leave removed successfully";
-  static const String leaveUpdatedSuccessMessage = "Leave updated successfully";
+      "Leave has been canceled successfully";
+  static const String leaveRemovedSuccessMessage =
+      "leave has been removed successfully";
+  static const String leaveUpdatedSuccessMessage =
+      "Leave has been updated successfully.";
   static const String newUserJoined = "A new user has joined";
   static const String no_event_found_text = "No events for today!";
-  static const String no_internet_subtitle_text =
-      "Make sure your Wi-Fi or cellular data is turned on and then try again";
+  static const String no_internet_subtitle_text = "Make sure your Wi-Fi or cellular data is turned on";
   static const String no_internet_title_text = "No internet!!";
   static const String organizationNotFoundMessage =
       "Organization not found. Try Another organization";
@@ -425,4 +427,6 @@ static String text_are_you_sure_deleted_candidate="Are you sure want to delete t
 
 
 
+  static String text_employee_type = "Employee & type";
+  static String text_time_sheet = "Time sheet";
 }

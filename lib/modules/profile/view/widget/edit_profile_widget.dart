@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/view/widget/phone_number_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../common/widget/custom_title_text_widget.dart';
@@ -27,7 +30,8 @@ class TextFiledLayout extends StatelessWidget {
         _userFirstName(),
         _userLastName(),
         _userAddress(),
-        _userPhoneNumber(),
+        _phoneNumberInputField(),
+        customSpacerHeight(height: 14),
         _userEmergencyPhoneNumber(),
         _userPersonalBio(),
         customSpacerHeight(height: 20),
@@ -39,9 +43,7 @@ class TextFiledLayout extends StatelessWidget {
                       ? () {}
                       : () {
                           final variables = _addVariables();
-                          variables?.forEach((key, value) {
-                            print("key $key value:: $value");
-                          });
+
                           if (formKey.currentState!.validate()) {
                             Get.find<UpdateProfileController>()
                                 .updateUserProfile(variables!);
@@ -68,13 +70,36 @@ class TextFiledLayout extends StatelessWidget {
   }
 }
 
+_phoneNumberInputField() {
+  return Column(
+    children: [
+      customTitleText(
+        text: AppString.text_phone.tr,
+      ),
+      customSpacerHeight(height: 12),
+      const PersonalPhoneNumber(),
+    ],
+  );
+}
+
+_userEmergencyPhoneNumber() {
+  return Column(
+    children: [
+      customTitleText(
+        text: AppString.text_emergency_phone.tr,
+      ),
+      customSpacerHeight(height: 12),
+      const EmergencyPhoneNumber(),
+      customSpacerHeight(height: 12),
+    ],
+  );
+}
+
 void _clearInputField() {
   UserProfileController controller = Get.find<UserProfileController>();
   controller.firstName.value = "";
   controller.lastName.value = "";
   controller.address.value = "";
-  controller.phone.value = "";
-  controller.emergencyNumber.value = "";
   controller.description.value = "";
   editBioController.clear();
   editEmergencyPhoneController.clear();
@@ -89,24 +114,18 @@ Map<String, dynamic>? _addVariables() {
 
   inputData["about"] = editBioController.text;
 
-  inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
+  // Set emergency phone number with country code if updated
+  _addInputPersonalPhoneNumber(inputData);
 
-  inputData["personal_phone_number"] = editPhoneController.text;
+  // Set personal phone number with country code if updated
+  _addInputEmergencyPhoneNumber(inputData);
 
   inputData["address"] = editAddressController.text;
 
   inputData["last_name"] = editLastNameController.text;
 
-  if (editFirstNameController.text.isNotEmpty) {
-    inputData["first_name"] = editFirstNameController.text;
-  } else {
-    inputData["first_name"] = Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.firstName ??
-        "";
-  }
+  // Set user first name
+  _addInputUserFirstName(inputData);
 
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
@@ -119,8 +138,52 @@ Map<String, dynamic>? _addVariables() {
 
   inputData["image"] =
       "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+  // Set image path if there is an uploaded profile image
+  _addInputProfileImage(inputData);
 
   return inputData;
+}
+
+void _addInputProfileImage(Map<String, dynamic> inputData) {
+  if (Get.find<PikedProfileImgController>()
+      .storageForUpload
+      .filePath
+      .value
+      .isNotEmpty) {
+    inputData["image"] =
+        "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+  }
+}
+
+void _addInputUserFirstName(Map<String, dynamic> inputData) {
+  if (editFirstNameController.text.isNotEmpty) {
+    inputData["first_name"] = editFirstNameController.text;
+  } else {
+    inputData["first_name"] = Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.firstName ??
+        "";
+  }
+}
+
+void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
+  if (editPhoneController.text.isEmpty) {
+    inputData["personal_phone_number"] = "";
+  } else {
+    inputData["personal_phone_number"] =
+        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+  }
+}
+
+void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
+  if (editEmergencyPhoneController.text.isEmpty) {
+    inputData["emergency_phone_number"] = "";
+  } else {
+    inputData["emergency_phone_number"] =
+        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+  }
 }
 
 _userPersonalBio() {
@@ -133,30 +196,6 @@ _userPersonalBio() {
       },
       controller: editBioController,
       isNoteFieldVisible: true);
-}
-
-_userEmergencyPhoneNumber() {
-  return userTextFieldLayout(
-      isRequired: false,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().emergencyNumber.value = value!;
-      },
-      textInputType: TextInputType.number,
-      hintText: AppString.text_emergency_phone.tr,
-      titleText: AppString.text_emergency_phone.tr,
-      controller: editEmergencyPhoneController);
-}
-
-_userPhoneNumber() {
-  return userTextFieldLayout(
-      isRequired: false,
-      hintText: AppString.text_phone.tr,
-      titleText: AppString.text_phone.tr,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().phone.value = value!;
-      },
-      textInputType: TextInputType.number,
-      controller: editPhoneController);
 }
 
 _userAddress() {

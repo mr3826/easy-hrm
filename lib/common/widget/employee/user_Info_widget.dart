@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import '../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../modules/profile/view/widget/common_widget.dart';
 import '../custom_network_image.dart';
 import '../custom_spacer.dart';

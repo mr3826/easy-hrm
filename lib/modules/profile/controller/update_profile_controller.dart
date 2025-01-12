@@ -19,6 +19,10 @@ class UpdateProfileController extends GetxController {
   final isLoading = false.obs;
   final isUploadPolicyLoading = false.obs;
   final isFileUploadedSuccessfully = false.obs;
+  RxString initialEmergencyPhoneNumber = ''.obs;
+  RxString initialPersonalPhoneNumber = ''.obs;
+
+
   UploadPolicyResponse uploadPolicyResponse = UploadPolicyResponse();
 
   void updateUserProfile(Map<String, dynamic> variables) async {
@@ -32,8 +36,7 @@ class UpdateProfileController extends GetxController {
         variables: {"inputData": variables});
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "updateUserProfile");
+      ExceptionHelper.errorHandler(exception: response.exception!, methodName: "updateUserProfile");
     } else {
       Get.find<UserProfileController>().getUserProfile();
       Get.back();

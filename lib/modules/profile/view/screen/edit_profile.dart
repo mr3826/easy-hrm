@@ -9,7 +9,7 @@ import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -150,7 +150,6 @@ class EditProfileScreen extends StatelessWidget {
         .userDetails?.getOrganizationUserDetails?.profile?.image;
 
     if ((storageFilePath.isNotEmpty || _isProfileImageValid(profileImage))) {
-
       return GestureDetector(
         onTap: () {
           showCustomAlertDialog(
@@ -192,10 +191,9 @@ class EditProfileScreen extends StatelessWidget {
           ),
         ),
       );
-    }else{
+    } else {
       return const SizedBox.shrink();
     }
-  
   }
 
   bool _isProfileImageValid(String? profileImage) {
@@ -236,24 +234,18 @@ Map<String, dynamic>? _addVariables() {
 
   inputData["about"] = editBioController.text;
 
-  inputData["emergency_phone_number"] = editEmergencyPhoneController.text;
+  // Set emergency phone number with country code if updated
+  _addInputEmergencyPhoneNumber(inputData);
 
-  inputData["personal_phone_number"] = editPhoneController.text;
+  // Set personal phone number with country code if updated
+  _addInputPersonalPhoneNumber(inputData);
 
   inputData["address"] = editAddressController.text;
 
   inputData["last_name"] = editLastNameController.text;
 
-  if (editFirstNameController.text.isNotEmpty) {
-    inputData["first_name"] = editFirstNameController.text;
-  } else {
-    inputData["first_name"] = Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.firstName ??
-        "";
-  }
+  // Set user first name
+  _addInputUserFirstName(inputData);
 
   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
@@ -268,15 +260,46 @@ Map<String, dynamic>? _addVariables() {
   return inputData;
 }
 
+void _addInputUserFirstName(Map<String, dynamic> inputData) {
+  if (editFirstNameController.text.isNotEmpty) {
+    inputData["first_name"] = editFirstNameController.text;
+  } else {
+    inputData["first_name"] = Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.firstName ??
+        "";
+  }
+}
+
+void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
+  if (editPhoneController.text.isEmpty) {
+    inputData["personal_phone_number"] = "";
+  } else {
+    inputData["personal_phone_number"] =
+        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+  }
+}
+
+void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
+  if (editEmergencyPhoneController.text.isEmpty) {
+    inputData["emergency_phone_number"] = "";
+  } else {
+    inputData["emergency_phone_number"] =
+        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+  }
+}
+
 Widget _imageLayout() {
-  if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue && Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+  if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue &&
+      Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
     /// file image
     return _selectedImageViewLayout();
   } else if (Get.find<UpdateProfileController>()
-      .isFileUploadedSuccessfully
+          .isFileUploadedSuccessfully
           .isFalse &&
       Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
-
     if (Get.find<PikedProfileImgController>()
         .storageForUpload
         .filePath
@@ -311,8 +334,6 @@ Widget _brokenImageViewLayout() {
 }
 
 _placeholderImage() {
-
-  print("image_url ::: ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}");
   return CustomNetworkImage(
     errorText: (Get.find<UserProfileController>()
                         .userDetails
@@ -342,6 +363,7 @@ _placeholderImage() {
             "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
         : "",
     height: 42,
+    isPublic: true,
     profileImageKey:
         "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
     imgUrlKey: '',

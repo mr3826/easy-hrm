@@ -9,7 +9,7 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
@@ -25,7 +25,7 @@ import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../common/widget/custom_title_text_widget.dart';
 import '../../../leave/presentation/view/widget/status_btn_widget.dart';
 import '../../../leave/presentation/view/widget/timmer_text_field_dob.dart';
-import '../../../starting/view/splash_screen.dart';
+import '../../../../app/modules/splash/view/splash_screen.dart';
 import 'duration_time_widget.dart';
 
 class TimeLogEntryTextField extends StatelessWidget {

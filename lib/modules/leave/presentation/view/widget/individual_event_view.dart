@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/enum.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/status_btn_widget.dart';
@@ -259,7 +259,7 @@ class IndividualEventView extends StatelessWidget {
                           .leaveDetailsByDate
                           ?.getLeaveRequests?[index]
                           .id,
-                    ),
+                    ), leaveId: '',
                   ),
                 );
               },

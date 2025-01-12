@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import '../../../../../app/modules/leave_hr/presentation/view/widget/assign_leave/leave_type.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
@@ -98,25 +98,4 @@ class _ApplyLeaveDropDownState extends State<ApplyLeaveDropDown> {
   }
 }
 
-getIconAccordingToLeaveType(String? leaveName) {
-  switch (leaveName) {
-    case "Vacationing":
-      return customSvgImage(imageUrl: Images.leaveImage7);
-    case "Paternity":
-      return customSvgImage(imageUrl: Images.leaveImage6);
-    case "Maternity":
-      return customSvgImage(imageUrl: Images.leaveImage5);
-    case "School closed":
-      return customSvgImage(imageUrl: Images.leaveImage4);
-    case "Children-minder illness":
-      return customSvgImage(imageUrl: Images.leaveImage3);
-    case "Children illness":
-      return customSvgImage(imageUrl: Images.leaveImage2);
-    case "Doctor declaration":
-      return customSvgImage(imageUrl: Images.leaveImage1);
-    case "Self declaration":
-      return customSvgImage(imageUrl: Images.leaveImage);
-    default:
-      return customSvgImage(imageUrl: Images.leaveImage8);
-  }
-}
+

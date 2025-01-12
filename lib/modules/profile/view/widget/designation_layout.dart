@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../auth/presentation/view/otp_screen.dart';
+import '../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../model/employee_work_history.dart';
 
 class DesignationLayout extends StatelessWidget {
@@ -118,7 +118,10 @@ class DesignationLayout extends StatelessWidget {
                         Text(
                           employeeCurrentStatus,
                           style: baseTextStyle.copyWith(
-                            color: AppColor.primaryColor,
+                            color: employeeCurrentStatus ==
+                                AppString.textPresent.tr
+                                ? AppColor.primaryColor
+                                : AppColor.hintColor,
                           ),
                         ),
                         _divider(),
