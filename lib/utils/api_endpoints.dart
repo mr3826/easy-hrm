@@ -873,3 +873,13 @@ query GET_JOBS($queryData: JobsQueryInputType, $optionData: OptionDataType) {
   }
 }
 ''';
+
+const getLeaveAndTimeLogQuery = r'''
+query GET_LEAVE_AND_TIMELOG_REQUEST_SUMMARY {
+getLeaveAndTimelogRequestSummary {
+total_candidates
+leave_request
+timelog_request
+  }
+}
+''';

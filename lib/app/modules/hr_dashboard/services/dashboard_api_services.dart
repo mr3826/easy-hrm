@@ -3,18 +3,24 @@ import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 
 class DashBoardApiService {
-  ApiService apiService;
-  DashBoardApiService(this.apiService);
+ final ApiService _apiService;
+  DashBoardApiService(this._apiService);
 
-  Future<QueryResult<Object?>> getEmployeeOverView() async {
-    return await apiService.query(query: getEmployeeOverviewQuery);
+  Future<Map<String, dynamic>?> getEmployeeOverView() async {
+    QueryResult<Object?> response= await _apiService.query(query: getEmployeeOverviewQuery);
+    return response.data;
   }
 
-    Future<QueryResult<Object?>> getJobOpening() async {
-    return await apiService.query(query:getJobOpeningQuery);
+  Future<Map<String, dynamic>?>  getJobOpening() async {
+    QueryResult<Object?> response= await _apiService.query(query:getJobOpeningQuery);
+    return response.data;
   }
 
 
+  Future<Map<String, dynamic>?>  getLeaveAndTimeLogSummary() async {
+    QueryResult<Object?> response= await _apiService.query(query:getLeaveAndTimeLogQuery);
+    return response.data;
+  }
 
 
 }

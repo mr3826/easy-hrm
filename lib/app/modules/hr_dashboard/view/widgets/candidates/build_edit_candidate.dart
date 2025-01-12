@@ -66,7 +66,7 @@ class BuildEditCandidate extends StatelessWidget {
   }
 
   void _clear() {
-    HrDashBoardController controller = Get.put(HrDashBoardController());
+    HrDashBoardController controller = Get.find<HrDashBoardController>();
     Get.back(canPop: false);
     controller.candidateLastName.clear();
     controller.candidateFirstName.clear();

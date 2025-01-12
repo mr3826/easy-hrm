@@ -8,7 +8,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../controllers/hr_deshboard_controller.dart';
 
 class TabBarWidget extends StatelessWidget {
-  final HrDashBoardController controller = Get.put(HrDashBoardController());
+  final HrDashBoardController controller = Get.find<HrDashBoardController>();
 
   final tabs = [
     {"text": "New", "value": "03", "id": "1"},

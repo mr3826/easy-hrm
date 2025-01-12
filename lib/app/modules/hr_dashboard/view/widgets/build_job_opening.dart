@@ -20,25 +20,26 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
     return LayoutBuilder(
       builder: (context, constraints) {
         double containerWidth = constraints.maxWidth * 0.85;
-        double imageHeight = constraints.maxWidth * 0.25;
-
+        double imageHeight = constraints.maxWidth * 0.35;
         return Column(
           children: [
             SizedBox(
-              height: imageHeight + 100,
-              child: ListView.builder(
+              height: imageHeight + 92,
+              child: PageView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: controller.jobOpening?.getJobs?.data?.length ?? 0,
-                controller: controller.scrollController,
-                shrinkWrap: true,
+                controller: controller.pageController,
+                onPageChanged: (index) {
+                  controller.currentIndex.value = index;
+                },
                 itemBuilder: (context, index) {
                   Data? data = controller.jobOpening?.getJobs?.data?[index];
                   return GestureDetector(
                     onTap: () => Get.toNamed(Routes.JOB_DETAILS),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(right: 8.0),
                       child: Container(
-                        width: containerWidth,
+                        width: 1000,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
@@ -76,10 +77,10 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
       height: height,
       child: CustomNetworkImage(
         imageRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
         ),
-        imageUrl: url,
+        imageUrl: buildImgIxUrl(imgKey: url),
         error: _buildImageError(),
       ),
     );
@@ -94,20 +95,19 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
         .noOfApplicant;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 12.0, top: 6, right: 12),
+      padding: const EdgeInsets.only(left: 12.0, top: 8, right: 12),
       child: Row(
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                customSpacerHeight(height: 8),
                 customTitleText(
                     text: date.title ?? "",
                     textStyle: AppStyle.mid_large_text.copyWith(
                         color: AppColor.secondaryColor,
                         fontSize: Dimensions.fontSizeMid)),
-                customSpacerHeight(height: 8),
+                customSpacerHeight(height: 6),
                 _buildInnerDescriptionText(_typeWithLocation(date)),
                 customSpacerHeight(height: 2),
                 _buildInnerDescriptionText(formatDate(
