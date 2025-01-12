@@ -23,8 +23,8 @@ class ApiService {
   }
 
   // GraphQL methods
-  Future<gql.QueryResult> query(String query) async {
-    return await _graphQLApiService.query(query);
+  Future<gql.QueryResult> query({required String queryString, Map<String, dynamic>? variables}) async {
+    return await _graphQLApiService.query(queryString:queryString,variables: variables);
   }
 
   Future<gql.QueryResult> mutate(String mutation) async {

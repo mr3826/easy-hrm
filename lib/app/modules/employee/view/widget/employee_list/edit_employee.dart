@@ -13,10 +13,9 @@ import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../../../../utils/utils.dart';
-import '../../../../../../modules/auth/view/screens/otp_screen.dart';
-import '../../../../domain/user_work_info_dropdown.dart';
+import '../../../../auth/view/screens/otp_screen.dart';
 import '../../../controller/employment_controller.dart';
+import '../../../model/user_work_info_dropdown.dart';
 
 class EditEmployee extends GetView<EmploymentController> {
   const EditEmployee({super.key});

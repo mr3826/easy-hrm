@@ -7,7 +7,7 @@ import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
-import '../../../../../../../leave_hr/presentation/view/widget/leave_record/leave_record_details/edit_leave_record/selecte_leave_type.dart';
+import '../../../../../../leave_hr/presentation/view/widget/leave_record/leave_record_details/edit_leave_record/selecte_leave_type.dart';
 import '../../../../../controller/employment_controller.dart';
 
 class LeaveAllowance extends StatelessWidget {

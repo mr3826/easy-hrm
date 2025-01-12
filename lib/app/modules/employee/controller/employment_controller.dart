@@ -1,23 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:payrun_mobile/app/modules/employee/repository/employee_data_sourse.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
 
 import '../../../../../modules/leave/domain/leave_record_response.dart' as lr;
-import '../../data/employee_remote_data_source.dart';
-import '../../domain/employee_info.dart';
-import '../../domain/user_work_info_dropdown.dart' as emp_wrk_inf;
+import '../model/employee_info.dart';
+import '../model/user_work_info_dropdown.dart' as emp_wrk_inf;
+import '../data/employee_remote_data_source.dart';
 import '../view/widget/filter/check_box.dart';
 
 class EmploymentController extends GetxController with StateMixin {
+  final EmployeeDataSource _employeeDataSource;
+
+  EmploymentController(this._employeeDataSource);
 
   final EmployeeRemoteDataSource _employeeRemoteDataSource =
-  Get.find<EmployeeRemoteDataSource>();
+      Get.find<EmployeeRemoteDataSource>();
   final LeaveRemoteDataSource _employeeLeaveRemoteDataSource =
-  Get.find<LeaveRemoteDataSource>();
+      Get.find<LeaveRemoteDataSource>();
 
   var selectedOption = ''.obs;
 
@@ -110,7 +114,7 @@ class EmploymentController extends GetxController with StateMixin {
       queryMap["queryData"]?["attendance"] = attendanceIds;
     }
     EmployeeInfo? employeeInfo =
-        await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
+        await _employeeDataSource.getEmployees(queryVariable: queryMap);
     employeeList = employeeInfo?.getOrganizationUsers?.data;
     update();
     isEmployeesInfoLoading(false);
@@ -128,7 +132,7 @@ class EmploymentController extends GetxController with StateMixin {
     };
 
     final EmployeeInfo? employees =
-        await _employeeRemoteDataSource.getEmployees(queryVariable: queryMap);
+        await _employeeDataSource.getEmployees(queryVariable: queryMap);
     searchedEmployeeList = employees?.getOrganizationUsers?.data ?? [];
     isSearchInfoLoading(false);
   }
@@ -136,7 +140,7 @@ class EmploymentController extends GetxController with StateMixin {
   Future<void> getEmploymentStatus() async {
     isFilterInfoLoading(true);
     isEmploymentHistoryApiCalled = true;
-    employmentStatuses = await _employeeRemoteDataSource.getEmploymentsStatus();
+    employmentStatuses = await _employeeDataSource.getEmploymentsStatus();
     if (employmentStatuses != null) {
       employmentStatusList = employmentStatuses!.statuses
           .map(
@@ -152,7 +156,7 @@ class EmploymentController extends GetxController with StateMixin {
   Future<void> getDepartments() async {
     isFilterInfoLoading(true);
     isEmploymentHistoryApiCalled = true;
-    departments = await _employeeRemoteDataSource.getDepartments();
+    departments = await _employeeDataSource.getDepartments();
 
     if (departments != null) {
       departmentList = departments!.departments
@@ -170,7 +174,7 @@ class EmploymentController extends GetxController with StateMixin {
   Future<void> getDesignations() async {
     change(null, status: RxStatus.loading());
     isEmploymentHistoryApiCalled = true;
-    designations = await _employeeRemoteDataSource.getDesignations();
+    designations = await _employeeDataSource.getDesignations();
     change(null, status: RxStatus.success());
   }
 
@@ -263,7 +267,6 @@ class EmploymentController extends GetxController with StateMixin {
         .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue
         .toList();
   }
-
 
   void dayIncrement() {
     daysCount++;

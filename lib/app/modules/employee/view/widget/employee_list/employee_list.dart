@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/employee/presentation/view/widget/employee_list/terminate_widget.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -13,8 +12,9 @@ import '../../../../../../../common/widget/custom_status_button.dart';
 import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../routes/app_pages.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../domain/employee_info.dart';
+import '../../../model/employee_info.dart';
 import '../../../controller/employment_controller.dart';
+import 'terminate_widget.dart';
 
 class EmployeeListInfo extends StatelessWidget {
   final String imgUrlKey;

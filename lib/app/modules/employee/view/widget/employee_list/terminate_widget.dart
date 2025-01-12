@@ -15,14 +15,11 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
 import '../../../controller/employment_controller.dart';
 
-
 class TerminateWidget extends StatelessWidget {
   const TerminateWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final EmploymentController controller = Get.put(EmploymentController());
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
       child: SingleChildScrollView(
@@ -35,13 +32,12 @@ class TerminateWidget extends StatelessWidget {
             customSpacerHeight(height: 15),
             _buildDescription(),
             customSpacerHeight(height: 15),
-            _buildTerminationOptions(context, controller),
+            _buildTerminationOptions(context, Get.find<EmploymentController>()),
             customSpacerHeight(height: 8),
             _buildTerminateDatePicker(context),
             customSpacerHeight(height: 16),
             _buildReasonNote(),
             customSpacerHeight(height: 20),
-
             _buildButtons(),
             customSpacerHeight(height: 300),
           ],
@@ -84,7 +80,8 @@ class TerminateWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTerminationOptions(BuildContext context, EmploymentController controller) {
+  Widget _buildTerminationOptions(
+      BuildContext context, EmploymentController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -98,11 +95,11 @@ class TerminateWidget extends StatelessWidget {
         ),
         customSpacerHeight(height: 8),
         Obx(() => Row(
-          children: [
-            _buildRadioOption(context, AppString.textTerminate, controller),
-            _buildRadioOption(context, AppString.textResigned, controller),
-          ],
-        )),
+              children: [
+                _buildRadioOption(context, AppString.textTerminate, controller),
+                _buildRadioOption(context, AppString.textResigned, controller),
+              ],
+            )),
       ],
     );
   }
@@ -171,7 +168,7 @@ class TerminateWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              onPressed: ()=>Get.back(),
+              onPressed: () => Get.back(),
               buttonColor: AppColor.cardColor,
               borderColor: AppColor.hintColor.withOpacity(0.5),
             ),
@@ -183,12 +180,12 @@ class TerminateWidget extends StatelessWidget {
             height: 45,
             child: CustomAppButton(
               isButtonExpanded: false,
-
               borderRadius: Dimensions.radiusDefault,
               buttonText: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.block_flipped, color: AppColor.cardColor, size: 23),
+                  const Icon(Icons.block_flipped,
+                      color: AppColor.cardColor, size: 23),
                   customSpacerWidth(width: 8),
                   Text(
                     AppString.textTerminate.tr,
@@ -209,7 +206,8 @@ class TerminateWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildRadioOption(BuildContext context, String value, EmploymentController controller) {
+  Widget _buildRadioOption(
+      BuildContext context, String value, EmploymentController controller) {
     return Expanded(
       child: Row(
         children: [
@@ -217,11 +215,13 @@ class TerminateWidget extends StatelessWidget {
             value: value,
             activeColor: AppColor.primaryColor,
             groupValue: controller.selectedOption.value,
-            onChanged: (newValue) => controller.selectedOption.value = newValue ?? '',
+            onChanged: (newValue) =>
+                controller.selectedOption.value = newValue ?? '',
           ),
           Text(
             value,
-            style: AppStyle.normal_text.copyWith(color: AppColor.normalTextColor),
+            style:
+                AppStyle.normal_text.copyWith(color: AppColor.normalTextColor),
           ),
         ],
       ),
@@ -260,9 +260,12 @@ class TerminateWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Obx(() {
-              final dateTime = Get.find<DateTimePickerController>().outDateTime.value;
-              DateTime parsedDate = DateTime.tryParse(dateTime) ?? DateTime.now();
-              String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+              final dateTime =
+                  Get.find<DateTimePickerController>().outDateTime.value;
+              DateTime parsedDate =
+                  DateTime.tryParse(dateTime) ?? DateTime.now();
+              String formattedDate =
+                  DateFormat('yyyy-MM-dd').format(parsedDate);
               return Text(
                 formattedDate,
                 style: const TextStyle(color: Colors.black, fontSize: 16),

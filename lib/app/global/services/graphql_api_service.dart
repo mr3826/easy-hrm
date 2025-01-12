@@ -79,11 +79,13 @@ class GraphQLApiService {
   }
 
   /// Executes a GraphQL query
-  Future<QueryResult> query(String query) async {
+  Future<QueryResult> query(
+      {required String queryString, Map<String, dynamic>? variables}) async {
     return await _retryOnAuthFailure(
       (client) => client.query(
         QueryOptions(
-          document: gql(query),
+          document: gql(queryString),
+          variables: variables ?? {},
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       ),

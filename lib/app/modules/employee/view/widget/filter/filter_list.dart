@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../utils/app_color.dart';
@@ -9,6 +8,7 @@ import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../controller/employment_controller.dart';
 import 'check_box.dart';
+import 'section_expansion_tile.dart';
 
 class EmployeeFilterSection extends StatefulWidget {
   const EmployeeFilterSection({super.key});

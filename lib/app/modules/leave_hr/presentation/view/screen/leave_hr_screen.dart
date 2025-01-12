@@ -16,7 +16,7 @@ import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../../modules/auth/view/screens/otp_screen.dart';
-import '../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
+import '../../../../employee/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../controller/hr_leave_controller.dart';
 import '../../controller/leave_controller.dart';
 import '../widget/assign_leave/assign_leave.dart';

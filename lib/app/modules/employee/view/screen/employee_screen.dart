@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/employee/bindings/employee_bindings.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
@@ -12,7 +13,7 @@ import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../controller/employment_controller.dart';
-import '../../../domain/employee_info.dart';
+import '../../model/employee_info.dart';
 import '../widget/employee_list/employee_list.dart';
 import '../widget/employee_list/search_with_filter.dart';
 import '../widget/filter/filter_list.dart';
@@ -23,6 +24,7 @@ class EmployeeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EmployeeBindings().dependencies();
     return Scaffold(
       appBar: _buildEmployeeAppBar(),
       body: Column(

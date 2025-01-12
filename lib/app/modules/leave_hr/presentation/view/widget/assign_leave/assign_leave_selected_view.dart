@@ -22,7 +22,7 @@ import '../../../../../../../modules/leave/presentation/controller/leave_screen_
 import '../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../../modules/auth/view/screens/otp_screen.dart';
-import '../../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
+import '../../../../../employee/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';
 import '../../../controller/leave_controller.dart';
 import 'add_attachment_file.dart';

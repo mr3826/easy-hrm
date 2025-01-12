@@ -26,6 +26,6 @@ class GlobalBindings extends Bindings {
         restApiService: Get.put<RestApiService>(RestApiService()),
         graphQLApiService: Get.put<GraphQLApiService>(GraphQLApiService())));
 
-    Get.lazyPut(() => UserInfoController());
+    Get.lazyPut(() => UserInfoController(),fenix: true);
   }
 }
