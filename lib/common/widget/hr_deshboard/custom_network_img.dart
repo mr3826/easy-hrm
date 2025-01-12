@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:imgix_core_dart/url_builder.dart';
+import 'package:payrun_mobile/utils/images.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_string.dart';
@@ -12,21 +13,21 @@ import '../../../utils/dimensions.dart';
 import '../custom_card_style.dart';
 import '../custom_spacer.dart';
 
-
-
 class CustomNetworkImage extends StatelessWidget {
   final String imageUrl;
   final double? radius;
- final BorderRadius?imageRadius;
+  final BorderRadius? imageRadius;
   final double? height;
   final Color? borderColor;
   final String? errorText;
   final bool isCircleImage;
+  final Widget? error;
 
   const CustomNetworkImage({
     super.key,
     required this.imageUrl,
     this.radius,
+    this.error,
     this.height,
     this.imageRadius,
     this.borderColor,
@@ -41,7 +42,7 @@ class CustomNetworkImage extends StatelessWidget {
 
     return isCircleImage
         ? _buildCircularImage(resolvedRadius)
-        : _buildRectangleImage(resolvedHeight);
+        : _buildRectangleImage(resolvedHeight, error);
   }
 
   Widget _buildCircularImage(double resolvedRadius) {
@@ -78,17 +79,17 @@ class CustomNetworkImage extends StatelessWidget {
     );
   }
 
-  Widget _buildRectangleImage(double resolvedHeight) {
+  Widget _buildRectangleImage(double resolvedHeight, Widget ?errorWidget) {
     return SizedBox(
       height: resolvedHeight,
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         placeholder: (context, url) =>
-        const Center(child: CupertinoActivityIndicator()),
-        errorWidget: (context, url, error) => _buildEmptyBox(),
+            const Center(child: CupertinoActivityIndicator()),
+        errorWidget: (context, url, error) => errorWidget !=null?Container(child: errorWidget,) : _buildEmptyBox(),
         imageBuilder: (context, imageProvider) => Container(
           decoration: BoxDecoration(
-            borderRadius:imageRadius?? BorderRadius.circular(4),
+            borderRadius: imageRadius ?? BorderRadius.circular(4),
             image: DecorationImage(
               image: imageProvider,
               fit: BoxFit.cover,
@@ -146,11 +147,8 @@ class CustomNetworkImage extends StatelessWidget {
   }
 }
 
-
-
-
 String buildImgIxUrl({
-  String ?imgKey,
+  String? imgKey,
   String? fileDirectory,
   String? profileImageKey,
   String? orgId,
@@ -170,7 +168,8 @@ String buildImgIxUrl({
 
   // Construct the URL path based on the given parameters.
   final organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_ID);
-  final urlPath = profileImageKey ?? '${fileDirectory ?? "files"}/$organizationId/$imgKey';
+  final urlPath =
+      profileImageKey ?? '${fileDirectory ?? "files"}/$organizationId/$imgKey';
 
   // Generate the full URL string using the client.
   return urlClient.createURLString(urlPath);

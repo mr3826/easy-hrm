@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/hr_deshboard_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_title_text_widget.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -23,33 +25,36 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
   @override
   Widget build(BuildContext context) {
     DashboardBindings.initDashboardBindings();
-    return Scaffold(
-      body: Padding(
-        padding: marginLayout.copyWith(left: 16, right: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              userInfoAppbarLayout(),
-              customSpacerHeight(height: 30),
-              _buildTitleText(AppString.text_employee_overview.tr),
-              const BuildEmployeeOverview(),
-              customSpacerHeight(height: 24),
-              _buildJobTitleText(value: "3"),
-              const BuildJobOpening(),
-              _buildAllCandidates(),
-              customSpacerHeight(height: 12),
-              _buildLeaveRequest(),
-              customSpacerHeight(height: 12),
-              _buildLogRequest(),
-              customSpacerHeight(height: 30),
-            ],
-          ),
+    return controller.obx((state)=>Padding(
+      padding: marginLayout.copyWith(left: 16, right: 16),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            userInfoAppbarLayout(),
+            customSpacerHeight(height: 30),
+            _buildTitleText(AppString.text_employee_overview.tr),
+            const BuildEmployeeOverview(),
+            customSpacerHeight(height: 24),
+            _buildJobTitleText(value: "3"),
+            const BuildJobOpening(),
+            _buildAllCandidates(),
+            customSpacerHeight(height: 12),
+            _buildLeaveRequest(),
+            customSpacerHeight(height: 12),
+            _buildLogRequest(),
+            customSpacerHeight(height: 30),
+          ],
         ),
       ),
+    ),
+    onLoading: const LoadingIndicator()
     );
+
   }
 }
+
+
 
 _buildTitleText(String labelText) {
     return Padding(

@@ -9,4 +9,12 @@ class DashBoardApiService {
   Future<QueryResult<Object?>> getEmployeeOverView() async {
     return await apiService.query(query: getEmployeeOverviewQuery);
   }
+
+    Future<QueryResult<Object?>> getJobOpening() async {
+    return await apiService.query(query:getJobOpeningQuery);
+  }
+
+
+
+
 }

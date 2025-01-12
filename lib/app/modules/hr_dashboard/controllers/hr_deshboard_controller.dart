@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../models/employee_overview.dart';
+import '../models/job_opening.dart';
 import '../repositories/dashboard_repository.dart';
 
-class HrDashBoardController extends GetxController {
+class HrDashBoardController extends GetxController with StateMixin {
   DasBoardRepository dasBoardRepository = Get.find<DashBoardImpl>();
 
   final RxInt currentIndex = 0.obs;
@@ -24,7 +25,6 @@ class HrDashBoardController extends GetxController {
 
   final ScrollController scrollController = ScrollController();
 
-  List jobIndex = ["Job 1", "Job 2", "Job 3", "Job 4"]; // Example data
 
   TextEditingController candidateEmail = TextEditingController();
   TextEditingController candidateFirstName = TextEditingController();
@@ -36,6 +36,7 @@ class HrDashBoardController extends GetxController {
 
 
   EmployeeOverview? employeeOverview;
+  JobOpening? jobOpening;
 
 
 
@@ -45,6 +46,15 @@ class HrDashBoardController extends GetxController {
   getEmployeeOverView() async {
     employeeOverview = await dasBoardRepository.getEmployeeOverview();
   }
+
+
+
+  getJobOpening() async {
+    change(null,status: RxStatus.loading());
+    jobOpening = await dasBoardRepository.getJobOpening();
+    change(null, status: RxStatus.success());
+  }
+
 
 
 
@@ -69,6 +79,7 @@ class HrDashBoardController extends GetxController {
     });
 
   getEmployeeOverView();
+  getJobOpening();
   }
 
   @override

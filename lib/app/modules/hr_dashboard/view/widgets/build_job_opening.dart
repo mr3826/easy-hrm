@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/job_opening.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_style.dart';
+import '../../../../../utils/images.dart';
+import '../../../../../utils/utils.dart';
 import '../../controllers/hr_deshboard_controller.dart';
 
-class BuildJobOpening extends StatelessWidget {
+class BuildJobOpening extends GetView<HrDashBoardController> {
   const BuildJobOpening({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final HrDashBoardController controller = Get.find<HrDashBoardController>();
-
     return LayoutBuilder(
       builder: (context, constraints) {
         double containerWidth = constraints.maxWidth * 0.85;
@@ -28,12 +28,13 @@ class BuildJobOpening extends StatelessWidget {
               height: imageHeight + 100,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: controller.jobIndex.length,
+                itemCount: controller.jobOpening?.getJobs?.data?.length ?? 0,
                 controller: controller.scrollController,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
+                  Data? data = controller.jobOpening?.getJobs?.data?[index];
                   return GestureDetector(
-                    onTap: ()=>Get.toNamed(Routes.JOB_DETAILS),
+                    onTap: () => Get.toNamed(Routes.JOB_DETAILS),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Container(
@@ -48,9 +49,10 @@ class BuildJobOpening extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildImage(imageHeight),
+                            _buildImage(imageHeight,
+                                url: data?.thumbnail ?? ""),
                             _buildJobDescription(
-                              jobName: controller.jobIndex[index],
+                              date: data ?? Data(),
                               containerWidth: containerWidth,
                             ),
                           ],
@@ -68,21 +70,29 @@ class BuildJobOpening extends StatelessWidget {
     );
   }
 
-  Widget _buildImage(double height) {
+  Widget _buildImage(double height, {required String url}) {
     return SizedBox(
       width: double.infinity,
       height: height,
-      child:  CustomNetworkImage(
-        imageRadius: BorderRadius.only(
+      child: CustomNetworkImage(
+        imageRadius: const BorderRadius.only(
           topLeft: Radius.circular(8),
           topRight: Radius.circular(8),
         ),
-        imageUrl:Images.demoImage
+        imageUrl: url,
+        error: _buildImageError(),
       ),
     );
   }
 
-  Widget _buildJobDescription({required String jobName, required double containerWidth}) {
+  Widget _buildJobDescription(
+      {required Data date, required double containerWidth}) {
+    int? values = date.hiringStages
+        ?.firstWhere(
+          (e) => e.title == "New",
+        )
+        .noOfApplicant;
+
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, top: 6, right: 12),
       child: Row(
@@ -93,16 +103,15 @@ class BuildJobOpening extends StatelessWidget {
               children: [
                 customSpacerHeight(height: 8),
                 customTitleText(
-                    text: jobName,
+                    text: date.title ?? "",
                     textStyle: AppStyle.mid_large_text.copyWith(
                         color: AppColor.secondaryColor,
                         fontSize: Dimensions.fontSizeMid)),
                 customSpacerHeight(height: 8),
-                _buildInnerDescriptionText(
-                  "${"Full time"} • ${"Dhaka, Bangladesh"}",
-                ),
+                _buildInnerDescriptionText(_typeWithLocation(date)),
                 customSpacerHeight(height: 2),
-                _buildInnerDescriptionText("24 June,2022"),
+                _buildInnerDescriptionText(formatDate(
+                    date: date.lastDateOfApply ?? "", format: "dd MMM, yyy")),
               ],
             ),
           ),
@@ -119,7 +128,7 @@ class BuildJobOpening extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "23",
+                      values.toString(),
                       style: AppStyle.mid_large_text.copyWith(
                           color: AppColor.primaryColor,
                           fontWeight: FontWeight.w800,
@@ -174,7 +183,7 @@ class BuildJobOpening extends StatelessWidget {
         height: 40,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: controller.jobIndex.length,
+          itemCount: controller.jobOpening?.getJobs?.data?.length ?? 0,
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return Center(
@@ -187,4 +196,31 @@ class BuildJobOpening extends StatelessWidget {
       ),
     );
   }
+
+  String _typeWithLocation(Data date) {
+    final type = date.type?.trim() ?? "";
+    final location = date.location?.trim() ?? "";
+
+    if (type.isNotEmpty && location.isEmpty) {
+      return capitalizeWords(type);
+    } else if (type.isEmpty && location.isNotEmpty) {
+      return capitalizeWords(location);
+    } else if (type.isNotEmpty && location.isNotEmpty) {
+      return "${capitalizeWords(type)} • $location";
+    } else {
+      return "";
+    }
+  }
+}
+
+Widget _buildImageError() {
+  return Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+        // color: AppColor.primaryColor.withOpacity(0.05),
+        borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+        image: DecorationImage(
+            image: AssetImage(Images.PLACEHOLDER), fit: BoxFit.cover)),
+  );
 }

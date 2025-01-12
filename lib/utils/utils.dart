@@ -415,27 +415,26 @@ handleUnknownError(di.Response response) {
   }
 }
 
-///Updated formatting method
+
+
+/// Formats a given date string into the specified format.
+/// Defaults to "dd MMM yy" if no format is provided.
+/// Returns an empty string if the input date is invalid.
 String formatDate({required String date, String? format}) {
-  if (date.isEmpty) return ""; // Return empty string if date is empty
-  final String dateFormat = format ?? "dd MMM yy"; // Default format
-  DateTime? parsedDate;
+  if (date.isEmpty) return "";
+  final String dateFormat = format ?? "dd MMM yy";
 
-  // Try parsing with multiple date formats to handle different date inputs
   try {
-    parsedDate = DateTime.parse(date); // ISO 8601 format
-  } catch (e) {
-    try {
-      parsedDate =
-          DateFormat("dd MMM,yyyy").parse(date); // "25 Jul,2023" format
-    } catch (e) {
-      return ""; // Return empty string if parsing fails
-    }
+    final parsedDate = DateTime.tryParse(date) ?? DateFormat(dateFormat).parse(date);
+    return DateFormat(dateFormat).format(parsedDate);
+  } catch (_) {
+    return "";
   }
-
-  // Format the parsed date
-  return DateFormat(dateFormat).format(parsedDate);
 }
+
+
+
+
 
 
 getIconAccordingToLeaveType(String? leaveName) {
@@ -475,3 +474,12 @@ String getInitials(String fullName) {
   // Combine the initials
   return '$firstInitial$lastInitial';
 }
+
+String capitalizeWords(String input) {
+  if (input.isEmpty) return input;
+  return input
+      .split(' ')
+      .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
+      .join(' ').replaceAll("_", " ");
+}
+

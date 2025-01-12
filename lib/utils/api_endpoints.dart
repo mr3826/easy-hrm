@@ -851,3 +851,25 @@ not_working_today
 }
 }
 ''';
+
+const getJobOpeningQuery = r'''
+query GET_JOBS($queryData: JobsQueryInputType, $optionData: OptionDataType) {
+  getJobs(queryData: $queryData, optionData: $optionData) {
+    data {
+      id
+      title
+      status
+      last_date_of_apply
+      location
+      no_of_vacancy
+      thumbnail
+      type
+      hiring_stages {
+        title
+        no_of_applicant
+      }
+    }
+ 
+  }
+}
+''';
