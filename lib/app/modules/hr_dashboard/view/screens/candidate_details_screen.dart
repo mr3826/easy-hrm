@@ -6,12 +6,12 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/widget/custom_appbar.dart';
-import '../../../../common/widget/custom_buttom_sheet.dart';
-import '../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
-import '../../../../utils/app_string.dart';
-import '../../../../utils/images.dart';
-import 'widgets/candidates/candidate_details_tab_bar/candidate_details_tabbar.dart';
+import '../../../../../common/widget/custom_appbar.dart';
+import '../../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
+import '../../../../../utils/app_string.dart';
+import '../../../../../utils/images.dart';
+import '../widgets/candidates/candidate_details_tab_bar/candidate_details_tabbar.dart';
 
 class CandidateDetailsScreen extends StatelessWidget {
   const CandidateDetailsScreen({super.key});

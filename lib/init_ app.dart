@@ -11,6 +11,7 @@ import 'package:pushy_flutter/pushy_flutter.dart';
 import 'app/home/view/screen/main_screen.dart';
 import 'app/modules/employee/data/employee_remote_data_source.dart';
 import 'app/modules/employee/domain/employee_info.dart';
+import 'app/modules/hr_dashboard/repositories/dashboard_repository.dart';
 import 'app/modules/leave_hr/data/apply_and_update_leave_date_source.dart';
 import 'app/modules/leave_hr/data/leave_remote_data_source.dart';
 import 'modules/dashboard/data/remote/dashboard_remote_data_source.dart';

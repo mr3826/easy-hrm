@@ -21,7 +21,7 @@ import '../../../../modules/subscription/view/subscription_screen.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
 import '../../../../modules/timeline/view/screen/timeline.dart';
-import '../../../admin_app/hr_dashboard/views/hr_dashboard_screen.dart';
+import '../../../modules/hr_dashboard/view/screens/hr_dashboard_screen.dart';
 import '../../../modules/employee/presentation/controller/employment_controller.dart';
 import '../../../modules/employee/presentation/view/screen/employee_screen.dart';
 import '../../../modules/leave_hr/presentation/controller/hr_leave_controller.dart';

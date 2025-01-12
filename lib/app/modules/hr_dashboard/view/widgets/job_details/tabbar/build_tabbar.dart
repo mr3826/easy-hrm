@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/widgets/job_details/tabbar/tabbar_body/tabbar_body.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/job_details/tabbar/tabbar_body.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../controllers/hr_deshboard_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+
+import '../../../../controllers/hr_deshboard_controller.dart';
 
 class TabBarWidget extends StatelessWidget {
   final HrDashBoardController controller = Get.put(HrDashBoardController());

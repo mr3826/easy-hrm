@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/hr_deshboard_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../global/view/widget/app_margin.dart';
-import 'widgets/build_access_level.dart';
-import 'widgets/build_employee_overview.dart';
-import 'widgets/build_job_opening.dart';
-import 'widgets/deshboard_widget.dart';
+import '../../../../global/view/widget/app_margin.dart';
+import '../../bindings/dashboard_bindings.dart';
+import '../widgets/build_access_level.dart';
+import '../widgets/build_employee_overview.dart';
+import '../widgets/build_job_opening.dart';
+import '../widgets/deshboard_widget.dart';
 
-class HrDashboardScreen extends StatelessWidget {
+
+class HrDashboardScreen extends GetView<HrDashBoardController> {
   const HrDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    DashboardBindings.initDashboardBindings();
     return Scaffold(
       body: Padding(
         padding: marginLayout.copyWith(left: 16, right: 16),
@@ -27,7 +32,7 @@ class HrDashboardScreen extends StatelessWidget {
             children: [
               userInfoAppbarLayout(),
               customSpacerHeight(height: 30),
-              _buildTitleText("Employee overview"),
+              _buildTitleText(AppString.text_employee_overview.tr),
               const BuildEmployeeOverview(),
               customSpacerHeight(height: 24),
               _buildJobTitleText(value: "3"),
@@ -44,8 +49,9 @@ class HrDashboardScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  _buildTitleText(String labelText) {
+_buildTitleText(String labelText) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: customTitleText(
@@ -97,4 +103,4 @@ class HrDashboardScreen extends StatelessWidget {
       value: "34",
     );
   }
-}
+

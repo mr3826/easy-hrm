@@ -839,3 +839,15 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
   }
 }
 ''';
+
+//'hr dashboard'
+
+const getEmployeeOverviewQuery = r'''
+query GET_EMPLOYEE_OVERVIEW {
+getEmployeeOverview {
+working_today
+on_leave_today
+not_working_today
+}
+}
+''';

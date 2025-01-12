@@ -429,4 +429,8 @@ static String text_are_you_sure_deleted_candidate="Are you sure want to delete t
 
   static String text_employee_type = "Employee & type";
   static String text_time_sheet = "Time sheet";
+  static String text_present = "Present";
+  static String text_on_leave = "On Leave";
+  static String text_absent = "Absent";
+  static String text_employee_overview = "Employee overview";
 }

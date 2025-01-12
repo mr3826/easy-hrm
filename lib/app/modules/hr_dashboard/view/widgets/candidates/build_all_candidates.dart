@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/widgets/deshboard_widget.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/deshboard_widget.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';

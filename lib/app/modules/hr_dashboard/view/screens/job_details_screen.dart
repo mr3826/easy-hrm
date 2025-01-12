@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/widgets/deshboard_widget.dart';
-import 'package:payrun_mobile/app/admin_app/hr_dashboard/views/widgets/job_details/tabbar/build_tabbar.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/deshboard_widget.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/job_details/tabbar/build_tabbar.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
-import '../../../../common/widget/custom_appbar.dart';
-import '../../../../common/widget/custom_buttom_sheet.dart';
-import '../../../../common/widget/custom_dialog.dart';
-import '../../../../common/widget/custom_double_app_button.dart';
-import '../../../../common/widget/custom_svg_image.dart';
-import '../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
-import '../../../../utils/app_string.dart';
-import '../../../../utils/dimensions.dart';
-import '../../../../utils/images.dart';
-import '../controllers/hr_deshboard_controller.dart';
+import '../../../../../common/widget/custom_appbar.dart';
+import '../../../../../common/widget/custom_buttom_sheet.dart';
+import '../../../../../common/widget/custom_dialog.dart';
+import '../../../../../common/widget/custom_double_app_button.dart';
+import '../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
+import '../../../../../utils/app_string.dart';
+import '../../../../../utils/dimensions.dart';
+import '../../../../../utils/images.dart';
+import '../../controllers/hr_deshboard_controller.dart';
 
 class JobDetailsScreen extends StatelessWidget {
   const JobDetailsScreen({super.key});

@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/employee_overview.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../controllers/hr_deshboard_controller.dart';
 
-class BuildEmployeeOverview extends StatelessWidget {
+class BuildEmployeeOverview extends GetView<HrDashBoardController> {
   const BuildEmployeeOverview({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    if (Get.isRegistered()) {
-      Get.delete<HrDashBoardController>();
-    }
-    Get.put(HrDashBoardController());
-
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final itemWidth = constraints.maxWidth / 3 - 24; // Dynamic width for each item
+        GetEmployeeOverview? getEmployeeOverview= controller.employeeOverview?.getEmployeeOverview;
         return Container(
           decoration: BoxDecoration(
             color: AppColor.primaryColor,
@@ -31,11 +27,11 @@ class BuildEmployeeOverview extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildText(label: "Present", value: "148.23", width: itemWidth),
+                _buildText(label: AppString.text_present.tr, value: getEmployeeOverview?.workingToday.toString()??"0", width: itemWidth),
                 _divider(),
-                _buildText(label: "On leave", value: "35.2", width: itemWidth),
+                _buildText(label: AppString.text_on_leave.tr, value: getEmployeeOverview?.onLeaveToday.toString()??"0", width: itemWidth),
                 _divider(),
-                _buildText(label: "Absent", value: "148", width: itemWidth),
+                _buildText(label: AppString.text_absent.tr, value: getEmployeeOverview?.notWorkingToday.toString()??"0", width: itemWidth),
               ],
             ),
           ),
