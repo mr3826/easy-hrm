@@ -6,8 +6,6 @@ import '../../../../modules/profile/model/user_profile.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
 import '../../../../utils/api_endpoints.dart';
-import '../model/employee_info.dart';
-import '../model/user_work_info_dropdown.dart';
 
 class EmployeeRemoteDataSource {
   final NetworkClient networkClient;

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:payrun_mobile/utils/images.dart';
@@ -19,8 +18,7 @@ import 'modules/notification/data/remote/notification_remote_data_source.dart';
 import 'network/network_client.dart';
 
 Future<void> initApp() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init();
+
   initNotification();
 
   initializeHive();
@@ -62,7 +60,7 @@ void registerAdapters() {
 Future<void> openBoxes() async {
   Box<String> settingsBox = await Hive.openBox<String>('settingsBox');
   await checkAppVersion(settingsBox);
-  await Hive.openBox('dataBox');
+  await Hive.openBox<Data>('dataBox');
 }
 
 Future<void> checkAppVersion(Box<String> box) async {
@@ -73,7 +71,7 @@ Future<void> checkAppVersion(Box<String> box) async {
 
   if (storedVersion == null || storedVersion != currentVersion) {
     // Clear the data box if the version has changed
-    final dataBox = await Hive.openBox('dataBox');
+    final dataBox = await Hive.openBox<Data>('dataBox');
     await dataBox.clear();
     // Store the new version
     await box.put('appVersion', currentVersion);

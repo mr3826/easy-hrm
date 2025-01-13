@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:payrun_mobile/app/modules/employee/services/employee_remote_service.dart';
+import 'package:payrun_mobile/app/modules/employee/services/employee_api_service.dart';
 
 import '../model/employee_info.dart';
 import '../model/user_work_info_dropdown.dart';

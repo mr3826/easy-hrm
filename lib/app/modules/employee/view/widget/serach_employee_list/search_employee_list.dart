@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart' as gs;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:payrun_mobile/app/modules/employee/model/employee_info.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
@@ -230,7 +231,7 @@ class SearchEmployeeList extends StatelessWidget {
 
   Widget _buildEmployeeList() {
     return ValueListenableBuilder(
-      valueListenable: Hive.box('dataBox').listenable(),
+      valueListenable: Hive.box<Data>('dataBox').listenable(),
       builder: (BuildContext context, Box value, Widget? child) {
         final dataList = value.values.toList();
         return ListView.builder(
@@ -302,7 +303,7 @@ class SearchEmployeeList extends StatelessWidget {
             ),
           ),
           ValueListenableBuilder(
-            valueListenable: Hive.box('dataBox').listenable(),
+            valueListenable: Hive.box<Data>('dataBox').listenable(),
             builder: (BuildContext context, Box value, child) {
               final dataList = value.values.toList();
 

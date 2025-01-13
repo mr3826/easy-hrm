@@ -3,7 +3,7 @@ import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/app/modules/employee/repository/employee_data_sourse.dart';
 
 import '../controller/employment_controller.dart';
-import '../services/employee_remote_service.dart';
+import '../services/employee_api_service.dart';
 
 class EmployeeBindings extends Bindings {
   @override
