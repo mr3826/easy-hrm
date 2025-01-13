@@ -43,6 +43,9 @@ class EmploymentController extends GetxController with StateMixin {
   RxInt applicationMaxDaysCount = 0.obs;
   RxBool hasChangedProfileInfo = false.obs;
 
+
+
+
   ///init values
   ///check for update data
   String? initFirstName;

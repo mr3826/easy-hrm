@@ -6,6 +6,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
+import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/custom_status_button.dart';
@@ -108,8 +109,9 @@ class EmployeeListInfo extends StatelessWidget {
                       Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
                     }),
                     _divider(),
-                    _buildActionItem(
-                        AppString.text_edit.tr, () => _handleEditButtonClick()),
+                    _buildActionItem(AppString.text_edit.tr, () {
+                      _handleEditButtonClick();
+                    }),
                     _divider(),
                     _buildActionItem(AppString.textTerminate.tr, () {
                       _customButtonSheet(
@@ -242,6 +244,8 @@ class EmployeeListInfo extends StatelessWidget {
   }
 
   _handleEditButtonClick() {
+    print("_handleEditButtonClick called");
+
     EmploymentController controller = Get.find<EmploymentController>();
     controller.editFirstNameController.text =
         controller.initFirstName = firstName;
@@ -250,16 +254,18 @@ class EmployeeListInfo extends StatelessWidget {
     controller.initDesignationId = designation.id;
     controller.initDepartmentId = department.id;
     controller.editJoiningController.text =
-        controller.initJoiningDate = joiningDate;
+        controller.initJoiningDate = formatDate(date: joiningDate,format: "yyyy-mm-dd");
+
     controller.editLastNameController.addListener(controller.checkForChanges);
     controller.editLastNameController.addListener(controller.checkForChanges);
 
-    Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
     Get.find<EmploymentController>().getDesignations();
     if (!Get.find<EmploymentController>().isEmploymentHistoryApiCalled) {
       Get.find<EmploymentController>()
         ..getDepartments()
         ..getEmploymentStatus();
     }
+
+    Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
   }
 }

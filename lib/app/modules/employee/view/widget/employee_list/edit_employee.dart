@@ -4,29 +4,35 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
+import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../common/widget/custom_app_button.dart';
 import '../../../../../../../common/widget/custom_inside_appbar.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
+import '../../../../../../../common/widget/timePicker/custom_date_picker.dart';
 import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../domain/user_work_info_dropdown.dart';
 import '../../../../auth/view/screens/otp_screen.dart';
 import '../../../controller/employment_controller.dart';
 import '../../../model/user_work_info_dropdown.dart';
 
 class EditEmployee extends GetView<EmploymentController> {
-  const EditEmployee({super.key});
+  EditEmployee({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customInsideAppbar(
-        title: AppString.textEditEmployee.tr,
-        onPressAction: () => Get.back(),
-      ),
+          title: AppString.textEditEmployee.tr,
+          onPressAction: () {
+            Get.back();
+            Get.back();
+          }),
       body: controller.obx((state) => _body(context),
           onLoading: const LoadingIndicator()),
     );
@@ -93,25 +99,29 @@ class EditEmployee extends GetView<EmploymentController> {
 
   Widget _buildJoiningDate(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showDialog<String>(
+      onTap: () async {
+        final weekendDays = [DateTime.saturday, DateTime.sunday];
+        final holidays = [
+          '2024-12-25T00:00:00',
+          '2025-01-01T00:00:00',
+        ];
+
+        final selectedRange = await showDialog<Map<String, DateTime?>>(
           context: context,
-          builder: (BuildContext context) => Dialog(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  //CustomCalendarPicker(isRangeSelectionEnabled: false, weekendDays: Get.find<LeaveScreenController>().holidays, holidayDates: const [])
-                ],
+          builder: (BuildContext context) => CustomCalendarPicker(
+              isRangeSelectionEnabled: false,
+              weekendDays: weekendDays,
+              holidayDates: holidays),
+        );
+        if (selectedRange != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Selected Range: ${selectedRange["start"]} - ${selectedRange["end"]}',
               ),
             ),
-          ),
-        );
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
@@ -123,11 +133,9 @@ class EditEmployee extends GetView<EmploymentController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Obx(() {
-              final dateTime =
-                  Get.find<DateTimePickerController>().outDateTime.value;
-              final parsedDate = DateTime.tryParse(dateTime) ?? DateTime.now();
-              final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-              return Text(formattedDate,
+              return Text(formatDate(
+                  date: Get.find<EmploymentController>().initJoiningDate ?? "",
+                  format: "yyyy-mm-dd"),
                   style: const TextStyle(color: Colors.black, fontSize: 16));
             }),
             const Icon(CupertinoIcons.calendar, color: Colors.grey, size: 28),
@@ -160,7 +168,7 @@ class EditEmployee extends GetView<EmploymentController> {
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -175,7 +183,10 @@ class EditEmployee extends GetView<EmploymentController> {
                   fontSize: Dimensions.fontSizeDefault + 2,
                 ),
               ),
-              onPressed: () => Get.back(),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
               buttonColor: AppColor.cardColor,
               borderColor: AppColor.hintColor.withOpacity(0.5),
             ),
@@ -267,7 +278,7 @@ class EditEmployee extends GetView<EmploymentController> {
             _buildJoiningDate(context),
             customSpacerHeight(height: 28),
             Obx(
-              () => _buildButtons(),
+              () => _buildButtons(context),
             ),
           ],
         ),
