@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
 import 'package:payrun_mobile/app/modules/employee/services/employee_api_service.dart';
 
 import '../model/employee_info.dart';
@@ -14,6 +15,8 @@ abstract class EmployeeDataSource {
   Future<DepartmentList?> getDepartments();
 
   Future<DesignationList?> getDesignations();
+
+  Future<String?> terminateAUser(TerminateUserModel terminateUserModel);
 }
 
 class EmployeeDataSourceImpl implements EmployeeDataSource {
@@ -75,6 +78,22 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
       return null;
     } catch (e) {
       log('Error in getEmployees: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<String?> terminateAUser(TerminateUserModel terminateUserModel) async {
+    try {
+      final Map<String, dynamic>? response =
+          await _employeeRemoteService.terminateAUser(terminateUserModel);
+      if (response != null) {
+        String status = response["getOrganizationUsers"]["status"] ?? "";
+        return status;
+      }
+      return null;
+    } catch (e) {
+      log('Error in terminateAUser: $e');
       return null;
     }
   }

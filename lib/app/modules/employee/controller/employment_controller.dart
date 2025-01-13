@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
 import 'package:payrun_mobile/app/modules/employee/repository/employee_data_sourse.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
@@ -23,13 +24,15 @@ class EmploymentController extends GetxController with StateMixin {
   final LeaveRemoteDataSource _employeeLeaveRemoteDataSource =
       Get.find<LeaveRemoteDataSource>();
 
-  var selectedOption = ''.obs;
+  RxString selectedTerminationOption = ''.obs;
+  Rx<DateTime> selectedTerminationDate = DateTime.now().obs;
 
   RxBool isSearchInfoLoading = false.obs;
   RxBool isEmployeesInfoLoading = false.obs;
   RxBool isFilterInfoLoading = false.obs;
   bool isEmploymentHistoryApiCalled = false;
   bool isProfileInfoApiCalled = false;
+  RxBool isTerminatedUserDataLoading = false.obs;
 
   RxString searchQuery = ''.obs;
 
@@ -37,14 +40,12 @@ class EmploymentController extends GetxController with StateMixin {
   TextEditingController editFirstNameController = TextEditingController();
   TextEditingController editLastNameController = TextEditingController();
   TextEditingController editJoiningController = TextEditingController();
+  TextEditingController terminationEditNoteController = TextEditingController();
 
   RxInt daysCount = 0.obs;
   RxInt applicationBalanceCount = 0.obs;
   RxInt applicationMaxDaysCount = 0.obs;
   RxBool hasChangedProfileInfo = false.obs;
-
-
-
 
   ///init values
   ///check for update data
@@ -179,6 +180,15 @@ class EmploymentController extends GetxController with StateMixin {
     isEmploymentHistoryApiCalled = true;
     designations = await _employeeDataSource.getDesignations();
     change(null, status: RxStatus.success());
+  }
+
+  Future<bool> terminatedAUser(TerminateUserModel terminateAUserModel) async {
+    isTerminatedUserDataLoading(true);
+    String? response =
+        await _employeeDataSource.terminateAUser(terminateAUserModel);
+    isTerminatedUserDataLoading(false);
+    if (response != null && response.isNotEmpty) return true;
+    return false;
   }
 
   Future<void> getEmployeeProfile({required String orgUserId}) async {
@@ -317,6 +327,7 @@ class EmploymentController extends GetxController with StateMixin {
     editFirstNameController.dispose();
     editLastNameController.dispose();
     editJoiningController.dispose();
+    terminationEditNoteController.dispose();
     super.onClose();
   }
 }

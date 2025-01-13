@@ -36,9 +36,6 @@ class GraphQLApiService {
         return await requestFunction(newClient);
       }
     }
-
-    print("result: $result");
-
     return result;
   }
 
@@ -81,25 +78,17 @@ class GraphQLApiService {
   /// Executes a GraphQL query
   Future<QueryResult> query(
       {required String queryString, Map<String, dynamic>? variables}) async {
-    return await _retryOnAuthFailure(
+    QueryResult<Object?> result = await _retryOnAuthFailure(
       (client) => client.query(
         QueryOptions(
-          document: gql(queryString),
-          variables: variables ?? {},
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ),
+            document: gql(queryString),
+            variables: variables ?? {},
+            fetchPolicy: FetchPolicy.cacheAndNetwork),
       ),
     );
-  }
-
-  /// Executes a GraphQL mutation
-  Future<QueryResult> mutate(String mutation) async {
-    return await _retryOnAuthFailure(
-      (client) => client.mutate(
-        MutationOptions(
-          document: gql(mutation),
-        ),
-      ),
-    );
+    if (result.exception?.graphqlErrors != null) {
+      print("result.hasException:: ${result.exception?.graphqlErrors[0].message}");
+    }
+    return result;
   }
 }

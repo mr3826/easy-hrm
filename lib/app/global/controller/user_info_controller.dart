@@ -22,7 +22,7 @@ class UserInfoController {
   Future<bool> getOrgSubscriptionInfo() async {
     try {
       final QueryResult<Object?> response =
-          await Get.find<ApiService>().query(queryString: getOrgSubscriptionInfoQuery);
+          await Get.find<ApiService>().gqlCall(queryString: getOrgSubscriptionInfoQuery);
       if (response.data != null) {
         return _checkIfSubscription(
             OrgSubscriptionInfoModel.fromJson(response.data!));

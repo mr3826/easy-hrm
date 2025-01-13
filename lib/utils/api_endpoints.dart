@@ -662,6 +662,14 @@ query GetDesignationsDropdown {
 }
 ''';
 
+const terminateAOrgUser = r'''
+mutation TerminateOrganizationUser($inputData: TerminateOrganizationUserInputData!) {
+  terminateOrganizationUser(inputData: $inputData) {
+    status
+  }
+}
+''';
+
 //Hr_leave
 
 const getHrLeaveCalendarList = r'''

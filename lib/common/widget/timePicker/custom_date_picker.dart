@@ -14,7 +14,7 @@ class CustomCalendarPicker extends StatefulWidget {
   final TextStyle? saveTextStyle;
   final Color? baseColor;
 
-  CustomCalendarPicker({
+  const CustomCalendarPicker({
     Key? key,
     required this.isRangeSelectionEnabled,
     required this.weekendDays,
@@ -25,21 +25,11 @@ class CustomCalendarPicker extends StatefulWidget {
     this.saveTextStyle,
     this.selectionText,
     this.clearText,
-  })  : assert(weekendDays.isNotEmpty, 'Weekend days cannot be empty.'),
-        assert(
-        weekendDays.every((day) => day >= DateTime.monday && day <= DateTime.sunday),
-        'Weekend days must be within the range of 1 (Monday) to 7 (Sunday).',
-        ),
-        assert(
-        holidayDates.every((date) => DateTime.tryParse(date) != null),
-        'Holiday dates must be in a valid date format (e.g., "yyyy-MM-dd").',
-        ),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _CustomCalendarPickerState createState() => _CustomCalendarPickerState();
 }
-
 
 class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
   late String _cancelText;

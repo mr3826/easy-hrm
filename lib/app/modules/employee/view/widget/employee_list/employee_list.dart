@@ -25,17 +25,19 @@ class EmployeeListInfo extends StatelessWidget {
   final EmploymentStatus employmentStatus;
   final EmploymentStatus designation;
   final String joiningDate;
+  final String orgUserId;
 
-  const EmployeeListInfo(
-      {Key? key,
-      required this.imgUrlKey,
-      required this.firstName,
-      required this.lastName,
-      required this.employmentStatus,
-      required this.department,
-      required this.designation,
-      required this.joiningDate})
-      : super(key: key);
+  const EmployeeListInfo({
+    Key? key,
+    required this.imgUrlKey,
+    required this.firstName,
+    required this.lastName,
+    required this.employmentStatus,
+    required this.department,
+    required this.designation,
+    required this.joiningDate,
+    required this.orgUserId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +117,11 @@ class EmployeeListInfo extends StatelessWidget {
                     _divider(),
                     _buildActionItem(AppString.textTerminate.tr, () {
                       _customButtonSheet(
-                          child: const TerminateWidget(), context: context);
+                          child: TerminateWidget(
+                            orgUserId: orgUserId,
+                            orgUserName: "$firstName $lastName",
+                          ),
+                          context: context);
                     }),
                     customSpacerHeight(height: 5),
                   ],
@@ -253,8 +259,8 @@ class EmployeeListInfo extends StatelessWidget {
     controller.initEmploymentStatusId = employmentStatus.id;
     controller.initDesignationId = designation.id;
     controller.initDepartmentId = department.id;
-    controller.editJoiningController.text =
-        controller.initJoiningDate = formatDate(date: joiningDate,format: "yyyy-mm-dd");
+    controller.editJoiningController.text = controller.initJoiningDate =
+        formatDate(date: joiningDate, format: "yyyy-mm-dd");
 
     controller.editLastNameController.addListener(controller.checkForChanges);
     controller.editLastNameController.addListener(controller.checkForChanges);

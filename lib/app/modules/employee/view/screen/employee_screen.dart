@@ -118,6 +118,7 @@ class EmployeeScreen extends StatelessWidget {
               Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
             },
             child: EmployeeListInfo(
+              orgUserId:employee?.id ?? "",
               firstName: employee?.profile?.firstName ?? "Unknown",
               lastName: employee?.profile?.lastName ?? "",
               imgUrlKey: employee?.profile?.image ?? "",

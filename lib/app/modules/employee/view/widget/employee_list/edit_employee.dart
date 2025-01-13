@@ -2,9 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
@@ -13,10 +11,8 @@ import '../../../../../../../common/widget/custom_inside_appbar.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/timePicker/custom_date_picker.dart';
-import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../domain/user_work_info_dropdown.dart';
 import '../../../../auth/view/screens/otp_screen.dart';
 import '../../../controller/employment_controller.dart';
 import '../../../model/user_work_info_dropdown.dart';
@@ -51,9 +47,6 @@ class EditEmployee extends GetView<EmploymentController> {
       children: [
         _buildTitleText(text: title, isRequired: isRequired),
         customSpacerHeight(height: 8),
-
-
-
         DropdownButtonFormField2(
           value: initValue.isNotEmpty ? initValue : null,
           decoration: _buildDropdownDecoration(),
@@ -71,11 +64,6 @@ class EditEmployee extends GetView<EmploymentController> {
               .toList(),
           onChanged: onChanged,
         ),
-
-
-
-
-
       ],
     );
   }
@@ -132,12 +120,11 @@ class EditEmployee extends GetView<EmploymentController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Obx(() {
-              return Text(formatDate(
+             Text(formatDate(
                   date: Get.find<EmploymentController>().initJoiningDate ?? "",
                   format: "yyyy-mm-dd"),
-                  style: const TextStyle(color: Colors.black, fontSize: 16));
-            }),
+                  style: const TextStyle(color: Colors.black, fontSize: 16)
+            ),
             const Icon(CupertinoIcons.calendar, color: Colors.grey, size: 28),
           ],
         ),
