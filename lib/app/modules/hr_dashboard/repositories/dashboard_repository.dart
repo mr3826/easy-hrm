@@ -61,6 +61,7 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
   }
 
 
+
   @override
   getJobApplicationBoard({required String entityId})async {
     try{
@@ -73,7 +74,6 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
     }
     return null;
   }
-
 
 
 

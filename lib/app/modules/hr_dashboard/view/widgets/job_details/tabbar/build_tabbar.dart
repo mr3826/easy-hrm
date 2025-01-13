@@ -123,7 +123,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                     : AppColor.normalTextColor.withOpacity(0.5);
                 return GestureDetector(
                   onTap: () {
-                    controller.jobDetailsSelectedIndex.value = index;
+                  //  controller.jobDetailsSelectedIndex.value = index;
                     controller.pageController.animateToPage(
                       index,
                       duration: const Duration(milliseconds: 800),
