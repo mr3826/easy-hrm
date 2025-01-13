@@ -18,9 +18,16 @@ class LeaveDataSource {
           "org_user_id":
               orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
           "start_year": "${DateTime.now().year}"
+        },
+        "optionData": {
+          "order": [
+            [
+              "available",
+              "desc"
+            ]
+          ]
         }
       });
-      print("getLeaveSummary :: ${response.data}");
       if (response.hasException) {
         ExceptionHelper.errorHandler(
             exception: response.exception!, methodName: "getLeaveSummary");

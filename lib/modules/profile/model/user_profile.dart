@@ -204,16 +204,13 @@ class WorkSchedules {
 }
 
 class Organization {
-  String? organizationUser;
   String? name;
   String? id;
   OrganizationSetting? organizationSetting;
 
-  Organization(
-      {this.organizationUser, this.name, this.id, this.organizationSetting});
+  Organization({this.name, this.id, this.organizationSetting});
 
   Organization.fromJson(Map<String, dynamic> json) {
-    organizationUser = json['organization_user'];
     name = json['name'];
     id = json['id'];
     organizationSetting = json['organization_setting'] != null

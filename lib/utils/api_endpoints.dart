@@ -212,9 +212,6 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
     }
 
     organization {
-      organization_user {
-        organization_id
-      }
       name
       id
      organization_setting {
