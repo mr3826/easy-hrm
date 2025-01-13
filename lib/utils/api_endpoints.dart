@@ -167,6 +167,7 @@ query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
     is_default
     is_enable
     leave_type_id
+    leave_status_id
     name
     type
   }
@@ -174,27 +175,30 @@ query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
 ''';
 // profile module
 
+
 const getUserProfileQuery = r'''
 query GetOrganizationUserDetails($orgUserId: UUID) {
   getOrganizationUserDetails(org_user_id: $orgUserId) {
+    employee_id
+    status
+    createdAt
     profile {
       id
+      first_name
+      last_name
+      image
       about
       address
-      emergency_number
-      first_name
-      image
-      last_name
       personal_number
+      emergency_number
     }
     user {
+      id
       email
-      id
     }
-   
     department {
-      name
       id
+      name
       parent {
         id
         name
@@ -209,19 +213,61 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
         }
       }
     }
-    status
+
     organization {
-      organization_setting {
+      name
+      id
+     organization_setting {
         logo_key
         logo_icon_key
         language
       }
-      name
+    }
+    designation {
       id
+      name
+    }
+    employment_status {
+      id
+      name
+      color
     }
   }
 }
 ''';
+
+
+const getLeaveSummaryQuery = r'''
+query GET_ORGANIZATION_USER_SUMMARY($queryData: OrganizationUserLeaveStatusQuery!, $optionData: OptionDataType) {
+  getOrganizationUsersLeaveSummary(queryData: $queryData, optionData: $optionData) {
+    allocated
+    approved
+    available_number_of_applications
+    available_number_of_days
+    calculate_allowance_by
+    earned_days
+    is_earned
+    leave_status_id
+    leave_type_id
+    maximum_consecutive_days
+    name
+    org_user_id
+    pending_req
+    taken
+    type
+  }
+}
+''';
+
+const updateOrgUserLeaveAvailabilityQuery = r'''
+mutation UPDATE_ORG_USER_LEAVE_AVAILABILITY($inputData: OrganizationUserLeaveAvailabilityInput) {
+  updateOrgUserLeaveAvailability(inputData: $inputData) {
+    leave_type_id
+    org_user_id
+    }
+}
+''';
+
 
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
@@ -276,6 +322,7 @@ query GeTimelogAndLeaveAvailabilityForApp($orgUserId: UUID) {
   }
 }
 ''';
+
 
 const updateUserProfileMutation = r'''
 mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {

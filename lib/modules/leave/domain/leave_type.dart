@@ -30,6 +30,7 @@ class GetAvailableLeaveTypes {
   bool? isDefault;
   bool? isEnable;
   String? leaveTypeId;
+  String? leaveStatusId;
   String? name;
   String? type;
 
@@ -52,6 +53,7 @@ class GetAvailableLeaveTypes {
     isDefault = json['is_default'];
     isEnable = json['is_enable'];
     leaveTypeId = json['leave_type_id'];
+    leaveStatusId = json['leave_status_id'];
     name = json['name'];
     type = json['type'];
   }
@@ -65,6 +67,7 @@ class GetAvailableLeaveTypes {
     data['is_default'] = this.isDefault;
     data['is_enable'] = this.isEnable;
     data['leave_type_id'] = this.leaveTypeId;
+    data['leave_status_id'] = this.leaveStatusId;
     data['name'] = this.name;
     data['type'] = this.type;
     return data;

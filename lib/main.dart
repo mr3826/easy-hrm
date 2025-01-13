@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:calendar_view/calendar_view.dart';
 import 'package:payrun_mobile/app/global/bindings/global_bindings.dart';
 import 'package:payrun_mobile/init_%20app.dart';

@@ -57,12 +57,18 @@ Widget customButtonSheetAppbar(
   return isLeave != false
       ? _leaveBtnAppbarLayout(text, subtext, status ?? "", duration)
       : Container(
-          color: AppColor.primaryColor.withOpacity(0.05),
+          decoration: const BoxDecoration(
+              color: AppColor.leaveRecordCardColor,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(14),topRight: Radius.circular(14))
+          ),
           height: 100,
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              customSpacerHeight(height: 6),
+              Container(height: 4,width: 100,decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: Colors.white),),
+              const Spacer(),
               Center(
                   child: Text(
                 text ?? "",
@@ -70,15 +76,16 @@ Widget customButtonSheetAppbar(
                     color: AppColor.normalTextColor,
                     fontWeight: FontWeight.w700),
               )),
-              if (subtext != null) customSpacerHeight(height: 5),
               if (subtext != null)
                 Center(
                     child: Text(
                   subtext ?? "",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.hintColor,
-                      fontSize: Dimensions.fontSizeDefault + 2),
+                      fontSize: Dimensions.fontSizeDefault),
                 )),
+              Spacer(),
+
             ],
           ),
         );

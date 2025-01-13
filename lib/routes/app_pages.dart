@@ -103,7 +103,7 @@ class AppPages {
     GetPage(
       name: _Paths.PROFILE_SCREEN,
       transition: Transition.size,
-      page: () => const ProfileScreen(),
+      page: () =>   ProfileScreen(),
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE_SCREEN,

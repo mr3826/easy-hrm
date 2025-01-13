@@ -124,6 +124,8 @@ class PushNotificationServiceForIOS {
     Get.to(() => const MainScreen(routeIndex: 3,));
   }
 }
+  Get.put(ProfileDataSource(client), permanent: true);
+  Get.put(LeaveDataSource(client), permanent: true);
 
 class ForegroundPushNotificationService {
   static final FlutterLocalNotificationsPlugin
