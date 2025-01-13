@@ -883,3 +883,36 @@ timelog_request
   }
 }
 ''';
+
+const getJobApplicationBoardQuery = r'''
+query GetJobApplicationBoard($optionData: OptionDataType, $queryData: JobApplicationBoardQueryType!) {
+  getJobApplicationBoard(optionData: $optionData, queryData: $queryData) {
+    id
+    title
+    type
+    last_date_of_apply
+    location
+    status
+    department {
+      name
+    }
+    hiring_stages {
+      id
+      title
+      priority
+      no_of_applicant
+      job_applications {
+        id
+        priority
+        candidate {
+          id
+          first_name
+          last_name
+           email
+          avatar_key
+        }
+      }
+    }
+  }
+}
+''';

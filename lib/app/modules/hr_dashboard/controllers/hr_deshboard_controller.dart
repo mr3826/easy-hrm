@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../models/employee_overview.dart';
+import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
 import '../models/leave_timline_summary.dart';
 import '../repositories/dashboard_repository.dart';
@@ -12,15 +13,19 @@ class HrDashBoardController extends GetxController with StateMixin {
   final RxInt currentIndex = 0.obs;
   final RxInt jobTabCurrentIndex = 0.obs;
 
+
   RxInt jobDetailsSelectedIndex = 0.obs; // Track the selected tab index
   late PageController pageController; // For smooth scrolling
 
-  RxBool isCandidateSelected = false.obs; // Check if a candidate is selected
 
-  RxBool isPasteButtonActive =
-      false.obs; // Track if the paste button should be active
+  RxBool isCandidateSelected = false.obs; // Check if a candidate is selected
+  RxBool isJobApplicationBoardLoading = false.obs;
+
+
+  RxBool isPasteButtonActive = false.obs; // Track if the paste button should be active
 
   RxString selectedCandidateId = ''.obs; // Ensure it's reactive
+  RxString selectedStageId = ''.obs; // Ensure it's reactive
 
   int activeStarIndex = -1;
   RxString reviewerInputValue = "".obs;
@@ -35,6 +40,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   EmployeeOverview? employeeOverview;
   JobOpening? jobOpening;
   LeaveTimeLogSummary? leaveTimeLogSummary;
+  JobApplicationBoard? jobApplicationBoard;
 
   getEmployeeOverView() async {
     employeeOverview = await _dasBoardDataSource.getEmployeeOverview();
@@ -46,11 +52,22 @@ class HrDashBoardController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+
+
+
   getLeaveAndTimeLogSummary() async {
     change(null, status: RxStatus.loading());
     leaveTimeLogSummary = await _dasBoardDataSource.getLeaveAndTimeLogSummary();
     change(null, status: RxStatus.success());
   }
+
+  getJobApplicationBoard({required String entityId}) async {
+    isJobApplicationBoardLoading(true);
+    jobApplicationBoard = await _dasBoardDataSource.getJobApplicationBoard(entityId: entityId);
+    isJobApplicationBoardLoading(false);
+  }
+
+
 
   @override
   void onInit() {

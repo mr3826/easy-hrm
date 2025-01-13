@@ -35,7 +35,10 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
                 itemBuilder: (context, index) {
                   Data? data = controller.jobOpening?.getJobs?.data?[index];
                   return GestureDetector(
-                    onTap: () => Get.toNamed(Routes.JOB_DETAILS),
+                    onTap: (){
+                      controller.getJobApplicationBoard(entityId: data?.id??"");
+                      Get.toNamed(Routes.JOB_DETAILS);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Container(

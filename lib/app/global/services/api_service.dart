@@ -4,6 +4,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 
 class ApiService {
+
   final RestApiService _restApiService;
   final GraphQLApiService _graphQLApiService;
 
@@ -23,11 +24,9 @@ class ApiService {
   }
 
   // GraphQL methods
-  Future<gql.QueryResult> query({required String query, Map<String, dynamic>? variables}) async {
+  Future<gql.QueryResult> gqlCall({required String query, Map<String, dynamic>? variables}) async {
     return await _graphQLApiService.query(query: query,variables: variables);
   }
 
-  Future<gql.QueryResult> mutate(String mutation) async {
-    return await _graphQLApiService.mutate(mutation);
-  }
+
 }

@@ -12,10 +12,12 @@ import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
+import '../../../../../../../utils/utils.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../controllers/hr_deshboard_controller.dart';
+import '../../../../models/job_applocation_board.dart';
 
-class BuildTabBarBody extends StatelessWidget {
+class BuildTabBarBody extends GetView<HrDashBoardController> {
   final String tabId;
 
   const BuildTabBarBody({super.key, required this.tabId});
@@ -23,36 +25,45 @@ class BuildTabBarBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Example data for the list
-    final RxList<Map<String, String>> tabBarUserList = [
-      {"text": "Agnes Neilson", "value": "03", "id": "1", "status": "New"},
-      {"text": "John Doe", "value": "04", "id": "2", "status": "Rejected"},
-      {"text": "Sara Smith", "value": "07", "id": "3", "status": "Interview"},
-    ].obs;
+    final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
+    RxList<JobApplications> userList = <JobApplications>[].obs;
 
     return Obx(() {
       // Filter the list based on the tabId
-      final filteredList =
-          tabBarUserList.where((user) => user["id"] == tabId).toList();
+      final hiringStagesFilter = hiringStages.where((user) => user.id == tabId).toList();
 
-      if (filteredList.isEmpty) {
+
+      List<HiringStages> candidateInfoList = hiringStagesFilter.where((user) => user.jobApplications?.isNotEmpty??false).toList();
+
+
+
+      for (var stage in hiringStagesFilter) {
+        stage.jobApplications?.forEach((jobApplication) {
+          userList.add(jobApplication);
+        });
+      }
+
+
+
+      if (candidateInfoList.isEmpty) {
         return _buildNoCandidate();
       }
 
       return ListView.builder(
-        itemCount: filteredList.length,
+        itemCount: userList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => Get.toNamed(Routes.CANDIDATES_DETAILS),
             child: LayoutBuilder(builder: (context, constraints) {
               double imageSize = constraints.maxWidth * 0.15;
               double paddingSize = constraints.maxWidth * 0.03;
-              final user = filteredList[index];
+              final user = userList[index];
 
               return Obx(() {
                 bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
-                        .selectedCandidateId
-                        .value ==
-                    user["id"];
+                    .selectedCandidateId
+                    .value ==
+                    user.id;
 
                 return Padding(
                   padding: _getPadding(), // Use a dedicated method for padding
@@ -62,12 +73,17 @@ class BuildTabBarBody extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            _buildProfileImage(imageSize),
+                            _buildProfileImage(imageSize,user.candidate?.avatarKey??"","${user.candidate?.firstName??"_"} ${user.candidate?.lastName??""}"),
                             SizedBox(width: paddingSize),
+
                             _buildCandidateInfo(
                                 context: context,
-                                name: user["text"] ?? "",
-                                candidateId: user["id"].toString()),
+                                stageId: hiringStages.first.id??"",
+                                email: user.candidate?.email??"",
+                                name: "${user.candidate?.firstName??"_"} ${user.candidate?.lastName??""}",
+                                candidateId: user.id.toString()),
+
+
                           ],
                         ),
                       )),
@@ -84,20 +100,22 @@ class BuildTabBarBody extends StatelessWidget {
     return marginLayout.copyWith(top: 15, left: 12, right: 12);
   }
 
-  Widget _buildProfileImage(double size) {
+  Widget _buildProfileImage(double size,String imgUrl,String errorText) {
     return CustomNetworkImage(
       isCircleImage: true,
       radius: size / 2.7,
+      errorText: getInitials(errorText),
       borderColor: Colors.transparent,
-      imageUrl:
-          "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+      imageUrl:buildImgIxUrl(imgKey: imgUrl),
     );
   }
 
   Widget _buildCandidateInfo(
       {required String name,
-      required BuildContext context,
-      required String candidateId}) {
+        required String email,
+        required BuildContext context,
+        required String stageId,
+        required String candidateId}) {
     return Expanded(
       child: Row(
         children: [
@@ -107,7 +125,7 @@ class BuildTabBarBody extends StatelessWidget {
               children: [
                 _buildTitleText(name),
                 const SizedBox(height: 2),
-                _buildEmailText(),
+                _buildEmailText(email),
               ],
             ),
           ),
@@ -117,7 +135,7 @@ class BuildTabBarBody extends StatelessWidget {
               customButtonSheet(
                   height: .5,
                   context: context,
-                  child: _buildMoreView(candidateId));
+                  child: _buildMoreView(candidateId,stageId));
             },
             child: Icon(
               Icons.more_horiz,
@@ -143,9 +161,9 @@ class BuildTabBarBody extends StatelessWidget {
     );
   }
 
-  Widget _buildEmailText() {
+  Widget _buildEmailText(String email) {
     return Text(
-      "email@demo.com",
+      email,
       maxLines: 2,
       style: AppStyle.normal_text.copyWith(
         color: AppColor.hintColor,
@@ -168,7 +186,7 @@ class BuildTabBarBody extends StatelessWidget {
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
   }
 
-  Widget _buildMoreView(candidateId) {
+  Widget _buildMoreView(String candidateId,String stageId) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -188,11 +206,15 @@ class BuildTabBarBody extends StatelessWidget {
           _buildMoreInfoSection(
             text: AppString.text_move_anywhere.tr,
             onTap: () {
-              Get.find<HrDashBoardController>().selectedCandidateId.value =
-                  candidateId;
-              Get.find<HrDashBoardController>().isCandidateSelected.value =
-                  true;
+
+              Get.find<HrDashBoardController>().selectedCandidateId.value = candidateId;
+              Get.find<HrDashBoardController>().selectedStageId.value = stageId;
+              Get.find<HrDashBoardController>().isCandidateSelected.value = true;
+
+
               Get.back(canPop: false);
+
+
             },
             trailing: Padding(
               padding: const EdgeInsets.only(left: 8.0),
@@ -228,7 +250,7 @@ class BuildTabBarBody extends StatelessWidget {
               radius: 30,
               borderColor: Colors.transparent,
               imageUrl:
-                  "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+              "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
             ),
           ),
           customSpacerHeight(height: 4),
@@ -262,7 +284,7 @@ class BuildTabBarBody extends StatelessWidget {
   Widget _buildNoCandidate() {
     return Column(
       mainAxisAlignment:
-          MainAxisAlignment.center, // Aligns the children in the center
+      MainAxisAlignment.center, // Aligns the children in the center
       children: [
         customSvgImage(
           imageUrl: Images.NOT_ADDED_YET,

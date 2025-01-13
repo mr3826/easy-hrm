@@ -184,7 +184,7 @@ class SignInScreen extends GetView<SignInController> {
         }
       },
       buttonColor: AppColor.primaryColor,
-      isButtonExpanded: false,
+      isButtonExpanded: true,
     );
   }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/job_applocation_board.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/deshboard_widget.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/job_details/tabbar/build_tabbar.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../common/widget/custom_appbar.dart';
@@ -15,43 +17,58 @@ import '../../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
+import '../../../../../utils/utils.dart';
 import '../../controllers/hr_deshboard_controller.dart';
 
-class JobDetailsScreen extends StatelessWidget {
+class JobDetailsScreen extends GetView<HrDashBoardController> {
   const JobDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppbar(title: AppString.text_job_details.tr, actions: [
-        IconButton(
-          onPressed: () {
-            customButtonSheet(
-                height: .5, context: context, child: _buildMoreView());
-          },
-          icon: const Icon(Icons.more_vert_sharp, color: AppColor.hintColor),
-        )
-      ]),
-      floatingActionButton: _buildPasteButton(),
-      body: Column(
-        children: [
-          customSpacerHeight(height: 18),
-          _buildJobTitleWithDescription(),
-          customSpacerHeight(height: 12),
-          _buildTimeAddressWithDate(),
-          customSpacerHeight(height: 4),
-          TabBarWidget(),
-        ],
-      ),
-    );
+
+
+    return Obx((){
+      if(controller.isJobApplicationBoardLoading.isTrue){
+        return const Scaffold(body: LoadingIndicator(),);
+      }else{
+
+        return Scaffold(
+          appBar: customAppbar(title: AppString.text_job_details.tr, actions: [
+            IconButton(
+              onPressed: () {
+                customButtonSheet(height: .5, context: context, child: _buildMoreView());
+              },
+              icon: const Icon(Icons.more_vert_sharp, color: AppColor.hintColor),
+            )
+          ]),
+          floatingActionButton: _buildPasteButton(),
+          body: Column(
+            children: [
+              customSpacerHeight(height: 18),
+              _buildJobTitleWithDescription(),
+              customSpacerHeight(height: 12),
+              _buildTimeAddressWithDate(),
+              customSpacerHeight(height: 4),
+              TabBarWidget(),
+            ],
+          ),
+        );
+
+
+      }
+
+
+    });
+
   }
 
   _buildJobTitleWithDescription() {
+    GetJobApplicationBoard? data=controller.jobApplicationBoard?.getJobApplicationBoard;
     return Column(
       children: [
         Center(
           child: Text(
-            "Node.js Developer",
+            data?.title??"",
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.secondaryColor,
                 fontWeight: FontWeight.w600,
@@ -60,7 +77,7 @@ class JobDetailsScreen extends StatelessWidget {
         ),
         Center(
           child: Text(
-            "Laravel department",
+            data?.department?.name??"No department",
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.normalTextColor,
                 fontWeight: FontWeight.w500,
@@ -72,19 +89,22 @@ class JobDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildTimeAddressWithDate() {
+    GetJobApplicationBoard? data=controller.jobApplicationBoard?.getJobApplicationBoard;
+
     // Define a list of objects that include the text and corresponding icons
     final List<Map<String, dynamic>> list = [
       {
         'icon': Icons.access_time_rounded,
-        'text': "Full time",
+        'text': capitalizeWords(data?.type??"")
       },
       {
         'icon': Icons.location_on_outlined,
-        'text': "Dhaka, Bangladesh",
+        'text': data?.location??"",
       },
       {
         'icon': Icons.date_range,
-        'text': "24 June, 2022",
+        'text': formatDate(
+            date: data?.lastDateOfApply ?? "", format: "dd MMM, yyy"),
       },
     ];
 
@@ -121,8 +141,7 @@ class JobDetailsScreen extends StatelessWidget {
 
   _buildPasteButton() {
     return Obx(() {
-      bool isCandidateSelected =
-          Get.find<HrDashBoardController>().isPasteButtonActive.isTrue;
+      bool isCandidateSelected = Get.find<HrDashBoardController>().isPasteButtonActive.isTrue;
 
       return AnimatedOpacity(
         opacity: isCandidateSelected

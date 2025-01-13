@@ -1,28 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/job_applocation_board.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/job_details/tabbar/tabbar_body.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-
 import '../../../../controllers/hr_deshboard_controller.dart';
 
-class TabBarWidget extends StatelessWidget {
-  final HrDashBoardController controller = Get.find<HrDashBoardController>();
-
-  final tabs = [
-    {"text": "New", "value": "03", "id": "1"},
-    {"text": "Rejected", "value": "04", "id": "2"},
-    {"text": "Interview", "value": "07", "id": "3"},
-    {"text": "Task assigned", "value": "08", "id": "4"},
-    {"text": "Hired", "value": "09", "id": "5"},
-    {"text": "Offer", "value": "01", "id": "6"},
-    {"text": "Completed", "value": "02", "id": "7"},
-    {"text": "Pending", "value": "06", "id": "8"},
-    {"text": "On Hold", "value": "05", "id": "9"},
-    {"text": "On Hold", "value": "05", "id": "9"},
-    {"text": "On Hold", "value": "05", "id": "9"},
-  ];
+class TabBarWidget extends GetView<HrDashBoardController> {
 
   // Create ScrollController to control tabBar scrolling
   final ScrollController tabsScrollController = ScrollController();
@@ -38,14 +23,13 @@ class TabBarWidget extends StatelessWidget {
         Expanded(
           child: PageView.builder(
             controller: controller.pageController,
-            itemCount: tabs.length,
+            itemCount: controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.length,
             onPageChanged: (index) {
               // Update the selected tab index
               controller.jobDetailsSelectedIndex.value = index;
 
               // Access HrDashBoardController once and use it
               final hrController = Get.find<HrDashBoardController>();
-
               if (hrController.isCandidateSelected.value) {
                 _updateCandidateSelectionState(index, hrController);
               }
@@ -54,7 +38,8 @@ class TabBarWidget extends StatelessWidget {
               _autoScrollTabs(index, context);
             },
             itemBuilder: (context, index) {
-              return BuildTabBarBody(tabId: tabs[index]["id"] ?? "");
+             HiringStages? data= controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
+              return BuildTabBarBody(tabId: data?.id ?? "");
             },
           ),
         ),
@@ -67,11 +52,25 @@ class TabBarWidget extends StatelessWidget {
   }
 // Helper method to update the candidate selection state
   void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
-    final selectedTabId = tabs[index]["id"].toString();
+    // Get the selected tab's hiring stage
+    final selectedTabId = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
+
+    // Get the selected candidate ID from the controller
     final selectedCandidateId = hrController.selectedCandidateId.value;
+
     // Check if the selected candidate matches the current tab's id
-    hrController.isPasteButtonActive.value = selectedTabId != selectedCandidateId;
+    final isMatchingCandidate = selectedTabId?.id == selectedCandidateId;
+
+    // Update the state of the Paste button based on the candidate selection
+    hrController.isPasteButtonActive.value = !isMatchingCandidate;
+
+    // If the selected stage ID is the same as the current tab's ID, deactivate the Paste button
+    if (hrController.selectedStageId.value == selectedTabId?.id) {
+      hrController.isPasteButtonActive(false);
+    }
   }
+
+
   // Function to handle the auto-scroll logic
   void _autoScrollTabs(int index, context) {
     double tabWidth = 150; // Adjust this according to your tab width
@@ -102,6 +101,8 @@ class TabBarWidget extends StatelessWidget {
   }
 
   _buildTabBar() {
+ List<HiringStages>? data= controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages??[];
+
     return Obx(() {
       return Container(
         height: 50,
@@ -121,7 +122,7 @@ class TabBarWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             controller: tabsScrollController, // Attach the controller
             child: Row(
-              children: List.generate(tabs.length, (index) {
+              children: List.generate(data.length, (index) {
                 final isSelected = controller.jobDetailsSelectedIndex.value == index;
                 final textColor = isSelected
                     ? AppColor.primaryColor
@@ -144,7 +145,7 @@ class TabBarWidget extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              tabs[index]["text"]!,
+                              data[index].title??"",
                               style: AppStyle.normal_text_black.copyWith(
                                 color: textColor,
                                 fontSize: Dimensions.fontSizeExtraDefault - .5,
@@ -161,7 +162,7 @@ class TabBarWidget extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                tabs[index]["value"]!,
+                                data[index].noOfApplicant.toString()??"",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -180,7 +181,7 @@ class TabBarWidget extends StatelessWidget {
                           height: 2,
                           width: isSelected
                               ? _getTextWidth(
-                                  "${tabs[index]["text"] ?? ""} ${tabs[index]["value"] ?? ""}")
+                                  "${data[index].title??""} ${data[index].noOfApplicant??""}")
                               : 0, // Smooth width transition
                           color: AppColor.primaryColor,
                         ),
@@ -196,3 +197,4 @@ class TabBarWidget extends StatelessWidget {
     });
   }
 }
+
