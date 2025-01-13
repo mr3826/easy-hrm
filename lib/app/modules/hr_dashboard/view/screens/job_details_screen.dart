@@ -141,15 +141,15 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
 
   _buildPasteButton() {
     return Obx(() {
-      bool isCandidateSelected = Get.find<HrDashBoardController>().isPasteButtonActive.isTrue;
+
 
       return AnimatedOpacity(
-        opacity: isCandidateSelected
+        opacity: Get.find<HrDashBoardController>().isPasteButtonActive.value
             ? 1.0
             : 0.0, // Fully visible when selected, hidden otherwise
         duration:
             const Duration(milliseconds: 400), // Duration of the fade in/out
-        child: isCandidateSelected
+        child: Get.find<HrDashBoardController>().isPasteButtonActive.value
             ? Padding(
                 padding: const EdgeInsets.only(left: 30.0),
                 child: CustomAppButton(

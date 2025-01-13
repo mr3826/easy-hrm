@@ -25,7 +25,6 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isPasteButtonActive = false.obs; // Track if the paste button should be active
 
   RxString selectedCandidateId = ''.obs; // Ensure it's reactive
-  RxString selectedStageId = ''.obs; // Ensure it's reactive
 
   int activeStarIndex = -1;
   RxString reviewerInputValue = "".obs;

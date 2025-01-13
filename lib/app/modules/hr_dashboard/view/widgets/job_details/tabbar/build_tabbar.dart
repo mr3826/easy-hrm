@@ -52,23 +52,17 @@ class TabBarWidget extends GetView<HrDashBoardController> {
   }
 // Helper method to update the candidate selection state
   void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
-    // Get the selected tab's hiring stage
-    final selectedTabId = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
+    final selectedTabId =  controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
 
-    // Get the selected candidate ID from the controller
     final selectedCandidateId = hrController.selectedCandidateId.value;
 
     // Check if the selected candidate matches the current tab's id
-    final isMatchingCandidate = selectedTabId?.id == selectedCandidateId;
+    hrController.isPasteButtonActive.value = selectedTabId?.id != selectedCandidateId;
 
-    // Update the state of the Paste button based on the candidate selection
-    hrController.isPasteButtonActive.value = !isMatchingCandidate;
-
-    // If the selected stage ID is the same as the current tab's ID, deactivate the Paste button
-    if (hrController.selectedStageId.value == selectedTabId?.id) {
-      hrController.isPasteButtonActive(false);
-    }
   }
+
+
+
 
 
   // Function to handle the auto-scroll logic

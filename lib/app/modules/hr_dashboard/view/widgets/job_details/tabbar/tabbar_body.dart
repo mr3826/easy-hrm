@@ -27,22 +27,16 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
     // Example data for the list
     final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
     RxList<JobApplications> userList = <JobApplications>[].obs;
-
     return Obx(() {
       // Filter the list based on the tabId
       final hiringStagesFilter = hiringStages.where((user) => user.id == tabId).toList();
-
-
       List<HiringStages> candidateInfoList = hiringStagesFilter.where((user) => user.jobApplications?.isNotEmpty??false).toList();
-
-
 
       for (var stage in hiringStagesFilter) {
         stage.jobApplications?.forEach((jobApplication) {
           userList.add(jobApplication);
         });
       }
-
 
 
       if (candidateInfoList.isEmpty) {
@@ -78,7 +72,6 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
 
                             _buildCandidateInfo(
                                 context: context,
-                                stageId: hiringStages.first.id??"",
                                 email: user.candidate?.email??"",
                                 name: "${user.candidate?.firstName??"_"} ${user.candidate?.lastName??""}",
                                 candidateId: user.id.toString()),
@@ -114,7 +107,6 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
       {required String name,
         required String email,
         required BuildContext context,
-        required String stageId,
         required String candidateId}) {
     return Expanded(
       child: Row(
@@ -135,7 +127,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
               customButtonSheet(
                   height: .5,
                   context: context,
-                  child: _buildMoreView(candidateId,stageId));
+                  child: _buildMoreView(candidateId));
             },
             child: Icon(
               Icons.more_horiz,
@@ -186,7 +178,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
   }
 
-  Widget _buildMoreView(String candidateId,String stageId) {
+  Widget _buildMoreView(String candidateId) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -206,12 +198,8 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           _buildMoreInfoSection(
             text: AppString.text_move_anywhere.tr,
             onTap: () {
-
               Get.find<HrDashBoardController>().selectedCandidateId.value = candidateId;
-              Get.find<HrDashBoardController>().selectedStageId.value = stageId;
               Get.find<HrDashBoardController>().isCandidateSelected.value = true;
-
-
               Get.back(canPop: false);
 
 
