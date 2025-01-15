@@ -9,7 +9,7 @@ class DashboardBindings extends Bindings{
   void dependencies() {
     ApiService apiService = Get.find<ApiService>();
     DashBoardApiService dashBoardApiService = DashBoardApiService(apiService);
-    DasBoardDataSource dasBoardDataSource = DasBoardDataSourceImpl(dashBoardApiService);
+    DashBoardDataSource dasBoardDataSource = DasBoardDataSourceImpl(dashBoardApiService);
     Get.put(HrDashBoardController(dasBoardDataSource));
   }
 }

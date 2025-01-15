@@ -5,16 +5,9 @@ class JobOpening {
 
   JobOpening.fromJson(Map<String, dynamic> json) {
     getJobs =
-    json['getJobs'] != null ? new GetJobs.fromJson(json['getJobs']) : null;
+    json['getJobs'] != null ? GetJobs.fromJson(json['getJobs']) : null;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getJobs != null) {
-      data['getJobs'] = this.getJobs!.toJson();
-    }
-    return data;
-  }
 }
 
 class GetJobs {
@@ -26,18 +19,11 @@ class GetJobs {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class Data {
@@ -79,22 +65,7 @@ class Data {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['status'] = this.status;
-    data['last_date_of_apply'] = this.lastDateOfApply;
-    data['location'] = this.location;
-    data['no_of_vacancy'] = this.noOfVacancy;
-    data['thumbnail'] = this.thumbnail;
-    data['type'] = this.type;
-    if (this.hiringStages != null) {
-      data['hiring_stages'] =
-          this.hiringStages!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+
 }
 
 class HiringStages {
@@ -108,10 +79,4 @@ class HiringStages {
     noOfApplicant = json['no_of_applicant'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this.title;
-    data['no_of_applicant'] = this.noOfApplicant;
-    return data;
-  }
 }

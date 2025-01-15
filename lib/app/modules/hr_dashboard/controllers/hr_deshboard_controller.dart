@@ -8,7 +8,7 @@ import '../models/leave_timline_summary.dart';
 import '../repositories/dashboard_repository.dart';
 
 class HrDashBoardController extends GetxController with StateMixin {
-  final DasBoardDataSource _dasBoardDataSource;
+  final DashBoardDataSource _dasBoardDataSource;
   HrDashBoardController(this._dasBoardDataSource);
 
   final RxInt currentIndex = 0.obs;
