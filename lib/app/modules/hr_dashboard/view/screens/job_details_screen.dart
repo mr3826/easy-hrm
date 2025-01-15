@@ -167,7 +167,6 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
                     HrDashBoardController controller=Get.find<HrDashBoardController>();
                     controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: controller.selectedJobApplicationId.value, entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
 
-
                   },
                   buttonColor: AppColor.primaryColor,
                   borderRadius: 35,

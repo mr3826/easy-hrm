@@ -26,15 +26,16 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   @override
   Widget build(BuildContext context) {
     // Example data for the list
-    final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
+    final RxList<HiringStages> hiringStages = controller
+            .jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ??
+        <HiringStages>[].obs;
 
     RxList<JobApplications> userList = <JobApplications>[].obs;
 
-
     return Obx(() {
-
       // Filter the list based on the tabId
-      final hiringStagesFilter = hiringStages.where((user) => user.id == tabId).toList();
+      final hiringStagesFilter =
+          hiringStages.where((user) => user.id == tabId).toList();
 
       List<HiringStages> candidateInfoList = hiringStagesFilter
           .where((user) => user.jobApplications?.isNotEmpty ?? false)
@@ -53,16 +54,20 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
       return ListView.builder(
         itemCount: userList.length,
         itemBuilder: (context, index) {
-
           return GestureDetector(
             onTap: () => Get.toNamed(Routes.CANDIDATES_DETAILS),
             child: LayoutBuilder(builder: (context, constraints) {
               double imageSize = constraints.maxWidth * 0.15;
               double paddingSize = constraints.maxWidth * 0.03;
               final user = userList[index];
-
               return Obx(() {
-                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().selectedJobApplicationId.value == user.id  && Get.find<HrDashBoardController>().isCandidateSelected.isTrue;
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
+                            .selectedJobApplicationId
+                            .value ==
+                        user.id &&
+                    Get.find<HrDashBoardController>()
+                        .isCandidateSelected
+                        .isTrue;
                 return Padding(
                   padding: _getPadding(), // Use a dedicated method for padding
                   child: Container(
@@ -78,10 +83,15 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
                             SizedBox(width: paddingSize),
                             _buildCandidateInfo(
                                 context: context,
+                                imgKey: user.candidate?.avatarKey ?? "",
                                 email: user.candidate?.email ?? "",
-                                name: "${user.candidate?.firstName ?? "_"} ${user.candidate?.lastName ?? ""}",
+                                name:
+                                    "${user.candidate?.firstName ?? "_"} ${user.candidate?.lastName ?? ""}",
                                 jobApplicationId: user.id.toString(),
-                                candidateId: user.candidate?.id.toString()??""),
+                                index: index,
+                                hiringStages: hiringStages,
+                                candidateId:
+                                    user.candidate?.id.toString() ?? ""),
                           ],
                         ),
                       )),
@@ -111,8 +121,11 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   Widget _buildCandidateInfo(
       {required String name,
       required String email,
+      required String imgKey,
       required BuildContext context,
       required String candidateId,
+      required int index,
+      required RxList<HiringStages> hiringStages,
       required String jobApplicationId}) {
     return Expanded(
       child: Row(
@@ -130,9 +143,12 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           customSpacerWidth(width: 4),
           GestureDetector(
             onTap: () {
-              controller.selectedJobApplicationId.value=jobApplicationId;
-              controller.selectedCandidateId.value=candidateId;
-              customButtonSheet(height: .5, context: context, child: _buildMoreView(context));
+              controller.selectedJobApplicationId.value = jobApplicationId;
+              controller.selectedCandidateId.value = candidateId;
+              customButtonSheet(
+                  height: .5,
+                  context: context,
+                  child: _buildMoreView(context, name, email, imgKey));
             },
             child: Icon(
               Icons.more_horiz,
@@ -183,39 +199,43 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
   }
 
-  Widget _buildMoreView(BuildContext context) {
-    String jobApplicationId= controller.selectedJobApplicationId.value;
-    String candidateId= controller.selectedCandidateId.value;
+  Widget _buildMoreView(
+      BuildContext context, String name, String email, String imageKey) {
+    String jobApplicationId = controller.selectedJobApplicationId.value;
+
+    String candidateId = controller.selectedCandidateId.value;
     return SingleChildScrollView(
       child: Column(
         children: [
-          _buildHeaderSection(),
-          Obx(() => _moveToNext(jobApplicationId)),
+          _buildHeaderSection(name, email, imageKey),
+          if (controller.nextHiringStagesId.value.isNotEmpty)
+            Obx(() => _moveToNext(jobApplicationId)),
           _moveAnyWhere(jobApplicationId),
-         Obx(()=> _removeCandidate(context,candidateId),),
+          Obx(
+            () => _removeCandidate(context, candidateId),
+          ),
         ],
       ),
     );
   }
 
 // A method to build the header section with profile image and name.
-  Widget _buildHeaderSection() {
+  Widget _buildHeaderSection(String name, String email, String imageKey) {
     return customButtonSheetAppbar(
       height: 150,
       titleWidget: Column(
         children: [
-          const Center(
+          Center(
             child: CustomNetworkImage(
-              isCircleImage: true,
-              radius: 30,
-              borderColor: Colors.transparent,
-              imageUrl:
-                  "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
-            ),
+                isCircleImage: true,
+                radius: 30,
+                borderColor: Colors.transparent,
+                errorText: getInitials(name),
+                imageUrl: buildImgIxUrl(imgKey: imageKey)),
           ),
           customSpacerHeight(height: 4),
           Text(
-            "Agens Nelson",
+            name,
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.secondaryColor,
               fontWeight: FontWeight.w700,
@@ -224,7 +244,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           ),
         ],
       ),
-      subtext: "email@gmail.com",
+      subtext: email,
     );
   }
 
@@ -269,17 +289,16 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
       return _buildMoreInfoSection(
         text: AppString.text_move_to_the_next.tr,
         onTap: () {
-          print('''
-          candidateId $jobApplicationId
-          
-          select : ${controller.selectedHiringStageId.value}
-          select : ${controller.jobApplicationBoard?.getJobApplicationBoard?.id??""}
-          
-          ''');
-          controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: jobApplicationId,entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"").than((v){
+          controller
+              .updateJobApplication(
+                  hiringStageId: controller.nextHiringStagesId.value,
+                  jobApplicationId: jobApplicationId,
+                  entryId: controller
+                          .jobApplicationBoard?.getJobApplicationBoard?.id ??
+                      "")
+              .then((v) {
             Get.back(canPop: false);
           });
-
         },
         trailing: Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -294,11 +313,12 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   }
 
   _moveAnyWhere(String jobApplicationId) {
-   return _buildMoreInfoSection(
+    return _buildMoreInfoSection(
       text: AppString.text_move_anywhere.tr,
       onTap: () {
-       // Get.find<HrDashBoardController>().selectedHiringStageId.value = jobApplicationId;
-        Get.find<HrDashBoardController>().selectedJobApplicationId.value = jobApplicationId;
+        // Get.find<HrDashBoardController>().selectedHiringStageId.value = jobApplicationId;
+        Get.find<HrDashBoardController>().selectedJobApplicationId.value =
+            jobApplicationId;
         Get.find<HrDashBoardController>().isCandidateSelected.value = true;
         Get.back(canPop: false);
       },
@@ -309,23 +329,27 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
     );
   }
 
-  _removeCandidate(BuildContext context,String candidateId) {
-
+  _removeCandidate(BuildContext context, String candidateId) {
     if (controller.isJobApplicationRemoveLoading.isTrue) {
       return const CupertinoActivityIndicator();
     } else {
-      return  _buildMoreInfoSection(
+      return _buildMoreInfoSection(
         text: AppString.text_remove_candidate.tr,
         onTap: () {
           showCustomAlertDialog(
             context: context,
             onConfirm: () {
-              controller.removeJobApplication(candidateId: candidateId,jobId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
+              controller.removeJobApplication(
+                  candidateId: candidateId,
+                  jobId: controller
+                          .jobApplicationBoard?.getJobApplicationBoard?.id ??
+                      "");
               Get.back(canPop: false);
             },
             iconData: Icons.delete_outline_outlined,
             titleText: AppString.text_remove_candidate.tr,
-            descriptionText: AppString.text_sure_you_want_t0_details_candidate_etc.tr,
+            descriptionText:
+                AppString.text_sure_you_want_t0_details_candidate_etc.tr,
             iconBackgroundColor: AppColor.errorColorLight,
             confirmButtonColor: AppColor.errorColorLight,
             confirmButtonText: AppString.text_remove.tr,
@@ -342,7 +366,5 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         ),
       );
     }
-
-
   }
 }

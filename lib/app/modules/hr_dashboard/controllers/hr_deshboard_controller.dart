@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/global/bindings/global_bindings.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import '../models/employee_overview.dart';
 import '../models/job_applocation_board.dart';
@@ -35,6 +34,8 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxString selectedHiringStageId = ''.obs;
 
   RxString selectedJobApplicationId = ''.obs;
+  RxString nextHiringStagesId = ''.obs;
+  RxInt nextHiringStateIndex = 0.obs;
 
   RxString selectedCandidateId = ''.obs;  ///todo
 
@@ -83,10 +84,11 @@ class HrDashBoardController extends GetxController with StateMixin {
     isJobApplicationBoardLoading(true);
     jobApplicationBoard = await _dasBoardDataSource.getJobApplicationBoard(entityId: entityId);
 
-    print("idd : ${jobApplicationBoard?.getJobApplicationBoard?.id}");
 
    ///Add hiring first stage Id
     selectedHiringStageId.value=jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.first.id??"";
+
+   nextHiringStagesId.value=jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[1].id??"";
 
     isJobApplicationBoardLoading(false);
   }
@@ -94,7 +96,7 @@ class HrDashBoardController extends GetxController with StateMixin {
 
 
 
-  updateJobApplication({required String hiringStageId,required String jobApplicationId,required String entryId}) async {
+  Future updateJobApplication({required String hiringStageId,required String jobApplicationId,required String entryId}) async {
     isJobApplicationUpdateLoading(true);
     bool? response;
     response = await _dasBoardDataSource.updateJobApplication(hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
@@ -118,9 +120,6 @@ class HrDashBoardController extends GetxController with StateMixin {
     }
     isJobApplicationRemoveLoading(false);
   }
-
-
-
 
 
 
@@ -167,5 +166,8 @@ class HrDashBoardController extends GetxController with StateMixin {
     selectedJobApplicationId.value="";
     isPasteButtonActive(false);
     isCandidateSelected(false);
+    currentIndex(0);
+    jobTabCurrentIndex(0);
+   jobDetailsSelectedIndex(0);
   }
 }

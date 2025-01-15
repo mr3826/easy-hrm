@@ -33,6 +33,20 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                controller.selectedHiringStageId.value = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id??"";
 
 
+
+               ///Add id for Move next step
+                // Safely update the next hiring stage ID
+                if (controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages != null &&
+                    index + 1 < controller.jobApplicationBoard!.getJobApplicationBoard!.hiringStages!.length) {
+                  controller.nextHiringStagesId.value = controller.jobApplicationBoard!
+                      .getJobApplicationBoard!
+                      .hiringStages![index + 1]
+                      .id ?? "";
+                } else {
+                  controller.nextHiringStagesId.value = ""; // Reset if there's no next stage
+                }
+
+
                 // Access HrDashBoardController once and use it
                 final hrController = Get.find<HrDashBoardController>();
                 if (hrController.isCandidateSelected.value) {
@@ -62,13 +76,6 @@ class TabBarWidget extends GetView<HrDashBoardController> {
     // Check if the selected candidate matches the current tab's id
     hrController.isPasteButtonActive.value =
         selectedTabId != selectedCandidateId;
-
-    print('''
-    selectedTabId $selectedTabId
-    selectedCandidateId $selectedCandidateId
-    ''');
-
-
   }
 
   // Function to handle the auto-scroll logic
