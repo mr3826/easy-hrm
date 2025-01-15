@@ -57,7 +57,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
   void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
     final selectedTabId = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id;
 
-    final selectedCandidateId = hrController.jobApplicationId.value;  ///todo [Paste button]
+    final selectedCandidateId = hrController.selectedJobApplicationId.value;  ///todo [Paste button]
 
     // Check if the selected candidate matches the current tab's id
     hrController.isPasteButtonActive.value =

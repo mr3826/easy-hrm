@@ -165,7 +165,7 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
                   onPressed: () {
 
                     HrDashBoardController controller=Get.find<HrDashBoardController>();
-                    controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: controller.jobApplicationId.value, entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
+                    controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: controller.selectedJobApplicationId.value, entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
 
 
                   },

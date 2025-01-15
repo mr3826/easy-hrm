@@ -34,7 +34,7 @@ class HrDashBoardController extends GetxController with StateMixin {
 
   RxString selectedHiringStageId = ''.obs;
 
-  RxString jobApplicationId = ''.obs;
+  RxString selectedJobApplicationId = ''.obs;
 
   RxString selectedCandidateId = ''.obs;  ///todo
 
@@ -101,16 +101,7 @@ class HrDashBoardController extends GetxController with StateMixin {
 
     if(response==true){
       showSuccessMessage(message: "Job application has been updated!");
-      getJobApplicationBoard(entityId: entryId);
-
-      selectedHiringStageId.value="";
-      selectedCandidateId.value="";
-      jobApplicationId="";
-      isPasteButtonActive(false);
-      isCandidateSelected(false);
-
-
-
+      _updatedDate(entryId);
     }
     isJobApplicationUpdateLoading(false);
   }
@@ -167,5 +158,14 @@ class HrDashBoardController extends GetxController with StateMixin {
     await getEmployeeOverView();
     await getJobOpening();
     await getLeaveAndTimeLogSummary();
+  }
+
+  void _updatedDate(String entryId) {
+    getJobApplicationBoard(entityId: entryId);
+    selectedHiringStageId.value="";
+    selectedCandidateId.value="";
+    selectedJobApplicationId.value="";
+    isPasteButtonActive(false);
+    isCandidateSelected(false);
   }
 }

@@ -62,7 +62,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
               final user = userList[index];
 
               return Obx(() {
-                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().jobApplicationId.value == user.id  && Get.find<HrDashBoardController>().isCandidateSelected.isTrue;
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().selectedJobApplicationId.value == user.id  && Get.find<HrDashBoardController>().isCandidateSelected.isTrue;
                 return Padding(
                   padding: _getPadding(), // Use a dedicated method for padding
                   child: Container(
@@ -130,7 +130,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           customSpacerWidth(width: 4),
           GestureDetector(
             onTap: () {
-              controller.jobApplicationId.value=jobApplicationId;
+              controller.selectedJobApplicationId.value=jobApplicationId;
               controller.selectedCandidateId.value=candidateId;
               customButtonSheet(height: .5, context: context, child: _buildMoreView(context));
             },
@@ -184,7 +184,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   }
 
   Widget _buildMoreView(BuildContext context) {
-    String jobApplicationId= controller.jobApplicationId.value;
+    String jobApplicationId= controller.selectedJobApplicationId.value;
     String candidateId= controller.selectedCandidateId.value;
     return SingleChildScrollView(
       child: Column(
@@ -298,7 +298,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
       text: AppString.text_move_anywhere.tr,
       onTap: () {
        // Get.find<HrDashBoardController>().selectedHiringStageId.value = jobApplicationId;
-        Get.find<HrDashBoardController>().jobApplicationId.value = jobApplicationId;
+        Get.find<HrDashBoardController>().selectedJobApplicationId.value = jobApplicationId;
         Get.find<HrDashBoardController>().isCandidateSelected.value = true;
         Get.back(canPop: false);
       },
