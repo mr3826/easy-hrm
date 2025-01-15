@@ -22,6 +22,7 @@ class DashBoardApiService {
     return response.data;
   }
 
+
   Future<Map<String, dynamic>?>  getJobApplicationBoard(String entityId) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
@@ -29,6 +30,29 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response= await _apiService.gqlCall(query:getJobApplicationBoardQuery,variables: variables);
+    return response.data;
+  }
+
+
+ Future<Map<String, dynamic>?>  updateJobApplication(String hiringStageId,String jobApplicationId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "hiring_stage_id": hiringStageId,
+        "job_application_id": jobApplicationId,
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:updateJobApplicationQuery,variables: variables);
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>?>  removeJobApplication(String jobId,String candidateId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "job_id": jobId,
+        "candidate_id": candidateId,
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:removeJobApplicationQuery,variables: variables);
     return response.data;
   }
 

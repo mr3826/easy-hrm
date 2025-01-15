@@ -916,3 +916,19 @@ query GetJobApplicationBoard($optionData: OptionDataType, $queryData: JobApplica
   }
 }
 ''';
+
+const updateJobApplicationQuery = r'''
+mutation UPDATE_A_JOB_Application($inputData: UpdateJobApplicationInputType!) {
+  updateAJobApplication(inputData: $inputData) {
+    id
+  }
+}
+''';
+
+const removeJobApplicationQuery = r'''
+mutation REMOVE_CANDIDATE($inputData: RemoveCandidateInputData!) {
+  removeCandidate(inputData: $inputData) {
+    result
+  }
+}
+''';

@@ -30,7 +30,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
 
 
                 ///Add hiring stage Id according selected stage
-               controller.selectedCandidateId.value = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id??"";
+               controller.selectedHiringStageId.value = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id??"";
 
 
                 // Access HrDashBoardController once and use it
@@ -57,7 +57,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
   void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
     final selectedTabId = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id;
 
-    final selectedCandidateId = hrController.selectedCandidateId.value;
+    final selectedCandidateId = hrController.selectedHiringStageId.value;
 
     // Check if the selected candidate matches the current tab's id
     hrController.isPasteButtonActive.value =

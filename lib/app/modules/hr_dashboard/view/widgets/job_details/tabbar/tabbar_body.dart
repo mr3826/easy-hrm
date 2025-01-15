@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
@@ -24,19 +25,21 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
 
   @override
   Widget build(BuildContext context) {
-
     // Example data for the list
-    final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
+    final RxList<HiringStages> hiringStages = controller
+            .jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ??
+        <HiringStages>[].obs;
 
     RxList<JobApplications> userList = <JobApplications>[].obs;
 
-
     return Obx(() {
       // Filter the list based on the tabId
-      final hiringStagesFilter = hiringStages.where((user) => user.id == tabId).toList();
+      final hiringStagesFilter =
+          hiringStages.where((user) => user.id == tabId).toList();
 
-
-      List<HiringStages> candidateInfoList = hiringStagesFilter.where((user) => user.jobApplications?.isNotEmpty??false).toList();
+      List<HiringStages> candidateInfoList = hiringStagesFilter
+          .where((user) => user.jobApplications?.isNotEmpty ?? false)
+          .toList();
 
       for (var stage in hiringStagesFilter) {
         stage.jobApplications?.forEach((jobApplication) {
@@ -51,6 +54,8 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
       return ListView.builder(
         itemCount: userList.length,
         itemBuilder: (context, index) {
+
+
           return GestureDetector(
             onTap: () => Get.toNamed(Routes.CANDIDATES_DETAILS),
             child: LayoutBuilder(builder: (context, constraints) {
@@ -59,7 +64,10 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
               final user = userList[index];
 
               return Obx(() {
-                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().selectedCandidateId.value == user.id;
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
+                        .selectedHiringStageId
+                        .value ==
+                    user.id;
                 return Padding(
                   padding: _getPadding(), // Use a dedicated method for padding
                   child: Container(
@@ -68,19 +76,17 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            _buildProfileImage(imageSize,user.candidate?.avatarKey??"","${user.candidate?.firstName??"_"} ${user.candidate?.lastName??""}"),
+                            _buildProfileImage(
+                                imageSize,
+                                user.candidate?.avatarKey ?? "",
+                                "${user.candidate?.firstName ?? "_"} ${user.candidate?.lastName ?? ""}"),
                             SizedBox(width: paddingSize),
-
                             _buildCandidateInfo(
                                 context: context,
-                                email: user.candidate?.email??"",
-                                name: "${user.candidate?.firstName??"_"} ${user.candidate?.lastName??""}",
-                                candidateId: user.id.toString(),
-                               hiringStageId: ""
-
-                            ),
-
-
+                                email: user.candidate?.email ?? "",
+                                name: "${user.candidate?.firstName ?? "_"} ${user.candidate?.lastName ?? ""}",
+                                jobApplicationId: user.id.toString(),
+                                candidateId: user.candidate?.id.toString()??""),
                           ],
                         ),
                       )),
@@ -97,17 +103,22 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
     return marginLayout.copyWith(top: 15, left: 12, right: 12);
   }
 
-  Widget _buildProfileImage(double size,String imgUrl,String errorText) {
+  Widget _buildProfileImage(double size, String imgUrl, String errorText) {
     return CustomNetworkImage(
       isCircleImage: true,
       radius: size / 2.7,
       errorText: getInitials(errorText),
       borderColor: Colors.transparent,
-      imageUrl:buildImgIxUrl(imgKey: imgUrl),
+      imageUrl: buildImgIxUrl(imgKey: imgUrl),
     );
   }
 
-  Widget _buildCandidateInfo({required String name, required String email, required BuildContext context,required String candidateId,required String hiringStageId }) {
+  Widget _buildCandidateInfo(
+      {required String name,
+      required String email,
+      required BuildContext context,
+      required String candidateId,
+      required String jobApplicationId}) {
     return Expanded(
       child: Row(
         children: [
@@ -124,10 +135,9 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           customSpacerWidth(width: 4),
           GestureDetector(
             onTap: () {
-
-              customButtonSheet(height: .5, context: context,child: _buildMoreView(candidateId));
-
-
+              controller.jobApplicationId.value=jobApplicationId;
+              controller.selectedCandidateId.value=candidateId;
+              customButtonSheet(height: .5, context: context, child: _buildMoreView(context));
             },
             child: Icon(
               Icons.more_horiz,
@@ -178,54 +188,16 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault));
   }
 
-  Widget _buildMoreView(String candidateId) {
+  Widget _buildMoreView(BuildContext context) {
+    String jobApplicationId= controller.jobApplicationId.value;
+    String candidateId= controller.selectedCandidateId.value;
     return SingleChildScrollView(
       child: Column(
         children: [
           _buildHeaderSection(),
-          _buildMoreInfoSection(
-            text: AppString.text_move_to_the_next.tr,
-            onTap: () {
-              print("_buildMoreView : ${controller.selectedCandidateId.value}");
-              print("_buildMoreView : ${controller.selectedHiringStageId.value}");
-              print("_buildMoreView : $candidateId");
-
-            },
-            trailing: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(
-                CupertinoIcons.arrow_turn_right_down,
-                color: AppColor.normalTextColor.withOpacity(0.4),
-                size: 24,
-              ),
-            ),
-          ),
-          _buildMoreInfoSection(
-            text: AppString.text_move_anywhere.tr,
-            onTap: () {
-              Get.find<HrDashBoardController>().selectedCandidateId.value = candidateId;
-              Get.find<HrDashBoardController>().isCandidateSelected.value = true;
-              Get.back(canPop: false);
-
-
-            },
-            trailing: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Image.asset(Images.MOVE_ANY_WHERE_ICON),
-            ),
-          ),
-          _buildMoreInfoSection(
-            text: AppString.text_remove_candidate.tr,
-            onTap: () {},
-            trailing: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(
-                Icons.delete_outline,
-                color: AppColor.normalTextColor.withOpacity(0.4),
-                size: 30,
-              ),
-            ),
-          ),
+          Obx(() => _moveToNext(jobApplicationId)),
+          _moveAnyWhere(jobApplicationId),
+         Obx(()=> _removeCandidate(context,candidateId),),
         ],
       ),
     );
@@ -243,7 +215,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
               radius: 30,
               borderColor: Colors.transparent,
               imageUrl:
-              "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+                  "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
             ),
           ),
           customSpacerHeight(height: 4),
@@ -277,7 +249,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   Widget _buildNoCandidate() {
     return Column(
       mainAxisAlignment:
-      MainAxisAlignment.center, // Aligns the children in the center
+          MainAxisAlignment.center, // Aligns the children in the center
       children: [
         customSvgImage(
           imageUrl: Images.NOT_ADDED_YET,
@@ -293,5 +265,87 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         )
       ],
     );
+  }
+
+  _moveToNext(String jobApplicationId) {
+    if (controller.isJobApplicationUpdateLoading.isTrue) {
+      return const CupertinoActivityIndicator();
+    } else {
+      return _buildMoreInfoSection(
+        text: AppString.text_move_to_the_next.tr,
+        onTap: () {
+          print('''
+          candidateId $jobApplicationId
+          
+          select : ${controller.selectedHiringStageId.value}
+          select : ${controller.jobApplicationBoard?.getJobApplicationBoard?.id??""}
+          
+          ''');
+          controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value,jobApplicationId: jobApplicationId,entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
+        },
+        trailing: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Icon(
+            CupertinoIcons.arrow_turn_right_down,
+            color: AppColor.normalTextColor.withOpacity(0.4),
+            size: 24,
+          ),
+        ),
+      );
+    }
+  }
+
+  _moveAnyWhere(String jobApplicationId) {
+   return _buildMoreInfoSection(
+      text: AppString.text_move_anywhere.tr,
+      onTap: () {
+        Get.find<HrDashBoardController>().selectedHiringStageId.value =
+            jobApplicationId;
+        Get.find<HrDashBoardController>().isCandidateSelected.value =
+        true;
+        Get.back(canPop: false);
+      },
+      trailing: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Image.asset(Images.MOVE_ANY_WHERE_ICON),
+      ),
+    );
+  }
+
+  _removeCandidate(BuildContext context,String candidateId) {
+
+    if (controller.isJobApplicationRemoveLoading.isTrue) {
+      return const CupertinoActivityIndicator();
+    } else {
+      return  _buildMoreInfoSection(
+        text: AppString.text_remove_candidate.tr,
+        onTap: () {
+          showCustomAlertDialog(
+            context: context,
+            onConfirm: () {
+              controller.removeJobApplication(candidateId: candidateId,jobId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
+              Get.back(canPop: false);
+            },
+            iconData: Icons.delete_outline_outlined,
+            titleText: AppString.text_remove_candidate.tr,
+            descriptionText: AppString.text_sure_you_want_t0_details_candidate_etc.tr,
+            iconBackgroundColor: AppColor.errorColorLight,
+            confirmButtonColor: AppColor.errorColorLight,
+            confirmButtonText: AppString.text_remove.tr,
+            extraInfoText: "",
+          );
+        },
+        trailing: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Icon(
+            Icons.delete_outline,
+            color: AppColor.normalTextColor.withOpacity(0.4),
+            size: 30,
+          ),
+        ),
+      );
+    }
+
+
   }
 }

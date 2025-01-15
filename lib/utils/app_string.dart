@@ -436,4 +436,7 @@ static String text_are_you_sure_deleted_candidate="Are you sure want to delete t
   static String text_log_request = "Log request";
   static String text_absent = "Absent";
   static String text_employee_overview = "Employee overview";
+
+  static const String text_sure_you_want_t0_details_candidate_etc =
+      "Are you sure you want to details the candidate? Once deleted this action cannot be undone.";
 }

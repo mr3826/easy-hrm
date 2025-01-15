@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/success_message.dart';
 import '../models/employee_overview.dart';
 import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
@@ -20,6 +21,8 @@ class HrDashBoardController extends GetxController with StateMixin {
 
   RxBool isCandidateSelected = false.obs; // Check if a candidate is selected
   RxBool isJobApplicationBoardLoading = false.obs;
+  RxBool isJobApplicationUpdateLoading = false.obs;
+  RxBool isJobApplicationRemoveLoading = false.obs;
 
 
 
@@ -28,10 +31,11 @@ class HrDashBoardController extends GetxController with StateMixin {
 
 
 
-  RxString selectedCandidateId = ''.obs;
+  RxString selectedHiringStageId = ''.obs;
 
+  RxString jobApplicationId = ''.obs;
 
-  RxString selectedHiringStageId = ''.obs;  ///todo [ selectedHiringStageId + selectedCandidateId ]
+  RxString selectedCandidateId = ''.obs;  ///todo
 
 
 
@@ -66,23 +70,60 @@ class HrDashBoardController extends GetxController with StateMixin {
 
 
 
-
   getLeaveAndTimeLogSummary() async {
     change(null, status: RxStatus.loading());
     leaveTimeLogSummary = await _dasBoardDataSource.getLeaveAndTimeLogSummary();
     change(null, status: RxStatus.success());
   }
 
+
+
   getJobApplicationBoard({required String entityId}) async {
     isJobApplicationBoardLoading(true);
     jobApplicationBoard = await _dasBoardDataSource.getJobApplicationBoard(entityId: entityId);
 
-   ///Add hiring first stage Id
-    selectedCandidateId.value=jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.first.id??"";
+    print("idd : ${jobApplicationBoard?.getJobApplicationBoard?.id}");
 
+   ///Add hiring first stage Id
+    selectedHiringStageId.value=jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.first.id??"";
 
     isJobApplicationBoardLoading(false);
   }
+
+
+
+
+  updateJobApplication({required String hiringStageId,required String jobApplicationId,required String entryId}) async {
+    isJobApplicationUpdateLoading(true);
+    bool? response;
+    response = await _dasBoardDataSource.updateJobApplication(hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
+
+    if(response==true){
+      showSuccessMessage(message: "Job application has been updated!");
+      getJobApplicationBoard(entityId: entryId);
+      Get.back(canPop: false);
+    }
+    isJobApplicationUpdateLoading(false);
+  }
+
+
+  removeJobApplication({required String candidateId,required String jobId}) async {
+    isJobApplicationRemoveLoading(true);
+    bool? response;
+    response = await _dasBoardDataSource.removeJobApplication(jobId: jobId, candidateId: candidateId);
+    if(response==true){
+      showSuccessMessage(message: "Job application has been removed!");
+      getJobApplicationBoard(entityId: jobId);
+      Get.back(canPop: false);
+    }
+    isJobApplicationRemoveLoading(false);
+  }
+
+
+
+
+
+
 
 
 
