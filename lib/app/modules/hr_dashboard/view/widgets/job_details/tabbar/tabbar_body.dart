@@ -26,16 +26,15 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   @override
   Widget build(BuildContext context) {
     // Example data for the list
-    final RxList<HiringStages> hiringStages = controller
-            .jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ??
-        <HiringStages>[].obs;
+    final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
 
     RxList<JobApplications> userList = <JobApplications>[].obs;
 
+
     return Obx(() {
+
       // Filter the list based on the tabId
-      final hiringStagesFilter =
-          hiringStages.where((user) => user.id == tabId).toList();
+      final hiringStagesFilter = hiringStages.where((user) => user.id == tabId).toList();
 
       List<HiringStages> candidateInfoList = hiringStagesFilter
           .where((user) => user.jobApplications?.isNotEmpty ?? false)
@@ -281,7 +280,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           select : ${controller.jobApplicationBoard?.getJobApplicationBoard?.id??""}
           
           ''');
-          controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value,jobApplicationId: jobApplicationId,entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
+          controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: jobApplicationId,entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
         },
         trailing: Padding(
           padding: const EdgeInsets.only(right: 8.0),
