@@ -38,13 +38,8 @@ String urlBuilder({
   return client.createURLString(urlPath);
 }
 
-
-
-
-
 Widget circleImageLayout(
     {radius, required url, borderColor, required errorText,TextStyle ?errorTextStyle}) {
-Widget circleImageLayout({radius, required url, borderColor, required errorText}) {
   return CircleAvatar(
     radius: radius + 2.1,
     backgroundColor: borderColor ?? AppColor.hintColor,

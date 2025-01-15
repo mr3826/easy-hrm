@@ -49,7 +49,7 @@ class NotificationScreen extends GetView<NotificationController> {
     });
   }
 
-  /// Returns the widget for the "Mark All As Seen" button.
+  /// Returns the widgets for the "Mark All As Seen" button.
   /// This button marks all notifications as seen when tapped.
   Widget get _markAllBtn {
     return GestureDetector(

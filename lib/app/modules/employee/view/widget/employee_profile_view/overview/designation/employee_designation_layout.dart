@@ -11,7 +11,7 @@ import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../../utils/images.dart';
 import '../../../../../../../modules/auth/view/screens/otp_screen.dart';
 
-/// A stateless widget that displays the employee status with a designated
+/// A stateless widgets that displays the employee status with a designated
 /// image, title, and date.
 
 class EmployeeStatusCard extends StatelessWidget {

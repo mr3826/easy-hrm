@@ -119,7 +119,7 @@ class LeaveSummaryWidget extends StatelessWidget {
     );
   }
 
-  // Build the pending request widget
+  // Build the pending request widgets
   Widget _buildPendingRequest() {
     return _buildSubText(
       label: "Pending Req: ",
@@ -137,7 +137,7 @@ class LeaveSummaryWidget extends StatelessWidget {
     );
   }
 
-  // Build a subtext with a label and either dynamic text or a custom widget
+  // Build a subtext with a label and either dynamic text or a custom widgets
   Widget _buildSubText({required String label, String? value, Widget? widget}) {
     return Row(
       children: [

@@ -10,7 +10,7 @@ import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
-import '../../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../controller/employment_controller.dart';
 import 'leave_allowance/leave_allowance.dart';
 
@@ -152,7 +152,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
     );
   }
 
-  // Build the pending request widget
+  // Build the pending request widgets
   Widget _buildPendingRequest(GetOrganizationUsersLeaveSummary leaveSummary) {
     return _buildSubText(
       label: "Pending Req: ",
@@ -170,7 +170,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
     );
   }
 
-  // Build a subtext with a label and either dynamic text or a custom widget
+  // Build a subtext with a label and either dynamic text or a custom widgets
   Widget _buildSubText({required String label, String? value, Widget? widget}) {
     return Padding(
       padding: const EdgeInsets.only(top: 2.0),

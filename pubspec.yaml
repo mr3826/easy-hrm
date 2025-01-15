@@ -42,7 +42,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
 
   cupertino_icons: ^1.0.2
-  get: ^4.6.5
+  get: ^4.6.6
   get_storage: ^2.1.1
   dots_indicator:
   flutter_otp_text_field: ^1.1.1

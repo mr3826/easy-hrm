@@ -15,6 +15,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_network_image.dart';
+import '../../../../common/widget/loading_indicator.dart';
 
 
 class DepartmentHistory extends GetView<UserProfileController> {

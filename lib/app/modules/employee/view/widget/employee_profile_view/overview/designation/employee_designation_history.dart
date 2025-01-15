@@ -129,7 +129,7 @@ class DesignationHistoryLayout extends GetView<EmploymentController> {
     );
   }
 
-  /// Builds a divider widget used between date ranges and duration.
+  /// Builds a divider widgets used between date ranges and duration.
   Widget _divider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6.0),

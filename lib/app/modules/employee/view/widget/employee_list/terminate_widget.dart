@@ -14,7 +14,7 @@ import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
-import '../../../../../../common/widget/timePicker/custom_date_picker.dart';
+import '../../../../../global/view/widgets/custom_date_picker.dart';
 import '../../../controller/employment_controller.dart';
 
 class TerminateWidget extends StatelessWidget {

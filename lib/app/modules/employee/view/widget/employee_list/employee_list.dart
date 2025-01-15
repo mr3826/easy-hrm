@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/employee/controller/update_org_user_info_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -250,7 +251,6 @@ class EmployeeListInfo extends StatelessWidget {
   }
 
   _handleEditButtonClick() {
-    print("_handleEditButtonClick called");
 
     EmploymentController controller = Get.find<EmploymentController>();
     controller.editFirstNameController.text =
@@ -272,6 +272,7 @@ class EmployeeListInfo extends StatelessWidget {
         ..getEmploymentStatus();
     }
 
+    Get.find<UpdateOrgUserInfoController>().getUpdateAbleUserInfo(orgUserId: orgUserId);
     Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
   }
 }

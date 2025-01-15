@@ -16,6 +16,7 @@ import 'package:payrun_mobile/app/modules/splash/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../app/home/view/screen/main_screen.dart';
+import '../app/modules/employee/bindings/update_org_user_binding.dart';
 import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
 import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
@@ -130,7 +131,8 @@ class AppPages {
     GetPage(
       name: _Paths.EDIT_EMPOLYEE_VIEW,
       transition: Transition.size,
-      page: () =>  EditEmployee(),
+      page: () =>  const EditEmployee(),
+      binding: UpdateOrgUserInfoBindings()
 
     ),
 

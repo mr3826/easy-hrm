@@ -8,6 +8,7 @@ import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/domain/last_input_model.dart';
+import '../../../../common/widget/loading_indicator.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';

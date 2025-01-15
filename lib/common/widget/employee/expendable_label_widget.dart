@@ -55,7 +55,7 @@ class _ExpendableLabelWidgetState extends State<ExpendableLabelWidget> {
   Widget build(BuildContext context) {
     // Update the text length check here
     if (widget.text.length > widget.maxLength) {
-      _splitText(widget.text); // Split text based on current widget.text
+      _splitText(widget.text); // Split text based on current widgets.text
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -23,7 +23,7 @@ import '../../../../controller/leave_controller.dart';
 import '../../../../model/leave_details_by_id.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
 
-/// A widget that displays detailed information for a specific leave record,
+/// A widgets that displays detailed information for a specific leave record,
 /// including options to approve, reject, edit, and view attached documents.
 /// The actions displayed depend on the leave record's status.
 ///

@@ -175,7 +175,6 @@ query GetAvailableLeaveTypes($queryData: AvailableLeaveTypesInput!) {
 ''';
 // profile module
 
-
 const getUserProfileQuery = r'''
 query GetOrganizationUserDetails($orgUserId: UUID) {
   getOrganizationUserDetails(org_user_id: $orgUserId) {
@@ -235,7 +234,32 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
   }
 }
 ''';
-
+const updateAbleOrgUserInfo = r'''
+query GetOrganizationUserDetails($orgUserId: UUID) {
+  getOrganizationUserDetails(org_user_id: $orgUserId) {
+    profile {
+      first_name
+      last_name
+      personal_number
+      emergency_number
+    }
+    department {
+      id
+      name
+    }
+    designation {
+      id
+      name
+    }
+    employment_status {
+      id
+      name
+    }
+    employee_id
+    join_date
+  }
+}
+''';
 
 const getLeaveSummaryQuery = r'''
 query GET_ORGANIZATION_USER_SUMMARY($queryData: OrganizationUserLeaveStatusQuery!, $optionData: OptionDataType) {
@@ -267,7 +291,6 @@ mutation UPDATE_ORG_USER_LEAVE_AVAILABILITY($inputData: OrganizationUserLeaveAva
     }
 }
 ''';
-
 
 const getEmploymentInfoQuery = r'''
 query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
@@ -322,7 +345,6 @@ query GeTimelogAndLeaveAvailabilityForApp($orgUserId: UUID) {
   }
 }
 ''';
-
 
 const updateUserProfileMutation = r'''
 mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {

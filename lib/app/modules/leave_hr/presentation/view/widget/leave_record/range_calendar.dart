@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../../common/widget/timePicker/custom_date_picker.dart';
+import '../../../../../../global/view/widgets/custom_date_picker.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
@@ -127,8 +127,7 @@ void _showCustomDateRangeDialog(int index, context) async {
         cancelTextStyle: AppStyle.normal_text.copyWith(
             color: AppColor.secondaryColor,
             fontSize: Dimensions.fontSizeDefault + 1),
-        baseColor: AppColor.primaryColor,
-        holidayDates: const []),
+        baseColor: AppColor.primaryColor),
   );
   if (selectedRange != null) {
     var startDate = selectedRange["start"];

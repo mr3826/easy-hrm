@@ -2,6 +2,9 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:payrun_mobile/app/global/view/widgets/custom_phone_number_input_field.dart';
+import 'package:payrun_mobile/app/modules/employee/controller/update_org_user_info_controller.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -10,15 +13,15 @@ import '../../../../../../../common/widget/custom_app_button.dart';
 import '../../../../../../../common/widget/custom_inside_appbar.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
-import '../../../../../../../common/widget/timePicker/custom_date_picker.dart';
+import '../../../../../global/view/widgets/custom_date_picker.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../auth/view/screens/otp_screen.dart';
 import '../../../controller/employment_controller.dart';
 import '../../../model/user_work_info_dropdown.dart';
 
-class EditEmployee extends GetView<EmploymentController> {
-  EditEmployee({super.key});
+class EditEmployee extends GetView<UpdateOrgUserInfoController> {
+  const EditEmployee({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,11 @@ class EditEmployee extends GetView<EmploymentController> {
             Get.back();
             Get.back();
           }),
-      body: controller.obx((state) => _body(context),
-          onLoading: const LoadingIndicator()),
+      body: Obx(
+        () => controller.isInfoDataLoading.isTrue
+            ? const LoadingIndicator()
+            : _body(context),
+      ),
     );
   }
 
@@ -89,26 +95,14 @@ class EditEmployee extends GetView<EmploymentController> {
     return GestureDetector(
       onTap: () async {
         final weekendDays = [DateTime.saturday, DateTime.sunday];
-        final holidays = [
-          '2024-12-25T00:00:00',
-          '2025-01-01T00:00:00',
-        ];
 
         final selectedRange = await showDialog<Map<String, DateTime?>>(
           context: context,
           builder: (BuildContext context) => CustomCalendarPicker(
-              isRangeSelectionEnabled: false,
-              weekendDays: weekendDays,
-              holidayDates: holidays),
+              isRangeSelectionEnabled: false, weekendDays: weekendDays),
         );
         if (selectedRange != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Selected Range: ${selectedRange["start"]} - ${selectedRange["end"]}',
-              ),
-            ),
-          );
+          selectedRange["start"];
         }
       },
       child: Container(
@@ -120,11 +114,12 @@ class EditEmployee extends GetView<EmploymentController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-             Text(formatDate(
-                  date: Get.find<EmploymentController>().initJoiningDate ?? "",
-                  format: "yyyy-mm-dd"),
-                  style: const TextStyle(color: Colors.black, fontSize: 16)
-            ),
+            Text(
+                formatDate(
+                    date:
+                        Get.find<EmploymentController>().initJoiningDate ?? "",
+                    format: "yyyy-mm-dd"),
+                style: const TextStyle(color: Colors.black, fontSize: 16)),
             const Icon(CupertinoIcons.calendar, color: Colors.grey, size: 28),
           ],
         ),
@@ -192,9 +187,8 @@ class EditEmployee extends GetView<EmploymentController> {
                   fontSize: Dimensions.fontSizeDefault + 2,
                 ),
               ),
-              onPressed: controller.hasChangedProfileInfo.isFalse
-                  ? () {}
-                  : () {},
+              onPressed:
+                  controller.isUpdateDataChanged.isFalse ? () {} : () {},
               buttonColor: controller.hasChangedProfileInfo.isFalse
                   ? AppColor.primaryColor.withOpacity(.5)
                   : AppColor.primaryColor,
@@ -263,6 +257,10 @@ class EditEmployee extends GetView<EmploymentController> {
                 text: AppString.textJoiningDate.tr, isRequired: true),
             customSpacerHeight(height: 8),
             _buildJoiningDate(context),
+            customSpacerHeight(height: 8),
+            _personalPhoneNumberInput(),
+            customSpacerHeight(height: 8),
+            _emergencyPhoneNumberInput(),
             customSpacerHeight(height: 28),
             Obx(
               () => _buildButtons(context),
@@ -271,5 +269,34 @@ class EditEmployee extends GetView<EmploymentController> {
         ),
       ),
     );
+  }
+
+  _personalPhoneNumberInput() {
+    return Column(
+      children: [
+        _buildTitleText(text: AppString.text_personal_number.tr),
+        customSpacerHeight(height: 8),
+        CustomPhoneNumberInputField(
+          onInputChanged: (PhoneNumber phoneNumber) {},
+        )
+      ],
+    );
+  }
+
+  _emergencyPhoneNumberInput() {
+    return Column(
+      children: [
+        _buildTitleText(text: AppString.text_emergency_number.tr),
+        customSpacerHeight(height: 8),
+        CustomPhoneNumberInputField(
+            onInputChanged: (PhoneNumber phoneNumber) {})
+      ],
+    );
+  }
+
+  _getPhone() async {
+    PhoneNumber phoneNumber =
+        await PhoneNumber.getRegionInfoFromPhoneNumber("+8801768586759");
+    return phoneNumber;
   }
 }

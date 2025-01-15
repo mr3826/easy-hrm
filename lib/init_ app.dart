@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -17,13 +18,25 @@ import 'modules/leave/data/remote/leave_remote_data_source.dart';
 import 'modules/notification/data/remote/notification_remote_data_source.dart';
 import 'network/network_client.dart';
 
+import '../../../common/controller/date_time_controller.dart';
+import '../../../common/controller/file_piker_controller.dart';
+import '../../../common/controller/language_controller.dart';
+import '../../../common/controller/leave_helper/leave_data_source.dart';
+import '../../../common/controller/profile_helper/profile_data_source.dart';
+import '../../../modules/leave/presentation/controller/calendar_date_controller.dart';
+import '../../../modules/leave/presentation/controller/file_upload_controller.dart';
+import '../../../modules/profile/controller/log_out_controller.dart';
+import '../../../modules/profile/controller/profile_image_selected_controller.dart';
+import '../../../modules/profile/controller/update_profile_controller.dart';
+import '../../../modules/timeline/controller/selected_task_controller.dart';
+
 Future<void> initApp() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
 
   initNotification();
 
   initializeHive();
-
-  NetworkClient client = Get.put(NetworkClient());
 
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -31,15 +44,43 @@ Future<void> initApp() async {
       statusBarIconBrightness: Brightness.dark));
 
 
+  ///
+
+  NetworkClient client = Get.put(NetworkClient());
+
   Get.put(DashboardRemoteDataSource(client), permanent: true);
 
   Get.put(NotificationRemoteDataSource(client), permanent: true);
 
   Get.put(LeaveRemoteDataSource(client), permanent: true);
+
   Get.put(EmployeeRemoteDataSource(client), permanent: true);
 
   Get.put(HrLeaveRemoteDataSource(client), permanent: true);
   Get.put(ApplyAndUpdateLeaveDateSource(client), permanent: true);
+
+  Get.lazyPut(() => LanguageController(), fenix: true);
+
+  Get.put(FileUploadController());
+
+  Get.put(PickedFileFormStorage());
+
+  Get.put(DateController());
+
+  Get.put(PikedProfileImgController());
+
+  Get.lazyPut(() => LogoutController(), fenix: true);
+
+  Get.put(SelectedTaskController());
+
+  Get.put(DateTimeController());
+
+  Get.lazyPut(() => UpdateProfileController(), fenix: true);
+
+  Get.put(ProfileDataSource(client), permanent: true);
+
+  Get.put(LeaveDataSource(client), permanent: true);
+
 
 }
 
@@ -124,8 +165,6 @@ class PushNotificationServiceForIOS {
     Get.to(() => const MainScreen(routeIndex: 3,));
   }
 }
-  Get.put(ProfileDataSource(client), permanent: true);
-  Get.put(LeaveDataSource(client), permanent: true);
 
 class ForegroundPushNotificationService {
   static final FlutterLocalNotificationsPlugin

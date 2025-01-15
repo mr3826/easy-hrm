@@ -29,7 +29,7 @@ import 'add_attachment_file.dart';
 import 'assign_leave.dart';
 import 'leave_type.dart';
 
-/// A widget that displays and edits leave record details.
+/// A widgets that displays and edits leave record details.
 class AssignLeaveSelectedValue extends StatelessWidget {
   const AssignLeaveSelectedValue({super.key});
 

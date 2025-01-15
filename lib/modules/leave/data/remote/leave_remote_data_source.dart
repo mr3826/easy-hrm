@@ -14,9 +14,6 @@ import '../../domain/leave_summary_dashboard.dart';
 import '../../domain/leave_type.dart';
 import '../../domain/workshief_response_by_date.dart';
 
-
-
-
 class LeaveRemoteDataSource {
   final NetworkClient networkClient;
 
@@ -24,24 +21,15 @@ class LeaveRemoteDataSource {
 
   Future<List<GetLeaveRecordsForApp>?> getLeaveRecordList(
       {required int limit, required int offset, String? orgId}) async {
-      {required int limit, required int offset, String? orgUserId}) async {
     Map<String, Map<String, Object?>> variables = {
       "optionData": {"limit": limit, "offset": offset}
     };
 
-    if (orgUserId != null) {
-      variables["queryData"] = {"assigned_to": orgUserId};
+    if (orgId != null) {
+      variables["queryData"] = {"assigned_to": orgId};
     }
 
     try {
-      final response = await networkClient
-          .graphRequest(queryString: getLeaveRecordsDataQuery, variables: {
-        "queryData": {
-          "assigned_to":
-              orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
-          "optionData": {"limit": limit, "offset": offset}
-        }
-      });
       final response = await networkClient.graphRequest(
         queryString: getLeaveRecordsDataQuery,
         variables: variables,

@@ -36,6 +36,14 @@ class EmployeeApiService {
     return response.data;
   }
 
+  Future<Map<String, dynamic>?>? getUpdateAbleOrgUserInfo(
+      {required String orgUserId}) async {
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: updateAbleOrgUserInfo,
+        variables: {"orgUserId": orgUserId});
+    return response.data;
+  }
+
   Future<Map<String, dynamic>?>? terminateAUser(
       TerminateUserModel terminateUserModel) async {
     QueryResult<Object?> response =

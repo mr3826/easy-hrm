@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../utils/app_color.dart';
+import '../../../../utils/app_color.dart';
 
 class CustomCalendarPicker extends StatefulWidget {
   final bool isRangeSelectionEnabled;
   final List<int> weekendDays;
-  final List<String> holidayDates;
+  final List<String>? holidayDates;
   final String? cancelText;
   final String? selectionText;
   final String? clearText;
@@ -18,7 +18,7 @@ class CustomCalendarPicker extends StatefulWidget {
     Key? key,
     required this.isRangeSelectionEnabled,
     required this.weekendDays,
-    required this.holidayDates,
+    this.holidayDates,
     this.cancelText,
     this.baseColor,
     this.cancelTextStyle,
@@ -39,7 +39,7 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   bool isRangeSelected = false; // Dynamic range selection
-  late final List<DateTime> parsedHolidays;
+  List<DateTime> parsedHolidays = [];
 
   @override
   void initState() {
@@ -47,9 +47,11 @@ class _CustomCalendarPickerState extends State<CustomCalendarPicker> {
     _cancelText = widget.cancelText ?? 'Cancel';
     _selectionText = widget.selectionText ?? 'Select';
     _clearText = widget.clearText ?? 'Clear';
-    parsedHolidays = widget.holidayDates.map((holiday) {
-      return DateTime.parse(holiday);
-    }).toList();
+    if (widget.holidayDates != null && widget.holidayDates!.isNotEmpty) {
+      parsedHolidays = widget.holidayDates!.map((holiday) {
+        return DateTime.parse(holiday);
+      }).toList();
+    }
   }
 
   // Check if the user has selected both range start and end

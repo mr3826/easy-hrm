@@ -64,7 +64,6 @@ class UserInfoWidget extends StatelessWidget {
             color: employeeStatus?.employmentStatusColorCode ?? "",
             text: employeeStatus?.employmentContractType ?? ""),
         customSpacerWidth(width: 12),
-        employmentStatus(employeeStatus?.currentEmployeeStatus),
       ],
     );
   }

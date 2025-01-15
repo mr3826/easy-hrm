@@ -17,7 +17,7 @@ import 'designation/employee_designation_history.dart';
 import 'designation/employee_designation_layout.dart';
 import 'designation/employee_status_history.dart';
 
-/// A widget that displays an overview of an employee's profile,
+/// A widgets that displays an overview of an employee's profile,
 /// including descriptions, contact information, department,
 /// and designation details.
 class OverviewWidget extends GetView<EmploymentController> {

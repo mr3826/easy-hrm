@@ -78,12 +78,12 @@ class AssignLeave extends GetView<HrLeaveController> {
     );
   }
 
-  /// Builds the bottom sheet header widget with a given title.
+  /// Builds the bottom sheet header widgets with a given title.
   Widget _buildBottomSheetHeader() {
     return buildBottomSheetHeader(text: AppString.textAssignLeave.tr);
   }
 
-  /// Builds a title text widget with the provided text.
+  /// Builds a title text widgets with the provided text.
   Widget _buildTitleText(String text) {
     return customTitleText(text: text, isRequired: true);
   }
@@ -338,7 +338,7 @@ Widget _buildLeaveTypeGrid(HrLeaveController controller) {
   );
 }
 
-/// Returns an icon widget according to the leave type.
+/// Returns an icon widgets according to the leave type.
 Widget _buildLeaveTypeIcon(String? leaveName, String? availableLeave) {
   // Define a map of leave types to corresponding image URLs
   final leaveImages = {

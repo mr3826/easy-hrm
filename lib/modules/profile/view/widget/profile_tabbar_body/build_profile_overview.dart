@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../../common/widget/custom_spacer.dart';
-import '../../../../auth/presentation/view/otp_screen.dart';
 import '../../../controller/user_profile_controller.dart';
 import '../chnage_email_notify_layout.dart';
 import '../common_widget.dart';

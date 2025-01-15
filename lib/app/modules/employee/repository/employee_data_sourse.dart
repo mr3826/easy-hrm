@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
 import 'package:payrun_mobile/app/modules/employee/services/employee_api_service.dart';
 
+import '../../../../modules/profile/model/user_profile.dart';
 import '../model/employee_info.dart';
 import '../model/user_work_info_dropdown.dart';
 
@@ -17,17 +18,19 @@ abstract class EmployeeDataSource {
   Future<DesignationList?> getDesignations();
 
   Future<String?> terminateAUser(TerminateUserModel terminateUserModel);
+
+  Future<GetOrganizationUserDetails> getUpdateAbleUserInfo({required String orgUserId});
 }
 
 class EmployeeDataSourceImpl implements EmployeeDataSource {
-  final EmployeeApiService _employeeRemoteService;
+  final EmployeeApiService _employeeApiService;
 
-  EmployeeDataSourceImpl(this._employeeRemoteService);
+  EmployeeDataSourceImpl(this._employeeApiService);
 
   @override
   Future<DepartmentList?> getDepartments() async {
     try {
-      final response = await _employeeRemoteService.getDepartments();
+      final response = await _employeeApiService.getDepartments();
       if (response != null) {
         return DepartmentList.fromJson(response);
       }
@@ -41,7 +44,7 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
   @override
   Future<DesignationList?> getDesignations() async {
     try {
-      final response = await _employeeRemoteService.getDesignations();
+      final response = await _employeeApiService.getDesignations();
       if (response != null) {
         return DesignationList.fromJson(response);
       }
@@ -55,7 +58,7 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
   @override
   Future<EmploymentStatusList?>? getEmploymentsStatus() async {
     try {
-      final response = await _employeeRemoteService.getEmploymentsStatus();
+      final response = await _employeeApiService.getEmploymentsStatus();
       if (response != null) {
         return EmploymentStatusList.fromJson(response);
       }
@@ -70,8 +73,8 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
   Future<EmployeeInfo?> getEmployees(
       {required Map<String, Map<String, Object>> queryVariable}) async {
     try {
-      Map<String, dynamic>? response = await _employeeRemoteService
-          .getEmployees(queryVariable: queryVariable);
+      Map<String, dynamic>? response =
+          await _employeeApiService.getEmployees(queryVariable: queryVariable);
       if (response != null) {
         return EmployeeInfo.fromJson(response);
       }
@@ -86,7 +89,7 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
   Future<String?> terminateAUser(TerminateUserModel terminateUserModel) async {
     try {
       final Map<String, dynamic>? response =
-          await _employeeRemoteService.terminateAUser(terminateUserModel);
+          await _employeeApiService.terminateAUser(terminateUserModel);
       if (response != null) {
         String status = response["getOrganizationUsers"]["status"] ?? "";
         return status;
@@ -96,5 +99,22 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
       log('Error in terminateAUser: $e');
       return null;
     }
+  }
+
+  @override
+  Future<GetOrganizationUserDetails> getUpdateAbleUserInfo(
+      {required String orgUserId}) async {
+    try {
+      Map<String, dynamic>? response = await _employeeApiService
+          .getUpdateAbleOrgUserInfo(orgUserId: orgUserId);
+
+      if (response != null && response["getOrganizationUserDetails"] != null) {
+        return GetOrganizationUserDetails.fromJson(
+            response["getOrganizationUserDetails"]);
+      }
+    } catch (e) {
+      log('Error in getUpdateAbleUserInfo: $e');
+    }
+    return GetOrganizationUserDetails();
   }
 }

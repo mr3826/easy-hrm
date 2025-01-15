@@ -31,7 +31,7 @@ import '../../../assign_leave/leave_type.dart';
 
 
 
-/// A widget that displays and edits leave record details.
+/// A widgets that displays and edits leave record details.
 class EditLeaveRecordDetails extends GetView<HrLeaveController> {
   final GetLeaveDetailsById? getLeaveDetailsById;
   const EditLeaveRecordDetails({super.key, this.getLeaveDetailsById});

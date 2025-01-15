@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/controller/convart_color_code_controller.dart';
 import '../../../../utils/utils.dart';
 import '../../../../app/modules/auth/view/screens/otp_screen.dart';
+import '../../model/employee_work_history.dart';
 import 'department_layout_widget.dart';
 
 class EmploymentLayout extends GetView<UserProfileController> {

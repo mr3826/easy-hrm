@@ -9,11 +9,11 @@ class EmployeeBindings extends Bindings {
   @override
   void dependencies() {
     EmployeeApiService employeeRemoteService =
-        Get.put<EmployeeApiService>(
+        Get.put(
             EmployeeApiService(Get.find<ApiService>()));
-    EmployeeDataSource employeeDataSource = Get.put<EmployeeDataSource>(
+    EmployeeDataSource employeeDataSource = Get.put(
         EmployeeDataSourceImpl(employeeRemoteService));
 
-    Get.put<EmploymentController>(EmploymentController(employeeDataSource));
+    Get.put(EmploymentController(employeeDataSource));
   }
 }

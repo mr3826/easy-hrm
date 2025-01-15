@@ -146,29 +146,6 @@ _workingShiftLayout(context) {
 
 
 
-
-getDateTimeFormat(dateString){
-  if(dateString.isEmpty) return"";
-  DateTime dateTime = DateTime.parse(dateString);
-  // Format the DateTime to "dd, MMM"
-  return DateFormat('dd MMM, yyyy').format(dateTime);
-}
-
-_parentDepartmentInfo({required String parentDepartmentName}) {
-  return Row(
-    children: [
-      Text(
-        parentDepartmentName,
-        style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.primaryColor,
-            fontSize: Dimensions.fontSizeDefault - 1),
-      ),
-      if (parentDepartmentName.isNotEmpty) _divider(),
-    ],
-  );
-}
-
-
 _verticalDivider() {
   return Container(
     width: 1,

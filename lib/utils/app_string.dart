@@ -380,12 +380,6 @@ class AppString {
       "text_we_have_sent_a_verification_etc";
   static String text_time_entry = "Add time entry";
   static String text_employee_type = "Employee & type";
-  static String textAddAllowance = "Add allowance";
-  static String textLeaveAllowance = "Leave allowance";
-  static String textAllowanceBalance = "Leave allowance balance";
-  static String textApplicationBalance = "Application balance";
-  static String textMaxConsecutiveBalance = "Max consecutive days";
-  static String textCancelled = "Cancelled";
 
   static String pleaseProvideATerminationType='Please select a termination type';
 }
