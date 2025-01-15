@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/bindings/global_bindings.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import '../models/employee_overview.dart';
 import '../models/job_applocation_board.dart';
@@ -101,7 +102,15 @@ class HrDashBoardController extends GetxController with StateMixin {
     if(response==true){
       showSuccessMessage(message: "Job application has been updated!");
       getJobApplicationBoard(entityId: entryId);
-      Get.back(canPop: false);
+
+      selectedHiringStageId.value="";
+      selectedCandidateId.value="";
+      jobApplicationId="";
+      isPasteButtonActive(false);
+      isCandidateSelected(false);
+
+
+
     }
     isJobApplicationUpdateLoading(false);
   }

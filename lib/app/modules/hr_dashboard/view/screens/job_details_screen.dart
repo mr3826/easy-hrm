@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/models/job_applocation_board.dart';
@@ -152,13 +153,22 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
         child: Get.find<HrDashBoardController>().isPasteButtonActive.value
             ? Padding(
                 padding: const EdgeInsets.only(left: 30.0),
-                child: CustomAppButton(
-                  buttonText: Text(
+                child:
+                CustomAppButton(
+                  buttonText:Get.find<HrDashBoardController>().isJobApplicationUpdateLoading.isTrue?const CupertinoActivityIndicator(color: AppColor.cardColor,):
+
+                  Text(
                     "Paste here",
                     style: AppStyle.normal_text_grey
                         .copyWith(color: AppColor.cardColor, fontSize: 15),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+
+                    HrDashBoardController controller=Get.find<HrDashBoardController>();
+                    controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: controller.jobApplicationId.value, entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
+
+
+                  },
                   buttonColor: AppColor.primaryColor,
                   borderRadius: 35,
                 ),

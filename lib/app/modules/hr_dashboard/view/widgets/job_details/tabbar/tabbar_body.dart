@@ -54,7 +54,6 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         itemCount: userList.length,
         itemBuilder: (context, index) {
 
-
           return GestureDetector(
             onTap: () => Get.toNamed(Routes.CANDIDATES_DETAILS),
             child: LayoutBuilder(builder: (context, constraints) {
@@ -63,10 +62,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
               final user = userList[index];
 
               return Obx(() {
-                bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
-                        .selectedHiringStageId
-                        .value ==
-                    user.id;
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().jobApplicationId.value == user.id  && Get.find<HrDashBoardController>().isCandidateSelected.isTrue;
                 return Padding(
                   padding: _getPadding(), // Use a dedicated method for padding
                   child: Container(
@@ -280,7 +276,10 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           select : ${controller.jobApplicationBoard?.getJobApplicationBoard?.id??""}
           
           ''');
-          controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: jobApplicationId,entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
+          controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: jobApplicationId,entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"").than((v){
+            Get.back(canPop: false);
+          });
+
         },
         trailing: Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -298,10 +297,9 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
    return _buildMoreInfoSection(
       text: AppString.text_move_anywhere.tr,
       onTap: () {
-        Get.find<HrDashBoardController>().selectedHiringStageId.value =
-            jobApplicationId;
-        Get.find<HrDashBoardController>().isCandidateSelected.value =
-        true;
+       // Get.find<HrDashBoardController>().selectedHiringStageId.value = jobApplicationId;
+        Get.find<HrDashBoardController>().jobApplicationId.value = jobApplicationId;
+        Get.find<HrDashBoardController>().isCandidateSelected.value = true;
         Get.back(canPop: false);
       },
       trailing: Padding(

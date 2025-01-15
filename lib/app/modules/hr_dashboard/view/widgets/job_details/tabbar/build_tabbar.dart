@@ -57,11 +57,18 @@ class TabBarWidget extends GetView<HrDashBoardController> {
   void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
     final selectedTabId = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id;
 
-    final selectedCandidateId = hrController.selectedHiringStageId.value;
+    final selectedCandidateId = hrController.jobApplicationId.value;  ///todo [Paste button]
 
     // Check if the selected candidate matches the current tab's id
     hrController.isPasteButtonActive.value =
         selectedTabId != selectedCandidateId;
+
+    print('''
+    selectedTabId $selectedTabId
+    selectedCandidateId $selectedCandidateId
+    ''');
+
+
   }
 
   // Function to handle the auto-scroll logic
