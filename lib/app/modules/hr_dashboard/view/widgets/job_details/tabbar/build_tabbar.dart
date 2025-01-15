@@ -8,7 +8,6 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../controllers/hr_deshboard_controller.dart';
 
 class TabBarWidget extends GetView<HrDashBoardController> {
-
   // Create ScrollController to control tabBar scrolling
   final ScrollController tabsScrollController = ScrollController();
 
@@ -19,51 +18,51 @@ class TabBarWidget extends GetView<HrDashBoardController> {
     return Expanded(
       child: Column(
         children: [
-          _buildTabBar(),
-        Expanded(
-          child: PageView.builder(
-            controller: controller.pageController,
-            itemCount: controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.length,
-            onPageChanged: (index) {
-              // Update the selected tab index
-              controller.jobDetailsSelectedIndex.value = index;
+          _buildTabBar(context),
+          Expanded(
+            child: PageView.builder(
+              controller: controller.pageController,
+              itemCount: controller.jobApplicationBoard?.getJobApplicationBoard
+                  ?.hiringStages?.length,
+              onPageChanged: (index) {
+                // Update the selected tab index
+                controller.jobDetailsSelectedIndex.value = index;
 
-              // Access HrDashBoardController once and use it
-              final hrController = Get.find<HrDashBoardController>();
-              if (hrController.isCandidateSelected.value) {
-                _updateCandidateSelectionState(index, hrController);
-              }
 
-              // Check if we need to auto-scroll based on index
-              _autoScrollTabs(index, context);
-            },
-            itemBuilder: (context, index) {
-             HiringStages? data= controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
-              return BuildTabBarBody(tabId: data?.id ?? "");
-            },
+                ///Add hiring stage Id according selected stage
+               controller.selectedCandidateId.value = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id??"";
+
+
+                // Access HrDashBoardController once and use it
+                final hrController = Get.find<HrDashBoardController>();
+                if (hrController.isCandidateSelected.value) {
+                  _updateCandidateSelectionState(index, hrController);
+                }
+
+                // Check if we need to auto-scroll based on index
+                _autoScrollTabs(index, context);
+              },
+              itemBuilder: (context, index) {
+                HiringStages? data = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
+                return BuildTabBarBody(tabId: data?.id ?? "");
+              },
+            ),
           ),
-        ),
-
-
-
-    ],
+        ],
       ),
     );
   }
+
 // Helper method to update the candidate selection state
   void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
-    final selectedTabId =  controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
+    final selectedTabId = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id;
 
     final selectedCandidateId = hrController.selectedCandidateId.value;
 
     // Check if the selected candidate matches the current tab's id
-    hrController.isPasteButtonActive.value = selectedTabId?.id != selectedCandidateId;
-
+    hrController.isPasteButtonActive.value =
+        selectedTabId != selectedCandidateId;
   }
-
-
-
-
 
   // Function to handle the auto-scroll logic
   void _autoScrollTabs(int index, context) {
@@ -94,9 +93,8 @@ class TabBarWidget extends GetView<HrDashBoardController> {
     return textPainter.width;
   }
 
-  _buildTabBar() {
- List<HiringStages>? data= controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages??[];
-
+  _buildTabBar(BuildContext context) {
+    List<HiringStages>? data = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages ?? [];
     return Obx(() {
       return Container(
         height: 50,
@@ -117,19 +115,13 @@ class TabBarWidget extends GetView<HrDashBoardController> {
             controller: tabsScrollController, // Attach the controller
             child: Row(
               children: List.generate(data.length, (index) {
-                final isSelected = controller.jobDetailsSelectedIndex.value == index;
+                final isSelected =
+                    controller.jobDetailsSelectedIndex.value == index;
                 final textColor = isSelected
                     ? AppColor.primaryColor
                     : AppColor.normalTextColor.withOpacity(0.5);
                 return GestureDetector(
-                  onTap: () {
-                  //  controller.jobDetailsSelectedIndex.value = index;
-                    controller.pageController.animateToPage(
-                      index,
-                      duration: const Duration(milliseconds: 800),
-                      curve: Curves.easeInOut,
-                    );
-                  },
+                  onTap: () {},
                   child: Padding(
                     padding: const EdgeInsets.only(right: 18.0),
                     child: Column(
@@ -139,7 +131,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                         Row(
                           children: [
                             Text(
-                              data[index].title??"",
+                              data[index].title ?? "",
                               style: AppStyle.normal_text_black.copyWith(
                                 color: textColor,
                                 fontSize: Dimensions.fontSizeExtraDefault - .5,
@@ -156,7 +148,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                data[index].noOfApplicant.toString()??"",
+                                data[index].noOfApplicant.toString() ?? "",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -175,7 +167,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                           height: 2,
                           width: isSelected
                               ? _getTextWidth(
-                                  "${data[index].title??""} ${data[index].noOfApplicant??""}")
+                                  "${data[index].title ?? ""} ${data[index].noOfApplicant ?? ""}")
                               : 0, // Smooth width transition
                           color: AppColor.primaryColor,
                         ),
@@ -191,4 +183,3 @@ class TabBarWidget extends GetView<HrDashBoardController> {
     });
   }
 }
-

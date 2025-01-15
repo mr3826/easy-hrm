@@ -24,12 +24,18 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
 
   @override
   Widget build(BuildContext context) {
+
     // Example data for the list
     final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
+
     RxList<JobApplications> userList = <JobApplications>[].obs;
+
+
     return Obx(() {
       // Filter the list based on the tabId
       final hiringStagesFilter = hiringStages.where((user) => user.id == tabId).toList();
+
+
       List<HiringStages> candidateInfoList = hiringStagesFilter.where((user) => user.jobApplications?.isNotEmpty??false).toList();
 
       for (var stage in hiringStagesFilter) {
@@ -37,7 +43,6 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           userList.add(jobApplication);
         });
       }
-
 
       if (candidateInfoList.isEmpty) {
         return _buildNoCandidate();
@@ -54,11 +59,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
               final user = userList[index];
 
               return Obx(() {
-                bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
-                    .selectedCandidateId
-                    .value ==
-                    user.id;
-
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().selectedCandidateId.value == user.id;
                 return Padding(
                   padding: _getPadding(), // Use a dedicated method for padding
                   child: Container(
@@ -74,7 +75,10 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
                                 context: context,
                                 email: user.candidate?.email??"",
                                 name: "${user.candidate?.firstName??"_"} ${user.candidate?.lastName??""}",
-                                candidateId: user.id.toString()),
+                                candidateId: user.id.toString(),
+                               hiringStageId: ""
+
+                            ),
 
 
                           ],
@@ -103,11 +107,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
     );
   }
 
-  Widget _buildCandidateInfo(
-      {required String name,
-        required String email,
-        required BuildContext context,
-        required String candidateId}) {
+  Widget _buildCandidateInfo({required String name, required String email, required BuildContext context,required String candidateId,required String hiringStageId }) {
     return Expanded(
       child: Row(
         children: [
@@ -124,10 +124,10 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           customSpacerWidth(width: 4),
           GestureDetector(
             onTap: () {
-              customButtonSheet(
-                  height: .5,
-                  context: context,
-                  child: _buildMoreView(candidateId));
+
+              customButtonSheet(height: .5, context: context,child: _buildMoreView(candidateId));
+
+
             },
             child: Icon(
               Icons.more_horiz,
@@ -185,7 +185,12 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
           _buildHeaderSection(),
           _buildMoreInfoSection(
             text: AppString.text_move_to_the_next.tr,
-            onTap: () {},
+            onTap: () {
+              print("_buildMoreView : ${controller.selectedCandidateId.value}");
+              print("_buildMoreView : ${controller.selectedHiringStageId.value}");
+              print("_buildMoreView : $candidateId");
+
+            },
             trailing: Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Icon(

@@ -22,9 +22,22 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isJobApplicationBoardLoading = false.obs;
 
 
+
+
   RxBool isPasteButtonActive = false.obs; // Track if the paste button should be active
 
-  RxString selectedCandidateId = ''.obs; // Ensure it's reactive
+
+
+  RxString selectedCandidateId = ''.obs;
+
+
+  RxString selectedHiringStageId = ''.obs;  ///todo [ selectedHiringStageId + selectedCandidateId ]
+
+
+
+
+
+
 
   int activeStarIndex = -1;
   RxString reviewerInputValue = "".obs;
@@ -63,6 +76,11 @@ class HrDashBoardController extends GetxController with StateMixin {
   getJobApplicationBoard({required String entityId}) async {
     isJobApplicationBoardLoading(true);
     jobApplicationBoard = await _dasBoardDataSource.getJobApplicationBoard(entityId: entityId);
+
+   ///Add hiring first stage Id
+    selectedCandidateId.value=jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.first.id??"";
+
+
     isJobApplicationBoardLoading(false);
   }
 
