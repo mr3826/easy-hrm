@@ -7,6 +7,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../common/widget/custom_svg_image.dart';
 import '../common/widget/error_message.dart';
@@ -420,16 +421,27 @@ handleUnknownError(di.Response response) {
 /// Formats a given date string into the specified format.
 /// Defaults to "dd MMM yy" if no format is provided.
 /// Returns an empty string if the input date is invalid.
+
+
 String formatDate({required String date, String? format}) {
   if (date.isEmpty) return "";
-  final String dateFormat = format ?? "dd MMM yy";
 
   try {
-    final parsedDate = DateTime.tryParse(date) ?? DateFormat(dateFormat).parse(date);
-    return DateFormat(dateFormat).format(parsedDate);
-  } catch (_) {
+
+    final String dateFormat = format ?? "dd MMM yy";
+
+    // Parse the input string to a DateTime object
+    DateTime dateTime = DateTime.parse(date);
+
+    // Format the DateTime object to the desired format
+    String formattedDate = DateFormat(dateFormat).format(dateTime);
+
+    return formattedDate;
+  } catch (e) {
+    log(e.toString());
     return "";
   }
+
 }
 
 
@@ -483,3 +495,17 @@ String capitalizeWords(String input) {
       .join(' ').replaceAll("_", " ");
 }
 
+Future<void> openUrlInBrowser(String url) async {
+  try {
+    final Uri? _url = Uri.tryParse(url);
+    if (_url == null) {
+      throw FormatException('Invalid URL format: $url');
+    }
+
+    if (!await launchUrl(_url)) {
+      throw Exception('Failed to launch the URL: $url');
+    }
+  } catch (e) {
+    rethrow; // Rethrow the error to be handled elsewhere or logged
+  }
+}

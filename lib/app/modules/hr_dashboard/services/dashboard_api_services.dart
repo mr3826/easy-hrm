@@ -68,5 +68,12 @@ class DashBoardApiService {
     return response.data;
   }
 
+ Future<Map<String, dynamic>?>  getFileSignUrl(String fileKey) async {
+    print("file_key : $fileKey");
+   Map<String, dynamic> variables = {"fileKey": fileKey, "isDownload": false};
+   QueryResult<Object?> response= await _apiService.gqlCall(query:getFileSignUrlQuery,variables: variables);
+   return response.data;
+ }
+
 
 }

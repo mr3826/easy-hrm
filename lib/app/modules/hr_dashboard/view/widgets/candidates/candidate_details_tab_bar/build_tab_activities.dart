@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_activities_logs.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../../enum.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../controllers/candidates_details_controller.dart';
@@ -79,7 +81,6 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
     String titleText = getLogs?.action == CandidateActivitiesLogsEnum.applied_to_job.name
         ? "${getLogs?.candidate?.firstName ?? ""} ${getLogs?.candidate?.lastName ?? ""}"
         : "${getLogs?.createdByUser?.profile?.firstName ?? ""} ${getLogs?.createdByUser?.profile?.lastName ?? ""}";
-
     return Text(
       titleText,
       style: AppStyle.normal_text_grey.copyWith(
@@ -209,11 +210,12 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
         _createDate(getLogs.createdAt.toString(), fontSize),
         if (getLogs.files?.isNotEmpty ?? false) ...[
           const SizedBox(height: 8),
-          _buildAttachFile(getLogs)
+          _buildAttachFile(getLogs),
         ]
       ],
     );
   }
+
 
   _appliedToJob(GetLogs getLogs, double fontSize) {
     return Column(
@@ -244,7 +246,8 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
         _createDate(getLogs.createdAt.toString(), fontSize),
         if (getLogs.files?.isNotEmpty ?? false) ...[
           const SizedBox(height: 8),
-          _buildAttachFile(getLogs)
+          _buildAttachFile(getLogs),
+
         ]
       ],
     );
@@ -295,6 +298,7 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
 
 
   Widget _buildAttachFile(GetLogs getLogs) {
+    RxInt currentIndex=0.obs;
     return SizedBox(
       height: 140,
       width: double.infinity,
@@ -303,35 +307,44 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
         itemCount:  getLogs.files?.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 100,
-                width: 80,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColor.hintColor.withOpacity(0.1),
-                  ),
-                  child: Icon(
-                    CupertinoIcons.doc_text,
-                    size: 50,
-                    color: AppColor.normalTextColor.withOpacity(0.5),
+        return GestureDetector(
+          onTap: (){
+            currentIndex.value =index;
+            Get.find<CandidateDetailsController>().getFileSignUrl(getLogs.files?[index].key??"");
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 100,
+                  width: 80,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColor.hintColor.withOpacity(0.1),
+                    ),
+                    child:Obx(()=>currentIndex.value ==index &&
+                    Get.find<CandidateDetailsController>().isFileSignUrlLoading.isTrue?const CupertinoActivityIndicator():
+                    Icon(
+                      CupertinoIcons.doc_text,
+                      size: 50,
+                      color: AppColor.normalTextColor.withOpacity(0.5),
+                    )),
+
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                getLogs.files?[index].name??"",
-                style: AppStyle.normal_text.copyWith(
-                  color: AppColor.normalTextColor.withOpacity(0.8),
-                  fontSize: Dimensions.fontSizeSmall,
+                const SizedBox(height: 8),
+                Text(
+                  getLogs.files?[index].name??"",
+                  style: AppStyle.normal_text.copyWith(
+                    color: AppColor.normalTextColor.withOpacity(0.8),
+                    fontSize: Dimensions.fontSizeSmall,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },),
@@ -349,4 +362,3 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
     );
   }
 }
-
