@@ -143,7 +143,6 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
   _buildPasteButton() {
     return Obx(() {
 
-
       return AnimatedOpacity(
         opacity: Get.find<HrDashBoardController>().isPasteButtonActive.value
             ? 1.0

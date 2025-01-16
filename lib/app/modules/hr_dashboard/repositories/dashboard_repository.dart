@@ -14,6 +14,7 @@ abstract class DasBoardDataSource {
   Future<JobApplicationBoard?> getJobApplicationBoard({required String entityId});
   Future<bool?> updateJobApplication({required String hiringStageId,required String jobApplicationId});
   Future<bool?> removeJobApplication({required String jobId,required String candidateId});
+  Future<bool?> getCandidateLog({required String jobId,required String candidateId});
 }
 
 
@@ -23,7 +24,7 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
   DasBoardDataSourceImpl(this._dashBoardApiService);
 
   @override
-  getEmployeeOverview() async {
+  Future<EmployeeOverview?>  getEmployeeOverview() async {
     try {
       final response = await _dashBoardApiService.getEmployeeOverView();
       if (response != null) {
@@ -37,7 +38,7 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
 
 
   @override
-  getJobOpening() async {
+  Future<JobOpening?> getJobOpening() async {
     try {
       final response = await _dashBoardApiService.getJobOpening();
       if (response != null) {
@@ -51,7 +52,7 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
 
 
   @override
-  getLeaveAndTimeLogSummary() async {
+  Future<LeaveTimeLogSummary?> getLeaveAndTimeLogSummary() async {
     try {
       final response = await _dashBoardApiService.getLeaveAndTimeLogSummary();
       if (response != null) {
@@ -65,7 +66,7 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
 
 
   @override
-  getJobApplicationBoard({required String entityId}) async {
+ Future<JobApplicationBoard?> getJobApplicationBoard({required String entityId}) async {
     try {
       final response = await _dashBoardApiService.getJobApplicationBoard(
           entityId);
@@ -96,7 +97,6 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
 
 
 
-
   @override
   Future<bool?> removeJobApplication({required String jobId,required String candidateId}) async {
     try {
@@ -109,6 +109,13 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
       log('Error remove job application : $e');
       return null;
     }
+  }
+
+
+  @override
+  Future<bool?> getCandidateLog({required String jobId, required String candidateId}) {
+    // TODO: implement getCandidateLog
+    throw UnimplementedError();
   }
 
 

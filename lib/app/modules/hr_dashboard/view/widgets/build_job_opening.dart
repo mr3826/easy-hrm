@@ -35,9 +35,8 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
                 itemBuilder: (context, index) {
                   Data? data = controller.jobOpening?.getJobs?.data?[index];
                   return GestureDetector(
-                    onTap: (){
-                      controller.getJobApplicationBoard(entityId: data?.id??"");
-                      Get.toNamed(Routes.JOB_DETAILS);
+                    onTap: () {
+                      _updateDataWithRoute(data?.id ?? "");
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -213,6 +212,19 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
     } else {
       return "";
     }
+  }
+
+  void _updateDataWithRoute(String id) {
+    controller.selectedHiringStageId.value = "";
+    controller.selectedCandidateId.value = "";
+    controller.selectedJobApplicationId.value = "";
+    controller.isPasteButtonActive(false);
+    controller.jobTabCurrentIndex(0);
+    controller.jobDetailsSelectedIndex(0);
+    controller.isCandidateSelected(false);
+    controller.currentIndex(0);
+    controller.getJobApplicationBoard(entityId: id);
+    Get.toNamed(Routes.JOB_DETAILS);
   }
 }
 

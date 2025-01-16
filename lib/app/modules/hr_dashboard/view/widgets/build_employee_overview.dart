@@ -13,7 +13,7 @@ class BuildEmployeeOverview extends GetView<HrDashBoardController> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
+    return LayoutBuilder( ///todo response not using layout builder
       builder: (context, constraints) {
         final itemWidth = constraints.maxWidth / 3 - 24; // Dynamic width for each item
         GetEmployeeOverview? getEmployeeOverview= controller.employeeOverview?.getEmployeeOverview;
@@ -27,7 +27,7 @@ class BuildEmployeeOverview extends GetView<HrDashBoardController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildText(label: AppString.text_present.tr, value: getEmployeeOverview?.workingToday.toString()??"0", width: itemWidth),
+                _buildText(label: AppString.text_present.tr, value: getEmployeeOverview?.workingToday.toString()??"0", width: itemWidth), ///todo check again null
                 _divider(),
                 _buildText(label: AppString.text_on_leave.tr, value: getEmployeeOverview?.onLeaveToday.toString()??"0", width: itemWidth),
                 _divider(),
@@ -47,7 +47,7 @@ class BuildEmployeeOverview extends GetView<HrDashBoardController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            _formatNumber(value).replaceAll(".0", ""),
+            _formatNumber(value).toString(), /// todo using end-with
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.cardColor,
               fontSize: Dimensions.fontSizeLarge,

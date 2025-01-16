@@ -26,9 +26,7 @@ class HrDashBoardController extends GetxController with StateMixin {
 
 
 
-
   RxBool isPasteButtonActive = false.obs; // Track if the paste button should be active
-
 
 
   RxString selectedHiringStageId = ''.obs;
@@ -38,11 +36,6 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxInt nextHiringStateIndex = 0.obs;
 
   RxString selectedCandidateId = ''.obs;  ///todo
-
-
-
-
-
 
 
   int activeStarIndex = -1;
@@ -167,6 +160,11 @@ class HrDashBoardController extends GetxController with StateMixin {
     isPasteButtonActive(false);
     isCandidateSelected(false);
     currentIndex(0);
+
+    selectedHiringStageId.value="";
+    selectedCandidateId.value="";
+    selectedJobApplicationId.value="";
+    isPasteButtonActive(false);
     jobTabCurrentIndex(0);
    jobDetailsSelectedIndex(0);
   }

@@ -932,3 +932,37 @@ mutation REMOVE_CANDIDATE($inputData: RemoveCandidateInputData!) {
   }
 }
 ''';
+
+const getCandidateLogsQuery = r'''
+query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) {
+  getLogs(optionData: $optionData, queryData: $queryData) {
+    id
+    context
+    action
+    createdAt
+    createdByUser {
+      id
+      profile {
+        first_name
+        last_name
+        image
+      }
+    }
+    candidate {
+      id
+      first_name
+      last_name
+    }
+    new_number
+    new_text
+    review {
+      rate
+    }
+    files {
+      id
+      name
+      key
+    }
+  }
+}
+''';

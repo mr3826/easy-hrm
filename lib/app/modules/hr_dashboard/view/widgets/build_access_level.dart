@@ -24,6 +24,7 @@ class BuildAccessLevel extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => onClick!() ?? () {}, // Pass the function reference directly
+      ///todo why not null [check if possible to custom]
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),

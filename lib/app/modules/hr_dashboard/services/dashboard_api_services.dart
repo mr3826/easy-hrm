@@ -57,4 +57,17 @@ class DashBoardApiService {
   }
 
 
+  Future<Map<String, dynamic>?>  getCandidate(String jobApplicationId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "job_application_id": "ed0e25c3-9c30-4d5f-88de-786dd53b3363",
+        "request_from": "job_application"
+      }
+    };
+
+    QueryResult<Object?> response= await _apiService.gqlCall(query:getCandidateLogsQuery,variables: variables);
+    return response.data;
+  }
+
+
 }

@@ -30,7 +30,8 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    userInfoAppbarLayout(),
+                    userInfoAppbarLayout(),///todo status bar dynamic
+
                     customSpacerHeight(height: 30),
                     _buildTitleText(AppString.text_employee_overview.tr),
                     const BuildEmployeeOverview(),
@@ -102,7 +103,7 @@ _buildJobTitleText({String? value}) {
   );
 }
 
-_buildAllCandidates(String value, HrDashBoardController controller) {
+_buildAllCandidates(String value, HrDashBoardController controller) { ///todo using method in class not pass
   if (controller.leaveTimeLogSummary?.getLeaveAndTimelogRequestSummary
           ?.totalCandidates !=
       0) {
@@ -133,7 +134,7 @@ _buildLeaveRequest(String value) {
 }
 
 _buildLogRequest(String value) {
-  return BuildAccessLevel(
+  return BuildAccessLevel(  ///todo must be rename
     bgColor: AppColor.timeLogRequestColor,
     imgUrl: Images.TIMELOG_REQ,
     labelText: AppString.text_log_request.tr,
