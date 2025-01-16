@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/candidates_details_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/hr_deshboard_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_details.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/job_applocation_board.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -12,7 +16,7 @@ import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../common/widget/hr_deshboard/more_info_text_divider.dart';
 import '../../../../../utils/app_string.dart';
-import '../../../../../utils/images.dart';
+import '../../../../../utils/utils.dart';
 import '../widgets/candidates/candidate_details_tab_bar/candidate_details_tabbar.dart';
 
 class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
@@ -21,47 +25,51 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppbar(
-          title: "${AppString.text_candidate.tr} ${AppString.text_details.tr}"),
-      body: controller.obx((state)=> Column(
-        children: [
-          Expanded(child: _buildCandidateInfoSection(context)),
-        ],
-      ),
-        onLoading: const LoadingIndicator()
-    )
-    );
-
+        appBar: customAppbar(
+            title:
+                "${AppString.text_candidate.tr} ${AppString.text_details.tr}"),
+        body: controller.obx(
+            (state) => Column(
+                  children: [
+                    Expanded(child: _buildCandidateInfoSection(context)),
+                  ],
+                ),
+            onLoading: const LoadingIndicator()));
   }
 
   Widget _buildCandidateInfoSection(BuildContext context) {
+    GetCandidateDetails? getCandidateDetails =
+        controller.candidateDetails?.getCandidateDetails;
     return Column(
       children: [
-        const Center(
+        Center(
           child: CustomNetworkImage(
-            imageUrl:
-                "https://thumbs.dreamstime.com/b/stylish-cat-sunglasses-poses-confidently-rocky-beach-capturing-unique-blend-humor-charm-warm-glow-sunset-349482060.jpg",
+            imageUrl: buildImgIxUrl(
+                imgKey: getCandidateDetails?.candidate?.avatarKey ?? ""),
+            errorText: getInitials(
+                "${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
             isCircleImage: true,
             radius: 32,
           ),
         ),
         customSpacerHeight(height: 12),
-        _buildCandidateName(),
+        _buildCandidateName(
+            "${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
         customSpacerHeight(height: 2),
-        _buildAppliedJobInfo(),
+        _buildAppliedJobInfo(getCandidateDetails?.job?.title ?? ""),
         customSpacerHeight(height: 6),
-        _buildReviewRow(),
+        _buildReviewRow(getCandidateDetails?.totalReview ?? 0),
         customSpacerHeight(height: 12),
         _buildCandidateStatusButton(context),
         customSpacerHeight(height: 14),
-        CandidateDetailsTabBar(),
+        const CandidateDetailsTabBar(),
       ],
     );
   }
 
-  Widget _buildCandidateName() {
+  Widget _buildCandidateName(String name) {
     return Text(
-      "Katarina Neilson",
+      name,
       style: AppStyle.large_text.copyWith(
         color: AppColor.normalTextColor,
         fontWeight: FontWeight.w600,
@@ -70,7 +78,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
     );
   }
 
-  Widget _buildAppliedJobInfo() {
+  Widget _buildAppliedJobInfo(String jobName) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -83,7 +91,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
           ),
         ),
         Text(
-          "Node.js Developer",
+          jobName,
           style: AppStyle.large_text.copyWith(
             color: AppColor.secondaryColor,
             fontWeight: FontWeight.w500,
@@ -94,26 +102,33 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
     );
   }
 
-  Widget _buildReviewRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(
-          Icons.star,
-          size: 22,
-          color: AppColor.pendingColor,
-        ),
-        Text(
-          " 4.5 (3)",
-          style: AppStyle.normal_text_black.copyWith(
+  Widget _buildReviewRow(int rating) {
+    if (rating > 0) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.star,
+            size: 22,
             color: AppColor.pendingColor,
           ),
-        ),
-      ],
-    );
+          Text(
+            " $rating",
+            style: AppStyle.normal_text_black.copyWith(
+              color: AppColor.pendingColor,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   Widget _buildCandidateStatusButton(BuildContext context) {
+    GetCandidateDetails? getCandidateDetails =
+        controller.candidateDetails?.getCandidateDetails;
+
     return GestureDetector(
       onTap: () {
         customButtonSheet(
@@ -135,7 +150,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Interview",
+                  getCandidateDetails?.hiringStage?.title ?? "",
                   style: AppStyle.normal_text_black
                       .copyWith(color: AppColor.cardColor),
                 ),
@@ -153,14 +168,10 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   }
 
   Widget _buildStatusBottomSheet() {
-    final List<Map<String, String>> statusOptions = [
-      {"text": "New", "value": "03"},
-      {"text": "Rejected", "value": "04"},
-      {"text": "Interview", "value": "07"},
-      {"text": "Task assigned", "value": "08"},
-      {"text": "Hired", "value": "09"},
-      {"text": "Offer", "value": "01"},
-    ];
+    RxInt selectedIndex = 0.obs;
+    HrDashBoardController controller = Get.find<HrDashBoardController>();
+    List<HiringStages>? hiringStages =
+        controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages;
 
     return SingleChildScrollView(
       child: Column(
@@ -169,11 +180,34 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: statusOptions.length,
+            itemCount: hiringStages?.length ?? 0,
             itemBuilder: (context, index) {
               return _buildBottomSheetOptionItem(
-                text: statusOptions[index]["text"]!,
-                onTap: () {},
+                onTap: () {
+                  selectedIndex.value = index;
+                  controller.updateJobApplication(
+                      hiringStageId: hiringStages?[index].id ?? "",
+                      jobApplicationId:
+                          controller.selectedJobApplicationId.value,
+                      entryId: controller.jobApplicationBoard
+                              ?.getJobApplicationBoard?.id ??
+                          "").then((v){
+                    Get.back(canPop: false);
+                    Get.back(canPop: false);
+                  });
+                },
+                textWidget: Obx(
+                  () => controller.isJobApplicationUpdateLoading.isTrue &&
+                          selectedIndex.value == index
+                      ? const CupertinoActivityIndicator()
+                      : Text(
+                          hiringStages?[index].title ?? "",
+                          style: AppStyle.normal_text_black.copyWith(
+                            color: AppColor.normalTextColor.withOpacity(0.8),
+                            fontSize: Dimensions.fontSizeDefault + 1,
+                          ),
+                        ),
+                ),
               );
             },
           ),
@@ -183,18 +217,23 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   }
 
   Widget _buildBottomSheetHeader() {
+    GetCandidateDetails? getCandidateDetails =
+        controller.candidateDetails?.getCandidateDetails;
+
     return customButtonSheetAppbar(
       height: AppLayout.getHeight(200),
       titleWidget: Column(
         children: [
           customSpacerHeight(height: 12),
-          const Center(
+          Center(
             child: CustomNetworkImage(
+              imageUrl: buildImgIxUrl(
+                  imgKey: getCandidateDetails?.candidate?.avatarKey ?? ""),
+              errorText: getInitials(
+                  "${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
               isCircleImage: true,
               radius: 30,
               borderColor: AppColor.primaryColor,
-              imageUrl:
-                  "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
             ),
           ),
           customSpacerHeight(height: 8),
@@ -206,10 +245,13 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   }
 
   Widget _buildBottomSheetTitle() {
+    GetCandidateDetails? getCandidateDetails =
+        controller.candidateDetails?.getCandidateDetails;
+
     return Column(
       children: [
         Text(
-          "Agens Nelson",
+          "${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
             fontWeight: FontWeight.w700,
@@ -228,7 +270,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
               ),
             ),
             Text(
-              "Node.js Developer",
+              getCandidateDetails?.job?.title ?? "",
               style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.secondaryColor,
                 fontSize: Dimensions.fontSizeDefault,
@@ -240,40 +282,42 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
     );
   }
 
-  Widget _buildBottomSheetOptionItem({
-    required String text,
-    required VoidCallback onTap,
-  }) {
-    return customMoreInfoTextWithDiver(
-      text: text,
-      onTap: onTap,
-    );
+  Widget _buildBottomSheetOptionItem(
+      {required VoidCallback onTap, required textWidget}) {
+    return customMoreInfoTextWithDiver(onTap: onTap, textWidget: textWidget);
   }
 
   Widget _buildBottomSheetRating() {
-    const int currentRating = 3;
+    GetCandidateDetails? getCandidateDetails =
+        controller.candidateDetails?.getCandidateDetails;
+
+    int currentRating = getCandidateDetails?.totalReview ?? 0;
     const int totalStars = 5;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "4.0",
-          style: AppStyle.normal_text_black.copyWith(
-            color: AppColor.pendingColor,
+    if (currentRating > 0) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            getCandidateDetails?.totalReview.toString() ?? "",
+            style: AppStyle.normal_text_black.copyWith(
+              color: AppColor.pendingColor,
+            ),
           ),
-        ),
-        const SizedBox(width: 8),
-        Row(
-          children: List.generate(totalStars, (index) {
-            return Icon(
-              index < currentRating ? Icons.star : Icons.star_border,
-              color: Colors.amber,
-              size: 16,
-            );
-          }),
-        ),
-      ],
-    );
+          const SizedBox(width: 8),
+          Row(
+            children: List.generate(totalStars, (index) {
+              return Icon(
+                index < currentRating ? Icons.star : Icons.star_border,
+                color: Colors.amber,
+                size: 16,
+              );
+            }),
+          ),
+        ],
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }

@@ -8,9 +8,6 @@ import '../services/dashboard_api_services.dart';
 class CandidatesBindings  extends Bindings{
   @override
   void dependencies() {
-    ApiService apiService = Get.find<ApiService>();
-    DashBoardApiService dashBoardApiService = DashBoardApiService(apiService);
-    DashBoardDataSource dasBoardDataSource = DasBoardDataSourceImpl(dashBoardApiService);
-    Get.put(CandidateDetailsController(dasBoardDataSource));
+    Get.lazyPut(()=>CandidateDetailsController(Get.find<DashBoardDataSource>()));
   }
 }

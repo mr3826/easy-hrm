@@ -974,3 +974,27 @@ query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) 
   }
 }
 ''';
+const getCandidateDetailsQuery = r'''
+query GET_CANDIDATE_DETAILS($queryData: CandidateDetailsQueryData!) {
+  getCandidateDetails(queryData: $queryData) {
+    id
+    avg_rating
+    total_review
+    candidate {
+      avatar_key
+      first_name
+      id
+      email
+      last_name
+    }
+    hiring_stage {
+      id
+      title
+    }
+    job {
+      id
+      title
+    }
+  }
+}
+''';

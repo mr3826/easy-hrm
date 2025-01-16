@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_activities_logs.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../../enum.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../controllers/candidates_details_controller.dart';
@@ -63,8 +61,10 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
   Widget _buildProfileImage(GetLogs? getLogs) {
     if (getLogs == null) return const SizedBox.shrink();
 
-    String imageUrl = buildImgIxUrl(imgKey: getLogs.createdByUser?.profile?.image ?? "");
-    String errorText = getLogs.action == CandidateActivitiesLogsEnum.applied_to_job.name
+    String imageUrl =
+        buildImgIxUrl(imgKey: getLogs.createdByUser?.profile?.image ?? "");
+    String errorText = getLogs.action ==
+            CandidateActivitiesLogsEnum.applied_to_job.name
         ? "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""}"
         : "${getLogs.createdByUser?.profile?.firstName ?? ""} ${getLogs.createdByUser?.profile?.lastName ?? ""}";
 
@@ -78,7 +78,8 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
   }
 
   Widget _buildTitleText(GetLogs? getLogs, double fontSize) {
-    String titleText = getLogs?.action == CandidateActivitiesLogsEnum.applied_to_job.name
+    String titleText = getLogs?.action ==
+            CandidateActivitiesLogsEnum.applied_to_job.name
         ? "${getLogs?.candidate?.firstName ?? ""} ${getLogs?.candidate?.lastName ?? ""}"
         : "${getLogs?.createdByUser?.profile?.firstName ?? ""} ${getLogs?.createdByUser?.profile?.lastName ?? ""}";
     return Text(
@@ -90,15 +91,13 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
     );
   }
 
-
-
-    _buildContent(double fontSize, GetLogs getLogs) {
+  _buildContent(double fontSize, GetLogs getLogs) {
     String? context = getLogs.action;
 
     if (context == CandidateActivitiesLogsEnum.added_candidate_rating.name) {
       return _candidateReview(getLogs, fontSize);
-
-    } else if (context == CandidateActivitiesLogsEnum.changed_hiring_stage.name) {
+    } else if (context ==
+        CandidateActivitiesLogsEnum.changed_hiring_stage.name) {
       return _hiringStage(getLogs, fontSize);
     } else if (context ==
         CandidateActivitiesLogsEnum.changed_candidate_name.name) {
@@ -111,7 +110,6 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
   }
 
   _candidateReview(GetLogs getLogs, fontSize) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -146,7 +144,7 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
               ),
               TextSpan(
                 text:
-                "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""}",
+                    "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""}",
                 style: AppStyle.normal_text.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: fontSize + 1,
@@ -196,7 +194,7 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
               ),
               TextSpan(
                 text:
-                "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""}",
+                    "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""}",
                 style: AppStyle.normal_text.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: fontSize + 1,
@@ -215,7 +213,6 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
       ],
     );
   }
-
 
   _appliedToJob(GetLogs getLogs, double fontSize) {
     return Column(
@@ -247,7 +244,6 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
         if (getLogs.files?.isNotEmpty ?? false) ...[
           const SizedBox(height: 8),
           _buildAttachFile(getLogs),
-
         ]
       ],
     );
@@ -269,14 +265,14 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
               ),
               TextSpan(
                 text:
-                "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""} to ",
+                    "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""} to ",
                 style: AppStyle.normal_text.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: fontSize + 1,
                 ),
               ),
               TextSpan(
-                text: getLogs.newHiringStage?.title??"",
+                text: getLogs.newHiringStage?.title ?? "",
                 style: AppStyle.normal_text.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: fontSize + 1,
@@ -296,60 +292,62 @@ class BuildTabActivities extends GetView<CandidateDetailsController> {
     );
   }
 
-
   Widget _buildAttachFile(GetLogs getLogs) {
-    RxInt currentIndex=0.obs;
+    RxInt currentIndex = 0.obs;
     return SizedBox(
       height: 140,
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount:  getLogs.files?.length,
+        itemCount: getLogs.files?.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: (){
-            currentIndex.value =index;
-            Get.find<CandidateDetailsController>().getFileSignUrl(getLogs.files?[index].key??"");
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 100,
-                  width: 80,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: AppColor.hintColor.withOpacity(0.1),
+          return GestureDetector(
+            onTap: () {
+              currentIndex.value = index;
+              Get.find<CandidateDetailsController>()
+                  .getFileSignUrl(getLogs.files?[index].key ?? "");
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 100,
+                    width: 80,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: AppColor.hintColor.withOpacity(0.1),
+                      ),
+                      child: Obx(() => currentIndex.value == index &&
+                              Get.find<CandidateDetailsController>()
+                                  .isFileSignUrlLoading
+                                  .isTrue
+                          ? const CupertinoActivityIndicator()
+                          : Icon(
+                              CupertinoIcons.doc_text,
+                              size: 50,
+                              color: AppColor.normalTextColor.withOpacity(0.5),
+                            )),
                     ),
-                    child:Obx(()=>currentIndex.value ==index &&
-                    Get.find<CandidateDetailsController>().isFileSignUrlLoading.isTrue?const CupertinoActivityIndicator():
-                    Icon(
-                      CupertinoIcons.doc_text,
-                      size: 50,
-                      color: AppColor.normalTextColor.withOpacity(0.5),
-                    )),
-
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  getLogs.files?[index].name??"",
-                  style: AppStyle.normal_text.copyWith(
-                    color: AppColor.normalTextColor.withOpacity(0.8),
-                    fontSize: Dimensions.fontSizeSmall,
+                  const SizedBox(height: 8),
+                  Text(
+                    getLogs.files?[index].name ?? "",
+                    style: AppStyle.normal_text.copyWith(
+                      color: AppColor.normalTextColor.withOpacity(0.8),
+                      fontSize: Dimensions.fontSizeSmall,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },),
+          );
+        },
+      ),
     );
-
   }
 
   Widget _createDate(String date, double fontSize) {

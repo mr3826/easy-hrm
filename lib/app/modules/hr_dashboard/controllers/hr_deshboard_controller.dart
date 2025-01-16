@@ -90,6 +90,14 @@ class HrDashBoardController extends GetxController with StateMixin {
 
 
   Future updateJobApplication({required String hiringStageId,required String jobApplicationId,required String entryId}) async {
+
+
+    print('''
+    hiringStageId $hiringStageId
+    jobApplicationId $jobApplicationId
+    entryId $entryId
+    
+    ''');
     isJobApplicationUpdateLoading(true);
     bool? response;
     response = await _dasBoardDataSource.updateJobApplication(hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);

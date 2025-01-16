@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/utils.dart';
 import '../models/candidate_activities_logs.dart';
+import '../models/candidate_details.dart';
 import '../models/file_sign_url.dart';
 import '../repositories/dashboard_repository.dart';
 
@@ -15,6 +16,7 @@ class CandidateDetailsController extends GetxController with StateMixin {
   RxBool isFileSignUrlLoading=false.obs;
 
   CandidateActivitiesLogs? candidateActivitiesLogs;
+  CandidateDetails? candidateDetails;
   FileSignedUrl? fileSignedUrl;
 
   getCandidateActivitiesLogs(String jobApplicationId) async {
@@ -24,6 +26,11 @@ class CandidateDetailsController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  getCandidateDetails(String jobApplicationId) async {
+    change(null, status: RxStatus.loading());
+    candidateDetails = await _dasBoardDataSource.getCandidateDetails(jobApplicationId: jobApplicationId);
+    change(null, status: RxStatus.success());
+  }
 
   getFileSignUrl(String fileKey) async {
     isFileSignUrlLoading(true);

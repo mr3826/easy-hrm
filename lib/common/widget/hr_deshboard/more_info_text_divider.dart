@@ -7,7 +7,7 @@ import '../../../utils/dimensions.dart';
 ///
 ///
 Widget customMoreInfoTextWithDiver(
-    {required String text, required VoidCallback onTap, Widget? trailing}) {
+    {String? text, Widget ?textWidget, required VoidCallback onTap, Widget? trailing}) {
   return GestureDetector(
     onTap: onTap,
     child: Column(
@@ -22,8 +22,8 @@ Widget customMoreInfoTextWithDiver(
                   width: double.infinity,
                   height: 54,
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    text,
+                  child:textWidget?? Text(
+                    text??"",
                     style: AppStyle.normal_text_black.copyWith(
                       color: AppColor.normalTextColor.withOpacity(0.8),
                       fontSize: Dimensions.fontSizeDefault + 1,

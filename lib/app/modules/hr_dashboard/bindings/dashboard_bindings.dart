@@ -8,11 +8,14 @@ import '../services/dashboard_api_services.dart';
 class DashboardBindings extends Bindings{
   @override
   void dependencies() {
-    ApiService apiService = Get.find<ApiService>();
-    DashBoardApiService dashBoardApiService = DashBoardApiService(apiService);
-    DashBoardDataSource dasBoardDataSource = DasBoardDataSourceImpl(dashBoardApiService);
+
+
+    DashBoardApiService dashBoardApiService = Get.put(DashBoardApiService(Get.find<ApiService>()));
+
+    DashBoardDataSource dasBoardDataSource = Get.put(DasBoardDataSourceImpl(dashBoardApiService));
+
     Get.put(HrDashBoardController(dasBoardDataSource));
-    Get.put(CandidateDetailsController(dasBoardDataSource));
+
   }
 
 }

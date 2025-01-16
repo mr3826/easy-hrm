@@ -1,5 +1,6 @@
 import 'dart:developer';
 import '../models/candidate_activities_logs.dart';
+import '../models/candidate_details.dart';
 import '../models/employee_overview.dart';
 import '../models/file_sign_url.dart';
 import '../models/job_applocation_board.dart';
@@ -17,6 +18,7 @@ abstract class DashBoardDataSource {
   Future<bool?> removeJobApplication({required String jobId,required String candidateId});
   Future<CandidateActivitiesLogs?> getCandidateActivitiesLogs({required String jobApplicationId});
   Future<FileSignedUrl?> getFileSignUrl({required String fileKey});
+  Future<CandidateDetails?> getCandidateDetails({required String jobApplicationId});
 
 }
 
@@ -144,5 +146,21 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
       log("getFileSignUrl : $ex");
     }
     return null;
+  }
+
+  @override
+  Future<CandidateDetails?> getCandidateDetails({required String jobApplicationId})async {
+    try{
+      final response= await _dashBoardApiService.getCandidateDetails(jobApplicationId);
+      if(response !=null){
+        return CandidateDetails.fromJson(response);
+      }
+      return null;
+
+    }catch(ex){
+      log("candidateDetails : $ex");
+    }
+    return null;
+
   }
 }
