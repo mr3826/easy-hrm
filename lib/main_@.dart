@@ -1,152 +1,335 @@
-// /*
-// Folder Structure:
-// bash
-// Copy code
-// SOLID -principal
-//home_module
-// ├── /data
-// │   ├── /models
-// │   │   └── home_data_model.dart
-// │   ├── /services
-// │   │   └── home_api_service.dart
-// │   ├── /repositories
-// │       └── home_repository.dart
-// ├── /domain
-// │   ├── /entities
-// │   │   └── home_entity.dart
-// │   ├── /repositories
-// │       └── home_repository_contract.dart
-// │   └── /usecases
-// │       └── fetch_home_data.dart
-// ├── /application
-// │   └── home_controller.dart
-// 1. /data/models/home_data_model.dart
-// dart
-// Copy code
+// import 'package:flutter/cupertino.dart';
+// import 'package:get/get.dart';
+// import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_activities_logs.dart';
+// import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
+// import 'package:payrun_mobile/utils/app_color.dart';
+// import 'package:payrun_mobile/utils/app_style.dart';
+// import 'package:payrun_mobile/utils/dimensions.dart';
+// import '../../../../../../../enum.dart';
+// import '../../../../../../../utils/utils.dart';
+// import '../../../../controllers/candidates_details_controller.dart';
 //
-// class HomeDataModel {
-//   final int id;
-//   final String title;
+// class BuildTabActivities extends GetView<CandidateDetailsController> {
+//   const BuildTabActivities({super.key});
 //
-//   HomeDataModel({required this.id, required this.title});
-//
-//   // Factory method for converting JSON to model
-//   factory HomeDataModel.fromJson(Map<String, dynamic> json) {
-//     return HomeDataModel(
-//       id: json['id'],
-//       title: json['title'],
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       padding: const EdgeInsets.only(left: 20, right: 20),
+//       itemCount: controller.candidateActivitiesLogs?.getLogs?.length ?? 0,
+//       itemBuilder: (context, index) {
+//         return _buildContext(index);
+//       },
 //     );
 //   }
 //
-//   // Convert model to domain entity
-//   Map<String, dynamic> toEntity() {
-//     return {
-//       'id': id,
-//       'title': title,
-//     };
+//   _buildContext(int index) {
+//     GetLogs? getLogs = controller.candidateActivitiesLogs?.getLogs?[index];
+//     return LayoutBuilder(
+//       builder: (context, constraints) {
+//         double width = constraints.maxWidth;
+//         double textFontSize = width * 0.04; // Dynamic font size
+//         double smallTextFontSize = width * 0.03; // Smaller text font size
+//         double spacerWidth = width * 0.03; // Spacer width
+//         return Padding(
+//           padding: EdgeInsets.only(
+//             top: width * 0.05, // Dynamic top padding
+//             bottom: width * 0.03, // Dynamic bottom padding
+//           ),
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//
+//               if (getLogs?.action == CandidateActivitiesLogsEnum.added_candidate_rating.name || getLogs?.action == CandidateActivitiesLogsEnum.changed_hiring_stage.name || getLogs?.action == CandidateActivitiesLogsEnum.changed_candidate_name.name || getLogs?.action == CandidateActivitiesLogsEnum.applied_to_job.name) ...[
+//                 CustomNetworkImage(
+//                   imageUrl: buildImgIxUrl(
+//                       imgKey: getLogs?.createdByUser?.profile?.image ?? ""),
+//                   isCircleImage: true,
+//                   radius: 18,
+//                   errorText: getInitials(
+//                     getLogs?.action ==
+//                         CandidateActivitiesLogsEnum.applied_to_job.name
+//                         ? "${getLogs?.candidate?.firstName ?? ""} ${getLogs?.candidate?.lastName ?? ""}"
+//                         : "${getLogs?.createdByUser?.profile?.firstName ?? ""} ${getLogs?.createdByUser?.profile?.lastName ?? ""}",
+//                   ),
+//                   borderColor: AppColor.primaryColor,
+//                 ),
+//
+//                 SizedBox(width: spacerWidth), // Spacer with dynamic width
+//                 Expanded(
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         getLogs?.action ==
+//                             CandidateActivitiesLogsEnum.applied_to_job.name
+//                             ? "${getLogs?.candidate?.firstName ?? ""} ${getLogs?.candidate?.lastName ?? ""}"
+//                             : "${getLogs?.createdByUser?.profile?.firstName ?? ""} ${getLogs?.createdByUser?.profile?.lastName ?? ""}",
+//                         style: AppStyle.normal_text_grey.copyWith(
+//                           color: AppColor.normalTextColor,
+//                           fontSize: textFontSize,
+//                         ),
+//                       ),
+//                       const SizedBox(height: 3),
+//                       _buildContent(smallTextFontSize, getLogs ?? GetLogs()),
+//                     ],
+//                   ),
+//                 )
+//               ]
+//
+//
+//             ],
+//           ),
+//         );
+//       },
+//     );
 //   }
-// }
-// 2. /data/services/home_api_service.dart
-// dart
-// Copy code
-// import 'package:dio/dio.dart';
 //
-// class HomeApiService {
-//   final Dio dio;
+//   _buildContent(double fontSize, GetLogs getLogs) {
+//     String? context = getLogs.action;
 //
-//   HomeApiService(this.dio);
-//
-//   Future<List<Map<String, dynamic>>> fetchHomeData() async {
-//     final response = await dio.get('/home');
-//     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
-//   }
-// }
-
-
-
-// 3. /data/repositories/home_repository.dart
-// dart
-// Copy code
-// import '../../domain/entities/home_entity.dart';
-// import '../../domain/repositories/home_repository_contract.dart';
-// import '../services/home_api_service.dart';
-// import '../models/home_data_model.dart';
-//
-// class HomeRepository implements HomeRepositoryContract {
-//   final HomeApiService apiService;
-//
-//   HomeRepository(this.apiService);
-//
-//   @override
-//   Future<List<HomeEntity>> getHomeData() async {
-//     final data = await apiService.fetchHomeData();
-//     return data.map((json) => HomeDataModel.fromJson(json)).map((model) {
-//       return HomeEntity(
-//         id: model.id,
-//         title: model.title,
+//     if (context == CandidateActivitiesLogsEnum.added_candidate_rating.name) {
+//       return  Row(
+//         children: [
+//           _candidateReview(getLogs, fontSize)
+//         ],
 //       );
-//     }).toList();
-//   }
-// }
-
-
-
-// 4. /domain/entities/home_entity.dart
-// dart
-// Copy code
-// class HomeEntity {
-//   final int id;
-//   final String title;
-//
-//   HomeEntity({required this.id, required this.title});
-// }
-// 5. /domain/repositories/home_repository_contract.dart
-// dart
-// Copy code
-// import '../entities/home_entity.dart';
-//
-// abstract class HomeRepositoryContract {
-//   Future<List<HomeEntity>> getHomeData();
-// }
-// 6. /domain/usecases/fetch_home_data.dart
-// dart
-// Copy code
-// import '../entities/home_entity.dart';
-// import '../repositories/home_repository_contract.dart';
-//
-// class FetchHomeData {
-//   final HomeRepositoryContract repository;
-//
-//   FetchHomeData(this.repository);
-//
-//   Future<List<HomeEntity>> execute() async {
-//     return await repository.getHomeData();
-//   }
-// }
-// 7. /application/home_controller.dart
-// dart
-// Copy code
-// import '../domain/entities/home_entity.dart';
-// import '../domain/usecases/fetch_home_data.dart';
-//
-// class HomeController {
-//   final FetchHomeData fetchHomeData;
-//
-//   // State management variables (if needed)
-//   List<HomeEntity> homeData = [];
-//   bool isLoading = false;
-//
-//   HomeController(this.fetchHomeData);
-//
-//   Future<void> loadHomeData() async {
-//     try {
-//       isLoading = true;
-//       homeData = await fetchHomeData.execute();
-//     } catch (error) {
-//       // Handle errors (logging, etc.)
-//       print("Error loading home data: $error");
-//     } finally {
-//       isLoading = false;
+//     } else if (context ==
+//         CandidateActivitiesLogsEnum.changed_hiring_stage.name) {
+//       return _hiringStage(getLogs, fontSize);
+//     } else if (context ==
+//         CandidateActivitiesLogsEnum.changed_candidate_name.name) {
+//       return _changedCandidateName(getLogs, fontSize);
+//     } else if (context == CandidateActivitiesLogsEnum.applied_to_job.name) {
+//       return _appliedToJob(getLogs, fontSize);
+//     } else {
+//       return const SizedBox.shrink();
 //     }
 //   }
-// }*/
+//
+//   _buildAttachFile() {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         SizedBox(
+//           height: 100,
+//           width: 80,
+//           child: Container(
+//             decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(8),
+//                 color: AppColor.hintColor.withOpacity(0.1)),
+//             child: Icon(
+//               CupertinoIcons.doc_text,
+//               size: 50,
+//               color: AppColor.normalTextColor.withOpacity(0.5),
+//             ),
+//           ),
+//         ),
+//         const SizedBox(height: 8),
+//         Text(
+//           "Resume.pdf",
+//           style: AppStyle.normal_text.copyWith(
+//               color: AppColor.normalTextColor.withOpacity(0.8),
+//               fontSize: Dimensions.fontSizeSmall),
+//         )
+//       ],
+//     );
+//   }
+//
+//   _candidateReview(GetLogs getLogs, fontSize) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         RichText(
+//           text: TextSpan(
+//             children: [
+//               TextSpan(
+//                 text: "Reviewed  ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor.withOpacity(0.7),
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text: getLogs.newNumber.toString(),
+//                 style: AppStyle.normal_text_grey.copyWith(
+//                   color: AppColor.pendingColor,
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text: " ★ ",
+//                 style: AppStyle.normal_text.copyWith(
+//                     color: AppColor.pendingColor, fontSize: fontSize + 5),
+//               ),
+//               TextSpan(
+//                 text: "to ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor.withOpacity(0.7),
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text:
+//                     "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""}",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor,
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//             ],
+//           ),
+//           maxLines: 2,
+//           overflow: TextOverflow.ellipsis,
+//         ),
+//         _createDate(getLogs.createdAt.toString(), fontSize),
+//         if (getLogs.review?.isNotEmpty ?? false) ...[
+//           const SizedBox(height: 8),
+//           _buildAttachFile()
+//         ]
+//       ],
+//     );
+//   }
+//
+//   _changedCandidateName(GetLogs getLogs, fontSize) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         RichText(
+//           text: TextSpan(
+//             children: [
+//               TextSpan(
+//                 text: "Edited ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor.withOpacity(0.7),
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text: "Name ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor,
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text: "of ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor.withOpacity(0.7),
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text:
+//                     "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""}",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor,
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//             ],
+//           ),
+//           maxLines: 2,
+//           overflow: TextOverflow.ellipsis,
+//         ),
+//         _createDate(getLogs.createdAt.toString(), fontSize),
+//         if (getLogs.review?.isNotEmpty ?? false) ...[
+//           const SizedBox(height: 8),
+//           _buildAttachFile()
+//         ]
+//       ],
+//     );
+//   }
+//
+//   _appliedToJob(GetLogs getLogs, double fontSize) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         RichText(
+//           text: TextSpan(
+//             children: [
+//               TextSpan(
+//                 text: "Applied for ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor.withOpacity(0.7),
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text: getLogs.job?.title ?? "",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor,
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//             ],
+//           ),
+//           maxLines: 2,
+//           overflow: TextOverflow.ellipsis,
+//         ),
+//         _createDate(getLogs.createdAt.toString(), fontSize),
+//         if (getLogs.review?.isNotEmpty ?? false) ...[
+//           const SizedBox(height: 8),
+//           _buildAttachFile()
+//         ]
+//       ],
+//     );
+//   }
+//
+//   _hiringStage(GetLogs getLogs, double fontSize) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         RichText(
+//           text: TextSpan(
+//             children: [
+//               TextSpan(
+//                 text: "Moved ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor.withOpacity(0.7),
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text:
+//                 "${getLogs.candidate?.firstName ?? ""} ${getLogs.candidate?.lastName ?? ""} to ",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor,
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//               TextSpan(
+//                 text: getLogs.newHiringStage?.title??"",
+//                 style: AppStyle.normal_text.copyWith(
+//                   color: AppColor.normalTextColor,
+//                   fontSize: fontSize + 1,
+//                 ),
+//               ),
+//             ],
+//           ),
+//           maxLines: 2,
+//           overflow: TextOverflow.ellipsis,
+//         ),
+//         _createDate(getLogs.createdAt.toString(), fontSize),
+//         if (getLogs.review?.isNotEmpty ?? false) ...[
+//           const SizedBox(height: 8),
+//           _buildAttachFile()
+//         ]
+//       ],
+//     );
+//   }
+//
+//
+//
+//
+// }
+//
+// _createDate(String date, double fontSize) {
+//   return Text(
+//     "on ${formatDate(date: date, format: "dd MMMM, yyyy")} at ${formatDate(date: date, format: "hh:mm")}",
+//     style: AppStyle.normal_text.copyWith(
+//       color: AppColor.normalTextColor.withOpacity(0.6),
+//       fontSize: fontSize + 1,
+//     ),
+//   );
+// }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/bindings/candidates_bindings.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/models/job_opening.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
@@ -215,11 +216,11 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
   }
 
   void _updateDataWithRoute(String id) {
+    CandidatesBindings().dependencies();
     controller.selectedHiringStageId.value = "";
     controller.selectedCandidateId.value = "";
     controller.selectedJobApplicationId.value = "";
     controller.isPasteButtonActive(false);
-    controller.jobTabCurrentIndex(0);
     controller.jobDetailsSelectedIndex(0);
     controller.isCandidateSelected(false);
     controller.currentIndex(0);

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/candidates_details_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
@@ -26,20 +27,15 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   @override
   Widget build(BuildContext context) {
     // Example data for the list
-    final RxList<HiringStages> hiringStages = controller
-            .jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ??
-        <HiringStages>[].obs;
+    final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
 
     RxList<JobApplications> userList = <JobApplications>[].obs;
 
     return Obx(() {
       // Filter the list based on the tabId
-      final hiringStagesFilter =
-          hiringStages.where((user) => user.id == tabId).toList();
+      final hiringStagesFilter = hiringStages.where((user) => user.id == tabId).toList();
 
-      List<HiringStages> candidateInfoList = hiringStagesFilter
-          .where((user) => user.jobApplications?.isNotEmpty ?? false)
-          .toList();
+      List<HiringStages> candidateInfoList = hiringStagesFilter.where((user) => user.jobApplications?.isNotEmpty ?? false).toList();
 
       for (var stage in hiringStagesFilter) {
         stage.jobApplications?.forEach((jobApplication) {
@@ -55,19 +51,22 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         itemCount: userList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => Get.toNamed(Routes.CANDIDATES_DETAILS),
+            onTap: (){
+              Get.find<CandidateDetailsController>().getCandidateActivitiesLogs(userList[index].id??"");
+
+
+              Get.toNamed(Routes.CANDIDATES_DETAILS);
+            },
+
             child: LayoutBuilder(builder: (context, constraints) {
               double imageSize = constraints.maxWidth * 0.15;
               double paddingSize = constraints.maxWidth * 0.03;
               final user = userList[index];
               return Obx(() {
-                bool hasAnyWhereSelected = Get.find<HrDashBoardController>()
-                            .selectedJobApplicationId
-                            .value ==
-                        user.id &&
-                    Get.find<HrDashBoardController>()
-                        .isCandidateSelected
-                        .isTrue;
+
+                bool hasAnyWhereSelected = Get.find<HrDashBoardController>().selectedJobApplicationId.value == user.id &&
+                    Get.find<HrDashBoardController>().isCandidateSelected.isTrue;
+
                 return Padding(
                   padding: _getPadding(), // Use a dedicated method for padding
                   child: Container(

@@ -940,6 +940,8 @@ query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) 
     context
     action
     createdAt
+    new_number
+    new_text
     createdByUser {
       id
       profile {
@@ -953,8 +955,14 @@ query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) 
       first_name
       last_name
     }
-    new_number
-    new_text
+     newHiringStage {
+      id
+      title
+    }
+    job {
+      id
+      title
+    }
     review {
       rate
     }

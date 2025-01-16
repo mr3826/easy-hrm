@@ -10,9 +10,9 @@ import '../repositories/dashboard_repository.dart';
 class HrDashBoardController extends GetxController with StateMixin {
   final DashBoardDataSource _dasBoardDataSource;
   HrDashBoardController(this._dasBoardDataSource);
-
+  //
   final RxInt currentIndex = 0.obs;
-  final RxInt jobTabCurrentIndex = 0.obs;
+  // final RxInt jobTabCurrentIndex = 0.obs;
 
 
   RxInt jobDetailsSelectedIndex = 0.obs; // Track the selected tab index
@@ -160,12 +160,10 @@ class HrDashBoardController extends GetxController with StateMixin {
     isPasteButtonActive(false);
     isCandidateSelected(false);
     currentIndex(0);
-
     selectedHiringStageId.value="";
     selectedCandidateId.value="";
     selectedJobApplicationId.value="";
     isPasteButtonActive(false);
-    jobTabCurrentIndex(0);
    jobDetailsSelectedIndex(0);
   }
 }

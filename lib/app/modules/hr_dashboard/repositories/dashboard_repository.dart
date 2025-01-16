@@ -1,10 +1,10 @@
 import 'dart:developer';
+import '../models/candidate_activities_logs.dart';
 import '../models/employee_overview.dart';
 import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
 import '../models/leave_timline_summary.dart';
 import '../services/dashboard_api_services.dart';
-
 
 
 abstract class DashBoardDataSource {
@@ -14,7 +14,8 @@ abstract class DashBoardDataSource {
   Future<JobApplicationBoard?> getJobApplicationBoard({required String entityId});
   Future<bool?> updateJobApplication({required String hiringStageId,required String jobApplicationId});
   Future<bool?> removeJobApplication({required String jobId,required String candidateId});
-  Future<bool?> getCandidateLog({required String jobId,required String candidateId});
+  Future<CandidateActivitiesLogs?> getCandidateActivitiesLogs({required String jobApplicationId});
+
 }
 
 
@@ -96,8 +97,6 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
   }
 
 
-
-
   @override
   Future<bool?> removeJobApplication({required String jobId,required String candidateId}) async {
     try {
@@ -114,12 +113,19 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
 
 
   @override
-  Future<bool?> getCandidateLog({required String jobId, required String candidateId}) {
-    // TODO: implement getCandidateLog
-    throw UnimplementedError();
+  Future<CandidateActivitiesLogs?> getCandidateActivitiesLogs({required String jobApplicationId})async {
+    try{
+      final response= await _dashBoardApiService.getCandidateActivitiesLogs(jobApplicationId);
+
+      if(response !=null){
+        return CandidateActivitiesLogs.fromJson(response);
+      }
+      return null;
+
+    }catch(ex){
+      log("getCandidateActivitiesLogs : $ex");
+    }
+    return null;
   }
-
-
-
 
 }

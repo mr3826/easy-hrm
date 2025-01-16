@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/candidates_details_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
@@ -8,9 +9,8 @@ import 'build_tab_activities.dart';
 import 'build_tab_details.dart';
 import 'build_tab_reviews.dart';
 
-class CandidateDetailsTabbar extends StatelessWidget {
-  CandidateDetailsTabbar({super.key});
-  final controller = Get.find<HrDashBoardController>();
+class CandidateDetailsTabBar extends GetView<CandidateDetailsController> {
+  const CandidateDetailsTabBar({super.key});
 
   @override
   Widget build(BuildContext context) {

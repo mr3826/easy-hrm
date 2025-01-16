@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/candidates_details_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -13,7 +15,7 @@ import '../../../../../utils/app_string.dart';
 import '../../../../../utils/images.dart';
 import '../widgets/candidates/candidate_details_tab_bar/candidate_details_tabbar.dart';
 
-class CandidateDetailsScreen extends StatelessWidget {
+class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   const CandidateDetailsScreen({super.key});
 
   @override
@@ -21,12 +23,15 @@ class CandidateDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppbar(
           title: "${AppString.text_candidate.tr} ${AppString.text_details.tr}"),
-      body: Column(
+      body: controller.obx((state)=> Column(
         children: [
           Expanded(child: _buildCandidateInfoSection(context)),
         ],
       ),
+        onLoading: const LoadingIndicator()
+    )
     );
+
   }
 
   Widget _buildCandidateInfoSection(BuildContext context) {
@@ -49,7 +54,7 @@ class CandidateDetailsScreen extends StatelessWidget {
         customSpacerHeight(height: 12),
         _buildCandidateStatusButton(context),
         customSpacerHeight(height: 14),
-        CandidateDetailsTabbar(),
+        CandidateDetailsTabBar(),
       ],
     );
   }
