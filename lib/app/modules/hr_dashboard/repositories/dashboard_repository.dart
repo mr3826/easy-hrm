@@ -7,7 +7,7 @@ import '../services/dashboard_api_services.dart';
 
 
 
-abstract class DasBoardDataSource {
+abstract class DashBoardDataSource {
   Future<EmployeeOverview?> getEmployeeOverview();
   Future<JobOpening?> getJobOpening();
   Future<LeaveTimeLogSummary?> getLeaveAndTimeLogSummary();
@@ -18,7 +18,7 @@ abstract class DasBoardDataSource {
 }
 
 
-class DasBoardDataSourceImpl implements DasBoardDataSource {
+class DasBoardDataSourceImpl implements DashBoardDataSource {
   final DashBoardApiService _dashBoardApiService;
 
   DasBoardDataSourceImpl(this._dashBoardApiService);
@@ -110,20 +110,6 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
       log('Error remove job application : $e');
       return null;
     }
-  }
-
-  @override
-  Future<EmployeeOverview?> getEmployeeOverview()async {
-    try {
-      final response = await _dashBoardApiService.getEmployeeOverView();
-      if (response != null) {
-        return EmployeeOverview.fromJson(response);
-      }
-    } catch (ex) {
-      log("getEmployeeOverview : $ex");
-    }
-    return null;
-
   }
 
 
