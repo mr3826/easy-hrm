@@ -97,6 +97,7 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
 
 
 
+
   @override
   Future<bool?> removeJobApplication({required String jobId,required String candidateId}) async {
     try {
@@ -109,6 +110,20 @@ class DasBoardDataSourceImpl implements DasBoardDataSource {
       log('Error remove job application : $e');
       return null;
     }
+  }
+
+  @override
+  Future<EmployeeOverview?> getEmployeeOverview()async {
+    try {
+      final response = await _dashBoardApiService.getEmployeeOverView();
+      if (response != null) {
+        return EmployeeOverview.fromJson(response);
+      }
+    } catch (ex) {
+      log("getEmployeeOverview : $ex");
+    }
+    return null;
+
   }
 
 
