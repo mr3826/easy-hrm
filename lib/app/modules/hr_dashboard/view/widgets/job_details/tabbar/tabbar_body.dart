@@ -52,9 +52,13 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: (){
+
               Get.find<CandidateDetailsController>().getCandidateActivitiesLogs(userList[index].id??"");
               Get.find<CandidateDetailsController>().getCandidateDetails(userList[index].id??"");
+              Get.find<CandidateDetailsController>().getCandidateReview(userList[index].id??"");
+
               controller.selectedJobApplicationId(userList[index].id??"");
+              controller.selectedJobId(controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
               Get.toNamed(Routes.CANDIDATES_DETAILS);
             },
 

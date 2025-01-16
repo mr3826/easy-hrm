@@ -79,14 +79,18 @@ class CustomNetworkImage extends StatelessWidget {
     );
   }
 
-  Widget _buildRectangleImage(double resolvedHeight, Widget ?errorWidget) {
+  Widget _buildRectangleImage(double resolvedHeight, Widget? errorWidget) {
     return SizedBox(
       height: resolvedHeight,
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         placeholder: (context, url) =>
             const Center(child: CupertinoActivityIndicator()),
-        errorWidget: (context, url, error) => errorWidget !=null?Container(child: errorWidget,) : _buildEmptyBox(),
+        errorWidget: (context, url, error) => errorWidget != null
+            ? Container(
+                child: errorWidget,
+              )
+            : _buildEmptyBox(),
         imageBuilder: (context, imageProvider) => Container(
           decoration: BoxDecoration(
             borderRadius: imageRadius ?? BorderRadius.circular(4),

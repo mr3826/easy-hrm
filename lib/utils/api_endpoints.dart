@@ -932,6 +932,13 @@ mutation REMOVE_CANDIDATE($inputData: RemoveCandidateInputData!) {
   }
 }
 ''';
+const createCandidateReviewQuery = r'''
+mutation CREATE_A_CANDIDATE_REWVIW($inputData: CreateCandidateReviewInput!) {
+  createACandidateReview(inputData: $inputData) {
+    id
+  }
+}
+''';
 
 const getCandidateLogsQuery = r'''
 query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) {
@@ -994,6 +1001,37 @@ query GET_CANDIDATE_DETAILS($queryData: CandidateDetailsQueryData!) {
     job {
       id
       title
+    }
+  }
+}
+''';
+
+const getTeamNotesQuery = r'''
+query GET_TEAM_NOTES($queryData: TeamNoteQueryInput!, $optionData: OptionDataType) {
+  getTeamNotes(queryData: $queryData, optionData: $optionData) {
+    data {
+      candidate_review {
+        createdAt
+        id
+        job_application_id
+        rate
+        updatedAt
+      }
+      id
+      note
+      type
+      createdAt
+      created_by
+      createdBy {
+        profile {
+          first_name
+          last_name
+          user_id
+          image
+          id
+        }
+      }
+      immutable
     }
   }
 }

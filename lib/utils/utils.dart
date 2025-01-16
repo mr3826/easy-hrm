@@ -416,18 +416,14 @@ handleUnknownError(di.Response response) {
   }
 }
 
-
-
 /// Formats a given date string into the specified format.
 /// Defaults to "dd MMM yy" if no format is provided.
 /// Returns an empty string if the input date is invalid.
-
 
 String formatDate({required String date, String? format}) {
   if (date.isEmpty) return "";
 
   try {
-
     final String dateFormat = format ?? "dd MMM yy";
 
     // Parse the input string to a DateTime object
@@ -441,13 +437,7 @@ String formatDate({required String date, String? format}) {
     log(e.toString());
     return "";
   }
-
 }
-
-
-
-
-
 
 getIconAccordingToLeaveType(String? leaveName) {
   switch (leaveName) {
@@ -479,7 +469,8 @@ String getInitials(String fullName) {
   final words = fullName.trim().split(' ');
 
   // Get the first letter of the first word
-  final firstInitial = words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
+  final firstInitial =
+      words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
 
   // Get the first letter of the last word
   final lastInitial = words.last.isNotEmpty ? words.last[0].toUpperCase() : '';
@@ -492,7 +483,8 @@ String capitalizeWords(String input) {
   return input
       .split(' ')
       .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
-      .join(' ').replaceAll("_", " ");
+      .join(' ')
+      .replaceAll("_", " ");
 }
 
 Future<void> openUrlInBrowser(String url) async {

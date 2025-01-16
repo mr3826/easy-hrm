@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/candidates_details_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../common/widget/custom_dotted_border.dart';
@@ -17,7 +19,7 @@ class CandidateRatingSection extends StatefulWidget {
 }
 
 class _CandidateRatingSectionState extends State<CandidateRatingSection> {
-  final controller = Get.find<HrDashBoardController>();
+  final controller = Get.find<CandidateDetailsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +54,24 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
           _buildFeedbackInput(),
           customSpacerHeight(height: 20),
           Obx(() {
-            if (controller.reviewerInputValue.value.isNotEmpty ||
-                !controller.activeStarIndex.isNegative) {
+            if (controller.reviewerInputValue.value.isNotEmpty || !controller.activeStarIndex.isNegative) {
+              if(controller.isCreateReviewLoading.isTrue){
+                return const Center(child: CupertinoActivityIndicator());
+              }
+
               return CustomDoubleAppButton(
-                onAction: () {},
+                onAction: () {
+                  controller.createCandidateReview(jobApplicationId: Get.find<HrDashBoardController>().selectedJobApplicationId.value, jobId: Get.find<HrDashBoardController>().selectedJobId.value, rate: controller.activeStarIndex+1).then((v){
+
+                    controller.getCandidateReview(Get.find<HrDashBoardController>().selectedJobApplicationId.value);
+                    controller.getCandidateDetails(Get.find<HrDashBoardController>().selectedJobApplicationId.value);
+
+                    controller.createReviewMessage.clear();
+                    controller.reviewerInputValue.value = "";
+                    controller.activeStarIndex=-1;
+
+                  });
+                },
                 cancelAction: () {
                   controller.createReviewMessage.clear();
                   controller.reviewerInputValue.value = "";
@@ -88,7 +104,7 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
         borderColor: AppColor.disableColor,
         borderRadius: BorderRadius.circular(4),
         onChanged: (value) {
-          Get.find<HrDashBoardController>().reviewerInputValue.value = value!;
+          controller.reviewerInputValue.value = value!;
         },
       ),
     );

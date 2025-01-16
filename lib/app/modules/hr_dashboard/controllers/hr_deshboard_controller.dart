@@ -32,21 +32,20 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxString selectedHiringStageId = ''.obs;
 
   RxString selectedJobApplicationId = ''.obs;
+  RxString selectedJobId = ''.obs;
   RxString nextHiringStagesId = ''.obs;
   RxInt nextHiringStateIndex = 0.obs;
 
   RxString selectedCandidateId = ''.obs;  ///todo
 
 
-  int activeStarIndex = -1;
-  RxString reviewerInputValue = "".obs;
+
 
   final ScrollController scrollController = ScrollController();
 
   TextEditingController candidateEmail = TextEditingController();
   TextEditingController candidateFirstName = TextEditingController();
   TextEditingController candidateLastName = TextEditingController();
-  TextEditingController createReviewMessage = TextEditingController();
 
   EmployeeOverview? employeeOverview;
   JobOpening? jobOpening;
@@ -90,14 +89,6 @@ class HrDashBoardController extends GetxController with StateMixin {
 
 
   Future updateJobApplication({required String hiringStageId,required String jobApplicationId,required String entryId}) async {
-
-
-    print('''
-    hiringStageId $hiringStageId
-    jobApplicationId $jobApplicationId
-    entryId $entryId
-    
-    ''');
     isJobApplicationUpdateLoading(true);
     bool? response;
     response = await _dasBoardDataSource.updateJobApplication(hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
@@ -148,7 +139,6 @@ class HrDashBoardController extends GetxController with StateMixin {
     candidateEmail.dispose();
     candidateFirstName.dispose();
     candidateLastName.dispose();
-    createReviewMessage.dispose();
     pageController.dispose();
 
     super.onClose();

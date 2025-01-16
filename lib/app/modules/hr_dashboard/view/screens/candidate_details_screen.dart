@@ -58,7 +58,8 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
         customSpacerHeight(height: 2),
         _buildAppliedJobInfo(getCandidateDetails?.job?.title ?? ""),
         customSpacerHeight(height: 6),
-        _buildReviewRow(getCandidateDetails?.totalReview ?? 0),
+        _buildReviewRow(getCandidateDetails?.totalReview ?? 0,
+            getCandidateDetails?.avgRating ?? 0),
         customSpacerHeight(height: 12),
         _buildCandidateStatusButton(context),
         customSpacerHeight(height: 14),
@@ -102,7 +103,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
     );
   }
 
-  Widget _buildReviewRow(int rating) {
+  Widget _buildReviewRow(int rating, int avgRating) {
     if (rating > 0) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +114,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
             color: AppColor.pendingColor,
           ),
           Text(
-            " $rating",
+            " $avgRating ($rating)",
             style: AppStyle.normal_text_black.copyWith(
               color: AppColor.pendingColor,
             ),
@@ -185,13 +186,15 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
               return _buildBottomSheetOptionItem(
                 onTap: () {
                   selectedIndex.value = index;
-                  controller.updateJobApplication(
-                      hiringStageId: hiringStages?[index].id ?? "",
-                      jobApplicationId:
-                          controller.selectedJobApplicationId.value,
-                      entryId: controller.jobApplicationBoard
-                              ?.getJobApplicationBoard?.id ??
-                          "").then((v){
+                  controller
+                      .updateJobApplication(
+                          hiringStageId: hiringStages?[index].id ?? "",
+                          jobApplicationId:
+                              controller.selectedJobApplicationId.value,
+                          entryId: controller.jobApplicationBoard
+                                  ?.getJobApplicationBoard?.id ??
+                              "")
+                      .then((v) {
                     Get.back(canPop: false);
                     Get.back(canPop: false);
                   });

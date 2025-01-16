@@ -4,8 +4,7 @@ import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
 
 /// Builds an action button for various leave options like Approve, Reject, Edit.
-///
-///
+
 Widget customMoreInfoTextWithDiver(
     {String? text, Widget ?textWidget, required VoidCallback onTap, Widget? trailing}) {
   return GestureDetector(

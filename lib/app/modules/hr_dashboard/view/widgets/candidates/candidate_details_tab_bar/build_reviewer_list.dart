@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_review.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -9,20 +10,24 @@ import '../../../../../../../common/widget/hr_deshboard/more_info_text_divider.d
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
+import '../../../../../../../utils/utils.dart';
+import '../../../../controllers/candidates_details_controller.dart';
 import 'build_rating_section.dart';
 
 
-class BuildReviewerList extends StatelessWidget {
+class BuildReviewerList extends GetView<CandidateDetailsController> {
   const BuildReviewerList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 12,
+      itemCount: controller.candidateReviewModel?.getTeamNotes?.data?.length??0,
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        Data? data=controller.candidateReviewModel?.getTeamNotes?.data?[index]??Data();
+
         return Padding(
           padding: const EdgeInsets.only(bottom: 28.0, left: 12, right: 12),
           child: Column(
@@ -31,17 +36,17 @@ class BuildReviewerList extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildReviewerProfileImage(),
+                  _buildReviewerProfileImage(data),
                   customSpacerWidth(width: 8),
-                  _buildReviewerDetails(context),
+                  _buildReviewerDetails(context,data),
                 ],
               ),
               customSpacerHeight(height: 12),
-              _buildRatingRow(),
-              customSpacerHeight(height: 5),
-              _buildReviewDescription(index),
-              customSpacerHeight(height: 12),
-              _buildReviewDateText(),
+              _buildRatingRow(data),
+               customSpacerHeight(height: 5),
+               _buildReviewDescription(index,data),
+
+              _buildReviewDateText(data),
               customSpacerHeight(height: 30),
               const DividerWithDashedLine(),
             ],
@@ -52,17 +57,20 @@ class BuildReviewerList extends StatelessWidget {
   }
 
   // Builds the reviewer's profile image widget
-  Widget _buildReviewerProfileImage() {
-    return const CustomNetworkImage(
+  Widget _buildReviewerProfileImage(Data data) {
+    return  CustomNetworkImage(
       isCircleImage: true,
       radius: 16,
+      errorText:getInitials("${data.createdBy?.profile?.firstName??""} ${data.createdBy?.profile?.lastName??""}",),
       borderColor: AppColor.primaryColor,
-      imageUrl: "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
+      imageUrl:buildImgIxUrl(imgKey:  data.createdBy?.profile?.image??"",)
+
+
     );
   }
 
   // Builds the reviewer's details section
-  Widget _buildReviewerDetails(BuildContext context) {
+  Widget _buildReviewerDetails(BuildContext context,Data data) {
     return Expanded(
       child: Row(
         children: [
@@ -70,9 +78,9 @@ class BuildReviewerList extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildReviewerNameText(),
+                _buildReviewerNameText( "${data.createdBy?.profile?.firstName??""} ${data.createdBy?.profile?.lastName??""}"),
                 const SizedBox(height: 2),
-                _buildReviewerEmailText(),
+                _buildReviewerEmailText("Reviewed the candidate"),
               ],
             ),
           ),
@@ -94,14 +102,14 @@ class BuildReviewerList extends StatelessWidget {
   }
 
   // Builds the review rating row
-  Widget _buildRatingRow() {
-    const int currentRating = 3;
+  Widget _buildRatingRow(Data date) {
+     int currentRating = date.candidateReview?.rate??0;
     const int totalStars = 5;
 
     return Row(
       children: [
         Text(
-          "4.0",
+          date.candidateReview?.rate.toString()??"",
           style: AppStyle.normal_text_black.copyWith(
             color: AppColor.pendingColor,
           ),
@@ -121,19 +129,24 @@ class BuildReviewerList extends StatelessWidget {
   }
 
   // Builds the review text description
-  Widget _buildReviewDescription(int index) {
-    return Text(
-      "$index Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-      style: AppStyle.normal_text_black.copyWith(
-        color: AppColor.normalTextColor.withOpacity(0.7),
+  Widget _buildReviewDescription(int index,Data date) {
+    if(date.note?.isEmpty??false || date.note ==null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Text(
+        date.note??"",
+        style: AppStyle.normal_text_black.copyWith(
+          color: AppColor.normalTextColor.withOpacity(0.7),
+        ),
       ),
     );
   }
 
   // Builds the review date text
-  Widget _buildReviewDateText() {
+  Widget _buildReviewDateText(Data date) {
     return Text(
-      "Mon, Apr 30",
+      formatDate(date: date.createdAt??"",format: "dd MMMM, yyy"),
+
       style: AppStyle.normal_text.copyWith(
         color: AppColor.normalTextColor.withOpacity(0.5),
         fontSize: Dimensions.fontSizeSmall + 1,
@@ -173,9 +186,9 @@ class BuildReviewerList extends StatelessWidget {
   }
 
   // Builds the reviewer's name text
-  Widget _buildReviewerNameText() {
+  Widget _buildReviewerNameText(String name) {
     return Text(
-      "Agens Neilson",
+      name,
       maxLines: 2,
       style: AppStyle.mid_large_text.copyWith(
         color: AppColor.secondaryColor,
@@ -186,9 +199,9 @@ class BuildReviewerList extends StatelessWidget {
   }
 
   // Builds the reviewer's email text
-  Widget _buildReviewerEmailText() {
+  Widget _buildReviewerEmailText(String email) {
     return Text(
-      "email@demo.com",
+      email,
       maxLines: 2,
       style: AppStyle.normal_text.copyWith(
         color: AppColor.hintColor,

@@ -56,6 +56,18 @@ class DashBoardApiService {
     return response.data;
   }
 
+  Future<Map<String, dynamic>?>  createCandidateReview(String jobId,String jobApplicationId, int rate) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "job_id": jobId,
+        "job_application_id": jobApplicationId,
+        "rate":rate
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:createCandidateReviewQuery,variables: variables);
+    return response.data;
+  }
+
 
   Future<Map<String, dynamic>?>  getCandidateActivitiesLogs(String jobApplicationId) async {
     Map<String, Map<String, dynamic>> variables = {
@@ -77,6 +89,17 @@ class DashBoardApiService {
     QueryResult<Object?> response= await _apiService.gqlCall(query:getCandidateDetailsQuery,variables: variables);
     return response.data;
   }
+
+  Future<Map<String, dynamic>?>  getCandidateReview(String jobApplicationId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "job_application_id": jobApplicationId,
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:getTeamNotesQuery,variables: variables);
+    return response.data;
+  }
+
 
  Future<Map<String, dynamic>?>  getFileSignUrl(String fileKey) async {
    Map<String, dynamic> variables = {"fileKey": fileKey, "isDownload": false};

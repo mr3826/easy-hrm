@@ -1,6 +1,7 @@
 import 'dart:developer';
 import '../models/candidate_activities_logs.dart';
 import '../models/candidate_details.dart';
+import '../models/candidate_review.dart';
 import '../models/employee_overview.dart';
 import '../models/file_sign_url.dart';
 import '../models/job_applocation_board.dart';
@@ -19,7 +20,8 @@ abstract class DashBoardDataSource {
   Future<CandidateActivitiesLogs?> getCandidateActivitiesLogs({required String jobApplicationId});
   Future<FileSignedUrl?> getFileSignUrl({required String fileKey});
   Future<CandidateDetails?> getCandidateDetails({required String jobApplicationId});
-
+  Future<CandidateReviewModel?> getCandidateReview({required String jobApplicationId});
+  Future<bool?> createCandidateReview({required String jobId,required String jobApplicationId, required int rate});
 }
 
 
@@ -101,6 +103,9 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
   }
 
 
+
+
+
   @override
   Future<bool?> removeJobApplication({required String jobId,required String candidateId}) async {
     try {
@@ -114,6 +119,23 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
       return null;
     }
   }
+
+
+  @override
+  Future<bool?> createCandidateReview({required String jobId,required String jobApplicationId, required int rate}) async {
+    try {
+      final response = await _dashBoardApiService.createCandidateReview(jobId, jobApplicationId,rate);
+      if (response != null) {
+        return true;
+      }
+      return null;
+    } catch (e) {
+      log('Error removeJobApplication : $e');
+      return null;
+    }
+  }
+
+
 
 
   @override
@@ -159,6 +181,22 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
 
     }catch(ex){
       log("candidateDetails : $ex");
+    }
+    return null;
+
+  }
+
+  @override
+  Future<CandidateReviewModel?> getCandidateReview({required String jobApplicationId})async {
+    try{
+      final response= await _dashBoardApiService.getCandidateReview(jobApplicationId);
+      if(response !=null){
+        return CandidateReviewModel.fromJson(response);
+      }
+      return null;
+
+    }catch(ex){
+      log("getTeamNotQuery : $ex");
     }
     return null;
 
