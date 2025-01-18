@@ -235,7 +235,6 @@ class BuildReviewerList extends GetView<CandidateDetailsController> {
       ),
     );
   }
-
   // Builds the bottom sheet header with profile image and name
   Widget _buildBottomSheetHeader(Data data) {
     return customButtonSheetAppbar(
