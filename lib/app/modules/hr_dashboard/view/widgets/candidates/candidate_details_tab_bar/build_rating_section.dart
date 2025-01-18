@@ -104,7 +104,8 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
   }
 
   void _addCandidateReviewWithNote() {
-    if (controller.activeStarIndex + 1 > 0 && controller.createReviewMessage.text.isNotEmpty) {
+    if (controller.activeStarIndex + 1 > 0 &&
+        controller.createReviewMessage.text.isNotEmpty) {
       ///Called api add note and add rating note
       _addRatingWithAddNote();
     } else if (controller.createReviewMessage.text.isNotEmpty) {
@@ -126,14 +127,15 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
   }
 
   void _updateCandidateReview() {
-    controller.getCandidateReview(
-        Get.find<HrDashBoardController>().selectedJobApplicationId.value);
-    controller.getCandidateDetails(
-        Get.find<HrDashBoardController>().selectedJobApplicationId.value);
     controller.createReviewMessage.clear();
     controller.reviewerInputValue.value = "";
     controller.activeStarIndex = -1;
     controller.selectedNoteId.value = "";
+
+    controller.getCandidateReview(
+        Get.find<HrDashBoardController>().selectedJobApplicationId.value);
+    controller.getCandidateDetails(
+        Get.find<HrDashBoardController>().selectedJobApplicationId.value);
   }
 
   void _noteAddWithUpdateNote() {

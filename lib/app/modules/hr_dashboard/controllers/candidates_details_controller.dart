@@ -16,111 +16,103 @@ class CandidateDetailsController extends GetxController with StateMixin {
 
   final RxInt currentIndex = 0.obs;
   final RxInt jobTabCurrentIndex = 0.obs;
-  RxBool isFileSignUrlLoading=false.obs;
-  RxBool isCreateReviewLoading=false.obs;
-  RxBool isDeletedTeamNoteLoading=false.obs;
-  RxBool isUpdateTeamNoteLoading=false.obs;
-  RxBool isEditNote=false.obs;
+  RxBool isFileSignUrlLoading = false.obs;
+  RxBool isCreateReviewLoading = false.obs;
+  RxBool isDeletedTeamNoteLoading = false.obs;
+  RxBool isUpdateTeamNoteLoading = false.obs;
+  RxBool isEditNote = false.obs;
   int activeStarIndex = -1;
   RxString reviewerInputValue = "".obs;
   RxString selectedNoteId = "".obs;
   TextEditingController createReviewMessage = TextEditingController();
-
 
   CandidateActivitiesLogs? candidateActivitiesLogs;
   CandidateDetails? candidateDetails;
   CandidateReviewModel? candidateReviewModel;
   FileSignedUrl? fileSignedUrl;
 
- Future getCandidateActivitiesLogs(String jobApplicationId) async {
+  Future getCandidateActivitiesLogs(String jobApplicationId) async {
     change(null, status: RxStatus.loading());
     candidateActivitiesLogs = await _dasBoardDataSource
         .getCandidateActivitiesLogs(jobApplicationId: jobApplicationId);
     change(null, status: RxStatus.success());
   }
 
-
-
   Future getCandidateDetails(String jobApplicationId) async {
     change(null, status: RxStatus.loading());
-    candidateDetails = await _dasBoardDataSource.getCandidateDetails(jobApplicationId: jobApplicationId);
+    candidateDetails = await _dasBoardDataSource.getCandidateDetails(
+        jobApplicationId: jobApplicationId);
     change(null, status: RxStatus.success());
   }
 
   Future getCandidateReview(String jobApplicationId) async {
     change(null, status: RxStatus.loading());
-    candidateReviewModel = await _dasBoardDataSource.getCandidateReview(jobApplicationId: jobApplicationId);
+    candidateReviewModel = await _dasBoardDataSource.getCandidateReview(
+        jobApplicationId: jobApplicationId);
     change(null, status: RxStatus.success());
   }
 
-
-
-
-
   Future getFileSignUrl(String fileKey) async {
     isFileSignUrlLoading(true);
-    final urlPath = '${"files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$fileKey';
+    final urlPath =
+        '${"files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$fileKey';
     fileSignedUrl = await _dasBoardDataSource.getFileSignUrl(fileKey: urlPath);
     isFileSignUrlLoading(false);
-    openUrlInBrowser(fileSignedUrl?.getFileSignedUrl??"");
+    openUrlInBrowser(fileSignedUrl?.getFileSignedUrl ?? "");
   }
 
-  Future createCandidateReview({required String jobApplicationId,required String jobId,required int rate}) async {
+  Future createCandidateReview(
+      {required String jobApplicationId,
+      required String jobId,
+      required int rate}) async {
     isCreateReviewLoading(true);
-    bool? response = await _dasBoardDataSource.createCandidateReview(jobApplicationId: jobApplicationId,jobId: jobId,rate: rate);
-    if(response==true){
+    bool? response = await _dasBoardDataSource.createCandidateReview(
+        jobApplicationId: jobApplicationId, jobId: jobId, rate: rate);
+    if (response == true) {
       showSuccessMessage(message: "Review create has been successfully");
     }
     isCreateReviewLoading(false);
   }
 
-
-  Future createCandidateNoteReview({required String jobApplicationId,required String jobId,required String note}) async {
+  Future createCandidateNoteReview(
+      {required String jobApplicationId,
+      required String jobId,
+      required String note}) async {
     isCreateReviewLoading(true);
-    bool? response = await _dasBoardDataSource.createCandidateNoteReview(jobApplicationId: jobApplicationId,jobId: jobId,note: note);
-   if(response==true){
+    bool? response = await _dasBoardDataSource.createCandidateNoteReview(
+        jobApplicationId: jobApplicationId, jobId: jobId, note: note);
+    if (response == true) {
       showSuccessMessage(message: "Review create has been successfully");
     }
     isCreateReviewLoading(false);
   }
-
 
   Future deleteCandidateNoteReview({required String entityId}) async {
+    isDeletedTeamNoteLoading(true);
 
-   isDeletedTeamNoteLoading(true);
+    bool? response =
+        await _dasBoardDataSource.deleteCandidateNoteReview(entityId: entityId);
 
-    bool? response = await _dasBoardDataSource.deleteCandidateNoteReview(entityId: entityId);
-
-   if(response==true){
+    if (response == true) {
       showSuccessMessage(message: "Team note delete successfully");
     }
-   isDeletedTeamNoteLoading(false);
+    isDeletedTeamNoteLoading(false);
   }
 
-
-  Future updateCandidateNoteReview({required String noteId,required String note}) async {
-   isUpdateTeamNoteLoading(true);
-    bool? response = await _dasBoardDataSource.updateCandidateNoteReview(noteId:noteId,note: note);
-   if(response==true){
+  Future updateCandidateNoteReview(
+      {required String noteId, required String note}) async {
+    isUpdateTeamNoteLoading(true);
+    bool? response = await _dasBoardDataSource.updateCandidateNoteReview(
+        noteId: noteId, note: note);
+    if (response == true) {
       showSuccessMessage(message: "Team note update successfully");
     }
-   isUpdateTeamNoteLoading(false);
+    isUpdateTeamNoteLoading(false);
   }
-
-
-
-
-
-
 
   @override
   void dispose() {
     createReviewMessage.dispose();
     super.dispose();
   }
-
-
 }
-
-
-

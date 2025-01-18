@@ -5,6 +5,7 @@ import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_review.d
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
@@ -23,38 +24,45 @@ class BuildReviewerList extends GetView<CandidateDetailsController> {
   const BuildReviewerList({super.key});
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.candidateReviewModel?.getTeamNotes?.data?.length ?? 0,
-      physics: const NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        Data? data = controller.candidateReviewModel?.getTeamNotes?.data?[index] ?? Data();
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 28.0, left: 12, right: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildReviewerProfileImage(data),
-                  customSpacerWidth(width: 8),
-                  _buildReviewerDetails(context, data),
-                ],
-              ),
-              customSpacerHeight(height: 12),
-              _buildRatingRow(data),
-              customSpacerHeight(height: 5),
-              _buildReviewDescription(index, data),
-              _buildReviewDateText(data),
-              customSpacerHeight(height: 30),
-              const DividerWithDashedLine(),
-            ],
-          ),
-        );
-      },
-    );
+    return controller.obx(
+        (state) => ListView.builder(
+              itemCount:
+                  controller.candidateReviewModel?.getTeamNotes?.data?.length ??
+                      0,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                Data? data = controller
+                        .candidateReviewModel?.getTeamNotes?.data?[index] ??
+                    Data();
+                return Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 28.0, left: 12, right: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _buildReviewerProfileImage(data),
+                          customSpacerWidth(width: 8),
+                          _buildReviewerDetails(context, data),
+                        ],
+                      ),
+                      customSpacerHeight(height: 12),
+                      _buildRatingRow(data),
+                      customSpacerHeight(height: 5),
+                      _buildReviewDescription(index, data),
+                      _buildReviewDateText(data),
+                      customSpacerHeight(height: 30),
+                      const DividerWithDashedLine(),
+                    ],
+                  ),
+                );
+              },
+            ),
+        onLoading: const LoadingIndicator());
   }
 
   // Builds the reviewer's profile image widget
