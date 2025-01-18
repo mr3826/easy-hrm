@@ -54,23 +54,16 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
           _buildFeedbackInput(),
           customSpacerHeight(height: 20),
           Obx(() {
-            if (controller.reviewerInputValue.value.isNotEmpty || !controller.activeStarIndex.isNegative) {
-              if(controller.isCreateReviewLoading.isTrue){
+            if (controller.reviewerInputValue.value.isNotEmpty ||
+                !controller.activeStarIndex.isNegative) {
+              if (controller.isCreateReviewLoading.isTrue ||
+                  controller.isUpdateTeamNoteLoading.isTrue) {
                 return const Center(child: CupertinoActivityIndicator());
               }
 
               return CustomDoubleAppButton(
                 onAction: () {
-                  controller.createCandidateReview(jobApplicationId: Get.find<HrDashBoardController>().selectedJobApplicationId.value, jobId: Get.find<HrDashBoardController>().selectedJobId.value, rate: controller.activeStarIndex+1).then((v){
-
-                    controller.getCandidateReview(Get.find<HrDashBoardController>().selectedJobApplicationId.value);
-                    controller.getCandidateDetails(Get.find<HrDashBoardController>().selectedJobApplicationId.value);
-
-                    controller.createReviewMessage.clear();
-                    controller.reviewerInputValue.value = "";
-                    controller.activeStarIndex=-1;
-
-                  });
+                  _addCandidateReviewWithNote();
                 },
                 cancelAction: () {
                   controller.createReviewMessage.clear();
@@ -108,6 +101,84 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
         },
       ),
     );
+  }
+
+  void _addCandidateReviewWithNote() {
+    if (controller.activeStarIndex + 1 > 0 && controller.createReviewMessage.text.isNotEmpty) {
+      ///Called api add note and add rating note
+      _addRatingWithAddNote();
+    } else if (controller.createReviewMessage.text.isNotEmpty) {
+      ///Called api add note and updated note
+      _noteAddWithUpdateNote();
+    } else {
+      ///Called api only candidate rate
+      controller
+          .createCandidateReview(
+              jobApplicationId: Get.find<HrDashBoardController>()
+                  .selectedJobApplicationId
+                  .value,
+              jobId: Get.find<HrDashBoardController>().selectedJobId.value,
+              rate: controller.activeStarIndex + 1)
+          .then((v) {
+        _updateCandidateReview();
+      });
+    }
+  }
+
+  void _updateCandidateReview() {
+    controller.getCandidateReview(
+        Get.find<HrDashBoardController>().selectedJobApplicationId.value);
+    controller.getCandidateDetails(
+        Get.find<HrDashBoardController>().selectedJobApplicationId.value);
+    controller.createReviewMessage.clear();
+    controller.reviewerInputValue.value = "";
+    controller.activeStarIndex = -1;
+    controller.selectedNoteId.value = "";
+  }
+
+  void _noteAddWithUpdateNote() {
+    if (controller.isEditNote.isTrue) {
+      controller
+          .updateCandidateNoteReview(
+              noteId: controller.selectedNoteId.value,
+              note: controller.createReviewMessage.text)
+          .then((v) {
+        _updateCandidateReview();
+      });
+    } else {
+      controller
+          .createCandidateNoteReview(
+              jobApplicationId: Get.find<HrDashBoardController>()
+                  .selectedJobApplicationId
+                  .value,
+              jobId: Get.find<HrDashBoardController>().selectedJobId.value,
+              note: controller.createReviewMessage.text)
+          .then((v) {
+        _updateCandidateReview();
+      });
+    }
+  }
+
+  void _addRatingWithAddNote() {
+    controller
+        .createCandidateReview(
+            jobApplicationId: Get.find<HrDashBoardController>()
+                .selectedJobApplicationId
+                .value,
+            jobId: Get.find<HrDashBoardController>().selectedJobId.value,
+            rate: controller.activeStarIndex + 1)
+        .then((v) {
+      controller
+          .createCandidateNoteReview(
+              jobApplicationId: Get.find<HrDashBoardController>()
+                  .selectedJobApplicationId
+                  .value,
+              jobId: Get.find<HrDashBoardController>().selectedJobId.value,
+              note: controller.createReviewMessage.text)
+          .then((v) {
+        _updateCandidateReview();
+      });
+    });
   }
 }
 

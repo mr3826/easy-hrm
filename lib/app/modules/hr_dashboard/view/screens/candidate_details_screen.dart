@@ -53,8 +53,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
           ),
         ),
         customSpacerHeight(height: 12),
-        _buildCandidateName(
-            "${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
+        _buildCandidateName("${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
         customSpacerHeight(height: 2),
         _buildAppliedJobInfo(getCandidateDetails?.job?.title ?? ""),
         customSpacerHeight(height: 6),

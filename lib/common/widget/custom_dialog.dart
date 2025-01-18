@@ -18,8 +18,8 @@ import 'package:payrun_mobile/utils/dimensions.dart';
   double paddingHorizontal = 20.0,
   double paddingVertical = 20.0,
   double buttonSpacing = 12.0,
-  required Function() onConfirm,
-  required String confirmButtonText,
+   Function()?onConfirm,
+   String? confirmButtonText,
   Widget? confirmButtonChild,
    String? extraInfoText,
   Widget? actionButtonWidget,
@@ -86,7 +86,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
             actionButtonWidget ??
                 CustomDoubleAppButton(
                   buttonText: confirmButtonText,
-                  onAction: onConfirm,
+                  onAction: onConfirm??(){},
                   cancelAction: () => Get.back(),
                   btnColor: confirmButtonColor,
                   saveBtn: confirmButtonChild,

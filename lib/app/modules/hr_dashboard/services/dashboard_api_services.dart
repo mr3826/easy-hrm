@@ -69,6 +69,49 @@ class DashBoardApiService {
   }
 
 
+
+
+  Future<Map<String, dynamic>?>  createCandidateNoteReview(String jobId,String jobApplicationId, String note) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "job_id": jobId,
+        "job_application_id": jobApplicationId,
+        "note":note
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:createTeamNoteQuery,variables: variables);
+    return response.data;
+  }
+
+
+  Future<Map<String, dynamic>?>  deleteCandidateNoteReview(String entityId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "entity_id": entityId,
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:deleteTeamNoteQuery,variables: variables);
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>?>  updateCandidateNoteReview(String noteId,String note) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "team_note_id": noteId,
+        "note":note
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:updateTeamNoteQuery,variables: variables);
+    return response.data;
+  }
+
+
+
+
+
+
+
+
   Future<Map<String, dynamic>?>  getCandidateActivitiesLogs(String jobApplicationId) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {

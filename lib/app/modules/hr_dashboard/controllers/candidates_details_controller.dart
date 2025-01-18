@@ -18,8 +18,12 @@ class CandidateDetailsController extends GetxController with StateMixin {
   final RxInt jobTabCurrentIndex = 0.obs;
   RxBool isFileSignUrlLoading=false.obs;
   RxBool isCreateReviewLoading=false.obs;
+  RxBool isDeletedTeamNoteLoading=false.obs;
+  RxBool isUpdateTeamNoteLoading=false.obs;
+  RxBool isEditNote=false.obs;
   int activeStarIndex = -1;
   RxString reviewerInputValue = "".obs;
+  RxString selectedNoteId = "".obs;
   TextEditingController createReviewMessage = TextEditingController();
 
 
@@ -62,23 +66,50 @@ class CandidateDetailsController extends GetxController with StateMixin {
   }
 
   Future createCandidateReview({required String jobApplicationId,required String jobId,required int rate}) async {
-
-
-    print('''
-    jobApplicationId : $jobApplicationId
-    jobId $jobId
-    rate $rate
-    
-    
-    ''');
     isCreateReviewLoading(true);
-
     bool? response = await _dasBoardDataSource.createCandidateReview(jobApplicationId: jobApplicationId,jobId: jobId,rate: rate);
     if(response==true){
       showSuccessMessage(message: "Review create has been successfully");
     }
     isCreateReviewLoading(false);
   }
+
+
+  Future createCandidateNoteReview({required String jobApplicationId,required String jobId,required String note}) async {
+    isCreateReviewLoading(true);
+    bool? response = await _dasBoardDataSource.createCandidateNoteReview(jobApplicationId: jobApplicationId,jobId: jobId,note: note);
+   if(response==true){
+      showSuccessMessage(message: "Review create has been successfully");
+    }
+    isCreateReviewLoading(false);
+  }
+
+
+  Future deleteCandidateNoteReview({required String entityId}) async {
+
+   isDeletedTeamNoteLoading(true);
+
+    bool? response = await _dasBoardDataSource.deleteCandidateNoteReview(entityId: entityId);
+
+   if(response==true){
+      showSuccessMessage(message: "Team note delete successfully");
+    }
+   isDeletedTeamNoteLoading(false);
+  }
+
+
+  Future updateCandidateNoteReview({required String noteId,required String note}) async {
+   isUpdateTeamNoteLoading(true);
+    bool? response = await _dasBoardDataSource.updateCandidateNoteReview(noteId:noteId,note: note);
+   if(response==true){
+      showSuccessMessage(message: "Team note update successfully");
+    }
+   isUpdateTeamNoteLoading(false);
+  }
+
+
+
+
 
 
 

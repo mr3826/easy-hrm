@@ -22,6 +22,9 @@ abstract class DashBoardDataSource {
   Future<CandidateDetails?> getCandidateDetails({required String jobApplicationId});
   Future<CandidateReviewModel?> getCandidateReview({required String jobApplicationId});
   Future<bool?> createCandidateReview({required String jobId,required String jobApplicationId, required int rate});
+  Future<bool?> createCandidateNoteReview({required String jobId,required String jobApplicationId, required String note});
+  Future<bool?> deleteCandidateNoteReview({required String entityId});
+  Future<bool?> updateCandidateNoteReview({required String noteId,required String note});
 }
 
 
@@ -130,7 +133,48 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
       }
       return null;
     } catch (e) {
-      log('Error removeJobApplication : $e');
+      log('Error createCandidateReview : $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<bool?> createCandidateNoteReview({required String jobId,required String jobApplicationId, required String note}) async {
+    try {
+      final response = await _dashBoardApiService.createCandidateNoteReview(jobId, jobApplicationId,note);
+      if (response != null) {
+        return true;
+      }
+      return null;
+    } catch (e) {
+      log('Error createCandidateNoteReview : $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<bool?> deleteCandidateNoteReview({required String entityId}) async {
+    try {
+      final response = await _dashBoardApiService.deleteCandidateNoteReview(entityId);
+      if (response != null) {
+        return true;
+      }
+      return null;
+    } catch (e) {
+      log('Error deleteCandidateNoteReview : $e');
+      return null;
+    }
+  }
+  @override
+  Future<bool?> updateCandidateNoteReview({required String noteId,required String note}) async {
+    try {
+      final response = await _dashBoardApiService.updateCandidateNoteReview(noteId,note);
+      if (response != null) {
+        return true;
+      }
+      return null;
+    } catch (e) {
+      log('Error updateCandidateNoteReview : $e');
       return null;
     }
   }

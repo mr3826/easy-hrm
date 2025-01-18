@@ -940,6 +940,31 @@ mutation CREATE_A_CANDIDATE_REWVIW($inputData: CreateCandidateReviewInput!) {
 }
 ''';
 
+const createTeamNoteQuery = r'''
+mutation CREATE_A_TEAM_NOTE($inputData: CreateTeamNoteInput!) {
+  createATeamNote(inputData: $inputData) {
+    id
+    note
+  }
+}
+''';
+const deleteTeamNoteQuery = r'''
+mutation DELETE_A_TEAM_NOTE($inputData: CommonEntityIdQueryDataType!) {
+  deleteATeamNote(inputData: $inputData) {
+    result
+  }
+}
+''';
+
+const updateTeamNoteQuery = r'''
+mutation UPDATE_A_TEAM_NOTE($inputData: UpdateTeamNoteInput!) {
+  updateATeamNote(inputData: $inputData) {
+    id
+    note
+  }
+}
+''';
+
 const getCandidateLogsQuery = r'''
 query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) {
   getLogs(optionData: $optionData, queryData: $queryData) {
