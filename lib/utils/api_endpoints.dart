@@ -1006,6 +1006,20 @@ query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) 
   }
 }
 ''';
+const getJobApplicationPreviewQuery = r'''
+query GET_JOB_APPLICATION_PREWVIEW($queryData: JobApplicationPreviewQueryData!) {
+  getJobApplicationPreview(queryData: $queryData) {
+    data {
+      id
+      form_fields
+      is_duplicatable
+      is_questionable
+      name
+      organization_id
+    }
+  }
+}
+''';
 const getCandidateDetailsQuery = r'''
 query GET_CANDIDATE_DETAILS($queryData: CandidateDetailsQueryData!) {
   getCandidateDetails(queryData: $queryData) {

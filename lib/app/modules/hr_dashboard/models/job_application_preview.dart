@@ -32,6 +32,12 @@ class GetJobApplicationPreview {
 
 class Data {
   String? id;
+
+  @override
+  String toString() {
+    return 'Data{id: $id, formFields: $formFields, isDuplicatable: $isDuplicatable, isQuestionable: $isQuestionable, name: $name, organizationId: $organizationId}';
+  }
+
   List<FormFields>? formFields;
   bool? isDuplicatable;
   bool? isQuestionable;
@@ -59,30 +65,23 @@ class Data {
     name = json['name'];
     organizationId = json['organization_id'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.formFields != null) {
-      data['form_fields'] = this.formFields!.map((v) => v.toJson()).toList();
-    }
-    data['is_duplicatable'] = this.isDuplicatable;
-    data['is_questionable'] = this.isQuestionable;
-    data['name'] = this.name;
-    data['organization_id'] = this.organizationId;
-    return data;
-  }
 }
 
 class FormFields {
   String? id;
   String? name;
   String? type;
-  String? priority;
+  dynamic priority;
   String? fieldWidth;
-  String? isRequired;
+  dynamic isRequired;
   List<FormFieldValues>? formFieldValues;
   List<FormFields>? formFields;
+
+
+  @override
+  String toString() {
+    return 'FormFields{id: $id, name: $name, type: $type, priority: $priority, fieldWidth: $fieldWidth, isRequired: $isRequired, formFieldValues: $formFieldValues, formFields: $formFields}';
+  }
 
   FormFields(
       {this.id,
@@ -93,6 +92,7 @@ class FormFields {
         this.isRequired,
         this.formFieldValues,
         this.formFields});
+
 
   FormFields.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -115,23 +115,7 @@ class FormFields {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['priority'] = this.priority;
-    data['field_width'] = this.fieldWidth;
-    data['is_required'] = this.isRequired;
-    if (this.formFieldValues != null) {
-      data['form_field_values'] =
-          this.formFieldValues!.map((v) => v.toJson()).toList();
-    }
-    if (this.formFields != null) {
-      data['form_fields'] = this.formFields!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+
 }
 
 class FormFieldValues {
@@ -147,15 +131,6 @@ class FormFieldValues {
     value = json['value'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.file != null) {
-      data['file'] = this.file!.toJson();
-    }
-    data['value'] = this.value;
-    return data;
-  }
 }
 
 class File {
@@ -171,13 +146,6 @@ class File {
     name = json['name'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['key'] = this.key;
-    data['name'] = this.name;
-    return data;
-  }
 }
 
 class FormFields1 {
@@ -187,7 +155,7 @@ class FormFields1 {
   int? priority;
   String? fieldWidth;
   bool? isRequired;
-  int? groupSerialId;
+  String? groupSerialId;
   List<FormFieldValues>? formFieldValues;
 
   FormFields1(
@@ -200,6 +168,10 @@ class FormFields1 {
         this.groupSerialId,
         this.formFieldValues});
 
+  @override
+  String toString() {
+    return 'FormFields1{id: $id, name: $name, type: $type, priority: $priority, fieldWidth: $fieldWidth, isRequired: $isRequired, groupSerialId: $groupSerialId, formFieldValues: $formFieldValues}';
+  }
   FormFields1.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
@@ -225,10 +197,7 @@ class FormFields1 {
     data['field_width'] = this.fieldWidth;
     data['is_required'] = this.isRequired;
     data['group_serial_id'] = this.groupSerialId;
-    if (this.formFieldValues != null) {
-      data['form_field_values'] =
-          this.formFieldValues!.map((v) => v.toJson()).toList();
-    }
+
     return data;
   }
 }

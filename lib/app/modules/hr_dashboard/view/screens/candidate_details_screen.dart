@@ -26,8 +26,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppbar(
-            title:
-                "${AppString.text_candidate.tr} ${AppString.text_details.tr}"),
+            title: "${AppString.text_candidate.tr} ${AppString.text_details.tr}"),
         body: controller.obx(
             (state) => Column(
                   children: [
@@ -46,8 +45,7 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
           child: CustomNetworkImage(
             imageUrl: buildImgIxUrl(
                 imgKey: getCandidateDetails?.candidate?.avatarKey ?? ""),
-            errorText: getInitials(
-                "${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
+            errorText: getInitials("${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
             isCircleImage: true,
             radius: 32,
           ),

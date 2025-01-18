@@ -4,6 +4,7 @@ import '../models/candidate_details.dart';
 import '../models/candidate_review.dart';
 import '../models/employee_overview.dart';
 import '../models/file_sign_url.dart';
+import '../models/job_application_preview.dart';
 import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
 import '../models/leave_timline_summary.dart';
@@ -25,6 +26,8 @@ abstract class DashBoardDataSource {
   Future<bool?> createCandidateNoteReview({required String jobId,required String jobApplicationId, required String note});
   Future<bool?> deleteCandidateNoteReview({required String entityId});
   Future<bool?> updateCandidateNoteReview({required String noteId,required String note});
+  Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId});
+
 }
 
 
@@ -194,6 +197,22 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
 
     }catch(ex){
       log("getCandidateActivitiesLogs : $ex");
+    }
+    return null;
+  }
+
+  @override
+  Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId })async {
+    try{
+      final response= await _dashBoardApiService.getJobApplicationPreview(jobId,candidateId);
+
+      if(response !=null){
+        return JobApplicationPreviewModel.fromJson(response);
+      }
+      return null;
+
+    }catch(ex){
+      log("getJobApplicationPreview : $ex");
     }
     return null;
   }

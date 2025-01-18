@@ -27,10 +27,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   @override
   Widget build(BuildContext context) {
     // Example data for the list
-    final RxList<HiringStages> hiringStages = controller
-            .jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ??
-        <HiringStages>[].obs;
-
+    final RxList<HiringStages> hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.obs ?? <HiringStages>[].obs;
     RxList<JobApplications> userList = <JobApplications>[].obs;
 
     return Obx(() {
@@ -57,17 +54,10 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Get.find<CandidateDetailsController>()
-                  .getCandidateActivitiesLogs(userList[index].id ?? "");
-              Get.find<CandidateDetailsController>()
-                  .getCandidateDetails(userList[index].id ?? "");
-              Get.find<CandidateDetailsController>()
-                  .getCandidateReview(userList[index].id ?? "");
-
+              Get.find<CandidateDetailsController>().getCandidateDetails(userList[index].id ?? "");
+              Get.find<CandidateDetailsController>().getJobApplicationPreview( controller.jobApplicationBoard?.getJobApplicationBoard?.id ??"",userList[index].candidate?.id ?? "");
               controller.selectedJobApplicationId(userList[index].id ?? "");
-              controller.selectedJobId(
-                  controller.jobApplicationBoard?.getJobApplicationBoard?.id ??
-                      "");
+              controller.selectedJobId(controller.jobApplicationBoard?.getJobApplicationBoard?.id ?? "");
               Get.toNamed(Routes.CANDIDATES_DETAILS);
             },
             child: LayoutBuilder(builder: (context, constraints) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/candidates_details_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/hr_deshboard_controller.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
@@ -19,14 +21,16 @@ class CandidateDetailsTabBar extends GetView<CandidateDetailsController> {
         child: Column(
           children: [
             _buildTabBar(),
-            const Expanded(
-              child: TabBarView(
-                children: [
-                  BuildTabDetails(),
-                  BuildTabActivities(),
-                  ReviewTab(),
-                ],
-              ),
+            Expanded(
+              child: Obx(() => controller.isReviewLoading.isTrue
+                  ? const LoadingIndicator()
+                  : const TabBarView(
+                      children: [
+                        BuildTabDetails(),
+                        BuildTabActivities(),
+                        ReviewTab(),
+                      ],
+                    )),
             ),
           ],
         ),
@@ -46,6 +50,15 @@ class CandidateDetailsTabBar extends GetView<CandidateDetailsController> {
         fontSize: Dimensions.fontSizeExtraDefault - .5,
       ),
       isScrollable: true,
+      onTap: (index) {
+        if (index == 1) {
+          Get.find<CandidateDetailsController>().getCandidateActivitiesLogs(
+              Get.find<HrDashBoardController>().selectedJobApplicationId.value);
+        } else if (index == 2) {
+          Get.find<CandidateDetailsController>().getCandidateReview(
+              Get.find<HrDashBoardController>().selectedJobApplicationId.value);
+        }
+      },
       tabs: const [
         Tab(text: 'Details'),
         Tab(text: 'Activities'),

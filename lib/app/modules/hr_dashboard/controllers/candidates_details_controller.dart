@@ -8,6 +8,7 @@ import '../models/candidate_activities_logs.dart';
 import '../models/candidate_details.dart';
 import '../models/candidate_review.dart';
 import '../models/file_sign_url.dart';
+import '../models/job_application_preview.dart';
 import '../repositories/dashboard_repository.dart';
 
 class CandidateDetailsController extends GetxController with StateMixin {
@@ -18,6 +19,7 @@ class CandidateDetailsController extends GetxController with StateMixin {
   RxBool isCreateReviewLoading = false.obs;
   RxBool isDeletedTeamNoteLoading = false.obs;
   RxBool isUpdateTeamNoteLoading = false.obs;
+  RxBool isReviewLoading = false.obs;
   RxBool isEditNote = false.obs;
   int activeStarIndex = -1;
   RxString reviewerInputValue = "".obs;
@@ -26,14 +28,15 @@ class CandidateDetailsController extends GetxController with StateMixin {
 
   CandidateActivitiesLogs? candidateActivitiesLogs;
   CandidateDetails? candidateDetails;
+  JobApplicationPreviewModel? jobApplicationPreview;
   CandidateReviewModel? candidateReviewModel;
   FileSignedUrl? fileSignedUrl;
 
   Future getCandidateActivitiesLogs(String jobApplicationId) async {
-    change(null, status: RxStatus.loading());
+    isReviewLoading(true);
     candidateActivitiesLogs = await _dasBoardDataSource
         .getCandidateActivitiesLogs(jobApplicationId: jobApplicationId);
-    change(null, status: RxStatus.success());
+    isReviewLoading(false);
   }
 
   Future getCandidateDetails(String jobApplicationId) async {
@@ -43,11 +46,20 @@ class CandidateDetailsController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  Future getJobApplicationPreview(String jobId,String candidateId ) async {
+    isReviewLoading(true);
+    jobApplicationPreview = await _dasBoardDataSource.getJobApplicationPreview(jobId: jobId,candidateId: candidateId);
+    isReviewLoading(false);
+
+  }
+
   Future getCandidateReview(String jobApplicationId) async {
-    change(null, status: RxStatus.loading());
+    isReviewLoading(true);
+
     candidateReviewModel = await _dasBoardDataSource.getCandidateReview(
         jobApplicationId: jobApplicationId);
-    change(null, status: RxStatus.success());
+    isReviewLoading(false);
+
   }
 
   Future getFileSignUrl(String fileKey) async {

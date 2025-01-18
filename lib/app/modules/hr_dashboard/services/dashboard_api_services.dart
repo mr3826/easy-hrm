@@ -109,9 +109,6 @@ class DashBoardApiService {
 
 
 
-
-
-
   Future<Map<String, dynamic>?>  getCandidateActivitiesLogs(String jobApplicationId) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
@@ -122,6 +119,22 @@ class DashBoardApiService {
     QueryResult<Object?> response= await _apiService.gqlCall(query:getCandidateLogsQuery,variables: variables);
     return response.data;
   }
+
+ Future<Map<String, dynamic>?>  getJobApplicationPreview(String jobId,String candidateId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "candidate_id": candidateId,
+        "job_id": jobId
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:getJobApplicationPreviewQuery,variables: variables);
+    return response.data;
+  }
+
+
+
+
+
 
   Future<Map<String, dynamic>?>  getCandidateDetails(String jobApplicationId) async {
     Map<String, Map<String, dynamic>> variables = {
