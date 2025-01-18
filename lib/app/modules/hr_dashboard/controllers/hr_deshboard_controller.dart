@@ -14,20 +14,16 @@ class HrDashBoardController extends GetxController with StateMixin {
   final RxInt currentIndex = 0.obs;
   // final RxInt jobTabCurrentIndex = 0.obs;
 
-
   RxInt jobDetailsSelectedIndex = 0.obs; // Track the selected tab index
   late PageController pageController; // For smooth scrolling
-
 
   RxBool isCandidateSelected = false.obs; // Check if a candidate is selected
   RxBool isJobApplicationBoardLoading = false.obs;
   RxBool isJobApplicationUpdateLoading = false.obs;
   RxBool isJobApplicationRemoveLoading = false.obs;
 
-
-
-  RxBool isPasteButtonActive = false.obs; // Track if the paste button should be active
-
+  RxBool isPasteButtonActive =
+      false.obs; // Track if the paste button should be active
 
   RxString selectedHiringStageId = ''.obs;
 
@@ -36,10 +32,9 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxString nextHiringStagesId = ''.obs;
   RxInt nextHiringStateIndex = 0.obs;
 
-  RxString selectedCandidateId = ''.obs;  ///todo
+  RxString selectedCandidateId = ''.obs;
 
-
-
+  ///todo
 
   final ScrollController scrollController = ScrollController();
 
@@ -62,61 +57,57 @@ class HrDashBoardController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-
-
   getLeaveAndTimeLogSummary() async {
     change(null, status: RxStatus.loading());
     leaveTimeLogSummary = await _dasBoardDataSource.getLeaveAndTimeLogSummary();
     change(null, status: RxStatus.success());
   }
 
-
-
   getJobApplicationBoard({required String entityId}) async {
     isJobApplicationBoardLoading(true);
-    jobApplicationBoard = await _dasBoardDataSource.getJobApplicationBoard(entityId: entityId);
+    jobApplicationBoard =
+        await _dasBoardDataSource.getJobApplicationBoard(entityId: entityId);
 
+    ///Add hiring first stage Id
+    selectedHiringStageId.value =
+        jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.first.id ??
+            "";
 
-   ///Add hiring first stage Id
-    selectedHiringStageId.value=jobApplicationBoard?.getJobApplicationBoard?.hiringStages?.first.id??"";
-
-   nextHiringStagesId.value=jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[1].id??"";
+    nextHiringStagesId.value =
+        jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[1].id ?? "";
 
     isJobApplicationBoardLoading(false);
   }
 
-
-
-
-  Future updateJobApplication({required String hiringStageId,required String jobApplicationId,required String entryId}) async {
+  Future updateJobApplication(
+      {required String hiringStageId,
+      required String jobApplicationId,
+      required String entryId}) async {
     isJobApplicationUpdateLoading(true);
     bool? response;
-    response = await _dasBoardDataSource.updateJobApplication(hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
+    response = await _dasBoardDataSource.updateJobApplication(
+        hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
 
-    if(response==true){
+    if (response == true) {
       showSuccessMessage(message: "Job application has been updated!");
       _updatedDate(entryId);
     }
     isJobApplicationUpdateLoading(false);
   }
 
-
-  removeJobApplication({required String candidateId,required String jobId}) async {
+  removeJobApplication(
+      {required String candidateId, required String jobId}) async {
     isJobApplicationRemoveLoading(true);
     bool? response;
-    response = await _dasBoardDataSource.removeJobApplication(jobId: jobId, candidateId: candidateId);
-    if(response==true){
+    response = await _dasBoardDataSource.removeJobApplication(
+        jobId: jobId, candidateId: candidateId);
+    if (response == true) {
       showSuccessMessage(message: "Job application has been removed!");
       getJobApplicationBoard(entityId: jobId);
       Get.back(canPop: false);
     }
     isJobApplicationRemoveLoading(false);
   }
-
-
-
-
-
 
   @override
   void onInit() {
@@ -152,16 +143,16 @@ class HrDashBoardController extends GetxController with StateMixin {
 
   void _updatedDate(String entryId) {
     getJobApplicationBoard(entityId: entryId);
-    selectedHiringStageId.value="";
-    selectedCandidateId.value="";
-    selectedJobApplicationId.value="";
+    selectedHiringStageId.value = "";
+    selectedCandidateId.value = "";
+    selectedJobApplicationId.value = "";
     isPasteButtonActive(false);
     isCandidateSelected(false);
     currentIndex(0);
-    selectedHiringStageId.value="";
-    selectedCandidateId.value="";
-    selectedJobApplicationId.value="";
+    selectedHiringStageId.value = "";
+    selectedCandidateId.value = "";
+    selectedJobApplicationId.value = "";
     isPasteButtonActive(false);
-   jobDetailsSelectedIndex(0);
+    jobDetailsSelectedIndex(0);
   }
 }

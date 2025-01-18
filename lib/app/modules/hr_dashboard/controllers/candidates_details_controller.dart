@@ -14,8 +14,6 @@ class CandidateDetailsController extends GetxController with StateMixin {
   final DashBoardDataSource _dasBoardDataSource;
   CandidateDetailsController(this._dasBoardDataSource);
 
-  final RxInt currentIndex = 0.obs;
-  final RxInt jobTabCurrentIndex = 0.obs;
   RxBool isFileSignUrlLoading = false.obs;
   RxBool isCreateReviewLoading = false.obs;
   RxBool isDeletedTeamNoteLoading = false.obs;
