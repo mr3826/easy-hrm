@@ -124,33 +124,36 @@ class TabBarWidget extends GetView<HrDashBoardController> {
     List<HiringStages>? data =
         controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages ??
             [];
-    return Obx(() {
-      return Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              offset: const Offset(0, 1),
-              blurRadius: 5,
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: tabsScrollController, // Attach the controller
-            child: Row(
-              children: List.generate(data.length, (index) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            offset: const Offset(0, 1),
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          controller: tabsScrollController, // Attach the controller
+          child: Row(
+            children: List.generate(data.length, (index) {
+              return Obx(() {
                 final isSelected =
                     controller.jobDetailsSelectedIndex.value == index;
                 final textColor = isSelected
                     ? AppColor.primaryColor
                     : AppColor.normalTextColor.withOpacity(0.5);
+
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    controller.jobDetailsSelectedIndex.value = index;
+                  },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 18.0),
                     child: Column(
@@ -163,7 +166,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                               data[index].title ?? "",
                               style: AppStyle.normal_text_black.copyWith(
                                 color: textColor,
-                                fontSize: Dimensions.fontSizeExtraDefault - .5,
+                                fontSize: Dimensions.fontSizeExtraDefault - 0.5,
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -177,7 +180,7 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                data[index].noOfApplicant.toString() ?? "",
+                                data[index].noOfApplicant.toString(),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -204,11 +207,11 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                     ),
                   ),
                 );
-              }),
-            ),
+              });
+            }),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
