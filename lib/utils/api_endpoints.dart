@@ -940,6 +940,13 @@ mutation UPDATE_CANDIDATE($inputData: UpdateCandidateInputData!) {
   }
 }
 ''';
+const removeCandidateQuery = r'''
+mutation REMOVE_CANDIDATE($inputData: RemoveCandidateInputData!) {
+  removeCandidate(inputData: $inputData) {
+    result
+  }
+}
+''';
 
 
 

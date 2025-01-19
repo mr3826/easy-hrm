@@ -35,7 +35,7 @@ abstract class DashBoardDataSource {
   Future<FilterHiringStages?> getHiringStages();
   Future<FilterJobsDropdown?> getJobsDropdown();
   Future<bool?> updateCandidate({required String candidateId,required String jobId,required String email,required String firstName,required String lastName});
-
+  Future<bool?> removeCandidate({required String candidateId,required String jobId});
 }
 
 
@@ -215,6 +215,20 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
       return null;
     } catch (e) {
       log('Error updateCandidate : $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<bool?> removeCandidate({required String candidateId,required String jobId}) async {
+    try {
+      final response = await _dashBoardApiService.removeCandidate(candidateId,jobId);
+      if (response != null) {
+        return true;
+      }
+      return null;
+    } catch (e) {
+      log('Error removeCandidate : $e');
       return null;
     }
   }

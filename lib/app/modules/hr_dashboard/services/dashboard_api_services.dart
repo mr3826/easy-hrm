@@ -227,6 +227,18 @@ Future<Map<String, dynamic>?> updateCandidate(String candidateId,String jobId,St
     return response.data;
   }
 
+Future<Map<String, dynamic>?> removeCandidate(String candidateId,String jobId) async {
+  Map<String, Map<String, dynamic>> variables = {
+    "inputData": {
+      "candidate_id": candidateId,
+      "job_id":jobId
+    },
+  };
+    QueryResult<Object?> response =
+    await _apiService.gqlCall(query: removeCandidateQuery,variables: variables);
+    return response.data;
+  }
+
 
 
 

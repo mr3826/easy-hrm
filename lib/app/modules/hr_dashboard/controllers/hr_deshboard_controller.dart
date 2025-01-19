@@ -23,6 +23,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isJobApplicationBoardLoading = false.obs;
   RxBool isJobApplicationUpdateLoading = false.obs;
   RxBool isUpdateCandidateLoading = false.obs;
+  RxBool isRemoveCandidateLoading = false.obs;
   RxBool isJobUpdateLoading = false.obs;
   RxBool isJobApplicationRemoveLoading = false.obs;
   RxBool isCandidateListLoading = false.obs;
@@ -154,6 +155,19 @@ class HrDashBoardController extends GetxController with StateMixin {
     }
     isUpdateCandidateLoading(false);
   }
+
+
+  Future removeCandidate({required String candidateId,required String jobId}) async {
+
+    isRemoveCandidateLoading(true);
+    bool? response = await _dasBoardDataSource.removeCandidate(jobId: jobId,candidateId: candidateId);
+
+    if (response == true) {
+      showSuccessMessage(message: "Candidate has been remove successfully");
+    }
+    isRemoveCandidateLoading(false);
+  }
+
 
 
   Future updateJob({required String entryId}) async {

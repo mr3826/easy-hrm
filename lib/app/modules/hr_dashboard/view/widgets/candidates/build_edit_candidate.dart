@@ -64,7 +64,6 @@ class BuildEditCandidate extends StatelessWidget {
     }
     return CustomDoubleAppButton(onAction: () {
       FocusScope.of(context).requestFocus(FocusNode());
-
       if (_formKey.currentState!.validate()) {
         controller.updateCandidate(
             candidateId: controller.selectedCandidateId.value,

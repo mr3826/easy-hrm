@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_list.dart';
@@ -113,6 +114,9 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
         customSpacerWidth(width: 4),
         GestureDetector(
           onTap: () {
+            controller.selectedCandidateId(data.candidate?.id ?? "");
+            controller.selectedJobId(data.job?.id ?? "");
+
             customButtonSheet(
                 height: .5, context: context, child: _buildMoreView(data));
           },
@@ -187,6 +191,7 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
   }
 
   void _showRemoveDialog() {
+    HrDashBoardController controller = Get.find<HrDashBoardController>();
     return displayCustomDialog(
         context: Get.context!,
         customIconWidget: SizedBox(
@@ -195,22 +200,31 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
             child: customSvgImage(imageUrl: Images.REMOVE_ICON)),
         titleText: AppString.text_remove_candidate.tr,
         descriptionText: AppString.text_are_you_sure_deleted_candidate.tr,
-        customActionButtons: CustomDoubleAppButton(
-          onAction: () {},
-          cancelAction: () => Get.back(canPop: false),
-          btnColor: AppColor.errorColorLight,
-          buttonText: AppString.text_remove.tr,
-        ));
+        customActionButtons:
+            Obx(() => controller.isRemoveCandidateLoading.isTrue
+                ? const Center(child: CupertinoActivityIndicator())
+                : CustomDoubleAppButton(
+                    onAction: () {
+                      controller
+                          .removeCandidate(
+                              candidateId: controller.selectedCandidateId.value,
+                              jobId: controller.selectedJobId.value)
+                          .then((v) {
+                        Get.back(canPop: false);
+                        Get.back(canPop: false);
+                        controller.getCandidateList("");
+                      });
+                    },
+                    cancelAction: () => Get.back(canPop: false),
+                    btnColor: AppColor.errorColorLight,
+                    buttonText: AppString.text_remove.tr,
+                  )));
   }
 
   void _updateDate(Data data) {
     Get.toNamed(Routes.EDIT_CANDIDATES);
-    controller.candidateFirstName.text =
-        data.candidate?.firstName ?? "";
-    controller.candidateLastName.text =
-        data.candidate?.lastName ?? "";
+    controller.candidateFirstName.text = data.candidate?.firstName ?? "";
+    controller.candidateLastName.text = data.candidate?.lastName ?? "";
     controller.candidateEmail.text = data.candidate?.email ?? "";
-    controller.selectedCandidateId(data.candidate?.id??"");
-    controller.selectedJobId(data.job?.id??"");
   }
 }
