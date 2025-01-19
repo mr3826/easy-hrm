@@ -252,27 +252,12 @@ class EmployeeListInfo extends StatelessWidget {
 
   _handleEditButtonClick() {
 
-    EmploymentController controller = Get.find<EmploymentController>();
-    controller.editFirstNameController.text =
-        controller.initFirstName = firstName;
-    controller.editLastNameController.text = controller.initLastName = lastName;
-    controller.initEmploymentStatusId = employmentStatus.id;
-    controller.initDesignationId = designation.id;
-    controller.initDepartmentId = department.id;
-    controller.editJoiningController.text = controller.initJoiningDate =
-        formatDate(date: joiningDate, format: "yyyy-mm-dd");
-
-    controller.editLastNameController.addListener(controller.checkForChanges);
-    controller.editLastNameController.addListener(controller.checkForChanges);
-
     Get.find<EmploymentController>().getDesignations();
     if (!Get.find<EmploymentController>().isEmploymentHistoryApiCalled) {
       Get.find<EmploymentController>()
         ..getDepartments()
         ..getEmploymentStatus();
     }
-
-    Get.find<UpdateOrgUserInfoController>().getUpdateAbleUserInfo(orgUserId: orgUserId);
-    Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW);
+    Get.toNamed(Routes.EDIT_EMPOLYEE_VIEW, arguments: {'orgUserId': orgUserId});
   }
 }

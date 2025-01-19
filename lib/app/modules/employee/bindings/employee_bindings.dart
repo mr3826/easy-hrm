@@ -8,9 +8,7 @@ import '../services/employee_api_service.dart';
 class EmployeeBindings extends Bindings {
   @override
   void dependencies() {
-    EmployeeApiService employeeRemoteService =
-        Get.put(
-            EmployeeApiService(Get.find<ApiService>()));
+    EmployeeApiService employeeRemoteService = Get.put(EmployeeApiService(Get.find<ApiService>()));
     EmployeeDataSource employeeDataSource = Get.put(
         EmployeeDataSourceImpl(employeeRemoteService));
 

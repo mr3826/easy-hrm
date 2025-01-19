@@ -2,9 +2,8 @@ import 'dart:developer';
 
 import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
 import 'package:payrun_mobile/app/modules/employee/services/employee_api_service.dart';
-
-import '../../../../modules/profile/model/user_profile.dart';
 import '../model/employee_info.dart';
+import '../model/org_user_info.dart';
 import '../model/user_work_info_dropdown.dart';
 
 abstract class EmployeeDataSource {

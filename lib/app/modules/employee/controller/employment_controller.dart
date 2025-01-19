@@ -37,24 +37,12 @@ class EmploymentController extends GetxController with StateMixin {
   RxString searchQuery = ''.obs;
 
   TextEditingController searchController = TextEditingController();
-  TextEditingController editFirstNameController = TextEditingController();
-  TextEditingController editLastNameController = TextEditingController();
-  TextEditingController editJoiningController = TextEditingController();
   TextEditingController terminationEditNoteController = TextEditingController();
 
   RxInt daysCount = 0.obs;
   RxInt applicationBalanceCount = 0.obs;
   RxInt applicationMaxDaysCount = 0.obs;
   RxBool hasChangedProfileInfo = false.obs;
-
-  ///init values
-  ///check for update data
-  String? initFirstName;
-  String? initLastName;
-  String? initEmploymentStatusId;
-  String? initDesignationId;
-  String? initDepartmentId;
-  String? initJoiningDate;
 
   EmployeeInfo? employeeInfo = EmployeeInfo();
   UserDetails? employeeProfileInfo = UserDetails();
@@ -226,13 +214,6 @@ class EmploymentController extends GetxController with StateMixin {
     }
   }
 
-  // Method to check for changes
-  void checkForChanges() {
-    hasChangedProfileInfo.value =
-        editFirstNameController.text != initFirstName ||
-            editLastNameController.text != initLastName;
-  }
-
   void addRecentSearchData(Data data) async {
     var box = Hive.box<Data>('dataBox');
     final dataList = box.values.toList();
@@ -324,9 +305,6 @@ class EmploymentController extends GetxController with StateMixin {
   @override
   void onClose() {
     searchController.dispose();
-    editFirstNameController.dispose();
-    editLastNameController.dispose();
-    editJoiningController.dispose();
     terminationEditNoteController.dispose();
     super.onClose();
   }
