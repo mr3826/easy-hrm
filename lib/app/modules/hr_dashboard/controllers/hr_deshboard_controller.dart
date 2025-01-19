@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import '../models/candidate_list.dart';
 import '../models/employee_overview.dart';
 import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
@@ -21,6 +22,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isJobApplicationUpdateLoading = false.obs;
   RxBool isJobUpdateLoading = false.obs;
   RxBool isJobApplicationRemoveLoading = false.obs;
+  RxBool isCandidateListLoading = false.obs;
 
   RxBool isPasteButtonActive =
       false.obs; // Track if the paste button should be active
@@ -32,9 +34,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxString nextHiringStagesId = ''.obs;
   RxInt nextHiringStateIndex = 0.obs;
 
-  RxString selectedCandidateId = ''.obs;
-
-  ///todo
+  RxString selectedCandidateId = ''.obs;///todo
 
   final ScrollController scrollController = ScrollController();
 
@@ -44,6 +44,7 @@ class HrDashBoardController extends GetxController with StateMixin {
 
   EmployeeOverview? employeeOverview;
   JobOpening? jobOpening;
+  CandidateList? candidateList;
   LeaveTimeLogSummary? leaveTimeLogSummary;
   JobApplicationBoard? jobApplicationBoard;
 
@@ -56,6 +57,15 @@ class HrDashBoardController extends GetxController with StateMixin {
     jobOpening = await _dasBoardDataSource.getJobOpening();
     change(null, status: RxStatus.success());
   }
+
+  getCandidateList(String searchKey) async {
+    isCandidateListLoading(true);
+    candidateList = await _dasBoardDataSource.getCandidateList(searchKey: searchKey);
+    isCandidateListLoading(false);
+  }
+
+
+
 
   getLeaveAndTimeLogSummary() async {
     change(null, status: RxStatus.loading());

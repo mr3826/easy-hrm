@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/hr_deshboard_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/candidate_filter/candidate_filter_list.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/candidates/build_all_candidates.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -12,7 +13,7 @@ import '../../../employee/presentation/view/screen/employee_screen.dart';
 import '../../../employee/presentation/view/widget/employee_list/search_with_filter.dart';
 
 
-class AllCandidatesScreen extends StatelessWidget {
+class AllCandidatesScreen extends GetView<HrDashBoardController> {
   const AllCandidatesScreen({super.key});
 
   @override

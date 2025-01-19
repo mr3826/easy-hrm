@@ -852,6 +852,9 @@ not_working_today
 }
 ''';
 
+
+
+
 const getJobOpeningQuery = r'''
 query GET_JOBS($queryData: JobsQueryInputType, $optionData: OptionDataType) {
   getJobs(queryData: $queryData, optionData: $optionData) {
@@ -873,6 +876,43 @@ query GET_JOBS($queryData: JobsQueryInputType, $optionData: OptionDataType) {
   }
 }
 ''';
+
+
+const getCandidateListQuery = r'''
+query GET_CANDIDATES($queryData: CandidateQueryData, $optionData: OptionDataType) {
+  getCandidates(queryData: $queryData, optionData: $optionData) {
+    data {
+      id
+      avg_rating
+      candidate {
+        id
+        avatar_key
+        first_name
+        email
+        last_name
+      }
+      hiring_stage {
+        id
+        title
+      }
+      job {
+        id
+        title
+        type
+      }
+    }
+  }
+}
+''';
+
+
+
+
+
+
+
+
+
 
 const getLeaveAndTimeLogQuery = r'''
 query GET_LEAVE_AND_TIMELOG_REQUEST_SUMMARY {

@@ -12,6 +12,9 @@ class DashBoardApiService {
     return response.data; ///todo [one line]
   }
 
+
+
+
   Future<Map<String, dynamic>?> getJobOpening() async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
@@ -23,6 +26,7 @@ class DashBoardApiService {
         await _apiService.gqlCall(query: getJobOpeningQuery, variables:variables);
     return response.data;
   }
+
 
   Future<Map<String, dynamic>?> getLeaveAndTimeLogSummary() async {
     QueryResult<Object?> response =
@@ -147,8 +151,6 @@ class DashBoardApiService {
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
         query: getJobApplicationPreviewQuery, variables: variables);
-    print("getJobApplicationPreview_main:: $response");
-
     return response.data;
   }
 
@@ -182,4 +184,20 @@ class DashBoardApiService {
         query: getFileSignUrlQuery, variables: variables);
     return response.data;
   }
+
+
+  Future<Map<String, dynamic>?> getCandidateList(String searchKey,) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "search_key": searchKey
+      },
+    };
+    QueryResult<Object?> response =
+    await _apiService.gqlCall(query: getCandidateListQuery, variables:variables);
+    return response.data;
+  }
+
+
+
+
 }

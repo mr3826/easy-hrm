@@ -1,6 +1,7 @@
 import 'dart:developer';
 import '../models/candidate_activities_logs.dart';
 import '../models/candidate_details.dart';
+import '../models/candidate_list.dart';
 import '../models/candidate_review.dart';
 import '../models/employee_overview.dart';
 import '../models/file_sign_url.dart';
@@ -28,6 +29,7 @@ abstract class DashBoardDataSource {
   Future<bool?> updateCandidateNoteReview({required String noteId,required String note});
   Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId});
   Future<bool?> updateJob({required String entityId});
+  Future<CandidateList?> getCandidateList({required String searchKey});
 }
 
 
@@ -251,6 +253,27 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     }
     return null;
   }
+
+
+
+
+  @override
+  Future<CandidateList?> getCandidateList({required String searchKey})async {
+    try {
+      final response= await _dashBoardApiService.getCandidateList(searchKey);
+
+      if(response !=null){
+        return CandidateList.fromJson(response);
+      }
+      return null;
+
+    }catch(ex){
+      log("getCandidateList : $ex");
+    }
+    return null;
+  }
+
+
 
   @override
   Future<CandidateDetails?> getCandidateDetails({required String jobApplicationId})async {
