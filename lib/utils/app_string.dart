@@ -380,6 +380,7 @@ class AppString {
       "text_we_have_sent_a_verification_etc";
   static String text_time_entry = "Add time entry";
   static String text_employee_type = "Employee & type";
+  static String text_time_sheet = "Time sheet";
 
   static String pleaseProvideATerminationType='Please select a termination type';
 }

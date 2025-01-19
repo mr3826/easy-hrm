@@ -167,11 +167,19 @@ class SignInScreen extends GetView<SignInController> {
           if (value) {
             print("Login Successful");
             // Get subscription info only if login is successful
+
             bool isSubscriptionExpired =
                 await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+
             print(isSubscriptionExpired
                 ? "Go to Sub expire screen"
                 : "Go to Main Screen");
+
+            if(!isSubscriptionExpired){
+              Get.offNamed(Routes.MAIN_SCREEN);
+            }
+
+
           } else {
             print("Login Unsuccessful");
           }

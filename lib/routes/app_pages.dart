@@ -14,11 +14,14 @@ import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/app/modules/splash/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
-import 'package:payrun_mobile/modules/timeline/view/screen/timer.dart';
 import '../app/home/view/screen/main_screen.dart';
 import '../app/modules/employee/bindings/update_org_user_binding.dart';
 import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
 import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
+import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
+import '../app/modules/hr_timeline/bindings/start_timer_bindings.dart';
+import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
+import '../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -67,10 +70,17 @@ class AppPages {
       transition: Transition.size,
       page: () => const PasswordUpdateScreen(),
     ),
+
+
+
     GetPage(
       name: _Paths.TIMER_SCREEN,
-      page: () => const TimerScreen(),
+      binding: StartTimerBindings(),
+      page: () => const StartTimerScreen(),
     ),
+
+
+
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,
@@ -116,10 +126,12 @@ class AppPages {
       transition: Transition.size,
       page: () => const TimeLogSummary(),
     ),
+
     GetPage(
       name: _Paths.NEW_ENTRY_SCREEN,
       transition: Transition.size,
-      page: () => const NewEntryScreen(),
+      binding: AddNewEntryBindings(),
+      page: () => const AddTimeEntryScreen(),
     ),
 
     GetPage(
