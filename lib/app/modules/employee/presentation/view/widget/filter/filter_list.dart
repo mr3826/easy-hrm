@@ -126,13 +126,19 @@ class _EmployeeFilterSectionState extends State<EmployeeFilterSection> {
     List<CheckBoxModel> list = [];
 
     if (title == AppString.text_deparmtnet.tr) {
+
       list = Get.find<EmploymentController>().departmentList;
+
     } else if (title == AppString.textEmployeeStatus.tr) {
+
       list = Get.find<EmploymentController>().employmentStatusList;
     } else if (title == AppString.textUserStatus.tr) {
+
       list = Get.find<EmploymentController>().userStatusList;
     } else {
+
       list = Get.find<EmploymentController>().attendanceList;
+
     }
 
     return GSMultiCheckbox(

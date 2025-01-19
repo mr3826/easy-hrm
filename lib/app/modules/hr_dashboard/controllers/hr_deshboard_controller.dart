@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
+import '../../../global/models/check_box.dart';
+import '../../../global/view/multi_check_box.dart';
 import '../models/candidate_list.dart';
 import '../models/employee_overview.dart';
 import '../models/filter_hiring_stages.dart';
@@ -55,6 +57,18 @@ class HrDashBoardController extends GetxController with StateMixin {
   FilterHiringStages? filterHiringStages;
   FilterJobsDropdown? filterJobsDropdown;
 
+  List<CheckBoxModel>? jobPost= [];
+  List<CheckBoxModel>? hiringStage= [];
+
+  List<CheckBoxModel>? rating= [
+    CheckBoxModel(checkBoxName: 'No rating', checkBoxNameValue: 'No rating'),
+    CheckBoxModel(checkBoxName: '1 star', checkBoxNameValue: '1 star'),
+    CheckBoxModel(checkBoxName: '2 stars', checkBoxNameValue: '2 stars'),
+    CheckBoxModel(checkBoxName: '3 stars', checkBoxNameValue: '3 stars'),
+    CheckBoxModel(checkBoxName: '4 stars', checkBoxNameValue: '4 stars'),
+    CheckBoxModel(checkBoxName: '5 stars', checkBoxNameValue: '5 stars'),
+  ];
+
 
 
 
@@ -85,6 +99,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   getCandidateBySearch(String searchKey) async {
     isCandidateBySearchLoading(true);
     candidateList = await _dasBoardDataSource.getCandidateList(searchKey: searchKey);
+
     isCandidateBySearchLoading(false);
   }
 
@@ -92,17 +107,28 @@ class HrDashBoardController extends GetxController with StateMixin {
   getJobsDropdown() async {
     isCandidateFilterLoading(true);
     filterJobsDropdown = await _dasBoardDataSource.getJobsDropdown();
-    isCandidateFilterLoading(false);
+    if (filterJobsDropdown != null) {
+      jobPost= filterJobsDropdown?.getJobsDropdown?.map((GetJobsDropdown e)=>CheckBoxModel(checkBoxName: e.title??"", checkBoxNameValue: e.id??"")).toList();
+
+    }
   }
 
   getHiringStages() async {
-    isCandidateFilterLoading(true);
     filterHiringStages = await _dasBoardDataSource.getHiringStages();
+    if (filterHiringStages != null) {
+      hiringStage= filterHiringStages?.getHiringStagesForDropDown?.data?.map(( e)=>CheckBoxModel(checkBoxName: e.title??"",checkBoxNameValue: e.stageIds.toString())).toList();
+    }
     isCandidateFilterLoading(false);
   }
 
 
 
+  List<String> getSelectedCheckBoxValues(List<CheckBoxModel> checkBoxList) {
+    return checkBoxList
+        .where((item) => item.value == true) // Filter items where value is true
+        .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue
+        .toList();
+  }
 
 
 

@@ -137,9 +137,8 @@ class EmploymentController extends GetxController with StateMixin {
     isEmploymentHistoryApiCalled = true;
     employmentStatuses = await _employeeRemoteDataSource.getEmploymentsStatus();
     if (employmentStatuses != null) {
-      employmentStatusList = employmentStatuses!.statuses
-          .map(
-            (emp_wrk_inf.EmploymentStatus employmentStatus) => CheckBoxModel(
+
+      employmentStatusList = employmentStatuses!.statuses.map((emp_wrk_inf.EmploymentStatus employmentStatus) => CheckBoxModel(
                 checkBoxName: employmentStatus.name,
                 checkBoxNameValue: employmentStatus.id),
           )

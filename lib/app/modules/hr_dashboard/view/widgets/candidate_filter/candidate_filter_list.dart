@@ -6,9 +6,10 @@ import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../../global/models/check_box.dart';
+import '../../../../../global/view/multi_check_box.dart';
 import '../../../../employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import '../../../controllers/hr_deshboard_controller.dart';
-import 'check_box.dart';
 
 class CandidateFilterSection extends StatefulWidget {
   const CandidateFilterSection({super.key});
@@ -116,58 +117,41 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
   }
 
   Widget _statusCheckBox(String title) {
-    List<CheckBoxModel> list = [];
-    final RxList<String> selectedStageIds = <String>[].obs; // Holds stage IDs
-    final RxList<String> selectedJobIds = <String>[].obs; // Holds job IDs
-
-    final hiringStages =controller.filterHiringStages?.getHiringStagesForDropDown?.data;
-    final jobDropdowns = controller.filterJobsDropdown?.getJobsDropdown;
+    List<CheckBoxModel>? list = [];
 
     if (title == AppString.text_rating.tr) {
-      list = [
-        CheckBoxModel(checkBoxName: 'No rating', checkBoxNameValue: 'No rating'),
-        CheckBoxModel(checkBoxName: '1 star', checkBoxNameValue: '1 star'),
-        CheckBoxModel(checkBoxName: '2 stars', checkBoxNameValue: '2 stars'),
-        CheckBoxModel(checkBoxName: '3 stars', checkBoxNameValue: '3 stars'),
-        CheckBoxModel(checkBoxName: '4 stars', checkBoxNameValue: '4 stars'),
-        CheckBoxModel(checkBoxName: '5 stars', checkBoxNameValue: '5 stars'),
-      ];
-    } else if (title == AppString.text_stage.tr && hiringStages != null) {
-      list = hiringStages
-          .map((stage) => CheckBoxModel(
-                checkBoxName: stage.title ?? "-",
-                checkBoxNameValue: stage.stageIds.toString(),
-              ))
-          .toList();
-    } else if (title == AppString.text_job_post.tr && jobDropdowns != null) {
-      list = jobDropdowns
-          .map((job) => CheckBoxModel(
-                checkBoxName: job.title ?? "-",
-                checkBoxNameValue: job.id.toString(),
-              ))
-          .toList();
+
+      list = Get.find<HrDashBoardController>().rating;
+
+    } else if (title == AppString.text_stage.tr) {
+
+      list = Get.find<HrDashBoardController>().hiringStage;
+
+    } else if (title == AppString.text_job_post.tr) {
+
+      list = Get.find<HrDashBoardController>().jobPost;
+
     }
 
-    return GSMultiCheckbox(
+    return MultiCheckbox(
       textStyle: AppStyle.normal_text_black.copyWith(
         fontSize: Dimensions.fontSizeDefault + 1,
         color: AppColor.normalTextColor.withOpacity(0.9),
       ),
-      itemsList: list,
+      itemsList: list!,
       onSelectionChanged: (List<CheckBoxModel> selectedList) {
-        if (title == AppString.text_stage.tr) {
 
-          selectedStageIds.value = selectedList.map((e) => e.checkBoxNameValue).toList();
 
-        } else if (title == AppString.text_job_post.tr) {
 
-          selectedJobIds.value = selectedList.map((e) => e.checkBoxNameValue).toList();
+        List<String> departmentIds = controller.getSelectedCheckBoxValues(Get.find<HrDashBoardController>().jobPost!);
 
-        }
+
 
         // Debugging prints
-        print('Selected Stage IDs: $selectedStageIds');
-        print('Selected Job IDs: $selectedJobIds');
+        print('IDs:::::::::: $departmentIds');
+
+
+
       },
     );
   }
