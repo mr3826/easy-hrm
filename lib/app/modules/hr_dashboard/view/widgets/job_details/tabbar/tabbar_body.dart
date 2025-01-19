@@ -53,13 +53,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
         itemCount: userList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {
-              Get.find<CandidateDetailsController>().getCandidateDetails(userList[index].id ?? "");
-              Get.find<CandidateDetailsController>().getJobApplicationPreview( controller.jobApplicationBoard?.getJobApplicationBoard?.id ??"",userList[index].candidate?.id ?? "");
-              controller.selectedJobApplicationId(userList[index].id ?? "");
-              controller.selectedJobId(controller.jobApplicationBoard?.getJobApplicationBoard?.id ?? "");
-              Get.toNamed(Routes.CANDIDATES_DETAILS);
-            },
+            onTap: () => _onUserTap(userList[index]),
             child: LayoutBuilder(builder: (context, constraints) {
               double imageSize = constraints.maxWidth * 0.15;
               double paddingSize = constraints.maxWidth * 0.03;
@@ -108,7 +102,16 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
       );
     });
   }
-
+  void _onUserTap(JobApplications user) {
+    Get.find<CandidateDetailsController>().getCandidateDetails(user.id ?? "");
+    Get.find<CandidateDetailsController>().getJobApplicationPreview(controller.jobApplicationBoard?.getJobApplicationBoard?.id ?? "", user.candidate?.id ?? "");
+    Get.find<CandidateDetailsController>().candidateReviewModel?.getTeamNotes?.data?.clear();
+    Get.find<CandidateDetailsController>().candidateActivitiesLogs?.getLogs?.clear();
+    controller.selectedJobApplicationId(user.id ?? "");
+    Get.find<CandidateDetailsController>().initialTabIndex = 0;
+    controller.selectedJobId(controller.jobApplicationBoard?.getJobApplicationBoard?.id ?? "");
+    Get.toNamed(Routes.CANDIDATES_DETAILS);
+  }
   EdgeInsets _getPadding() {
     return marginLayout.copyWith(top: 15, left: 12, right: 12);
   }

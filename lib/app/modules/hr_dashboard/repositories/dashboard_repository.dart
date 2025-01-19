@@ -201,21 +201,26 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     return null;
   }
 
+
   @override
   Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId })async {
+
     try{
       final response= await _dashBoardApiService.getJobApplicationPreview(jobId,candidateId);
 
+      print("getJobApplicationPreview respo:: $response");
       if(response !=null){
         return JobApplicationPreviewModel.fromJson(response);
       }
-      return null;
-
     }catch(ex){
-      log("getJobApplicationPreview : $ex");
+      log("getJobApplicationPreviewremo_ex : $ex");
     }
+
     return null;
   }
+
+
+
 
 
   @override

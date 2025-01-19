@@ -22,6 +22,7 @@ class CandidateDetailsController extends GetxController with StateMixin {
   RxBool isReviewLoading = false.obs;
   RxBool isEditNote = false.obs;
   int activeStarIndex = -1;
+  int initialTabIndex = 0;
   RxString reviewerInputValue = "".obs;
   RxString selectedNoteId = "".obs;
   TextEditingController createReviewMessage = TextEditingController();

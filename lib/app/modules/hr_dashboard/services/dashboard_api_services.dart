@@ -128,6 +128,8 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response= await _apiService.gqlCall(query:getJobApplicationPreviewQuery,variables: variables);
+    print("getJobApplicationPreview_main:: $response");
+
     return response.data;
   }
 

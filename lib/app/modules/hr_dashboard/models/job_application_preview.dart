@@ -77,12 +77,6 @@ class FormFields {
   List<FormFieldValues>? formFieldValues;
   List<FormFields>? formFields;
 
-
-  @override
-  String toString() {
-    return 'FormFields{id: $id, name: $name, type: $type, priority: $priority, fieldWidth: $fieldWidth, isRequired: $isRequired, formFieldValues: $formFieldValues, formFields: $formFields}';
-  }
-
   FormFields(
       {this.id,
         this.name,
@@ -93,7 +87,6 @@ class FormFields {
         this.formFieldValues,
         this.formFields});
 
-
   FormFields.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
@@ -101,22 +94,27 @@ class FormFields {
     priority = json['priority'];
     fieldWidth = json['field_width'];
     isRequired = json['is_required'];
-    if (json['form_field_values'] != null) {
-      formFieldValues = <FormFieldValues>[];
+
+    if (json['form_field_values'] != null && json['form_field_values'] is List) {
+      formFieldValues = [];
       json['form_field_values'].forEach((v) {
-        formFieldValues!.add(new FormFieldValues.fromJson(v));
+        if (v is Map<String, dynamic>) {
+          formFieldValues!.add(FormFieldValues.fromJson(v));
+        }
       });
     }
-    if (json['form_fields'] != null) {
-      formFields = <FormFields>[];
+
+    if (json['form_fields'] != null && json['form_fields'] is List) {
+      formFields = [];
       json['form_fields'].forEach((v) {
-        formFields!.add(new FormFields.fromJson(v));
+        if (v is Map<String, dynamic>) {
+          formFields!.add(FormFields.fromJson(v));
+        }
       });
     }
   }
-
-
 }
+
 
 class FormFieldValues {
   String? id;

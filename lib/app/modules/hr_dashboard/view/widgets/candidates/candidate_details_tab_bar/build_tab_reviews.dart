@@ -12,7 +12,6 @@ class ReviewTab extends GetView<CandidateDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-
     return controller.obx((state)=>Padding(
       padding: marginLayout,
       child: SingleChildScrollView(

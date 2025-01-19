@@ -28,23 +28,32 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                 // Update the selected tab index
                 controller.jobDetailsSelectedIndex.value = index;
 
-
                 ///Add hiring stage Id according selected stage
-               controller.selectedHiringStageId.value = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id??"";
+                controller.selectedHiringStageId.value = controller
+                        .jobApplicationBoard
+                        ?.getJobApplicationBoard
+                        ?.hiringStages?[index]
+                        .id ??
+                    "";
 
-
-               ///Add id for Move next step
+                ///Add id for Move next step
                 // Safely update the next hiring stage ID
-                if (controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages != null &&
-                    index + 1 < controller.jobApplicationBoard!.getJobApplicationBoard!.hiringStages!.length) {
-                  controller.nextHiringStagesId.value = controller.jobApplicationBoard!
-                      .getJobApplicationBoard!
-                      .hiringStages![index + 1]
-                      .id ?? "";
+                if (controller.jobApplicationBoard?.getJobApplicationBoard
+                            ?.hiringStages !=
+                        null &&
+                    index + 1 <
+                        controller.jobApplicationBoard!.getJobApplicationBoard!
+                            .hiringStages!.length) {
+                  controller.nextHiringStagesId.value = controller
+                          .jobApplicationBoard!
+                          .getJobApplicationBoard!
+                          .hiringStages![index + 1]
+                          .id ??
+                      "";
                 } else {
-                  controller.nextHiringStagesId.value = ""; // Reset if there's no next stage
+                  controller.nextHiringStagesId.value =
+                      ""; // Reset if there's no next stage
                 }
-
 
                 // Access HrDashBoardController once and use it
                 final hrController = Get.find<HrDashBoardController>();
@@ -56,7 +65,8 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                 _autoScrollTabs(index, context);
               },
               itemBuilder: (context, index) {
-                HiringStages? data = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index];
+                HiringStages? data = controller.jobApplicationBoard
+                    ?.getJobApplicationBoard?.hiringStages?[index];
                 return BuildTabBarBody(tabId: data?.id ?? "");
               },
             ),
@@ -67,10 +77,14 @@ class TabBarWidget extends GetView<HrDashBoardController> {
   }
 
 // Helper method to update the candidate selection state
-  void _updateCandidateSelectionState(int index, HrDashBoardController hrController) {
-    final selectedTabId = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id;
+  void _updateCandidateSelectionState(
+      int index, HrDashBoardController hrController) {
+    final selectedTabId = controller
+        .jobApplicationBoard?.getJobApplicationBoard?.hiringStages?[index].id;
 
-    final selectedCandidateId = hrController.selectedJobApplicationId.value;  ///todo [Paste button]
+    final selectedCandidateId = hrController.selectedJobApplicationId.value;
+
+    ///todo [Paste button]
 
     // Check if the selected candidate matches the current tab's id
     hrController.isPasteButtonActive.value =
@@ -107,7 +121,9 @@ class TabBarWidget extends GetView<HrDashBoardController> {
   }
 
   _buildTabBar(BuildContext context) {
-    List<HiringStages>? data = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages ?? [];
+    List<HiringStages>? data =
+        controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages ??
+            [];
     return Obx(() {
       return Container(
         height: 50,

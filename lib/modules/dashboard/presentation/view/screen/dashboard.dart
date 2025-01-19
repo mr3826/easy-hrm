@@ -25,10 +25,14 @@ class Dashboard extends GetView<DashboardController> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: [
+
                       ProgressbarLayout(),
+
                       customSpacerHeight(height: 12),
                       Obx(() => entryAndStartTimeLayout(context)),
                       customSpacerHeight(height: 16),
+
+
                       controller.upcommingLeaveDashboard
                                       ?.getUpcomingLeavesForApp !=
                                   null &&
@@ -40,6 +44,8 @@ class Dashboard extends GetView<DashboardController> {
                                   .copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeMid),
                             )
                           : Container(),
+
+
                       const UpcomingLeaveLayout(),
 
                       customSpacerHeight(height: 50),

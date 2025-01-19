@@ -131,6 +131,7 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
     controller.reviewerInputValue.value = "";
     controller.activeStarIndex = -1;
     controller.selectedNoteId.value = "";
+    controller.initialTabIndex=2;
 
     controller.getCandidateReview(
         Get.find<HrDashBoardController>().selectedJobApplicationId.value);
