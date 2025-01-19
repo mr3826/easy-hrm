@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../employee/presentation/view/widget/filter/section_expansion_tile.dart';
+import '../../../controllers/hr_deshboard_controller.dart';
 import 'check_box.dart';
 
 class CandidateFilterSection extends StatefulWidget {
@@ -16,28 +18,30 @@ class CandidateFilterSection extends StatefulWidget {
 }
 
 class _CandidateFilterSectionState extends State<CandidateFilterSection> {
+  HrDashBoardController controller = Get.find<HrDashBoardController>();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildHeader(),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [..._buildSectionList()],
-            ),
-          ),
-        ),
-      ],
-    );
+    return Obx(() => controller.isCandidateFilterLoading.isTrue
+        ? const Center(child: LoadingIndicator())
+        : Column(
+            children: [
+              _buildHeader(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [..._buildSectionList()],
+                  ),
+                ),
+              ),
+            ],
+          ));
   }
 
   List<Widget> _buildSectionList() {
     final sectionTitles = [
       AppString.text_job_post.tr,
       AppString.text_stage.tr,
-      AppString.text_department.tr,
       AppString.text_rating.tr
     ];
 
@@ -113,22 +117,35 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
 
   Widget _statusCheckBox(String title) {
     List<CheckBoxModel> list = [];
+    final RxList<String> selectedStageIds = <String>[].obs; // Holds stage IDs
+    final RxList<String> selectedJobIds = <String>[].obs; // Holds job IDs
+
+    final hiringStages =controller.filterHiringStages?.getHiringStagesForDropDown?.data;
+    final jobDropdowns = controller.filterJobsDropdown?.getJobsDropdown;
 
     if (title == AppString.text_rating.tr) {
       list = [
         CheckBoxModel(checkBoxName: 'No rating', checkBoxNameValue: 'No rating'),
-        CheckBoxModel(checkBoxName: '1 start', checkBoxNameValue: '1 start'),
-        CheckBoxModel(checkBoxName: '2 start', checkBoxNameValue: '2 start'),
-        CheckBoxModel(checkBoxName: '3 start', checkBoxNameValue: '3 start'),
-        CheckBoxModel(checkBoxName: '4 start', checkBoxNameValue: '4 start'),
-        CheckBoxModel(checkBoxName: '5 start', checkBoxNameValue: '5 start'),
+        CheckBoxModel(checkBoxName: '1 star', checkBoxNameValue: '1 star'),
+        CheckBoxModel(checkBoxName: '2 stars', checkBoxNameValue: '2 stars'),
+        CheckBoxModel(checkBoxName: '3 stars', checkBoxNameValue: '3 stars'),
+        CheckBoxModel(checkBoxName: '4 stars', checkBoxNameValue: '4 stars'),
+        CheckBoxModel(checkBoxName: '5 stars', checkBoxNameValue: '5 stars'),
       ];
-    } else {
-      list = [
-        CheckBoxModel(
-            checkBoxName: 'Laravel developer', checkBoxNameValue: '1'),
-        CheckBoxModel(checkBoxName: 'UI/UX developer', checkBoxNameValue: '1'),
-      ];
+    } else if (title == AppString.text_stage.tr && hiringStages != null) {
+      list = hiringStages
+          .map((stage) => CheckBoxModel(
+                checkBoxName: stage.title ?? "-",
+                checkBoxNameValue: stage.stageIds.toString(),
+              ))
+          .toList();
+    } else if (title == AppString.text_job_post.tr && jobDropdowns != null) {
+      list = jobDropdowns
+          .map((job) => CheckBoxModel(
+                checkBoxName: job.title ?? "-",
+                checkBoxNameValue: job.id.toString(),
+              ))
+          .toList();
     }
 
     return GSMultiCheckbox(
@@ -137,8 +154,20 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
         color: AppColor.normalTextColor.withOpacity(0.9),
       ),
       itemsList: list,
-      onSelectionChanged: (List<CheckBoxModel> list) async {
-        print(list);
+      onSelectionChanged: (List<CheckBoxModel> selectedList) {
+        if (title == AppString.text_stage.tr) {
+
+          selectedStageIds.value = selectedList.map((e) => e.checkBoxNameValue).toList();
+
+        } else if (title == AppString.text_job_post.tr) {
+
+          selectedJobIds.value = selectedList.map((e) => e.checkBoxNameValue).toList();
+
+        }
+
+        // Debugging prints
+        print('Selected Stage IDs: $selectedStageIds');
+        print('Selected Job IDs: $selectedJobIds');
       },
     );
   }

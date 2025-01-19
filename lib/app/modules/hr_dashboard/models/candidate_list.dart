@@ -45,7 +45,6 @@ class Data {
         : null;
     job = json['job'] != null ? new Job.fromJson(json['job']) : null;
   }
-
 }
 
 class Candidate {
@@ -83,12 +82,26 @@ class Job {
   String? id;
   String? title;
   String? type;
+  Department? department;
 
-  Job({this.id, this.title, this.type});
+  Job({this.id, this.title, this.type, this.department});
 
   Job.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     type = json['type'];
+    department = json['department'] != null
+        ? new Department.fromJson(json['department'])
+        : null;
+  }
+}
+
+class Department {
+  String? name;
+
+  Department({this.name});
+
+  Department.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
   }
 }

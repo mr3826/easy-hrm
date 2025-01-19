@@ -43,8 +43,7 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
                                 ?.getLeaveAndTimelogRequestSummary
                                 ?.totalCandidates
                                 .toString() ??
-                            "0",
-                        controller),
+                            "0"),
                     _buildLeaveRequest(controller.leaveTimeLogSummary
                             ?.getLeaveAndTimelogRequestSummary?.leaveRequest
                             .toString() ??
@@ -76,68 +75,72 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
       return const SizedBox.shrink();
     }
   }
-}
 
-_buildTitleText(String labelText) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 12.0),
-    child: customTitleText(
-        text: labelText,
-        textStyle: AppStyle.mid_large_text.copyWith(
-            color: AppColor.normalTextColor,
-            fontWeight: FontWeight.w500,
-            fontSize: Dimensions.fontSizeMid)),
-  );
-}
+  _buildTitleText(String labelText) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: customTitleText(
+          text: labelText,
+          textStyle: AppStyle.mid_large_text.copyWith(
+              color: AppColor.normalTextColor,
+              fontWeight: FontWeight.w500,
+              fontSize: Dimensions.fontSizeMid)),
+    );
+  }
 
-_buildJobTitleText({String? value}) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      _buildTitleText("Job openings ($value)"),
-      Icon(
-        Icons.arrow_forward,
-        color: AppColor.normalTextColor.withOpacity(0.8),
-      )
-    ],
-  );
-}
-
-_buildAllCandidates(String value, HrDashBoardController controller) { ///todo using method in class not pass
-  if (controller.leaveTimeLogSummary?.getLeaveAndTimelogRequestSummary
-          ?.totalCandidates !=
-      0) {
-    return Column(
+  _buildJobTitleText({String? value}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        BuildAccessLevel(
-          onClick: () => Get.toNamed(Routes.ALL_CANDIDATES),
-          bgColor: AppColor.interViewCandidatesColor,
-          imgUrl: Images.INTERVIEW_CANDIDATES,
-          labelText: AppString.text_all_candidate.tr,
-          value: value,
-        ),
-        customSpacerHeight(height: 12),
+        _buildTitleText("Job openings ($value)"),
+        Icon(
+          Icons.arrow_forward,
+          color: AppColor.normalTextColor.withOpacity(0.8),
+        )
       ],
     );
-  }else{
-    return const SizedBox.shrink();
+  }
+
+  _buildAllCandidates(String value) { ///todo using method HrDashBoardController not pass
+    if (controller.leaveTimeLogSummary?.getLeaveAndTimelogRequestSummary
+        ?.totalCandidates !=
+        0) {
+      return Column(
+        children: [
+          BuildAccessLevel(
+            onClick: () {
+              controller.getCandidateList("");
+              Get.toNamed(Routes.ALL_CANDIDATES);
+            },
+            bgColor: AppColor.interViewCandidatesColor,
+            imgUrl: Images.INTERVIEW_CANDIDATES,
+            labelText: AppString.text_all_candidate.tr,
+            value: value,
+          ),
+          customSpacerHeight(height: 12),
+        ],
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+  }
+
+  _buildLeaveRequest(String value) {
+    return BuildAccessLevel(
+      bgColor: AppColor.pendingColor,
+      imgUrl: Images.LEAVE_REQ,
+      labelText: AppString.text_leave_req.tr,
+      value: value,
+    );
+  }
+
+  _buildLogRequest(String value) {
+    return BuildAccessLevel(  ///todo must be rename
+      bgColor: AppColor.timeLogRequestColor,
+      imgUrl: Images.TIMELOG_REQ,
+      labelText: AppString.text_log_request.tr,
+      value: value,
+    );
   }
 }
 
-_buildLeaveRequest(String value) {
-  return BuildAccessLevel(
-    bgColor: AppColor.pendingColor,
-    imgUrl: Images.LEAVE_REQ,
-    labelText: AppString.text_leave_req.tr,
-    value: value,
-  );
-}
-
-_buildLogRequest(String value) {
-  return BuildAccessLevel(  ///todo must be rename
-    bgColor: AppColor.timeLogRequestColor,
-    imgUrl: Images.TIMELOG_REQ,
-    labelText: AppString.text_log_request.tr,
-    value: value,
-  );
-}

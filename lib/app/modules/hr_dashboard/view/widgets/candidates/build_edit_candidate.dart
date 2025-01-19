@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
@@ -47,7 +48,7 @@ class BuildEditCandidate extends StatelessWidget {
                   controller: controller.candidateLastName,
                   hintText: "Enter last name"),
               customSpacerHeight(height: 26),
-              _buildButton(context)
+              Obx(() => _buildButton(context)),
             ],
           ),
         ),
@@ -56,10 +57,26 @@ class BuildEditCandidate extends StatelessWidget {
   }
 
   _buildButton(context) {
+    var controller = Get.find<HrDashBoardController>();
+
+    if (controller.isUpdateCandidateLoading.isTrue) {
+      return const Center(child: CupertinoActivityIndicator());
+    }
     return CustomDoubleAppButton(onAction: () {
       FocusScope.of(context).requestFocus(FocusNode());
 
-      if (_formKey.currentState!.validate()) {}
+      if (_formKey.currentState!.validate()) {
+        controller.updateCandidate(
+            candidateId: controller.selectedCandidateId.value,
+            jobId: controller.selectedJobId.value,
+            email: controller.candidateEmail.text,
+            firstName: controller.candidateFirstName.text,
+            lastName: controller.candidateLastName.text).then((e){
+              Get.back(canPop: false);
+              Get.back(canPop: false);
+              controller.getCandidateList("");
+        });
+      }
     }, cancelAction: () {
       _clear();
     });

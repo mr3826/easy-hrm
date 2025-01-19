@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_list.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/deshboard_widget.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -15,33 +16,30 @@ import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../../global/view/widget/app_margin.dart';
+import '../../../controllers/hr_deshboard_controller.dart';
 
-class BuildAllCandidates extends StatelessWidget {
+class BuildAllCandidates extends GetView<HrDashBoardController> {
   const BuildAllCandidates({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: 5,
+        itemCount: controller.candidateList?.getCandidates?.data?.length ?? 0,
         itemBuilder: (context, index) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              double imageSize = constraints.maxWidth * 0.15;
-              double paddingSize = constraints.maxWidth * 0.04;
-              return Padding(
-                padding: _getPadding(), // Use a dedicated method for padding
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildProfileImage(imageSize),
-                    SizedBox(width: paddingSize),
-                    _buildCandidateInfo(),
-                  ],
-                ),
-              );
-            },
+          Data? data = controller.candidateList?.getCandidates?.data?[index];
+          return Padding(
+            padding: _getPadding(), // Use a dedicated method for padding
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildProfileImage(data ?? Data()),
+                const SizedBox(width: 16), // Padding size can be static here
+                _buildCandidateInfo(data ?? Data(), context),
+              ],
+            ),
           );
         },
       ),
@@ -52,33 +50,37 @@ class BuildAllCandidates extends StatelessWidget {
     return marginLayout.copyWith(bottom: 18, top: 15);
   }
 
-  Widget _buildProfileImage(double size) {
+  Widget _buildProfileImage(Data data) {
+    double imageSize = 60.0; // Static value for image size
     return CustomNetworkImage(
-      isCircleImage: true,
-      radius: size / 2,
-      imageUrl:
-          "https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=",
-    );
+        isCircleImage: true,
+        radius: imageSize / 2,
+        errorText: getInitials(
+            "${data.candidate?.firstName ?? ""} ${data.candidate?.lastName ?? ""}"),
+        imageUrl: buildImgIxUrl(imgKey: data.candidate?.avatarKey ?? ""));
   }
 
-  Widget _buildCandidateInfo() {
+  Widget _buildCandidateInfo(Data data, BuildContext context) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTitleText(),
+          _buildTitleText(
+              "${data.candidate?.firstName ?? ""} ${data.candidate?.lastName ?? ""}"),
           const SizedBox(height: 2),
-          _buildJobAppliedRow(),
-          _buildInterviewTag(),
+          _buildJobAppliedRow(data, context),
+          _buildInterviewTag(
+            data.hiringStage?.title ?? "",
+          ),
         ],
       ),
     );
   }
 
   // Method to build candidate title text
-  Widget _buildTitleText() {
+  Widget _buildTitleText(String name) {
     return customTitleText(
-      text: "Agens Neilson",
+      text: name,
       textStyle: AppStyle.mid_large_text.copyWith(
         color: AppColor.secondaryColor,
         fontSize: Dimensions.fontSizeMid - 1,
@@ -87,7 +89,7 @@ class BuildAllCandidates extends StatelessWidget {
   }
 
   // Method to build the "Applied for" job info with more icon
-  Widget _buildJobAppliedRow() {
+  Widget _buildJobAppliedRow(Data data, BuildContext context) {
     return Row(
       children: [
         Text(
@@ -99,7 +101,7 @@ class BuildAllCandidates extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            "Node.js developer",
+            data.job?.title ?? "",
             maxLines: 2,
             style: AppStyle.normal_text.copyWith(
               color: AppColor.normalTextColor,
@@ -112,7 +114,7 @@ class BuildAllCandidates extends StatelessWidget {
         GestureDetector(
           onTap: () {
             customButtonSheet(
-                height: .5, context: Get.context!, child: _buildMoreView());
+                height: .5, context: context, child: _buildMoreView(data));
           },
           child: Icon(
             Icons.more_horiz,
@@ -124,7 +126,7 @@ class BuildAllCandidates extends StatelessWidget {
   }
 
   // Method to build the interview tag
-  Widget _buildInterviewTag() {
+  Widget _buildInterviewTag(String status) {
     return Container(
       decoration: BoxDecoration(
         color: AppColor.interViewCandidatesColor.withOpacity(0.2),
@@ -133,7 +135,7 @@ class BuildAllCandidates extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
         child: Text(
-          "Interview",
+          status,
           style: AppStyle.normal_text.copyWith(
             color: AppColor.interViewCandidatesColor,
           ),
@@ -142,14 +144,16 @@ class BuildAllCandidates extends StatelessWidget {
     );
   }
 
-  Widget _buildMoreView() {
+  Widget _buildMoreView(Data data) {
     return Column(
       children: [
         customButtonSheetAppbar(
-            text: "Agens Nelson", subtext: "email@gmail.com"),
+            text:
+                "${data.candidate?.firstName ?? ""} ${data.candidate?.lastName ?? ""}",
+            subtext: data.candidate?.email ?? ""),
         customMoreInfoTextWithDiver(
             text: AppString.text_edit.tr,
-            onTap: () => Get.toNamed(Routes.EDIT_CANDIDATES),
+            onTap: () => _updateDate(data),
             trailing: Image.asset(Images.EDIT_ICON)),
         customMoreInfoTextWithDiver(
             text: AppString.text_share.tr,
@@ -197,5 +201,16 @@ class BuildAllCandidates extends StatelessWidget {
           btnColor: AppColor.errorColorLight,
           buttonText: AppString.text_remove.tr,
         ));
+  }
+
+  void _updateDate(Data data) {
+    Get.toNamed(Routes.EDIT_CANDIDATES);
+    controller.candidateFirstName.text =
+        data.candidate?.firstName ?? "";
+    controller.candidateLastName.text =
+        data.candidate?.lastName ?? "";
+    controller.candidateEmail.text = data.candidate?.email ?? "";
+    controller.selectedCandidateId(data.candidate?.id??"");
+    controller.selectedJobId(data.job?.id??"");
   }
 }

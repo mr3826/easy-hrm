@@ -197,6 +197,38 @@ class DashBoardApiService {
     return response.data;
   }
 
+ Future<Map<String, dynamic>?> getHiringStages() async {
+
+    QueryResult<Object?> response =
+    await _apiService.gqlCall(query: getHiringStagesQuery);
+    return response.data;
+  }
+
+
+Future<Map<String, dynamic>?> getJobsDropdown() async {
+    QueryResult<Object?> response =
+    await _apiService.gqlCall(query: getJobsDropdownQuery);
+    return response.data;
+  }
+
+
+Future<Map<String, dynamic>?> updateCandidate(String candidateId,String jobId,String email,String firstName,String lastName) async {
+  Map<String, Map<String, dynamic>> variables = {
+    "inputData": {
+      "candidate_id": candidateId,
+      "job_id": jobId,
+      "email":email,
+      "first_name":firstName,
+      "last_name":lastName,
+    },
+  };
+    QueryResult<Object?> response =
+    await _apiService.gqlCall(query: updateCandidateQuery,variables: variables);
+    return response.data;
+  }
+
+
+
 
 
 

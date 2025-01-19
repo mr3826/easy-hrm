@@ -899,17 +899,47 @@ query GET_CANDIDATES($queryData: CandidateQueryData, $optionData: OptionDataType
         id
         title
         type
+        department {
+          name
+        }
       }
     }
   }
 }
 ''';
 
+const getHiringStagesQuery = r'''
+query GET_HIRING_STATGES_DROPDOWN($optionData: OptionDataType) {
+  getHiringStagesForDropDown(optionData: $optionData) {
+    data {
+      stage_ids
+      title
+    }
+  }
+}
+''';
 
+const getJobsDropdownQuery = r'''
+query GET_JOBS_DROPDOWN($queryData: DropdownFilterInputType, $optionData: OptionDataType) {
+  getJobsDropdown(queryData: $queryData, optionData: $optionData) {
+    id
+    title
+    slug
+    department {
+      id
+      name
+    }
+  }
+}
+''';
 
-
-
-
+const updateCandidateQuery = r'''
+mutation UPDATE_CANDIDATE($inputData: UpdateCandidateInputData!) {
+  updateCandidate(inputData: $inputData) {
+    job_application_id
+  }
+}
+''';
 
 
 

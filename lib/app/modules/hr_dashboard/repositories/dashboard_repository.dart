@@ -5,6 +5,8 @@ import '../models/candidate_list.dart';
 import '../models/candidate_review.dart';
 import '../models/employee_overview.dart';
 import '../models/file_sign_url.dart';
+import '../models/filter_hiring_stages.dart';
+import '../models/filter_jobs_dropdown.dart';
 import '../models/job_application_preview.dart';
 import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
@@ -30,6 +32,10 @@ abstract class DashBoardDataSource {
   Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId});
   Future<bool?> updateJob({required String entityId});
   Future<CandidateList?> getCandidateList({required String searchKey});
+  Future<FilterHiringStages?> getHiringStages();
+  Future<FilterJobsDropdown?> getJobsDropdown();
+  Future<bool?> updateCandidate({required String candidateId,required String jobId,required String email,required String firstName,required String lastName});
+
 }
 
 
@@ -199,6 +205,21 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
   }
 
 
+  @override
+  Future<bool?> updateCandidate({required String candidateId,required String jobId,required String email,required String firstName,required String lastName}) async {
+    try {
+      final response = await _dashBoardApiService.updateCandidate(candidateId,jobId,email,firstName,lastName);
+      if (response != null) {
+        return true;
+      }
+      return null;
+    } catch (e) {
+      log('Error updateCandidate : $e');
+      return null;
+    }
+  }
+
+
 
 
   @override
@@ -273,6 +294,38 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     return null;
   }
 
+ @override
+  Future<FilterHiringStages?> getHiringStages()async {
+    try {
+      final response= await _dashBoardApiService.getHiringStages();
+
+      if(response !=null){
+        return FilterHiringStages.fromJson(response);
+      }
+      return null;
+
+    }catch(ex){
+      log("getHiringStages : $ex");
+    }
+    return null;
+  }
+
+ @override
+  Future<FilterJobsDropdown?> getJobsDropdown()async {
+    try {
+      final response= await _dashBoardApiService.getJobsDropdown();
+
+      if(response !=null){
+        return FilterJobsDropdown.fromJson(response);
+      }
+      return null;
+
+    }catch(ex){
+      log("getJobsDropdown : $ex");
+    }
+    return null;
+  }
+
 
 
   @override
@@ -291,6 +344,7 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
 
   }
 
+
   @override
   Future<CandidateReviewModel?> getCandidateReview({required String jobApplicationId})async {
     try{
@@ -306,4 +360,8 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     return null;
 
   }
+
+
+
+
 }

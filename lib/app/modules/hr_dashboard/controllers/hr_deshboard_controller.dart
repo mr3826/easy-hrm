@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import '../models/candidate_list.dart';
 import '../models/employee_overview.dart';
+import '../models/filter_hiring_stages.dart';
+import '../models/filter_jobs_dropdown.dart';
 import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
 import '../models/leave_timline_summary.dart';
@@ -20,9 +22,12 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isCandidateSelected = false.obs; // Check if a candidate is selected
   RxBool isJobApplicationBoardLoading = false.obs;
   RxBool isJobApplicationUpdateLoading = false.obs;
+  RxBool isUpdateCandidateLoading = false.obs;
   RxBool isJobUpdateLoading = false.obs;
   RxBool isJobApplicationRemoveLoading = false.obs;
   RxBool isCandidateListLoading = false.obs;
+  RxBool isCandidateBySearchLoading = false.obs;
+  RxBool isCandidateFilterLoading = false.obs;
 
   RxBool isPasteButtonActive =
       false.obs; // Track if the paste button should be active
@@ -41,10 +46,22 @@ class HrDashBoardController extends GetxController with StateMixin {
   TextEditingController candidateEmail = TextEditingController();
   TextEditingController candidateFirstName = TextEditingController();
   TextEditingController candidateLastName = TextEditingController();
+  TextEditingController candidateSearchController = TextEditingController();
 
   EmployeeOverview? employeeOverview;
   JobOpening? jobOpening;
   CandidateList? candidateList;
+  FilterHiringStages? filterHiringStages;
+  FilterJobsDropdown? filterJobsDropdown;
+
+
+
+
+
+
+
+
+
   LeaveTimeLogSummary? leaveTimeLogSummary;
   JobApplicationBoard? jobApplicationBoard;
 
@@ -63,6 +80,28 @@ class HrDashBoardController extends GetxController with StateMixin {
     candidateList = await _dasBoardDataSource.getCandidateList(searchKey: searchKey);
     isCandidateListLoading(false);
   }
+
+  getCandidateBySearch(String searchKey) async {
+    isCandidateBySearchLoading(true);
+    candidateList = await _dasBoardDataSource.getCandidateList(searchKey: searchKey);
+    isCandidateBySearchLoading(false);
+  }
+
+
+  getJobsDropdown() async {
+    isCandidateFilterLoading(true);
+    filterJobsDropdown = await _dasBoardDataSource.getJobsDropdown();
+    isCandidateFilterLoading(false);
+  }
+
+  getHiringStages() async {
+    isCandidateFilterLoading(true);
+    filterHiringStages = await _dasBoardDataSource.getHiringStages();
+    isCandidateFilterLoading(false);
+  }
+
+
+
 
 
 
@@ -103,6 +142,19 @@ class HrDashBoardController extends GetxController with StateMixin {
     }
     isJobApplicationUpdateLoading(false);
   }
+
+
+  Future updateCandidate({required String candidateId,required String jobId ,required String email, required String firstName, required String lastName}) async {
+
+    isUpdateCandidateLoading(true);
+    bool? response = await _dasBoardDataSource.updateCandidate(jobId: jobId,candidateId: candidateId,email: email,firstName: firstName,lastName: lastName);
+
+    if (response == true) {
+      showSuccessMessage(message: "Candidate has been update successfully ");
+    }
+    isUpdateCandidateLoading(false);
+  }
+
 
   Future updateJob({required String entryId}) async {
     isJobUpdateLoading(true);
@@ -151,6 +203,7 @@ class HrDashBoardController extends GetxController with StateMixin {
     candidateEmail.dispose();
     candidateFirstName.dispose();
     candidateLastName.dispose();
+    candidateSearchController.dispose();
     pageController.dispose();
 
     super.onClose();
