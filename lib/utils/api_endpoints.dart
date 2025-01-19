@@ -924,6 +924,13 @@ mutation UPDATE_A_JOB_Application($inputData: UpdateJobApplicationInputType!) {
   }
 }
 ''';
+const updateJobQuery = r'''
+mutation UPDATE_A_JOB($queryData: CommonEntityIdQueryDataType!, $updatingData: UpdateJobInputDataType!) {
+  updateJob(queryData: $queryData, updatingData: $updatingData) {
+    id
+  }
+}
+''';
 
 const removeJobApplicationQuery = r'''
 mutation REMOVE_CANDIDATE($inputData: RemoveCandidateInputData!) {

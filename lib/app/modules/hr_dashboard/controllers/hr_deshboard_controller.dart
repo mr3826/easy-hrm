@@ -10,9 +10,8 @@ import '../repositories/dashboard_repository.dart';
 class HrDashBoardController extends GetxController with StateMixin {
   final DashBoardDataSource _dasBoardDataSource;
   HrDashBoardController(this._dasBoardDataSource);
-  //
+
   final RxInt currentIndex = 0.obs;
-  // final RxInt jobTabCurrentIndex = 0.obs;
 
   RxInt jobDetailsSelectedIndex = 0.obs; // Track the selected tab index
   late PageController pageController; // For smooth scrolling
@@ -20,6 +19,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isCandidateSelected = false.obs; // Check if a candidate is selected
   RxBool isJobApplicationBoardLoading = false.obs;
   RxBool isJobApplicationUpdateLoading = false.obs;
+  RxBool isJobUpdateLoading = false.obs;
   RxBool isJobApplicationRemoveLoading = false.obs;
 
   RxBool isPasteButtonActive =
@@ -84,8 +84,7 @@ class HrDashBoardController extends GetxController with StateMixin {
       required String jobApplicationId,
       required String entryId}) async {
     isJobApplicationUpdateLoading(true);
-    bool? response;
-    response = await _dasBoardDataSource.updateJobApplication(
+    bool? response = await _dasBoardDataSource.updateJobApplication(
         hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
 
     if (response == true) {
@@ -95,11 +94,23 @@ class HrDashBoardController extends GetxController with StateMixin {
     isJobApplicationUpdateLoading(false);
   }
 
+  Future updateJob({required String entryId}) async {
+    isJobUpdateLoading(true);
+    bool? response = await _dasBoardDataSource.updateJob(
+      entityId: entryId,
+    );
+
+    if (response == true) {
+      showSuccessMessage(message: "Job has been updated!");
+      _updatedDate(entryId);
+    }
+    isJobUpdateLoading(false);
+  }
+
   removeJobApplication(
       {required String candidateId, required String jobId}) async {
     isJobApplicationRemoveLoading(true);
-    bool? response;
-    response = await _dasBoardDataSource.removeJobApplication(
+    bool? response = await _dasBoardDataSource.removeJobApplication(
         jobId: jobId, candidateId: candidateId);
     if (response == true) {
       showSuccessMessage(message: "Job application has been removed!");

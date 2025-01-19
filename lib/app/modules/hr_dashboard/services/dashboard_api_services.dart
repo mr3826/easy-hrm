@@ -12,10 +12,17 @@ class DashBoardApiService {
   }
 
   Future<Map<String, dynamic>?>  getJobOpening() async {
-    QueryResult<Object?> response= await _apiService.gqlCall(query:getJobOpeningQuery);
+
+
+    QueryResult<Object?> response= await _apiService.gqlCall(query:getJobOpeningQuery,variables: {
+      "queryData": {
+        "status": [
+          "published"
+        ],
+      },
+    });
     return response.data;
   }
-
 
   Future<Map<String, dynamic>?>  getLeaveAndTimeLogSummary() async {
     QueryResult<Object?> response= await _apiService.gqlCall(query:getLeaveAndTimeLogQuery);
@@ -42,6 +49,19 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response= await _apiService.gqlCall(query:updateJobApplicationQuery,variables: variables);
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>?>  updateJob(String entityId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "entity_id": entityId
+      },
+      "updatingData": {
+        "status": "unpublished"
+      }
+    };
+    QueryResult<Object?> response= await _apiService.gqlCall(query:updateJobQuery,variables: variables);
     return response.data;
   }
 

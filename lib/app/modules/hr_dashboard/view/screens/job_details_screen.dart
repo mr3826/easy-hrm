@@ -175,78 +175,87 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
       );
     });
   }
-}
-
-Widget _buildMoreView() {
-  return SingleChildScrollView(
-    child: Column(
-      children: [
-        _buildHeaderSection(),
-        _buildMoreInfoSection(
-          text: AppString.text_share.tr,
-          onTap: () {
-            showShareDialog(
-                titleText: AppString.text_job_post.replaceAll("p", "P").tr,
-                description: AppString.text_this_is_visible_to_everyone_etc,
-                linkDinAction: () {},
-                messengerAction: () {},
-                slackAction: () {},
-                whatAppAction: () {},
-                copyAction: () {});
-          },
-        ),
-        _buildMoreInfoSection(
-          text: AppString.text_unpublish.tr,
-          onTap: () {
-            _showRemoveDialog();
-          },
-        ),
-      ],
-    ),
-  );
-}
+  Widget _buildMoreView() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildHeaderSection(),
+          _buildMoreInfoSection(
+            text: AppString.text_share.tr,
+            onTap: () {
+              showShareDialog(
+                  titleText: AppString.text_job_post.replaceAll("p", "P").tr,
+                  description: AppString.text_this_is_visible_to_everyone_etc,
+                  linkDinAction: () {},
+                  messengerAction: () {},
+                  slackAction: () {},
+                  whatAppAction: () {},
+                  copyAction: () {});
+            },
+          ),
+          _buildMoreInfoSection(
+            text: AppString.text_unpublish.tr,
+            onTap: () {
+              _showRemoveDialog();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
 // A method to build the header section with profile image and name.
-Widget _buildHeaderSection() {
-  return customButtonSheetAppbar(
-    height: 150,
-    titleWidget: Text(
-      "Node.js Developer",
-      style: AppStyle.mid_large_text.copyWith(
-        color: AppColor.secondaryColor,
-        fontWeight: FontWeight.w700,
-        fontSize: Dimensions.fontSizeDefault + 3,
+  Widget _buildHeaderSection() {
+    return customButtonSheetAppbar(
+      height: 150,
+      titleWidget: Text(
+        "Node.js Developer",
+        style: AppStyle.mid_large_text.copyWith(
+          color: AppColor.secondaryColor,
+          fontWeight: FontWeight.w700,
+          fontSize: Dimensions.fontSizeDefault + 3,
+        ),
       ),
-    ),
-    subtext: "Laravel department",
-  );
-}
+      subtext: "Laravel department",
+    );
+  }
 
 // A method to build individual more info items with divider.
-Widget _buildMoreInfoSection({
-  required String text,
-  required VoidCallback onTap,
-}) {
-  return customMoreInfoTextWithDiver(
-    text: text,
-    onTap: onTap,
-  );
+  Widget _buildMoreInfoSection({
+    required String text,
+    required VoidCallback onTap,
+  }) {
+    return customMoreInfoTextWithDiver(
+      text: text,
+      onTap: onTap,
+    );
+  }
+
+  void _showRemoveDialog() {
+    return displayCustomDialog(
+        context: Get.context!,
+        customIconWidget: SizedBox(
+            height: 65,
+            width: 65,
+            child: customSvgImage(imageUrl: Images.UNPUBLISH_ICON)),
+        titleText: AppString.text_unpublish_job.tr,
+        descriptionText:
+        AppString.text_you_are_going_to_unpublish_this_job_etc.tr,
+
+        customActionButtons: Obx(()=>controller.isJobUpdateLoading.isTrue?const Center(child: CupertinoActivityIndicator()):
+        CustomDoubleAppButton(
+          onAction: () {
+            controller.updateJob(entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"").then((v){
+              Get.back(canPop: false);
+              Get.back(canPop: false);
+            });
+          },
+          cancelAction: () => Get.back(canPop: false),
+          btnColor: AppColor.pendingColor,
+          buttonText: AppString.text_unpublish.tr,
+        )));
+
+  }
 }
 
-void _showRemoveDialog() {
-  return displayCustomDialog(
-      context: Get.context!,
-      customIconWidget: SizedBox(
-          height: 65,
-          width: 65,
-          child: customSvgImage(imageUrl: Images.UNPUBLISH_ICON)),
-      titleText: AppString.text_unpublish_job.tr,
-      descriptionText:
-          AppString.text_you_are_going_to_unpublish_this_job_etc.tr,
-      customActionButtons: CustomDoubleAppButton(
-        onAction: () {},
-        cancelAction: () => Get.back(canPop: false),
-        btnColor: AppColor.pendingColor,
-        buttonText: AppString.text_unpublish.tr,
-      ));
-}
+

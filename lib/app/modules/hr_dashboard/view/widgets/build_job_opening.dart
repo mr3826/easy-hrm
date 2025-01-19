@@ -35,6 +35,7 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
                 },
                 itemBuilder: (context, index) {
                   Data? data = controller.jobOpening?.getJobs?.data?[index];
+
                   return GestureDetector(
                     onTap: () {
                       _updateDataWithRoute(data?.id ?? "");

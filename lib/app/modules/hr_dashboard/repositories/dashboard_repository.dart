@@ -27,7 +27,7 @@ abstract class DashBoardDataSource {
   Future<bool?> deleteCandidateNoteReview({required String entityId});
   Future<bool?> updateCandidateNoteReview({required String noteId,required String note});
   Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId});
-
+  Future<bool?> updateJob({required String entityId});
 }
 
 
@@ -104,6 +104,20 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
       return null;
     } catch (e) {
       log('Error updating job application: $e');
+      return null;
+    }
+  }
+
+ @override
+  Future<bool?> updateJob({required String entityId}) async {
+    try {
+      final response = await _dashBoardApiService.updateJob(entityId);
+      if (response != null) {
+        return true;
+      }
+      return null;
+    } catch (e) {
+      log('Error updating job : $e');
       return null;
     }
   }
