@@ -1,22 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
+import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
 import '../../../../../common/widget/custom_dialog.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../modules/profile/controller/user_profile_controller.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
+import '../../../../../utils/utils.dart';
 
 userInfoAppbarLayout() {
+  /// todo profile info data add to profile controller
+  Profile? user = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.profile;
+
   return Padding(
     padding: const EdgeInsets.only(top: 46.0),
     child: Row(
       children: [
-        _userImageLayout(),
+        _userImageLayout(
+          user?.image ?? "",
+          "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
+        ),
         customSpacerWidth(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +40,7 @@ userInfoAppbarLayout() {
                   fontSize: Dimensions.fontSizeDefault),
             ),
             Text(
-              "Rifat Hasan",
+              "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
               style: AppStyle.normal_text_grey.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeMid),
@@ -46,14 +58,13 @@ userInfoAppbarLayout() {
   );
 }
 
-_userImageLayout() {
-  return const CustomNetworkImage(
+_userImageLayout(String imgUrl, String error) {
+  return CustomNetworkImage(
     radius: 22,
-    errorText: "ER",
+    errorText: getInitials(error),
     isCircleImage: true,
     borderColor: AppColor.primaryColor,
-    imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToDhcKo7SHf5KPPVnfFFV8zlgE4nNCubsP9w&s',
+    imageUrl: imgUrl,
   );
 }
 

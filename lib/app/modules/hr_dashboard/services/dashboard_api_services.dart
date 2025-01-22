@@ -9,11 +9,9 @@ class DashBoardApiService {
   Future<Map<String, dynamic>?> getEmployeeOverView() async {
     QueryResult<Object?> response =
         await _apiService.gqlCall(query: getEmployeeOverviewQuery);
-    return response.data; ///todo [one line]
+    return response.data;
+    ///todo [one line]
   }
-
-
-
 
   Future<Map<String, dynamic>?> getJobOpening() async {
     Map<String, Map<String, dynamic>> variables = {
@@ -22,11 +20,10 @@ class DashBoardApiService {
       }
     };
 
-    QueryResult<Object?> response =
-        await _apiService.gqlCall(query: getJobOpeningQuery, variables:variables);
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        query: getJobOpeningQuery, variables: variables);
     return response.data;
   }
-
 
   Future<Map<String, dynamic>?> getLeaveAndTimeLogSummary() async {
     QueryResult<Object?> response =
@@ -185,65 +182,56 @@ class DashBoardApiService {
     return response.data;
   }
 
-  Future<Map<String, dynamic>?> getCandidateList(String searchKey,List<String>  jobIds,List<String> stageIds,List<int>  ratings) async {
+  Future<Map<String, dynamic>?> getCandidateList(String searchKey,
+      List<String> jobIds, List<String> stageIds, List<int> ratings) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
         "search_key": searchKey,
         "job_ids": jobIds,
-        "stage_ids":stageIds,
+        "stage_ids": stageIds,
         "ratings": ratings
       },
     };
-    QueryResult<Object?> response =
-    await _apiService.gqlCall(query: getCandidateListQuery, variables:variables);
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        query: getCandidateListQuery, variables: variables);
     return response.data;
   }
 
- Future<Map<String, dynamic>?> getHiringStages() async {
-
+  Future<Map<String, dynamic>?> getHiringStages() async {
     QueryResult<Object?> response =
-    await _apiService.gqlCall(query: getHiringStagesQuery);
+        await _apiService.gqlCall(query: getHiringStagesQuery);
     return response.data;
   }
 
-
-Future<Map<String, dynamic>?> getJobsDropdown() async {
+  Future<Map<String, dynamic>?> getJobsDropdown() async {
     QueryResult<Object?> response =
-    await _apiService.gqlCall(query: getJobsDropdownQuery);
+        await _apiService.gqlCall(query: getJobsDropdownQuery);
     return response.data;
   }
 
-
-Future<Map<String, dynamic>?> updateCandidate(String candidateId,String jobId,String email,String firstName,String lastName) async {
-  Map<String, Map<String, dynamic>> variables = {
-    "inputData": {
-      "candidate_id": candidateId,
-      "job_id": jobId,
-      "email":email,
-      "first_name":firstName,
-      "last_name":lastName,
-    },
-  };
-    QueryResult<Object?> response =
-    await _apiService.gqlCall(query: updateCandidateQuery,variables: variables);
+  Future<Map<String, dynamic>?> updateCandidate(String candidateId,
+      String jobId, String email, String firstName, String lastName) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "candidate_id": candidateId,
+        "job_id": jobId,
+        "email": email,
+        "first_name": firstName,
+        "last_name": lastName,
+      },
+    };
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        query: updateCandidateQuery, variables: variables);
     return response.data;
   }
 
-Future<Map<String, dynamic>?> removeCandidate(String candidateId,String jobId) async {
-  Map<String, Map<String, dynamic>> variables = {
-    "inputData": {
-      "candidate_id": candidateId,
-      "job_id":jobId
-    },
-  };
-    QueryResult<Object?> response =
-    await _apiService.gqlCall(query: removeCandidateQuery,variables: variables);
+  Future<Map<String, dynamic>?> removeCandidate(
+      String candidateId, String jobId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {"candidate_id": candidateId, "job_id": jobId},
+    };
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        query: removeCandidateQuery, variables: variables);
     return response.data;
   }
-
-
-
-
-
-
 }

@@ -12,9 +12,9 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../global/view/widget/app_margin.dart';
 import '../../bindings/dashboard_bindings.dart';
-import '../widgets/build_access_level.dart';
 import '../widgets/build_employee_overview.dart';
 import '../widgets/build_job_opening.dart';
+import '../widgets/build_section_card.dart';
 import '../widgets/deshboard_widget.dart';
 
 class HrDashboardScreen extends GetView<HrDashBoardController> {
@@ -30,20 +30,15 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    userInfoAppbarLayout(),///todo status bar dynamic
-
+                    userInfoAppbarLayout(),
                     customSpacerHeight(height: 30),
                     _buildTitleText(AppString.text_employee_overview.tr),
+
                     const BuildEmployeeOverview(),
+
                     customSpacerHeight(height: 24),
                     _buildOpenJob(),
-                    _buildAllCandidates(
-                        controller
-                                .leaveTimeLogSummary
-                                ?.getLeaveAndTimelogRequestSummary
-                                ?.totalCandidates
-                                .toString() ??
-                            "0"),
+                    _buildAllCandidates(),
                     _buildLeaveRequest(controller.leaveTimeLogSummary
                             ?.getLeaveAndTimelogRequestSummary?.leaveRequest
                             .toString() ??
@@ -101,13 +96,13 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
     );
   }
 
-  _buildAllCandidates(String value) { ///todo using method HrDashBoardController not pass
+  _buildAllCandidates() {
     if (controller.leaveTimeLogSummary?.getLeaveAndTimelogRequestSummary
         ?.totalCandidates !=
         0) {
       return Column(
         children: [
-          BuildAccessLevel(
+          BuildSectionCard(
             onClick: () {
               controller.getCandidateBySearch();
               Get.toNamed(Routes.ALL_CANDIDATES);
@@ -115,7 +110,12 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
             bgColor: AppColor.interViewCandidatesColor,
             imgUrl: Images.INTERVIEW_CANDIDATES,
             labelText: AppString.text_all_candidate.tr,
-            value: value,
+            value: controller
+                .leaveTimeLogSummary
+                ?.getLeaveAndTimelogRequestSummary
+                ?.totalCandidates
+                .toString() ??
+                "0",
           ),
           customSpacerHeight(height: 12),
         ],
@@ -126,7 +126,7 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
   }
 
   _buildLeaveRequest(String value) {
-    return BuildAccessLevel(
+    return BuildSectionCard(
       bgColor: AppColor.pendingColor,
       imgUrl: Images.LEAVE_REQ,
       labelText: AppString.text_leave_req.tr,
@@ -135,7 +135,7 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
   }
 
   _buildLogRequest(String value) {
-    return BuildAccessLevel(  ///todo must be rename
+    return BuildSectionCard(
       bgColor: AppColor.timeLogRequestColor,
       imgUrl: Images.TIMELOG_REQ,
       labelText: AppString.text_log_request.tr,

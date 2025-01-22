@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/global/view/widget/app_margin.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/hr_deshboard_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/models/candidate_list.dart' as can_list;
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import '../../../../../../../common/widget/custom_search_field.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
@@ -47,7 +45,6 @@ class SearchCandidateList extends GetView<HrDashBoardController> {
 
   /// Builds the search input field
   Widget _buildSearchInputField() {
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: CustomSearchField(
@@ -62,24 +59,16 @@ class SearchCandidateList extends GetView<HrDashBoardController> {
         searchHintText: AppString.textSearchAndSelect.tr,
       ),
     );
-
-
   }
 
   /// Handles search input changes
   void _handleSearchValueChange(String value) {
-
-
     controller.candidateSearchController.text = value;
     controller.searchQuery.value = value;
-
-
-
   }
 
   /// Builds the candidate list view based on search results or recent searches
   Widget _buildCandidateListView() {
-
     if (controller.searchQuery.isEmpty) {
       if (controller.candidates.isNotEmpty) {
         return _buildRecentSearchList();
@@ -87,9 +76,11 @@ class SearchCandidateList extends GetView<HrDashBoardController> {
     }
 
     return controller.isCandidateBySearchLoading.isTrue
-        ? const Center(child: CupertinoActivityIndicator(color: AppColor.primaryColor,))
+        ? const Center(
+            child: CupertinoActivityIndicator(
+            color: AppColor.primaryColor,
+          ))
         : _buildSearchResultList();
-
   }
 
   /// Builds the list of recent searches
@@ -143,7 +134,8 @@ class SearchCandidateList extends GetView<HrDashBoardController> {
         return GestureDetector(
           onTap: () {
             _handleCandidateSelection(
-              name: "${candidate?.firstName ?? ""} ${candidate?.lastName ?? ""}",
+              name:
+                  "${candidate?.firstName ?? ""} ${candidate?.lastName ?? ""}",
               imgUrl: candidate?.avatarKey,
             );
             controller.addItem(can_list.SearchCandidate.name(

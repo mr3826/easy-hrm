@@ -4,14 +4,14 @@ import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 
-class BuildAccessLevel extends StatelessWidget {
+class BuildSectionCard extends StatelessWidget {
   final String labelText;
   final String value;
   final String imgUrl;
   final Color bgColor;
   final Function? onClick;
 
-  const BuildAccessLevel({
+  const BuildSectionCard({
     super.key,
     required this.labelText,
     required this.value,
@@ -23,8 +23,7 @@ class BuildAccessLevel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onClick!() ?? () {}, // Pass the function reference directly
-      ///todo why not null [check if possible to custom]
+      onTap: onClick != null ? () => onClick!() : null,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),

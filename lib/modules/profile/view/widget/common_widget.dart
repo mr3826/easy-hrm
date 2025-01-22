@@ -94,6 +94,7 @@ Widget _userNameAndDptLayout() {
       .userDetails
       ?.getOrganizationUserDetails
       ?.profile;
+
   final department = Get.find<UserProfileController>()
           .userDetails
           ?.getOrganizationUserDetails

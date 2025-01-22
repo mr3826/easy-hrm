@@ -26,20 +26,21 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    return Obx((){
-      if(controller.isJobApplicationBoardLoading.isTrue){
-        return const Scaffold(body: LoadingIndicator(),);
-      }else{
-
+    return Obx(() {
+      if (controller.isJobApplicationBoardLoading.isTrue) {
+        return const Scaffold(
+          body: LoadingIndicator(),
+        );
+      } else {
         return Scaffold(
           appBar: customAppbar(title: AppString.text_job_details.tr, actions: [
             IconButton(
               onPressed: () {
-                customButtonSheet(height: .5, context: context, child: _buildMoreView());
+                customButtonSheet(
+                    height: .5, context: context, child: _buildMoreView());
               },
-              icon: const Icon(Icons.more_vert_sharp, color: AppColor.hintColor),
+              icon:
+                  const Icon(Icons.more_vert_sharp, color: AppColor.hintColor),
             )
           ]),
           floatingActionButton: _buildPasteButton(),
@@ -54,22 +55,18 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
             ],
           ),
         );
-
-
       }
-
-
     });
-
   }
 
   _buildJobTitleWithDescription() {
-    GetJobApplicationBoard? data=controller.jobApplicationBoard?.getJobApplicationBoard;
+    GetJobApplicationBoard? data =
+        controller.jobApplicationBoard?.getJobApplicationBoard;
     return Column(
       children: [
         Center(
           child: Text(
-            data?.title??"",
+            data?.title ?? "",
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.secondaryColor,
                 fontWeight: FontWeight.w600,
@@ -78,7 +75,7 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
         ),
         Center(
           child: Text(
-            data?.department?.name??"No department",
+            data?.department?.name ?? "No department",
             style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.normalTextColor,
                 fontWeight: FontWeight.w500,
@@ -90,17 +87,18 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
   }
 
   Widget _buildTimeAddressWithDate() {
-    GetJobApplicationBoard? data=controller.jobApplicationBoard?.getJobApplicationBoard;
+    GetJobApplicationBoard? data =
+        controller.jobApplicationBoard?.getJobApplicationBoard;
 
     // Define a list of objects that include the text and corresponding icons
     final List<Map<String, dynamic>> list = [
       {
         'icon': Icons.access_time_rounded,
-        'text': capitalizeWords(data?.type??"")
+        'text': capitalizeWords(data?.type ?? "")
       },
       {
         'icon': Icons.location_on_outlined,
-        'text': data?.location??"",
+        'text': data?.location ?? "",
       },
       {
         'icon': Icons.date_range,
@@ -142,7 +140,6 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
 
   _buildPasteButton() {
     return Obx(() {
-
       return AnimatedOpacity(
         opacity: Get.find<HrDashBoardController>().isPasteButtonActive.value
             ? 1.0
@@ -152,20 +149,28 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
         child: Get.find<HrDashBoardController>().isPasteButtonActive.value
             ? Padding(
                 padding: const EdgeInsets.only(left: 30.0),
-                child:
-                CustomAppButton(
-                  buttonText:Get.find<HrDashBoardController>().isJobApplicationUpdateLoading.isTrue?const CupertinoActivityIndicator(color: AppColor.cardColor,):
-
-                  Text(
-                    "Paste here",
-                    style: AppStyle.normal_text_grey
-                        .copyWith(color: AppColor.cardColor, fontSize: 15),
-                  ),
+                child: CustomAppButton(
+                  buttonText: Get.find<HrDashBoardController>()
+                          .isJobApplicationUpdateLoading
+                          .isTrue
+                      ? const CupertinoActivityIndicator(
+                          color: AppColor.cardColor,
+                        )
+                      : Text(
+                          "Paste here",
+                          style: AppStyle.normal_text_grey.copyWith(
+                              color: AppColor.cardColor, fontSize: 15),
+                        ),
                   onPressed: () {
-
-                    HrDashBoardController controller=Get.find<HrDashBoardController>();
-                    controller.updateJobApplication(hiringStageId: controller.selectedHiringStageId.value, jobApplicationId: controller.selectedJobApplicationId.value, entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"");
-
+                    HrDashBoardController controller =
+                        Get.find<HrDashBoardController>();
+                    controller.updateJobApplication(
+                        hiringStageId: controller.selectedHiringStageId.value,
+                        jobApplicationId:
+                            controller.selectedJobApplicationId.value,
+                        entryId: controller.jobApplicationBoard
+                                ?.getJobApplicationBoard?.id ??
+                            "");
                   },
                   buttonColor: AppColor.primaryColor,
                   borderRadius: 35,
@@ -175,6 +180,7 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
       );
     });
   }
+
   Widget _buildMoreView() {
     return SingleChildScrollView(
       child: Column(
@@ -206,17 +212,19 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
 
 // A method to build the header section with profile image and name.
   Widget _buildHeaderSection() {
+    GetJobApplicationBoard? data =
+        controller.jobApplicationBoard?.getJobApplicationBoard;
     return customButtonSheetAppbar(
       height: 150,
       titleWidget: Text(
-        "Node.js Developer",
+        data?.title??"",
         style: AppStyle.mid_large_text.copyWith(
           color: AppColor.secondaryColor,
           fontWeight: FontWeight.w700,
           fontSize: Dimensions.fontSizeDefault + 3,
         ),
       ),
-      subtext: "Laravel department",
+      subtext: data?.department?.name??"",
     );
   }
 
@@ -240,22 +248,24 @@ class JobDetailsScreen extends GetView<HrDashBoardController> {
             child: customSvgImage(imageUrl: Images.UNPUBLISH_ICON)),
         titleText: AppString.text_unpublish_job.tr,
         descriptionText:
-        AppString.text_you_are_going_to_unpublish_this_job_etc.tr,
-
-        customActionButtons: Obx(()=>controller.isJobUpdateLoading.isTrue?const Center(child: CupertinoActivityIndicator()):
-        CustomDoubleAppButton(
-          onAction: () {
-            controller.updateJob(entryId: controller.jobApplicationBoard?.getJobApplicationBoard?.id??"").then((v){
-              Get.back(canPop: false);
-              Get.back(canPop: false);
-            });
-          },
-          cancelAction: () => Get.back(canPop: false),
-          btnColor: AppColor.pendingColor,
-          buttonText: AppString.text_unpublish.tr,
-        )));
-
+            AppString.text_you_are_going_to_unpublish_this_job_etc.tr,
+        customActionButtons: Obx(() => controller.isJobUpdateLoading.isTrue
+            ? const Center(child: CupertinoActivityIndicator())
+            : CustomDoubleAppButton(
+                onAction: () {
+                  controller
+                      .updateJob(
+                          entryId: controller.jobApplicationBoard
+                                  ?.getJobApplicationBoard?.id ??
+                              "")
+                      .then((v) {
+                    Get.back(canPop: false);
+                    Get.back(canPop: false);
+                  });
+                },
+                cancelAction: () => Get.back(canPop: false),
+                btnColor: AppColor.pendingColor,
+                buttonText: AppString.text_unpublish.tr,
+              )));
   }
 }
-
-

@@ -7,7 +7,6 @@ import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../../global/models/check_box.dart';
 import '../../../../../global/view/multi_check_box.dart';
 import '../../../../employee/presentation/view/widget/filter/section_expansion_tile.dart';
 import '../../../controllers/hr_deshboard_controller.dart';

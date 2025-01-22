@@ -324,7 +324,6 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
     return _buildMoreInfoSection(
       text: AppString.text_move_anywhere.tr,
       onTap: () {
-        // Get.find<HrDashBoardController>().selectedHiringStageId.value = jobApplicationId;
         Get.find<HrDashBoardController>().selectedJobApplicationId.value =
             jobApplicationId;
         Get.find<HrDashBoardController>().isCandidateSelected.value = true;
