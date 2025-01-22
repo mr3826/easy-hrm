@@ -26,30 +26,31 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
     return controller.obx(
         (state) => Padding(
               padding: marginLayout.copyWith(left: 16, right: 16),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    userInfoAppbarLayout(),
-                    customSpacerHeight(height: 30),
-                    _buildTitleText(AppString.text_employee_overview.tr),
-
-                    const BuildEmployeeOverview(),
-
-                    customSpacerHeight(height: 24),
-                    _buildOpenJob(),
-                    _buildAllCandidates(),
-                    _buildLeaveRequest(controller.leaveTimeLogSummary
-                            ?.getLeaveAndTimelogRequestSummary?.leaveRequest
-                            .toString() ??
-                        "0"),
-                    customSpacerHeight(height: 12),
-                    _buildLogRequest(controller.leaveTimeLogSummary
-                            ?.getLeaveAndTimelogRequestSummary?.timelogRequest
-                            .toString() ??
-                        "0"),
-                    customSpacerHeight(height: 30),
-                  ],
+              child: RefreshIndicator(
+                onRefresh: _refreshScreen,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      userInfoAppbarLayout(),
+                      customSpacerHeight(height: 30),
+                      _buildTitleText(AppString.text_employee_overview.tr),
+                      const BuildEmployeeOverview(),
+                      customSpacerHeight(height: 24),
+                      _buildOpenJob(),
+                      _buildAllCandidates(),
+                      _buildLeaveRequest(controller.leaveTimeLogSummary
+                              ?.getLeaveAndTimelogRequestSummary?.leaveRequest
+                              .toString() ??
+                          "0"),
+                      customSpacerHeight(height: 12),
+                      _buildLogRequest(controller.leaveTimeLogSummary
+                              ?.getLeaveAndTimelogRequestSummary?.timelogRequest
+                              .toString() ??
+                          "0"),
+                      customSpacerHeight(height: 30),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -66,7 +67,7 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
           const BuildJobOpening(),
         ],
       );
-    }else{
+    } else {
       return const SizedBox.shrink();
     }
   }
@@ -98,7 +99,7 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
 
   _buildAllCandidates() {
     if (controller.leaveTimeLogSummary?.getLeaveAndTimelogRequestSummary
-        ?.totalCandidates !=
+            ?.totalCandidates !=
         0) {
       return Column(
         children: [
@@ -110,17 +111,15 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
             bgColor: AppColor.interViewCandidatesColor,
             imgUrl: Images.INTERVIEW_CANDIDATES,
             labelText: AppString.text_all_candidate.tr,
-            value: controller
-                .leaveTimeLogSummary
-                ?.getLeaveAndTimelogRequestSummary
-                ?.totalCandidates
-                .toString() ??
+            value: controller.leaveTimeLogSummary
+                    ?.getLeaveAndTimelogRequestSummary?.totalCandidates
+                    .toString() ??
                 "0",
           ),
           customSpacerHeight(height: 12),
         ],
       );
-    }else{
+    } else {
       return const SizedBox.shrink();
     }
   }
@@ -142,5 +141,9 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
       value: value,
     );
   }
-}
 
+  Future<void> _refreshScreen() async {
+    await controller.getJobOpening();
+    await controller.getEmployeeOverView();
+  }
+}
