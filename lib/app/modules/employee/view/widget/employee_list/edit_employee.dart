@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:payrun_mobile/app/global/view/widgets/custom_phone_number_input_field.dart';
 import 'package:payrun_mobile/app/modules/employee/controller/update_org_user_info_controller.dart';
+import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
@@ -21,13 +23,19 @@ import '../../../controller/employment_controller.dart';
 import '../../../model/user_work_info_dropdown.dart';
 
 class EditEmployee extends GetView<UpdateOrgUserInfoController> {
-  const EditEmployee({super.key});
+  EditEmployee({super.key});
+
+  String orgUserId = '';
 
   @override
   Widget build(BuildContext context) {
-    final arguments = Get.arguments as Map<String, dynamic>;
+    final Map<String, dynamic> arguments =
+        Get.arguments as Map<String, dynamic>;
+
+    orgUserId = arguments['orgUserId'];
+
     Get.find<UpdateOrgUserInfoController>()
-        .getUpdateAbleUserInfo(orgUserId: arguments['orgUserId']);
+        .getUpdateAbleUserInfo(orgUserId: orgUserId);
     return Scaffold(
         appBar: customInsideAppbar(
             title: AppString.textEditEmployee.tr,
@@ -120,7 +128,11 @@ class EditEmployee extends GetView<UpdateOrgUserInfoController> {
             _emergencyPhoneNumberInput(),
             customSpacerHeight(height: 28),
             Obx(
-              () => _buildButtons(context),
+              () => controller.isUpdateDataLoading.isTrue
+                  ? const Center(
+                      child: CupertinoActivityIndicator(
+                          color: AppColor.primaryColor, radius: 14))
+                  : _buildButtons(context),
             ),
           ],
         ),
@@ -283,7 +295,21 @@ class EditEmployee extends GetView<UpdateOrgUserInfoController> {
                       .isUpdateDataChanged
                       .isFalse
                   ? () {}
-                  : () {},
+                  : () async {
+                      bool value = await Get.find<UpdateOrgUserInfoController>()
+                          .updateAOrgUserInfo(orgUserId: orgUserId);
+                      if (value) {
+                        if (context.mounted) {
+                          showSuccessMessage(
+                              message: AppString
+                                  .profile_update_successfully_text.tr);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        }
+                      } else {
+                        showErrorMessage(message: AppString.error_text.tr);
+                      }
+                    },
               buttonColor: Get.find<UpdateOrgUserInfoController>()
                       .isUpdateDataChanged
                       .isFalse

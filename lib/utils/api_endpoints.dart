@@ -261,6 +261,14 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
 }
 ''';
 
+const updateOrgUserInfoQuery=r'''
+mutation UpdateOrganizationUser($inputData: UpdateOrganizationUserInputData!) {
+  updateOrganizationUser(inputData: $inputData) {
+    id
+  }
+}
+''';
+
 const getLeaveSummaryQuery = r'''
 query GET_ORGANIZATION_USER_SUMMARY($queryData: OrganizationUserLeaveStatusQuery!, $optionData: OptionDataType) {
   getOrganizationUsersLeaveSummary(queryData: $queryData, optionData: $optionData) {

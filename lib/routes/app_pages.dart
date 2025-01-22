@@ -143,7 +143,7 @@ class AppPages {
     GetPage(
       name: _Paths.EDIT_EMPOLYEE_VIEW,
       transition: Transition.size,
-      page: () =>  const EditEmployee(),
+      page: () =>  EditEmployee(),
       binding: UpdateOrgUserInfoBindings()
 
     ),

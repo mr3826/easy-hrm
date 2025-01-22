@@ -13,6 +13,8 @@ class EmployeeApiService {
 
   Future<Map<String, dynamic>?>? getEmployees(
       {Map<String, Map<String, Object>>? queryVariable}) async {
+    queryVariable?.forEach((key, value) => print('key: $key value: $value'));
+
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: getEmployeeList, variables: queryVariable);
     return response.data;
@@ -57,6 +59,12 @@ class EmployeeApiService {
             terminateUserModel.terminationOrResignationReason
       }
     });
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>?>? updateOrgUserInfo({required Map<String, dynamic> input}) async {
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: updateOrgUserInfoQuery, variables: input);
     return response.data;
   }
 }

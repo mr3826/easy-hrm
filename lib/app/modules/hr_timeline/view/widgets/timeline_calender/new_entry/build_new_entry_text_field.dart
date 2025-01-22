@@ -328,7 +328,6 @@ class BuildNewEntryTextField extends StatelessWidget {
       onValueSelected: (value) {},
       onClickRouteAction: () {},
       userInfo: (data) {
-        print(data.name);
       },
     );
   }

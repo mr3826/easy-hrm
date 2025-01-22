@@ -42,8 +42,8 @@ class TimelineApiServices {
     if (orgUserId != null) {
       variables["queryData"]?["org_user_ids"] = orgUserId;
     }
-    return await apiService.query(
-        query: getTimelineSummaryByDateQuery, variables: variables);
+    return await apiService.gqlCall(
+        queryString: getTimelineSummaryByDateQuery, variables: variables);
   }
 }
 

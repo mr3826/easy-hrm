@@ -18,7 +18,10 @@ abstract class EmployeeDataSource {
 
   Future<String?> terminateAUser(TerminateUserModel terminateUserModel);
 
-  Future<GetOrganizationUserDetails> getUpdateAbleUserInfo({required String orgUserId});
+  Future<GetOrganizationUserDetails> getUpdateAbleUserInfo(
+      {required String orgUserId});
+
+  Future<bool> updateOrgUserInfo({required Map<String, dynamic> input});
 }
 
 class EmployeeDataSourceImpl implements EmployeeDataSource {
@@ -115,5 +118,21 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
       log('Error in getUpdateAbleUserInfo: $e');
     }
     return GetOrganizationUserDetails();
+  }
+
+  @override
+  Future<bool> updateOrgUserInfo({required Map<String, dynamic> input}) async {
+    try {
+      Map<String, dynamic>? response =
+          await _employeeApiService.updateOrgUserInfo(input: input);
+
+      if (response != null &&
+          response["updateOrganizationUser"]['id'] != null) {
+        return true;
+      }
+    } catch (e) {
+      log('Error in updateOrgUserInfo: $e');
+    }
+    return false;
   }
 }
