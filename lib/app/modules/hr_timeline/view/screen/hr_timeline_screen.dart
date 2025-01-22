@@ -25,7 +25,7 @@ import '../widgets/time_sheet/build_select_month.dart';
 import '../widgets/timeline_calender/buid_timeline_short_summury.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
 
-bool isEmployee = true;
+bool isEmployee = false;
 
 class HrTimelineScreen extends StatefulWidget {
    HrTimelineScreen({super.key});
