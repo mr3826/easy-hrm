@@ -73,7 +73,7 @@ class BuildEditCandidate extends StatelessWidget {
             lastName: controller.candidateLastName.text).then((e){
               Get.back(canPop: false);
               Get.back(canPop: false);
-              controller.getCandidateList("");
+              controller.getCandidateBySearch();
         });
       }
     }, cancelAction: () {

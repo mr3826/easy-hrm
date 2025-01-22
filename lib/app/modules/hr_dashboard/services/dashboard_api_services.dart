@@ -185,11 +185,13 @@ class DashBoardApiService {
     return response.data;
   }
 
-
-  Future<Map<String, dynamic>?> getCandidateList(String searchKey,) async {
+  Future<Map<String, dynamic>?> getCandidateList(String searchKey,List<String>  jobIds,List<String> stageIds,List<int>  ratings) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
-        "search_key": searchKey
+        "search_key": searchKey,
+        "job_ids": jobIds,
+        "stage_ids":stageIds,
+        "ratings": ratings
       },
     };
     QueryResult<Object?> response =

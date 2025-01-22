@@ -5,7 +5,7 @@ import '../../../global/models/check_box.dart';
 import '../../../global/view/multi_check_box.dart';
 import '../models/candidate_list.dart';
 import '../models/employee_overview.dart';
-import '../models/filter_hiring_stages.dart';
+import '../models/filter_hiring_stages.dart' as hir_stages;
 import '../models/filter_jobs_dropdown.dart';
 import '../models/job_applocation_board.dart';
 import '../models/job_opening.dart';
@@ -31,6 +31,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isCandidateListLoading = false.obs;
   RxBool isCandidateBySearchLoading = false.obs;
   RxBool isCandidateFilterLoading = false.obs;
+  RxBool isFilterInfoApiCalledLoading = false.obs;
 
   RxBool isPasteButtonActive =
       false.obs; // Track if the paste button should be active
@@ -42,7 +43,9 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxString nextHiringStagesId = ''.obs;
   RxInt nextHiringStateIndex = 0.obs;
 
-  RxString selectedCandidateId = ''.obs;///todo
+  RxString selectedCandidateId = ''.obs;
+
+  ///todo
 
   final ScrollController scrollController = ScrollController();
 
@@ -54,31 +57,97 @@ class HrDashBoardController extends GetxController with StateMixin {
   EmployeeOverview? employeeOverview;
   JobOpening? jobOpening;
   CandidateList? candidateList;
-  FilterHiringStages? filterHiringStages;
+  hir_stages.FilterHiringStages? filterHiringStages;
   FilterJobsDropdown? filterJobsDropdown;
+  LeaveTimeLogSummary? leaveTimeLogSummary;
+  JobApplicationBoard? jobApplicationBoard;
 
-  List<CheckBoxModel>? jobPost= [];
-  List<CheckBoxModel>? hiringStage= [];
+  List<CheckBoxModel>? jobPost = [];
+  List<CheckBoxModel>? hiringStage = [];
 
-  List<CheckBoxModel>? rating= [
-    CheckBoxModel(checkBoxName: 'No rating', checkBoxNameValue: 'No rating'),
-    CheckBoxModel(checkBoxName: '1 star', checkBoxNameValue: '1 star'),
-    CheckBoxModel(checkBoxName: '2 stars', checkBoxNameValue: '2 stars'),
-    CheckBoxModel(checkBoxName: '3 stars', checkBoxNameValue: '3 stars'),
-    CheckBoxModel(checkBoxName: '4 stars', checkBoxNameValue: '4 stars'),
-    CheckBoxModel(checkBoxName: '5 stars', checkBoxNameValue: '5 stars'),
+  List<CheckBoxModel>? rating = [
+    CheckBoxModel(checkBoxName: 'No rating', checkBoxNameValue: '0'),
+    CheckBoxModel(checkBoxName: '1 star', checkBoxNameValue: '1'),
+    CheckBoxModel(checkBoxName: '2 stars', checkBoxNameValue: '2'),
+    CheckBoxModel(checkBoxName: '3 stars', checkBoxNameValue: '3'),
+    CheckBoxModel(checkBoxName: '4 stars', checkBoxNameValue: '4'),
+    CheckBoxModel(checkBoxName: '5 stars', checkBoxNameValue: '5'),
   ];
 
 
 
 
 
+  /// Fetches a list of candidates based on the search key and selected filters, then sorts the results.
+  /// Filters candidates by job posts, ratings, and hiring stages, and sorts the list (e.g., by name).
+  /// [searchKey] The keyword to search candidates (optional).
+  getCandidateBySearch({String? searchKey}) async {
+    isCandidateBySearchLoading(true);
+
+    // Retrieve selected filter values.
+    List<String> jobPostIds = getSelectedCheckBoxValues(jobPost ?? []);
+    List<String> ratingIds = getSelectedCheckBoxValues(rating ?? []);
+    List<String> hiringStageValues = getSelectedCheckBoxValues(hiringStage ?? []);
+    List<String> hiringStageIds = [];
+
+    // Fetch stage IDs for selected hiring stages.
+    if (filterHiringStages?.getHiringStagesForDropDown?.data != null) {
+      for (String stageId in hiringStageValues) {
+        // For each stageId, filter the data to find matching titles.
+        // Expand the `stageIds` list from the matching items and add them to `hiringStageIds`.
+        hiringStageIds.addAll(
+            filterHiringStages?.getHiringStagesForDropDown?.data
+            // Check if the item title contains the current stageId.
+                ?.where((item) => item.title?.contains(stageId) ?? false)
+            // Expand the list of `stageIds` from the filtered items and add them to the list.
+                .expand((element) => element.stageIds ?? [])
+                // In case no matching data is found, return an empty list.
+                ?? []
+        );
+      }
+    }
+
+
+    candidateList = await _dasBoardDataSource.getCandidateList(
+        searchKey: searchKey ?? "",
+        jobIds: jobPostIds,
+        stageIds: hiringStageIds,
+        ratings: ratingIds.map((String ratings) => int.parse(ratings)).toList()
+    );
+
+    isCandidateBySearchLoading(false);
+  }
 
 
 
 
-  LeaveTimeLogSummary? leaveTimeLogSummary;
-  JobApplicationBoard? jobApplicationBoard;
+  List<String> getSelectedCheckBoxValues(List<CheckBoxModel> checkBoxList) {
+    return checkBoxList
+        .where((item) => item.value == true) // Filter items where value is true
+        .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue
+        .toList();
+  }
+
+  getHiringStages() async {
+    isFilterInfoApiCalledLoading(true);
+    filterHiringStages = await _dasBoardDataSource.getHiringStages();
+    if (filterHiringStages != null) {
+      hiringStage = filterHiringStages?.getHiringStagesForDropDown?.data
+          ?.map((hir_stages.Data hiringStage) => CheckBoxModel(
+              checkBoxName: hiringStage.title ?? "",
+              checkBoxNameValue: hiringStage.title ?? ""))
+          .toList();
+    }
+    isCandidateFilterLoading(false);
+
+  }
+
+
+  void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {
+    for (CheckBoxModel item in checkBoxList) {
+      item.value = false;
+    }
+  }
 
   getEmployeeOverView() async {
     employeeOverview = await _dasBoardDataSource.getEmployeeOverview();
@@ -90,48 +159,19 @@ class HrDashBoardController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
-  getCandidateList(String searchKey) async {
-    isCandidateListLoading(true);
-    candidateList = await _dasBoardDataSource.getCandidateList(searchKey: searchKey);
-    isCandidateListLoading(false);
-  }
-
-  getCandidateBySearch(String searchKey) async {
-    isCandidateBySearchLoading(true);
-    candidateList = await _dasBoardDataSource.getCandidateList(searchKey: searchKey);
-
-    isCandidateBySearchLoading(false);
-  }
-
-
   getJobsDropdown() async {
     isCandidateFilterLoading(true);
+    isFilterInfoApiCalledLoading(true);
     filterJobsDropdown = await _dasBoardDataSource.getJobsDropdown();
     if (filterJobsDropdown != null) {
-      jobPost= filterJobsDropdown?.getJobsDropdown?.map((GetJobsDropdown e)=>CheckBoxModel(checkBoxName: e.title??"", checkBoxNameValue: e.id??"")).toList();
-
+      jobPost = filterJobsDropdown?.getJobsDropdown
+          ?.map((GetJobsDropdown jobs) => CheckBoxModel(
+              checkBoxName: jobs.title ?? "", checkBoxNameValue: jobs.id ?? ""))
+          .toList();
     }
+
+
   }
-
-  getHiringStages() async {
-    filterHiringStages = await _dasBoardDataSource.getHiringStages();
-    if (filterHiringStages != null) {
-      hiringStage= filterHiringStages?.getHiringStagesForDropDown?.data?.map(( e)=>CheckBoxModel(checkBoxName: e.title??"",checkBoxNameValue: e.stageIds.toString())).toList();
-    }
-    isCandidateFilterLoading(false);
-  }
-
-
-
-  List<String> getSelectedCheckBoxValues(List<CheckBoxModel> checkBoxList) {
-    return checkBoxList
-        .where((item) => item.value == true) // Filter items where value is true
-        .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue
-        .toList();
-  }
-
-
-
 
   getLeaveAndTimeLogSummary() async {
     change(null, status: RxStatus.loading());
@@ -155,14 +195,9 @@ class HrDashBoardController extends GetxController with StateMixin {
     isJobApplicationBoardLoading(false);
   }
 
-  Future updateJobApplication(
-      {required String hiringStageId,
-      required String jobApplicationId,
-      required String entryId}) async {
+  Future updateJobApplication({required String hiringStageId, required String jobApplicationId, required String entryId}) async {
     isJobApplicationUpdateLoading(true);
-    bool? response = await _dasBoardDataSource.updateJobApplication(
-        hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
-
+    bool? response = await _dasBoardDataSource.updateJobApplication(hiringStageId: hiringStageId, jobApplicationId: jobApplicationId);
     if (response == true) {
       showSuccessMessage(message: "Job application has been updated!");
       _updatedDate(entryId);
@@ -170,11 +205,14 @@ class HrDashBoardController extends GetxController with StateMixin {
     isJobApplicationUpdateLoading(false);
   }
 
-
-  Future updateCandidate({required String candidateId,required String jobId ,required String email, required String firstName, required String lastName}) async {
-
+  Future updateCandidate({required String candidateId, required String jobId, required String email, required String firstName, required String lastName}) async {
     isUpdateCandidateLoading(true);
-    bool? response = await _dasBoardDataSource.updateCandidate(jobId: jobId,candidateId: candidateId,email: email,firstName: firstName,lastName: lastName);
+    bool? response = await _dasBoardDataSource.updateCandidate(
+        jobId: jobId,
+        candidateId: candidateId,
+        email: email,
+        firstName: firstName,
+        lastName: lastName);
 
     if (response == true) {
       showSuccessMessage(message: "Candidate has been update successfully ");
@@ -182,19 +220,17 @@ class HrDashBoardController extends GetxController with StateMixin {
     isUpdateCandidateLoading(false);
   }
 
-
-  Future removeCandidate({required String candidateId,required String jobId}) async {
-
+  Future removeCandidate(
+      {required String candidateId, required String jobId}) async {
     isRemoveCandidateLoading(true);
-    bool? response = await _dasBoardDataSource.removeCandidate(jobId: jobId,candidateId: candidateId);
+    bool? response = await _dasBoardDataSource.removeCandidate(
+        jobId: jobId, candidateId: candidateId);
 
     if (response == true) {
       showSuccessMessage(message: "Candidate has been remove successfully");
     }
     isRemoveCandidateLoading(false);
   }
-
-
 
   Future updateJob({required String entryId}) async {
     isJobUpdateLoading(true);
@@ -253,6 +289,8 @@ class HrDashBoardController extends GetxController with StateMixin {
     await getEmployeeOverView();
     await getJobOpening();
     await getLeaveAndTimeLogSummary();
+    await getJobsDropdown();
+    await getHiringStages();
   }
 
   void _updatedDate(String entryId) {

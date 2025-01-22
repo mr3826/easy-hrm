@@ -13,31 +13,29 @@ import '../models/job_opening.dart';
 import '../models/leave_timline_summary.dart';
 import '../services/dashboard_api_services.dart';
 
-
 abstract class DashBoardDataSource {
   Future<EmployeeOverview?> getEmployeeOverview();
   Future<JobOpening?> getJobOpening();
   Future<LeaveTimeLogSummary?> getLeaveAndTimeLogSummary();
   Future<JobApplicationBoard?> getJobApplicationBoard({required String entityId});
-  Future<bool?> updateJobApplication({required String hiringStageId,required String jobApplicationId});
-  Future<bool?> removeJobApplication({required String jobId,required String candidateId});
+  Future<bool?> updateJobApplication({required String hiringStageId, required String jobApplicationId});
+  Future<bool?> removeJobApplication({required String jobId, required String candidateId});
   Future<CandidateActivitiesLogs?> getCandidateActivitiesLogs({required String jobApplicationId});
   Future<FileSignedUrl?> getFileSignUrl({required String fileKey});
   Future<CandidateDetails?> getCandidateDetails({required String jobApplicationId});
   Future<CandidateReviewModel?> getCandidateReview({required String jobApplicationId});
-  Future<bool?> createCandidateReview({required String jobId,required String jobApplicationId, required int rate});
-  Future<bool?> createCandidateNoteReview({required String jobId,required String jobApplicationId, required String note});
+  Future<bool?> createCandidateReview({required String jobId, required String jobApplicationId, required int rate});
+  Future<bool?> createCandidateNoteReview({required String jobId, required String jobApplicationId, required String note});
   Future<bool?> deleteCandidateNoteReview({required String entityId});
-  Future<bool?> updateCandidateNoteReview({required String noteId,required String note});
-  Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId});
+  Future<bool?> updateCandidateNoteReview({required String noteId, required String note});
+  Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId, required String candidateId});
   Future<bool?> updateJob({required String entityId});
-  Future<CandidateList?> getCandidateList({required String searchKey});
   Future<FilterHiringStages?> getHiringStages();
   Future<FilterJobsDropdown?> getJobsDropdown();
-  Future<bool?> updateCandidate({required String candidateId,required String jobId,required String email,required String firstName,required String lastName});
-  Future<bool?> removeCandidate({required String candidateId,required String jobId});
+  Future<bool?> updateCandidate({required String candidateId, required String jobId, required String email, required String firstName, required String lastName});
+  Future<bool?> removeCandidate({required String candidateId, required String jobId});
+  Future<CandidateList?> getCandidateList({required String searchKey, required List<String> jobIds,required List<String> stageIds, required List<int> ratings});
 }
-
 
 class DasBoardDataSourceImpl implements DashBoardDataSource {
   final DashBoardApiService _dashBoardApiService;
@@ -45,7 +43,7 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
   DasBoardDataSourceImpl(this._dashBoardApiService);
 
   @override
-  Future<EmployeeOverview?>  getEmployeeOverview() async {
+  Future<EmployeeOverview?> getEmployeeOverview() async {
     try {
       final response = await _dashBoardApiService.getEmployeeOverView();
       if (response != null) {
@@ -56,7 +54,6 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     }
     return null;
   }
-
 
   @override
   Future<JobOpening?> getJobOpening() async {
@@ -71,7 +68,6 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     return null;
   }
 
-
   @override
   Future<LeaveTimeLogSummary?> getLeaveAndTimeLogSummary() async {
     try {
@@ -85,12 +81,12 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     return null;
   }
 
-
   @override
- Future<JobApplicationBoard?> getJobApplicationBoard({required String entityId}) async {
+  Future<JobApplicationBoard?> getJobApplicationBoard(
+      {required String entityId}) async {
     try {
-      final response = await _dashBoardApiService.getJobApplicationBoard(
-          entityId);
+      final response =
+          await _dashBoardApiService.getJobApplicationBoard(entityId);
       if (response != null) {
         return JobApplicationBoard.fromJson(response);
       }
@@ -100,12 +96,12 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     return null;
   }
 
-
-
   @override
-  Future<bool?> updateJobApplication({required String hiringStageId, required String jobApplicationId}) async {
+  Future<bool?> updateJobApplication(
+      {required String hiringStageId, required String jobApplicationId}) async {
     try {
-      final response = await _dashBoardApiService.updateJobApplication(hiringStageId, jobApplicationId);
+      final response = await _dashBoardApiService.updateJobApplication(
+          hiringStageId, jobApplicationId);
       if (response != null) {
         return true;
       }
@@ -116,7 +112,7 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     }
   }
 
- @override
+  @override
   Future<bool?> updateJob({required String entityId}) async {
     try {
       final response = await _dashBoardApiService.updateJob(entityId);
@@ -130,14 +126,12 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     }
   }
 
-
-
-
-
   @override
-  Future<bool?> removeJobApplication({required String jobId,required String candidateId}) async {
+  Future<bool?> removeJobApplication(
+      {required String jobId, required String candidateId}) async {
     try {
-      final response = await _dashBoardApiService.removeJobApplication(jobId, candidateId);
+      final response =
+          await _dashBoardApiService.removeJobApplication(jobId, candidateId);
       if (response != null) {
         return true;
       }
@@ -148,11 +142,14 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     }
   }
 
-
   @override
-  Future<bool?> createCandidateReview({required String jobId,required String jobApplicationId, required int rate}) async {
+  Future<bool?> createCandidateReview(
+      {required String jobId,
+      required String jobApplicationId,
+      required int rate}) async {
     try {
-      final response = await _dashBoardApiService.createCandidateReview(jobId, jobApplicationId,rate);
+      final response = await _dashBoardApiService.createCandidateReview(
+          jobId, jobApplicationId, rate);
       if (response != null) {
         return true;
       }
@@ -164,9 +161,13 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
   }
 
   @override
-  Future<bool?> createCandidateNoteReview({required String jobId,required String jobApplicationId, required String note}) async {
+  Future<bool?> createCandidateNoteReview(
+      {required String jobId,
+      required String jobApplicationId,
+      required String note}) async {
     try {
-      final response = await _dashBoardApiService.createCandidateNoteReview(jobId, jobApplicationId,note);
+      final response = await _dashBoardApiService.createCandidateNoteReview(
+          jobId, jobApplicationId, note);
       if (response != null) {
         return true;
       }
@@ -180,7 +181,8 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
   @override
   Future<bool?> deleteCandidateNoteReview({required String entityId}) async {
     try {
-      final response = await _dashBoardApiService.deleteCandidateNoteReview(entityId);
+      final response =
+          await _dashBoardApiService.deleteCandidateNoteReview(entityId);
       if (response != null) {
         return true;
       }
@@ -190,10 +192,13 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
       return null;
     }
   }
+
   @override
-  Future<bool?> updateCandidateNoteReview({required String noteId,required String note}) async {
+  Future<bool?> updateCandidateNoteReview(
+      {required String noteId, required String note}) async {
     try {
-      final response = await _dashBoardApiService.updateCandidateNoteReview(noteId,note);
+      final response =
+          await _dashBoardApiService.updateCandidateNoteReview(noteId, note);
       if (response != null) {
         return true;
       }
@@ -204,11 +209,16 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     }
   }
 
-
   @override
-  Future<bool?> updateCandidate({required String candidateId,required String jobId,required String email,required String firstName,required String lastName}) async {
+  Future<bool?> updateCandidate(
+      {required String candidateId,
+      required String jobId,
+      required String email,
+      required String firstName,
+      required String lastName}) async {
     try {
-      final response = await _dashBoardApiService.updateCandidate(candidateId,jobId,email,firstName,lastName);
+      final response = await _dashBoardApiService.updateCandidate(
+          candidateId, jobId, email, firstName, lastName);
       if (response != null) {
         return true;
       }
@@ -220,9 +230,11 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
   }
 
   @override
-  Future<bool?> removeCandidate({required String candidateId,required String jobId}) async {
+  Future<bool?> removeCandidate(
+      {required String candidateId, required String jobId}) async {
     try {
-      final response = await _dashBoardApiService.removeCandidate(candidateId,jobId);
+      final response =
+          await _dashBoardApiService.removeCandidate(candidateId, jobId);
       if (response != null) {
         return true;
       }
@@ -233,149 +245,134 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     }
   }
 
-
-
-
   @override
-  Future<CandidateActivitiesLogs?> getCandidateActivitiesLogs({required String jobApplicationId})async {
-    try{
-      final response= await _dashBoardApiService.getCandidateActivitiesLogs(jobApplicationId);
+  Future<CandidateActivitiesLogs?> getCandidateActivitiesLogs(
+      {required String jobApplicationId}) async {
+    try {
+      final response = await _dashBoardApiService
+          .getCandidateActivitiesLogs(jobApplicationId);
 
-      if(response !=null){
+      if (response != null) {
         return CandidateActivitiesLogs.fromJson(response);
       }
       return null;
-
-    }catch(ex){
+    } catch (ex) {
       log("getCandidateActivitiesLogs : $ex");
     }
     return null;
   }
 
-
   @override
-  Future<JobApplicationPreviewModel?> getJobApplicationPreview({required String jobId,required String candidateId })async {
-
-    try{
-      final response= await _dashBoardApiService.getJobApplicationPreview(jobId,candidateId);
+  Future<JobApplicationPreviewModel?> getJobApplicationPreview(
+      {required String jobId, required String candidateId}) async {
+    try {
+      final response = await _dashBoardApiService.getJobApplicationPreview(
+          jobId, candidateId);
 
       print("getJobApplicationPreview respo:: $response");
-      if(response !=null){
+      if (response != null) {
         return JobApplicationPreviewModel.fromJson(response);
       }
-    }catch(ex){
+    } catch (ex) {
       log("getJobApplicationPreviewremo_ex : $ex");
     }
 
     return null;
   }
 
-
-
-
-
   @override
-  Future<FileSignedUrl?> getFileSignUrl({required String fileKey})async {
+  Future<FileSignedUrl?> getFileSignUrl({required String fileKey}) async {
     try {
-      final response= await _dashBoardApiService.getFileSignUrl(fileKey);
-      if(response !=null){
+      final response = await _dashBoardApiService.getFileSignUrl(fileKey);
+      if (response != null) {
         return FileSignedUrl.fromJson(response);
       }
       return null;
-
-    }catch(ex){
+    } catch (ex) {
       log("getFileSignUrl : $ex");
     }
     return null;
   }
 
-
-
-
   @override
-  Future<CandidateList?> getCandidateList({required String searchKey})async {
+  Future<CandidateList?> getCandidateList(
+      {required String searchKey,
+      required List<String> jobIds,
+      required List<String> stageIds,
+      required List<int> ratings}) async {
     try {
-      final response= await _dashBoardApiService.getCandidateList(searchKey);
+      final response = await _dashBoardApiService.getCandidateList(
+          searchKey, jobIds, stageIds, ratings);
 
-      if(response !=null){
+      if (response != null) {
         return CandidateList.fromJson(response);
       }
       return null;
-
-    }catch(ex){
+    } catch (ex) {
       log("getCandidateList : $ex");
     }
     return null;
   }
 
- @override
-  Future<FilterHiringStages?> getHiringStages()async {
+  @override
+  Future<FilterHiringStages?> getHiringStages() async {
     try {
-      final response= await _dashBoardApiService.getHiringStages();
+      final response = await _dashBoardApiService.getHiringStages();
 
-      if(response !=null){
+      if (response != null) {
         return FilterHiringStages.fromJson(response);
       }
       return null;
-
-    }catch(ex){
+    } catch (ex) {
       log("getHiringStages : $ex");
     }
     return null;
   }
 
- @override
-  Future<FilterJobsDropdown?> getJobsDropdown()async {
+  @override
+  Future<FilterJobsDropdown?> getJobsDropdown() async {
     try {
-      final response= await _dashBoardApiService.getJobsDropdown();
+      final response = await _dashBoardApiService.getJobsDropdown();
 
-      if(response !=null){
+      if (response != null) {
         return FilterJobsDropdown.fromJson(response);
       }
       return null;
-
-    }catch(ex){
+    } catch (ex) {
       log("getJobsDropdown : $ex");
     }
     return null;
   }
 
-
-
   @override
-  Future<CandidateDetails?> getCandidateDetails({required String jobApplicationId})async {
-    try{
-      final response= await _dashBoardApiService.getCandidateDetails(jobApplicationId);
-      if(response !=null){
+  Future<CandidateDetails?> getCandidateDetails(
+      {required String jobApplicationId}) async {
+    try {
+      final response =
+          await _dashBoardApiService.getCandidateDetails(jobApplicationId);
+      if (response != null) {
         return CandidateDetails.fromJson(response);
       }
       return null;
-
-    }catch(ex){
+    } catch (ex) {
       log("candidateDetails : $ex");
     }
     return null;
-
   }
 
-
   @override
-  Future<CandidateReviewModel?> getCandidateReview({required String jobApplicationId})async {
-    try{
-      final response= await _dashBoardApiService.getCandidateReview(jobApplicationId);
-      if(response !=null){
+  Future<CandidateReviewModel?> getCandidateReview(
+      {required String jobApplicationId}) async {
+    try {
+      final response =
+          await _dashBoardApiService.getCandidateReview(jobApplicationId);
+      if (response != null) {
         return CandidateReviewModel.fromJson(response);
       }
       return null;
-
-    }catch(ex){
+    } catch (ex) {
       log("getTeamNotQuery : $ex");
     }
     return null;
-
   }
-
-
-
-
 }

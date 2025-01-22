@@ -7,7 +7,6 @@ import 'package:payrun_mobile/app/modules/hr_dashboard/view/widgets/candidates/b
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../common/widget/custom_spacer.dart';
-import '../../../../../common/widget/loading_indicator.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/images.dart';
 import '../../../employee/presentation/view/widget/employee_list/search_with_filter.dart';
@@ -20,16 +19,15 @@ class AllCandidatesScreen extends GetView<HrDashBoardController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppbar(title: AppString.text_candidate.tr),
-      body: Obx(() => controller.isCandidateListLoading.isTrue
-          ? const LoadingIndicator()
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                customSpacerHeight(height: 8),
-                _buildSearchWithFilters(),
-                const BuildAllCandidates()
-              ],
-            )),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customSpacerHeight(height: 8),
+          _buildSearchWithFilters(),
+
+          const BuildAllCandidates()
+        ],
+      ),
     );
   }
 
@@ -53,8 +51,10 @@ class AllCandidatesScreen extends GetView<HrDashBoardController> {
           ),
           labelText: AppString.textFilters.tr,
           onTap: () {
-            Get.find<HrDashBoardController>().getHiringStages();
-            Get.find<HrDashBoardController>().getJobsDropdown();
+            if(controller.isFilterInfoApiCalledLoading.isFalse){
+              controller.getHiringStages();
+              controller.getJobsDropdown();
+            }
             _showFilterSelectionSheet();
           },
         ),
@@ -78,7 +78,8 @@ class AllCandidatesScreen extends GetView<HrDashBoardController> {
         onClickRouteAction: () => Get.back(canPop: false),
         userInfo: (info) {
           info.name ?? "";
-          Get.find<HrDashBoardController>().getCandidateList(info.name ?? "");
+          Get.find<HrDashBoardController>()
+              .getCandidateBySearch(searchKey: info.name ?? "");
           Get.find<HrDashBoardController>().candidateSearchController.clear();
         },
       ),

@@ -89,7 +89,7 @@ class SearchCandidateList extends StatelessWidget {
         onSearchChanged: (value) async {
           _onSearchValueChanged(value);
           if (value.isNotEmpty) {
-            await Get.find<HrDashBoardController>().getCandidateBySearch(value);
+            await Get.find<HrDashBoardController>().getCandidateBySearch(searchKey: value);
           }
         },
         searchController: Get.find<HrDashBoardController>().candidateSearchController,

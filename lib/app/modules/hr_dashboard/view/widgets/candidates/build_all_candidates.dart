@@ -17,6 +17,7 @@ import '../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../../../common/widget/loading_indicator.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../../global/view/widget/app_margin.dart';
 import '../../../controllers/hr_deshboard_controller.dart';
@@ -26,25 +27,37 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: controller.candidateList?.getCandidates?.data?.length ?? 0,
-        itemBuilder: (context, index) {
-          Data? data = controller.candidateList?.getCandidates?.data?[index];
-          return Padding(
-            padding: _getPadding(), // Use a dedicated method for padding
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildProfileImage(data ?? Data()),
-                const SizedBox(width: 16), // Padding size can be static here
-                _buildCandidateInfo(data ?? Data(), context),
-              ],
-            ),
-          );
-        },
-      ),
-    );
+    return Expanded(child: Obx(() {
+      if (controller.isCandidateBySearchLoading.isTrue) {
+        return const LoadingIndicator();
+      } else if (controller.candidateList?.getCandidates?.data?.isEmpty ??
+          false) {
+        return Center(
+          child: Text(
+            "No candidate found!",
+            style: AppStyle.normal_text_grey,
+          ),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: controller.candidateList?.getCandidates?.data?.length ?? 0,
+          itemBuilder: (context, index) {
+            Data? data = controller.candidateList?.getCandidates?.data?[index];
+            return Padding(
+              padding: _getPadding(), // Use a dedicated method for padding
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildProfileImage(data ?? Data()),
+                  const SizedBox(width: 16), // Padding size can be static here
+                  _buildCandidateInfo(data ?? Data(), context),
+                ],
+              ),
+            );
+          },
+        );
+      }
+    }));
   }
 
   EdgeInsets _getPadding() {
@@ -212,7 +225,7 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
                           .then((v) {
                         Get.back(canPop: false);
                         Get.back(canPop: false);
-                        controller.getCandidateList("");
+                        controller.getCandidateBySearch();
                       });
                     },
                     cancelAction: () => Get.back(canPop: false),

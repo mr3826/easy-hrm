@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
@@ -65,38 +66,41 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
   }
 
   Widget _buildHeader() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return buildBottomSheetHeader(
-          height: constraints.constrainHeight(76),
-          customWidget: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Spacer(flex: 2),
-              Center(
-                child: Text(
-                  AppString.textFilters.tr,
-                  style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: Dimensions.fontSizeMid,
-                  ),
-                ),
+    return buildBottomSheetHeader(
+      height: AppLayout.getHeight(89),
+      customWidget: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const Spacer(flex: 2),
+          Center(
+            child: Text(
+              AppString.textFilters.tr,
+              style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.normalTextColor,
+                fontWeight: FontWeight.w600,
+                fontSize: Dimensions.fontSizeMid,
               ),
-              const SizedBox(width: 20),
-              const Spacer(),
-              _buildResetButton(),
-              const SizedBox(width: 20),
-            ],
+            ),
           ),
-        );
-      },
+          const SizedBox(width: 20),
+          const Spacer(),
+          _buildResetButton(),
+          const SizedBox(width: 20),
+        ],
+      ),
     );
   }
 
   Widget _buildResetButton() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        var controller = Get.find<HrDashBoardController>();
+        controller.resetCheckBoxList(controller.jobPost??[]);
+        controller.resetCheckBoxList(controller.hiringStage??[]);
+        controller.resetCheckBoxList(controller.rating??[]);
+        setState(() {});
+        controller.getCandidateBySearch();
+      },
       child: Text(
         AppString.textReset.tr,
         style: AppStyle.normal_text_black.copyWith(
@@ -119,17 +123,17 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
   Widget _statusCheckBox(String title) {
     List<CheckBoxModel>? list = [];
 
-    if (title == AppString.text_rating.tr) {
+    if (title == AppString.text_job_post.tr) {
 
-      list = Get.find<HrDashBoardController>().rating;
+      list = Get.find<HrDashBoardController>().jobPost;
 
     } else if (title == AppString.text_stage.tr) {
 
       list = Get.find<HrDashBoardController>().hiringStage;
 
-    } else if (title == AppString.text_job_post.tr) {
+    } else {
 
-      list = Get.find<HrDashBoardController>().jobPost;
+      list = Get.find<HrDashBoardController>().rating;
 
     }
 
@@ -138,20 +142,9 @@ class _CandidateFilterSectionState extends State<CandidateFilterSection> {
         fontSize: Dimensions.fontSizeDefault + 1,
         color: AppColor.normalTextColor.withOpacity(0.9),
       ),
-      itemsList: list!,
+      itemsList: list ?? [],
       onSelectionChanged: (List<CheckBoxModel> selectedList) {
-
-
-
-        List<String> departmentIds = controller.getSelectedCheckBoxValues(Get.find<HrDashBoardController>().jobPost!);
-
-
-
-        // Debugging prints
-        print('IDs:::::::::: $departmentIds');
-
-
-
+        controller.getCandidateBySearch();
       },
     );
   }

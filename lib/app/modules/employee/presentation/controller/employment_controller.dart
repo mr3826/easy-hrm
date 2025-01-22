@@ -89,6 +89,14 @@ class EmploymentController extends GetxController with StateMixin {
     List<String> userStatusIds = getSelectedCheckBoxValues(userStatusList);
     List<String> attendanceIds = getSelectedCheckBoxValues(attendanceList);
 
+    print('''
+    departmentIds ; $departmentIds
+    employmentStatusIds $employmentStatusIds
+    userStatusIds $userStatusIds
+    attendanceIds $attendanceIds
+    ''');
+
+
     Map<String, Map<String, Object>> queryMap = {
       "queryData": {
         "role": ["org_employee"]

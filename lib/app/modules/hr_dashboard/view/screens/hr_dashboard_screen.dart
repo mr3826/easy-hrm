@@ -109,7 +109,7 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
         children: [
           BuildAccessLevel(
             onClick: () {
-              controller.getCandidateList("");
+              controller.getCandidateBySearch();
               Get.toNamed(Routes.ALL_CANDIDATES);
             },
             bgColor: AppColor.interViewCandidatesColor,
