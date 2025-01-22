@@ -105,3 +105,22 @@ class Department {
     name = json['name'];
   }
 }
+
+
+
+class SearchCandidate{
+  String? id;
+  String? avatarKey;
+  String? firstName;
+  String? lastName;
+  String? department;
+  SearchCandidate.name(
+      {this.id,
+      this.avatarKey,
+      this.firstName,
+      this.lastName,
+      this.department});
+
+
+
+}

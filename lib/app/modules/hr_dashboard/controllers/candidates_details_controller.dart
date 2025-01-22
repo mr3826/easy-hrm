@@ -33,6 +33,7 @@ class CandidateDetailsController extends GetxController with StateMixin {
   CandidateReviewModel? candidateReviewModel;
   FileSignedUrl? fileSignedUrl;
 
+
   Future getCandidateActivitiesLogs(String jobApplicationId) async {
     isReviewLoading(true);
     candidateActivitiesLogs = await _dasBoardDataSource
@@ -72,26 +73,18 @@ class CandidateDetailsController extends GetxController with StateMixin {
     openUrlInBrowser(fileSignedUrl?.getFileSignedUrl ?? "");
   }
 
-  Future createCandidateReview(
-      {required String jobApplicationId,
-      required String jobId,
-      required int rate}) async {
+  Future createCandidateReview({required String jobApplicationId, required String jobId, required int rate}) async {
     isCreateReviewLoading(true);
-    bool? response = await _dasBoardDataSource.createCandidateReview(
-        jobApplicationId: jobApplicationId, jobId: jobId, rate: rate);
+    bool? response = await _dasBoardDataSource.createCandidateReview(jobApplicationId: jobApplicationId, jobId: jobId, rate: rate);
     if (response == true) {
       showSuccessMessage(message: "Review create has been successfully");
     }
     isCreateReviewLoading(false);
   }
 
-  Future createCandidateNoteReview(
-      {required String jobApplicationId,
-      required String jobId,
-      required String note}) async {
+  Future createCandidateNoteReview({required String jobApplicationId, required String jobId, required String note}) async {
     isCreateReviewLoading(true);
-    bool? response = await _dasBoardDataSource.createCandidateNoteReview(
-        jobApplicationId: jobApplicationId, jobId: jobId, note: note);
+    bool? response = await _dasBoardDataSource.createCandidateNoteReview(jobApplicationId: jobApplicationId, jobId: jobId, note: note);
     if (response == true) {
       showSuccessMessage(message: "Review create has been successfully");
     }
@@ -101,8 +94,7 @@ class CandidateDetailsController extends GetxController with StateMixin {
   Future deleteCandidateNoteReview({required String entityId}) async {
     isDeletedTeamNoteLoading(true);
 
-    bool? response =
-        await _dasBoardDataSource.deleteCandidateNoteReview(entityId: entityId);
+    bool? response = await _dasBoardDataSource.deleteCandidateNoteReview(entityId: entityId);
 
     if (response == true) {
       showSuccessMessage(message: "Team note delete successfully");
@@ -110,11 +102,9 @@ class CandidateDetailsController extends GetxController with StateMixin {
     isDeletedTeamNoteLoading(false);
   }
 
-  Future updateCandidateNoteReview(
-      {required String noteId, required String note}) async {
+  Future updateCandidateNoteReview({required String noteId, required String note}) async {
     isUpdateTeamNoteLoading(true);
-    bool? response = await _dasBoardDataSource.updateCandidateNoteReview(
-        noteId: noteId, note: note);
+    bool? response = await _dasBoardDataSource.updateCandidateNoteReview(noteId: noteId, note: note);
     if (response == true) {
       showSuccessMessage(message: "Team note update successfully");
     }

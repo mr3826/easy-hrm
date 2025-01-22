@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
-import '../../../global/models/check_box.dart';
 import '../../../global/view/multi_check_box.dart';
-import '../models/candidate_list.dart';
+import '../models/candidate_list.dart'as can_list;
 import '../models/employee_overview.dart';
 import '../models/filter_hiring_stages.dart' as hir_stages;
 import '../models/filter_jobs_dropdown.dart';
@@ -33,8 +32,7 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxBool isCandidateFilterLoading = false.obs;
   RxBool isFilterInfoApiCalledLoading = false.obs;
 
-  RxBool isPasteButtonActive =
-      false.obs; // Track if the paste button should be active
+  RxBool isPasteButtonActive = false.obs; // Track if the paste button should be active
 
   RxString selectedHiringStageId = ''.obs;
 
@@ -43,9 +41,8 @@ class HrDashBoardController extends GetxController with StateMixin {
   RxString nextHiringStagesId = ''.obs;
   RxInt nextHiringStateIndex = 0.obs;
 
-  RxString selectedCandidateId = ''.obs;
-
   ///todo
+  RxString selectedCandidateId = ''.obs;
 
   final ScrollController scrollController = ScrollController();
 
@@ -54,9 +51,13 @@ class HrDashBoardController extends GetxController with StateMixin {
   TextEditingController candidateLastName = TextEditingController();
   TextEditingController candidateSearchController = TextEditingController();
 
+
+
+
+
   EmployeeOverview? employeeOverview;
   JobOpening? jobOpening;
-  CandidateList? candidateList;
+  can_list.CandidateList? candidateList;
   hir_stages.FilterHiringStages? filterHiringStages;
   FilterJobsDropdown? filterJobsDropdown;
   LeaveTimeLogSummary? leaveTimeLogSummary;
@@ -64,6 +65,14 @@ class HrDashBoardController extends GetxController with StateMixin {
 
   List<CheckBoxModel>? jobPost = [];
   List<CheckBoxModel>? hiringStage = [];
+  RxString searchQuery = ''.obs;
+
+  RxList<can_list.SearchCandidate> candidates = <can_list.SearchCandidate>[].obs;
+
+  void addItem(can_list.SearchCandidate candidate) {
+    candidates.add(candidate);
+  }
+
 
   List<CheckBoxModel>? rating = [
     CheckBoxModel(checkBoxName: 'No rating', checkBoxNameValue: '0'),
@@ -73,7 +82,6 @@ class HrDashBoardController extends GetxController with StateMixin {
     CheckBoxModel(checkBoxName: '4 stars', checkBoxNameValue: '4'),
     CheckBoxModel(checkBoxName: '5 stars', checkBoxNameValue: '5'),
   ];
-
 
 
 
@@ -245,11 +253,9 @@ class HrDashBoardController extends GetxController with StateMixin {
     isJobUpdateLoading(false);
   }
 
-  removeJobApplication(
-      {required String candidateId, required String jobId}) async {
+  removeJobApplication({required String candidateId, required String jobId}) async {
     isJobApplicationRemoveLoading(true);
-    bool? response = await _dasBoardDataSource.removeJobApplication(
-        jobId: jobId, candidateId: candidateId);
+    bool? response = await _dasBoardDataSource.removeJobApplication(jobId: jobId, candidateId: candidateId);
     if (response == true) {
       showSuccessMessage(message: "Job application has been removed!");
       getJobApplicationBoard(entityId: jobId);

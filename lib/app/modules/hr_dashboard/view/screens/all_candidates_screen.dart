@@ -75,8 +75,8 @@ class AllCandidatesScreen extends GetView<HrDashBoardController> {
     customButtonSheet(
       context: Get.context!,
       child: SearchCandidateList(
-        onClickRouteAction: () => Get.back(canPop: false),
-        userInfo: (info) {
+        onRouteAction: () => Get.back(canPop: false),
+        onUserSelected: (info) {
           info.name ?? "";
           Get.find<HrDashBoardController>()
               .getCandidateBySearch(searchKey: info.name ?? "");
