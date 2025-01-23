@@ -12,14 +12,14 @@ AppBar profileAppbar({onAction ,Color ?bgColor}) {
     backgroundColor:bgColor?? AppColor.primaryColor,
     elevation: 0,
     actions: [
-      IconButton(onPressed: onAction, icon:  const Icon(Icons.menu,color: AppColor.cardColor,)),
+      IconButton(onPressed: onAction, icon:  const Icon(Icons.menu,color: AppColor.normalTextColor,)),
     ],
     leading: Padding(
       padding: const EdgeInsets.only(top: 16.0, left: 18),
       child: Text(
         AppString.text_profile.tr,
         style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.cardColor,
+            color: AppColor.normalTextColor,
             fontWeight: FontWeight.w600,
             fontSize: Dimensions.fontSizeMid + 1),
       ),

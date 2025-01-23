@@ -139,7 +139,8 @@ class OrganisationView extends GetView<UserProfileController> {
     return CustomNetworkImage(
       fileDir: "profile_images",
       height: 22,
-      errorText: getFirstTwoLetterFromWord(Get.find<UserProfileController>()
+      errorText:
+      getInitials(Get.find<UserProfileController>()
               .organizationInfo
               ?.getUserOrganizations
               ?.data?[index]

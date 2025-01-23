@@ -250,23 +250,6 @@ String workingTimeSinceFormString(
   }
 }
 
-String getFirstTwoLetterFromWord(String input) {
-  if (input.isEmpty) {
-    return "";
-  }
-
-  // Split the input into words
-  List<String> words = input.split(" ");
-
-  // Extract the first letter of the first word
-  String firstLetter = words.isNotEmpty ? words.first[0] : '';
-
-  // Extract the first letter of the last word
-  String lastLetter = words.length > 1 ? words.last[0] : '';
-
-  // Concatenate the results
-  return '$firstLetter$lastLetter';
-}
 
 String formatLeaveDate(String inputDate) {
   // Check for empty input

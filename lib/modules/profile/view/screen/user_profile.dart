@@ -7,7 +7,6 @@ import '../../../../utils/app_color.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
-import '../../controller/employment_controller.dart';
 import '../../controller/user_profile_controller.dart';
 import '../widget/common_widget.dart';
 import '../widget/profile_tabbar_body/build_profile_leave_record.dart';
@@ -20,6 +19,7 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   @override
   Widget build(BuildContext context) {
+
     final screenHeight = MediaQuery.sizeOf(context).height;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
@@ -28,8 +28,10 @@ class ProfileScreen extends GetView<UserProfileController> {
           backgroundColor: AppColor.primaryColor,
           body: Stack(
             children: [
+
               _buildBackgroundContainer(context),
               _buildProfileImage(screenHeight, screenWidth),
+
             ],
           ),
         ),
@@ -135,8 +137,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                 const Expanded(child: BuildLeaveRecord()),
                 const Expanded(child: BuildProfileLeaveSummary())
               ])
-            else
-              const BuildProfileOverView()
+            else const BuildProfileOverView()
           ],
         ),
       ),

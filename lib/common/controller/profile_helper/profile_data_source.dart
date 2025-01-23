@@ -54,6 +54,9 @@ class ProfileDataSource {
       final response = await networkClient.graphRequest(
           queryString: getEmploymentInfoQuery, variables: {
         "orgUserId": orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID)});
+
+
+      print("getEmploymentInfo : ${response.data}");
       if (response.hasException) {
         ExceptionHelper.errorHandler(
             exception: response.exception!, methodName: "getEmploymentInfo");

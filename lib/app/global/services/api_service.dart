@@ -15,7 +15,9 @@ class ApiService {
 
   // REST API methods
   Future<dio.Response?> get(String endpoint) async {
+
     return await _restApiService.get(endpoint);
+
   }
 
   Future<dio.Response?> post(String endpoint, dynamic data) async {
@@ -26,5 +28,6 @@ class ApiService {
   Future<gql.QueryResult> gqlCall({required String queryString, Map<String, dynamic>? variables}) async {
     return await _graphQLApiService.query(queryString:queryString,variables: variables);
   }
+
 
 }

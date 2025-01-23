@@ -47,6 +47,7 @@ import '../model/user_profile.dart';
 import 'package:dio/dio.dart' as di;
 
 import '../model/user_profile_model.dart';
+import '../view/screen/hr_profile/hr_profile.dart';
 
 class UserProfileController extends GetxController with StateMixin {
   @override
@@ -157,6 +158,9 @@ class UserProfileController extends GetxController with StateMixin {
   Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
+
+
+
     change(null, status: RxStatus.success());
   }
 
@@ -169,8 +173,7 @@ class UserProfileController extends GetxController with StateMixin {
 
   Future<void> getEmploymentInfo() async {
     isEmployeeInfoLoading(true);
-    employeeWorkHistory =
-        (await _profileDataSource.getEmploymentInfo()) ?? EmployeeWorkHistory();
+    employeeWorkHistory = (await _profileDataSource.getEmploymentInfo()) ?? EmployeeWorkHistory();
     isEmployeeInfoLoading(false);
   }
 
@@ -613,3 +616,72 @@ switchOrganisationDataChange() async {
     ..getMonthlyTimelineInfoForDashboard()
     ..getUpComingInfoForDashboard();
 }
+
+
+
+
+
+
+
+
+
+//
+//
+// class hrController extends GetxController{
+//
+//
+//   Future<void> getUserProfile() async {
+//     change(null, status: RxStatus.loading());
+//     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
+//
+//     change(null, status: RxStatus.success());
+//   }
+//
+//
+// }
+//
+// class emController extends GetxController{
+//
+//   Future<void> getUserProfile() async {
+//     change(null, status: RxStatus.loading());
+//     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
+//
+//     change(null, status: RxStatus.success());
+//   }
+//
+//
+// }
+//
+//
+//
+//
+// class emRoubaseController extends GetxController{
+//
+//   Future<void> getUserProfile(id) async {
+//     change(null, status: RxStatus.loading());
+//     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
+//
+//     change(null, status: RxStatus.success());
+//   }
+//
+//
+//
+//
+// }
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
