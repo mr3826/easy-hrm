@@ -39,7 +39,7 @@ class _SelectedLeaveTypeState extends State<SelectedLeaveType> {
   Widget build(BuildContext context) {
     return Container(
       padding:
-          EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10), vertical: 2),
+      EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10), vertical: 2),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8)),

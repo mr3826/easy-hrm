@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../view/widget/leave_record/leave_record_details/leave_record_details.dart';
+import '../../../../view/widget/leave_record/leave_record_details/more_leave_record_details.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../enum.dart';
-import '../../../../../../../../modules/leave/presentation/view/widget/leave_record_details_view.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import '../../../../controller/leave_controller.dart';
-import '../../leave_record/leave_record_details/more_leave_record_details.dart';
 import '../../leave_record/leave_record_list.dart';
 import 'calendar_widget.dart';
 
@@ -102,7 +102,7 @@ class TaskCard extends StatelessWidget {
                         style: AppStyle.normal_text_black.copyWith(
                             color: AppColor.secondaryColor,
                             fontSize:
-                                MediaQuery.of(context).size.width * 0.040),
+                            MediaQuery.of(context).size.width * 0.040),
                       ),
                       Text(
                         task.designation ?? "",

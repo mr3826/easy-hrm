@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/app/modules/leave_hr/presentation/view/widget/leave_record/leave_record_details/see_documents/see_document_details.dart';
+import '../../../../controller/hr_update_leave_controller.dart';
+import '../../../../controller/leave_controller.dart';
+import '../../../../model/leave_details_by_id.dart';
+import '../../../../view/widget/leave_record/leave_record_details/see_documents/see_document_details.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_app_button.dart';
@@ -18,12 +21,9 @@ import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
-import '../../../../controller/hr_update_leave_controller.dart';
-import '../../../../controller/leave_controller.dart';
-import '../../../../model/leave_details_by_id.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
 
-/// A widgets that displays detailed information for a specific leave record,
+/// A widget that displays detailed information for a specific leave record,
 /// including options to approve, reject, edit, and view attached documents.
 /// The actions displayed depend on the leave record's status.
 ///
@@ -36,85 +36,85 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
     var leaveController = Get.put(LeaveController());
     return Obx(() => controller.isHrLeaveDetailsByLoading.isTrue
         ? const Center(
-            child: CupertinoActivityIndicator(
-            radius: 15,
-            color: AppColor.primaryColor,
-          ))
+        child: CupertinoActivityIndicator(
+          radius: 15,
+          color: AppColor.primaryColor,
+        ))
         : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// Header with employee details
-              _buildHeader(
-                imageUrl: controller.leaveDetailsById?.getLeaveDetailsById
-                    ?.organizationUser?.profile?.image,
-                name:
-                    "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
-                    "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
-                details:
-                    "${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.name ?? ""}: ${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.type} - ${"${DateFormat("dd MMM yy").format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.startDate ?? ""))} - ${DateFormat("dd MMM yy").format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.endDate ?? ""))}"}",
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ///Conditional actions based on application status
-                      if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name ||
-                          controller.leaveDetailsById?.getLeaveDetailsById
-                                  ?.status ==
-                              LeaveStatus.approved.name) ...[
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// Header with employee details
+        _buildHeader(
+          imageUrl: controller.leaveDetailsById?.getLeaveDetailsById
+              ?.organizationUser?.profile?.image,
+          name:
+          "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
+              "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
+          details:
+          "${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.name ?? ""}: ${controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.type} - ${"${DateFormat("dd MMM yy").format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.startDate ?? ""))} - ${DateFormat("dd MMM yy").format(DateTime.parse(controller.leaveDetailsById?.getLeaveDetailsById?.endDate ?? ""))}"}",
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ///Conditional actions based on application status
+                if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name ||
+                    controller.leaveDetailsById?.getLeaveDetailsById
+                        ?.status ==
+                        LeaveStatus.approved.name) ...[
 
-                        if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name) ...[
-                          Obx(
-                            () => Get.find<HrLeaveController>()
-                                    .updateLeaveLoader
-                                    .isTrue
-                                ? const Center(
-                                    child: CupertinoActivityIndicator())
-                                : _buildActionOption(AppString.textApprove.tr,
-                                    () {
-                                    Get.find<HrLeaveController>().updateLeave(
-                                        leaveId: leaveId ?? "",
-                                        status: "approved");
-                                  }),
-                          ),
-                          _divider(),
-                        ],
-                        _buildCancel(context, leaveId),
-
-                        ///reject || cancel build action
-                        _divider(),
-                        if (controller.leaveDetailsById?.getLeaveDetailsById
-                                ?.status ==
-                            LeaveStatus.pending.name) ...[
-                          _buildActionOption(AppString.text_edit.tr, () {
-                            _showEditLeaveDetails();
+                  if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name) ...[
+                    Obx(
+                          () => Get.find<HrLeaveController>()
+                          .updateLeaveLoader
+                          .isTrue
+                          ? const Center(
+                          child: CupertinoActivityIndicator())
+                          : _buildActionOption(AppString.textApprove.tr,
+                              () {
+                            Get.find<HrLeaveController>().updateLeave(
+                                leaveId: leaveId ?? "",
+                                status: "approved");
                           }),
-                          _divider(),
-                        ],
-                      ],
-                      _buildActionOption(
-                          AppString.textSeeDocument.tr, _showBuildAttachedFile),
+                    ),
+                    _divider(),
+                  ],
+                  _buildCancel(context, leaveId),
 
-                      _divider(),
+                  ///reject || cancel build action
+                  _divider(),
+                  if (controller.leaveDetailsById?.getLeaveDetailsById
+                      ?.status ==
+                      LeaveStatus.pending.name) ...[
+                    _buildActionOption(AppString.text_edit.tr, () {
+                      _showEditLeaveDetails();
+                    }),
+                    _divider(),
+                  ],
+                ],
+                _buildActionOption(
+                    AppString.textSeeDocument.tr, _showBuildAttachedFile),
 
-                      _buildActionOption(AppString.textViewLeaveRecord.tr, () {
-                        controller.getLeaveRecord(
-                            startDate: controller.leaveDetailsById
-                                ?.getLeaveDetailsById?.startDate,
-                            endDate: controller
-                                .leaveDetailsById?.getLeaveDetailsById?.endDate,
-                            assignedLeaveId: controller.leaveDetailsById
-                                ?.getLeaveDetailsById?.organizationUser?.id);
-                        leaveController.tabLength(1);
-                        Get.back(canPop: false);
-                      }),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ));
+                _divider(),
+
+                _buildActionOption(AppString.textViewLeaveRecord.tr, () {
+                  controller.getLeaveRecord(
+                      startDate: controller.leaveDetailsById
+                          ?.getLeaveDetailsById?.startDate,
+                      endDate: controller
+                          .leaveDetailsById?.getLeaveDetailsById?.endDate,
+                      assignedLeaveId: controller.leaveDetailsById
+                          ?.getLeaveDetailsById?.organizationUser?.id);
+                  leaveController.tabLength(1);
+                  Get.back(canPop: false);
+                }),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ));
   }
 
   /// Builds an action button for various leave options like Approve, Reject, Edit.
@@ -222,7 +222,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
             showRejectDialog(
                 context,
                 controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails
-                        ?.first.date ??
+                    ?.first.date ??
                     "",
                 leaveId: leaveId);
           }),
@@ -236,7 +236,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
       showRejectDialog(
           context,
           controller.leaveDetailsById?.getLeaveDetailsById?.leaveDetails?.first
-                  .date ??
+              .date ??
               "",
           leaveId: leaveId);
     });
@@ -266,19 +266,19 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
   void _updateDateFromResponse() {
     controller.getAvailableLeaveType();
     controller.selectedEmployeeImgKey.value = controller.leaveDetailsById
-            ?.getLeaveDetailsById?.organizationUser?.profile?.image ??
+        ?.getLeaveDetailsById?.organizationUser?.profile?.image ??
         "";
     controller.selectedEmployeeInfo.value =
-        "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
+    "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
         "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}";
     controller.leaveTypeId =
         controller.leaveDetailsById?.getLeaveDetailsById?.leaveType?.id ?? "";
     controller.leaveId = controller.leaveDetailsById?.getLeaveDetailsById
-            ?.leaveDetails?.first.leaveId ??
+        ?.leaveDetails?.first.leaveId ??
         "";
     controller.calculateAllowanceOfLeave.value = controller.leaveDetailsById
-            ?.getLeaveDetailsById?.leaveType?.calculateAllowanceBy
-            .toString() ??
+        ?.getLeaveDetailsById?.leaveType?.calculateAllowanceBy
+        .toString() ??
         "";
     controller.storageForUpload.filePath.value = "";
     controller.isFileUploadedSuccessfully(false);
@@ -294,29 +294,29 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
           controller.leaveDetailsById?.getLeaveDetailsById?.files?.first.id ??
               "";
       controller.fileSize = controller
-              .leaveDetailsById?.getLeaveDetailsById?.files?.first.size
-              .toString() ??
+          .leaveDetailsById?.getLeaveDetailsById?.files?.first.size
+          .toString() ??
           "";
     }
 
     Get.find<LeaveController>().selectedStatusIndex.value =
-        controller.leaveDetailsById?.getLeaveDetailsById?.status == "pending"
-            ? 0
-            : 1;
+    controller.leaveDetailsById?.getLeaveDetailsById?.status == "pending"
+        ? 0
+        : 1;
 
     Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
         .format(DateTime.parse(
-            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
-                DateTime.now().toString()));
+        controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
+            DateTime.now().toString()));
     Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
         .format(DateTime.parse(
-            controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
-                DateTime.now().toString()));
+        controller.leaveDetailsById?.getLeaveDetailsById?.startDate ??
+            DateTime.now().toString()));
 
     Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
         .format(DateTime.parse(
-            controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
-                DateTime.now().toString()));
+        controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
+            DateTime.now().toString()));
     Get.find<DateTimePickerController>().outDate.value =
         DateFormat('yyyy-MM-dd').format(DateTime.parse(
             controller.leaveDetailsById?.getLeaveDetailsById?.endDate ??
@@ -388,9 +388,9 @@ void showRejectDialog(BuildContext context, String leaveData,
     confirmButtonColor: AppColor.errorColor,
     confirmButtonText: AppString.confirmText.tr,
     actionButtonWidget: Obx(() =>
-        Get.find<HrLeaveController>().updateLeaveLoader.isTrue
-            ? const Center(child: CupertinoActivityIndicator())
-            : _buildDialogActions(leaveId)),
+    Get.find<HrLeaveController>().updateLeaveLoader.isTrue
+        ? const Center(child: CupertinoActivityIndicator())
+        : _buildDialogActions(leaveId)),
   );
 }
 
@@ -465,5 +465,4 @@ Widget _buildDialogActions(String leaveId) {
     ),
   );
 }
-
 

@@ -27,9 +27,9 @@ class SeeDocumentDetails extends GetView<HrLeaveController> {
           ),
           Center(
               child: Text(
-            "No document!",
-            style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
-          )),
+                "No document!",
+                style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+              )),
         ],
       );
     }
@@ -48,7 +48,7 @@ class SeeDocumentDetails extends GetView<HrLeaveController> {
                 return _buildDocumentCard(
                   fileName: file.name ?? "Unknown File",
                   date: controller.leaveDetailsById?.getLeaveDetailsById
-                          ?.leaveDetails?.first.date ??
+                      ?.leaveDetails?.first.date ??
                       "",
                   imgUrl: file.key ?? "",
                   context: context,
@@ -86,9 +86,9 @@ class SeeDocumentDetails extends GetView<HrLeaveController> {
   /// Builds each document card displaying document name, date, and download icon.
   Widget _buildDocumentCard(
       {required String date,
-      required String fileName,
-      required String imgUrl,
-      context}) {
+        required String fileName,
+        required String imgUrl,
+        context}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: SizedBox(

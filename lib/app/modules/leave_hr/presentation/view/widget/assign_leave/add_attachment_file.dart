@@ -33,16 +33,16 @@ class AttachmentFile extends StatelessWidget {
       children: [
         dottedCircleStyle(
             child: GestureDetector(onTap: () {
-          if (isAssignLeave == true) {
-            Get.find<HrLeaveController>().storageForUpload.pickFile(controller: Get.find<HrLeaveController>());
-          } else {
-            Get.find<HrUpdateLeaveController>().storageForUpload.pickFile(controller: Get.find<HrUpdateLeaveController>());
-          }
-        }, child: Obx(() {
-          return isAssignLeave == true
-              ? _documentLayout()
-              : _updateDocumentLayout();
-        }))),
+              if (isAssignLeave == true) {
+                Get.find<HrLeaveController>().storageForUpload.pickFile(controller: Get.find<HrLeaveController>());
+              } else {
+                Get.find<HrUpdateLeaveController>().storageForUpload.pickFile(controller: Get.find<HrUpdateLeaveController>());
+              }
+            }, child: Obx(() {
+              return isAssignLeave == true
+                  ? _documentLayout()
+                  : _updateDocumentLayout();
+            }))),
         customSpacerHeight(height: 8),
         if (getLeaveDetailsById?.files?.isNotEmpty ?? false)
           _pathNameText(getLeaveDetailsById?.files?.first.key.toString() ?? ""),
@@ -55,15 +55,15 @@ class AttachmentFile extends StatelessWidget {
         Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
       /// file image
       return Get.find<HrLeaveController>()
-              .storageForUpload
-              .filePath
-              .endsWith(".pdf")
+          .storageForUpload
+          .filePath
+          .endsWith(".pdf")
           ? _replaceFileLayout()
           : _selectedImageViewLayout(
-              Get.find<HrLeaveController>().storageForUpload.filePath.value);
+          Get.find<HrLeaveController>().storageForUpload.filePath.value);
     } else if (Get.find<HrLeaveController>()
-            .isFileUploadedSuccessfully
-            .isFalse &&
+        .isFileUploadedSuccessfully
+        .isFalse &&
         Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<HrLeaveController>().storageForUpload.filePath.isEmpty) {
         if (getLeaveDetailsById?.files != null) {
@@ -86,20 +86,20 @@ class AttachmentFile extends StatelessWidget {
         if (Get.find<HrLeaveController>().isUploadPolicyLoading.isFalse) {
           return const Center(
               child: CupertinoActivityIndicator(
-            color: AppColor.primaryColor,
-          ));
+                color: AppColor.primaryColor,
+              ));
         } else {
           return const Center(
               child: CupertinoActivityIndicator(
-            color: AppColor.primaryColor,
-          ));
+                color: AppColor.primaryColor,
+              ));
         }
       }
     } else {
       return const Center(
           child: CupertinoActivityIndicator(
-        color: AppColor.primaryColor,
-      ));
+            color: AppColor.primaryColor,
+          ));
     }
   }
 
@@ -135,10 +135,10 @@ class AttachmentFile extends StatelessWidget {
         return firstFileKey.endsWith(".pdf")
             ? _replaceFileLayout()
             : CustomNetworkImage(
-                imgUrlKey: firstFileKey,
-                isDocumentLayout: true,
-                errorText: "",
-              );
+          imgUrlKey: firstFileKey,
+          isDocumentLayout: true,
+          errorText: "",
+        );
       }
       // Show loading indicator for broken image
       return const Center(
@@ -221,25 +221,25 @@ _emptyBox() {
 
 _pathNameText(String remoteUrl) {
   return remoteUrl.isEmpty ||
-          Get.find<HrLeaveController>()
-              .storageForUpload
-              .filePath
-              .value
-              .isNotEmpty
+      Get.find<HrLeaveController>()
+          .storageForUpload
+          .filePath
+          .value
+          .isNotEmpty
       ? Obx(() => Text(
-          Get.find<HrLeaveController>()
-              .storageForUpload
-              .filePath
-              .value
-              .split('/')
-              .last,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.primaryColor,
-              fontSize: Dimensions.fontSizeDefault - 2)))
+      Get.find<HrLeaveController>()
+          .storageForUpload
+          .filePath
+          .value
+          .split('/')
+          .last,
+      style: AppStyle.mid_large_text.copyWith(
+          color: AppColor.primaryColor,
+          fontSize: Dimensions.fontSizeDefault - 2)))
       : Text(remoteUrl,
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.primaryColor,
-              fontSize: Dimensions.fontSizeDefault - 2));
+      style: AppStyle.mid_large_text.copyWith(
+          color: AppColor.primaryColor,
+          fontSize: Dimensions.fontSizeDefault - 2));
 }
 
 _selectedImageViewLayout(String path) {
@@ -254,4 +254,3 @@ _selectedImageViewLayout(String path) {
     ),
   );
 }
-

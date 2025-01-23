@@ -32,11 +32,11 @@ class VerticalDottedDivider extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
             rows,
-            (index) => Row(
+                (index) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                 dotsPerRow,
-                (dotIndex) => Container(
+                    (dotIndex) => Container(
                   width: dashWidth,
                   height: dashHeight,
                   color: Colors.grey.withOpacity(0.3),
@@ -144,4 +144,3 @@ class OverlappingAvatars extends StatelessWidget {
     );
   }
 }
-

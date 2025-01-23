@@ -58,7 +58,7 @@ class CalendarController {
         break;
 
       case "6": //Custom
-        // Handle custom date selection if needed
+      // Handle custom date selection if needed
         start = DateTime.now(); // Placeholder for custom start
         end = DateTime.now(); // Placeholder for custom end
         break;

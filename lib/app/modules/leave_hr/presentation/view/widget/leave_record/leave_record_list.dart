@@ -21,85 +21,85 @@ class LeaveRecordList extends GetView<HrLeaveController> {
   Widget build(BuildContext context) {
     return Obx(() => controller.isLoadingLeaveRecord.isTrue
         ? const Center(
-            child: CupertinoActivityIndicator(
-            color: AppColor.primaryColor,
-            radius: 15,
-          ))
+        child: CupertinoActivityIndicator(
+          color: AppColor.primaryColor,
+          radius: 15,
+        ))
         : controller.leaveRecorde?.getLeaveRequests?.isEmpty ?? true
-            ? Center(
-                child: Text(
-                "No leave record!",
-                style: AppStyle.normal_text_black
-                    .copyWith(color: AppColor.hintColor),
-              ))
-            : Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RefreshIndicator(
-                    onRefresh: _refreshScreen,
-                    child: ListView.builder(
-                      itemCount:
-                          controller.leaveRecorde?.getLeaveRequests?.length ??
-                              0,
-                      itemBuilder: (context, index) {
-                        var data =
-                            controller.leaveRecorde?.getLeaveRequests?[index];
+        ? Center(
+        child: Text(
+          "No leave record!",
+          style: AppStyle.normal_text_black
+              .copyWith(color: AppColor.hintColor),
+        ))
+        : Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: RefreshIndicator(
+          onRefresh: _refreshScreen,
+          child: ListView.builder(
+            itemCount:
+            controller.leaveRecorde?.getLeaveRequests?.length ??
+                0,
+            itemBuilder: (context, index) {
+              var data =
+              controller.leaveRecorde?.getLeaveRequests?[index];
 
-                        if (data == null) {
-                          return const SizedBox.shrink();
-                        }
+              if (data == null) {
+                return const SizedBox.shrink();
+              }
 
-                        return SizedBox(
-                          width: double.infinity,
-                          child: Card(
-                            elevation: 0,
-                            shape: roundedRectangleBorder,
-                            color: AppColor.leaveRecordCardColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildLeaveCard(
-                                    LeaveRecordDetailsModel(
-                                      employeeName:
-                                          "${data.organizationUser?.profile?.firstName ?? "No added yet"} ${data.organizationUser?.profile?.lastName ?? ""}",
-                                      applicationStatus:
-                                          data.status ?? "Unknown",
-                                      designation:
-                                          data.organizationUser?.designation ??
-                                              "No designation",
-                                      typeOfLeave:
-                                          data.leaveType?.name ?? "N/A",
-                                      leaveStatus:
-                                          data.leaveType?.type ?? "N/A",
-                                      imgUrl: data.organizationUser?.profile
-                                              ?.image ??
-                                          "",
-                                      leaveDate: _formatLeaveDate(
-                                          data.startDate, data.endDate),
-                                      leaveDuration: getLeaveDuration(
-                                        data.leaveDetails?.first.leaveSeconds
-                                                ?.toString() ??
-                                            "0",
-                                        data.leaveType?.numberOfDays ?? "0",
-                                      ),
-                                      applicationDate:
-                                          data.leaveType?.applicationDate ??
-                                              "N/A",
-                                    ),
-                                    data.leaveDetails?.first.leaveId ?? "",
-                                  ),
-                                ],
-                              ),
+              return SizedBox(
+                width: double.infinity,
+                child: Card(
+                  elevation: 0,
+                  shape: roundedRectangleBorder,
+                  color: AppColor.leaveRecordCardColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildLeaveCard(
+                          LeaveRecordDetailsModel(
+                            employeeName:
+                            "${data.organizationUser?.profile?.firstName ?? "No added yet"} ${data.organizationUser?.profile?.lastName ?? ""}",
+                            applicationStatus:
+                            data.status ?? "Unknown",
+                            designation:
+                            data.organizationUser?.designation ??
+                                "No designation",
+                            typeOfLeave:
+                            data.leaveType?.name ?? "N/A",
+                            leaveStatus:
+                            data.leaveType?.type ?? "N/A",
+                            imgUrl: data.organizationUser?.profile
+                                ?.image ??
+                                "",
+                            leaveDate: _formatLeaveDate(
+                                data.startDate, data.endDate),
+                            leaveDuration: getLeaveDuration(
+                              data.leaveDetails?.first.leaveSeconds
+                                  ?.toString() ??
+                                  "0",
+                              data.leaveType?.numberOfDays ?? "0",
                             ),
+                            applicationDate:
+                            data.leaveType?.applicationDate ??
+                                "N/A",
                           ),
-                        );
-                      },
+                          data.leaveDetails?.first.leaveId ?? "",
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ));
+              );
+            },
+          ),
+        ),
+      ),
+    ));
   }
 
   Widget _buildLeaveCard(
