@@ -14,6 +14,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 20),
