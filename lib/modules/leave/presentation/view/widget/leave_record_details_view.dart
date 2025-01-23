@@ -10,7 +10,7 @@ import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/enum.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
@@ -27,11 +27,12 @@ import '../../../../../utils/utils.dart';
 
 class LeaveRecordDetails extends StatelessWidget {
   dynamic status;
+
   final GetLeaveRecords? leaveRecords;
   dynamic leaveDate;
   dynamic leaveWeekday;
 
-  LeaveRecordDetails({super.key, this.status, this.leaveRecords});
+  LeaveRecordDetails({super.key, this.status, this.leaveRecords, required String leaveId});
 
   @override
   Widget build(BuildContext context) {
@@ -154,15 +155,15 @@ class LeaveRecordDetails extends StatelessWidget {
               fontSize: Dimensions.fontSizeDefault + 2),
         ),
         onPressed: () {
-          customDialog(
+          showCustomAlertDialog(
               context: context,
-              saveBtnAction: () {
+              onConfirm: () {
                 if (leaveRecords?.id != null) {
                   Get.find<LeaveScreenController>()
                       .removeLeave(leaveId: leaveRecords!.id!);
                 }
               },
-              childForSaveBtn: Obx(() => Get.find<LeaveScreenController>()
+              confirmButtonChild: Obx(() => Get.find<LeaveScreenController>()
                       .cancelLeaveLoader
                       .isTrue
                   ? const Center(
@@ -174,13 +175,14 @@ class LeaveRecordDetails extends StatelessWidget {
                       AppString.text_remove.tr,
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     )),
-              icon: Icons.delete_outline_outlined,
+              iconData: Icons.delete_outline_outlined,
               titleText: AppString.text_remove_leave.tr,
-              subText: AppString.text_sure_you_want_to_deleted_this_leave.tr,
-              drcText: "",
-              iconBgColor: AppColor.errorColorLight,
-              btnBgColor: AppColor.errorColorLight,
-              btnText: AppString.text_remove.tr);
+              descriptionText:
+                  AppString.text_sure_you_want_to_deleted_this_leave.tr,
+              extraInfoText: "",
+              iconBackgroundColor: AppColor.errorColorLight,
+              confirmButtonColor: AppColor.errorColorLight,
+              confirmButtonText: AppString.text_remove.tr);
         },
         buttonColor: AppColor.errorColorLight,
         isButtonExpanded: false,
@@ -195,21 +197,21 @@ class LeaveRecordDetails extends StatelessWidget {
           cancelText: AppString.text_cancel.tr,
           cancelTextColor: AppColor.cardColor,
           cancelAction: () {
-            customDialog(
+            showCustomAlertDialog(
               context: context,
-              saveBtnAction: () {
+              onConfirm: () {
                 Get.find<LeaveScreenController>()
                     .cancelLeave(leaveId: leaveRecords?.id ?? "");
               },
-              childForSaveBtn: Obx(() => _cancelLeaveProgress()),
-              drcText: "",
+              confirmButtonChild: Obx(() => _cancelLeaveProgress()),
+              extraInfoText: "",
               iconWidget: customSvgImage(
                   imageUrl: Images.cancelLeave, height: 60, width: 60),
               titleText: AppString.cancelLeaveText.tr,
-              subText: AppString.cancelLeaveNotificationText.tr,
-              iconBgColor: AppColor.cardColor,
-              btnBgColor: AppColor.hintColor,
-              btnText: AppString.confirmText.tr,
+              descriptionText: AppString.cancelLeaveNotificationText.tr,
+              iconBackgroundColor: AppColor.cardColor,
+              confirmButtonColor: AppColor.hintColor,
+              confirmButtonText: AppString.confirmText.tr,
             );
           },
           buttonText: AppString.text_edit.tr,
@@ -258,21 +260,21 @@ class LeaveRecordDetails extends StatelessWidget {
       child: CustomAppButton(
         buttonColor: AppColor.hintColor,
         onPressed: () {
-          customDialog(
+          showCustomAlertDialog(
             context: context,
-            saveBtnAction: () {
+            onConfirm: () {
               Get.find<LeaveScreenController>()
                   .cancelLeave(leaveId: leaveRecords?.id ?? "");
             },
-            childForSaveBtn: Obx(() => _cancelLeaveProgress()),
-            drcText: "",
+            confirmButtonChild: Obx(() => _cancelLeaveProgress()),
+            extraInfoText: "",
             iconWidget: customSvgImage(
                 imageUrl: Images.cancelLeave, height: 60, width: 60),
             titleText: AppString.cancelLeaveText.tr,
-            subText: AppString.cancelLeaveNotificationText.tr,
-            iconBgColor: AppColor.cardColor,
-            btnBgColor: AppColor.hintColor,
-            btnText: AppString.confirmText.tr,
+            descriptionText: AppString.cancelLeaveNotificationText.tr,
+            iconBackgroundColor: AppColor.cardColor,
+            confirmButtonColor: AppColor.hintColor,
+            confirmButtonText: AppString.confirmText.tr,
           );
         },
         buttonText: Text(
@@ -314,5 +316,3 @@ class LeaveRecordDetails extends StatelessWidget {
     }
   }
 }
-
-

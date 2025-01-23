@@ -9,7 +9,7 @@ import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
-import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../profile/controller/user_profile_controller.dart';
 import '../../controller/dashbpard_controller.dart';
 import 'dashboad_widget.dart';

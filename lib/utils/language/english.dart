@@ -72,7 +72,7 @@ Map<String, String> eng = {
     AppString.text_current_password: "Current password",
     AppString.text_daily_summary: "Daily summary",
     AppString.text_date: "Date",
-    AppString.text_date_of_application: "Date of application:",
+    AppString.text_date_of_application: "Date of application",
     AppString.text_day: "day",
     AppString.text_days: "days",
     AppString.text_deparmtnet: "Department",

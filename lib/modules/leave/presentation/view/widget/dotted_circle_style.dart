@@ -7,8 +7,7 @@ import '../../../../../utils/dimensions.dart';
 Widget dottedCircleStyle({required child, bool? isErrorOccurred}) {
   return DottedBorder(
     radius: Radius.circular(Dimensions.radiusMid),
-    color:
-        isErrorOccurred == true ? AppColor.errorColorLight : AppColor.disableColor,
+    color: isErrorOccurred == true ? AppColor.errorColorLight : AppColor.disableColor,
     strokeCap: StrokeCap.square,
     dashPattern: const [8, 6],
     strokeWidth: AppLayout.getWidth(2),

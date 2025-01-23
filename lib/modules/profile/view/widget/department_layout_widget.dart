@@ -5,7 +5,7 @@ import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
@@ -118,11 +118,11 @@ _workingShiftLayout(context) {
           children: [
             Text(
               Get.find<UserProfileController>()
-                      .userDetails
-                      ?.getOrganizationUserDetails
-                      ?.department
-                      ?.workShift
-                      ?.name ??
+                  .userDetails
+                  ?.getOrganizationUserDetails
+                  ?.department
+                  ?.workShift
+                  ?.name ??
                   "",
               style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.normalTextColor,
@@ -143,6 +143,8 @@ _workingShiftLayout(context) {
     ),
   );
 }
+
+
 
 _verticalDivider() {
   return Container(
@@ -169,6 +171,7 @@ _workShiftDetailsLayout() {
     return schedule.startTime == workSchedules[0].startTime &&
         schedule.endTime == workSchedules[0].endTime;
   });
+
 
   return Row(
     children: [

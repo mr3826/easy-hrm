@@ -15,8 +15,7 @@ import '../../domain/leave_type.dart';
 import 'file_upload_controller.dart';
 
 class ApplyLeaveController extends GetxController with StateMixin {
-  final LeaveRemoteDataSource _leaveRemoteDataSource =
-      Get.find<LeaveRemoteDataSource>();
+  final LeaveRemoteDataSource _leaveRemoteDataSource = Get.find<LeaveRemoteDataSource>();
 
   LeaveTypeDropdown? leaveTypeDropdown;
 
@@ -64,6 +63,7 @@ class ApplyLeaveController extends GetxController with StateMixin {
       "leave_type_id": leaveId,
       "files": _prepareFileData()
     };
+
 
     // Sending the GraphQL request using NetworkClient
     final bool response = await _leaveRemoteDataSource.applyLeave(inputData);

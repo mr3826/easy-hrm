@@ -16,7 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -67,28 +67,23 @@ class UpdateLeave extends StatelessWidget {
 
   void _updateDateFromResponse() {
     Get.find<UpDateLeaveController>().leaveId = leaveRecords?.id ?? '';
-    Get.find<UpDateLeaveController>().leaveTypeId =
-        leaveRecords?.leaveType?.leaveId ?? "";
-    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
-        .format(DateTime.parse(
-            leaveRecords?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
-        .format(DateTime.parse(
-            leaveRecords?.startDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
-        .format(
-            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
-    Get.find<DateTimePickerController>().outDate.value =
-        DateFormat('yyyy-MM-dd').format(
-            DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
+    Get.find<UpDateLeaveController>().leaveTypeId = leaveRecords?.leaveType?.leaveId ?? "";
+
+    Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()));
+
+
+
+    Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
+    Get.find<DateTimePickerController>().outDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(leaveRecords?.endDate ?? DateTime.now().toString()));
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
+
     leaveNoteController.text = leaveRecords?.description ?? "";
-    Get.find<UpDateLeaveController>().isNoteRequired.value =
-        leaveRecords?.leaveType?.isAddNoteRequired ?? false;
-    Get.find<UpDateLeaveController>().isDocumentRequired.value =
-        leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
+    Get.find<UpDateLeaveController>().isNoteRequired.value = leaveRecords?.leaveType?.isAddNoteRequired ?? false;
+
+    Get.find<UpDateLeaveController>().isDocumentRequired.value = leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
   }
 }
 
@@ -111,8 +106,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      customTitleText(
-                          text: AppString.text_leave_name.tr, isRequired: true),
+                      customTitleText(text: AppString.text_leave_name.tr, isRequired: true),
                       customSpacerHeight(height: 8),
                       UpdateLeaveDropdown(
                           dropdownValue:
@@ -120,17 +114,23 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
                       customSpacerHeight(height: 20),
-                      customTitleText(
-                          text: AppString.text_from.tr, isRequired: true),
+                      customTitleText(text: AppString.text_from.tr, isRequired: true),
                       customSpacerHeight(height: 8),
+
                       const CustomTimePickerInTime(),
+
                       customSpacerHeight(height: 20),
-                      customTitleText(
-                          text: AppString.text_to.tr, isRequired: true),
+
+                      customTitleText(text: AppString.text_to.tr, isRequired: true),
+
                       customSpacerHeight(height: 8),
+
                       const CustomTimePickerOutTime(),
+
                       customSpacerHeight(height: 12),
-                      customSpacerHeight(height: 18),
+
+                      customSpacerHeight(height: 20),
+
                       Obx(() => Row(
                             children: [
                               customTitleText(text: AppString.text_note.tr),
@@ -308,10 +308,10 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
   }
 
   void _updateLeaveMethod() {
-    if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
-        .difference(DateTime.parse(
+    if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
+
       Get.find<UpDateLeaveController>().updateLeave(
         leaveId: leaveRecords?.id ?? "",
         leaveTypeId: Get.find<UpDateLeaveController>().leaveTypeId,

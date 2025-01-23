@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -71,12 +71,6 @@ class IndividualTimeLayout extends StatelessWidget {
     Color itemColor = index % 2 == 0
         ? AppColor.primaryColor.withOpacity(0.03)
         : Colors.transparent;
-
-    print(" date : ${Get.find<TimelineSummaryController>()
-        .timelogDetailsByMonth
-        ?.getDailyTimeEntries
-        ?.data?[index]
-        .entryDay  ??""} balance ::: ${Get.find<TimelineSummaryController>().timelogDetailsByMonth?.getDailyTimeEntries?.data?[index].balance ??""}");
     return Padding(
       padding: marginLayout,
       child: Card(

@@ -25,9 +25,12 @@ class CustomTimePickerInTime extends StatelessWidget {
     _setDefaultData();
     return Row(
       children: [
+
         _datePicker(context),
         customSpacerWidth(width: 10),
         _timePicker(context),
+
+
       ],
     );
   }

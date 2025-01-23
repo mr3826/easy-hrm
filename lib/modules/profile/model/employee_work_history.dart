@@ -13,16 +13,19 @@ class EmployeeWorkHistory {
 }
 
 class GetOrganizationUserHistory {
+  String? joinDate;
   List<DesignationHistories>? designationHistories;
   List<EmploymentHistories>? employmentHistories;
   List<DeptHistories>? deptHistories;
 
   GetOrganizationUserHistory(
       {this.designationHistories,
+        this.joinDate,
         this.employmentHistories,
         this.deptHistories});
 
   GetOrganizationUserHistory.fromJson(Map<String, dynamic> json) {
+    joinDate = json['join_date'];
     if (json['designation_histories'] != null) {
       designationHistories = <DesignationHistories>[];
       json['designation_histories'].forEach((v) {

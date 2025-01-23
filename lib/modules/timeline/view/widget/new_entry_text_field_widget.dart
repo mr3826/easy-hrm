@@ -9,7 +9,7 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
@@ -25,7 +25,7 @@ import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../../leave/presentation/view/widget/status_btn_widget.dart';
 import '../../../leave/presentation/view/widget/timmer_text_field_dob.dart';
-import '../../../starting/view/splash_screen.dart';
+import '../../../../app/modules/splash/view/splash_screen.dart';
 import 'duration_time_widget.dart';
 
 class TimeLogEntryTextField extends StatelessWidget {
@@ -78,9 +78,9 @@ class TimeLogEntryTextField extends StatelessWidget {
                           style: const TextStyle(
                               color: Colors.white, fontSize: 16)),
                       onPressed: () {
-                        customDialog(
+                        showCustomAlertDialog(
                             context: context,
-                            saveBtnAction: () async {
+                            onConfirm: () async {
                               Get.find<TimelineController>()
                                   .removeTimeEntry(
                                       timeLogId: Get.find<TimelineController>()
@@ -91,16 +91,16 @@ class TimeLogEntryTextField extends StatelessWidget {
                                 }
                               });
                             },
-                            icon: CupertinoIcons.delete,
+                            iconData: CupertinoIcons.delete,
                             titleText: AppString.text_remove_timelog.tr,
-                            subText: AppString
+                            descriptionText: AppString
                                 .text_sure_you_want_to_delete_timelog.tr,
-                            iconBgColor: AppColor.errorColorLight,
-                            btnBgColor: AppColor.errorColorLight,
-                            btnText: "",
-                            drcText: "",
-                            drcFontSize: Dimensions.fontSizeDefault,
-                            childForSaveBtn: Obx(() => removeTextLayout()));
+                            iconBackgroundColor: AppColor.errorColorLight,
+                            confirmButtonColor: AppColor.errorColorLight,
+                            confirmButtonText: "",
+                            extraInfoText: "",
+                            descriptionFontSize: Dimensions.fontSizeDefault,
+                            confirmButtonChild: Obx(() => removeTextLayout()));
                       },
                       buttonColor: AppColor.errorColorLight)
                   : Obx(

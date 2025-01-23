@@ -23,18 +23,16 @@ class ProfileScreen extends GetView<UserProfileController> {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    Get.put(EmploymentController());
-
     return controller.obx(
-        (sate) => Scaffold(
-              backgroundColor: AppColor.primaryColor,
-              body: Stack(
-                children: [
-                  _buildBackgroundContainer(context),
-                  _buildProfileImage(screenHeight, screenWidth),
-                ],
-              ),
-            ),
+            (sate) => Scaffold(
+          backgroundColor: AppColor.primaryColor,
+          body: Stack(
+            children: [
+              _buildBackgroundContainer(context),
+              _buildProfileImage(screenHeight, screenWidth),
+            ],
+          ),
+        ),
         onLoading: const LoadingIndicator());
   }
 
@@ -125,7 +123,7 @@ class ProfileScreen extends GetView<UserProfileController> {
             customSpacerHeight(height: 50),
 
             /// User info section
-            userInfoLayout(context),
+            userInfoLayout(),
             customSpacerHeight(height: 30),
             monthlyStatusLayout(),
 
@@ -135,7 +133,7 @@ class ProfileScreen extends GetView<UserProfileController> {
               _buildProfileTabBar([
                 const BuildProfileOverView(),
                 const Expanded(child: BuildLeaveRecord()),
-                 const Expanded(child: BuildProfileLeaveSummary())
+                const Expanded(child: BuildProfileLeaveSummary())
               ])
             else
               const BuildProfileOverView()
@@ -198,7 +196,7 @@ class ProfileScreen extends GetView<UserProfileController> {
                 }
               },
               child: Obx(
-                () => Center(
+                    () => Center(
                   child: Column(
                     children: [
                       const Spacer(),

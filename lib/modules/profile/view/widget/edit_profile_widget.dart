@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../utils/app_style.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
@@ -139,6 +140,9 @@ Map<String, dynamic>? _addVariables() {
           ?.department
           ?.id ??
       "";
+
+  inputData["image"] =
+      "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
   // Set image path if there is an uploaded profile image
   _addInputProfileImage(inputData);
 
@@ -273,9 +277,12 @@ Widget userTextFieldLayout(
               controller: editBioController,
               hintText: hintText,
               onChanged: onChanged,
+              maxLength: 150,
             )
           : CustomInputField(
               hint: hintText,
+              hintStyle: AppStyle.normal_text_grey
+                  .copyWith(fontWeight: FontWeight.w500),
               controller: controller,
               textInputType: textInputType,
               validator: validator,

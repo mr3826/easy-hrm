@@ -21,8 +21,8 @@ class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;
   final GetLeaveRecords? leaveRecords;
 
-  const AddAttachmentFile(
-      {this.isFromApplyLeave = false, super.key, this.leaveRecords});
+  const AddAttachmentFile({this.isFromApplyLeave = false, super.key, this.leaveRecords});
+
 
   @override
   Widget build(BuildContext context) {

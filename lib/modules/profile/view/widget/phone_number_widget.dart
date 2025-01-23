@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../app/modules/leave_hr/presentation/view/widget/assign_leave/assign_leave.dart';
 import '../../controller/update_profile_controller.dart';
 
 class PersonalPhoneNumber extends StatefulWidget {
@@ -31,9 +31,6 @@ class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
         print("onInputChanged:: ${number.phoneNumber}");
         Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value =
             number.phoneNumber.toString();
-      },
-      onInputValidated: (bool value) {
-        print(value);
       },
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.DIALOG,

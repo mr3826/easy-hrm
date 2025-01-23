@@ -1,5 +1,9 @@
 class AppString {
-  AppString._();
+  static final AppString _instance = AppString._initials();
+
+  factory AppString() => _instance;
+
+  AppString._initials();
 
   //storage key here
 
@@ -13,7 +17,61 @@ class AppString {
   static const String LOGGED_IN = "loggedIn";
   static const String IOS_DEVICE_TOKEN = "ios_device_token";
 
-  // Apps string here
+  ///String for Employee module v2
+  static const String textViewProfile = "View profile";
+  static const String notAddedText = "No designation";
+  static const String textTerminate = "Terminate";
+  static const String textTerminateDate = "Terminate date";
+  static const String textReasonNote = "Reason note";
+  static const String textSearch = "Search";
+  static const String textFilters = "Filters";
+  static const String textEmployees = "Employees";
+ static const String textLeaveYear = "Leave year";
+  static const String textEmployeeStatus = "Employees status";
+  static const String textUserStatus = "User status";
+  static const String textJoiningDate = "Joining date";
+  static const String textTodayAttendance = "Today's attendance";
+  static const String textAddAllowance = "Add allowance";
+  static const String textAllowanceBalance = "Allowance balance";
+  static const String textApplicationBalance = "Application balance";
+  static const String textMaxConsecutiveBalance = "Max consecutive days";
+  static const String textLeaveAllowance = "Leave allowance";
+  static const String textRecentSearch = "Recent search";
+  static const String textClearAll = "Clear all";
+  static const String textReset = "Reset";
+  static const String textTerminated = "Terminated";
+  static const String textResigned = "Resigned";
+  static const String textOverview = "Overview";
+  static const String textLeaveSummary = "Leave Summary";
+  static const String textTerminating = "Terminating";
+  static const String textEditEmployee = "Edit Employee";
+  static const String textSearchAndSelect = "Search & select";
+  static const String textThisActionWillRemoveEtc =
+      "This action will remove this worker's employment with your company. Are you certain you want to terminate this employee?";
+
+  ///String for leave module v2
+
+  static const String textCalendar = "Calender";
+  static const String textLeaveRecord = "Leave recodes";
+  static const String textClear = "Clear";
+  static const String textSearchAndSelectEmployee = "Search & select employee";
+  static const String textSearchEmployee = "Search employee";
+  static const String textApprove = "Approve";
+  static const String textReject = "Reject";
+  static const String textSeeDocument = "See document";
+  static const String textAttachedFiles = "Attached files";
+  static const String textViewLeaveRecord = "View leave recod";
+  static const String textCancelled = "Cancelled";
+  static const String textType = "Type";
+  static const String textLeaveType = "Leave type";
+  static const String textAssignLeave = "Assign leave";
+
+  static const String textRejectLeaveRequestDated =
+      "Rejecting leave request dated";
+  static const String textThisWillRejectTheSelectedLeaveEtc =
+      "This will reject the selected leave request for this requester.Do you still want to reject this leave request?";
+
+  /// Apps string here
 
   static const String addedALeaveText = "has added your leave on";
   static const String addedATimelogText = "has added your time log on";
@@ -22,33 +80,46 @@ class AppString {
   static const String approveATimelogText = "has approved your time log on";
   static const String approvedALeaveText = "has approved your leave on";
   static const String cancelALeaveText = "has cancelled your leave on";
-  static const String cancelLeaveNotificationText = "Sure you want to cancel this leave request? If you cancel this leave request, you can apply a new request again.";
+  static const String cancelLeaveNotificationText =
+      "Sure you want to cancel this leave request? If you cancel this leave request, you can apply a new request again.";
   static const String cancelLeaveText = "Cancel leave";
-  static const String changeOrganizationWarningMessage = "Are you sure want change your organization";
+  static const String changeOrganizationWarningMessage =
+      "Are you sure want change your organization";
   static const String confirmText = "Confirm";
-  static const String dateDifferenceIssueMessage = "In time must be before out time";
+  static const String dateDifferenceIssueMessage =
+      "In time must be before out time";
   static const String departmentHeaDText = "Department head";
   static const String error_text = "Something went wrong! Please try again";
   static const String forgotPassword = "Forgot password?";
   static const String incorrect_user_or_password = "Incorrect user or password";
-  static const String inputTimeInvalidMessage = "End time must be after start time";
-  static const String invalidVerificationCode = "Invalid verification code provided";
+  static const String inputTimeInvalidMessage =
+      "End time must be after start time";
+  static const String invalidVerificationCode =
+      "Invalid verification code provided";
   static const String leaveAddedSuccessMessage = "Leave Added Successfully";
   static const String leaveApprover = "Time log approver";
-  static const String leaveCanceledSuccessMessage = "Leave canceled successfully";
-  static const String leaveRemovedSuccessMessage = "Leave removed successfully";
-  static const String leaveUpdatedSuccessMessage = "Leave updated successfully";
+  static const String leaveCanceledSuccessMessage =
+      "Leave has been canceled successfully";
+  static const String leaveRemovedSuccessMessage =
+      "leave has been removed successfully";
+  static const String leaveUpdatedSuccessMessage =
+      "Leave has been updated successfully.";
   static const String newUserJoined = "A new user has joined";
   static const String no_event_found_text = "No events for today!";
-  static const String no_internet_subtitle_text = "Make sure your Wi-Fi or cellular data is turned on and then try again";
+  static const String no_internet_subtitle_text = "Make sure your Wi-Fi or cellular data is turned on";
   static const String no_internet_title_text = "No internet!!";
-  static const String organizationNotFoundMessage = "Organization not found. Try Another organization";
+  static const String organizationNotFoundMessage =
+      "Organization not found. Try Another organization";
   static const String password_not_matched = "Password not matched";
-  static const String passwordChangeSuccessfulMessage = "Change password has been Successfully ";
+  static const String passwordChangeSuccessfulMessage =
+      "Change password has been Successfully ";
   static const String pendingALeaveText = "has marked your leave as pending on";
-  static const String pendingATimelogText = "has marked your time log as pending on";
-  static const String please_insert_a_valid_email_address = "Please insert a valid email address";
-  static const String profile_update_successfully_text = "Profile updated successfully";
+  static const String pendingATimelogText =
+      "has marked your time log as pending on";
+  static const String please_insert_a_valid_email_address =
+      "Please insert a valid email address";
+  static const String profile_update_successfully_text =
+      "Profile updated successfully";
   static const String rejectALeaveText = "has rejected your leave on";
   static const String rejectedATimelogText = "has reject your time log on";
   static const String removeDepartment = "has removed you from";
@@ -64,7 +135,8 @@ class AppString {
   static const String text_apply_leve = "Apply leave";
   static const String text_approved = "Approved";
   static const String text_are_you_sure = "Are you sure?";
-  static const String text_are_you_sure_want_to_exit_from_app = "Are you sure you want to exit from App";
+  static const String text_are_you_sure_want_to_exit_from_app =
+      "Are you sure you want to exit from App";
   static const String text_available = "Available";
   static const String text_back = "Back";
   static const String text_back_to_login = "Back to login";
@@ -84,7 +156,7 @@ class AppString {
   static const String text_current_password = "Current password";
   static const String text_daily_summary = "Daily summary";
   static const String text_date = "Date";
-  static const String text_date_of_application = "Date of application:";
+  static const String text_date_of_application = "Date of application";
   static const String text_day = "day";
   static const String text_days = "days";
   static const String text_deparmtnet = "Department";
@@ -95,23 +167,28 @@ class AppString {
   static const String text_do_not_receive_otp = "Don't receive code? ";
   static const String text_document = "Document";
   static const String text_done_of_save = "Done and Save";
-  static const String text_dont_not_worry = "Don’t worry! It happens. Please enter the email address associated with your account.";
+  static const String text_dont_not_worry =
+      "Don’t worry! It happens. Please enter the email address associated with your account.";
   static const String text_duration = "Duration";
   static const String text_no_data_found = "No data found!";
   static const String text_edit = "Edit";
   static const String text_edit_profile = "Edit profile";
   static const String text_email = "Email";
-  static const String text_email_change_request_is_in_pendding_etc = "Email change request is in pending. Need verification.";
+  static const String text_email_change_request_is_in_pendding_etc =
+      "Email change request is in pending. Need verification.";
   static const String text_emergency_phone = "Emergency phone";
   static const String text_employment = "Employment status";
   static const String text_end = "End";
   static const String text_enter_code = "Enter your code";
-  static const String text_enter_new_email_address = "Enter your new email address";
+  static const String text_enter_new_email_address =
+      "Enter your new email address";
   static const String text_event = "Events";
   static const String text_feature_unavailbe = "Feature unavailable";
   static const String text_file_upload_file = "File upload file";
-  static const String text_file_upload_update_successfully = "File upload update successfully";
-  static const String text_first_and_last_field_is_requured = "First and last name field is required!";
+  static const String text_file_upload_update_successfully =
+      "File upload update successfully";
+  static const String text_first_and_last_field_is_requured =
+      "First and last name field is required!";
   static const String text_first_half = "First Half";
   static const String text_first_name = "First name";
   static const String text_forgot_password = "Forgot password?";
@@ -120,15 +197,18 @@ class AppString {
   static const String text_full_day = "Full day";
   static const String text_hide = "Hide";
   static const String text_history = "History";
-  static const String text_if_you_do_this_etc = "If you do this, you cannot turn back";
-  static const String text_jpeg_format_not_support = "The file is too big! Maximum allowed 5MB";
+  static const String text_if_you_do_this_etc =
+      "If you do this, you cannot turn back";
+  static const String text_jpeg_format_not_support =
+      "The file is too big! Maximum allowed 5MB";
   static const String text_jpeg_jpg_png_etc = "pdf, image or doc file";
   static const String text_language = "Language: ";
   static const String text_last_half = "Last half";
   static const String text_last_name = "Last name";
   static const String text_leave = "Leave";
   static const String text_leave_balance = "Leave balance";
-  static const String text_leave_management_etc = "Leave management is one of the key features of Payrun. You can customise your leave anytime. You can take multiple days' leave as well as hourly leave.";
+  static const String text_leave_management_etc =
+      "Leave management is one of the key features of Payrun. You can customise your leave anytime. You can take multiple days' leave as well as hourly leave.";
   static const String text_leave_name = "Leave name";
   static const String text_leave_records = "Leave record";
   static const String text_log_out = "Log out";
@@ -145,10 +225,13 @@ class AppString {
   static const String text_no_available_leave = "No available leave";
   static const String text_note = "Note";
   static const String text_notication = "Notifications";
+  static const String text_employees = "Employess";
   static const String text_notications = "Notifications";
   static const String text_ok = "Ok";
-  static const String text_org_linked_with_your = "organization linked with your";
-  static const String text_organisations_linked_with_your = "organizations linked with your";
+  static const String text_org_linked_with_your =
+      "organization linked with your";
+  static const String text_organisations_linked_with_your =
+      "organizations linked with your";
   static const String text_organization = "Organization";
   static const String text_organization_name = "Subdomain name";
   static const String text_paid_leave = "Paid leave";
@@ -164,7 +247,8 @@ class AppString {
   static const String text_employee_Id = "Employee ID";
 
   static const String text_please_valid_file = "Please selected valid document";
-  static const String text_please_valid_photo = "Please selected valid profile image";
+  static const String text_please_valid_photo =
+      "Please selected valid profile image";
   static const String text_profile = "Profile";
   static const String text_progress = "Progress";
   static const String text_project_or_task = "Project or task";
@@ -195,7 +279,8 @@ class AppString {
   static const String text_set_end_time = "Set end time";
   static const String text_set_new_password = "Set new password";
   static const String text_set_start_time = "Set start time";
-  static const String text_setup_your_code_etc = "Setup your new password now. Minimum 8 letter or digits";
+  static const String text_setup_your_code_etc =
+      "Setup your new password now. Minimum 8 letter or digits";
   static const String text_show = "Show";
   static const String text_sign_in = "Sign in";
   static const String text_skip = "Skip";
@@ -204,15 +289,23 @@ class AppString {
   static const String text_status = "Status";
   static const String text_stitch_org = "Switch organizations";
   static const String text_submit = "Submit";
-  static const String text_sure_you_want_to_delete_timelog = "Sure you want to delete this time log? If you delete this timelog you can’t recover it again.";
-  static const String text_sure_you_want_to_deleted_this_leave = "Sure you want to deleted this leave?";
-  static const String text_sure_you_want_to_deleted_this_log = "Sure you want to deleted this log?";
-  static const String text_sure_you_want_to_deleted_this_photo = "Sure you want to deleted this photo?";
+  static const String text_sure_you_want_to_delete_timelog =
+      "Sure you want to delete this time log? If you delete this timelog you can’t recover it again.";
+  static const String text_sure_you_want_to_deleted_this_leave =
+      "Sure you want to deleted this leave?";
+  static const String text_sure_you_want_to_deleted_this_log =
+      "Sure you want to deleted this log?";
+  static const String text_sure_you_want_to_deleted_this_photo =
+      "Sure you want to deleted this photo?";
   static const String text_swich_organisation = "Switch organization";
-  static const String text_tab_to_view_leave_record = "Tab to view leave record";
-  static const String text_tab_to_view_timelog_summary = "Tab to view timelog summary";
-  static const String text_there_is_not_etc = "There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ";
-  static const String text_this_functionality_might_etc = "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information.";
+  static const String text_tab_to_view_leave_record =
+      "Tab to view leave record";
+  static const String text_tab_to_view_timelog_summary =
+      "Tab to view timelog summary";
+  static const String text_there_is_not_etc =
+      "There is no need for several apps for different organizations. You can manage all of your organizations from a single app! ";
+  static const String text_this_functionality_might_etc =
+      "This functionality might be reserved for administrators or require a specific plan. Please contact your administrator for more information.";
   static const String text_time_line = "Timeline";
   static const String text_time_log_details = "Timelog details";
   static const String text_time_log_summary = "Timelog summary";
@@ -228,52 +321,66 @@ class AppString {
   static const String text_upcoming_leave = "Upcoming leave";
   static const String text_update_your_profile = "Update your profile photo";
   static const String text_upload = "Upload ";
-  static const String text_upload_a_photo_undar_2mb = "Upload a photo under 2 MB";
+  static const String text_upload_a_photo_undar_2mb =
+      "Upload a photo under 2 MB";
   static const String text_upload_image = "Upload Image";
   static const String text_variable_time = "Variable time";
   static const String text_verify = "Verify";
   static const String text_verify_email = "Verify email";
-  static const String text_verify_your_email_address = "Verify your email address";
+  static const String text_verify_your_email_address =
+      "Verify your email address";
   static const String text_view_less = "View less";
   static const String text_view_more = "View more";
   static const String text_welcome = "Welcome";
-  static const String text_with_the_help_etc = "With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.";
+  static const String text_with_the_help_etc =
+      "With the help of timelog, you can easily keep track of your work on your phone. You can update your timelog anytime from anywhere.";
   static const String text_working_day = "Working day";
   static const String text_yes = "Yes";
   static const String text_yesterday = "Yesterday";
   static const String text_you_have = "You have";
-  static const String text_you_have_seen_all_notification = "There is no notification to show right now. We'll notify you when there is something new!";
-  static const String text_your_password_has_been_etc = "Your password has been changed successfully. Use your";
+  static const String text_you_have_seen_all_notification =
+      "There is no notification to show right now. We'll notify you when there is something new!";
+  static const String text_your_password_has_been_etc =
+      "Your password has been changed successfully. Use your";
   static const String textDay = "day";
   static const String textDays = "days";
   static const String textHiringManager = "Hiring manager";
   static const String textHiringTeam = "Hiring team";
   static const String textManager = "Manager";
+
   static const String textOn = "on";
+  static const String textYou = "You";
   static const String textPresent = "Present";
   static const String textTimelogApprover = "Time log approver";
-  static const String textWeDidNotEtc = "We did not find anything to show here!";
-  static const String the_confirm_password_field_is_required = "The confirm password field is required.";
-  static const String the_email_field_is_required = "The email field is required.";
-  static const String the_first_name_field_is_required = "The first name field is required.";
-  static const String the_last_name_field_is_required = "The last name field is required.";
-  static const String the_new_password_field_is_required = "The new password field is required.";
-  static const String the_password_field_is_required = "The password field is required.";
+  static const String textWeDidNotEtc =
+      "We did not find anything to show here!";
+  static const String the_confirm_password_field_is_required =
+      "The confirm password field is required.";
+  static const String the_email_field_is_required =
+      "The email field is required.";
+  static const String the_first_name_field_is_required =
+      "The first name field is required.";
+  static const String the_last_name_field_is_required =
+      "The last name field is required.";
+  static const String the_new_password_field_is_required =
+      "The new password field is required.";
+  static const String the_password_field_is_required =
+      "The password field is required.";
   static const String timelogApprover = "Time log approver";
-  static const String timerRemovedSuccessfulMessage = "Timer Removed Successfully";
+  static const String timerRemovedSuccessfulMessage =
+      "Timer Removed Successfully";
   static const String timerSavedSuccessfulMessage = "Timer Saved Successfully";
-  static const String timerStartedSuccessfulMessage = "Timer Started Successfully";
+  static const String timerStartedSuccessfulMessage =
+      "Timer Started Successfully";
   static const String updateALeaveText = "has updated your leave on";
   static const String validOtpText = "Please provide a valid OTP";
   static const String workShiftText = "Work Shift";
   static const String yourOrganizationText = "Your organization";
-  static const String text_we_have_sent_a_verification_etc = "text_we_have_sent_a_verification_etc";
+  static const String text_we_have_sent_a_verification_etc =
+      "text_we_have_sent_a_verification_etc";
   static String text_time_entry = "Add time entry";
-  static String textAddAllowance = "Add allowance";
-  static String textLeaveAllowance = "Leave allowance";
-  static String textAllowanceBalance = "Leave allowance balance";
-  static String textApplicationBalance = "Application balance";
-  static String textMaxConsecutiveBalance = "Max consecutive days";
-  static String textCancelled = "Cancelled";
+  static String text_employee_type = "Employee & type";
+  static String text_time_sheet = "Time sheet";
 
+  static String pleaseProvideATerminationType='Please select a termination type';
 }

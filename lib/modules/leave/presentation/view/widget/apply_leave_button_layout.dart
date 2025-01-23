@@ -7,7 +7,7 @@ import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_in_tim
 import 'package:payrun_mobile/common/widget/input_note.dart';
 import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_time.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/apply_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';
@@ -45,14 +45,17 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
                       customSpacerHeight(height: 20),
-                      customTitleText(
-                          text: AppString.text_from.tr, isRequired: true),
+
+                      customTitleText(text: AppString.text_from.tr, isRequired: true),
+
                       customSpacerHeight(height: 8),
+
                       Get.find<LeaveScreenController>().startTime != null
                           ? CustomTimePickerInTime(
                               inTime: "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
                             )
                           : const CustomTimePickerInTime(),
+
                       customSpacerHeight(height: 20),
                       customTitleText(
                           text: AppString.text_to.tr, isRequired: true),
@@ -78,6 +81,8 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
                           )),
                       customSpacerHeight(height: 8),
                       _noteTextField(),
+                      customSpacerHeight(height: 20),
+
                       Obx(() => Row(
                             children: [
                               customTitleText(text: AppString.text_document.tr),

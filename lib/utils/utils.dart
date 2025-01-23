@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/domain/error_model.dart';
 import 'package:intl/intl.dart';
 
+import '../common/widget/custom_svg_image.dart';
 import '../common/widget/error_message.dart';
 
 //global items here
@@ -209,10 +210,8 @@ String getTimeDifference(String startTimeString, String endTimeString) {
   return "${duration.inHours} h : ${duration.inMinutes % 60} m";
 }
 
-
-String workingTimeSinceFormString(String startDateString, String? endDateString) {
-
-
+String workingTimeSinceFormString(
+    String startDateString, String? endDateString) {
   // Parse the start date
   DateTime startDate = DateTime.tryParse(startDateString) ?? DateTime.now();
 
@@ -220,8 +219,6 @@ String workingTimeSinceFormString(String startDateString, String? endDateString)
   DateTime endDate = (endDateString == null || endDateString.isEmpty)
       ? DateTime.now()
       : DateTime.tryParse(endDateString) ?? DateTime.now();
-
-
 
   // Calculate the initial differences
   int years = endDate.year - startDate.year;
@@ -253,8 +250,6 @@ String workingTimeSinceFormString(String startDateString, String? endDateString)
   }
 }
 
-
-
 String getFirstTwoLetterFromWord(String input) {
   if (input.isEmpty) {
     return "";
@@ -272,7 +267,6 @@ String getFirstTwoLetterFromWord(String input) {
   // Concatenate the results
   return '$firstLetter$lastLetter';
 }
-
 
 String formatLeaveDate(String inputDate) {
   // Check for empty input
@@ -419,4 +413,62 @@ handleUnknownError(di.Response response) {
   if (response.data == null) {
     return showErrorMessage(message: "Something went wrong. Please try again.");
   }
+}
+
+/// Formats a given date string into the specified format.
+/// Defaults to "dd MMM yy" if no format is provided.
+/// Returns an empty string if the input date is invalid.
+String formatDate({required String date, String? format}) {
+  if (date.isEmpty) return "";
+  final String dateFormat = format ?? "dd MMM yy";
+  try {
+    // Parse the input string to a DateTime object
+    DateTime dateTime = DateTime.parse(date);
+    // Format the DateTime object to the desired format
+    String formattedDate = DateFormat(dateFormat).format(dateTime);
+
+    return formattedDate;
+  } catch (e) {
+    log(e.toString());
+    return "";
+  }
+}
+
+getIconAccordingToLeaveType(String? leaveName) {
+  switch (leaveName) {
+    case "Vacationing":
+      return customSvgImage(imageUrl: Images.leaveImage7);
+    case "Paternity":
+      return customSvgImage(imageUrl: Images.leaveImage6);
+    case "Maternity":
+      return customSvgImage(imageUrl: Images.leaveImage5);
+    case "School closed":
+      return customSvgImage(imageUrl: Images.leaveImage4);
+    case "Children-minder illness":
+      return customSvgImage(imageUrl: Images.leaveImage3);
+    case "Children illness":
+      return customSvgImage(imageUrl: Images.leaveImage2);
+    case "Doctor declaration":
+      return customSvgImage(imageUrl: Images.leaveImage1);
+    case "Self declaration":
+      return customSvgImage(imageUrl: Images.leaveImage);
+    default:
+      return customSvgImage(imageUrl: Images.leaveImage8);
+  }
+}
+
+String getInitials(String fullName) {
+  if (fullName.isEmpty) return "Er";
+
+  // Split the name into words
+  final words = fullName.trim().split(' ');
+
+  // Get the first letter of the first word
+  final firstInitial =
+      words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
+
+  // Get the first letter of the last word
+  final lastInitial = words.last.isNotEmpty ? words.last[0].toUpperCase() : '';
+  // Combine the initials
+  return '$firstInitial$lastInitial';
 }

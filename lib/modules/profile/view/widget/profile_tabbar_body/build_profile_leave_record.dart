@@ -9,12 +9,12 @@ import 'package:payrun_mobile/modules/profile/controller/user_profile_controller
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_dotted_border.dart';
 import '../../../../../common/widget/custom_drawer.dart';
 import '../../../../../common/widget/status_button_helper.dart';
 import '../../../../../utils/utils.dart';
-import '../../../../auth/presentation/view/otp_screen.dart';
 import '../../../../leave/presentation/view/widget/leave_record_details_view.dart';
 
 class BuildLeaveRecord extends GetView<UserProfileController> {
@@ -173,7 +173,7 @@ class BuildLeaveRecord extends GetView<UserProfileController> {
         context,
         LeaveRecordDetails(
           status: leaveRecord.status ?? "",
-          leaveRecords: leaveRecord,
+          leaveRecords: leaveRecord, leaveId: '',
         ),
       ),
       child: Card(

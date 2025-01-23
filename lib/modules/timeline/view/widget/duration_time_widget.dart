@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -142,7 +142,7 @@ Widget _statusBtn({required Color textColor, required String? text}) {
   return CustomStatusButton(
     textColor: textColor,
     bgColor: AppColor.cardColor,
-    text: text,
+    text: text??"",
   );
 }
 

@@ -28,7 +28,7 @@ class TimeLineCalendar extends StatelessWidget {
         : SizedBox(
             height: MediaQuery.of(context).size.height + 2500,
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 14, right: 14),
+              padding: const EdgeInsets.only(left: 14,right: 14),
               child: DayView(
                 showVerticalLine: false,
                 minDay: DateTime(2021),
@@ -41,6 +41,7 @@ class TimeLineCalendar extends StatelessWidget {
                   leftIconVisible: false,
                   headerMargin: EdgeInsets.zero,
                   headerPadding: EdgeInsets.zero,
+                  decoration: BoxDecoration(color: Colors.transparent)
                 ),
                 heightPerMinute: 2,
                 scrollPhysics: const NeverScrollableScrollPhysics(),
@@ -315,7 +316,7 @@ class TimeLineCalendar extends StatelessWidget {
                                       ? true
                                       : false,
                                   type: type.substring(1, type.length - 1)),
-                            ),
+                            ), leaveId: '',
                           ),
                   );
                 },

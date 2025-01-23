@@ -21,15 +21,19 @@ class LeaveRemoteDataSource {
 
   Future<List<GetLeaveRecordsForApp>?> getLeaveRecordList(
       {required int limit, required int offset, String? orgId}) async {
+    Map<String, Map<String, Object?>> variables = {
+      "optionData": {"limit": limit, "offset": offset}
+    };
+
+    if (orgId != null) {
+      variables["queryData"] = {"assigned_to": orgId};
+    }
+
     try {
-      final response = await networkClient
-          .graphRequest(queryString: getLeaveRecordsDataQuery, variables: {
-        "queryData": {
-          "assigned_to":
-              orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
-          "optionData": {"limit": limit, "offset": offset}
-        }
-      });
+      final response = await networkClient.graphRequest(
+        queryString: getLeaveRecordsDataQuery,
+        variables: variables,
+      );
 
       if (response.hasException) {
         ExceptionHelper.errorHandler(
@@ -116,7 +120,7 @@ class LeaveRemoteDataSource {
   Future<bool> cancelLeave({required String leaveId}) async {
     try {
       final response = await networkClient
-          .graphRequest(queryString: cancelLeaveQuery, variables: {
+          .graphRequest(queryString: updatedLeaveQuery, variables: {
         "inputData": {"leave_id": leaveId, "status": "cancelled"}
       });
 

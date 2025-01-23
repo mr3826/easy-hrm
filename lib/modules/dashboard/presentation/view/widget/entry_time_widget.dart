@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/common/controller/user_info_controller.dart';
+import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_dialog.dart';
@@ -13,8 +13,8 @@ import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
-import '../../../../auth/presentation/controller/signin_controller.dart';
-import '../../../../auth/presentation/view/otp_screen.dart';
+import '../../../../../app/modules/auth/controller/signin_controller.dart';
+import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../timeline/controller/timer_controller.dart';
 
 
@@ -151,22 +151,22 @@ void _checkIfSubscription() {
 }
 
 alertForSubscriptionRequired() {
-  return customDialog(
+  return showCustomAlertDialog(
       context: Get.context!,
-      saveBtnAction: () {},
-      icon: Icons.logout,
-      horizontalPadding: 18.0,
-      verticalPadding: 16.0,
-      btnPadding: 0.0,
+      onConfirm: () {},
+      iconData: Icons.logout,
+      paddingHorizontal: 18.0,
+      paddingVertical: 16.0,
+      buttonSpacing: 0.0,
       iconWidget: customSvgImage(imageUrl: Images.alert, height: 56, width: 56),
       titleText: AppString.text_feature_unavailbe.tr,
-      subText: AppString.text_this_functionality_might_etc.tr,
-      iconBgColor: AppColor.errorColorLight,
-      btnBgColor: AppColor.errorColorLight,
-      btnText: AppString.text_log_out.tr,
-      drcText: "",
-      drcFontSize: Dimensions.fontSizeDefault - 2,
-      btnWidget: GestureDetector(
+      descriptionText: AppString.text_this_functionality_might_etc.tr,
+      iconBackgroundColor: AppColor.errorColorLight,
+      confirmButtonColor: AppColor.errorColorLight,
+      confirmButtonText: AppString.text_log_out.tr,
+      extraInfoText: "",
+      descriptionFontSize: Dimensions.fontSizeDefault - 2,
+      actionButtonWidget: GestureDetector(
         onTap: () => Get.back(),
         child: SizedBox(
           height: 50,

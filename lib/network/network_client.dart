@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../common/domain/error_model.dart';
 import '../common/widget/error_message.dart';
-import '../modules/auth/domain/signin_res.dart';
+import '../app/modules/auth/models/signin_res.dart';
 import '../utils/utils.dart';
 import 'custom_interceptor.dart';
 

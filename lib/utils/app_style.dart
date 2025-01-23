@@ -5,7 +5,11 @@ import 'app_layout.dart';
 
 
 class AppStyle {
-  AppStyle._();
+  static final AppStyle _instance= AppStyle._initial();
+
+  factory AppStyle()=>_instance;
+
+  AppStyle._initial();
 
   static TextStyle title_text = TextStyle(
       fontSize: AppLayout.getWidth(Dimensions.paddingExtraLarge),
@@ -26,12 +30,12 @@ class AppStyle {
       color: AppColor.cardColor,
       fontWeight: FontWeight.w500,
       fontFamily: "Poppins"
-   );
+  );
 
   static TextStyle small_text_grey = TextStyle(
-    fontSize: AppLayout.getWidth(12),
-    color: Colors.grey,
-    fontWeight: FontWeight.w500,
+      fontSize: AppLayout.getWidth(12),
+      color: Colors.grey,
+      fontWeight: FontWeight.w500,
       fontFamily: "Poppins"
   );
   static TextStyle small_text_black = TextStyle(
@@ -39,7 +43,7 @@ class AppStyle {
       color: AppColor.normalTextColor,
       fontWeight: FontWeight.w500,
       fontFamily: "Poppins"
-      );
+  );
 
   static TextStyle normal_text = TextStyle(
       fontSize: AppLayout.getWidth(Dimensions.fontSizeDefault),
@@ -80,12 +84,12 @@ class AppStyle {
       color: Colors.white,
       fontWeight: FontWeight.w500,
       fontFamily: "Poppins");
-  static TextStyle extra_large_text_black= TextStyle(
+  static TextStyle extra_large_text_black = TextStyle(
       fontSize: AppLayout.getWidth(Dimensions.fontSizeLarge),
       color: Colors.black,
       fontWeight: FontWeight.w500,
       fontFamily: "Poppins");
   static BoxDecoration ContainerStyle = BoxDecoration(
-  borderRadius: BorderRadius.circular(Dimensions.radiusMid,),);
+    borderRadius: BorderRadius.circular(Dimensions.radiusMid,),);
 
 }

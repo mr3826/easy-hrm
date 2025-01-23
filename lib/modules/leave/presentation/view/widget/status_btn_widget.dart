@@ -5,7 +5,7 @@ import 'package:payrun_mobile/common/controller/convart_color_code_controller.da
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -148,9 +148,9 @@ _pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
 }
 
 void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
-  customDialog(
+  showCustomAlertDialog(
       context: context,
-      saveBtnAction: () async {
+      onConfirm: () async {
         await Get.find<TimelineController>()
             .removeTimeEntry(timeLogId: taskInfo.timeLineId)
             .then((value) {
@@ -160,15 +160,15 @@ void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
           }
         });
       },
-      icon: Icons.delete_outline_outlined,
+      iconData: Icons.delete_outline_outlined,
       titleText: AppString.text_remove_timelog.tr,
-      subText: AppString.text_sure_you_want_to_delete_timelog.tr,
-      iconBgColor: AppColor.errorColorLight,
-      btnBgColor: AppColor.errorColorLight,
-      btnText: "",
-      drcText: "",
-      drcFontSize: Dimensions.fontSizeDefault - 1,
-      childForSaveBtn: Obx(() => removeTextLayout()));
+      descriptionText: AppString.text_sure_you_want_to_delete_timelog.tr,
+      iconBackgroundColor: AppColor.errorColorLight,
+      confirmButtonColor: AppColor.errorColorLight,
+      confirmButtonText: "",
+      extraInfoText: "",
+      descriptionFontSize: Dimensions.fontSizeDefault - 1,
+      confirmButtonChild: Obx(() => removeTextLayout()));
 }
 
 removeTextLayout() {

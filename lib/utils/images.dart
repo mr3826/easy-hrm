@@ -1,7 +1,11 @@
 // App Image string here
 
 class Images {
-  Images._();
+  static final Images _instance = Images.__();
+
+  factory Images() => _instance;
+
+  Images.__();
 
   static String appLogo = "assets/images/app_logo.svg";
   static String networkError = "assets/images/network_error.svg";
@@ -12,7 +16,8 @@ class Images {
   static String startTime = "assets/images/start_time.svg";
   static String startTimeOpen = "assets/images/start_timer_open.svg";
   static String addTimeEntry = "assets/images/add_time_entry.svg";
-  static String passwordResetSuccessfully = "assets/images/password_reset_succeessful.svg";
+  static String passwordResetSuccessfully =
+      "assets/images/password_reset_succeessful.svg";
   static String leaveImage = "assets/images/Custom Icons.svg";
   static String leaveImage1 = "assets/images/Custom Icons-1.svg";
   static String leaveImage2 = "assets/images/Custom Icons-2.svg";
@@ -25,7 +30,8 @@ class Images {
   static String subscription = "assets/images/subscription.svg";
   static String alert = "assets/images/alert.svg";
   static String leaveIconNavOutLine = "assets/images/leave_Icon_nav.svg";
-  static String profileIconNavOutLine = "assets/images/notification_outline.svg";
+  static String profileIconNavOutLine =
+      "assets/images/notification_outline.svg";
   static String notificationIconNavOutLine = "assets/images/notification.svg";
   static String timelineIconNav = "assets/images/timline_icon.svg";
   static String leaveIconNav = "assets/images/leave_icon.svg";
@@ -45,6 +51,7 @@ class Images {
   static String profileNav = "assets/images/profile_nav.svg";
   static String profileOutNav = "assets/images/profile_out_nav.svg";
   static String cancelLeave = "assets/images/cancel_leave_icon.svg";
+  static String rejectLeave = "assets/images/reject_leave.png.svg";
   static String calendarNav = "assets/images/calendar_nav.svg";
   static String calendarOutlineLav = "assets/images/calander_outline_lev.svg";
   static String calendarLav = "assets/images/calander_lev.svg";
@@ -54,10 +61,15 @@ class Images {
   static String notificationOutNav = "assets/images/notification_nav_out.svg";
   static String notificationNav = "assets/images/notification_nav.svg";
   static String leaveNotification = "assets/images/leave_notification.svg";
-  static String departmentNotification = "assets/images/department_notification.svg";
+  static String departmentNotification =
+      "assets/images/department_notification.svg";
   static String timeLogNotification = "assets/images/time_log_notification.svg";
   static String announcementNotification = "assets/images/announce_icon.svg";
   static String user = "assets/images/user.jpeg";
+  static String filterIcon = "assets/images/filter.png";
+  static String terminate = "assets/images/terminate.svg";
+  static String employees_active = "assets/images/employees_active.svg";
+  static String employees_inactive = "assets/images/employees_inactive.svg";
 
   static String EMAIL_POP = "assets/images/email_pop.svg";
   static String LEAVE_TAKAN = "assets/images/leave_taken.svg";
@@ -77,7 +89,6 @@ class Images {
   static String KEY_ICON = "assets/images/key.png";
   static String ORG = "assets/images/org.png";
   static String timer_animation = "assets/json/timer.json";
-  static String timer_stop_line_animation = "assets/json/timer_stop_horizontal_line.json";
-
-
+  static String timer_stop_line_animation =
+      "assets/json/timer_stop_horizontal_line.json";
 }

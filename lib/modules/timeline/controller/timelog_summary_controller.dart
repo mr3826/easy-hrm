@@ -47,7 +47,8 @@ class TimelineSummaryController extends GetxController with StateMixin {
       }
     });
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getTimelineByMonth");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getTimelineByMonth");
     } else {
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
     }
@@ -56,21 +57,28 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelogDetailsByMonth() async {
     isMonthlySummaryDataLoading(true);
-      final response = await NetworkClient()
+    final response = await NetworkClient()
         .graphRequest(queryString: getTimelogDetailsByMonthQuery, variables: {
       "queryData": {
         "start_date": selectedMonthStartDate.value,
         "end_date": selectedMonthEndDate.value,
         "leave_statuses": ["approved", "pending"],
+      },
+      "optionData": {
+        "limit": 50,
+        "offset": 0,
+        "order": [
+          ["ta.entry_day", "desc"]
+        ]
       }
     });
 
     if (response.hasException) {
-      ExceptionHelper.errorHandler(exception: response.exception!,methodName: "getTimelineByMonth");
+      ExceptionHelper.errorHandler(
+          exception: response.exception!, methodName: "getTimelineByMonth");
     } else {
       timelogDetailsByMonth = TimelogDetailsByMonth.fromJson(response.data!);
     }
     isMonthlySummaryDataLoading(false);
   }
-
 }

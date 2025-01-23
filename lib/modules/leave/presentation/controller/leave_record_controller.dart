@@ -22,7 +22,6 @@ class LeaveRecordsController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     leaveRecordList = await _remoteDataSource.getLeaveRecordList(
         limit: limit, offset: offset.value);
-
     change(null, status: RxStatus.success());
   }
 }

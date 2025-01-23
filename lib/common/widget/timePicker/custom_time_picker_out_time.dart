@@ -216,8 +216,8 @@ class _OutDatePickerState extends State<OutDatePicker> {
               },
             ),
             const SizedBox(width: 40),
-            GestureDetector(
-              child: const SizedBox(width: 50, child: Text('Ok')),
+            GestureDetector( child: const SizedBox(width: 50, child: Text('Ok')),
+
               onTap: () {
                 if (!Get.find<LeaveScreenController>()
                     .holidays

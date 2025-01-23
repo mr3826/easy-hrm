@@ -9,7 +9,7 @@ import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -31,13 +31,12 @@ class EditProfileScreen extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Scaffold(
-        appBar: customInsideAppbar(
-            title: AppString.text_edit_profile.tr,
-            onPressAction: () {
+        appBar: customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
               _clearInputField();
               Get.back();
               Get.back();
             }),
+
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
             : Padding(
@@ -55,6 +54,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               )),
+
       ),
     );
   }
@@ -152,9 +152,9 @@ class EditProfileScreen extends StatelessWidget {
     if ((storageFilePath.isNotEmpty || _isProfileImageValid(profileImage))) {
       return GestureDetector(
         onTap: () {
-          customDialog(
+          showCustomAlertDialog(
             context: context,
-            saveBtnAction: () {
+            onConfirm: () {
               pikedProfileImgController.storageForUpload.filePath.value = "";
 
               if (_isProfileInfoValid()) {
@@ -172,13 +172,13 @@ class EditProfileScreen extends StatelessWidget {
                 Get.back();
               }
             },
-            icon: Icons.delete_outline_outlined,
+            iconData: Icons.delete_outline_outlined,
             titleText: AppString.text_remove_photo.tr,
-            subText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
-            iconBgColor: AppColor.errorColorLight,
-            btnBgColor: AppColor.errorColorLight,
-            btnText: AppString.text_remove.tr,
-            drcText: "",
+            descriptionText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
+            iconBackgroundColor: AppColor.errorColorLight,
+            confirmButtonColor: AppColor.errorColorLight,
+            confirmButtonText: AppString.text_remove.tr,
+            extraInfoText: "",
           );
         },
         child: Text(

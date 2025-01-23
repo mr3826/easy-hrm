@@ -14,6 +14,7 @@ class CustomInputField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? Function(String?)? onChanged;
   final bool? isObscureText;
+  final TextStyle ?hintStyle;
   final TextInputType? textInputType;
 
   const CustomInputField(
@@ -22,6 +23,7 @@ class CustomInputField extends StatelessWidget {
       this.controller,
       this.weight,
       this.textInputType,
+      this.hintStyle,
       this.prefixWidget,
       this.validator,
       this.prefixIcon,
@@ -56,7 +58,7 @@ class CustomInputField extends StatelessWidget {
       keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(
+        hintStyle:hintStyle?? TextStyle(
             color: AppColor.normalTextColor.withOpacity(0.4),
             fontFamily: "Poppins",
             fontSize: Dimensions.fontSizeDefault + 1),
@@ -66,10 +68,17 @@ class CustomInputField extends StatelessWidget {
               color: AppColor.hintColor,
             ),
         suffixIcon: weight,
-        border:outlineInputBorder,
+        border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault-2),
+        ),
         focusColor: AppColor.primaryColor,
-        focusedBorder: outlineInputBorder,
-        enabledBorder:outlineInputBorder,
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.disableColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColor.disableColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault-2)),
       ),
     );
   }
@@ -84,26 +93,26 @@ class CustomInputField extends StatelessWidget {
       keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(
+        hintStyle:hintStyle??  TextStyle(
             color: AppColor.hintColor,
             fontFamily: "Poppins",
             fontSize: Dimensions.fontSizeDefault + 1),
-        border:outlineInputBorder,
+        border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 0.0, color: AppColor.primaryColor),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault-2),
+        ),
         focusColor: AppColor.primaryColor,
-        focusedBorder:  outlineInputBorder,
-        enabledBorder: outlineInputBorder,
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.normalTextColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColor.hintColor),
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault-2)),
       ),
     );
   }
 }
 
-
-
-OutlineInputBorder get outlineInputBorder{
-  return OutlineInputBorder(
-      borderSide:  BorderSide(color: AppColor.hintColor.withOpacity(0.8)),
-      borderRadius: BorderRadius.circular(Dimensions.radiusDefault-2));
-}
 TextStyle get subTextFieldTitleStyle {
   return AppStyle.mid_large_text.copyWith(
       fontWeight: FontWeight.w400,

@@ -1,0 +1,1 @@
+enum TerminationTypeEnum { terminated, resigned }
