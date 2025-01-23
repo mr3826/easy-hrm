@@ -24,36 +24,33 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
   Widget build(BuildContext context) {
     DashboardBindings().dependencies();
     return controller.obx(
-        (state) => Padding(
-              padding: marginLayout.copyWith(left: 16, right: 16),
-              child: RefreshIndicator(
-                onRefresh: _refreshScreen,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      userInfoAppbarLayout(),
-                      customSpacerHeight(height: 30),
-                      _buildTitleText(AppString.text_employee_overview.tr),
-                      const BuildEmployeeOverview(),
-                      customSpacerHeight(height: 24),
-                      _buildOpenJob(),
-                      _buildAllCandidates(),
-                      _buildLeaveRequest(controller.leaveTimeLogSummary
-                              ?.getLeaveAndTimelogRequestSummary?.leaveRequest
-                              .toString() ??
-                          "0"),
-                      customSpacerHeight(height: 12),
-                      _buildLogRequest(controller.leaveTimeLogSummary
-                              ?.getLeaveAndTimelogRequestSummary?.timelogRequest
-                              .toString() ??
-                          "0"),
-                      customSpacerHeight(height: 30),
-                    ],
-                  ),
-                ),
-              ),
+        (state) => RefreshIndicator(
+          onRefresh: _refreshScreen,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                userInfoAppbarLayout(context),
+                customSpacerHeight(height: 30),
+                _buildTitleText(AppString.text_employee_overview.tr),
+                const BuildEmployeeOverview(),
+                customSpacerHeight(height: 24),
+                _buildOpenJob(),
+                _buildAllCandidates(),
+                _buildLeaveRequest(controller.leaveTimeLogSummary
+                        ?.getLeaveAndTimelogRequestSummary?.leaveRequest
+                        .toString() ??
+                    "0"),
+                customSpacerHeight(height: 12),
+                _buildLogRequest(controller.leaveTimeLogSummary
+                        ?.getLeaveAndTimelogRequestSummary?.timelogRequest
+                        .toString() ??
+                    "0"),
+                customSpacerHeight(height: 30),
+              ],
             ),
+          ),
+        ),
         onLoading: const LoadingIndicator());
   }
 
@@ -74,7 +71,7 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
 
   _buildTitleText(String labelText) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 12.0,left: 20,right: 20),
       child: customTitleText(
           text: labelText,
           textStyle: AppStyle.mid_large_text.copyWith(
@@ -85,15 +82,19 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
   }
 
   _buildJobTitleText({String? value}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildTitleText("Job openings ($value)"),
-        Icon(
-          Icons.arrow_forward,
-          color: AppColor.normalTextColor.withOpacity(0.8),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(right: 20.0,bottom: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildTitleText("Job openings ($value)"),
+          Icon(
+            Icons.arrow_forward,
+            color: AppColor.normalTextColor.withOpacity(0.8),
+          ),
+
+        ],
+      ),
     );
   }
 

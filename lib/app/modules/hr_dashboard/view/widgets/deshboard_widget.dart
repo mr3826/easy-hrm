@@ -14,15 +14,15 @@ import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
 import '../../../../../utils/utils.dart';
 
-userInfoAppbarLayout() {
+userInfoAppbarLayout(BuildContext context) {
   /// todo profile info data add to profile controller
   Profile? user = Get.find<UserProfileController>()
       .userDetails
       ?.getOrganizationUserDetails
       ?.profile;
-
+  final double statusBarHeight = MediaQuery.of(context).viewPadding.top;
   return Padding(
-    padding: const EdgeInsets.only(top: 46.0),
+    padding:  EdgeInsets.only(top: statusBarHeight,left: 20,right: 20),
     child: Row(
       children: [
         _userImageLayout(

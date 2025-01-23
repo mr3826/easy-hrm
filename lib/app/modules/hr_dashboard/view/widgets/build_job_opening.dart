@@ -5,6 +5,7 @@ import 'package:payrun_mobile/app/modules/hr_dashboard/models/job_opening.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../utils/app_color.dart';
@@ -13,65 +14,62 @@ import '../../../../../utils/images.dart';
 import '../../../../../utils/utils.dart';
 import '../../controllers/hr_deshboard_controller.dart';
 
+
 class BuildJobOpening extends GetView<HrDashBoardController> {
   const BuildJobOpening({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double containerWidth = constraints.maxWidth * 0.85;
-        double imageHeight = constraints.maxWidth * 0.35;
-        return Column(
-          children: [
-            SizedBox(
-              height: imageHeight + 92,
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: controller.jobOpening?.getJobs?.data?.length ?? 0,
-                controller: controller.pageController,
-                onPageChanged: (index) {
-                  controller.currentIndex.value = index;
-                },
-                itemBuilder: (context, index) {
-                  Data? data = controller.jobOpening?.getJobs?.data?[index];
+    double containerWidth = MediaQuery.sizeOf(context).width * 0.85;
+    double imageHeight = MediaQuery.sizeOf(context).height * 0.15;
 
-                  return GestureDetector(
-                    onTap: () {
-                      _updateDataWithRoute(data?.id ?? "");
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Container(
-                        width: 1000,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            width: 1.5,
-                            color: AppColor.hintColor.withOpacity(0.2),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildImage(imageHeight,
-                                url: data?.thumbnail ?? ""),
-                            _buildJobDescription(
-                              date: data ?? Data(),
-                              containerWidth: containerWidth,
-                            ),
-                          ],
-                        ),
+    return Column(
+      children: [
+        SizedBox(
+          height: imageHeight + 92,
+          child: PageView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.jobOpening?.getJobs?.data?.length ?? 0,
+            controller: controller.pageController,
+            onPageChanged: (index) {
+              controller.currentIndex.value = index;
+            },
+            itemBuilder: (context, index) {
+              Data? data = controller.jobOpening?.getJobs?.data?[index];
+
+              return GestureDetector(
+                onTap: () {
+                  _updateDataWithRoute(data?.id ?? "");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    width: AppLayout.getHeight(1000),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        width: 1.5,
+                        color: AppColor.hintColor.withOpacity(0.2),
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            _buildDottedBorderLayout(controller),
-          ],
-        );
-      },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildImage(imageHeight, url: data?.thumbnail ?? ""),
+                        _buildJobDescription(
+                          date: data ?? Data(),
+                          containerWidth: containerWidth,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        _buildDottedBorderLayout(controller),
+      ],
     );
   }
 
@@ -90,13 +88,9 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
     );
   }
 
-  Widget _buildJobDescription(
-      {required Data date, required double containerWidth}) {
+  Widget _buildJobDescription({required Data date, required double containerWidth}) {
     int? values = date.hiringStages
-        ?.firstWhere(
-          (e) => e.title == "New",
-        )
-        .noOfApplicant;
+        ?.firstWhere((e) => e.title == "New").noOfApplicant;
 
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, top: 8, right: 12),
@@ -128,7 +122,7 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
                 child: Column(
                   children: [
                     Text(
@@ -192,8 +186,8 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
           itemBuilder: (context, index) {
             return Center(
               child: Obx(() => _buildDottedBorder(
-                    isActive: controller.currentIndex.value == index,
-                  )),
+                isActive: controller.currentIndex.value == index,
+              )),
             );
           },
         ),
@@ -204,7 +198,6 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
   String _typeWithLocation(Data date) {
     final type = date.type?.trim() ?? "";
     final location = date.location?.trim() ?? "";
-
     if (type.isNotEmpty && location.isEmpty) {
       return capitalizeWords(type);
     } else if (type.isEmpty && location.isNotEmpty) {
@@ -234,7 +227,6 @@ Widget _buildImageError() {
   return Container(
     width: double.infinity,
     decoration: BoxDecoration(
-        // color: AppColor.primaryColor.withOpacity(0.05),
         borderRadius: const BorderRadius.only(
             topRight: Radius.circular(8), topLeft: Radius.circular(8)),
         image: DecorationImage(
