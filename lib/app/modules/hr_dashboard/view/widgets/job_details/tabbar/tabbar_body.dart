@@ -105,6 +105,7 @@ class BuildTabBarBody extends GetView<HrDashBoardController> {
   void _onUserTap(JobApplications user) {
     Get.find<CandidateDetailsController>().getCandidateDetails(user.id ?? "");
     Get.find<CandidateDetailsController>().getJobApplicationPreview(controller.jobApplicationBoard?.getJobApplicationBoard?.id ?? "", user.candidate?.id ?? "");
+
     Get.find<CandidateDetailsController>().candidateReviewModel?.getTeamNotes?.data?.clear();
     Get.find<CandidateDetailsController>().candidateActivitiesLogs?.getLogs?.clear();
     controller.selectedJobApplicationId(user.id ?? "");

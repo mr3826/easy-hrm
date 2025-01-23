@@ -16,6 +16,7 @@ import 'app/modules/leave_hr/data/leave_remote_data_source.dart';
 import 'modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'modules/leave/data/remote/leave_remote_data_source.dart';
 import 'modules/notification/data/remote/notification_remote_data_source.dart';
+import 'modules/profile/controller/log_out_controller.dart';
 import 'network/network_client.dart';
 
 Future<void> initApp() async {
@@ -42,6 +43,7 @@ Future<void> initApp() async {
 
   Get.put(HrLeaveRemoteDataSource(client), permanent: true);
   Get.put(ApplyAndUpdateLeaveDateSource(client), permanent: true);
+  Get.lazyPut(()=>LogoutController());
 
 }
 

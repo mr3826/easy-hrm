@@ -268,8 +268,6 @@ class DasBoardDataSourceImpl implements DashBoardDataSource {
     try {
       final response = await _dashBoardApiService.getJobApplicationPreview(
           jobId, candidateId);
-
-      print("getJobApplicationPreview respo:: $response");
       if (response != null) {
         return JobApplicationPreviewModel.fromJson(response);
       }

@@ -20,6 +20,8 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../common/widget/loading_indicator.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../../global/view/widget/app_margin.dart';
+import '../../../bindings/candidates_bindings.dart';
+import '../../../controllers/candidates_details_controller.dart';
 import '../../../controllers/hr_deshboard_controller.dart';
 
 class BuildAllCandidates extends GetView<HrDashBoardController> {
@@ -43,21 +45,46 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
           itemCount: controller.candidateList?.getCandidates?.data?.length ?? 0,
           itemBuilder: (context, index) {
             Data? data = controller.candidateList?.getCandidates?.data?[index];
-            return Padding(
-              padding: _getPadding(), // Use a dedicated method for padding
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildProfileImage(data ?? Data()),
-                  const SizedBox(width: 16), // Padding size can be static here
-                  _buildCandidateInfo(data ?? Data(), context),
-                ],
+            return GestureDetector(
+              onTap: () => _onUserTap(data ?? Data()),
+              child: Padding(
+                padding: _getPadding(), // Use a dedicated method for padding
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildProfileImage(data ?? Data()),
+                    const SizedBox(
+                        width: 16), // Padding size can be static here
+                    _buildCandidateInfo(data ?? Data(), context),
+                  ],
+                ),
               ),
             );
           },
         );
       }
     }));
+  }
+
+  void _onUserTap(Data user) {
+    CandidatesBindings().dependencies();
+    Get.find<CandidateDetailsController>().getCandidateDetails(user.id ?? "");
+    Get.find<CandidateDetailsController>()
+        .getJobApplicationPreview(user.job?.id ?? "", user.candidate?.id ?? "");
+    Get.find<CandidateDetailsController>()
+        .candidateReviewModel
+        ?.getTeamNotes
+        ?.data
+        ?.clear();
+    Get.find<CandidateDetailsController>()
+        .candidateActivitiesLogs
+        ?.getLogs
+        ?.clear();
+    controller.selectedJobApplicationId(user.id ?? "");
+    Get.find<CandidateDetailsController>().initialTabIndex = 0;
+    controller.selectedJobId(
+        controller.jobApplicationBoard?.getJobApplicationBoard?.id ?? "");
+    Get.toNamed(Routes.CANDIDATES_DETAILS);
   }
 
   EdgeInsets _getPadding() {
