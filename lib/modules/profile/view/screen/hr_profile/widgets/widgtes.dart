@@ -17,199 +17,215 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../../../app/global/view/widgets/custom_network_image.dart';
-import '../../../../../common/widget/custom_drawer.dart';
-import '../../../../../utils/utils.dart';
-import '../../../model/user_profile.dart';
-import '../../widget/action_layout_widget.dart';
-import '../../widget/expanded_text_layout.dart';
-import '../../widget/language_widget.dart';
-import '../../widget/organization_widget.dart';
+import '../../../../../../app/global/view/widgets/custom_network_image.dart';
+import '../../../../../../common/widget/custom_drawer.dart';
+import '../../../../../../utils/utils.dart';
+import '../../../../model/user_log_history.dart';
+import '../../../../model/user_profile.dart';
+import '../../../widget/action_layout_widget.dart';
+import '../../../widget/expanded_text_layout.dart';
+import '../../../widget/language_widget.dart';
+import '../../../widget/organization_widget.dart';
+
+
 
 
 class UserInfoLayout extends StatelessWidget {
-final  UserDetails information;
-final String ?editIconUrl;
-const UserInfoLayout({super.key,required this.information,this.editIconUrl});
+  final UserDetails information;
+  final String? editIconUrl;
+  const UserInfoLayout({super.key, required this.information, this.editIconUrl});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _userImageLayout(),
-        customSpacerWidth(width: 20),
-        Expanded(
-          child: SizedBox(
-            width: double.infinity,
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.start,
-              children: [
-                ///User name and department
-                _userNameAndDptLayout(),
-              ],
+    return Padding(
+      padding: marginLayout,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _userImageLayout(),
+          customSpacerWidth(width: 20),
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: [
+                  ///User name and department
+                  _userNameAndDptLayout(),
+                ],
+              ),
             ),
           ),
+          customSpacerWidth(width: 18),
+        ],
+      ),
+    );
+  }
+
+  _userImageLayout({double? height}) {
+    String userName =
+        "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
+    return CircularNetworkImage(
+      errorText: getInitials(userName),
+      radius: height ?? 28,
+      imageUrl: buildImgIxUrl(
+          imgKey: information.getOrganizationUserDetails?.profile?.image ?? "",
+          isPublic: true),
+    );
+  }
+
+  _userNameAndDptLayout() {
+    String userName = "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Flexible(
+                child: Text(
+              userName,
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.normalTextColor,
+                  overflow: TextOverflow.ellipsis),
+              maxLines: 2,
+            )),
+            customSpacerWidth(width: 8),
+            if (editIconUrl != null)
+              GestureDetector(
+                onTap: () {
+
+                },
+                child: SizedBox(
+                    height: AppLayout.getHeight(17),
+                    width: AppLayout.getWidth(17),
+                    child: Image.asset(editIconUrl??"")),
+              )
+          ],
         ),
-        customSpacerWidth(width: 18),
+
+        Text(
+          information.getOrganizationUserDetails?.department?.name ?? "",
+          style: AppStyle.normal_text_grey,
+        ),
+        customSpacerHeight(height: 6),
+
+        /// Status
+        if (information.getOrganizationUserDetails?.employmentStatus != null)
+          Wrap(
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _employmentContractStatus(),
+              ),
+              customSpacerWidth(width: 12),
+              if (information.getOrganizationUserDetails?.status != null)
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: employmentStatus(
+                      information.getOrganizationUserDetails?.status ?? ""),
+                ),
+            ],
+          ),
       ],
     );
   }
- _userImageLayout({double? height}) {
-    String userName="${information.getOrganizationUserDetails?.profile?.firstName??""} ${information.getOrganizationUserDetails?.profile?.lastName??""}";
-   return CircularNetworkImage(
-     errorText: getInitials(userName),
-     radius: height ?? 28,
-     imageUrl:buildImgIxUrl(imgKey:information.getOrganizationUserDetails?.profile?.image??"",isPublic: true),
-   );
- }
 
- _userNameAndDptLayout() {
-   String userName="${information.getOrganizationUserDetails?.profile?.firstName??""} ${information.getOrganizationUserDetails?.profile?.lastName??""}";
+  _employmentContractStatus() {
+    EmploymentStatusData? data =
+        information.getOrganizationUserDetails?.employmentStatus;
+    // Return an empty container if employment status or its color is null
+    if (data?.color == null || data!.color!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    // Safely parse the color code
+    final colorCodeString = data.color?.replaceAll("#", "");
+    final colorCode = int.tryParse("0xFF$colorCodeString");
 
-   return Column(
-     crossAxisAlignment: CrossAxisAlignment.start,
-     children: [
-
-       Row(
-         children: [
-           Expanded(child: Text("userNameuserNameuserNameuserNameuserNameus", style: AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor,overflow: TextOverflow.ellipsis),maxLines: 2,)),
-
-           Expanded(
-             child: GestureDetector(
-               onTap: (){},
-               child: SizedBox(
-                   height: 20,width: 20,
-             
-                   child: Image.asset(Images.EDIT_ICON)),
-             ),
-           )
-
-         ],
-       ),
-
-
-       Text(
-         information.getOrganizationUserDetails?.department?.name??"",
-         style: AppStyle.normal_text_grey,
-       ),
-       customSpacerHeight(height: 6),
-
-       /// Status
-       if (information.getOrganizationUserDetails?.employmentStatus != null)
-         Wrap(
-           children: [
-             FittedBox(
-               fit: BoxFit.scaleDown,
-               child: _employmentContractStatus(),
-             ),
-             customSpacerWidth(width: 12),
-
-             if(information.getOrganizationUserDetails?.status !=null)
-             FittedBox(
-               fit: BoxFit.scaleDown,
-               child: employmentStatus(information.getOrganizationUserDetails?.status??""),
-             ),
-           ],
-         ),
-     ],
-   );
- }
+    // Return an empty container if color code is invalid
+    if (colorCode == null) {
+      return const SizedBox.shrink();
+    }
+    return CustomStatusButton(
+      bgColor: Color(colorCode).withOpacity(.2),
+      textColor: Color(colorCode),
+      text: data.name ?? "",
+    );
+  }
 
 
 
-
- _employmentContractStatus() {
-  EmploymentStatusData? data= information.getOrganizationUserDetails?.employmentStatus;
-   // Return an empty container if employment status or its color is null
-   if (data?.color == null || data!.color!.isEmpty) {
-     return const SizedBox.shrink();
-   }
-   // Safely parse the color code
-   final colorCodeString = data.color?.replaceAll("#", "");
-   final colorCode = int.tryParse("0xFF$colorCodeString");
-
-   // Return an empty container if color code is invalid
-   if (colorCode == null) {
-     return const SizedBox.shrink();
-   }
-   return CustomStatusButton(
-     bgColor: Color(colorCode).withOpacity(.2),
-     textColor: Color(colorCode),
-     text: data.name ?? "",
-   );
- }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- _monthlyStatusLayout() {
-   UserProfileController controller = Get.find<UserProfileController>();
-   return Row(
-     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-     children: [
-       _infoTextLayout(
-           value: formatToTwoDecimalPlaces(controller.userLogHistory
-               ?.geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
-               ""),
-           label: AppString.text_leave_balance.tr),
-       _divider(),
-       _infoTextLayout(
-           value: controller.userLogHistory
-               ?.geTimelogAndLeaveAvailabilityForApp?.totalSchedule ??
-               "",
-           label: AppString.text_monthly_goal.tr),
-       _divider(),
-       _infoTextLayout(
-           value: controller.userLogHistory
-               ?.geTimelogAndLeaveAvailabilityForApp?.totalLogged ??
-               "",
-           label: AppString.text_logged_time.tr),
-     ],
-   );
- }
-
- _infoTextLayout({required String value, required String label}) {
-   return Column(
-     children: [
-       Text(
-         value,
-         style:
-         AppStyle.normal_text_grey.copyWith(color: AppColor.normalTextColor),
-       ),
-       Text(
-         label,
-         style: AppStyle.mid_large_text.copyWith(
-             fontSize: Dimensions.fontSizeDefault - 3,
-             color: AppColor.hintColor),
-       )
-     ],
-   );
- }
- _divider() {
-   return Container(
-     width: 1,
-     height: 20,
-     color: AppColor.disableColor,
-   );
- }
 
 
 
 }
+
+
+
+class LeaveStatusGoal extends StatelessWidget {
+  final UserLogHistory userLogHistory;
+
+  const LeaveStatusGoal({super.key,required this.userLogHistory});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: marginLayout,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _infoTextLayout(
+              value: formatToTwoDecimalPlaces(userLogHistory
+                  .geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
+                  ""),
+              label: AppString.text_leave_balance.tr),
+          _divider(),
+          _infoTextLayout(
+              value: userLogHistory
+                  .geTimelogAndLeaveAvailabilityForApp?.totalSchedule ??
+                  "",
+              label: AppString.text_monthly_goal.tr),
+          _divider(),
+          _infoTextLayout(
+              value: userLogHistory
+                  .geTimelogAndLeaveAvailabilityForApp?.totalLogged ??
+                  "",
+              label: AppString.text_logged_time.tr),
+        ],
+      ),
+    );
+  }
+
+  _infoTextLayout({required String value, required String label}) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: AppStyle.normal_text
+              .copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeMid),
+        ),
+        Text(
+          label,
+          style: AppStyle.mid_large_text.copyWith(
+              fontSize: Dimensions.fontSizeSmall-1,
+              color: AppColor.hintColor),
+        )
+      ],
+    );
+  }
+
+  _divider() {
+    return Container(
+      width: 1,
+      height: 30,
+      color: AppColor.disableColor,
+    );
+  }
+
+}
+
+
+
+
 
 
 
@@ -221,12 +237,12 @@ actionBtnLayout(context) {
         child: actionLayout(
             context: context,
             userName:
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
+                "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
             departmentText: Get.find<UserProfileController>()
-                .userDetails
-                ?.getOrganizationUserDetails
-                ?.department
-                ?.name ??
+                    .userDetails
+                    ?.getOrganizationUserDetails
+                    ?.department
+                    ?.name ??
                 "",
             editAction: () {},
             changePassAction: () {})),
@@ -239,10 +255,10 @@ actionBtnLayout(context) {
       ),
       child: Center(
           child: Text(
-            AppString.text_action.tr,
-            style: AppStyle.mid_large_text
-                .copyWith(fontSize: Dimensions.fontSizeDefault + 3),
-          )),
+        AppString.text_action.tr,
+        style: AppStyle.mid_large_text
+            .copyWith(fontSize: Dimensions.fontSizeDefault + 3),
+      )),
     ),
   );
 }
@@ -253,10 +269,10 @@ descriptionTextLayout() {
 
 filterTextLengthLayout() {
   String drc = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.profile
-      ?.about ??
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.profile
+          ?.about ??
       '';
   final wordCount = drc.split(' ').length;
   if (wordCount > 20) {
@@ -386,7 +402,7 @@ organisationLayout(context) {
               children: [
                 Text(
                   controller.userDetails?.getOrganizationUserDetails
-                      ?.organization?.name ??
+                          ?.organization?.name ??
                       "Not added yet",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
@@ -395,13 +411,13 @@ organisationLayout(context) {
                 ),
                 customSpacerHeight(height: 6),
                 if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                    ?.designationHistories !=
-                    null &&
+                            ?.designationHistories !=
+                        null &&
                     controller.employeeWorkHistory!.getOrganizationUserHistory!
                         .designationHistories!.isNotEmpty)
                   Text(
                     controller.employeeWorkHistory?.getOrganizationUserHistory
-                        ?.designationHistories?[0].designation?.name ??
+                            ?.designationHistories?[0].designation?.name ??
                         "",
                     style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
@@ -430,22 +446,6 @@ organisationLayout(context) {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 profileInfoDrawerLayout() {
   var controller = Get.find<UserProfileController>();
   return Padding(
@@ -457,11 +457,11 @@ profileInfoDrawerLayout() {
       ),
       child: Padding(
         padding:
-        const EdgeInsets.only(top: 20.0, bottom: 20, left: 12, right: 12),
+            const EdgeInsets.only(top: 20.0, bottom: 20, left: 12, right: 12),
         child: Center(
           child: Column(
             children: [
-            //  userProfileImgLayout(),
+              //  userProfileImgLayout(),
               customSpacerHeight(height: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -472,8 +472,8 @@ profileInfoDrawerLayout() {
                         .copyWith(color: AppColor.normalTextColor),
                   ),
                   if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                      ?.designationHistories !=
-                      null &&
+                              ?.designationHistories !=
+                          null &&
                       controller
                           .employeeWorkHistory!
                           .getOrganizationUserHistory!
@@ -481,7 +481,7 @@ profileInfoDrawerLayout() {
                           .isNotEmpty)
                     Text(
                       controller.employeeWorkHistory?.getOrganizationUserHistory
-                          ?.designationHistories?[0].designation?.name ??
+                              ?.designationHistories?[0].designation?.name ??
                           "Not added yet",
                       style: AppStyle.normal_text_grey
                           .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
@@ -501,10 +501,10 @@ phoneNumberText() {
   return userInfoSectionLayout(
     staticText: AppString.text_phone.tr,
     dynamicText: Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
-        ?.profile
-        ?.personalNumber ??
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.personalNumber ??
         "",
   );
 }
@@ -513,10 +513,10 @@ emergencyPhoneNumber() {
   return userInfoSectionLayout(
     staticText: AppString.text_emergency_phone.tr,
     dynamicText: Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
-        ?.profile
-        ?.emergencyNumber ??
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.profile
+            ?.emergencyNumber ??
         "",
   );
 }
@@ -525,22 +525,12 @@ addressText() {
   return userInfoSectionLayout(
       staticText: AppString.text_address.tr,
       dynamicText: Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.profile
-          ?.address ??
+              .userDetails
+              ?.getOrganizationUserDetails
+              ?.profile
+              ?.address ??
           "");
 }
-
-
-
-
-
-
-
-
-
-
 
 employmentStatus(String? employmentStatus) {
   if (employmentStatus == null) {
@@ -575,9 +565,17 @@ employmentStatus(String? employmentStatus) {
 organisationLogoLayout() {
   return CustomNetworkImage(
     height: AppLayout.getHeight(25),
-    imageUrl: buildImgIxUrl(imgKey:"${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",    isPublic: true,
+    imageUrl: buildImgIxUrl(
+        imgKey:
+            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
+        isPublic: true,
         fileDirectory: "profile_images"),
-    errorText: getInitials(Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization!.name ?? ""),
+    errorText: getInitials(Get.find<UserProfileController>()
+            .userDetails
+            ?.getOrganizationUserDetails
+            ?.organization!
+            .name ??
+        ""),
     borderColor: Colors.transparent,
   );
 }
@@ -606,14 +604,14 @@ endDrawer(BuildContext context) {
 logoutTextLayout() {
   return Get.find<LogoutController>().isLogoutLoading.value
       ? const CupertinoActivityIndicator(
-    color: AppColor.cardColor,
-  )
+          color: AppColor.cardColor,
+        )
       : Text(
-    AppString.text_log_out.tr,
-    style: AppStyle.normal_text_grey.copyWith(
-        fontSize: Dimensions.fontSizeDefault + 1,
-        color: AppColor.cardColor),
-  );
+          AppString.text_log_out.tr,
+          style: AppStyle.normal_text_grey.copyWith(
+              fontSize: Dimensions.fontSizeDefault + 1,
+              color: AppColor.cardColor),
+        );
 }
 
 void _customButtonSheet({context, child}) {
@@ -670,7 +668,6 @@ String _getLanguageFlag() {
   }
   return Images.FLAG_PNG;
 }
-
 
 horizontalDivider() {
   return const Padding(

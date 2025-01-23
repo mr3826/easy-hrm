@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/profile/controller/employment_controller.dart';
-import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_layout.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../leave/domain/leave_type.dart';
+import '../../../../../controller/profile_module/hr_profile_controller.dart';
 
 class LeaveTypeDropDown extends StatefulWidget {
   const LeaveTypeDropDown({super.key});
@@ -23,12 +23,11 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
   void initState() {
     super.initState();
     // Get the controller instance
-    UserProfileController controller = Get.find<UserProfileController>();
+    HrProfileController controller = Get.find<HrProfileController>();
     // Set the default value if available, with null checks
-    dropDownValue =
-        (controller.leaveTypeId.isNotEmpty) ? controller.leaveTypeId : null;
+    dropDownValue = (controller.leaveTypeId.isNotEmpty) ? controller.leaveTypeId : null;
   }
-
+HrProfileController controller=Get.find<HrProfileController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +47,7 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
           icon: const SizedBox.shrink(),
           underline: const SizedBox.shrink(),
           isExpanded: true,
-          items: Get.find<UserProfileController>()
+          items: controller
               .leaveTypeDropdown
               ?.getAvailableLeaveTypes!
               .map((e) {
@@ -81,7 +80,7 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
                         ),
                       ),
                       if (e.leaveTypeId ==
-                          Get.find<UserProfileController>().leaveTypeId)
+                          controller.leaveTypeId)
                         const Icon(
                           Icons.done,
                           color: AppColor.secondaryColor,
@@ -95,20 +94,20 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
           onChanged: (valueType) {
             setState(() {
               dropDownValue = valueType as String;
-              Get.find<UserProfileController>().leaveTypeId = valueType;
+              controller.leaveTypeId = valueType;
             });
 
             GetAvailableLeaveTypes? getLeaveTypesDropdown =
-                Get.find<UserProfileController>()
+                controller
                     .leaveTypeDropdown
                     ?.getAvailableLeaveTypes
                     ?.firstWhere((element) => element.leaveTypeId == valueType);
 
-            Get.find<UserProfileController>().calculateAllowanceBy.value =
+            controller.calculateAllowanceBy.value =
                 getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
-            Get.find<UserProfileController>().availableLeave.value =
+            controller.availableLeave.value =
                 getLeaveTypesDropdown?.availableLeave ?? "";
-            Get.find<UserProfileController>().leaveStatusId = getLeaveTypesDropdown?.leaveStatusId ?? "";
+            Get.find<HrProfileController>().leaveStatusId = getLeaveTypesDropdown?.leaveStatusId ?? "";
             Get.find<EmploymentController>().daysCount.value = int.parse(getLeaveTypesDropdown?.availableLeave ?? "");
           }),
     );

@@ -16,8 +16,9 @@ import '../../../../../common/widget/custom_drawer.dart';
 import '../../../../../common/widget/status_button_helper.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../leave/presentation/view/widget/leave_record_details_view.dart';
+import '../../../controller/profile_module/hr_profile_controller.dart';
 
-class BuildLeaveRecord extends GetView<UserProfileController> {
+class BuildLeaveRecord extends GetView<HrProfileController> {
   const BuildLeaveRecord({super.key});
   @override
   Widget build(BuildContext context) {

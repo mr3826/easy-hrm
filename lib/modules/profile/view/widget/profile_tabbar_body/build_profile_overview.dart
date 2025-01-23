@@ -3,20 +3,21 @@ import 'package:get/get.dart';
 import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../controller/user_profile_controller.dart';
+import '../../../model/user_profile.dart';
 import '../chnage_email_notify_layout.dart';
 import '../common_widget.dart';
 import '../department_layout_widget.dart';
 import '../employee_stauts_layout.dart';
 
-class BuildProfileOverView extends GetView<UserProfileController> {
-  const BuildProfileOverView({super.key});
+
+class BuildProfileOverView extends StatelessWidget {
+
+ final UserDetails? userDetails;
+ const BuildProfileOverView({super.key,this.userDetails});
 
   @override
   Widget build(BuildContext context) {
-
-    return
-      /// RefreshIndicator with scrollable content
-      Expanded(
+    return Expanded(
         child: RefreshIndicator(
           onRefresh: _fetchProfileData, // Call the refresh method
           child: SingleChildScrollView(
@@ -63,6 +64,10 @@ class BuildProfileOverView extends GetView<UserProfileController> {
 
 
 
+
+
+
+
   Widget _buildPhoneNumberSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,10 +100,10 @@ class BuildProfileOverView extends GetView<UserProfileController> {
   /// Fetches the latest profile data from the server.
   Future<void> _fetchProfileData() async {
     try {
-      await controller.getUserProfile();
-      await controller.getEmploymentInfo();
-      await controller.getUserLogHistory();
-      await controller.getOrganizationInfo();
+      // await controller.getUserProfile();
+      // await controller.getEmploymentInfo();
+      // await controller.getUserLogHistory();
+      // await controller.getOrganizationInfo();
     } catch (e) {
       // Optionally handle errors or show a message
       Get.snackbar('Error', 'Failed to refresh data');

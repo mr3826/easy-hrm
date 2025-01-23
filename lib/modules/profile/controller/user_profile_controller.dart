@@ -65,10 +65,8 @@ class UserProfileController extends GetxController with StateMixin {
   String otpCode = "";
   String isSelectLeaveType = "";
   String leaveTypeId = "";
-  String leaveStatusId = "";
   RxString calculateAllowanceBy = "".obs;
   RxString availableLeave = "".obs;
-  RxInt profileTabIndex = 0.obs;
 
   final NetworkClient _networkClient = Get.find<NetworkClient>();
 
@@ -143,24 +141,23 @@ class UserProfileController extends GetxController with StateMixin {
   final editEmployeeIDController = TextEditingController();
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
-  final LeaveRemoteDataSource _remoteDataSource =
-  Get.find<LeaveRemoteDataSource>();
-  final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
-  final LeaveRemoteDataSource _leaveRemoteDataSource =
-  Get.find<LeaveRemoteDataSource>();
+  // final LeaveRemoteDataSource _remoteDataSource =
+  // Get.find<LeaveRemoteDataSource>();
+ // final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
+  // final LeaveRemoteDataSource _leaveRemoteDataSource =
+  // Get.find<LeaveRemoteDataSource>();
 
   List<GetLeaveRecordsForApp>? leaveRecordList;
+
   LeaveTypeDropdown? leaveTypeDropdown;
 
   RxInt offset = 0.obs;
   int limit = 30;
 
+
   Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
-
-
-
     change(null, status: RxStatus.success());
   }
 
@@ -184,66 +181,68 @@ class UserProfileController extends GetxController with StateMixin {
     isViewOrganizationLoading(false);
   }
 
-  getLeaveRecordsData() async {
-    isViewLeaveRecordLoading(true);
-    leaveRecordList = await _remoteDataSource.getLeaveRecordList(
-        limit: limit, offset: offset.value);
-
-    isViewLeaveRecordLoading(false);
-  }
-
-  getLeaveSummary() async {
-    isViewLeaveSummaryLoading(true);
-    leaveSummary = await _leaveDataSource.getLeaveSummary();
-    isViewLeaveSummaryLoading(false);
-  }
-
-  getLeaveTypeDropdown() async {
-    isLeaveTypeLoading(true);
-    leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
-    isLeaveTypeLoading(false);
-  }
 
 
+  // getLeaveRecordsData() async {
+  //   isViewLeaveRecordLoading(true);
+  //   leaveRecordList = await _remoteDataSource.getLeaveRecordList(
+  //       limit: limit, offset: offset.value);
+  //
+  //   isViewLeaveRecordLoading(false);
+  // }
+  //
+  // getLeaveSummary() async {
+  //   isViewLeaveSummaryLoading(true);
+  //   leaveSummary = await _leaveDataSource.getLeaveSummary();
+  //   isViewLeaveSummaryLoading(false);
+  // }
+  //
+  // getLeaveTypeDropdown() async {
+  //   isLeaveTypeLoading(true);
+  //   leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
+  //   isLeaveTypeLoading(false);
+  // }
 
-  Future<void> updateORGLeaveAvailability({
-    int? numberOfDays,
-    int? numberOfApplication,
-    int? maximumConsecutiveDays,
-    String? calculateAllowanceBy,
-  }) async {
-    // Prepare input data based on the allowance calculation type
-    Map<String, dynamic> inputData = {
-      "inputData": {
-        "leave_status_id": leaveStatusId,
-        if (calculateAllowanceBy == "no_of_application") ...{
-          "available_number_of_applications": numberOfApplication,
-          "maximum_consecutive_days": maximumConsecutiveDays,
-        } else ...{
-          "available_number_of_days": numberOfDays,
-        },
-      }
-    };
 
-    isLeaveTypeLoading(true);
-    try {
-      // Call the data source with the prepared input data
-      bool response = await _leaveDataSource.updateORGLeaveAvailability(inputData);
-      // Handle response
-      if (response) {
-        showSuccessMessage(message: "Leave allowance has been added successfully!");
-        Get.back(); // Close current screen
-        Get.back(canPop: false); // Close another screen
-        getLeaveSummary(); // Refresh leave summary
-      } else {
-        showErrorMessage(message: "Failed to update leave allowance. Please try again.");
-      }
-    } catch (e) {
-      showErrorMessage(message: "An error occurred: ${e.toString()}");
-    } finally {
-      isLeaveTypeLoading(false);
-    }
-  }
+  //
+  // Future<void> updateORGLeaveAvailability({
+  //   int? numberOfDays,
+  //   int? numberOfApplication,
+  //   int? maximumConsecutiveDays,
+  //   String? calculateAllowanceBy,
+  // }) async {
+  //   // Prepare input data based on the allowance calculation type
+  //   Map<String, dynamic> inputData = {
+  //     "inputData": {
+  //       "leave_status_id": leaveStatusId,
+  //       if (calculateAllowanceBy == "no_of_application") ...{
+  //         "available_number_of_applications": numberOfApplication,
+  //         "maximum_consecutive_days": maximumConsecutiveDays,
+  //       } else ...{
+  //         "available_number_of_days": numberOfDays,
+  //       },
+  //     }
+  //   };
+  //
+  //   isLeaveTypeLoading(true);
+  //   try {
+  //     // Call the data source with the prepared input data
+  //     bool response = await _leaveDataSource.updateORGLeaveAvailability(inputData);
+  //     // Handle response
+  //     if (response) {
+  //       showSuccessMessage(message: "Leave allowance has been added successfully!");
+  //       Get.back(); // Close current screen
+  //       Get.back(canPop: false); // Close another screen
+  //       getLeaveSummary(); // Refresh leave summary
+  //     } else {
+  //       showErrorMessage(message: "Failed to update leave allowance. Please try again.");
+  //     }
+  //   } catch (e) {
+  //     showErrorMessage(message: "An error occurred: ${e.toString()}");
+  //   } finally {
+  //     isLeaveTypeLoading(false);
+  //   }
+  // }
 
 
 

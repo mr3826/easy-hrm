@@ -7,6 +7,7 @@ import '../../../../utils/app_color.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/dimensions.dart';
+import '../../controller/profile_module/hr_profile_controller.dart';
 import '../../controller/user_profile_controller.dart';
 import '../widget/common_widget.dart';
 import '../widget/profile_tabbar_body/build_profile_leave_record.dart';
@@ -146,7 +147,7 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   _buildProfileTabBar(List<Widget> profileTabView) {
     // GetX Controller to manage the selected tab index
-    UserProfileController controller = Get.find<UserProfileController>();
+    HrProfileController controller = Get.find<HrProfileController>();
 
     return Expanded(
       child: Column(
@@ -161,7 +162,7 @@ class ProfileScreen extends GetView<UserProfileController> {
     );
   }
 
-  _tabBarList(UserProfileController controller) {
+  _tabBarList(HrProfileController controller) {
     List<String> tabIndex = ["Overview", "Leave records", "Leave summary"];
 
     return Container(

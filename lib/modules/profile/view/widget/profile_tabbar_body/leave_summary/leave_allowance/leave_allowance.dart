@@ -10,9 +10,10 @@ import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../controller/employment_controller.dart';
+import '../../../../../controller/profile_module/hr_profile_controller.dart';
 import 'leave_type.dart';
 
-class LeaveAllowance extends GetView<UserProfileController> {
+class LeaveAllowance extends GetView<HrProfileController> {
   LeaveAllowance({super.key});
 
   final EmploymentController employmentController =
@@ -242,9 +243,9 @@ class LeaveAllowance extends GetView<UserProfileController> {
 
   Widget _buildButtons() {
     final EmploymentController employmentController =
-        Get.find<EmploymentController>();
-    final UserProfileController userProfileController =
-        Get.find<UserProfileController>();
+    Get.find<EmploymentController>();
+
+
 
     // Determine if the Save button should be enabled
     final bool isSaveEnabled =
@@ -277,14 +278,14 @@ class LeaveAllowance extends GetView<UserProfileController> {
                   : AppColor.primaryColor.withOpacity(0.5),
               onPressed: () {
                 if (isSaveEnabled) {
-                  userProfileController.updateORGLeaveAvailability(
+                  controller.updateORGLeaveAvailability(
                     maximumConsecutiveDays:
-                        employmentController.applicationMaxDaysCount.value,
+                    employmentController.applicationMaxDaysCount.value,
                     numberOfApplication:
-                        employmentController.applicationBalanceCount.value,
+                    employmentController.applicationBalanceCount.value,
                     numberOfDays: employmentController.daysCount.value,
                     calculateAllowanceBy:
-                        userProfileController.calculateAllowanceBy.value,
+                    controller.calculateAllowanceBy.value,
                   );
                 }
               },

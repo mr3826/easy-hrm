@@ -12,9 +12,10 @@ import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../controller/employment_controller.dart';
+import '../../../../controller/profile_module/hr_profile_controller.dart';
 import 'leave_allowance/leave_allowance.dart';
 
-class BuildProfileLeaveSummary extends GetView<UserProfileController> {
+class BuildProfileLeaveSummary extends GetView<HrProfileController> {
   const BuildProfileLeaveSummary({super.key});
   @override
   Widget build(BuildContext context) {
@@ -114,7 +115,7 @@ class BuildProfileLeaveSummary extends GetView<UserProfileController> {
           onPressed: () {
             Get.find<UserProfileController>().leaveTypeId =
                 leaveSummary.leaveTypeId ?? "";
-            Get.find<UserProfileController>().leaveStatusId =
+            controller.leaveStatusId =
                 leaveSummary.leaveStatusId ?? "";
             showAddAllowance(
                 headerText: leaveSummary.name, subText: leaveSummary.type);
@@ -265,7 +266,7 @@ void showAddAllowance({String? headerText, String? subText}) {
           padding: const EdgeInsets.all(20.0),
           child: GestureDetector(
             onTap: () {
-              Get.find<UserProfileController>().getLeaveTypeDropdown();
+              Get.find<HrProfileController>().getLeaveTypeDropdown();
               Get.find<EmploymentController>().applicationMaxDaysCount.value =
                   0;
               Get.find<EmploymentController>().applicationBalanceCount.value =
