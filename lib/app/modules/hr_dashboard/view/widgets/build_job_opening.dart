@@ -14,7 +14,6 @@ import '../../../../../utils/images.dart';
 import '../../../../../utils/utils.dart';
 import '../../controllers/hr_deshboard_controller.dart';
 
-
 class BuildJobOpening extends GetView<HrDashBoardController> {
   const BuildJobOpening({super.key});
 
@@ -22,15 +21,19 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
   Widget build(BuildContext context) {
     double containerWidth = MediaQuery.sizeOf(context).width * 0.85;
     double imageHeight = MediaQuery.sizeOf(context).height * 0.15;
-
+    controller.pageController = PageController(
+      viewportFraction: 1.0, // Ensures full-width pages
+    );
     return Column(
       children: [
         SizedBox(
           height: imageHeight + 92,
           child: PageView.builder(
+            clipBehavior: Clip.none, // Ensures no clipping
             scrollDirection: Axis.horizontal,
             itemCount: controller.jobOpening?.getJobs?.data?.length ?? 0,
             controller: controller.pageController,
+
             onPageChanged: (index) {
               controller.currentIndex.value = index;
             },
@@ -42,7 +45,7 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
                   _updateDataWithRoute(data?.id ?? "");
                 },
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 0.0),
                   child: Container(
                     width: AppLayout.getHeight(1000),
                     decoration: BoxDecoration(
@@ -88,9 +91,10 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
     );
   }
 
-  Widget _buildJobDescription({required Data date, required double containerWidth}) {
-    int? values = date.hiringStages
-        ?.firstWhere((e) => e.title == "New").noOfApplicant;
+  Widget _buildJobDescription(
+      {required Data date, required double containerWidth}) {
+    int? values =
+        date.hiringStages?.firstWhere((e) => e.title == "New").noOfApplicant;
 
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, top: 8, right: 12),
@@ -122,7 +126,7 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
               ),
               child: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
                 child: Column(
                   children: [
                     Text(
@@ -186,8 +190,8 @@ class BuildJobOpening extends GetView<HrDashBoardController> {
           itemBuilder: (context, index) {
             return Center(
               child: Obx(() => _buildDottedBorder(
-                isActive: controller.currentIndex.value == index,
-              )),
+                    isActive: controller.currentIndex.value == index,
+                  )),
             );
           },
         ),

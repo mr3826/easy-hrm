@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/global/view/widget/app_margin.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/models/employee_overview.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../utils/app_color.dart';
@@ -17,44 +16,41 @@ class BuildEmployeeOverview extends GetView<HrDashBoardController> {
     GetEmployeeOverview? getEmployeeOverview =
         controller.employeeOverview?.getEmployeeOverview;
 
-    return Padding(
-      padding: marginLayout,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColor.primaryColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding:
-              const EdgeInsets.all(24.0), // Adjusted padding for better layout
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                flex: 1,
-                child: _buildText(
-                  label: AppString.text_present.tr,
-                  value: getEmployeeOverview?.workingToday.toString() ?? "0",
-                ),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.primaryColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding:
+            const EdgeInsets.all(24.0), // Adjusted padding for better layout
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              flex: 1,
+              child: _buildText(
+                label: AppString.text_present.tr,
+                value: getEmployeeOverview?.workingToday.toString() ?? "0",
               ),
-              _divider(),
-              Flexible(
-                flex: 1,
-                child: _buildText(
-                  label: AppString.text_on_leave.tr,
-                  value: getEmployeeOverview?.onLeaveToday.toString() ?? "0",
-                ),
+            ),
+            _divider(),
+            Flexible(
+              flex: 1,
+              child: _buildText(
+                label: AppString.text_on_leave.tr,
+                value: getEmployeeOverview?.onLeaveToday.toString() ?? "0",
               ),
-              _divider(),
-              Flexible(
-                flex: 1,
-                child: _buildText(
-                  label: AppString.text_absent.tr,
-                  value: getEmployeeOverview?.notWorkingToday.toString() ?? "0",
-                ),
+            ),
+            _divider(),
+            Flexible(
+              flex: 1,
+              child: _buildText(
+                label: AppString.text_absent.tr,
+                value: getEmployeeOverview?.notWorkingToday.toString() ?? "0",
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

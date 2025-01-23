@@ -22,7 +22,7 @@ userInfoAppbarLayout(BuildContext context) {
       ?.profile;
   final double statusBarHeight = MediaQuery.of(context).viewPadding.top;
   return Padding(
-    padding:  EdgeInsets.only(top: statusBarHeight,left: 20,right: 20),
+    padding:  EdgeInsets.only(top: statusBarHeight),
     child: Row(
       children: [
         _userImageLayout(

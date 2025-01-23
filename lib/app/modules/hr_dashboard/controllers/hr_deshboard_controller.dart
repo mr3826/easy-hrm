@@ -18,7 +18,8 @@ class HrDashBoardController extends GetxController with StateMixin {
   final RxInt currentIndex = 0.obs;
 
   RxInt jobDetailsSelectedIndex = 0.obs; // Track the selected tab index
-  late PageController pageController; // For smooth scrolling
+   PageController pageController=PageController(viewportFraction: 1.0); // For smooth scrolling
+
 
   RxBool isCandidateSelected = false.obs; // Check if a candidate is selected
   RxBool isJobApplicationBoardLoading = false.obs;
