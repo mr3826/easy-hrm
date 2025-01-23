@@ -17,8 +17,7 @@ class ProfileDataSource {
   Future<UserDetails?> getUserProfile({String? orgId}) async {
 
     try {
-      final response = await networkClient
-          .graphRequest(queryString: getUserProfileQuery, variables: {
+      final response = await networkClient.graphRequest(queryString: getUserProfileQuery, variables: {
         "orgUserId": orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID)
       });
       if (response.hasException) {

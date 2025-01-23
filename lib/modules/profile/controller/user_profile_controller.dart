@@ -520,8 +520,7 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   void _handleTokenInfo(di.Response response) async {
-    await GetStorage().write(AppString.ACCESS_TOKEN,
-        SignInResponse.fromJson(response.data).data?.accessToken);
+    await GetStorage().write(AppString.ACCESS_TOKEN, SignInResponse.fromJson(response.data).data?.accessToken);
     await GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken);
   }
