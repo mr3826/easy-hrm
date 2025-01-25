@@ -9,7 +9,6 @@ import '../../../widget/profile_tabbar_body/build_profile_leave_record.dart';
 import '../../../widget/profile_tabbar_body/leave_summary/leave_summary_widget.dart';
 import '../widgets/employee_overview.dart';
 
-
 class ProfileTabBar extends StatefulWidget {
   const ProfileTabBar({super.key});
 
@@ -21,32 +20,30 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final HrProfileController hrProfileController = Get.find<HrProfileController>();
+  final HrProfileController hrProfileController =
+      Get.find<HrProfileController>();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: hrProfileController.initialTabIndex);
+    _tabController = TabController(
+        length: 3,
+        vsync: this,
+        initialIndex: hrProfileController.initialTabIndex);
     _tabController.addListener(_onTabChanged);
   }
 
   void _onTabChanged() {
     if (_tabController.index == 1) {
-
-
-      if (hrProfileController.leaveRecordList?.isEmpty??true) {
+      if (hrProfileController.leaveRecordList?.isEmpty ?? true) {
         _getLeaveRecord();
       }
-
-
     } else if (_tabController.index == 2) {
-
-
-      if (hrProfileController.leaveSummary?.getOrganizationUsersLeaveSummary?.isEmpty ?? true) {
+      if (hrProfileController
+              .leaveSummary?.getOrganizationUsersLeaveSummary?.isEmpty ??
+          true) {
         _getLeaveSummary();
       }
-
-
     }
   }
 
@@ -56,7 +53,6 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
 
   void _getLeaveSummary() {
     hrProfileController.getLeaveSummary();
-
   }
 
   @override
@@ -65,7 +61,6 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
     _tabController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +73,10 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-
                 children: [
                   ProfileOverView(
-                    userDetails: Get.find<HrProfileController>().userDetails ?? UserDetails(),
+                    userDetails: Get.find<HrProfileController>().userDetails ??
+                        UserDetails(),
                     onRefresh: () {
                       Get.find<HrProfileController>().getUserProfile();
                     },
@@ -117,6 +112,4 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
       ],
     );
   }
-
 }
-

@@ -21,12 +21,11 @@ import 'department_history_view.dart';
 import 'department_layout.dart';
 import 'employee_status.dart';
 
-
-
 class ProfileOverView extends StatelessWidget {
   final UserDetails userDetails;
- final Function onRefresh;
-  const ProfileOverView({super.key,required this.userDetails,required this.onRefresh});
+  final Function onRefresh;
+  const ProfileOverView(
+      {super.key, required this.userDetails, required this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +38,15 @@ class ProfileOverView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               customSpacerHeight(height: 8),
+
               /// User description
               _descriptionLayout(),
-
 
               customSpacerHeight(height: 8),
 
               /// User email
-               _buildEmail(),
+              _buildEmail(),
 
               /// Phone number
               customSpacerHeight(height: 15),
@@ -76,16 +74,8 @@ class ProfileOverView extends StatelessWidget {
     );
   }
 
-
-
-
-
   _descriptionLayout() {
-    String drc = userDetails
-        .getOrganizationUserDetails
-        ?.profile
-        ?.about ??
-        '';
+    String drc = userDetails.getOrganizationUserDetails?.profile?.about ?? '';
     final wordCount = drc.split(' ').length;
     if (wordCount > 20) {
       return ExpandedText(
@@ -100,10 +90,8 @@ class ProfileOverView extends StatelessWidget {
     }
   }
 
-
-
-_buildEmail(){
-    return   Column(
+  _buildEmail() {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -118,11 +106,7 @@ _buildEmail(){
           children: [
             Flexible(
               child: Text(
-             userDetails
-                    .getOrganizationUserDetails
-                    ?.user
-                    ?.email ??
-                    "",
+                userDetails.getOrganizationUserDetails?.user?.email ?? "",
                 maxLines: 2,
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.hintColor,
@@ -131,21 +115,15 @@ _buildEmail(){
               ),
             ),
             const SizedBox(width: 12),
-            if (userDetails
-                .getOrganizationUserDetails
-                ?.user
-                ?.email !=
-                null)
+            if (userDetails.getOrganizationUserDetails?.user?.email != null)
               SizedBox(
                 height: 17,
                 width: 17,
                 child: GestureDetector(
                   onTap: () {
                     Clipboard.setData(ClipboardData(
-                        text:userDetails
-                            .getOrganizationUserDetails
-                            ?.user
-                            ?.email ??
+                        text: userDetails
+                                .getOrganizationUserDetails?.user?.email ??
                             ""));
 
                     showSuccessMessage(message: "Copied");
@@ -161,83 +139,65 @@ _buildEmail(){
         ),
       ],
     );
-}
+  }
 
-
-
-_phoneNumberText() {
+  _phoneNumberText() {
     return userInfoSectionLayout(
       staticText: AppString.text_phone.tr,
-      dynamicText:userDetails
-          .getOrganizationUserDetails
-          ?.profile
-          ?.personalNumber ??
-          "",
+      dynamicText:
+          userDetails.getOrganizationUserDetails?.profile?.personalNumber ?? "",
     );
   }
 
   _emergencyPhoneNumber() {
     return userInfoSectionLayout(
       staticText: AppString.text_emergency_phone.tr,
-      dynamicText: userDetails
-          .getOrganizationUserDetails
-          ?.profile
-          ?.emergencyNumber ??
-          "",
+      dynamicText:
+          userDetails.getOrganizationUserDetails?.profile?.emergencyNumber ??
+              "",
     );
   }
 
   _addressText() {
     return userInfoSectionLayout(
         staticText: AppString.text_address.tr,
-        dynamicText: userDetails
-            .getOrganizationUserDetails
-            ?.profile
-            ?.address ??
-            "");
+        dynamicText:
+            userDetails.getOrganizationUserDetails?.profile?.address ?? "");
   }
 
   Widget _buildDepartmentLayout(BuildContext context) {
     String? department =
-        userDetails
-            .getOrganizationUserDetails
-            ?.department
-            ?.name;
+        userDetails.getOrganizationUserDetails?.department?.name;
     if (department != null) {
-      return BuildDepartment(userDetails: userDetails, onDtpHistoryAction: (){
-
-         Get.find<UserProfileController>().getEmploymentInfo();
-         customAntButtonSheet(context: context, child: const DepartmentHistoryView());
-
-
-      },);
+      return BuildDepartment(
+        userDetails: userDetails,
+        onDtpHistoryAction: () {
+          Get.find<UserProfileController>().getEmploymentInfo();
+          customAntButtonSheet(
+              context: context, child: const DepartmentHistoryView());
+        },
+      );
     }
     return const SizedBox.shrink();
   }
 
-
-
   Widget _buildDesignationHistoryLayout(BuildContext context) {
-
-    return BuildEmployeeStatusLayout(userDetails: userDetails,onDesignation: (){
-      Get.find<UserProfileController>().getEmploymentInfo();
-      customAntButtonSheet(child: const DesignationLayout(), context: context);
-
-    },onEmployeeStatus: (){
-      Get.find<UserProfileController>().getEmploymentInfo();
-      customAntButtonSheet(
-          context: context, child: const EmploymentLayout());
-
-    },);
+    return BuildEmployeeStatusLayout(
+      userDetails: userDetails,
+      onDesignation: () {
+        Get.find<UserProfileController>().getEmploymentInfo();
+        customAntButtonSheet(
+            child: const DesignationLayout(), context: context);
+      },
+      onEmployeeStatus: () {
+        Get.find<UserProfileController>().getEmploymentInfo();
+        customAntButtonSheet(context: context, child: const EmploymentLayout());
+      },
+    );
   }
-
 
   /// Fetches the latest profile data from the server.
   Future<void> _fetchProfileData() async {
     onRefresh();
-
   }
-
 }
-
-
