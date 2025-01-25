@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
@@ -13,14 +12,15 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../utils/app_style.dart';
 import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/update_profile_controller.dart';
+import '../../model/user_profile.dart';
 
 class TextFiledLayout extends StatelessWidget {
+ final UserDetails? userDetails;
   final dynamic formKey;
-  const TextFiledLayout({super.key, this.formKey});
+  const TextFiledLayout({super.key, this.formKey,this.userDetails});
 
   @override
   Widget build(BuildContext context) {
@@ -73,200 +73,200 @@ class TextFiledLayout extends StatelessWidget {
       ],
     );
   }
-}
 
-_phoneNumberInputField() {
-  return Column(
-    children: [
-      customTitleText(
-        text: AppString.text_phone.tr,
-      ),
-      customSpacerHeight(height: 12),
-      const PersonalPhoneNumber(),
-    ],
-  );
-}
 
-_userEmergencyPhoneNumber() {
-  return Column(
-    children: [
-      customTitleText(
-        text: AppString.text_emergency_phone.tr,
-      ),
-      customSpacerHeight(height: 12),
-      const EmergencyPhoneNumber(),
-      customSpacerHeight(height: 12),
-    ],
-  );
-}
+ _phoneNumberInputField() {
+   return Column(
+     children: [
+       customTitleText(
+         text: AppString.text_phone.tr,
+       ),
+       customSpacerHeight(height: 12),
+       const PersonalPhoneNumber(),
+     ],
+   );
+ }
 
-void _clearInputField() {
-  UserProfileController controller = Get.find<UserProfileController>();
-  controller.firstName.value = "";
-  controller.lastName.value = "";
-  controller.address.value = "";
-  controller.description.value = "";
-  editBioController.clear();
-  editEmergencyPhoneController.clear();
-  editPhoneController.clear();
-  editAddressController.clear();
-  editLastNameController.clear();
-  editFirstNameController.clear();
-}
+ _userEmergencyPhoneNumber() {
+   return Column(
+     children: [
+       customTitleText(
+         text: AppString.text_emergency_phone.tr,
+       ),
+       customSpacerHeight(height: 12),
+       const EmergencyPhoneNumber(),
+       customSpacerHeight(height: 12),
+     ],
+   );
+ }
 
-Map<String, dynamic>? _addVariables() {
-  Map<String, dynamic> inputData = {};
+ void _clearInputField() {
+   UserProfileController controller = Get.find<UserProfileController>();
+   controller.firstName.value = "";
+   controller.lastName.value = "";
+   controller.address.value = "";
+   controller.description.value = "";
+   editBioController.clear();
+   editEmergencyPhoneController.clear();
+   editPhoneController.clear();
+   editAddressController.clear();
+   editLastNameController.clear();
+   editFirstNameController.clear();
+ }
 
-  inputData["about"] = editBioController.text;
+ Map<String, dynamic>? _addVariables() {
+   Map<String, dynamic> inputData = {};
 
-  // Set emergency phone number with country code if updated
-  _addInputPersonalPhoneNumber(inputData);
+   inputData["about"] = editBioController.text;
 
-  // Set personal phone number with country code if updated
-  _addInputEmergencyPhoneNumber(inputData);
+   // Set emergency phone number with country code if updated
+   _addInputPersonalPhoneNumber(inputData);
 
-  inputData["address"] = editAddressController.text;
+   // Set personal phone number with country code if updated
+   _addInputEmergencyPhoneNumber(inputData);
 
-  inputData["last_name"] = editLastNameController.text;
+   inputData["address"] = editAddressController.text;
 
-  // Set user first name
-  _addInputUserFirstName(inputData);
+   inputData["last_name"] = editLastNameController.text;
 
-  inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
+   // Set user first name
+   _addInputUserFirstName(inputData);
 
-  inputData["department_id"] = Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.department
-          ?.id ??
-      "";
+   inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
-  inputData["image"] =
-      "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
-  // Set image path if there is an uploaded profile image
-  _addInputProfileImage(inputData);
+   inputData["department_id"] =
+       userDetails
+           ?.getOrganizationUserDetails
+           ?.department
+           ?.id ??
+           "";
 
-  return inputData;
-}
+   inputData["image"] =
+   "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+   // Set image path if there is an uploaded profile image
+   _addInputProfileImage(inputData);
 
-void _addInputProfileImage(Map<String, dynamic> inputData) {
-  if (Get.find<PikedProfileImgController>()
-      .storageForUpload
-      .filePath
-      .value
-      .isNotEmpty) {
-    inputData["image"] =
-        "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
-  }
-}
+   return inputData;
+ }
 
-void _addInputUserFirstName(Map<String, dynamic> inputData) {
-  if (editFirstNameController.text.isNotEmpty) {
-    inputData["first_name"] = editFirstNameController.text;
-  } else {
-    inputData["first_name"] = Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.firstName ??
-        "";
-  }
-}
+ void _addInputProfileImage(Map<String, dynamic> inputData) {
+   if (Get.find<PikedProfileImgController>()
+       .storageForUpload
+       .filePath
+       .value
+       .isNotEmpty) {
+     inputData["image"] =
+     "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+   }
+ }
 
-void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
-  if (editPhoneController.text.isEmpty) {
-    inputData["personal_phone_number"] = "";
-  } else {
-    inputData["personal_phone_number"] =
-        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
-  }
-}
+ void _addInputUserFirstName(Map<String, dynamic> inputData) {
+   if (editFirstNameController.text.isNotEmpty) {
+     inputData["first_name"] = editFirstNameController.text;
+   } else {
+     inputData["first_name"] =
+         userDetails
+         ?.getOrganizationUserDetails
+         ?.profile
+         ?.firstName ??
+         "";
+   }
+ }
 
-void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
-  if (editEmergencyPhoneController.text.isEmpty) {
-    inputData["emergency_phone_number"] = "";
-  } else {
-    inputData["emergency_phone_number"] =
-        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
-  }
-}
+ void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
+   if (editPhoneController.text.isEmpty) {
+     inputData["personal_phone_number"] = "";
+   } else {
+     inputData["personal_phone_number"] =
+         Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+   }
+ }
 
-_userPersonalBio() {
-  return userTextFieldLayout(
-      hintText: AppString.text_bio.tr,
-      titleText: AppString.text_bio.tr,
-      isRequired: false,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().description.value = value!;
-      },
-      controller: editBioController,
-      isNoteFieldVisible: true);
-}
+ void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
+   if (editEmergencyPhoneController.text.isEmpty) {
+     inputData["emergency_phone_number"] = "";
+   } else {
+     inputData["emergency_phone_number"] =
+         Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+   }
+ }
 
-_userAddress() {
-  return userTextFieldLayout(
-      isRequired: false,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().address.value = value!;
-      },
-      titleText: AppString.text_address.tr,
-      controller: editAddressController,
-      hintText: AppString.text_address.tr);
-}
+ _userPersonalBio() {
+   return userTextFieldLayout(
+       hintText: AppString.text_bio.tr,
+       titleText: AppString.text_bio.tr,
+       isRequired: false,
+       onChanged: (String? value) {
+         Get.find<UserProfileController>().description.value = value!;
+       },
+       controller: editBioController,
+       isNoteFieldVisible: true);
+ }
 
-_userLastName() {
-  return userTextFieldLayout(
-      hintText: AppString.text_last_name.tr,
-      titleText: AppString.text_last_name.tr,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().lastName.value = value!;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          return AppString.the_last_name_field_is_required.tr;
-        } else {
-          return null;
-        }
-      },
-      controller: editLastNameController);
-}
-_employeeID() {
-  return IgnorePointer(
+ _userAddress() {
+   return userTextFieldLayout(
+       isRequired: false,
+       onChanged: (String? value) {
+         Get.find<UserProfileController>().address.value = value!;
+       },
+       titleText: AppString.text_address.tr,
+       controller: editAddressController,
+       hintText: AppString.text_address.tr);
+ }
+
+ _userLastName() {
+   return userTextFieldLayout(
+       hintText: AppString.text_last_name.tr,
+       titleText: AppString.text_last_name.tr,
+       onChanged: (String? value) {
+         Get.find<UserProfileController>().lastName.value = value!;
+       },
+       validator: (value) {
+         if (value!.isEmpty) {
+           return AppString.the_last_name_field_is_required.tr;
+         } else {
+           return null;
+         }
+       },
+       controller: editLastNameController);
+ }
+ _employeeID() {
+   return IgnorePointer(
      ignoring: true, /// Is role employee than always  ignoring: true.
-      child: userTextFieldLayout(
-        isRequired: false,
-        hintText: AppString.text_employee_Id.tr,
-        titleText: AppString.text_employee_Id.tr,
-        controller: Get.find<UserProfileController>().editEmployeeIDController),
-  );
-}
+     child: userTextFieldLayout(
+         isRequired: false,
+         hintText: AppString.text_employee_Id.tr,
+         titleText: AppString.text_employee_Id.tr,
+         controller: Get.find<UserProfileController>().editEmployeeIDController),
+   );
+ }
 
-_userFirstName() {
-  return userTextFieldLayout(
-      hintText: AppString.text_first_name.tr,
-      titleText: AppString.text_first_name.tr,
-      onChanged: (String? value) {
-        Get.find<UserProfileController>().firstName.value = value!;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          return AppString.the_first_name_field_is_required.tr;
-        } else {
-          return null;
-        }
-      },
-      controller: editFirstNameController);
+ _userFirstName() {
+   return userTextFieldLayout(
+       hintText: AppString.text_first_name.tr,
+       titleText: AppString.text_first_name.tr,
+       onChanged: (String? value) {
+         Get.find<UserProfileController>().firstName.value = value!;
+       },
+       validator: (value) {
+         if (value!.isEmpty) {
+           return AppString.the_first_name_field_is_required.tr;
+         } else {
+           return null;
+         }
+       },
+       controller: editFirstNameController);
+ }
 }
-
 Widget userTextFieldLayout(
     {required String titleText,
-    required TextEditingController controller,
-    required String hintText,
-    bool isNoteFieldVisible = false,
-    bool isRequired = true,
-    final String? Function(String?)? onChanged,
-    final TextInputType? textInputType,
-    validator}) {
+      required TextEditingController controller,
+      required String hintText,
+      bool isNoteFieldVisible = false,
+      bool isRequired = true,
+      final String? Function(String?)? onChanged,
+      final TextInputType? textInputType,
+      validator}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -274,20 +274,20 @@ Widget userTextFieldLayout(
       customSpacerHeight(height: 12),
       isNoteFieldVisible != false
           ? InputNote(
-              controller: editBioController,
-              hintText: hintText,
-              onChanged: onChanged,
-              maxLength: 150,
-            )
+        controller: editBioController,
+        hintText: hintText,
+        onChanged: onChanged,
+        maxLength: 150,
+      )
           : CustomInputField(
-              hint: hintText,
-              hintStyle: AppStyle.normal_text_grey
-                  .copyWith(fontWeight: FontWeight.w500),
-              controller: controller,
-              textInputType: textInputType,
-              validator: validator,
-              onChanged: onChanged,
-            ),
+        hint: hintText,
+        hintStyle: AppStyle.normal_text_grey
+            .copyWith(fontWeight: FontWeight.w500),
+        controller: controller,
+        textInputType: textInputType,
+        validator: validator,
+        onChanged: onChanged,
+      ),
       customSpacerHeight(height: 12),
     ],
   );

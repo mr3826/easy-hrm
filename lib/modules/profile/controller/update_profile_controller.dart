@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
+import 'package:payrun_mobile/modules/profile/controller/profile_module/hr_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
@@ -38,9 +39,11 @@ class UpdateProfileController extends GetxController {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!, methodName: "updateUserProfile");
     } else {
-    //  Get.find<UserProfileController>().getUserProfile();
-      Get.back();
-      Get.back();
+     Get.find<HrProfileController>().getUserProfile();
+     // Get.find<ProfileController>().getUserProfile();
+      Get.back(canPop: false);
+      Get.back(canPop: false);
+      Get.back(canPop: false);
       showSuccessMessage(message: AppString.profile_update_successfully_text.tr);
       Get.find<PikedProfileImgController>().storageForUpload.filePath.value="";
       Get.find<DashboardController>().getProfileInfoForDashboard();

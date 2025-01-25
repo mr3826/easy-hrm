@@ -11,7 +11,6 @@ import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
-import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
@@ -48,6 +47,7 @@ class UpdateProfileScreen extends StatelessWidget {
                 customSpacerHeight(height: 30),
                 TextFiledLayout(
                   formKey: _formKey,
+                  userDetails: userDetails,
                 )
               ],
             ),
@@ -141,12 +141,10 @@ class UpdateProfileScreen extends StatelessWidget {
 
   _removeBtnLayout(BuildContext context) {
     final pikedProfileImgController = Get.find<PikedProfileImgController>();
-    final userProfileController = Get.find<UserProfileController>();
 
     final storageFilePath =
         pikedProfileImgController.storageForUpload.filePath.value;
-    final profileImage = userProfileController
-        .userDetails?.getOrganizationUserDetails?.profile?.image;
+    final profileImage = userDetails.getOrganizationUserDetails?.profile?.image;
 
     if ((storageFilePath.isNotEmpty || _isProfileImageValid(profileImage))) {
       return GestureDetector(
@@ -206,8 +204,7 @@ class UpdateProfileScreen extends StatelessWidget {
   }
 
   bool _isProfileInfoValid() {
-    return editFirstNameController.text.isNotEmpty &&
-        editLastNameController.text.isNotEmpty;
+    return editFirstNameController.text.isNotEmpty && editLastNameController.text.isNotEmpty;
   }
 
   _profileImageLayout() {
@@ -226,7 +223,6 @@ class UpdateProfileScreen extends StatelessWidget {
         ))
         : _placeholderImage();
   }
-
 
 
   Map<String, dynamic>? _addVariables() {
@@ -249,24 +245,34 @@ class UpdateProfileScreen extends StatelessWidget {
 
     inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
-    inputData["department_id"] = Get.find<UserProfileController>()
-        .userDetails
-        ?.getOrganizationUserDetails
+    inputData["department_id"] =
+        userDetails
+        .getOrganizationUserDetails
         ?.department
         ?.id ??
         "";
-    inputData["image"] = "";
-
+   // inputData["image"] = "";
+    _addInputProfileImage(inputData);
     return inputData;
   }
 
+  void _addInputProfileImage(Map<String, dynamic> inputData) {
+    if (Get.find<PikedProfileImgController>()
+        .storageForUpload
+        .filePath
+        .value
+        .isNotEmpty) {
+      inputData["image"] =
+      "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
+    }
+  }
   void _addInputUserFirstName(Map<String, dynamic> inputData) {
     if (editFirstNameController.text.isNotEmpty) {
       inputData["first_name"] = editFirstNameController.text;
     } else {
-      inputData["first_name"] = Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
+      inputData["first_name"] =
+          userDetails
+          .getOrganizationUserDetails
           ?.profile
           ?.firstName ??
           "";
@@ -337,8 +343,7 @@ class UpdateProfileScreen extends StatelessWidget {
     return CircularNetworkImage(
       errorText:getInitials("${userDetails.getOrganizationUserDetails?.profile?.firstName} ${userDetails.getOrganizationUserDetails?.profile?.lastName}"),
       radius: 42,
-      imageUrl: buildImgIxUrl(imgKey: userDetails.getOrganizationUserDetails?.profile?.image,isPublic: true),
-
+      imageUrl: buildImgIxUrl(imagePath: userDetails.getOrganizationUserDetails?.profile?.image,isPublic: true),
     );
   }
 

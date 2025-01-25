@@ -13,6 +13,7 @@ import '../../../../../../utils/dimensions.dart';
 import '../../../../../timeline/view/widget/timeline_calendar.dart';
 import '../../../../controller/user_profile_controller.dart';
 import '../../../../model/user_profile.dart';
+import '../../../widget/department_history.dart';
 import '../../../widget/designation_layout.dart';
 import '../../../widget/employeement_status_layout.dart';
 import '../../../widget/user_info_section_layout.dart';
@@ -205,7 +206,7 @@ _phoneNumberText() {
       return BuildDepartment(userDetails: userDetails, onDtpHistoryAction: (){
 
          Get.find<UserProfileController>().getEmploymentInfo();
-         // customAntButtonSheet(context: context, child: const DepartmentHistory());
+         customAntButtonSheet(context: context, child: const DepartmentHistory());
 
 
       },);

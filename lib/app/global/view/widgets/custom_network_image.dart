@@ -223,7 +223,7 @@ Widget _buildEmptyBox() {
 String buildImgIxUrl({
   String? imgKey,
   String? fileDirectory,
-  String? profileImageKey,
+  String? imagePath,
   String? orgId,
   bool isPublic = false,
 }) {
@@ -241,8 +241,9 @@ String buildImgIxUrl({
 
   // Construct the URL path based on the given parameters.
   final organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_ID);
+
   final urlPath =
-      profileImageKey ?? '${fileDirectory ?? "files"}/$organizationId/$imgKey';
+      imagePath ?? '${fileDirectory ?? "files"}/$organizationId/$imgKey';
 
   // Generate the full URL string using the client.
   return urlClient.createURLString(urlPath);

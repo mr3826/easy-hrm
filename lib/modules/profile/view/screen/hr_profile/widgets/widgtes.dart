@@ -9,6 +9,7 @@ import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/log_out_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/hr_profile/widgets/update_profile_action_view.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/hr_profile/widgets/update_profile_screen.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/user_info_section_layout.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
@@ -20,6 +21,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../app/global/view/widgets/custom_network_image.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
+import '../../../../../../common/widget/custom_image_network_widget.dart';
 import '../../../../../../routes/app_pages.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../controller/profile_image_selected_controller.dart';
@@ -54,7 +56,7 @@ class UserInfoLayout extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: [
                   ///User name and department
-                  _userNameAndDptLayout(),
+                  _userNameAndDptLayout(context),
                 ],
               ),
             ),
@@ -66,18 +68,17 @@ class UserInfoLayout extends StatelessWidget {
   }
 
   _userImageLayout({double? height}) {
-    String userName =
-        "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
+    String userName = "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
     return CircularNetworkImage(
       errorText: getInitials(userName),
       radius: height ?? 28,
       imageUrl: buildImgIxUrl(
-          imgKey: information.getOrganizationUserDetails?.profile?.image ?? "",
+          imagePath: information.getOrganizationUserDetails?.profile?.image ?? "",
           isPublic: true),
     );
   }
 
-  _userNameAndDptLayout() {
+  _userNameAndDptLayout(BuildContext context) {
     String userName = "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +96,7 @@ class UserInfoLayout extends StatelessWidget {
             customSpacerWidth(width: 8),
             if (editIconUrl != null)
               GestureDetector(
-                onTap: ()=>_editProfileRoute(information),
+                onTap: ()=>_updateProfileAction(context),
                 child: SizedBox(
                     height: AppLayout.getHeight(17),
                     width: AppLayout.getWidth(17),
@@ -154,39 +155,14 @@ class UserInfoLayout extends StatelessWidget {
   }
 
 
-  void _editProfileRoute(UserDetails userDetails) {
-    ///clear img local path
-    Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
-
-    _setDataForUpdateChecker(information.getOrganizationUserDetails?.profile); ///Save data
-
-    UserProfileController controller =Get.find<UserProfileController>();
-
-
-
-    ///Clear controller
-    controller.firstName.value = "";
-    controller.lastName.value = "";
-    controller.address.value = "";
-    controller.description.value = "";
-    Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
-    Get.to(()=>UpdateProfileScreen(userDetails: userDetails,));
+  _updateProfileAction(BuildContext context) {
+    customAntButtonSheet(
+        context: context,
+        child: UpdateProfileActionView(
+          userDetails: information));
   }
 
 
-
-  void _setDataForUpdateChecker(Profile? userDetails) {
-    editFirstNameController.text = userDetails?.firstName ?? "";
-    editLastNameController.text = userDetails?.lastName ?? "";
-    editAddressController.text = userDetails?.address ?? "";
-    editPhoneController.text = userDetails?.personalNumber ?? "";
-    editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
-    editBioController.text = userDetails?.about ?? "";
-
-    //todo
-    Get.find<UserProfileController>().editEmployeeIDController.text =  Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.employeeId??"";
-
-  }
 
 }
 
