@@ -14,19 +14,23 @@ AppBar buildProfileAppBar({
 }) {
   return AppBar(
     leadingWidth: AppLayout.getWidth(200),
-    backgroundColor: backgroundColor ?? AppColor.primaryColor,
+    backgroundColor:backgroundColor?? AppColor.primaryColor,
     elevation: 0,
     actions: [
-      IconButton(
-        onPressed: onAction,
-        icon: Icon(
-          actionIcon ?? Icons.menu,
-          color: AppColor.normalTextColor,
+      Padding(
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: IconButton(
+          onPressed: onAction,
+          padding: EdgeInsets.zero,
+          icon: Icon(
+            actionIcon ?? Icons.menu,
+            color: AppColor.normalTextColor,
+          ),
         ),
       ),
     ],
     leading:leadingWidget ?? Padding(
-      padding: const EdgeInsets.only(top: 16.0, left: 18),
+      padding: const EdgeInsets.only(left: 18),
       child:
           Text(
             AppString.text_profile.tr,

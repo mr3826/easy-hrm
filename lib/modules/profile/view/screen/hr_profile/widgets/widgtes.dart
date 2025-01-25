@@ -19,7 +19,9 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../app/global/view/widgets/custom_network_image.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
+import '../../../../../../routes/app_pages.dart';
 import '../../../../../../utils/utils.dart';
+import '../../../../controller/profile_image_selected_controller.dart';
 import '../../../../model/user_log_history.dart';
 import '../../../../model/user_profile.dart';
 import '../../../widget/action_layout_widget.dart';
@@ -38,7 +40,7 @@ class UserInfoLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: marginLayout,
+      padding: marginLayout.copyWith(top: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -92,9 +94,7 @@ class UserInfoLayout extends StatelessWidget {
             customSpacerWidth(width: 8),
             if (editIconUrl != null)
               GestureDetector(
-                onTap: () {
-
-                },
+                onTap: ()=>_editProfileRoute(),
                 child: SizedBox(
                     height: AppLayout.getHeight(17),
                     width: AppLayout.getWidth(17),
@@ -153,9 +153,38 @@ class UserInfoLayout extends StatelessWidget {
   }
 
 
+  void _editProfileRoute() {
+    ///clear img local path
+    Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
+
+    _setDataForUpdateChecker(information.getOrganizationUserDetails?.profile); ///Save data
+
+    UserProfileController controller =Get.find<UserProfileController>();
 
 
 
+    ///Clear controller
+    controller.firstName.value = "";
+    controller.lastName.value = "";
+    controller.address.value = "";
+    controller.description.value = "";
+    Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
+  }
+
+
+
+  void _setDataForUpdateChecker(Profile? userDetails) {
+    editFirstNameController.text = userDetails?.firstName ?? "";
+    editLastNameController.text = userDetails?.lastName ?? "";
+    editAddressController.text = userDetails?.address ?? "";
+    editPhoneController.text = userDetails?.personalNumber ?? "";
+    editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
+    editBioController.text = userDetails?.about ?? "";
+
+    //todo
+    Get.find<UserProfileController>().editEmployeeIDController.text =  Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.employeeId??"";
+
+  }
 
 }
 
@@ -377,8 +406,11 @@ languageLayout(context) {
   );
 }
 
-organisationLayout(context) {
-  var controller = Get.find<UserProfileController>();
+_organisationLayout(context,UserDetails userDetails) {
+  print('''
+  userDetails_name : ${userDetails.getOrganizationUserDetails?.profile?.firstName??""}
+  ''');
+  UserProfileController controller=Get.find<UserProfileController>();
   return Padding(
     padding: marginLayout,
     child: Column(
@@ -395,13 +427,13 @@ organisationLayout(context) {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            organisationLogoLayout(),
+            organisationLogoLayout(userDetails),
             customSpacerWidth(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  controller.userDetails?.getOrganizationUserDetails
+                 userDetails.getOrganizationUserDetails
                           ?.organization?.name ??
                       "Not added yet",
                   style: AppStyle.mid_large_text.copyWith(
@@ -413,7 +445,7 @@ organisationLayout(context) {
                 if (controller.employeeWorkHistory?.getOrganizationUserHistory
                             ?.designationHistories !=
                         null &&
-                    controller.employeeWorkHistory!.getOrganizationUserHistory!
+                   controller.employeeWorkHistory!.getOrganizationUserHistory!
                         .designationHistories!.isNotEmpty)
                   Text(
                     controller.employeeWorkHistory?.getOrganizationUserHistory
@@ -446,8 +478,8 @@ organisationLayout(context) {
   );
 }
 
-profileInfoDrawerLayout() {
-  var controller = Get.find<UserProfileController>();
+_profileInfoDrawerLayout(UserDetails userDetails) {
+  UserProfileController controller = Get.find<UserProfileController>();
   return Padding(
     padding: const EdgeInsets.all(12.0),
     child: Container(
@@ -461,13 +493,13 @@ profileInfoDrawerLayout() {
         child: Center(
           child: Column(
             children: [
-              // userProfileImgLayout(),
+               _userProfileImgLayout(userDetails),
               customSpacerHeight(height: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "${controller.userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${controller.userDetails?.getOrganizationUserDetails?.profile?.lastName ?? "Not added yet"}",
+                    "${userDetails.getOrganizationUserDetails?.profile?.firstName ?? ""} ${userDetails.getOrganizationUserDetails?.profile?.lastName ?? ""}",
                     style: AppStyle.mid_large_text
                         .copyWith(color: AppColor.normalTextColor),
                   ),
@@ -482,7 +514,7 @@ profileInfoDrawerLayout() {
                     Text(
                       controller.employeeWorkHistory?.getOrganizationUserHistory
                               ?.designationHistories?[0].designation?.name ??
-                          "Not added yet",
+                          "Not designation",
                       style: AppStyle.normal_text_grey
                           .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
                     ),
@@ -495,6 +527,15 @@ profileInfoDrawerLayout() {
       ),
     ),
   );
+}
+
+_userProfileImgLayout(UserDetails userDetails) {
+    String userName="${userDetails.getOrganizationUserDetails?.profile?.firstName} ${userDetails.getOrganizationUserDetails?.profile?.lastName}";
+    return CircularNetworkImage(
+      errorText: getInitials(userName),
+      radius:  28,
+      imageUrl:buildImgIxUrl(imgKey: userDetails.getOrganizationUserDetails?.profile?.image,isPublic: true),
+    );
 }
 
 phoneNumberText() {
@@ -562,17 +603,17 @@ employmentStatus(String? employmentStatus) {
   }
 }
 
-organisationLogoLayout() {
+organisationLogoLayout(UserDetails userDetails) {
   return CircularNetworkImage(
     radius: AppLayout.getHeight(25),
     imageUrl: buildImgIxUrl(
         imgKey:
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
+            "${userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
         isPublic: true,
         fileDirectory: "profile_images"),
-    errorText: getInitials(Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
+    errorText: getInitials(
+            userDetails
+            .getOrganizationUserDetails
             ?.organization!
             .name ??
         ""),
@@ -580,7 +621,7 @@ organisationLogoLayout() {
   );
 }
 
-endDrawer(BuildContext context) {
+endDrawer(BuildContext context,UserDetails userDetails) {
   return Drawer(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     shape: const RoundedRectangleBorder(
@@ -589,9 +630,9 @@ endDrawer(BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         customSpacerHeight(height: 40),
-       profileInfoDrawerLayout(),
+        _profileInfoDrawerLayout(userDetails),
         customSpacerHeight(height: 40),
-        organisationLayout(context),
+        _organisationLayout(context,userDetails),
         const Spacer(),
         languageLayout(context),
         customSpacerHeight(height: 30),

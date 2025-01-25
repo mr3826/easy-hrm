@@ -22,14 +22,15 @@ class EmployeeProfileScreen extends StatelessWidget {
     UserLogHistory? userLogHistory =
         Get.find<UserProfileController>().userLogHistory;
 
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      appBar: _profileAppbar(context),
-      body: Obx(() {
-        if (Get.find<ProfileController>().isLoadingProfile.isTrue) {
-          return const LoadingIndicator();
-        } else {
-          return Column(
+    return Obx(() {
+      if (Get.find<ProfileController>().isLoadingProfile.isTrue) {
+        return const LoadingIndicator();
+      }
+      return Scaffold(
+          backgroundColor: AppColor.backgroundColor,
+          appBar: _profileAppbar(context,
+              Get.find<ProfileController>().userDetails ?? UserDetails()),
+          body: Column(
             children: [
               UserInfoLayout(
                 information:
@@ -49,13 +50,11 @@ class EmployeeProfileScreen extends StatelessWidget {
                 },
               )),
             ],
-          );
-        }
-      }),
-    );
+          ));
+    });
   }
 
-  _profileAppbar(BuildContext context) {
+  _profileAppbar(BuildContext context, UserDetails userDetails) {
     return buildProfileAppBar(
       backgroundColor: AppColor.backgroundColor,
       onAction: () {
@@ -64,7 +63,7 @@ class EmployeeProfileScreen extends StatelessWidget {
           child: Container(
             color: Colors.transparent,
             width: double.infinity,
-            child: endDrawer(context),
+            child: endDrawer(context, userDetails),
           ),
         );
       },

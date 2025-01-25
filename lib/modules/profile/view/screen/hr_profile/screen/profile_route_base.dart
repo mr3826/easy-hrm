@@ -16,40 +16,46 @@ import '../../../../controller/profile_module/route_base_profile_controller.dart
 import '../../../../controller/user_profile_controller.dart';
 import '../../../widget/profile_appbar.dart';
 
-
 class ProfileRouteBase extends StatelessWidget {
   const ProfileRouteBase({super.key});
   @override
   Widget build(BuildContext context) {
     Get.put(ProfileRouteBaseController());
-    UserLogHistory? userLogHistory = Get.find<UserProfileController>().userLogHistory;
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      appBar: _profileAppbar(context),
-      body: Obx((){
-
-    if (Get.find<ProfileRouteBaseController>().isLoadingProfile.isTrue) {
-    return const LoadingIndicator();
-    } else {
-        return Column(
-          children: [
-            UserInfoLayout(
-              information: Get.find<ProfileRouteBaseController>().userDetails ?? UserDetails(),
-              editIconUrl: Images.EDIT_ICON,
-            ),
-            customSpacerHeight(height: 30),
-            LeaveStatusGoal(
-              userLogHistory: userLogHistory ?? UserLogHistory(),
-            ),
-            Expanded(
-              child: ProfileOverView(userDetails: Get.find<ProfileRouteBaseController>().userDetails ?? UserDetails(),onRefresh: (){
-                Get.find<ProfileRouteBaseController>().getUserProfile();
-              },),
-            ),
-          ],
-        );}
-      }),
-    );
+    UserLogHistory? userLogHistory =
+        Get.find<UserProfileController>().userLogHistory;
+    return Obx(() {
+      if (Get.find<ProfileRouteBaseController>().isLoadingProfile.isTrue) {
+        return const LoadingIndicator();
+      } else {
+        return Scaffold(
+            backgroundColor: AppColor.backgroundColor,
+            appBar: _profileAppbar(context),
+            body: Column(
+              children: [
+                UserInfoLayout(
+                  information:
+                      Get.find<ProfileRouteBaseController>().userDetails ??
+                          UserDetails(),
+                  editIconUrl: Images.EDIT_ICON,
+                ),
+                customSpacerHeight(height: 30),
+                LeaveStatusGoal(
+                  userLogHistory: userLogHistory ?? UserLogHistory(),
+                ),
+                Expanded(
+                  child: ProfileOverView(
+                    userDetails:
+                        Get.find<ProfileRouteBaseController>().userDetails ??
+                            UserDetails(),
+                    onRefresh: () {
+                      Get.find<ProfileRouteBaseController>().getUserProfile();
+                    },
+                  ),
+                ),
+              ],
+            ));
+      }
+    });
   }
 
   _profileAppbar(BuildContext context) {
@@ -57,21 +63,24 @@ class ProfileRouteBase extends StatelessWidget {
       backgroundColor: AppColor.backgroundColor,
       leadingWidget: Row(
         children: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_back_ios)),
-          const SizedBox(width: 8,),
+          IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {}, icon: const Icon(Icons.arrow_back_ios)),
+          const SizedBox(
+            width: 8,
+          ),
           Text(
             AppString.text_profile.tr,
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor,
               fontWeight: FontWeight.w600,
-              fontSize: Dimensions.fontSizeMid + 1,
+              fontSize: Dimensions.fontSizeMid,
             ),
           ),
         ],
       ),
-      actionIcon:CupertinoIcons.bell,
+      actionIcon: CupertinoIcons.bell,
       onAction: () {},
     );
   }
 }
-

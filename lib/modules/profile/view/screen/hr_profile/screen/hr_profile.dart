@@ -24,57 +24,61 @@ class HrProfileScreen extends StatelessWidget {
 
     ///todo [ProfileController]
     ///todo global
-    UserLogHistory? userLogHistory = Get.find<UserProfileController>().userLogHistory;
+    UserLogHistory? userLogHistory =
+        Get.find<UserProfileController>().userLogHistory;
 
     return DefaultTabController(
       length: 3, // Number of tabs
-      child: Scaffold(
-        backgroundColor: AppColor.backgroundColor,
-        appBar: _profileAppbar(context),
-        body: Obx((){
-
-          if(Get.find<HrProfileController>().isLoadingProfile.isTrue){
-            return const LoadingIndicator();
-          }else{
-            return  Column(
-              children: [
-
-                UserInfoLayout(
-                  information: Get.find<HrProfileController>().userDetails ?? UserDetails(),
-                  editIconUrl: Images.EDIT_ICON,
-                ),
-
-                customSpacerHeight(height: 30),
-
-                LeaveStatusGoal(
-                  userLogHistory: userLogHistory ?? UserLogHistory(),
-                ),
-
-                customSpacerHeight(height: 30),
-                // TabBar Section
-                _buildTabBarItem(),
-
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      ProfileOverView(userDetails: Get.find<HrProfileController>().userDetails ?? UserDetails(),onRefresh: (){
-                        Get.find<HrProfileController>().getUserProfile();
-                      },),
-                      const BuildLeaveRecord(),
-                      const BuildProfileLeaveSummary(),
-                    ],
+      child: Obx(() {
+        if (Get.find<HrProfileController>().isLoadingProfile.isTrue) {
+          return const LoadingIndicator();
+        } else {
+          return Scaffold(
+              backgroundColor: AppColor.backgroundColor,
+              appBar: _profileAppbar(context,
+                  Get.find<HrProfileController>().userDetails ?? UserDetails()),
+              body: Column(
+                children: [
+                  UserInfoLayout(
+                    information: Get.find<HrProfileController>().userDetails ??
+                        UserDetails(),
+                    editIconUrl: Images.EDIT_ICON,
                   ),
-                ),
-              ],
-            );
-          }
-        })
 
-      ),
+                  customSpacerHeight(height: 30),
+
+                  LeaveStatusGoal(
+                    userLogHistory: userLogHistory ?? UserLogHistory(),
+                  ),
+
+                  customSpacerHeight(height: 30),
+                  // TabBar Section
+                  _buildTabBarItem(),
+
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        ProfileOverView(
+                          userDetails:
+                              Get.find<HrProfileController>().userDetails ??
+                                  UserDetails(),
+                          onRefresh: () {
+                            Get.find<HrProfileController>().getUserProfile();
+                          },
+                        ),
+                        const BuildLeaveRecord(),
+                        const BuildProfileLeaveSummary(),
+                      ],
+                    ),
+                  ),
+                ],
+              ));
+        }
+      }),
     );
   }
 
-  _profileAppbar(BuildContext context) {
+  _profileAppbar(BuildContext context, UserDetails userDetails) {
     return buildProfileAppBar(
       backgroundColor: AppColor.backgroundColor,
       onAction: () {
@@ -83,7 +87,7 @@ class HrProfileScreen extends StatelessWidget {
           child: Container(
             color: Colors.transparent,
             width: double.infinity,
-            child: endDrawer(context),
+            child: endDrawer(context, userDetails),
           ),
         );
       },
@@ -100,7 +104,9 @@ class HrProfileScreen extends StatelessWidget {
           // Perform additional actions on tab change
           if (index == 1 && controller.leaveRecordList == null) {
             controller.getLeaveRecordsData();
-          } else if (index == 2 && controller.leaveSummary?.getOrganizationUsersLeaveSummary == null) {
+          } else if (index == 2 &&
+              controller.leaveSummary?.getOrganizationUsersLeaveSummary ==
+                  null) {
             controller.getLeaveSummary();
           }
         },
