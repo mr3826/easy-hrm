@@ -16,6 +16,7 @@ import 'app/modules/leave_hr/data/leave_remote_data_source.dart';
 import 'modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'modules/leave/data/remote/leave_remote_data_source.dart';
 import 'modules/notification/data/remote/notification_remote_data_source.dart';
+import 'modules/profile/controller/profile_module/hr_profile_controller.dart';
 import 'network/network_client.dart';
 
 import '../../../common/controller/date_time_controller.dart';

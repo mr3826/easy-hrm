@@ -27,6 +27,7 @@ class HrProfileController extends GetxController with StateMixin {
   final isViewLeaveRecordLoading = false.obs;
   final isViewLeaveSummaryLoading = false.obs;
   final isLeaveTypeLoading = false.obs;
+  final isLoadingProfile = false.obs;
   String leaveStatusId = "";
   RxInt profileTabIndex = 0.obs;
   RxString calculateAllowanceBy = "".obs;
@@ -42,9 +43,10 @@ class HrProfileController extends GetxController with StateMixin {
 
 
   Future<void> getUserProfile() async {
-    change(null, status: RxStatus.loading());
+    isLoadingProfile(true);
     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
-    change(null, status: RxStatus.success());
+    print("userDetails : ${userDetails?.getOrganizationUserDetails?.department?.name}");
+    isLoadingProfile(false);
   }
 
 

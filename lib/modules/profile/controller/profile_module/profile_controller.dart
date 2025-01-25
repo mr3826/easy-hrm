@@ -10,14 +10,16 @@ class ProfileController extends GetxController with StateMixin {
     getUserProfile();
     super.onInit();
   }
+  final isLoadingProfile = false.obs;
 
   UserDetails? userDetails;
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
 
   Future<void> getUserProfile() async {
-    change(null, status: RxStatus.loading());
+    isLoadingProfile(true);
     userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
-    change(null, status: RxStatus.success());
+    print("userDetails : ${userDetails?.getOrganizationUserDetails?.department?.name}");
+    isLoadingProfile(false);
   }
 
 

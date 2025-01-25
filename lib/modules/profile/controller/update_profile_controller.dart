@@ -38,7 +38,7 @@ class UpdateProfileController extends GetxController {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!, methodName: "updateUserProfile");
     } else {
-      Get.find<UserProfileController>().getUserProfile();
+    //  Get.find<UserProfileController>().getUserProfile();
       Get.back();
       Get.back();
       showSuccessMessage(message: AppString.profile_update_successfully_text.tr);

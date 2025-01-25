@@ -20,7 +20,7 @@ class ProfileScreen extends GetView<UserProfileController> {
     return controller.obx(
           (state) => Scaffold(
         backgroundColor: AppColor.backgroundColor,
-        appBar: profileAppbar(
+        appBar: buildProfileAppBar(
           onAction: () {
             /// Displays a custom drawer when the action is triggered.
             showCustomDrawer(
@@ -86,7 +86,7 @@ class ProfileScreen extends GetView<UserProfileController> {
 
   /// Fetches the latest profile data from the server.
   Future<void> _fetchProfileData() async {
-    await controller.getUserProfile();
+   // await controller.getUserProfile();
     await controller.getEmploymentInfo();
     await controller.getUserLogHistory();
     await controller.getOrganizationInfo();

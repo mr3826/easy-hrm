@@ -461,7 +461,7 @@ profileInfoDrawerLayout() {
         child: Center(
           child: Column(
             children: [
-              //  userProfileImgLayout(),
+              // userProfileImgLayout(),
               customSpacerHeight(height: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -563,8 +563,8 @@ employmentStatus(String? employmentStatus) {
 }
 
 organisationLogoLayout() {
-  return CustomNetworkImage(
-    height: AppLayout.getHeight(25),
+  return CircularNetworkImage(
+    radius: AppLayout.getHeight(25),
     imageUrl: buildImgIxUrl(
         imgKey:
             "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
@@ -589,7 +589,7 @@ endDrawer(BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         customSpacerHeight(height: 40),
-        profileInfoDrawerLayout(),
+       profileInfoDrawerLayout(),
         customSpacerHeight(height: 40),
         organisationLayout(context),
         const Spacer(),

@@ -17,7 +17,9 @@ import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/notification/presentation/view/screen/notification.dart';
 import '../../../../modules/profile/controller/user_profile_controller.dart';
-import '../../../../modules/profile/view/screen/hr_profile/hr_profile.dart';
+import '../../../../modules/profile/view/screen/hr_profile/screen/employee_profile.dart';
+import '../../../../modules/profile/view/screen/hr_profile/screen/hr_profile.dart';
+import '../../../../modules/profile/view/screen/hr_profile/screen/profile_route_base.dart';
 import '../../../../modules/profile/view/screen/user_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
@@ -122,6 +124,8 @@ class _MainScreenState extends State<MainScreen> {
       isEmployee ? const NotificationScreen() : const EmployeeScreen(),
      // const ProfileScreen(),
       const HrProfileScreen()
+     // EmployeeProfileScreen()
+     //ProfileRouteBase()
     ];
   }
 

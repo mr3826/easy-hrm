@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/modules/profile/controller/profile_module/hr_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/expanded_text_layout.dart';
 import '../../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../../../common/widget/custom_spacer.dart';
@@ -22,52 +23,51 @@ import 'employee_status.dart';
 
 class ProfileOverView extends StatelessWidget {
   final UserDetails userDetails;
-  const ProfileOverView({super.key,required this.userDetails});
+ final Function onRefresh;
+  const ProfileOverView({super.key,required this.userDetails,required this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RefreshIndicator(
-        onRefresh: _fetchProfileData, // Call the refresh method
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: marginLayout,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return RefreshIndicator(
+      onRefresh: _fetchProfileData, // Call the refresh method
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: marginLayout,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-                customSpacerHeight(height: 25),
-                /// User description
-                _descriptionLayout(),
+              customSpacerHeight(height: 8),
+              /// User description
+              _descriptionLayout(),
 
 
-                customSpacerHeight(height: 8),
+              customSpacerHeight(height: 8),
 
-                /// User email
-                 _buildEmail(),
+              /// User email
+               _buildEmail(),
 
-                /// Phone number
-                customSpacerHeight(height: 15),
-                _phoneNumberText(),
-                customSpacerHeight(height: 15),
-                _emergencyPhoneNumber(),
-                customSpacerHeight(height: 15),
+              /// Phone number
+              customSpacerHeight(height: 15),
+              _phoneNumberText(),
+              customSpacerHeight(height: 15),
+              _emergencyPhoneNumber(),
+              customSpacerHeight(height: 15),
 
-                /// Employee address
-                _addressText(),
-                customSpacerHeight(height: 15),
+              /// Employee address
+              _addressText(),
+              customSpacerHeight(height: 15),
 
-                /// Department layout
-                _buildDepartmentLayout(context),
+              /// Department layout
+              _buildDepartmentLayout(context),
 
-                customSpacerHeight(height: 5),
+              customSpacerHeight(height: 5),
 
-                /// Designation history
-                _buildDesignationHistoryLayout(context),
-                customSpacerHeight(height: 50),
-              ],
-            ),
+              /// Designation history
+              _buildDesignationHistoryLayout(context),
+              customSpacerHeight(height: 50),
+            ],
           ),
         ),
       ),
@@ -163,7 +163,7 @@ _buildEmail(){
 
 
 
-  _phoneNumberText() {
+_phoneNumberText() {
     return userInfoSectionLayout(
       staticText: AppString.text_phone.tr,
       dynamicText:userDetails
@@ -232,16 +232,10 @@ _buildEmail(){
 
   /// Fetches the latest profile data from the server.
   Future<void> _fetchProfileData() async {
-    try {
-      // await controller.getUserProfile();
-      // await controller.getEmploymentInfo();
-      // await controller.getUserLogHistory();
-      // await controller.getOrganizationInfo();
-    } catch (e) {
-      // Optionally handle errors or show a message
-      Get.snackbar('Error', 'Failed to refresh data');
-    }
+    onRefresh();
+
   }
 
 }
+
 

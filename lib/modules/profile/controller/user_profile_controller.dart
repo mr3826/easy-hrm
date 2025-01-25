@@ -47,12 +47,12 @@ import '../model/user_profile.dart';
 import 'package:dio/dio.dart' as di;
 
 import '../model/user_profile_model.dart';
-import '../view/screen/hr_profile/hr_profile.dart';
+import '../view/screen/hr_profile/screen/hr_profile.dart';
 
 class UserProfileController extends GetxController with StateMixin {
   @override
   void onInit() {
-    getUserProfile();
+   // getUserProfile();
     getUserLogHistory();
     // getOrganizationInfo();
     startTimer();
@@ -155,11 +155,11 @@ class UserProfileController extends GetxController with StateMixin {
   int limit = 30;
 
 
-  Future<void> getUserProfile() async {
-    change(null, status: RxStatus.loading());
-    userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
-    change(null, status: RxStatus.success());
-  }
+  // Future<void> getUserProfile() async {
+  //   change(null, status: RxStatus.loading());
+  //   userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
+  //   change(null, status: RxStatus.success());
+  // }
 
   Future<void> getUserLogHistory() async {
     change(null, status: RxStatus.loading());
@@ -578,7 +578,7 @@ switchOrganisationDataChange() async {
   await Get.find<TimeCounterController>().timerStatus();
 
   Get.find<UserProfileController>()
-    ..getUserProfile()
+    // ..getUserProfile()
     ..getEmploymentInfo()
     ..getUserLogHistory()
     ..getOrganizationInfo();
