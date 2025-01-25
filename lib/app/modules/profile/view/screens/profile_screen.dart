@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../../common/widget/custom_drawer.dart';
 import '../../../../../common/widget/employee/user_Info_widget.dart';
-import '../../../../../modules/profile/view/widget/common_widget.dart';
-import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
@@ -47,14 +43,14 @@ class ProfileScreen extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            showCustomDrawer(
-              context: context,
-              child: Container(
-                color: Colors.transparent,
-                width: double.infinity,
-                child: endDrawer(context),
-              ),
-            );
+            // showCustomDrawer(
+            //   context: context,
+            //   child: Container(
+            //     color: Colors.transparent,
+            //     width: double.infinity,
+            //     child: endDrawer(context),
+            //   ),
+            // );
           },
           icon: const Icon(Icons.menu, color: Colors.black),
         ),

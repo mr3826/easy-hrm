@@ -17,6 +17,7 @@ import '../../../widget/department_history.dart';
 import '../../../widget/designation_layout.dart';
 import '../../../widget/employeement_status_layout.dart';
 import '../../../widget/user_info_section_layout.dart';
+import 'department_history_view.dart';
 import 'department_layout.dart';
 import 'employee_status.dart';
 
@@ -206,7 +207,7 @@ _phoneNumberText() {
       return BuildDepartment(userDetails: userDetails, onDtpHistoryAction: (){
 
          Get.find<UserProfileController>().getEmploymentInfo();
-         customAntButtonSheet(context: context, child: const DepartmentHistory());
+         customAntButtonSheet(context: context, child: const DepartmentHistoryView());
 
 
       },);

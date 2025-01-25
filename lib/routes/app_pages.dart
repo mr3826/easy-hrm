@@ -22,6 +22,7 @@ import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
 import '../app/modules/hr_timeline/bindings/start_timer_bindings.dart';
 import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
 import '../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
+import '../app/modules/profile/view/screens/profile_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';

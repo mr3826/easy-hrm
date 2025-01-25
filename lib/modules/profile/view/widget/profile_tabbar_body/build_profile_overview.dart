@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../../../../common/widget/custom_spacer.dart';
+import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_string.dart';
+import '../../../../../utils/app_style.dart';
+import '../../../../../utils/dimensions.dart';
 import '../../../controller/user_profile_controller.dart';
 import '../../../model/user_profile.dart';
 import '../chnage_email_notify_layout.dart';
 import '../common_widget.dart';
 import '../department_layout_widget.dart';
 import '../employee_stauts_layout.dart';
+import '../expanded_text_layout.dart';
+import '../user_info_section_layout.dart';
 
 
 class BuildProfileOverView extends StatelessWidget {
@@ -32,7 +38,7 @@ class BuildProfileOverView extends StatelessWidget {
                   customSpacerHeight(height: 25),
 
                   /// User description
-                  descriptionTextLayout(),
+                  _descriptionTextLayout(),
 
                   customSpacerHeight(height: 8),
 
@@ -43,7 +49,7 @@ class BuildProfileOverView extends StatelessWidget {
                   _buildPhoneNumberSection(),
 
                   /// Employee address
-                  addressText(),
+                  _addressText(),
                   customSpacerHeight(height: 15),
 
                   /// Department layout
@@ -73,9 +79,9 @@ class BuildProfileOverView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         customSpacerHeight(height: 15),
-        phoneNumberText(),
+        _phoneNumberText(),
         customSpacerHeight(height: 15),
-        emergencyPhoneNumber(),
+        _emergencyPhoneNumber(),
         customSpacerHeight(height: 15),
       ],
     );
@@ -109,5 +115,63 @@ class BuildProfileOverView extends StatelessWidget {
       Get.snackbar('Error', 'Failed to refresh data');
     }
   }
+
+  _descriptionTextLayout() {
+    String drc =
+        userDetails
+        ?.getOrganizationUserDetails
+        ?.profile
+        ?.about ??
+        '';
+    final wordCount = drc.split(' ').length;
+    if (wordCount > 20) {
+      return ExpandedText(
+        text: drc,
+      );
+    } else {
+      return Text(
+        drc,
+        style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.hintColor, fontSize: Dimensions.fontSizeDefault),
+      );
+    }
+  }
+
+  _addressText() {
+      return userInfoSectionLayout(
+          staticText: AppString.text_address.tr,
+          dynamicText:
+              userDetails
+              ?.getOrganizationUserDetails
+              ?.profile
+              ?.address ??
+              "");
+
+  }
+
+
+ _phoneNumberText() {
+   return userInfoSectionLayout(
+     staticText: AppString.text_phone.tr,
+     dynamicText:
+         userDetails
+         ?.getOrganizationUserDetails
+         ?.profile
+         ?.personalNumber ??
+         "",
+   );
+ }
+
+ _emergencyPhoneNumber() {
+   return userInfoSectionLayout(
+     staticText: AppString.text_emergency_phone.tr,
+     dynamicText:
+         userDetails
+         ?.getOrganizationUserDetails
+         ?.profile
+         ?.emergencyNumber ??
+         "",
+   );
+ }
 
 }

@@ -232,44 +232,6 @@ class LeaveStatusGoal extends StatelessWidget {
 
 
 
-
-
-
-
-
-actionBtnLayout(context) {
-  return GestureDetector(
-    onTap: () => customAntButtonSheet(
-        context: context,
-        child: actionLayout(
-            context: context,
-            userName:
-                "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-            departmentText: Get.find<UserProfileController>()
-                    .userDetails
-                    ?.getOrganizationUserDetails
-                    ?.department
-                    ?.name ??
-                "",
-            editAction: () {},
-            changePassAction: () {})),
-    child: Container(
-      height: AppLayout.getHeight(44),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge),
-        color: AppColor.primaryColor,
-      ),
-      child: Center(
-          child: Text(
-        AppString.text_action.tr,
-        style: AppStyle.mid_large_text
-            .copyWith(fontSize: Dimensions.fontSizeDefault + 3),
-      )),
-    ),
-  );
-}
-
 descriptionTextLayout() {
   return filterTextLengthLayout();
 }
