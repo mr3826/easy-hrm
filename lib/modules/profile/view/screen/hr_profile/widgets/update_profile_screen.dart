@@ -24,8 +24,8 @@ import '../../../widget/edit_profile_widget.dart';
 
 
 class UpdateProfileScreen extends StatelessWidget {
-  final UserDetails? userDetails;
-  UpdateProfileScreen({super.key,this.userDetails});
+  final UserDetails userDetails;
+  UpdateProfileScreen({super.key,required this.userDetails});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -34,11 +34,7 @@ class UpdateProfileScreen extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Scaffold(
-        appBar: customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
-          _clearInputField();
-          Get.back(canPop: false);
-          Get.back(canPop: false);
-        }),
+        appBar: _buildAppbar(),
 
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
@@ -205,7 +201,7 @@ class UpdateProfileScreen extends StatelessWidget {
   }
 
   bool _hasValidImageExtension(String key) {
-    List<String> validExtensions = ['.jpeg', '.jpg', '.png'];
+    List<String> validExtensions = ['.jpeg', '.jpg', '.png','.JPEG', '.JPG', '.PNG'];
     return validExtensions.any((ext) => key.toLowerCase().endsWith(ext));
   }
 
@@ -339,9 +335,9 @@ class UpdateProfileScreen extends StatelessWidget {
 
   _placeholderImage() {
     return CircularNetworkImage(
-      errorText:getInitials("${userDetails?.getOrganizationUserDetails?.profile?.firstName} ${userDetails?.getOrganizationUserDetails?.profile?.lastName}"),
+      errorText:getInitials("${userDetails.getOrganizationUserDetails?.profile?.firstName} ${userDetails.getOrganizationUserDetails?.profile?.lastName}"),
       radius: 42,
-      imageUrl: buildImgIxUrl(imgKey: userDetails?.getOrganizationUserDetails?.profile?.image,isPublic: true),
+      imageUrl: buildImgIxUrl(imgKey: userDetails.getOrganizationUserDetails?.profile?.image,isPublic: true),
 
     );
   }
@@ -356,6 +352,14 @@ class UpdateProfileScreen extends StatelessWidget {
           .value)
           .absolute),
     );
+  }
+
+  _buildAppbar() {
+    return customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
+      _clearInputField();
+      Get.back(canPop: false);
+      Get.back(canPop: false);
+    });
   }
 
 }

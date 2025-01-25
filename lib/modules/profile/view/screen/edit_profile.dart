@@ -33,11 +33,7 @@ class EditProfileScreen extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Scaffold(
-        appBar: customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
-              _clearInputField();
-              Get.back();
-              Get.back();
-            }),
+        appBar: _editAppbar(),
 
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
@@ -228,6 +224,14 @@ class EditProfileScreen extends StatelessWidget {
               child: _imageLayout(),
             ))
         : _placeholderImage();
+  }
+
+  _editAppbar() {
+    customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
+      _clearInputField();
+      Get.back(canPop: false);
+      Get.back(canPop: false);
+    });
   }
 }
 
