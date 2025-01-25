@@ -16,15 +16,16 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../common/widget/custom_network_image.dart';
-import '../../../../utils/utils.dart';
-import '../../controller/profile_image_selected_controller.dart';
-import '../../model/user_profile.dart';
-import '../widget/edit_profile_widget.dart';
+import '../../../../../../app/global/view/widgets/custom_network_image.dart';
+import '../../../../../../utils/utils.dart';
+import '../../../../controller/profile_image_selected_controller.dart';
+import '../../../../model/user_profile.dart';
+import '../../../widget/edit_profile_widget.dart';
 
-class EditProfileScreen extends StatelessWidget {
+
+class UpdateProfileScreen extends StatelessWidget {
   final UserDetails? userDetails;
-  EditProfileScreen({super.key,this.userDetails});
+  UpdateProfileScreen({super.key,this.userDetails});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -34,28 +35,28 @@ class EditProfileScreen extends StatelessWidget {
       key: _formKey,
       child: Scaffold(
         appBar: customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
-              _clearInputField();
-              Get.back();
-              Get.back();
-            }),
+          _clearInputField();
+          Get.back(canPop: false);
+          Get.back(canPop: false);
+        }),
 
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
             : Padding(
-                padding: marginLayout,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      _profileSectionLayout(context),
-                      customSpacerHeight(height: 30),
-                      TextFiledLayout(
-                        formKey: _formKey,
-                      )
-                    ],
-                  ),
-                ),
-              )),
+          padding: marginLayout,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                _profileSectionLayout(context),
+                customSpacerHeight(height: 30),
+                TextFiledLayout(
+                  formKey: _formKey,
+                )
+              ],
+            ),
+          ),
+        )),
 
       ),
     );
@@ -215,171 +216,151 @@ class EditProfileScreen extends StatelessWidget {
 
   _profileImageLayout() {
     return Get.find<PikedProfileImgController>()
-            .storageForUpload
-            .filePath
-            .value
-            .isNotEmpty
-        ? CircleAvatar(
-            radius: 42,
-            backgroundColor: AppColor.hintColor.withOpacity(0.8),
-            child: CircleAvatar(
-              backgroundColor: AppColor.cardColor,
-              radius: 41,
-              child: _imageLayout(),
-            ))
-        : _placeholderImage();
-  }
-}
-
-Map<String, dynamic>? _addVariables() {
-  Map<String, dynamic> inputData = {};
-
-  inputData["about"] = editBioController.text;
-
-  // Set emergency phone number with country code if updated
-  _addInputEmergencyPhoneNumber(inputData);
-
-  // Set personal phone number with country code if updated
-  _addInputPersonalPhoneNumber(inputData);
-
-  inputData["address"] = editAddressController.text;
-
-  inputData["last_name"] = editLastNameController.text;
-
-  // Set user first name
-  _addInputUserFirstName(inputData);
-
-  inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
-
-  inputData["department_id"] = Get.find<UserProfileController>()
-          .userDetails
-          ?.getOrganizationUserDetails
-          ?.department
-          ?.id ??
-      "";
-  inputData["image"] = "";
-
-  return inputData;
-}
-
-void _addInputUserFirstName(Map<String, dynamic> inputData) {
-  if (editFirstNameController.text.isNotEmpty) {
-    inputData["first_name"] = editFirstNameController.text;
-  } else {
-    inputData["first_name"] = Get.find<UserProfileController>()
-            .userDetails
-            ?.getOrganizationUserDetails
-            ?.profile
-            ?.firstName ??
-        "";
-  }
-}
-
-void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
-  if (editPhoneController.text.isEmpty) {
-    inputData["personal_phone_number"] = "";
-  } else {
-    inputData["personal_phone_number"] =
-        Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
-  }
-}
-
-void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
-  if (editEmergencyPhoneController.text.isEmpty) {
-    inputData["emergency_phone_number"] = "";
-  } else {
-    inputData["emergency_phone_number"] =
-        Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
-  }
-}
-
-Widget _imageLayout() {
-  if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue &&
-      Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
-    /// file image
-    return _selectedImageViewLayout();
-  } else if (Get.find<UpdateProfileController>()
-          .isFileUploadedSuccessfully
-          .isFalse &&
-      Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
-    if (Get.find<PikedProfileImgController>()
         .storageForUpload
         .filePath
-        .isEmpty) {
-      /// initial stage
-      return _placeholderImage();
-    } else {
-      /// broken image
-      if (Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
-        return _brokenImageViewLayout();
-      } else {
-        return const Center(
-            child: CupertinoActivityIndicator(
-          color: AppColor.primaryColor,
-        ));
-      }
-    }
-  } else {
-    return const Center(
-        child: CupertinoActivityIndicator(
-      color: AppColor.primaryColor,
-    ));
+        .value
+        .isNotEmpty
+        ? CircleAvatar(
+        radius: 42,
+        backgroundColor: AppColor.hintColor.withOpacity(0.8),
+        child: CircleAvatar(
+          backgroundColor: AppColor.cardColor,
+          radius: 41,
+          child: _imageLayout(),
+        ))
+        : _placeholderImage();
   }
+
+
+
+  Map<String, dynamic>? _addVariables() {
+    Map<String, dynamic> inputData = {};
+
+    inputData["about"] = editBioController.text;
+
+    // Set emergency phone number with country code if updated
+    _addInputEmergencyPhoneNumber(inputData);
+
+    // Set personal phone number with country code if updated
+    _addInputPersonalPhoneNumber(inputData);
+
+    inputData["address"] = editAddressController.text;
+
+    inputData["last_name"] = editLastNameController.text;
+
+    // Set user first name
+    _addInputUserFirstName(inputData);
+
+    inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
+
+    inputData["department_id"] = Get.find<UserProfileController>()
+        .userDetails
+        ?.getOrganizationUserDetails
+        ?.department
+        ?.id ??
+        "";
+    inputData["image"] = "";
+
+    return inputData;
+  }
+
+  void _addInputUserFirstName(Map<String, dynamic> inputData) {
+    if (editFirstNameController.text.isNotEmpty) {
+      inputData["first_name"] = editFirstNameController.text;
+    } else {
+      inputData["first_name"] = Get.find<UserProfileController>()
+          .userDetails
+          ?.getOrganizationUserDetails
+          ?.profile
+          ?.firstName ??
+          "";
+    }
+  }
+
+  void _addInputPersonalPhoneNumber(Map<String, dynamic> inputData) {
+    if (editPhoneController.text.isEmpty) {
+      inputData["personal_phone_number"] = "";
+    } else {
+      inputData["personal_phone_number"] =
+          Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value;
+    }
+  }
+
+  void _addInputEmergencyPhoneNumber(Map<String, dynamic> inputData) {
+    if (editEmergencyPhoneController.text.isEmpty) {
+      inputData["emergency_phone_number"] = "";
+    } else {
+      inputData["emergency_phone_number"] =
+          Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value;
+    }
+  }
+
+  Widget _imageLayout() {
+    if (Get.find<UpdateProfileController>().isFileUploadedSuccessfully.isTrue &&
+        Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+      /// file image
+      return _selectedImageViewLayout();
+    } else if (Get.find<UpdateProfileController>()
+        .isFileUploadedSuccessfully
+        .isFalse &&
+        Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+      if (Get.find<PikedProfileImgController>()
+          .storageForUpload
+          .filePath
+          .isEmpty) {
+        /// initial stage
+        return _placeholderImage();
+      } else {
+        /// broken image
+        if (Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
+          return _brokenImageViewLayout();
+        } else {
+          return const Center(
+              child: CupertinoActivityIndicator(
+                color: AppColor.primaryColor,
+              ));
+        }
+      }
+    } else {
+      return const Center(
+          child: CupertinoActivityIndicator(
+            color: AppColor.primaryColor,
+          ));
+    }
+  }
+
+  Widget _brokenImageViewLayout() {
+    return const CircleAvatar(
+      radius: 39,
+      backgroundColor: AppColor.cardColor,
+      child: CupertinoActivityIndicator(color: AppColor.primaryColor),
+    );
+  }
+
+  _placeholderImage() {
+    return CircularNetworkImage(
+      errorText:getInitials("${userDetails?.getOrganizationUserDetails?.profile?.firstName} ${userDetails?.getOrganizationUserDetails?.profile?.lastName}"),
+      radius: 42,
+      imageUrl: buildImgIxUrl(imgKey: userDetails?.getOrganizationUserDetails?.profile?.image,isPublic: true),
+
+    );
+  }
+
+  Widget _selectedImageViewLayout() {
+    return CircleAvatar(
+      radius: 39,
+      backgroundColor: AppColor.primaryColor,
+      backgroundImage: FileImage(File(Get.find<PikedProfileImgController>()
+          .storageForUpload
+          .filePath
+          .value)
+          .absolute),
+    );
+  }
+
 }
 
-Widget _brokenImageViewLayout() {
-  return const CircleAvatar(
-    radius: 39,
-    backgroundColor: AppColor.cardColor,
-    child: CupertinoActivityIndicator(color: AppColor.primaryColor),
-  );
-}
 
-_placeholderImage() {
-  return CustomNetworkImage(
-    errorText: (Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.profile
-                        ?.firstName !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .userDetails!
-                    .getOrganizationUserDetails!
-                    .profile!
-                    .firstName!
-                    .isNotEmpty) &&
-            (Get.find<UserProfileController>()
-                        .userDetails
-                        ?.getOrganizationUserDetails
-                        ?.profile
-                        ?.lastName !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .userDetails!
-                    .getOrganizationUserDetails!
-                    .profile!
-                    .lastName!
-                    .isNotEmpty)
-        ? "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName?[0].toUpperCase() ?? ""}"
-            "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName?[0].toUpperCase() ?? ""}"
-        : "",
-    height: 42,
-    isPublic: true,
-    profileImageKey:
-        "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.image}",
-    imgUrlKey: '',
-  );
-}
 
-Widget _selectedImageViewLayout() {
-  return CircleAvatar(
-    radius: 39,
-    backgroundColor: AppColor.primaryColor,
-    backgroundImage: FileImage(File(Get.find<PikedProfileImgController>()
-            .storageForUpload
-            .filePath
-            .value)
-        .absolute),
-  );
-}
+
+

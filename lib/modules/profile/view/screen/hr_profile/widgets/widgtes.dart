@@ -9,6 +9,7 @@ import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/log_out_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/hr_profile/widgets/update_profile_screen.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/user_info_section_layout.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -94,7 +95,7 @@ class UserInfoLayout extends StatelessWidget {
             customSpacerWidth(width: 8),
             if (editIconUrl != null)
               GestureDetector(
-                onTap: ()=>_editProfileRoute(),
+                onTap: ()=>_editProfileRoute(information),
                 child: SizedBox(
                     height: AppLayout.getHeight(17),
                     width: AppLayout.getWidth(17),
@@ -153,7 +154,7 @@ class UserInfoLayout extends StatelessWidget {
   }
 
 
-  void _editProfileRoute() {
+  void _editProfileRoute(UserDetails userDetails) {
     ///clear img local path
     Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
 
@@ -169,6 +170,7 @@ class UserInfoLayout extends StatelessWidget {
     controller.address.value = "";
     controller.description.value = "";
     Get.toNamed(Routes.EDIT_PROFILE_SCREEN);
+    Get.to(()=>UpdateProfileScreen(userDetails: userDetails,));
   }
 
 
