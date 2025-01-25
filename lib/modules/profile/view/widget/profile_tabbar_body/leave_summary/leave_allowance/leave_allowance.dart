@@ -42,9 +42,7 @@ class LeaveAllowance extends GetView<HrProfileController> {
 
                   customSpacerHeight(height: 20),
 
-                  Obx(
-                    () => _buildAllowanceCounterLayout(),
-                  ),
+                  Obx(() => _buildAllowanceCounterLayout()),
 
                   customSpacerHeight(height: 12),
                   _alertMessageLayout(),
@@ -242,16 +240,10 @@ class LeaveAllowance extends GetView<HrProfileController> {
   }
 
   Widget _buildButtons() {
-    final EmploymentController employmentController =
-    Get.find<EmploymentController>();
-
-
+    final EmploymentController employmentController = Get.find<EmploymentController>();
 
     // Determine if the Save button should be enabled
-    final bool isSaveEnabled =
-        employmentController.applicationBalanceCount.value > 0 ||
-            employmentController.applicationMaxDaysCount.value > 0 ||
-            employmentController.daysCount > 0;
+    final bool isSaveEnabled = employmentController.applicationBalanceCount.value > 0 || employmentController.applicationMaxDaysCount.value > 0 || employmentController.daysCount > 0;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
@@ -279,13 +271,10 @@ class LeaveAllowance extends GetView<HrProfileController> {
               onPressed: () {
                 if (isSaveEnabled) {
                   controller.updateORGLeaveAvailability(
-                    maximumConsecutiveDays:
-                    employmentController.applicationMaxDaysCount.value,
-                    numberOfApplication:
-                    employmentController.applicationBalanceCount.value,
+                    maximumConsecutiveDays: employmentController.applicationMaxDaysCount.value,
+                    numberOfApplication: employmentController.applicationBalanceCount.value,
                     numberOfDays: employmentController.daysCount.value,
-                    calculateAllowanceBy:
-                    controller.calculateAllowanceBy.value,
+                    calculateAllowanceBy: controller.calculateAllowanceBy.value,
                   );
                 }
               },

@@ -29,9 +29,13 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
         );
       }
 
-
-      if(controller.leaveRecordList ==null || controller.leaveRecordList!.isEmpty){
-        return Center(child: Text("No leave record!",style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),));
+      if (controller.leaveRecordList == null ||
+          controller.leaveRecordList!.isEmpty) {
+        return Center(
+            child: Text(
+          "No leave record!",
+          style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+        ));
       }
       return RefreshIndicator(
         backgroundColor: AppColor.cardColor,
@@ -40,7 +44,7 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
         child: SingleChildScrollView(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),
-          child:  ListView.builder(
+          child: ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -62,58 +66,63 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
       itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        Color itemColor = index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
+        Color itemColor =
+            index % 2 == 0 ? AppColor.leaveRecordCardColor : Colors.transparent;
 
         return _infoLayoutView(
           context: context,
           bgColor: itemColor,
           leaveRecord: GetLeaveRecords(
-              startDate: controller.leaveRecordList?[monthIndex].data?[index].startDate,
-              endDate: controller.leaveRecordList?[monthIndex].data?[index].endDate,
-              status: controller.leaveRecordList?[monthIndex].data?[index].status,
-              duration: controller.leaveRecordList?[monthIndex].data?[index].numberOfDays,
-              createdAt: controller.leaveRecordList?[monthIndex].data?[index].createdAt,
-
+              startDate: controller
+                  .leaveRecordList?[monthIndex].data?[index].startDate,
+              endDate:
+                  controller.leaveRecordList?[monthIndex].data?[index].endDate,
+              status:
+                  controller.leaveRecordList?[monthIndex].data?[index].status,
+              duration: controller
+                  .leaveRecordList?[monthIndex].data?[index].numberOfDays,
+              createdAt: controller
+                  .leaveRecordList?[monthIndex].data?[index].createdAt,
               files: [
                 (controller.leaveRecordList?[monthIndex].data?[index].files !=
-                    null &&
-                    controller.leaveRecordList![monthIndex].data![index]
-                        .files!.isNotEmpty)
+                            null &&
+                        controller.leaveRecordList![monthIndex].data![index]
+                            .files!.isNotEmpty)
                     ? Files(
-                  createdAt: controller.leaveRecordList?[monthIndex]
-                      .data?[index].files?[0].createdAt ??
-                      "",
-                  size: controller.leaveRecordList?[monthIndex]
-                      .data?[index].files?[0].size ??
-                      "",
-                  name: controller.leaveRecordList?[monthIndex]
-                      .data?[index].files?[0].name ??
-                      "",
-                  id: controller.leaveRecordList?[monthIndex].data?[index]
-                      .files?[0].id ??
-                      "",
-                  key: controller.leaveRecordList?[monthIndex]
-                      .data?[index].files?[0].key ??
-                      "",
-                )
+                        createdAt: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].createdAt ??
+                            "",
+                        size: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].size ??
+                            "",
+                        name: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].name ??
+                            "",
+                        id: controller.leaveRecordList?[monthIndex].data?[index]
+                                .files?[0].id ??
+                            "",
+                        key: controller.leaveRecordList?[monthIndex]
+                                .data?[index].files?[0].key ??
+                            "",
+                      )
                     : Files()
               ],
               leaveDetails: [
                 (controller.leaveRecordList?[monthIndex].data?[index]
-                    .leaveDetails !=
-                    null &&
-                    controller.leaveRecordList![monthIndex].data![index]
-                        .leaveDetails!.isNotEmpty)
+                                .leaveDetails !=
+                            null &&
+                        controller.leaveRecordList![monthIndex].data![index]
+                            .leaveDetails!.isNotEmpty)
                     ? LeaveDetails(
-                  scheduleHour: controller.leaveRecordList?[monthIndex]
-                      .data?[index].leaveDetails?[0].scheduleSecond
-                      .toString() ??
-                      "",
-                  leaveHour: controller.leaveRecordList?[monthIndex]
-                      .data?[index].leaveDetails?[0].leaveSecond
-                      .toString() ??
-                      "",
-                )
+                        scheduleHour: controller.leaveRecordList?[monthIndex]
+                                .data?[index].leaveDetails?[0].scheduleSecond
+                                .toString() ??
+                            "",
+                        leaveHour: controller.leaveRecordList?[monthIndex]
+                                .data?[index].leaveDetails?[0].leaveSecond
+                                .toString() ??
+                            "",
+                      )
                     : LeaveDetails()
               ],
               leaveType: LeaveType(
@@ -134,8 +143,6 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
               id: controller.leaveRecordList?[monthIndex].data![index].id,
               description: controller
                   .leaveRecordList?[monthIndex].data![index].description),
-
-
         );
       },
     );
@@ -174,12 +181,14 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
         context,
         LeaveRecordDetails(
           status: leaveRecord.status ?? "",
-          leaveRecords: leaveRecord, leaveId: '',
+          leaveRecords: leaveRecord,
+          leaveId: '',
         ),
       ),
       child: Card(
         elevation: 0,
-        shape: roundedRectangleBorder.copyWith(borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+        shape: roundedRectangleBorder.copyWith(
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
         color: bgColor,
         child: Padding(
           padding: const EdgeInsets.all(14.0),
@@ -220,11 +229,16 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
 
   _showDateDurationText(GetLeaveRecords leaveRecord) {
     String? leaveDate;
-    String starDate = leaveRecord.startDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
-    String endDate = leaveRecord.endDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
+    String starDate =
+        leaveRecord.startDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
+    String endDate =
+        leaveRecord.endDate?.substring(0, 10) ?? "2023-01-01T08:23:49.550Z";
     if (starDate == endDate) {
-      leaveDate = dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z");
-    } else {leaveDate = "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
+      leaveDate = dateMonthFormatFromDatetime(
+          leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z");
+    } else {
+      leaveDate =
+          "${dateMonthFormatFromDatetime(leaveRecord.startDate ?? "2023-01-01T08:23:49.550Z")} - ${dateMonthFormatFromDatetime(leaveRecord.endDate ?? "2023-01-01T08:23:49.550Z")}";
     }
     return Row(
       children: [
@@ -262,7 +276,6 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
     );
   }
 
-
   Widget _showStatusButton(String leaveStatus) {
     switch (leaveStatus.toLowerCase()) {
       case 'approved':
@@ -279,8 +292,6 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
         return Container();
     }
   }
-
-
 
   Future<void> _refreshScreen() async {
     controller.getLeaveRecordsData();

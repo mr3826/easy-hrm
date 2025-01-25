@@ -56,7 +56,7 @@ class BuildProfileLeaveSummary extends GetView<HrProfileController> {
                 child: Wrap(
                   children: [
                     _buildHeader(
-                        leaveSummary ?? GetOrganizationUsersLeaveSummary()),
+                        leaveSummary ?? GetOrganizationUsersLeaveSummary(),context),
                     customSpacerHeight(height: 12),
                     _buildLeaveDetailsRow(
                         staticText1: "Allowance: ",
@@ -85,7 +85,7 @@ class BuildProfileLeaveSummary extends GetView<HrProfileController> {
   }
 
   // Build header with title and more button
-  Widget _buildHeader(GetOrganizationUsersLeaveSummary leaveSummary) {
+  Widget _buildHeader(GetOrganizationUsersLeaveSummary leaveSummary,BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -118,7 +118,7 @@ class BuildProfileLeaveSummary extends GetView<HrProfileController> {
             controller.leaveStatusId =
                 leaveSummary.leaveStatusId ?? "";
             showAddAllowance(
-                headerText: leaveSummary.name, subText: leaveSummary.type);
+                headerText: leaveSummary.name, subText: leaveSummary.type,context: context);
           },
           icon: Icon(
             Icons.more_horiz,
@@ -255,9 +255,10 @@ class BuildProfileLeaveSummary extends GetView<HrProfileController> {
   }
 }
 
-void showAddAllowance({String? headerText, String? subText}) {
+void showAddAllowance({String? headerText, String? subText,required BuildContext context}) {
+  Get.put(EmploymentController());
   customButtonSheet(
-    context: Get.context!,
+    context:Get.context!,
     child: Column(
       children: [
         _buildHeader(headerText ?? "", subText ?? ""),
@@ -267,16 +268,15 @@ void showAddAllowance({String? headerText, String? subText}) {
           child: GestureDetector(
             onTap: () {
               Get.find<HrProfileController>().getLeaveTypeDropdown();
-              Get.find<EmploymentController>().applicationMaxDaysCount.value =
-                  0;
-              Get.find<EmploymentController>().applicationBalanceCount.value =
-                  0;
+              Get.find<EmploymentController>().applicationMaxDaysCount.value = 0;
+              Get.find<EmploymentController>().applicationBalanceCount.value = 0;
               Get.find<EmploymentController>().daysCount.value = 0;
               customButtonSheet(
-                context: Get.context!,
+                context:Get.context!,
                 child: LeaveAllowance(),
                 height: 0.7,
               );
+
             },
             child: Row(
               children: [
