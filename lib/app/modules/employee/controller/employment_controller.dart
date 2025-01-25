@@ -4,9 +4,9 @@ import 'package:hive/hive.dart';
 import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
 import 'package:payrun_mobile/app/modules/employee/repository/employee_data_sourse.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
-import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
-import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
-import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
+import 'package:payrun_mobile/app/modules/profile/models/employee_work_history.dart';
+import 'package:payrun_mobile/app/modules/profile/models/user_log_history.dart';
+import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
 
 import '../../../../../modules/leave/domain/leave_record_response.dart' as lr;
 import '../model/employee_info.dart';

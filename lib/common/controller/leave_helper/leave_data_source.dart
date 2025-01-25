@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
-import '../../../modules/profile/model/leave_summary.dart';
+import '../../../app/modules/profile/models/leave_summary.dart';
 import '../../../network/exception_helper.dart';
 import '../../../network/network_client.dart';
 import '../../../utils/app_string.dart';

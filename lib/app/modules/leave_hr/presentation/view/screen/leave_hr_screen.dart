@@ -9,7 +9,7 @@ import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
-import '../../../../../../modules/profile/controller/user_profile_controller.dart';
+import '../../../../profile/controller/global_profile_controller.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
@@ -188,10 +188,8 @@ class LeaveHrScreen extends StatelessWidget {
       onPressed: () {
         Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
-        final userProfileController = Get.find<UserProfileController>();
+        final userProfileController = Get.find<ProfileGlobalController>();
 
-        final userDetails = userProfileController
-            .userDetails?.getOrganizationUserDetails?.profile;
         leaveNoteController.clear();
 
         // Fetch available leave types
@@ -210,11 +208,11 @@ class LeaveHrScreen extends StatelessWidget {
 
         // Set selected employee info
         hrLeaveController.selectedEmployeeInfo.value =
-        "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
+        "${userProfileController.employeeName.value} (You)";
 
         // Set selected employee image key
         hrLeaveController.selectedEmployeeImgKey.value =
-            userDetails?.image ?? "";
+            userProfileController.employeeImeKey.value;
       },
       backgroundColor: AppColor.primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),

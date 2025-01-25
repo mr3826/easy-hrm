@@ -11,7 +11,7 @@ import '../../../common/widget/custom_spacer.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/app_style.dart';
 import '../../../utils/dimensions.dart';
-import '../../profile/controller/log_out_controller.dart';
+import '../../../app/modules/profile/controller/log_out_controller.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key});
