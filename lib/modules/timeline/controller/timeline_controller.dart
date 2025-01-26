@@ -443,6 +443,9 @@ class TimelineController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+
+
+
   getTimelineSummaryByDate(
       {required String? startDate, String? endDate}) async {
     isTimelineSummaryByDateLoading(true);
@@ -464,6 +467,10 @@ class TimelineController extends GetxController with StateMixin {
     }
     isTimelineSummaryByDateLoading(false);
   }
+
+
+
+
 
   DateTime _createEndDateForTimeLine(
       {required String startDate, String? endDate}) {

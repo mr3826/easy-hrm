@@ -25,7 +25,7 @@ import '../widgets/time_sheet/build_select_month.dart';
 import '../widgets/timeline_calender/buid_timeline_short_summury.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
 
-bool isEmployee = true;
+bool isEmployee = false;
 
 class HrTimelineScreen extends StatefulWidget {
    HrTimelineScreen({super.key});
@@ -96,7 +96,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           padding: const EdgeInsets.only(left: 18.0, right: 18),
           child: Column(
             children: [
-              _buildAppbar(),
+             _buildAppbar(),
               Padding(
                 padding: const EdgeInsets.only(top: 22.0),
                 child: SizedBox(
@@ -151,7 +151,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   customSpacerHeight(height: 45),
-                  _timelineText(),
+                 _timelineText(),
                   customSpacerHeight(height: 12),
                   buildTimelineShortSummary(),
                   customSpacerHeight(height: 6),

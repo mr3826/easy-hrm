@@ -121,7 +121,10 @@ class _MainScreenState extends State<MainScreen> {
   _screenListLayout() {
     bool isEmployee = false;
     return [
-      isEmployee ? const TimelineScreen(): HrTimelineScreen(),
+      isEmployee ? const TimelineScreen():
+
+
+      HrTimelineScreen(),
       isEmployee ? const LeaveScreen() : const LeaveHrScreen(),
       const Dashboard(),
       isEmployee ? const NotificationScreen() : const EmployeeScreen(),
