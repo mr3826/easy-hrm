@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
@@ -25,15 +26,14 @@ import '../../../../modules/dashboard/controller/dashbpard_controller.dart';
 import '../../../../modules/timeline/model/calendar_timeline.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../home/view/screen/main_screen.dart';
-import '../repositories/timline_repository.dart';
+import '../models/time_sheet_model.dart';
+import '../repositories/timeline_data_source.dart';
 
 
 class HrTimelineController extends GetxController with StateMixin {
 
-
-
-  TimelineRepository timelineRepository = Get.find<TimelineRepoImpl>();
-
+  final TimelineDataSource _timelineDataSource;
+  HrTimelineController(this._timelineDataSource);
   final isLoading = false.obs;
   final isManualEntryLoading = false.obs;
   final isTimelineCalendarByDateLoading = false.obs;
@@ -53,31 +53,50 @@ class HrTimelineController extends GetxController with StateMixin {
   RxString projectColor = ''.obs;
   final searchInputData = TextEditingController().obs;
   late Timer updateDataTime;
+  RxString isSelectDate = ''.obs;
+  /// The index of the selected time entry status, used for updating time entry status (e.g., Pending, Approved).
+  RxInt selectedStatusIndex = 0.obs;
+  /// List of status options to categorize leave requests (e.g., Pending, Approved).
+  final List<String> statusOptions = ["Pending", "Approved"];
+  /// Method to check if the button should be enabled
+  RxBool isValueChangeForTimeLogUpdate = false.obs;
+  TextEditingController descriptionController =TextEditingController();
   CalendarTimeline calendarTimeline = CalendarTimeline();
 
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
-
   final isTimelogEntryOrRemoveLoading = false.obs;
-
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
   TimelineSummaryByDate? timelineSummaryByDate;
   TimelineSummaryByMonth? timelineSummaryByMonth;
 
-  var isSelectDate = ''.obs;
-
-  /// The index of the selected time entry status, used for updating time entry status (e.g., Pending, Approved).
-  RxInt selectedStatusIndex = 0.obs;
-  /// List of status options to categorize leave requests (e.g., Pending, Approved).
-  final List<String> statusOptions = ["Pending", "Approved"];
 
 
 
-  /// Method to check if the button should be enabled
-  RxBool isValueChangeForTimeLogUpdate = false.obs;
 
-  TextEditingController descriptionController =TextEditingController();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // Future<bool> startOrEndTimer({required String timerType}) async {
@@ -494,7 +513,7 @@ class HrTimelineController extends GetxController with StateMixin {
   getTimelineSummaryByDate({required String startDate, required String endDate}) async {
     isTimelineSummaryByDateLoading(true);
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
-    timelineSummaryByDate= await timelineRepository.getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
+    timelineSummaryByDate= await _timelineDataSource.getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
     isTimelineSummaryByDateLoading(false);
   }
 

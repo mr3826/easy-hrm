@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 import '../common/widget/custom_svg_image.dart';
 import '../common/widget/error_message.dart';
+import '../enum.dart';
 
 //global items here
 TextEditingController _emailController = TextEditingController();
@@ -74,6 +75,7 @@ List get notificationTabBarIndex => _notificationTabBarIndex;
 
 List get selectedBeforeDayAndAfterDay => _selectedBeforeDayAndAfterDay;
 
+
 String dateMonthFormatFromDatetime(String dateString) {
   if (dateString.isEmpty) return "";
   // Parse the string to DateTime
@@ -124,11 +126,15 @@ String amPmFormatTimeFromString(String dateString) {
   return formattedTime;
 }
 
+
+
 bool isSameDate({required String startDate, required String endDate}) {
   if (startDate.isEmpty || endDate.isEmpty) return false;
 
   return startDate.substring(0, 10) == endDate.substring(0, 10);
 }
+
+
 
 String getConvertSecondsToHours(String secondsStr) {
   if (secondsStr.isEmpty || secondsStr == "null") {
@@ -250,6 +256,8 @@ String workingTimeSinceFormString(
   }
 }
 
+
+
 String getFirstTwoLetterFromWord(String input) {
   if (input.isEmpty) {
     return "";
@@ -331,6 +339,8 @@ List _selectedBeforeDayAndAfterDay = [
 ];
 
 List _notificationTabBarIndex = [AppString.text_new.tr, AppString.text_seen.tr];
+
+
 
 String convertMiniToHour(Duration duration) {
   int hours = duration.inHours;
@@ -472,3 +482,107 @@ String getInitials(String fullName) {
   // Combine the initials
   return '$firstInitial$lastInitial';
 }
+
+
+
+
+
+
+
+String getTimeWithFormat(String dateStr) {
+  try {
+    // Attempt to parse the date string
+    DateTime date = DateTime.parse(dateStr);
+    // Define the desired time format
+    final DateFormat formatter = DateFormat.jm(); // 'jm' for formats like  10:12 am or 9 pm
+    return formatter.format(date);
+  } catch (e) {
+    return 'Invalid date';
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+String formatDateTimeWithZone({
+  required String dateTimeInput,
+  required String timeZone,
+  String timeFormat = "12_hours",
+  String dateFormat = "yyyy-MM-dd",
+  DateTimePart include = DateTimePart.both,
+}) {
+  try {
+    if (dateTimeInput.isEmpty || timeZone.isEmpty) return "";
+
+    // Parse the input date-time string
+    DateTime inputDateTime = DateTime.parse(dateTimeInput);
+
+    // Validate and parse the time zone offset
+    final timeZoneMatch = RegExp(r'UTC ([+-]\d{2}):(\d{2})').firstMatch(timeZone);
+
+    if (timeZoneMatch == null) {
+      throw const FormatException("Invalid time zone");
+    }
+
+    int hourOffset = int.parse(timeZoneMatch.group(1)!);
+    int minuteOffset = int.parse(timeZoneMatch.group(2)!);
+
+    // Adjust the date-time for the time zone offset
+    DateTime adjustedDateTime = inputDateTime.toUtc().add(
+      Duration(hours: hourOffset, minutes: minuteOffset),
+    );
+
+    // Normalize the date format for the `intl` package
+    dateFormat = dateFormat
+        .replaceAll("YYYY", "yyyy")
+        .replaceAll("YY", "yy")
+        .replaceAll("DD", "dd")
+        .replaceAll("D", "d")
+        .replaceAll("mm", "MM")
+        .replaceAll("M", "M");
+
+    // Determine the time format pattern
+    String timeFormatPattern = timeFormat == "12_hours" ? "hh:mm a" : "HH:mm";
+
+    // Declare the formatPattern variable
+    String formatPattern;
+
+    switch (include) {
+      case DateTimePart.date:
+        formatPattern = dateFormat;
+        break;
+      case DateTimePart.time:
+        formatPattern = timeFormatPattern;
+        break;
+      case DateTimePart.both:
+        formatPattern = "$dateFormat $timeFormatPattern";
+        break;
+      default:
+        throw ArgumentError('Invalid DateTimePart value');
+    }
+
+    // Format the date-time
+    String formattedDateTime = DateFormat(formatPattern).format(adjustedDateTime);
+
+    // Convert AM/PM to lowercase for consistency
+    return formattedDateTime.replaceAll("AM", "am").replaceAll("PM", "pm");
+  } catch (e) {
+    return "Error: ${e is FormatException ? e.message : 'Invalid input data.'}";
+  }
+}
+
+
+
+
+
+
+

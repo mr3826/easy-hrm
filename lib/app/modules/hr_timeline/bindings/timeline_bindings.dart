@@ -1,15 +1,18 @@
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timeline_controller.dart';
-
 import '../../../global/services/api_service.dart';
-import '../repositories/timline_repository.dart';
+import '../controllers/start_timer_controller.dart';
+import '../repositories/timeline_data_source.dart';
+import '../services/timeline_api_service.dart';
 
-class TimelineBindings {
-  static initTimelineBindings() {
-    ApiService apiService = Get.find<ApiService>();
-    TimelineApiServices timelineApiServices = TimelineApiServices(apiService);
-    TimelineRepoImpl timelineRepoImpl = TimelineRepoImpl(timelineApiServices);
-    Get.put(timelineRepoImpl);
-    Get.put(HrTimelineController());
+class TimelineBindings extends Bindings{
+
+  @override
+  void dependencies() {
+    TimelineApiService timelineApiService = Get.put(TimelineApiService(Get.find<ApiService>()));
+    TimelineDataSource timelineDataSource = Get.put(TimelineDataImpl(timelineApiService));
+    Get.put(HrTimelineController(timelineDataSource));
+    Get.put(StartTimerController());
   }
+
 }

@@ -396,6 +396,18 @@ query GetAnOrganizationSubscription {
   }
 }
 ''';
+const getOrgSettingQuery = r'''
+query GetOrganizationSetting {
+  getOrganizationSetting {
+    id
+    time_zone
+    time_format
+    country_code
+    date_format
+    language
+  }
+}
+''';
 
 const timelineSummaryInfoDashboardQuery = '''
 query GetMonthlyTimelog {
@@ -926,7 +938,6 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
 ''';
 
 //Timeline v2
-
 const getTimeSheetByDateQuery = r'''
 query GET_USERS_TIMESHEET($queryData: UsersTimeSheetQueryData, $optionData: OptionDataType) {
   getUsersTimeSheet(queryData: $queryData, optionData: $optionData) {
@@ -936,7 +947,6 @@ query GET_USERS_TIMESHEET($queryData: UsersTimeSheetQueryData, $optionData: Opti
         roles {
           name
         }
-
         department {
           name
         }
@@ -944,26 +954,17 @@ query GET_USERS_TIMESHEET($queryData: UsersTimeSheetQueryData, $optionData: Opti
           first_name
           last_name
           image
-   
         }
-   
       }
-
-     org_user_id
-   timeline_start_date
+  org_user_id
+  timeline_start_date
   timeline_end_date
       total_scheduled_seconds
       logged_total_seconds
       is_flagged_timelog
       total_leaves_seconds
-
-      approved_request
-      rejected_request
-      pending_request
-      total_entry
-  
+      balance
     }
-
   }
 }
 ''';

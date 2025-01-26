@@ -5,6 +5,8 @@ import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/app/global/services/local_store_service.dart';
 import 'package:payrun_mobile/app/global/services/rest_api_service.dart';
 import 'package:payrun_mobile/app/global/controller/exit_app_controller.dart';
+import '../../modules/settings/bindings/setting_bindings.dart';
+import '../../modules/settings/controller/app_setting_controller.dart';
 import '../controller/user_info_controller.dart';
 import '../services/auth_token_service.dart';
 import '../services/graphql_api_service.dart';
@@ -24,11 +26,11 @@ class GlobalBindings extends Bindings {
     // Inject TokenRefreshService using Get.put
     Get.lazyPut<TokenRefreshService>(() => TokenRefreshService(), fenix: true);
     // Inject ApiService using Get.put
-    Get.lazyPut<ApiService>(() => ApiService(
-        restApiService: Get.put<RestApiService>(RestApiService()),
-        graphQLApiService: Get.put<GraphQLApiService>(GraphQLApiService())));
+    Get.lazyPut<ApiService>(() => ApiService(restApiService: Get.put<RestApiService>(RestApiService()),graphQLApiService: Get.put<GraphQLApiService>(GraphQLApiService())));
 
     Get.lazyPut(() => UserInfoController(), fenix: true);
+
+    SettingBindings().dependencies();
 
   }
 }

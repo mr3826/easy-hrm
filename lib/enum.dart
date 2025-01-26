@@ -6,3 +6,4 @@ enum StartOrEndTimer { start, end }
 
 enum Language { english, norwegian }
 
+enum DateTimePart { date, time, both }

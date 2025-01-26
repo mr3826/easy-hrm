@@ -8,12 +8,11 @@ import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../global/view/widgets/custom_date_picker.dart';
 import '../../../controllers/time_sheet_controller.dart';
 
-class BuildSelectMonth extends StatelessWidget {
+class BuildSelectMonth extends GetView<TimeSheetController> {
   const BuildSelectMonth({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TimeSheetController controller = Get.put(TimeSheetController());
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 12, right: 10),
       child: GestureDetector(
@@ -74,82 +73,81 @@ class BuildSelectMonth extends StatelessWidget {
       ),
     );
   }
+  _openDateRangeDialog() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 26),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
 
-}
+          Obx(() => _createDialogTitle(_retrieveSelectedDate(controller))),
 
+          customSpacerHeight(height: 16),
 
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: controller.dayList.length <= 5 ? controller.dayList.length * 60.0 : 310),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: controller.dayList.length,
+              itemBuilder: (context, index) {
+                return Obx(() => InkWell(
+                  onTap: () {
+                    controller.currentDate.value = controller.dayList[index];
+                    controller.listIndex.value = index;
+                    controller.onDaySelected(index.toString());
 
+                    if (controller.dayList[index] == "Custom" &&
+                        controller.listIndex.value == 6) {
 
-_openDateRangeDialog() {
-  var controller = Get.put(TimeSheetController());
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(8),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 26),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
+                      controller.clearRange();
 
-        Obx(() => _createDialogTitle(_retrieveSelectedDate(controller))),
+                      _showCustomDateRangeDialog(index, context);
+                    } else {
+                      //controller.rangeStart.toString();
+                      //controller.rangeEnd.toString();
+                      Navigator.pop(context);
 
-        customSpacerHeight(height: 16),
-
-        ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: controller.dayList.length <= 5 ? controller.dayList.length * 60.0 : 310),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: controller.dayList.length,
-            itemBuilder: (context, index) {
-              return Obx(() => InkWell(
-                onTap: () {
-                  controller.currentDate.value = controller.dayList[index];
-                  controller.listIndex.value = index;
-                  controller.onDaySelected(index.toString());
-
-                  if (controller.dayList[index] == "Custom" &&
-                      controller.listIndex.value == 6) {
-
-                    controller.clearRange();
-
-                    _showCustomDateRangeDialog(index, context);
-                  } else {
-                    //controller.rangeStart.toString();
-                    //controller.rangeEnd.toString();
-                    Navigator.pop(context);
-
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Container(
-                    color: controller.listIndex.value == index
-                        ? AppColor.primaryColor.withOpacity(0.1)
-                        : AppColor.cardColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        controller.dayList[index],
-                        style: AppStyle.mid_large_text.copyWith(
-                          color: controller.listIndex.value == index
-                              ? AppColor.secondaryColor
-                              : AppColor.normalTextColor,
-                          fontSize: Dimensions.fontSizeDefault + 1,
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Container(
+                      color: controller.listIndex.value == index
+                          ? AppColor.primaryColor.withOpacity(0.1)
+                          : AppColor.cardColor,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          controller.dayList[index],
+                          style: AppStyle.mid_large_text.copyWith(
+                            color: controller.listIndex.value == index
+                                ? AppColor.secondaryColor
+                                : AppColor.normalTextColor,
+                            fontSize: Dimensions.fontSizeDefault + 1,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ));
-            },
+                ));
+              },
+            ),
           ),
-        ),
-        customSpacerHeight(height: 4),
-      ],
-    ),
-  );
+          customSpacerHeight(height: 4),
+        ],
+      ),
+    );
+  }
 }
+
+
+
+
+
 
 _createDialogTitle(String text) {
   return Column(

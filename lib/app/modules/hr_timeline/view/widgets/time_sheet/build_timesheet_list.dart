@@ -1,25 +1,44 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/time_sheet_model.dart';
 import '../../../../../../common/widget/hr_timeline/custom_network_image.dart';
+import '../../../../../../enum.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
+import '../../../../../../utils/utils.dart';
 
-class BuildTimesheetList extends StatelessWidget {
+class BuildTimesheetList extends GetView<TimeSheetController> {
   const BuildTimesheetList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 15,
-      padding: EdgeInsets.zero,
-      itemBuilder: (context, index) {
-      return _timeSheetDetailsCard();
-    },);
+
+    return Obx((){
+      if(controller.isTimeSheetLoading.isTrue){
+        return const CupertinoActivityIndicator(color: AppColor.primaryColor,radius: 18,);
+      }else if(controller.timeSheetModel?.getUsersTimeSheet?.data?.isEmpty??false){
+        return Center(child: Text("Timesheet not found!",style: AppStyle.normal_text_grey,));
+      }
+      else{
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: controller.timeSheetModel?.getUsersTimeSheet?.data?.length??0,
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            Data? data=controller.timeSheetModel?.getUsersTimeSheet?.data?[index];
+            return _timeSheetDetailsCard(data??Data());
+          },);
+      }
+
+    });
   }
 
-  _timeSheetDetailsCard() {
+  _timeSheetDetailsCard(Data data) {
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
@@ -35,21 +54,24 @@ class BuildTimesheetList extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _profileInfo(),
+                _profileInfo(data),
                 const SizedBox(height: 16),
                 Wrap(
                   spacing: 10.0, // Horizontal space between items
                   runSpacing: 12.0, // Vertical space between rows
                   children: [
-                    _buildDetailRow('Date:', 'Today (10:15 am - 08:15 pm)'),
+                    _buildDetailRow('Date:', _getTime(data)),
                     Row(
                       children: [
-                        Flexible(child: _buildDetailRow('Scheduled:', '9h')),
+                        Flexible(child: _buildDetailRow('Scheduled:', getConvertSecondsToHours (data.totalScheduledSeconds.toString())
+
+                        )),
                         const SizedBox(width: 12),
-                        Flexible(child: _buildDetailRow('Logged:', '8h 12m')),
+                        Flexible(child: _buildDetailRow('Logged:',  getConvertSecondsToHours (data.loggedTotalSeconds.toString())
+                        )),
                       ],
                     ),
-                    _buildBalanceRow(),
+                    _buildBalanceRow(data),
                   ],
                 ),
               ],
@@ -58,8 +80,42 @@ class BuildTimesheetList extends StatelessWidget {
         ),
       ),
     );
+
   }
+
+  String _getTime(Data data) {
+
+
+   String startTime= getTimeWithFormat(data.timelineStartDate.toString()).toLowerCase();
+   String endTime= getTimeWithFormat(data.timelineEndDate.toString()).toLowerCase();
+
+
+   String startDate= formatDate(date: data.timelineStartDate.toString(),format:"dd MMM" );
+   String endDate= formatDate(date: data.timelineEndDate.toString(),format: "dd MMM");
+
+
+
+  String timeZone = formatDateTimeWithZone(dateTimeInput: data.timelineStartDate.toString(),timeZone: Get.find<AppSettingController>().orgSetting?.getOrganizationSetting?.timeZone??"");
+
+
+
+  print("timeZone ::: ${Get.find<AppSettingController>().orgSetting?.getOrganizationSetting?.timeZone}");
+
+
+
+   if(startDate.contains(endDate)){
+     return 'Today ($startTime - $endTime)';
+   }else{
+     return '$startDate - $endDate ($startTime - $endTime)';
+   }
+
+
+
+
+  }
+
 }
+
 
 
 
@@ -91,7 +147,7 @@ class BuildTimesheetList extends StatelessWidget {
   }
 
   // Helper method for the balance row with styled containers
-  Widget _buildBalanceRow() {
+  Widget _buildBalanceRow(Data data) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -103,10 +159,7 @@ class BuildTimesheetList extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        Text(
-          '-48m',
-          style: AppStyle.normal_text.copyWith(color: AppColor.normalTextColor.withOpacity(0.8)),
-        ),
+        Text(getConvertSecondsToHours (data.loggedTotalSeconds.toString()), style: AppStyle.normal_text.copyWith(color: AppColor.normalTextColor.withOpacity(0.8))),
         const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.only(left: 12.0, right: 12,top: 0,bottom: 0),
@@ -116,7 +169,7 @@ class BuildTimesheetList extends StatelessWidget {
 
           ),
           child: Text(
-            '2h',
+                getConvertSecondsToHours (data.totalLeavesSeconds.toString()),
             style: AppStyle.normal_text.copyWith(color: AppColor.pendingColor,fontSize: Dimensions.fontSizeSmall+1),
           ),
         ),
@@ -125,15 +178,14 @@ class BuildTimesheetList extends StatelessWidget {
   }
 
   // Profile information layout
-  Widget _profileInfo() {
+  Widget _profileInfo(Data data) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CustomNetworkImage(
-          imageUrl: "https://thumbs.dreamstime.com/b/lonely-cherry-tree-seaside-rocks-d-artwork-35112983.jpg", // Provide an image URL if available
-          isCircleImage: true,
-          radius: 17,
-          errorText: "Er",
+         CircularNetworkImage(
+          imageUrl: buildImgIxUrl(imagePath: data.organizationUser?.profile?.image??"",isPublic: true),
+          radius: 18,
+          errorText: getInitials( "${data.organizationUser?.profile?.firstName??""} ${data.organizationUser?.profile?.lastName??""}",),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -141,12 +193,12 @@ class BuildTimesheetList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Agens Neilson',
+                "${data.organizationUser?.profile?.firstName??""} ${data.organizationUser?.profile?.lastName??""}",
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.secondaryColor, fontSize: Dimensions.fontSizeDefault + 1),
               ),
               Text(
-                'Laravel department',
+                data.organizationUser?.department?.name??"",
                 style: AppStyle.normal_text.copyWith(
                     color: AppColor.hintColor, fontSize: Dimensions.fontSizeSmall),
               ),

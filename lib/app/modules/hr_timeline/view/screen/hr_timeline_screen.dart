@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timeline_controller.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/build_time_sheet.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/time_sheet_bindings.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../common/widget/custom_spacer.dart';
@@ -15,20 +15,19 @@ import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
 import '../../../../global/controller/user_info_controller.dart';
-import '../../../../global/services/api_service.dart';
 import '../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
 import '../../bindings/timeline_bindings.dart';
 import '../../controllers/start_timer_controller.dart';
-import '../../repositories/timline_repository.dart';
 import '../widgets/time_sheet/build_select_month.dart';
+import '../widgets/time_sheet/build_timesheet_list.dart';
 import '../widgets/timeline_calender/buid_timeline_short_summury.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
 
 bool isEmployee = false;
 
 class HrTimelineScreen extends StatefulWidget {
-   HrTimelineScreen({super.key});
+   const HrTimelineScreen({super.key});
 
 
   @override
@@ -42,13 +41,19 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   @override
   void initState() {
 
-    TimelineBindings.initTimelineBindings();
+
+    TimelineBindings().dependencies();
 
     _tabController =
         TabController(length: isEmployee == true ? 1 : 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
-        setState(() {}); // Rebuild the widget when the tab changes
+
+        setState(() {});
+        if(_tabController.index==1){
+          TimeSheetBindings().dependencies();
+          Get.find<TimeSheetController>().getTimesheetByDate();
+        }
       }
     });
 
@@ -65,7 +70,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   @override
   Widget build(BuildContext context) {
 
-    Get.put(StartTimerController());
 
     return DefaultTabController(
       length: 2, // Number of tabs
@@ -172,7 +176,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         else
           tabController.index == 0
               ? const TimelineCalendar()
-              : const BuildTimeSheet(),
+              : _buildTimeSheet(),
       ]),
     );
   }
@@ -275,5 +279,10 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       AppString.text_time_line.tr,
       style: AppStyle.mid_large_text.copyWith(fontSize: 20),
     );
+  }
+
+  _buildTimeSheet() {
+
+    return const BuildTimesheetList();
   }
 }
