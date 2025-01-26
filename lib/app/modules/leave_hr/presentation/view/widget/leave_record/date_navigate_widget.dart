@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/app/modules/leave_hr/presentation/view/widget/leave_record/range_calendar.dart';
+import '../../../controller/leave_controller.dart';
+import '../../../view/widget/leave_record/range_calendar.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../controller/leave_controller.dart';
 
 class DateNavigatorWidget extends StatelessWidget {
   const DateNavigatorWidget({super.key});
@@ -43,7 +43,7 @@ class DateNavigatorWidget extends StatelessWidget {
                 ),
               ),
               Obx(
-                () => Column(
+                    () => Column(
                   children: [
                     Text(
                       controller.currentDate.value,

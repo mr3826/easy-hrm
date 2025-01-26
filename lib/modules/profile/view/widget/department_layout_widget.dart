@@ -47,8 +47,14 @@ Widget departmentLayout(BuildContext? context) {
 }
 
 _departmentHistoryInfo(context) {
+  Department? department = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.department;
+
   return GestureDetector(
     onTap: () {
+      Get.find<UserProfileController>().getEmploymentInfo();
       customAntButtonSheet(context: context, child: const DepartmentHistory());
     },
     child: Column(
@@ -56,32 +62,17 @@ _departmentHistoryInfo(context) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          Get.find<UserProfileController>()
-                  .userDetails
-                  ?.getOrganizationUserDetails
-                  ?.department
-                  ?.name ??
-              "",
+          department?.name ?? "",
           style:
               AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
         ),
         Row(
           children: [
-            _parentDepartmentInfo(
-                parentDepartmentName: _getParentDepartmentName()),
-            if (Get.find<UserProfileController>()
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.employmentHistories !=
-                    null &&
-                Get.find<UserProfileController>()
-                    .employeeWorkHistory!
-                    .getOrganizationUserHistory!
-                    .employmentHistories!
-                    .isNotEmpty)
+            _parentDepartmentInfo(parentDepartmentName: _getParentDepartmentName()),
+            if (department != null)
               Expanded(
                 child: Text(
-                  "${AppString.text_from.tr} - ${getDateTimeFormat(Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[0].startDate ?? "")}",
+                  "${AppString.text_from.tr} - ${getDateTimeFormat("")}",///todo [query]
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.hintColor,
                       fontSize: Dimensions.fontSizeDefault - 1,
@@ -95,6 +86,26 @@ _departmentHistoryInfo(context) {
   );
 }
 
+getDateTimeFormat(dateString) {
+  if (dateString.isEmpty) return "";
+  DateTime dateTime = DateTime.parse(dateString);
+  // Format the DateTime to "dd, MMM"
+  return DateFormat('dd MMM, yyyy').format(dateTime);
+}
+
+_parentDepartmentInfo({required String parentDepartmentName}) {
+  return Row(
+    children: [
+      Text(
+        parentDepartmentName,
+        style: AppStyle.mid_large_text.copyWith(
+            color: AppColor.primaryColor,
+            fontSize: Dimensions.fontSizeDefault - 1),
+      ),
+      if (parentDepartmentName.isNotEmpty) _divider(),
+    ],
+  );
+}
 
 _workingShiftLayout(context) {
   return Expanded(
@@ -135,29 +146,6 @@ _workingShiftLayout(context) {
 
 
 
-
-getDateTimeFormat(dateString){
-  if(dateString.isEmpty) return"";
-  DateTime dateTime = DateTime.parse(dateString);
-  // Format the DateTime to "dd, MMM"
-  return DateFormat('dd MMM, yyyy').format(dateTime);
-}
-
-_parentDepartmentInfo({required String parentDepartmentName}) {
-  return Row(
-    children: [
-      Text(
-        parentDepartmentName,
-        style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.primaryColor,
-            fontSize: Dimensions.fontSizeDefault - 1),
-      ),
-      if (parentDepartmentName.isNotEmpty) _divider(),
-    ],
-  );
-}
-
-
 _verticalDivider() {
   return Container(
     width: 1,
@@ -178,13 +166,13 @@ _workShiftDetailsLayout() {
       .map((e) => e)
       .toList();
 
-
   bool? allTimesSame = workSchedules?.every((schedule) {
     // Check if start_time and end_time are the same for each item
     return schedule.startTime == workSchedules[0].startTime &&
         schedule.endTime == workSchedules[0].endTime;
   });
-  
+
+
   return Row(
     children: [
       Text(
@@ -325,25 +313,13 @@ _workingDaySchedule(context) {
 }
 
 String _getParentDepartmentName() {
-  if (Get.find<UserProfileController>()
-              .employeeWorkHistory
-              ?.getOrganizationUserHistory
-              ?.deptHistories ==
-          null &&
-      Get.find<UserProfileController>()
-          .employeeWorkHistory!
-          .getOrganizationUserHistory!
-          .deptHistories!
-          .isEmpty) return "";
-
-  if (Get.find<UserProfileController>()
-          .employeeWorkHistory
-          ?.getOrganizationUserHistory
-          ?.deptHistories?[0]
-          .department
-          ?.parent !=
-      null) {
-    return "${AppString.text_child_of_deparmtnet.tr} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[0].department?.parent?.name ?? ""}";
+  var parent = Get.find<UserProfileController>()
+      .userDetails
+      ?.getOrganizationUserDetails
+      ?.department
+      ?.parent;
+  if (parent != null) {
+    return "${AppString.text_child_of_deparmtnet.tr} ${parent.name ?? ""}";
   } else {
     return "";
   }

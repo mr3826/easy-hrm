@@ -241,6 +241,11 @@ class AppString {
   static const String text_pendding = "Pending";
   static const String text_pending = "Pending";
   static const String text_phone = "Phone";
+
+  static const String text_personal_number = "Personal number";
+  static const String text_emergency_number = "Emergency number";
+  static const String text_employee_Id = "Employee ID";
+
   static const String text_please_valid_file = "Please selected valid document";
   static const String text_please_valid_photo =
       "Please selected valid profile image";
@@ -376,4 +381,6 @@ class AppString {
   static String text_time_entry = "Add time entry";
   static String text_employee_type = "Employee & type";
   static String text_time_sheet = "Time sheet";
+
+  static String pleaseProvideATerminationType='Please select a termination type';
 }

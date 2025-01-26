@@ -21,8 +21,8 @@ import '../../../../../../../common/widget/warning_message.dart';
 import '../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
 import '../../../../../../../utils/utils.dart';
-import '../../../../../../modules/auth/view/screens/otp_screen.dart';
-import '../../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
+import '../../../../../auth/view/screens/otp_screen.dart';
+import '../../../../../employee/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';
 import '../../../controller/leave_controller.dart';
 import 'add_attachment_file.dart';
@@ -56,9 +56,9 @@ class AssignLeaveSelectedValue extends StatelessWidget {
         padding: EdgeInsets.only(top: 28.0),
         child: Center(
             child: CupertinoActivityIndicator(
-          color: AppColor.primaryColor,
-          radius: 15,
-        )),
+              color: AppColor.primaryColor,
+              radius: 15,
+            )),
       );
     }
 
@@ -79,7 +79,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               customSpacerHeight(height: 8),
 
               Obx(
-                () => _buildSearchBar(context, onSearch: () {
+                    () => _buildSearchBar(context, onSearch: () {
                   _showEmployeeSelectionSheet();
                 }),
               ),
@@ -122,9 +122,9 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
               Get.find<LeaveScreenController>().startTime != null
                   ? CustomTimePickerInTime(
-                      inTime:
-                          "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
-                    )
+                inTime:
+                "2024-01-01 ${Get.find<LeaveScreenController>().startTime}",
+              )
                   : const CustomTimePickerInTime(),
 
               customSpacerHeight(height: 20),
@@ -132,9 +132,9 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               customSpacerHeight(height: 8),
               Get.find<LeaveScreenController>().endTime != null
                   ? CustomTimePickerOutTime(
-                      outTime:
-                          "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
-                    )
+                outTime:
+                "2024-01-01 ${Get.find<LeaveScreenController>().endTime}",
+              )
                   : const CustomTimePickerOutTime(),
 
               customSpacerHeight(height: 12),
@@ -149,14 +149,14 @@ class AssignLeaveSelectedValue extends StatelessWidget {
               /// Displays the title and an attachment input.
               _buildTitleText(text: AppString.text_document.tr),
               customSpacerHeight(height: 8),
-               const AttachmentFile(
+              const AttachmentFile(
                 isAssignLeave: true,
               ),
               customSpacerHeight(height: 30),
 
               /// Displays the action buttons.
               Obx(
-                () => _buildButton(),
+                    () => _buildButton(),
               ),
               customSpacerHeight(height: 100),
             ],
@@ -168,38 +168,38 @@ class AssignLeaveSelectedValue extends StatelessWidget {
 
   _leaveCountStyleLayout() {
     return Obx(() =>
-        Get.find<HrLeaveController>().calculateAllowanceOfLeave.value.isNotEmpty
-            ? SizedBox(
-                width: double.infinity,
-                child: Card(
-                  elevation: 0,
-                  shape: roundedRectangleBorder,
-                  color: AppColor.primaryColor.withOpacity(0.05),
-                  child: Padding(
-                    padding: marginLayout.copyWith(
-                        top: 8, bottom: 8, left: 16, right: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          formatToTwoDecimalPlaces(Get.find<HrLeaveController>()
-                              .calculateAllowanceOfLeave
-                              .value),
-                          style: AppStyle.mid_large_text
-                              .copyWith(color: AppColor.normalTextColor),
-                        ),
-                        Text(
-                          _getCalculateLeave(),
-                          style: AppStyle.mid_large_text.copyWith(
-                              color: AppColor.hintColor,
-                              fontSize: Dimensions.fontSizeDefault),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            : Container());
+    Get.find<HrLeaveController>().calculateAllowanceOfLeave.value.isNotEmpty
+        ? SizedBox(
+      width: double.infinity,
+      child: Card(
+        elevation: 0,
+        shape: roundedRectangleBorder,
+        color: AppColor.primaryColor.withOpacity(0.05),
+        child: Padding(
+          padding: marginLayout.copyWith(
+              top: 8, bottom: 8, left: 16, right: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                formatToTwoDecimalPlaces(Get.find<HrLeaveController>()
+                    .calculateAllowanceOfLeave
+                    .value),
+                style: AppStyle.mid_large_text
+                    .copyWith(color: AppColor.normalTextColor),
+              ),
+              Text(
+                _getCalculateLeave(),
+                style: AppStyle.mid_large_text.copyWith(
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault),
+              ),
+            ],
+          ),
+        ),
+      ),
+    )
+        : Container());
   }
 
   String _getCalculateLeave() {
@@ -225,7 +225,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
           color: AppColor.cardColor,
           borderRadius: BorderRadius.circular(4),
           border:
-              Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
+          Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
         ),
         child: ListView.builder(
           itemCount: leaveController.statusOptions.length,
@@ -240,7 +240,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
                     color:
-                        isSelected ? AppColor.pendingColor : Colors.transparent,
+                    isSelected ? AppColor.pendingColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   alignment: Alignment.center,
@@ -248,7 +248,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
                     leaveController.statusOptions[index],
                     style: AppStyle.normal_text.copyWith(
                       color:
-                          isSelected ? AppColor.cardColor : AppColor.hintColor,
+                      isSelected ? AppColor.cardColor : AppColor.hintColor,
                     ),
                   ),
                 ),
@@ -283,9 +283,9 @@ class AssignLeaveSelectedValue extends StatelessWidget {
     if (Get.find<HrLeaveController>().isAssignLeaveLoaderLoading.isTrue) {
       return const Center(
           child: CupertinoActivityIndicator(
-        color: AppColor.primaryColor,
-        radius: 15,
-      ));
+            color: AppColor.primaryColor,
+            radius: 15,
+          ));
     }
 
     return CustomDoubleAppButton(
@@ -294,16 +294,16 @@ class AssignLeaveSelectedValue extends StatelessWidget {
           if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).difference(DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)).isNegative) {
 
             if (Get.find<HrLeaveController>()
-                    .calculateAllowanceOfLeave
-                    .value
-                    .isNotEmpty &&
+                .calculateAllowanceOfLeave
+                .value
+                .isNotEmpty &&
                 Get.find<HrLeaveController>().calculateAllowanceOfLeave.value !=
                     "0") {
 
               Get.find<HrLeaveController>().applyLeave(
                   status: Get.find<LeaveController>().selectedStatusIndex.value == 0
-                          ? "pending"
-                          : "approved");
+                      ? "pending"
+                      : "approved");
             } else {
               showWarningMessage(message: AppString.text_no_available_leave.tr);
             }
@@ -357,17 +357,17 @@ Widget _buildHeader() {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child:
-              Container(height: 4, width: 120, color: AppColor.backgroundColor),
+          Container(height: 4, width: 120, color: AppColor.backgroundColor),
         ),
         customSpacerHeight(height: 12),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-                      .day ==
-                  DateTime.parse(
-                          Get.find<DateTimePickerController>().outDate.value)
-                      .day
+              .day ==
+              DateTime.parse(
+                  Get.find<DateTimePickerController>().outDate.value)
+                  .day
               ? DateFormat('d MMMM').format(DateTime.parse(
-                  Get.find<DateTimePickerController>().inDate.value))
+              Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
@@ -377,12 +377,12 @@ Widget _buildHeader() {
         ),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-                      .day ==
-                  DateTime.parse(
-                          Get.find<DateTimePickerController>().outDate.value)
-                      .day
+              .day ==
+              DateTime.parse(
+                  Get.find<DateTimePickerController>().outDate.value)
+                  .day
               ? DateFormat('EEEE').format(DateTime.parse(
-                  Get.find<DateTimePickerController>().inDate.value))
+              Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.small_text_black.copyWith(
             color: AppColor.hintColor,
@@ -473,11 +473,11 @@ Widget _buildDropdownField({
         style: AppStyle.normal_text_grey.copyWith(fontWeight: FontWeight.w500)),
     items: items
         .map((item) => DropdownMenuItem<String>(
-              value: item,
-              child: Text(item,
-                  style: AppStyle.normal_text_black
-                      .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
-            ))
+      value: item,
+      child: Text(item,
+          style: AppStyle.normal_text_black
+              .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
+    ))
         .toList(),
     onChanged: onChanged,
   );

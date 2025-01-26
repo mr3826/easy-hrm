@@ -15,8 +15,9 @@ import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/app/modules/splash/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import '../app/home/view/screen/main_screen.dart';
-import '../app/modules/employee/presentation/view/screen/employee_profile_view_screen.dart';
-import '../app/modules/employee/presentation/view/widget/employee_list/edit_employee.dart';
+import '../app/modules/employee/bindings/update_org_user_binding.dart';
+import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
+import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
 import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
 import '../app/modules/hr_timeline/bindings/start_timer_bindings.dart';
 import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
@@ -113,7 +114,7 @@ class AppPages {
     GetPage(
       name: _Paths.PROFILE_SCREEN,
       transition: Transition.size,
-      page: () => const ProfileScreen(),
+      page: () =>   ProfileScreen(),
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE_SCREEN,
@@ -143,6 +144,7 @@ class AppPages {
       name: _Paths.EDIT_EMPOLYEE_VIEW,
       transition: Transition.size,
       page: () =>  EditEmployee(),
+      binding: UpdateOrgUserInfoBindings()
 
     ),
 

@@ -29,13 +29,13 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
 
   Future<void> updateAssignLeave(
       {required String leaveId,
-      required String startDate,
-      required String endDate,
-      required String key,
-      required String size,
-      required String name,
-      required String id,
-      required String? leaveTypeId}) async {
+        required String startDate,
+        required String endDate,
+        required String key,
+        required String size,
+        required String name,
+        required String id,
+        required String? leaveTypeId}) async {
     isUpdateLeaveLoading(true);
 
     // Preparing the input data for the GraphQL mutation
@@ -58,7 +58,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
 
     // Sending the GraphQL request using NetworkClient
     final bool response =
-        await _updateLeaveDateSource.updateAssignLeave(inputData);
+    await _updateLeaveDateSource.updateAssignLeave(inputData);
 
     // Handling the response
     if (response) {
@@ -79,7 +79,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
         "filename":
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });
@@ -99,8 +99,8 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
 
   uploadFile(
       {required String fileName,
-      List<PolicyData>? list,
-      required String url}) async {
+        List<PolicyData>? list,
+        required String url}) async {
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 
@@ -113,7 +113,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
         "file",
         MultipartFile(File(fileName),
             filename:
-                "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
       isFileUploadedSuccessfully.value = true;
@@ -123,35 +123,35 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
 
   _getFileInfo(
       {required String key,
-      required String filePath,
-      required UploadPolicyResponse uploadPolicyResponse,
-      required String size,
-      required String name,
-      required String id}) {
+        required String filePath,
+        required UploadPolicyResponse uploadPolicyResponse,
+        required String size,
+        required String name,
+        required String id}) {
     return (key != "null" && key.isNotEmpty || filePath.isNotEmpty)
         ? {
-            "addData": filePath.isNotEmpty
-                ? [
-                    {
-                      "size":
-                          int.parse(storageForUpload.fileSize.value.toString()),
-                      "name": storageForUpload.filePath.value
-                          .split(".")
-                          .last
-                          .toString(),
-                      "key": uploadPolicyResponse.getUploadPolicy?.policyData
-                              ?.firstWhere((e) => e.name == 'key'.toLowerCase())
-                              .value
-                              ?.split("/")
-                              .last ??
-                          ""
-                    }
-                  ]
-                : [
-                    {"name": name, "key": key, "size": int.parse(size)}
-                  ],
-            "removeData": id.isNotEmpty && id != "null" ? id : null
-          }
+      "addData": filePath.isNotEmpty
+          ? [
+        {
+          "size":
+          int.parse(storageForUpload.fileSize.value.toString()),
+          "name": storageForUpload.filePath.value
+              .split(".")
+              .last
+              .toString(),
+          "key": uploadPolicyResponse.getUploadPolicy?.policyData
+              ?.firstWhere((e) => e.name == 'key'.toLowerCase())
+              .value
+              ?.split("/")
+              .last ??
+              ""
+        }
+      ]
+          : [
+        {"name": name, "key": key, "size": int.parse(size)}
+      ],
+      "removeData": id.isNotEmpty && id != "null" ? id : null
+    }
         : null;
   }
 }

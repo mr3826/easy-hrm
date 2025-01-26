@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/leave_hr/presentation/view/widget/leave_record/leave_record_details/leave_details_button.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
@@ -11,7 +12,6 @@ import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
-import 'leave_details_button.dart';
 
 class LeaveRecordDetails extends GetView<HrLeaveController> {
   final String? leaveId;
@@ -21,70 +21,70 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
   Widget build(BuildContext context) {
     return Obx(() => controller.isHrLeaveDetailsByLoading.isTrue
         ? const Center(
-            child: CupertinoActivityIndicator(
-            radius: 15,
-            color: AppColor.primaryColor,
-          ))
+        child: CupertinoActivityIndicator(
+          radius: 15,
+          color: AppColor.primaryColor,
+        ))
         : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(
-                  imgUrl: controller.leaveDetailsById?.getLeaveDetailsById
-                          ?.organizationUser?.profile?.image ??
-                      "",
-                  employeeName:
-                      "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
-                      "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
-                  designation: controller.leaveDetailsById?.getLeaveDetailsById
-                      ?.organizationUser?.designation
-                      .toString()),
-              customSpacerHeight(height: 12),
-              _buildRow(
-                label: AppString.textType.tr,
-                value: controller.leaveDetailsById?.getLeaveDetailsById
-                        ?.leaveType?.name ??
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildHeader(
+            imgUrl: controller.leaveDetailsById?.getLeaveDetailsById
+                ?.organizationUser?.profile?.image ??
+                "",
+            employeeName:
+            "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.firstName ?? "No added yet"} "
+                "${controller.leaveDetailsById?.getLeaveDetailsById?.organizationUser?.profile?.lastName ?? ""}",
+            designation: controller.leaveDetailsById?.getLeaveDetailsById
+                ?.organizationUser?.designation
+                .toString()),
+        customSpacerHeight(height: 12),
+        _buildRow(
+          label: AppString.textType.tr,
+          value: controller.leaveDetailsById?.getLeaveDetailsById
+              ?.leaveType?.name ??
+              "",
+        ),
+        _buildRow(
+          label: AppString.text_date.tr,
+          value: controller.leaveDetailsById?.getLeaveDetailsById
+              ?.leaveDetails?.first.date ??
+              "",
+        ),
+        _buildRow(
+          label: AppString.text_duration.tr,
+          value: getLeaveDuration(
+              controller.leaveDetailsById?.getLeaveDetailsById
+                  ?.leaveDetails?.first.leaveSeconds
+                  ?.toString() ??
+                  "",
+              controller
+                  .leaveDetailsById?.getLeaveDetailsById?.numberOfDays
+                  ?.toString() ??
+                  ""),
+        ),
+        _buildRow(
+            label: AppString.text_status.tr,
+            widget: _showStatusButton(controller
+                .leaveDetailsById?.getLeaveDetailsById?.status ??
+                "")),
+        _buildRow(
+            label: AppString.text_date_of_application.tr,
+            value: formatDate(
+                date: controller.leaveDetailsById?.getLeaveDetailsById
+                    ?.createdAt ??
                     "",
-              ),
-              _buildRow(
-                label: AppString.text_date.tr,
-                value: controller.leaveDetailsById?.getLeaveDetailsById
-                        ?.leaveDetails?.first.date ??
-                    "",
-              ),
-              _buildRow(
-                label: AppString.text_duration.tr,
-                value: getLeaveDuration(
-                    controller.leaveDetailsById?.getLeaveDetailsById
-                            ?.leaveDetails?.first.leaveSeconds
-                            ?.toString() ??
-                        "",
-                    controller
-                            .leaveDetailsById?.getLeaveDetailsById?.numberOfDays
-                            ?.toString() ??
-                        ""),
-              ),
-              _buildRow(
-                  label: AppString.text_status.tr,
-                  widget: _showStatusButton(controller
-                          .leaveDetailsById?.getLeaveDetailsById?.status ??
-                      "")),
-              _buildRow(
-                  label: AppString.text_date_of_application.tr,
-                  value: formatDate(
-                      date: controller.leaveDetailsById?.getLeaveDetailsById
-                              ?.createdAt ??
-                          "",
-                      format: "dd MMMM yyyy")),
-              _buildActionButtons(
-                  leaveId: leaveId.toString(),
-                  leaveDate: controller.leaveDetailsById?.getLeaveDetailsById
-                          ?.leaveDetails?.first.date ??
-                      "",
-                  status: controller
-                          .leaveDetailsById?.getLeaveDetailsById?.status ??
-                      ""),
-            ],
-          ));
+                format: "dd MMMM yyyy")),
+        _buildActionButtons(
+            leaveId: leaveId.toString(),
+            leaveDate: controller.leaveDetailsById?.getLeaveDetailsById
+                ?.leaveDetails?.first.date ??
+                "",
+            status: controller
+                .leaveDetailsById?.getLeaveDetailsById?.status ??
+                ""),
+      ],
+    ));
   }
 
   Widget _buildRow({required String label, String? value, Widget? widget}) {
@@ -96,7 +96,7 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
           Text(
             "$label:",
             style:
-                AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+            AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
           ),
           widget ?? Text(value ?? "", style: AppStyle.normal_text_black),
         ],
@@ -107,10 +107,10 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
   ///Status according to details button
   Widget _buildActionButtons(
       {required String status,
-      required String leaveId,
-      required String leaveDate}) {
+        required String leaveId,
+        required String leaveDate}) {
     if (status == LeaveStatus.pending.name) {
-      return buildPendingBtn(leaveId: leaveId, leaveDate: leaveDate);
+     return buildPendingBtn(leaveId: leaveId, leaveDate: leaveDate);
     } else if (status == LeaveStatus.approved.name) {
       return buildApprovedBtn(leaveId: leaveId, leaveDate: leaveDate);
     } else {

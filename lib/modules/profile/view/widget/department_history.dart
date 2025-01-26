@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
+import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -14,82 +15,64 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../common/widget/custom_network_image.dart';
+import '../../../../common/widget/loading_indicator.dart';
 
-class DepartmentHistory extends StatelessWidget {
+
+class DepartmentHistory extends GetView<UserProfileController> {
   const DepartmentHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        customButtonSheetAppbar(
+    return Obx(() {
+      if (controller.isEmployeeInfoLoading.isTrue) {
+        return const Center(child: LoadingIndicator());
+      }
+
+      final deptHistories = controller.employeeWorkHistory?.getOrganizationUserHistory?.deptHistories;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customButtonSheetAppbar(
             text: AppString.text_deparmtnet.tr,
-            subtext: AppString.text_history.tr),
-        Expanded(
-            child: ListView.builder(
-          itemCount: Get.find<UserProfileController>()
-              .employeeWorkHistory
-              ?.getOrganizationUserHistory
-              ?.deptHistories
-              ?.length,
-          padding: EdgeInsets.zero,
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            int length = Get.find<UserProfileController>()
-                    .employeeWorkHistory
-                    ?.getOrganizationUserHistory
-                    ?.deptHistories
-                    ?.length ??
-                0;
-            bool isLastItem = index == length - 1;
-            return _departmentSectionInfoLayout(
-              isLastIndex: isLastItem,
-              imageUrl: Get.find<UserProfileController>()
-                      .employeeWorkHistory
-                      ?.getOrganizationUserHistory
-                      ?.deptHistories?[index]
-                      .department
-                      ?.manager
-                      ?.profile
-                      ?.image ??
-                  "",
-              index: index,
-              startDate: _getEmploymentDate(Get.find<UserProfileController>()
-                  .employeeWorkHistory
-                  ?.getOrganizationUserHistory
-                  ?.deptHistories?[index]
-                  .startDate),
-              endDate: _getEmploymentDate(Get.find<UserProfileController>()
-                  .employeeWorkHistory
-                  ?.getOrganizationUserHistory
-                  ?.deptHistories?[index]
-                  .endDate),
-              departmentName: Get.find<UserProfileController>()
-                      .employeeWorkHistory
-                      ?.getOrganizationUserHistory
-                      ?.deptHistories?[index]
-                      .department
-                      ?.name ??
-                  "",
-              parentDepartment: _getParentDepartmentName(index),
-              managerName: _getManagerName(index),
-            );
-          },
-        ))
-      ],
-    );
+            subtext: AppString.text_history.tr,
+          ),
+          if (deptHistories == null || deptHistories.isEmpty)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Text(
+                  "No department history!",
+                  style: AppStyle.normal_text_black.copyWith(
+                    color: AppColor.hintColor,
+                  ),
+                ),
+              ),
+            )
+          else
+            Expanded(
+              child: ListView.builder(
+                itemCount: deptHistories.length,
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final deptHistory = deptHistories[index];
+                  final isLastItem = index == deptHistories.length - 1;
+                  return _buildDepartmentInfo(
+                    isLastIndex: isLastItem,
+                    deptHistory: deptHistory,
+                  );
+                },
+              ),
+            ),
+        ],
+      );
+    });
   }
 
-  _departmentSectionInfoLayout({
-    required String departmentName,
-    required String parentDepartment,
-    String? startDate,
-    String? endDate,
-    required int index,
+  Widget _buildDepartmentInfo({
     required bool isLastIndex,
-    required String managerName,
-    required String imageUrl,
+    required DeptHistories deptHistory,
   }) {
     return Padding(
       padding: marginLayout.copyWith(bottom: 14, left: 0, right: 0, top: 16),
@@ -101,167 +84,145 @@ class DepartmentHistory extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSvgImage(
-                    imageUrl: Images.departmentNotification,
-                    color: AppColor.normalTextColor,
-                    height: 18,
-                    width: 18),
+                  imageUrl: Images.departmentNotification,
+                  color: AppColor.normalTextColor,
+                  height: 18,
+                  width: 18,
+                ),
                 customSpacerWidth(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      departmentName,
+                      deptHistory.department?.name ?? "",
                       style: AppStyle.normal_text_grey.copyWith(
-                          color: AppColor.normalTextColor,
-                          fontSize: Dimensions.fontSizeMid - 3),
+                        color: AppColor.normalTextColor,
+                        fontSize: Dimensions.fontSizeMid - 3,
+                      ),
                     ),
-                    _employmentDate(
-                        startDate: startDate,
-                        endDate: endDate,
-                        parentDepartment: parentDepartment),
+                    _buildEmploymentDetails(deptHistory),
                     customSpacerHeight(height: 14),
                     SizedBox(
                       child: Stack(
                         children: [
-                          _verticalAndHorizontalDivider(),
+                          _buildDivider(),
                           Stack(
                             children: [
-                              _managerInfoLayout(
-                                  index: index,
-                                  imageUrl: imageUrl,
-                                  managerName: managerName),
-                              _departmentCircleLayout()
+                              _buildManagerDetails(deptHistory),
+                              _buildCircleAvatar(),
                             ],
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
-          isLastIndex == true
-              ? const SizedBox()
-              : Positioned(
-                  top: 26,
-                  left: 1,
-                  bottom: 0,
-                  child: dottedStyleLayout(height: 99)),
+          if (!isLastIndex)
+            Positioned(
+              top: 26,
+              left: 1,
+              bottom: 0,
+              child: dottedStyleLayout(height: 99),
+            ),
         ],
       ),
     );
   }
 
-  _departmentCircleLayout() {
+  Widget _buildCircleAvatar() {
     return Positioned(
-        left: 40,
-        bottom: 0,
-        child: CircleAvatar(
-          radius: 8,
-          backgroundColor: AppColor.pureOrange,
-          child: customSvgImage(
-              imageUrl: Images.departmentNotification,
-              color: AppColor.cardColor,
-              height: 10),
-        ));
+      left: 40,
+      bottom: 0,
+      child: CircleAvatar(
+        radius: 8,
+        backgroundColor: AppColor.pureOrange,
+        child: customSvgImage(
+          imageUrl: Images.departmentNotification,
+          color: AppColor.cardColor,
+          height: 10,
+        ),
+      ),
+    );
   }
 
-  String? _getEmploymentDate(String? date) {
-    if (date != null) {
-      return DateFormat('dd MMM, yyyy').format(DateTime.parse(date));
-    } else {
-      return null;
-    }
-  }
+  Widget _buildEmploymentDetails(DeptHistories deptHistory) {
+    final startDate = _formatDate(deptHistory.startDate);
+    final endDate = _formatDate(deptHistory.endDate) ?? AppString.textPresent.tr;
+    final parentDeptName = _getParentDepartmentName(deptHistory);
 
-  _employmentDate({String? startDate, String? endDate, parentDepartment}) {
     return SizedBox(
       width: MediaQuery.of(Get.context!).size.width / 1.5,
       child: Text.rich(
         TextSpan(
           children: [
-            TextSpan(
-              text: parentDepartment,
-              style: AppStyle.mid_large_text.copyWith(
+            if (parentDeptName.isNotEmpty)
+              TextSpan(
+                text: parentDeptName,
+                style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.secondaryColor,
                   fontSize: Dimensions.fontSizeDefault - 3,
                   fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis),
-            ),
-            if (parentDepartment.isNotEmpty)
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            if (parentDeptName.isNotEmpty)
               const TextSpan(
                 text: '  | ',
                 style: TextStyle(color: AppColor.hintColor, fontSize: 10),
               ),
             TextSpan(
-                text: "${AppString.text_from.tr} $startDate",
-                style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.hintColor,
-                    fontSize: Dimensions.fontSizeDefault - 4,
-                    overflow: TextOverflow.ellipsis)),
+              text: "${AppString.text_from.tr} $startDate",
+              style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.hintColor,
+                fontSize: Dimensions.fontSizeDefault - 4,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             const TextSpan(
               text: ' - ',
               style: TextStyle(color: AppColor.hintColor, fontSize: 10),
             ),
             TextSpan(
-                text: endDate ?? AppString.textPresent.tr,
-                style: endDate == null
-                    ? AppStyle.mid_large_text.copyWith(
-                        color: AppColor.primaryColor,
-                        fontSize: Dimensions.fontSizeDefault - 3)
-                    : AppStyle.mid_large_text.copyWith(
-                        color: AppColor.hintColor,
-                        fontSize: Dimensions.fontSizeDefault - 3,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+              text: endDate,
+              style: AppStyle.mid_large_text.copyWith(
+                color: endDate == AppString.textPresent.tr
+                    ? AppColor.primaryColor
+                    : AppColor.hintColor,
+                fontSize: Dimensions.fontSizeDefault - 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  _getParentDepartmentName(int index) {
-    if (Get.find<UserProfileController>()
-            .employeeWorkHistory
-            ?.getOrganizationUserHistory
-            ?.deptHistories?[index]
-            .department
-            ?.parent !=
-        null) {
-      return "${AppString.text_child_of_deparmtnet.tr} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.parent?.name ?? ""}";
-    } else {
-      return "";
-    }
-  }
+  Widget _buildManagerDetails(DeptHistories deptHistory) {
+    final managerName = _getManagerFullName(deptHistory);
+    final initials = _getManagerInitials(deptHistory);
 
-  String _getManagerName(int index) {
-    return "${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.manager?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().employeeWorkHistory?.getOrganizationUserHistory?.deptHistories?[index].department?.manager?.profile?.lastName ?? ""}";
-  }
-
-  _managerImageLayout(imageUrl, int index) {
-    return CircleAvatar(
-      backgroundColor: AppColor.pendingColor,
-      radius: 20,
-      child: CircleAvatar(
-        backgroundColor: AppColor.cardColor,
-        radius: 19.4,
-        child: CustomNetworkImage(
-          errorText: _getFirstCharOfName(index),
-          height: 18,
-          imgUrlKey: imageUrl,
-          borderColor: Colors.transparent,
-        ),
-      ),
-    );
-  }
-
-  _managerInfoLayout({imageUrl, managerName, required int index}) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0),
       child: Row(
         children: [
-          _managerImageLayout(imageUrl, index),
+          CircleAvatar(
+            backgroundColor: AppColor.pendingColor,
+            radius: 20,
+            child: CircleAvatar(
+              backgroundColor: AppColor.cardColor,
+              radius: 19.4,
+              child: CustomNetworkImage(
+                errorText: initials, //Error text
+                height: 18,
+                imgUrlKey: deptHistory.department?.manager?.profile?.image ?? "",
+                borderColor: Colors.transparent,
+              ),
+            ),
+          ),
           customSpacerWidth(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,8 +237,9 @@ class DepartmentHistory extends StatelessWidget {
               Text(
                 AppString.departmentHeaDText.tr,
                 style: AppStyle.mid_large_text.copyWith(
-                    color: AppColor.normalTextColor,
-                    fontSize: Dimensions.fontSizeDefault - 3),
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault - 3,
+                ),
               ),
             ],
           ),
@@ -286,7 +248,7 @@ class DepartmentHistory extends StatelessWidget {
     );
   }
 
-  _verticalAndHorizontalDivider() {
+  Widget _buildDivider() {
     return Positioned(
       child: Container(
         height: AppLayout.getHeight(20),
@@ -295,72 +257,41 @@ class DepartmentHistory extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             left: BorderSide(
-                width: .9, color: AppColor.hintColor.withOpacity(0.6)),
+              width: .9,
+              color: AppColor.hintColor.withOpacity(0.6),
+            ),
             bottom: BorderSide(
-                width: .9, color: AppColor.hintColor.withOpacity(0.6)),
+              width: .9,
+              color: AppColor.hintColor.withOpacity(0.6),
+            ),
           ),
         ),
       ),
     );
   }
 
-  String _getFirstCharOfName(int index) {
-    String firstCharOfFirstName = Get.find<UserProfileController>()
-                    .employeeWorkHistory
-                    ?.getOrganizationUserHistory
-                    ?.deptHistories?[index]
-                    .department
-                    ?.manager
-                    ?.profile !=
-                null &&
-            Get.find<UserProfileController>()
-                .employeeWorkHistory!
-                .getOrganizationUserHistory!
-                .deptHistories![index]
-                .department!
-                .manager!
-                .profile!
-                .firstName!
-                .isNotEmpty
-        ? Get.find<UserProfileController>()
-            .employeeWorkHistory!
-            .getOrganizationUserHistory!
-            .deptHistories![index]
-            .department!
-            .manager!
-            .profile!
-            .firstName![0]
-            .toUpperCase()
-        : "";
+  String? _formatDate(String? date) {
+    return date != null
+        ? DateFormat('dd MMM, yyyy').format(DateTime.parse(date))
+        : null;
+  }
 
-    String lastCharOfFirstName = Get.find<UserProfileController>()
-                    .employeeWorkHistory
-                    ?.getOrganizationUserHistory
-                    ?.deptHistories?[index]
-                    .department
-                    ?.manager
-                    ?.profile !=
-                null &&
-            Get.find<UserProfileController>()
-                .employeeWorkHistory!
-                .getOrganizationUserHistory!
-                .deptHistories![index]
-                .department!
-                .manager!
-                .profile!
-                .lastName!
-                .isNotEmpty
-        ? Get.find<UserProfileController>()
-            .employeeWorkHistory!
-            .getOrganizationUserHistory!
-            .deptHistories![index]
-            .department!
-            .manager!
-            .profile!
-            .lastName![0]
-            .toUpperCase()
+  String _getParentDepartmentName(DeptHistories deptHistory) {
+    return deptHistory.department?.parent?.name != null
+        ? "${AppString.text_child_of_deparmtnet.tr} ${deptHistory.department!.parent!.name!}"
         : "";
+  }
 
-    return "$firstCharOfFirstName$lastCharOfFirstName";
+  String _getManagerFullName(DeptHistories deptHistory) {
+    final profile = deptHistory.department?.manager?.profile;
+    return "${profile?.firstName ?? ""} ${profile?.lastName ?? ""}".trim();
+  }
+
+  String _getManagerInitials(DeptHistories deptHistory) {
+    final profile = deptHistory.department?.manager?.profile;
+    final firstInitial = profile?.firstName?.substring(0, 1).toUpperCase() ?? "";
+    final lastInitial = profile?.lastName?.substring(0, 1).toUpperCase() ?? "";
+    return "$firstInitial$lastInitial";
   }
 }
+

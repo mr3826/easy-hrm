@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:imgix_core_dart/url_builder.dart';
@@ -36,10 +37,6 @@ String urlBuilder({
 
   return client.createURLString(urlPath);
 }
-
-
-
-
 
 Widget circleImageLayout(
     {radius, required url, borderColor, required errorText,TextStyle ?errorTextStyle}) {
@@ -82,6 +79,23 @@ Widget _errorText(errorText,TextStyle ?errorTextStyle) {
       style: errorTextStyle?? AppStyle.normal_text_grey.copyWith(
           fontSize: Dimensions.fontSizeMid, color: AppColor.primaryColor));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Widget rectangleImageLayout({url}) {
   return CachedNetworkImage(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import '../view/widget/calendar/vertical_calendar/calendar_task_card_widget.dart';
 import 'package:payrun_mobile/enum.dart';
 import '../../../../../common/controller/file_piker_controller.dart';
 import '../../../../../common/domain/upload_policy.dart';
@@ -18,7 +19,6 @@ import '../model/download_file.dart';
 import '../model/hr_leave_calender.dart';
 import '../model/hr_leave_record.dart';
 import '../model/leave_details_by_id.dart';
-import '../view/widget/calendar/vertical_calendar/calendar_task_card_widget.dart';
 import 'hr_update_leave_controller.dart';
 import 'leave_controller.dart';
 
@@ -82,7 +82,7 @@ class HrLeaveController extends GetxController {
     }
     isHrLeaveCalendarLoading(true);
     hrLeaveCalender =
-        await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
+    await _hrLeaveRemoteDataSource.getLeaveCalender(queryMap: queryMap);
     isHrLeaveCalendarLoading(false);
   }
 
@@ -106,7 +106,7 @@ class HrLeaveController extends GetxController {
       name: _getFirstUserName(leave),
       role: _getUserRole(leave),
       leaveType:
-          "${leave.leaveTypeName}: ${leave.leaveTypeCategory}", // Replace with actual leave type if needed.
+      "${leave.leaveTypeName}: ${leave.leaveTypeCategory}", // Replace with actual leave type if needed.
       status: _getStatus(leave), // Customize based on leave request status.
       approvedCount: leave.totalApproved ?? 0,
       pendingCount: leave.totalPending ?? 0,
@@ -166,13 +166,13 @@ class HrLeaveController extends GetxController {
   /// Returns a list of image URLs or user names if images are unavailable.
   List<String> _getUserImages(LeaveRequests leave) {
     return leave.organizationUsers?.map((user) {
-          final imageUrl = user.profile?.image;
-          if (imageUrl == null || imageUrl.isEmpty) {
-            return "${user.profile?.firstName ?? 'Unknown'} ${user.profile?.lastName ?? ''}"
-                .trim();
-          }
-          return imageUrl;
-        }).toList() ??
+      final imageUrl = user.profile?.image;
+      if (imageUrl == null || imageUrl.isEmpty) {
+        return "${user.profile?.firstName ?? 'Unknown'} ${user.profile?.lastName ?? ''}"
+            .trim();
+      }
+      return imageUrl;
+    }).toList() ??
         [];
   }
 
@@ -196,7 +196,7 @@ class HrLeaveController extends GetxController {
   Future<void> getLeaveDetailsById({required String leaveId}) async {
     isHrLeaveDetailsByLoading(true);
     leaveDetailsById =
-        await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
+    await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
     isHrLeaveDetailsByLoading(false);
   }
 
@@ -232,7 +232,7 @@ class HrLeaveController extends GetxController {
     isAvailableLeaveType(true);
     availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(
         orgUserId:
-            orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
+        orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
         year: year ?? "${DateTime.now().year}");
     isAvailableLeaveType(false);
   }
@@ -244,13 +244,13 @@ class HrLeaveController extends GetxController {
     final Map<String, dynamic> inputData = {
       "description": leaveNoteController.text,
       "start_date":
-          DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)
-              .toUtc()
-              .toString(),
+      DateTime.parse(Get.find<DateTimePickerController>().inDateTime.value)
+          .toUtc()
+          .toString(),
       "end_date":
-          DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
-              .toUtc()
-              .toString(),
+      DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
+          .toUtc()
+          .toString(),
       "assigned_to": selectedEmployeeId.isEmpty
           ? "${GetStorage().read(AppString.ORGANIZATION_USER_ID)}"
           : selectedEmployeeId,
@@ -278,11 +278,11 @@ class HrLeaveController extends GetxController {
     }
 
     String fileKey = uploadPolicyResponse.getUploadPolicy?.policyData
-            ?.firstWhere((PolicyData e) => e.name?.toLowerCase() == 'key',
-                orElse: () => PolicyData())
-            .value
-            ?.split("/")
-            .last ??
+        ?.firstWhere((PolicyData e) => e.name?.toLowerCase() == 'key',
+        orElse: () => PolicyData())
+        .value
+        ?.split("/")
+        .last ??
         "";
 
     return [
@@ -302,7 +302,7 @@ class HrLeaveController extends GetxController {
       "queryData": {
         "sub_folder_name": GetStorage().read(AppString.ORGANIZATION_ID),
         "filename":
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
+        "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
         "directive": "Files"
       }
     });
@@ -323,8 +323,8 @@ class HrLeaveController extends GetxController {
 
   uploadFile(
       {required String fileName,
-      List<PolicyData>? list,
-      required String url}) async {
+        List<PolicyData>? list,
+        required String url}) async {
     if (list == null || url.isEmpty) return;
     isUploadPolicyLoading(true);
 
@@ -337,7 +337,7 @@ class HrLeaveController extends GetxController {
         "file",
         MultipartFile(File(fileName),
             filename:
-                "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
+            "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}")));
 
     await NetworkClient().post(url, formData).then((value) {
       isFileUploadedSuccessfully.value = true;

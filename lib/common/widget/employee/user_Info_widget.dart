@@ -50,7 +50,7 @@ class UserInfoWidget extends StatelessWidget {
   Widget _buildUserImage({double? height}) {
     return CustomNetworkImage(
       errorText:
-          "${employeeStatus?.firstName?[0] ?? ""}${employeeStatus?.lastName?[0]}",
+          "ER",
       height: height ?? 32,
       profileImageKey: employeeStatus?.profileImageKey ?? "",
       imgUrlKey: "",
@@ -64,7 +64,6 @@ class UserInfoWidget extends StatelessWidget {
             color: employeeStatus?.employmentStatusColorCode ?? "",
             text: employeeStatus?.employmentContractType ?? ""),
         customSpacerWidth(width: 12),
-        employmentStatus(employeeStatus?.currentEmployeeStatus),
       ],
     );
   }

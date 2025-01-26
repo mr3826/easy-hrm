@@ -15,8 +15,6 @@ import '../../../../utils/dimensions.dart';
 import '../../../../utils/images.dart';
 import '../../../../app/modules/auth/controller/signin_controller.dart';
 
-List<PersistentBottomNavBarItem> get iconList => _navBarsItems();
-
 Future<bool> get appExitChecker => _onWillPop();
 
 Future<bool> _onWillPop() async {
@@ -37,83 +35,5 @@ Future<bool> _onWillPop() async {
     confirmButtonText: AppString.text_yes.tr,
     extraInfoText: "",
     descriptionFontSize: Dimensions.fontSizeDefault,
-  );
-}
-
-List<PersistentBottomNavBarItem> _navBarsItems() {
-  bool isEmployee = true;
-  return [
-    _navbarIcon(
-        activeIcon: Images.timelineIconNav,
-        text: AppString.text_time_line.tr,
-        imgUrl: Images.clockNav),
-    _navbarIcon(
-        activeIcon: Images.leaveIconNav,
-        text: AppString.text_leave.tr,
-        imgUrl: Images.leaveIconNavOutLine),
-    PersistentBottomNavBarItem(
-      icon: customSvgImage(imageUrl: Images.home, height: 25, width: 25),
-      activeColorPrimary: AppColor.primaryColor,
-      inactiveIcon:
-          customSvgImage(imageUrl: Images.home, height: 25, width: 25),
-    ),
-    _navbarIcon(
-        activeIcon:
-            isEmployee ? Images.notificationIconNav : Images.employees_active,
-        text: isEmployee
-            ? AppString.text_notication.tr
-            : AppString.text_employees.tr,
-        imgUrl: isEmployee
-            ? Images.notificationIconNavOutLine
-            : Images.employees_inactive),
-    _navbarIcon(
-        activeIcon: Images.profileIconNav,
-        text: AppString.text_profile.tr,
-        imgUrl: Images.profileIconNavOutLine),
-  ];
-}
-
-PersistentBottomNavBarItem _navbarIcon(
-    {required activeIcon, required String text, imgUrl}) {
-  return PersistentBottomNavBarItem(
-    icon: Obx(() => Get.find<UserInfoController>().isSubscriptionExpired.isTrue
-        ? _inActiveIcon(text, imgUrl)
-        : _activeIcon(text, activeIcon)),
-    inactiveIcon: _inActiveIcon(text, imgUrl),
-  );
-}
-
-_inActiveIcon(text, imgUrl) {
-  return SizedBox(
-    height: AppLayout.getHeight(25),
-    child: Column(
-      children: [
-        customSvgImage(
-            imageUrl: imgUrl, color: AppColor.hintColor, height: 25, width: 25),
-        customSpacerHeight(height: 2),
-        Text(
-          text,
-          style: AppStyle.mid_large_text
-              .copyWith(fontSize: 10, color: AppColor.hintColor),
-        )
-      ],
-    ),
-  );
-}
-
-_activeIcon(text, activeIcon) {
-  return SizedBox(
-    height: AppLayout.getHeight(25),
-    child: Column(
-      children: [
-        customSvgImage(imageUrl: activeIcon, height: 25, width: 25),
-        customSpacerHeight(height: 2),
-        Text(
-          text,
-          style: AppStyle.mid_large_text
-              .copyWith(fontSize: 10, color: AppColor.primaryColor),
-        )
-      ],
-    ),
   );
 }

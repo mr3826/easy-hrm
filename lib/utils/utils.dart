@@ -415,28 +415,24 @@ handleUnknownError(di.Response response) {
   }
 }
 
-///Updated formatting method
+/// Formats a given date string into the specified format.
+/// Defaults to "dd MMM yy" if no format is provided.
+/// Returns an empty string if the input date is invalid.
 String formatDate({required String date, String? format}) {
-  if (date.isEmpty) return ""; // Return empty string if date is empty
-  final String dateFormat = format ?? "dd MMM yy"; // Default format
-  DateTime? parsedDate;
-
-  // Try parsing with multiple date formats to handle different date inputs
+  if (date.isEmpty) return "";
+  final String dateFormat = format ?? "dd MMM yy";
   try {
-    parsedDate = DateTime.parse(date); // ISO 8601 format
+    // Parse the input string to a DateTime object
+    DateTime dateTime = DateTime.parse(date);
+    // Format the DateTime object to the desired format
+    String formattedDate = DateFormat(dateFormat).format(dateTime);
+
+    return formattedDate;
   } catch (e) {
-    try {
-      parsedDate =
-          DateFormat("dd MMM,yyyy").parse(date); // "25 Jul,2023" format
-    } catch (e) {
-      return ""; // Return empty string if parsing fails
-    }
+    log(e.toString());
+    return "";
   }
-
-  // Format the parsed date
-  return DateFormat(dateFormat).format(parsedDate);
 }
-
 
 getIconAccordingToLeaveType(String? leaveName) {
   switch (leaveName) {
@@ -468,7 +464,8 @@ String getInitials(String fullName) {
   final words = fullName.trim().split(' ');
 
   // Get the first letter of the first word
-  final firstInitial = words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
+  final firstInitial =
+      words.first.isNotEmpty ? words.first[0].toUpperCase() : '';
 
   // Get the first letter of the last word
   final lastInitial = words.last.isNotEmpty ? words.last[0].toUpperCase() : '';

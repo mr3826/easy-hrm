@@ -35,14 +35,14 @@ class GetLeaveRequests {
 
   GetLeaveRequests(
       {this.id,
-      this.startDate,
-      this.endDate,
-      this.description,
-      this.status,
-      this.leaveType,
-      this.leaveDetails,
-      this.files,
-      this.organizationUser});
+        this.startDate,
+        this.endDate,
+        this.description,
+        this.status,
+        this.leaveType,
+        this.leaveDetails,
+        this.files,
+        this.organizationUser});
 
   GetLeaveRequests.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -104,11 +104,11 @@ class LeaveType {
 
   LeaveType(
       {this.id,
-      this.name,
-      this.type,
-      this.numberOfDays,
-      this.numberOfApplications,
-      this.applicationDate});
+        this.name,
+        this.type,
+        this.numberOfDays,
+        this.numberOfApplications,
+        this.applicationDate});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -188,7 +188,7 @@ class OrganizationUser {
     designation = json['designation'];
     status = json['status'];
     profile =
-        json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
     department = json['department'] != null
         ? new Department.fromJson(json['department'])
         : null;

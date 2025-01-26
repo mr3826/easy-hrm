@@ -14,22 +14,19 @@ import '../../domain/leave_summary_dashboard.dart';
 import '../../domain/leave_type.dart';
 import '../../domain/workshief_response_by_date.dart';
 
-
-
-
 class LeaveRemoteDataSource {
   final NetworkClient networkClient;
 
   LeaveRemoteDataSource(this.networkClient);
 
   Future<List<GetLeaveRecordsForApp>?> getLeaveRecordList(
-      {required int limit, required int offset, String? orgUserId}) async {
+      {required int limit, required int offset, String? orgId}) async {
     Map<String, Map<String, Object?>> variables = {
       "optionData": {"limit": limit, "offset": offset}
     };
 
-    if (orgUserId != null) {
-      variables["queryData"] = {"assigned_to": orgUserId};
+    if (orgId != null) {
+      variables["queryData"] = {"assigned_to": orgId};
     }
 
     try {

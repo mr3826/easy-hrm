@@ -1,6 +1,8 @@
 import 'package:get_storage/get_storage.dart';
 
 class LocalStoreService {
+
+
   final GetStorage _storage = GetStorage();
 
   /// Read data from storage
@@ -22,4 +24,6 @@ class LocalStoreService {
   Future<void> clear() async {
     await _storage.erase();
   }
+
+
 }

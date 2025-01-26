@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/global/view/newtwork_error_screen.dart';
+import 'package:payrun_mobile/app/global/view/screens/newtwork_error_screen.dart';
 import '../../home/view/screen/main_screen.dart';
 
 class NetworkDebouncer {

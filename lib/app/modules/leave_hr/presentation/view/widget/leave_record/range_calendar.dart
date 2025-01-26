@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../../../global/view/widgets/custom_date_picker.dart';
+import '../../../controller/hr_leave_controller.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
-import '../../../../../../../common/widget/timePicker/custom_date_picker.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../controller/calender_controller.dart';
-import '../../../controller/hr_leave_controller.dart';
 import '../../../controller/leave_controller.dart';
 
 leaveRecodeFilterDialog() {
@@ -36,44 +36,49 @@ leaveRecodeFilterDialog() {
             itemCount: controller.dayList.length,
             itemBuilder: (context, index) {
               return Obx(() => InkWell(
-                    onTap: () {
-                      controller.currentDate.value = controller.dayList[index];
-                      controller.listIndex.value = index;
-                      Get.find<CalendarController>().onDaySelected("$index");
+                onTap: () {
+                  controller.currentDate.value = controller.dayList[index];
+                  controller.listIndex.value = index;
+                  Get.find<CalendarController>().onDaySelected("$index");
 
-                      if (controller.dayList[index] == "Custom" &&
-                          controller.listIndex.value == 6) {
-                        calendarController.clearRange();
-                        _showCustomDateRangeDialog(index, context);
-                      } else {
+                  if (controller.dayList[index] == "Custom" &&
+                      controller.listIndex.value == 6) {
+                    calendarController.clearRange();
+                    _showCustomDateRangeDialog(index, context);
+                  } else {
+                    Get.find<HrLeaveController>().getLeaveRecord(
+                        startDate: calendarController.rangeStart.toString(),
+                        endDate: calendarController.rangeEnd.toString());
 
-                        Get.find<HrLeaveController>().selectedRangeStartDate = calendarController.rangeStart.toString();
-                        Get.find<HrLeaveController>().selectedRangeEndDate = calendarController.rangeEnd.toString();
-                        Navigator.pop(context);
-                        
-                      }
-                    },
+                    Get.find<HrLeaveController>().selectedRangeStartDate =
+                        calendarController.rangeStart.toString();
+                    Get.find<HrLeaveController>().selectedRangeEndDate =
+                        calendarController.rangeEnd.toString();
+
+                    Navigator.pop(context);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Container(
+                    color: controller.listIndex.value == index
+                        ? AppColor.primaryColor.withOpacity(0.1)
+                        : AppColor.cardColor,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Container(
-                        color: controller.listIndex.value == index
-                            ? AppColor.primaryColor.withOpacity(0.1)
-                            : AppColor.cardColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            controller.dayList[index],
-                            style: AppStyle.mid_large_text.copyWith(
-                              color: controller.listIndex.value == index
-                                  ? AppColor.secondaryColor
-                                  : AppColor.normalTextColor,
-                              fontSize: Dimensions.fontSizeDefault + 1,
-                            ),
-                          ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        controller.dayList[index],
+                        style: AppStyle.mid_large_text.copyWith(
+                          color: controller.listIndex.value == index
+                              ? AppColor.secondaryColor
+                              : AppColor.normalTextColor,
+                          fontSize: Dimensions.fontSizeDefault + 1,
                         ),
                       ),
                     ),
-                  ));
+                  ),
+                ),
+              ));
             },
           ),
         ),

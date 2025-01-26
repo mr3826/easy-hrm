@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../../../../auth/view/screens/otp_screen.dart';
+import '../../../../../model/leave_details_by_id.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../../common/widget/custom_card_style.dart';
@@ -19,12 +21,10 @@ import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../../utils/utils.dart';
-import '../../../../../../../../modules/auth/view/screens/otp_screen.dart';
 import '../../../../../controller/hr_leave_controller.dart';
 import '../../../../../controller/hr_update_leave_controller.dart';
 import '../../../../../controller/leave_controller.dart';
 import '../../../../../controller/picked_file_from_stroage.dart';
-import '../../../../../model/leave_details_by_id.dart';
 import '../../../assign_leave/add_attachment_file.dart';
 import '../../../assign_leave/assign_leave.dart';
 import '../../../assign_leave/leave_type.dart';
@@ -63,9 +63,9 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
         padding: EdgeInsets.only(top: 28.0),
         child: Center(
             child: CupertinoActivityIndicator(
-          color: AppColor.primaryColor,
-          radius: 15,
-        )),
+              color: AppColor.primaryColor,
+              radius: 15,
+            )),
       );
     }
     return Expanded(
@@ -142,32 +142,32 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               /// Displays the action buttons.
 
               Obx(
-                () => Get.find<HrUpdateLeaveController>()
-                        .isUpdateLeaveLoading
-                        .isTrue
+                    () => Get.find<HrUpdateLeaveController>()
+                    .isUpdateLeaveLoading
+                    .isTrue
                     ? const Center(
-                        child: CupertinoActivityIndicator(
-                            color: AppColor.primaryColor, radius: 15),
-                      )
+                  child: CupertinoActivityIndicator(
+                      color: AppColor.primaryColor, radius: 15),
+                )
                     : CustomDoubleAppButton(onAction: () {
-                        if (Get.find<HrLeaveController>()
-                                .calculateAllowanceOfLeave
-                                .value
-                                .isNotEmpty &&
-                            Get.find<HrLeaveController>()
-                                    .calculateAllowanceOfLeave
-                                    .value !=
-                                "0") {
-                          _updateLeaveMethod();
-                        } else {
-                          showWarningMessage(
-                              message: AppString.text_no_available_leave.tr);
-                        }
-                      }, cancelAction: () {
-                        /// Clears the file upload path and navigates back.
-                        Get.find<LeaveFileUploadController>().path.value = "";
-                        Get.back(canPop: false);
-                      }),
+                  if (Get.find<HrLeaveController>()
+                      .calculateAllowanceOfLeave
+                      .value
+                      .isNotEmpty &&
+                      Get.find<HrLeaveController>()
+                          .calculateAllowanceOfLeave
+                          .value !=
+                          "0") {
+                    _updateLeaveMethod();
+                  } else {
+                    showWarningMessage(
+                        message: AppString.text_no_available_leave.tr);
+                  }
+                }, cancelAction: () {
+                  /// Clears the file upload path and navigates back.
+                  Get.find<LeaveFileUploadController>().path.value = "";
+                  Get.back(canPop: false);
+                }),
               ),
 
               _spacer(100),
@@ -181,7 +181,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
   void _updateLeaveMethod() {
     if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
         .difference(DateTime.parse(
-            Get.find<DateTimePickerController>().inDateTime.value))
+        Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
       Get.find<HrUpdateLeaveController>().updateAssignLeave(
         leaveId: controller.leaveId.toString(),
@@ -208,7 +208,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
           color: AppColor.cardColor,
           borderRadius: BorderRadius.circular(4),
           border:
-              Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
+          Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
         ),
         child: ListView.builder(
           itemCount: leaveController.statusOptions.length,
@@ -224,7 +224,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
                     color:
-                        isSelected ? AppColor.pendingColor : Colors.transparent,
+                    isSelected ? AppColor.pendingColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   alignment: Alignment.center,
@@ -232,7 +232,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
                     leaveController.statusOptions[index],
                     style: AppStyle.normal_text.copyWith(
                       color:
-                          isSelected ? AppColor.cardColor : AppColor.hintColor,
+                      isSelected ? AppColor.cardColor : AppColor.hintColor,
                     ),
                   ),
                 ),
@@ -321,17 +321,17 @@ Widget _buildHeader() {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child:
-              Container(height: 4, width: 120, color: AppColor.backgroundColor),
+          Container(height: 4, width: 120, color: AppColor.backgroundColor),
         ),
         customSpacerHeight(height: 12),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-                      .day ==
-                  DateTime.parse(
-                          Get.find<DateTimePickerController>().outDate.value)
-                      .day
+              .day ==
+              DateTime.parse(
+                  Get.find<DateTimePickerController>().outDate.value)
+                  .day
               ? DateFormat('d MMMM').format(DateTime.parse(
-                  Get.find<DateTimePickerController>().inDate.value))
+              Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
@@ -341,12 +341,12 @@ Widget _buildHeader() {
         ),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-                      .day ==
-                  DateTime.parse(
-                          Get.find<DateTimePickerController>().outDate.value)
-                      .day
+              .day ==
+              DateTime.parse(
+                  Get.find<DateTimePickerController>().outDate.value)
+                  .day
               ? DateFormat('EEEE').format(DateTime.parse(
-                  Get.find<DateTimePickerController>().inDate.value))
+              Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.small_text_black.copyWith(
             color: AppColor.hintColor,
@@ -422,11 +422,11 @@ Widget _buildDropdownField({
         style: AppStyle.normal_text_grey.copyWith(fontWeight: FontWeight.w500)),
     items: items
         .map((item) => DropdownMenuItem<String>(
-              value: item,
-              child: Text(item,
-                  style: AppStyle.normal_text_black
-                      .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
-            ))
+      value: item,
+      child: Text(item,
+          style: AppStyle.normal_text_black
+              .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
+    ))
         .toList(),
     onChanged: onChanged,
   );
@@ -434,38 +434,38 @@ Widget _buildDropdownField({
 
 _leaveCountStyleLayout() {
   return Obx(() =>
-      Get.find<HrLeaveController>().calculateAllowanceOfLeave.value.isNotEmpty
-          ? SizedBox(
-              width: double.infinity,
-              child: Card(
-                elevation: 0,
-                shape: roundedRectangleBorder,
-                color: AppColor.primaryColor.withOpacity(0.05),
-                child: Padding(
-                  padding: marginLayout.copyWith(
-                      top: 8, bottom: 8, left: 16, right: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        formatToTwoDecimalPlaces(Get.find<HrLeaveController>()
-                            .calculateAllowanceOfLeave
-                            .value),
-                        style: AppStyle.mid_large_text
-                            .copyWith(color: AppColor.normalTextColor),
-                      ),
-                      Text(
-                        _getCalculateLeave(),
-                        style: AppStyle.mid_large_text.copyWith(
-                            color: AppColor.hintColor,
-                            fontSize: Dimensions.fontSizeDefault),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : Container());
+  Get.find<HrLeaveController>().calculateAllowanceOfLeave.value.isNotEmpty
+      ? SizedBox(
+    width: double.infinity,
+    child: Card(
+      elevation: 0,
+      shape: roundedRectangleBorder,
+      color: AppColor.primaryColor.withOpacity(0.05),
+      child: Padding(
+        padding: marginLayout.copyWith(
+            top: 8, bottom: 8, left: 16, right: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              formatToTwoDecimalPlaces(Get.find<HrLeaveController>()
+                  .calculateAllowanceOfLeave
+                  .value),
+              style: AppStyle.mid_large_text
+                  .copyWith(color: AppColor.normalTextColor),
+            ),
+            Text(
+              _getCalculateLeave(),
+              style: AppStyle.mid_large_text.copyWith(
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault),
+            ),
+          ],
+        ),
+      ),
+    ),
+  )
+      : Container());
 }
 
 String _getCalculateLeave() {

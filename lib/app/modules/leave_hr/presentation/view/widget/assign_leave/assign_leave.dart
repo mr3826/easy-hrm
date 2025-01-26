@@ -16,7 +16,7 @@ import '../../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/images.dart';
-import '../../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
+import '../../../../../employee/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';
 import '../../../controller/leave_controller.dart';
 import '../../../controller/picked_file_from_stroage.dart';
@@ -34,44 +34,44 @@ class AssignLeave extends GetView<HrLeaveController> {
         _buildBottomSheetHeader(),
         Expanded(
             child: Obx(
-          () => controller.isAvailableLeaveType.isTrue
-              ? const Center(
+                  () => controller.isAvailableLeaveType.isTrue
+                  ? const Center(
                   child: CupertinoActivityIndicator(
-                  radius: 15,
-                  color: AppColor.primaryColor,
-                ))
-              : Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _buildTitleText(AppString.textEmployees.tr),
-                        const SizedBox(height: 6),
-                        Obx(() => _buildSearchBar(context)),
-                        const SizedBox(height: 18),
-                        _buildTitleText(AppString.textLeaveYear.tr),
-                        const SizedBox(height: 6),
-                        _buildDropdownField(
-                          items: leaveController.items,
-                          value: leaveController.selectAssignLeave.value,
-                          onChanged: (value) {
-                            leaveController.selectAssignLeave.value =
-                                value ?? '';
-                            String year = value == "This year"
-                                ? "${DateTime.now().year}"
-                                : "${DateTime.now().year + 1}";
-                            controller.getAvailableLeaveType(year: year);
-                          },
-                        ),
-                        const SizedBox(height: 18),
-                        _buildTitleText(AppString.textLeaveType.tr),
-                        const SizedBox(height: 6),
-                        _buildLeaveTypeGrid(controller),
-                      ],
-                    ),
+                    radius: 15,
+                    color: AppColor.primaryColor,
+                  ))
+                  : Padding(
+                padding: const EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildTitleText(AppString.textEmployees.tr),
+                      const SizedBox(height: 6),
+                      Obx(() => _buildSearchBar(context)),
+                      const SizedBox(height: 18),
+                      _buildTitleText(AppString.textLeaveYear.tr),
+                      const SizedBox(height: 6),
+                      _buildDropdownField(
+                        items: leaveController.items,
+                        value: leaveController.selectAssignLeave.value,
+                        onChanged: (value) {
+                          leaveController.selectAssignLeave.value =
+                              value ?? '';
+                          String year = value == "This year"
+                              ? "${DateTime.now().year}"
+                              : "${DateTime.now().year + 1}";
+                          controller.getAvailableLeaveType(year: year);
+                        },
+                      ),
+                      const SizedBox(height: 18),
+                      _buildTitleText(AppString.textLeaveType.tr),
+                      const SizedBox(height: 6),
+                      _buildLeaveTypeGrid(controller),
+                    ],
                   ),
                 ),
-        )),
+              ),
+            )),
         // Action buttons
         _buildButtonLayout(context),
       ],
@@ -162,20 +162,20 @@ class AssignLeave extends GetView<HrLeaveController> {
         padding: const EdgeInsets.only(left: 18, bottom: 18, right: 18),
         child: Obx(() => CustomDoubleAppButton(
             onAction:
-                Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
-                    ? () {
-                  showCustomBottomSheet(
-                      context: Get.context!,
-                      height: MediaQuery.of(Get.context!).size.height / 1.2,
-                      child: const AssignLeaveSelectedValue());
-                        controller.path.value = "";
-                      }
-                    : () {},
+            Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
+                ? () {
+              showCustomBottomSheet(
+                  context: Get.context!,
+                  height: MediaQuery.of(Get.context!).size.height / 1.2,
+                  child: const AssignLeaveSelectedValue());
+              controller.path.value = "";
+            }
+                : () {},
             buttonText: AppString.text_continue.tr,
             btnColor:
-                Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
-                    ? AppColor.primaryColor
-                    : AppColor.primaryColor.withOpacity(0.5),
+            Get.find<LeaveController>().leaveTypeSelectedIndex.value >= 0
+                ? AppColor.primaryColor
+                : AppColor.primaryColor.withOpacity(0.5),
             cancelAction: () {
               _clear();
             })));
@@ -184,7 +184,7 @@ class AssignLeave extends GetView<HrLeaveController> {
   void _clear() {
     Get.back(canPop: false);
     Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-        (-1); //clear selection index.
+    (-1); //clear selection index.
     Get.find<HrLeaveController>().selectedEmployeeInfo.value =
         AppString.textSearchEmployee.tr;
     Get.find<FileUploadController>().storageForUpload.filePath.value = "";
@@ -206,11 +206,11 @@ Widget _buildDropdownField({
         style: AppStyle.normal_text_grey.copyWith(fontWeight: FontWeight.w500)),
     items: items
         .map((item) => DropdownMenuItem<String>(
-              value: item,
-              child: Text(item,
-                  style: AppStyle.normal_text_black
-                      .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
-            ))
+      value: item,
+      child: Text(item,
+          style: AppStyle.normal_text_black
+              .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
+    ))
         .toList(),
     onChanged: onChanged,
   );
@@ -232,7 +232,7 @@ OutlineInputBorder get outlineInputBorder {
   return OutlineInputBorder(
     borderRadius: BorderRadius.circular(6),
     borderSide:
-        BorderSide(color: AppColor.hintColor.withOpacity(0.4), width: 1),
+    BorderSide(color: AppColor.hintColor.withOpacity(0.4), width: 1),
   );
 }
 

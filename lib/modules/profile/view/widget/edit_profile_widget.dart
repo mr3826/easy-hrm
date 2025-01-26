@@ -29,11 +29,16 @@ class TextFiledLayout extends StatelessWidget {
       children: [
         _userFirstName(),
         _userLastName(),
+
+        _employeeID(), //todo
         _userAddress(),
         _phoneNumberInputField(),
         customSpacerHeight(height: 14),
+
         _userEmergencyPhoneNumber(),
+
         _userPersonalBio(),
+
         customSpacerHeight(height: 20),
         Obx(
           () => CustomDoubleAppButton(
@@ -225,6 +230,16 @@ _userLastName() {
       },
       controller: editLastNameController);
 }
+_employeeID() {
+  return IgnorePointer(
+     ignoring: true, /// Is role employee than always  ignoring: true.
+      child: userTextFieldLayout(
+        isRequired: false,
+        hintText: AppString.text_employee_Id.tr,
+        titleText: AppString.text_employee_Id.tr,
+        controller: Get.find<UserProfileController>().editEmployeeIDController),
+  );
+}
 
 _userFirstName() {
   return userTextFieldLayout(
@@ -243,7 +258,7 @@ _userFirstName() {
       controller: editFirstNameController);
 }
 
-userTextFieldLayout(
+Widget userTextFieldLayout(
     {required String titleText,
     required TextEditingController controller,
     required String hintText,

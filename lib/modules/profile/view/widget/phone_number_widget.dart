@@ -32,9 +32,6 @@ class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
         Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value =
             number.phoneNumber.toString();
       },
-      onInputValidated: (bool value) {
-        print(value);
-      },
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.DIALOG,
         setSelectorButtonAsPrefixIcon: true,

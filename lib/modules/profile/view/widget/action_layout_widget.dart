@@ -16,6 +16,7 @@ import '../../controller/profile_image_selected_controller.dart';
 import '../../controller/user_profile_controller.dart';
 import '../../model/user_profile.dart';
 import '../screen/change_password.dart';
+import '../screen/chnage_email.dart';
 
 Widget actionLayout({
   required String userName,
@@ -37,6 +38,20 @@ Widget actionLayout({
           hintText: AppString.text_edit_profile.tr,
           onAction: editAction,
           url: Images.EDIT_ICON,
+        ),
+      ),
+      InkWell(
+        onTap: () {
+          currentPasswordController.clear();
+          newPasswordController.clear();
+          confirmPasswordController.clear();
+          customAntButtonSheet(
+              context: context, child: ChangeEmailScreen());
+        },
+        child: _fieldLayout(
+          hintText: AppString.text_change_email.tr,
+          onAction: changePassAction,
+          url: Images.EMAIL_ICON,
         ),
       ),
       InkWell(
@@ -88,6 +103,9 @@ void _setDataForUpdateChecker(Profile? userDetails) {
   editPhoneController.text = userDetails?.personalNumber ?? "";
   editEmergencyPhoneController.text = userDetails?.emergencyNumber ?? "";
   editBioController.text = userDetails?.about ?? "";
+
+  //todo
+  Get.find<UserProfileController>().editEmployeeIDController.text =  Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.employeeId??"";
 
 }
 

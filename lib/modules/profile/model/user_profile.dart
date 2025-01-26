@@ -6,95 +6,117 @@ class UserDetails {
   UserDetails.fromJson(Map<String, dynamic> json) {
     getOrganizationUserDetails = json['getOrganizationUserDetails'] != null
         ? GetOrganizationUserDetails.fromJson(
-            json['getOrganizationUserDetails'])
+        json['getOrganizationUserDetails'])
         : null;
   }
 }
 
 class GetOrganizationUserDetails {
+  String? employeeId;
+  String? status;
+  String? createdAt;
+  String? joinDate;
   Profile? profile;
   User? user;
   Department? department;
-  String? status;
   Organization? organization;
+  Designation? designation;
+  EmploymentStatusData? employmentStatus;
 
   GetOrganizationUserDetails(
-      {this.profile,
-      this.user,
-      this.department,
-      this.status,
-      this.organization});
+      {this.employeeId,
+        this.status,
+        this.createdAt,
+        this.profile,
+        this.user,
+        this.department,
+        this.organization,
+        this.designation,
+        this.employmentStatus});
 
   GetOrganizationUserDetails.fromJson(Map<String, dynamic> json) {
+    employeeId = json['employee_id'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    createdAt = json['join_date'];
     profile =
-        json['profile'] != null ? Profile.fromJson(json['profile']) : null;
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     department = json['department'] != null
         ? Department.fromJson(json['department'])
         : null;
-    status = json['status'];
     organization = json['organization'] != null
         ? Organization.fromJson(json['organization'])
         : null;
+    designation = json['designation'] != null
+        ? Designation.fromJson(json['designation'])
+        : null;
+    employmentStatus = json['employment_status'] != null
+        ? EmploymentStatusData.fromJson(json['employment_status'])
+        : null;
   }
+
+
 }
 
 class Profile {
   String? id;
+  String? firstName;
+  String? lastName;
+  String? image;
   String? about;
   String? address;
-  String? emergencyNumber;
-  String? firstName;
-  String? image;
-  String? lastName;
   String? personalNumber;
+  String? emergencyNumber;
 
   Profile(
       {this.id,
-      this.about,
-      this.address,
-      this.emergencyNumber,
-      this.firstName,
-      this.image,
-      this.lastName,
-      this.personalNumber});
+        this.firstName,
+        this.lastName,
+        this.image,
+        this.about,
+        this.address,
+        this.personalNumber,
+        this.emergencyNumber});
 
   Profile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    image = json['image'];
     about = json['about'];
     address = json['address'];
-    emergencyNumber = json['emergency_number'];
-    firstName = json['first_name'];
-    image = json['image'];
-    lastName = json['last_name'];
     personalNumber = json['personal_number'];
+    emergencyNumber = json['emergency_number'];
   }
 }
 
 class User {
-  String? email;
   String? id;
+  String? email;
 
-  User({this.email, this.id});
+  User({this.id, this.email});
 
   User.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
     id = json['id'];
+    email = json['email'];
   }
 }
 
 class Department {
-  String? name;
   String? id;
+  String? name;
   Parent? parent;
   WorkShift? workShift;
 
-  Department({this.name, this.id, this.parent, this.workShift});
+  Department({this.id, this.name, this.parent, this.workShift});
 
   Department.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
     id = json['id'];
+    name = json['name'];
+    // Ensure correct handling of parent
     parent = json['parent'] != null ? Parent.fromJson(json['parent']) : null;
+    // Ensure correct handling of workShift
     workShift = json['work_shift'] != null
         ? WorkShift.fromJson(json['work_shift'])
         : null;
@@ -102,16 +124,14 @@ class Department {
 }
 
 class Parent {
-  String? id;
   String? name;
-
-  Parent({this.id, this.name});
+  Parent({this.name});
 
   Parent.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     name = json['name'];
   }
 }
+
 
 class WorkShift {
   String? name;
@@ -147,15 +167,15 @@ class WorkSchedules {
 }
 
 class Organization {
+  String? name;
+  String? id;
   OrganizationSetting? organizationSetting;
-  String? orgName;
-  String? orgId;
 
-  Organization({this.organizationSetting, this.orgName});
+  Organization({this.name, this.id, this.organizationSetting});
 
   Organization.fromJson(Map<String, dynamic> json) {
-    orgName = json['name'];
-    orgId = json['id'];
+    name = json['name'];
+    id = json['id'];
     organizationSetting = json['organization_setting'] != null
         ? OrganizationSetting.fromJson(json['organization_setting'])
         : null;
@@ -163,15 +183,41 @@ class Organization {
 }
 
 class OrganizationSetting {
-  String? language;
   String? logoKey;
   String? logoIconKey;
+  String? language;
 
-  OrganizationSetting({this.language, this.logoKey,this.logoIconKey});
+  OrganizationSetting({this.logoKey, this.logoIconKey, this.language});
 
   OrganizationSetting.fromJson(Map<String, dynamic> json) {
-    language = json['language'];
-    logoIconKey = json['logo_icon_key'];
     logoKey = json['logo_key'];
+    logoIconKey = json['logo_icon_key'];
+    language = json['language'];
+  }
+}
+
+class Designation {
+  String? id;
+  String? name;
+
+  Designation({this.id, this.name});
+
+  Designation.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+}
+
+class EmploymentStatusData {
+  String? id;
+  String? name;
+  String? color;
+
+  EmploymentStatusData({this.id, this.name, this.color});
+
+  EmploymentStatusData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    color = json['color'];
   }
 }

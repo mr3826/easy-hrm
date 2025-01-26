@@ -94,6 +94,7 @@ class SignInScreen extends GetView<SignInController> {
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_password_field_is_required.tr;
+
         } else if (value.length < 6) {
           return AppString.incorrect_user_or_password.tr;
         } else {
@@ -142,6 +143,7 @@ class SignInScreen extends GetView<SignInController> {
   }
 
   _logInBtnLayout(BuildContext context) {
+
     return CustomAppButton(
       buttonText: controller.isSignInLoading.isFalse
           ? Text(

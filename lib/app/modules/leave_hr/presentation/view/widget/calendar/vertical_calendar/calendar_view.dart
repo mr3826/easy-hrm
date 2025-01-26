@@ -23,7 +23,7 @@ class CalendarView extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DateTime> monthDates = _generateDatesForCurrentMonth();
     Map<String, List<Task>> taskData =
-        Get.find<HrLeaveController>().getTaskDataFromLeaves();
+    Get.find<HrLeaveController>().getTaskDataFromLeaves();
 
     return RefreshIndicator(
       onRefresh: _refreshScreen,
@@ -62,7 +62,7 @@ class CalendarView extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
+                                MediaQuery.of(context).size.width * 0.05,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -82,14 +82,14 @@ class CalendarView extends StatelessWidget {
                       children: tasks.isEmpty
                           ? [const VerticalDottedDivider()]
                           : tasks
-                              .map((task) => Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 12, right: 12),
-                                    child: TaskCard(
-                                      task: task,
-                                    ),
-                                  ))
-                              .toList(),
+                          .map((task) => Padding(
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 12),
+                        child: TaskCard(
+                          task: task,
+                        ),
+                      ))
+                          .toList(),
                     ),
                   ),
                 ],

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import 'package:payrun_mobile/common/domain/token_model.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -17,6 +16,7 @@ import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen
 import 'package:payrun_mobile/modules/profile/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
+import 'package:payrun_mobile/modules/profile/model/leave_summary.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
@@ -24,30 +24,36 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
+import '../../../app/global/controller/user_info_controller.dart';
+import '../../../app/modules/auth/models/signin_res.dart';
 import '../../../common/controller/date_time_controller.dart';
+import '../../../common/controller/leave_helper/leave_data_source.dart';
+import '../../../common/controller/profile_helper/profile_data_source.dart';
 import '../../../common/domain/user_info.dart';
 import '../../../common/widget/custom_password_text_field.dart';
-import '../../../network/exception_helper.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_string.dart';
 import '../../../utils/dimensions.dart';
 import '../../../utils/images.dart';
 import '../../../utils/utils.dart';
-import '../../../app/modules/auth/models/signin_res.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../leave/data/remote/leave_remote_data_source.dart';
+import '../../leave/domain/leave_record_response.dart';
+import '../../leave/domain/leave_type.dart';
 import '../../notification/presentation/controller/notification_controller.dart';
 import '../../timeline/controller/timer_controller.dart';
 import '../model/organization_info.dart';
 import '../model/user_profile.dart';
 import 'package:dio/dio.dart' as di;
 
+import '../model/user_profile_model.dart';
+
 class UserProfileController extends GetxController with StateMixin {
   @override
   void onInit() {
     getUserProfile();
-    getEmploymentInfo();
     getUserLogHistory();
-    getOrganizationInfo();
+    // getOrganizationInfo();
     startTimer();
     super.onInit();
   }
@@ -56,6 +62,12 @@ class UserProfileController extends GetxController with StateMixin {
   RxBool timerActive = false.obs;
   RxBool isOTPProvided = false.obs;
   String otpCode = "";
+  String isSelectLeaveType = "";
+  String leaveTypeId = "";
+  String leaveStatusId = "";
+  RxString calculateAllowanceBy = "".obs;
+  RxString availableLeave = "".obs;
+  RxInt profileTabIndex = 0.obs;
 
   final NetworkClient _networkClient = Get.find<NetworkClient>();
 
@@ -106,15 +118,20 @@ class UserProfileController extends GetxController with StateMixin {
   EmployeeWorkHistory? employeeWorkHistory;
   UserLogHistory? userLogHistory;
   OrganizationInfoDetails? organizationInfo;
+  LeaveSummary? leaveSummary;
   final isLoading = false.obs;
   final isLoadingChangeEmail = false.obs;
   final isOrganizationChangeLoading = false.obs;
+  final isEmployeeInfoLoading = false.obs;
   final isNewOrganizationChangeLoading = false.obs;
+  final isViewOrganizationLoading = false.obs;
+  final isViewLeaveRecordLoading = false.obs;
+  final isViewLeaveSummaryLoading = false.obs;
+  final isLeaveTypeLoading = false.obs;
+
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
   final resendOtpLoading = false.obs;
-
-
   var isOtpString = ''.obs;
 
   bool get isButtonEnabledForOTP {
@@ -122,52 +139,111 @@ class UserProfileController extends GetxController with StateMixin {
   }
 
   final passwordInputController = TextEditingController();
+  final editEmployeeIDController = TextEditingController();
+
+  final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
+  final LeaveRemoteDataSource _remoteDataSource =
+  Get.find<LeaveRemoteDataSource>();
+  final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
+  final LeaveRemoteDataSource _leaveRemoteDataSource =
+  Get.find<LeaveRemoteDataSource>();
+
+  List<GetLeaveRecordsForApp>? leaveRecordList;
+  LeaveTypeDropdown? leaveTypeDropdown;
+
+  RxInt offset = 0.obs;
+  int limit = 30;
 
   Future<void> getUserProfile() async {
     change(null, status: RxStatus.loading());
-    print("orgUserId: ${GetStorage().read(AppString.ORGANIZATION_USER_ID)}");
-    final response = await _networkClient.graphRequest(
-        queryString: getUserProfileQuery,
-        variables: {
-          "orgUserId": GetStorage().read(AppString.ORGANIZATION_USER_ID)
-        });
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getUserProfile");
-    } else {
-      userDetails = UserDetails.fromJson(response.data!);
-    }
+    userDetails = (await _profileDataSource.getUserProfile()) ?? UserDetails();
     change(null, status: RxStatus.success());
   }
 
-  getEmploymentInfo() async {
+  Future<void> getUserLogHistory() async {
     change(null, status: RxStatus.loading());
-    final response = await _networkClient.graphRequest(
-      queryString: getEmploymentInfoQuery,
-    );
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getEmploymentInfo");
-    } else {
-      employeeWorkHistory = EmployeeWorkHistory.fromJson(response.data!);
-    }
-
+    userLogHistory =
+        (await _profileDataSource.getUserLogHistory()) ?? UserLogHistory();
     change(null, status: RxStatus.success());
   }
 
-  getUserLogHistory() async {
-    change(null, status: RxStatus.loading());
-    final response =
-        await _networkClient.graphRequest(queryString: userLogHistoryQuery);
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getUserLogHistory");
-    } else {
-      userLogHistory = UserLogHistory.fromJson(response.data!);
-    }
-    change(null, status: RxStatus.success());
+  Future<void> getEmploymentInfo() async {
+    isEmployeeInfoLoading(true);
+    employeeWorkHistory =
+        (await _profileDataSource.getEmploymentInfo()) ?? EmployeeWorkHistory();
+    isEmployeeInfoLoading(false);
   }
+
+  Future<void> getOrganizationInfo() async {
+    isViewOrganizationLoading(true);
+    organizationInfo = (await _profileDataSource.getOrganizationInfo()) ??
+        OrganizationInfoDetails();
+    isViewOrganizationLoading(false);
+  }
+
+  getLeaveRecordsData() async {
+    isViewLeaveRecordLoading(true);
+    leaveRecordList = await _remoteDataSource.getLeaveRecordList(
+        limit: limit, offset: offset.value);
+
+    isViewLeaveRecordLoading(false);
+  }
+
+  getLeaveSummary() async {
+    isViewLeaveSummaryLoading(true);
+    leaveSummary = await _leaveDataSource.getLeaveSummary();
+    isViewLeaveSummaryLoading(false);
+  }
+
+  getLeaveTypeDropdown() async {
+    isLeaveTypeLoading(true);
+    leaveTypeDropdown = await _leaveRemoteDataSource.getLeaveTypeDropdown();
+    isLeaveTypeLoading(false);
+  }
+
+
+
+  Future<void> updateORGLeaveAvailability({
+    int? numberOfDays,
+    int? numberOfApplication,
+    int? maximumConsecutiveDays,
+    String? calculateAllowanceBy,
+  }) async {
+    // Prepare input data based on the allowance calculation type
+    Map<String, dynamic> inputData = {
+      "inputData": {
+        "leave_status_id": leaveStatusId,
+        if (calculateAllowanceBy == "no_of_application") ...{
+          "available_number_of_applications": numberOfApplication,
+          "maximum_consecutive_days": maximumConsecutiveDays,
+        } else ...{
+          "available_number_of_days": numberOfDays,
+        },
+      }
+    };
+
+    isLeaveTypeLoading(true);
+    try {
+      // Call the data source with the prepared input data
+      bool response = await _leaveDataSource.updateORGLeaveAvailability(inputData);
+      // Handle response
+      if (response) {
+        showSuccessMessage(message: "Leave allowance has been added successfully!");
+        Get.back(); // Close current screen
+        Get.back(canPop: false); // Close another screen
+        getLeaveSummary(); // Refresh leave summary
+      } else {
+        showErrorMessage(message: "Failed to update leave allowance. Please try again.");
+      }
+    } catch (e) {
+      showErrorMessage(message: "An error occurred: ${e.toString()}");
+    } finally {
+      isLeaveTypeLoading(false);
+    }
+  }
+
+
+
 
   Future<bool> getPasswordVerification({required String password}) async {
     bool validation = false;
@@ -209,7 +285,7 @@ class UserProfileController extends GetxController with StateMixin {
     isVerificationApiLoading(true);
     try {
       final response =
-          await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+      await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
@@ -241,19 +317,6 @@ class UserProfileController extends GetxController with StateMixin {
     resendOtpLoading(false);
   }
 
-  getOrganizationInfo() async {
-    change(null, status: RxStatus.loading());
-    final response =
-        await _networkClient.graphRequest(queryString: organizationInfoQuery);
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getOrganizationInfo");
-    } else {
-      organizationInfo = OrganizationInfoDetails.fromJson(response.data!);
-    }
-    change(null, status: RxStatus.success());
-  }
-
   switchOrganization({required String orgId, required String email}) async {
     print("ordId: $orgId");
     if (GetStorage().read(orgId) != null) {
@@ -261,13 +324,13 @@ class UserProfileController extends GetxController with StateMixin {
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
       TokenModel tokenModel = TokenModel.fromJson(jsonMap);
       if (_checkTokenExpiration(accessToken: tokenModel.accessToken ?? "")
-              .isNegative ||
+          .isNegative ||
           _checkTokenExpiration(accessToken: tokenModel.accessToken ?? "") <
               1) {
         _getNewToken(
-                refreshToken: tokenModel.refreshToken ?? "",
-                orgId: orgId,
-                accessToken: tokenModel.accessToken ?? "")
+            refreshToken: tokenModel.refreshToken ?? "",
+            orgId: orgId,
+            accessToken: tokenModel.accessToken ?? "")
             .then((value) {
           if (value == true) {
             Get.find<UserInfoController>().getOrgSubscriptionInfo();
@@ -285,7 +348,7 @@ class UserProfileController extends GetxController with StateMixin {
             .write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
 
         final userInfoResponse =
-            await Get.find<UserInfoController>().getUserInfo();
+        await Get.find<UserInfoController>().getUserInfo();
 
         _handleUserInfo(userInfoResponse);
 
@@ -306,7 +369,7 @@ class UserProfileController extends GetxController with StateMixin {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(12)),
               child: Obx(
-                () => Column(
+                    () => Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -316,77 +379,77 @@ class UserProfileController extends GetxController with StateMixin {
                     customSpacerHeight(height: 10),
                     isNewOrganizationChangeLoading.isTrue
                         ? const Center(
-                            child: CupertinoActivityIndicator(
-                              color: Colors.blueAccent,
-                              radius: 14,
-                            ),
-                          )
+                      child: CupertinoActivityIndicator(
+                        color: Colors.blueAccent,
+                        radius: 14,
+                      ),
+                    )
                         : Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                  onTap: () => Get.back(canPop: false),
-                                  child: Text(AppString.text_cancel.tr)),
-                              customSpacerWidth(width: 36),
-                              InkWell(
-                                  onTap: () async {
-                                    String deviceToken = "";
-                                    if (Platform.isAndroid) {
-                                      deviceToken = await Pushy.register();
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                            onTap: () => Get.back(canPop: false),
+                            child: Text(AppString.text_cancel.tr)),
+                        customSpacerWidth(width: 36),
+                        InkWell(
+                            onTap: () async {
+                              String deviceToken = "";
+                              if (Platform.isAndroid) {
+                                deviceToken = await Pushy.register();
+                              }
+                              isNewOrganizationChangeLoading(true);
+                              try {
+                                if (passwordInputController
+                                    .text.isNotEmpty) {
+                                  di.Response response =
+                                  await Get.find<NetworkClient>()
+                                      .postRequest(Api.LOGIN, {
+                                    "email": email,
+                                    "password":
+                                    passwordInputController.text,
+                                    "orgId": orgId,
+                                    "device_token": Platform.isIOS
+                                        ? GetStorage().read(
+                                        AppString.IOS_DEVICE_TOKEN)
+                                        : deviceToken,
+                                    "push_notification_platform":
+                                    Platform.isIOS ? "apns" : "pushy"
+                                  });
+
+                                  if (response.statusCode == 200) {
+                                    _handleTokenInfo(response);
+
+                                    final userInfoResponse = await Get
+                                        .find<UserInfoController>()
+                                        .getUserInfo();
+
+                                    _handleLoginSuccess(
+                                        response, userInfoResponse);
+
+                                    Get.find<UserInfoController>()
+                                        .getOrgSubscriptionInfo();
+                                    if (Get.find<UserInfoController>()
+                                        .isSubscriptionExpired
+                                        .isFalse) {
+                                      switchOrganisationDataChange();
+
+                                      Get.back(canPop: false);
+                                      Get.back(canPop: false);
+                                      Get.back(canPop: false);
+
+                                      passwordInputController.clear();
                                     }
-                                    isNewOrganizationChangeLoading(true);
-                                    try {
-                                      if (passwordInputController
-                                          .text.isNotEmpty) {
-                                        di.Response response =
-                                            await Get.find<NetworkClient>()
-                                                .postRequest(Api.LOGIN, {
-                                          "email": email,
-                                          "password":
-                                              passwordInputController.text,
-                                          "orgId": orgId,
-                                          "device_token": Platform.isIOS
-                                              ? GetStorage().read(
-                                                  AppString.IOS_DEVICE_TOKEN)
-                                              : deviceToken,
-                                          "push_notification_platform":
-                                              Platform.isIOS ? "apns" : "pushy"
-                                        });
-
-                                        if (response.statusCode == 200) {
-                                          _handleTokenInfo(response);
-
-                                          final userInfoResponse = await Get
-                                                  .find<UserInfoController>()
-                                              .getUserInfo();
-
-                                          _handleLoginSuccess(
-                                              response, userInfoResponse);
-
-                                          Get.find<UserInfoController>()
-                                              .getOrgSubscriptionInfo();
-                                          if (Get.find<UserInfoController>()
-                                              .isSubscriptionExpired
-                                              .isFalse) {
-                                            switchOrganisationDataChange();
-
-                                            Get.back(canPop: false);
-                                            Get.back(canPop: false);
-                                            Get.back(canPop: false);
-
-                                            passwordInputController.clear();
-                                          }
-                                        }
-                                      }
-                                    } catch (e) {
-                                      log(e.toString());
-                                    }
-                                    isNewOrganizationChangeLoading(false);
-                                  },
-                                  child: Text(AppString.text_ok.tr)),
-                              customSpacerWidth(width: 16),
-                            ],
-                          ),
+                                  }
+                                }
+                              } catch (e) {
+                                log(e.toString());
+                              }
+                              isNewOrganizationChangeLoading(false);
+                            },
+                            child: Text(AppString.text_ok.tr)),
+                        customSpacerWidth(width: 16),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -409,8 +472,8 @@ class UserProfileController extends GetxController with StateMixin {
 
   Future<bool> _getNewToken(
       {required String accessToken,
-      required String refreshToken,
-      required String orgId}) async {
+        required String refreshToken,
+        required String orgId}) async {
     try {
       var response = await Get.find<NetworkClient>().postRequest(
           Api.REFRESH_TOKEN,
@@ -422,7 +485,7 @@ class UserProfileController extends GetxController with StateMixin {
         _handleTokenInfo(response);
 
         final userInfoResponse =
-            await Get.find<UserInfoController>().getUserInfo();
+        await Get.find<UserInfoController>().getUserInfo();
 
         _handleLoginSuccess(response, userInfoResponse);
 
@@ -466,9 +529,9 @@ class UserProfileController extends GetxController with StateMixin {
     // Save token information
     TokenModel tokenModel = TokenModel(
       accessToken:
-          SignInResponse.fromJson(response.data).data?.accessToken ?? "",
+      SignInResponse.fromJson(response.data).data?.accessToken ?? "",
       refreshToken:
-          SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
+      SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
     );
     String tokenJson = jsonEncode(tokenModel.toJson());
 
@@ -522,19 +585,19 @@ switchOrganisationDataChange() async {
   Get.find<TimelineController>()
     ..getTimelineSummaryByMonth(
         startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
     ..getCalendarTimelineDataByDate(
         startDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
     ..getTimelineSummaryByDate(
         startDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 
   Get.find<TimelineSummaryController>()
     ..getTimelineByMonth()

@@ -15,8 +15,8 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
 import '../../../../../../utils/utils.dart';
-import '../../../../../modules/auth/view/screens/otp_screen.dart';
-import '../../../../employee/presentation/view/widget/serach_employee_list/search_employee_list.dart';
+import '../../../../auth/view/screens/otp_screen.dart';
+import '../../../../employee/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../controller/hr_leave_controller.dart';
 import '../../controller/leave_controller.dart';
 import '../widget/assign_leave/assign_leave.dart';
@@ -44,12 +44,12 @@ class LeaveHrScreen extends StatelessWidget {
 
             ///build search employee list
             Obx(() => _buildSearchBar(context, onSearch: () {
-                  _showEmployeeSelectionSheet();
-                })),
+              _showEmployeeSelectionSheet();
+            })),
 
             ///Tab-bar view according to index
             Obx(
-              () => Get.find<LeaveController>().tabLength.value == 0
+                  () => Get.find<LeaveController>().tabLength.value == 0
                   ? _buildCalendar()
                   : _leaveRecordeList(),
             ),
@@ -60,7 +60,7 @@ class LeaveHrScreen extends StatelessWidget {
   }
 
   // App bar method renamed and optimized for readability
-  _buildAppBar() {
+  PreferredSizeWidget _buildAppBar() {
     return customAppbar(
       leadingIcon: Text(
         AppString.text_leave.tr,
@@ -93,9 +93,9 @@ class LeaveHrScreen extends StatelessWidget {
     if (Get.find<HrLeaveController>().isHrLeaveCalendarLoading.isTrue) {
       return const Center(
           child: CupertinoActivityIndicator(
-        color: AppColor.primaryColor,
-        radius: 17,
-      ));
+            color: AppColor.primaryColor,
+            radius: 17,
+          ));
     }
     return const Expanded(
       child: Column(
@@ -152,7 +152,7 @@ class LeaveHrScreen extends StatelessWidget {
                     style: AppStyle.normal_text_black.copyWith(
                         fontSize: Dimensions.fontSizeMid - 3,
                         color: controller.selectedEmployeeInfo.value ==
-                                AppString.textSearchEmployee
+                            AppString.textSearchEmployee
                             ? AppColor.hintColor
                             : AppColor.normalTextColor,
                         overflow: TextOverflow.ellipsis),
@@ -210,7 +210,7 @@ class LeaveHrScreen extends StatelessWidget {
 
         // Set selected employee info
         hrLeaveController.selectedEmployeeInfo.value =
-            "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
+        "${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""} (You)";
 
         // Set selected employee image key
         hrLeaveController.selectedEmployeeImgKey.value =
@@ -224,7 +224,7 @@ class LeaveHrScreen extends StatelessWidget {
 
   void _clear() {
     Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-        (-1); //clear selection index
+    (-1); //clear selection index
     Get.find<HrLeaveController>().selectedEmployeeInfo.value =
         AppString.textSearchEmployee.tr;
     Get.find<HrLeaveController>().storageForUpload.filePath.value = "";
@@ -275,7 +275,7 @@ _customAntButtonSheet({
           color: AppColor.noColor,
           child: Container(
             height:
-                computedHeight, // Ensure the height matches the bottom sheet's height
+            computedHeight, // Ensure the height matches the bottom sheet's height
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(Dimensions.radiusMid),

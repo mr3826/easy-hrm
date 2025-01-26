@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import 'package:payrun_mobile/modules/profile/view/widget/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -15,55 +16,58 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../model/employee_work_history.dart';
 
-class DesignationLayout extends StatelessWidget {
+class DesignationLayout extends GetView<UserProfileController> {
   const DesignationLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final userProfileController = Get.find<UserProfileController>();
+    return Obx(() {
+      if (controller.isEmployeeInfoLoading.isTrue) {
+        return const LoadingIndicator();
+      }
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customButtonSheetAppbar(
+              text: AppString.text_designation.tr,
+              subtext: AppString.text_history.tr),
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemCount: controller
+                      .employeeWorkHistory
+                      ?.getOrganizationUserHistory
+                      ?.designationHistories
+                      ?.length ??
+                  0,
+              itemBuilder: (context, index) {
+                final designationHistory = controller.employeeWorkHistory
+                    ?.getOrganizationUserHistory?.designationHistories?[index];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        customButtonSheetAppbar(
-            text: AppString.text_designation.tr,
-            subtext: AppString.text_history.tr),
-        Expanded(
-          child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.zero,
-            itemCount: userProfileController
+                final designationHistories = Get.find<UserProfileController>()
                     .employeeWorkHistory
-                    ?.getOrganizationUserHistory
-                    ?.designationHistories
-                    ?.length ??
-                0,
-            itemBuilder: (context, index) {
-              final designationHistory = userProfileController
-                  .employeeWorkHistory
-                  ?.getOrganizationUserHistory
-                  ?.designationHistories?[index];
+                    ?.getOrganizationUserHistory;
 
-              final designationHistories = Get.find<UserProfileController>()
-                  .employeeWorkHistory
-                  ?.getOrganizationUserHistory;
+                bool isLastItem = (designationHistories != null &&
+                        designationHistories.designationHistories != null &&
+                        designationHistories.designationHistories!.isNotEmpty)
+                    ? index ==
+                        designationHistories.designationHistories!.length - 1
+                    : false;
 
-              bool isLastItem = (designationHistories != null &&
-                      designationHistories.designationHistories != null &&
-                      designationHistories.designationHistories!.isNotEmpty)
-                  ? index ==
-                      designationHistories.designationHistories!.length - 1
-                  : false;
-
-              return _employeeStatusInfoLayout(designationHistory, isLastItem);
-            },
+                return _employeeStatusInfoLayout(
+                    designationHistory, isLastItem);
+              },
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
-  Widget _employeeStatusInfoLayout(DesignationHistories ?designationHistory, bool isLastItem) {
+  Widget _employeeStatusInfoLayout(
+      DesignationHistories? designationHistory, bool isLastItem) {
     final baseTextStyle = AppStyle.mid_large_text.copyWith(
       fontSize: Dimensions.fontSizeDefault - 2,
       overflow: TextOverflow.ellipsis,
@@ -72,7 +76,7 @@ class DesignationLayout extends StatelessWidget {
     final developerStatus = designationHistory?.designation?.name ?? "";
     final date = _formatDate(designationHistory?.startDate);
     final durationText =
-        "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "",designationHistory?.endDate ?? "")}";
+        "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "", designationHistory?.endDate ?? "")}";
     final employeeCurrentStatus = designationHistory?.endDate == null
         ? AppString.textPresent.tr
         : dateMonthYearFormatFromDatetime(designationHistory?.endDate ?? "");
@@ -92,7 +96,6 @@ class DesignationLayout extends StatelessWidget {
                   height: 18,
                   width: 18,
                 ),
-
               ),
               customSpacerWidth(width: 12),
               Expanded(
@@ -119,7 +122,7 @@ class DesignationLayout extends StatelessWidget {
                           employeeCurrentStatus,
                           style: baseTextStyle.copyWith(
                             color: employeeCurrentStatus ==
-                                AppString.textPresent.tr
+                                    AppString.textPresent.tr
                                 ? AppColor.primaryColor
                                 : AppColor.hintColor,
                           ),
