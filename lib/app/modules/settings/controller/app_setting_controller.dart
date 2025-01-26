@@ -17,6 +17,7 @@ class AppSettingController extends GetxController {
   OrgSetting? orgSetting;
 
   Future<OrgSetting?> getAppSetting() async {
+    print("called_get_setting");
     orgSetting= await _settingDataSource.getAppSetting();
     return null;
   }

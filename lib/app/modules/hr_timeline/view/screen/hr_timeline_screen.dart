@@ -17,6 +17,7 @@ import '../../../../../utils/images.dart';
 import '../../../../global/controller/user_info_controller.dart';
 import '../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
+import '../../../settings/bindings/setting_bindings.dart';
 import '../../bindings/timeline_bindings.dart';
 import '../../controllers/start_timer_controller.dart';
 import '../widgets/time_sheet/build_select_month.dart';
@@ -41,14 +42,12 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   @override
   void initState() {
 
-
     TimelineBindings().dependencies();
+    SettingBindings().dependencies();
 
-    _tabController =
-        TabController(length: isEmployee == true ? 1 : 2, vsync: this);
+    _tabController = TabController(length: isEmployee == true ? 1 : 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
-
         setState(() {});
         if(_tabController.index==1){
           TimeSheetBindings().dependencies();
@@ -70,7 +69,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   @override
   Widget build(BuildContext context) {
 
-
     return DefaultTabController(
       length: 2, // Number of tabs
       child: Scaffold(
@@ -86,6 +84,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       ),
     );
   }
+
 
   _isAdminSilverAppbar(TabController tabController) {
     return SliverAppBar(
@@ -109,16 +108,14 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                     labelColor: AppColor.cardColor,
                     controller: tabController,
                     unselectedLabelColor: AppColor.normalTextColor,
-                    unselectedLabelStyle: AppStyle.normal_text
-                        .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
+                    unselectedLabelStyle: AppStyle.normal_text.copyWith(fontSize: Dimensions.fontSizeDefault + 1),
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       color: AppColor.primaryColor,
                     ),
                     indicatorPadding: EdgeInsets.zero,
                     indicatorSize: TabBarIndicatorSize.tab,
-                    labelStyle: AppStyle.normal_text
-                        .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
+                    labelStyle: AppStyle.normal_text.copyWith(fontSize: Dimensions.fontSizeDefault + 1),
                     tabs: [
                       Tab(text: AppString.textCalendar.tr),
                       Tab(text: AppString.text_time_sheet.tr),
@@ -127,7 +124,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                 ),
               ),
               const SizedBox(height: 20),
-              const CustomSearchBar(),
+             _buildEmployeeSearch(),
             ],
           ),
         ),
@@ -136,6 +133,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       bottom: _bottomLayout(_tabController.index), // Use the current tab index
     );
   }
+
 
   SliverAppBar get _isEmployeeSilverAppbar {
     return SliverAppBar(
@@ -168,6 +166,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 
+
   _sliverAppbarBody(TabController tabController) {
     return SliverList(
       delegate: SliverChildListDelegate([
@@ -180,6 +179,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       ]),
     );
   }
+
 
   _buildAppbar() {
     return Padding(
@@ -203,6 +203,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 
+
   _bottomLayout([int? tabIndex]) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(86),
@@ -222,6 +223,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       ),
     );
   }
+
 
   _timerBtnLayout(BuildContext context) {
     final StartTimerController controller = Get.find<StartTimerController>();
@@ -243,6 +245,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 
+
   _timerStringBtn(BuildContext context) {
     return floatingTimmerButton(
         bgBtnColor: AppColor.secondaryColor,
@@ -258,6 +261,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         btnText: AppString.text_stat_timer.tr);
   }
 
+
   _addTimeEntryBtn() {
     return floatingTimmerButton(
         bgBtnColor: AppColor.primaryColor,
@@ -267,12 +271,14 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         btnText: AppString.text_add_time_entry.tr);
   }
 
+
   _timerStringOpenBtn({required time}) {
     return startTimerOpenBtn(
         bgBtnColor: AppColor.secondaryColor,
         onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
         btnText: time.toString());
   }
+
 
   _timelineText() {
     return Text(
@@ -281,8 +287,24 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 
-  _buildTimeSheet() {
 
+  _buildTimeSheet() {
     return const BuildTimesheetList();
   }
+
+  _buildEmployeeSearch() {
+    return  CustomSearchBar(
+      onValueSelected: (String orgId){
+        Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
+        Navigator.pop(context);
+      },
+      onClearAction: (){
+        Get.find<TimeSheetController>().getTimesheetByDate();
+
+      },
+    );
+  }
+
+
+
 }

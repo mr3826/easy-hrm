@@ -10,6 +10,8 @@ class SettingApiServices {
 
   Future<Map<String, dynamic>?> getSettingApi() async {
     QueryResult<Object?> response = await _apiService.gqlCall(queryString: getOrgSettingQuery);
+    print("getSettingApi_data_so:: $response");
+
     return response.data;
   }
 

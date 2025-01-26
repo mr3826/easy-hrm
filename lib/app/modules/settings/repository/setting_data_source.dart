@@ -16,8 +16,10 @@ class SettingDataSourceIml implements SettingDataSource{
 
  @override
   Future<OrgSetting?> getAppSetting() async {
+   print("getAppSetting_called");
    try {
    Map<String, dynamic>? response=await  _apiServices.getSettingApi();
+   print("getAppSetting : $response");
    if(response !=null){
      return OrgSetting.fromJson(response);
    }

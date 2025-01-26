@@ -9,14 +9,12 @@ import '../../../../common/widget/custom_spacer.dart';
 import '../../../common/widget/custom_buttom_sheet.dart';
 import '../../modules/employee/view/widget/serach_employee_list/search_employee_list.dart';
 
-
-
-
 class TabBarWidget extends StatefulWidget {
   final List<TabItem> tabs;
   final ValueChanged<int> onTabSelect;
 
-  const TabBarWidget({super.key, required this.tabs, required this.onTabSelect});
+  const TabBarWidget(
+      {super.key, required this.tabs, required this.onTabSelect});
 
   @override
   State<TabBarWidget> createState() => _TabBarWidgetState();
@@ -34,8 +32,6 @@ class _TabBarWidgetState extends State<TabBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Column(
       children: [
         Padding(
@@ -81,10 +77,8 @@ class _TabBarWidgetState extends State<TabBarWidget> {
           ),
         ),
 
-
-
         const SizedBox(height: 18),
-         const Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: SizedBox(height: 50, child: CustomSearchBar()),
         ),
@@ -97,76 +91,70 @@ class _TabBarWidgetState extends State<TabBarWidget> {
   }
 }
 
-class TabItem {
-  final String label;
-  final Widget body;
-  TabItem({ required this.label, required this.body});
-}
-
-class CustomSearchBar extends StatelessWidget {
+class CustomSearchBar extends StatefulWidget {
   final Function(String)? onValueSelected;
   final Function(UserInfo)? userInfo;
   final Function? onClickRouteAction;
+  final Function? onClearAction;
 
-  const CustomSearchBar(
-      {Key? key,
-        this.onValueSelected,
-         this.onClickRouteAction,
-        this.userInfo})
-      : super(key: key);
+  const CustomSearchBar({
+    Key? key,
+    this.onValueSelected,
+    this.userInfo,
+    this.onClickRouteAction,
+    this.onClearAction,
+  }) : super(key: key);
+
+  @override
+  _CustomSearchBarState createState() => _CustomSearchBarState();
+}
+
+class _CustomSearchBarState extends State<CustomSearchBar> {
+  final TextEditingController searchController =
+      TextEditingController(text: "Search employee");
+  String profileImgKey = "";
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        customButtonSheet(
-          context: context,
-          child: SearchEmployeeList(
-            onValueSelected:onValueSelected?? (value) {},
-            userInfo: userInfo??(name) {},
-            onClickRouteAction:onClickRouteAction?? () {},
-          ),
-          height: 0.8,
-        );
-      },
+      onTap: () => _showSearchBottomSheet(),
       child: SizedBox(
         height: 52,
         width: MediaQuery.of(context).size.width,
         child: Card(
           elevation: 0,
           color: AppColor.cardColor,
-          shape: roundedRectangleBorder.copyWith(
-            side: BorderSide(
-              color: AppColor.hintColor.withOpacity(0.3),
-              width: 1.3,
-            ),
-            borderRadius: BorderRadius.circular(Dimensions.fontSizeMid + 2),
-          ),
+          shape: _buildCardShape(),
           child: Row(
             children: [
               customSpacerWidth(width: 12),
               const Icon(CupertinoIcons.search,
                   color: AppColor.hintColor, size: 25),
               customSpacerWidth(width: 8),
-              CustomNetworkImage(
-                imgUrlKey: "",
-                errorText: "er",
-                height: 12,
-                borderColor: Colors.transparent,
-                errorTextStyle: AppStyle.normal_text_black
-                    .copyWith(fontSize: 14, color: AppColor.secondaryColor),
-              ),
+              if (profileImgKey.isNotEmpty)
+                CustomNetworkImage(
+                  imgUrlKey: profileImgKey,
+                  errorText: "er",
+                  height: 12,
+                  borderColor: Colors.transparent,
+                  errorTextStyle: AppStyle.normal_text_black.copyWith(
+                    fontSize: 14,
+                    color: AppColor.secondaryColor,
+                  ),
+                ),
               customSpacerWidth(width: 6),
-              // Employee name display or a default message
               Expanded(
-                  child: Text(
-                "Search employee",
-                style:
-                    AppStyle.normal_text.copyWith(color: AppColor.hintColor),
-              )),
-              // Clear icon
+                child: Text(
+                  searchController.text,
+                  style:
+                      AppStyle.normal_text.copyWith(color: AppColor.hintColor),
+                ),
+              ),
               InkWell(
-                onTap: () {},
+                onTap: () => setState(() {
+                 widget. onClearAction!();
+                  searchController.text = "Search employee";
+                }),
                 child: const Icon(CupertinoIcons.clear,
                     color: AppColor.hintColor, size: 23),
               ),
@@ -177,4 +165,38 @@ class CustomSearchBar extends StatelessWidget {
       ),
     );
   }
+
+  void _showSearchBottomSheet() {
+    customButtonSheet(
+      context: context,
+      height: 0.8,
+      child: SearchEmployeeList(
+        onValueSelected: widget.onValueSelected,
+        userInfo: widget.userInfo ??
+            (name) {
+              setState(() {
+                searchController.text = name.name ?? "";
+                profileImgKey = name.imgUrl ?? "";
+              });
+            },
+        onClickRouteAction: widget.onClickRouteAction ?? () {},
+      ),
+    );
+  }
+
+  RoundedRectangleBorder _buildCardShape() {
+    return roundedRectangleBorder.copyWith(
+      side: BorderSide(
+        color: AppColor.hintColor.withOpacity(0.3),
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(Dimensions.fontSizeMid + 2),
+    );
+  }
+}
+
+class TabItem {
+  final String label;
+  final Widget body;
+  TabItem({required this.label, required this.body});
 }

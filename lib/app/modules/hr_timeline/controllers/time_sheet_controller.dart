@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../../utils/app_string.dart';
-import '../../../global/controller/user_info_controller.dart';
 import '../models/time_sheet_model.dart';
 import '../repositories/timeline_data_source.dart';
 

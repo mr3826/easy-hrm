@@ -16,7 +16,9 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
   @override
   Widget build(BuildContext context) {
 
+
     return Obx((){
+
       if(controller.isTimeSheetLoading.isTrue){
         return const CupertinoActivityIndicator(color: AppColor.primaryColor,radius: 18,);
       }else if(controller.timeSheetModel?.getUsersTimeSheet?.data?.isEmpty??false){
@@ -37,8 +39,8 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
     });
   }
 
-  _timeSheetDetailsCard(Data data) {
 
+  _timeSheetDetailsCard(Data data) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
@@ -84,40 +86,48 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
   }
 
   String _getTime(Data data) {
+    final timeZone = Get.find<AppSettingController>().orgSetting?.getOrganizationSetting?.timeZone ?? "";
 
+    // Format start and end times
+    final startTime = formatDateTimeWithZone(
+      dateTimeInput: data.timelineStartDate.toString(),
+      timeZone: timeZone,
+      include: DateTimePart.time,
+    );
 
-   String startTime= getTimeWithFormat(data.timelineStartDate.toString()).toLowerCase();
-   String endTime= getTimeWithFormat(data.timelineEndDate.toString()).toLowerCase();
+    final endTime = data.timelineEndDate==null?"OnGoing":
+    formatDateTimeWithZone(
+      dateTimeInput: data.timelineEndDate.toString(),
+      timeZone: timeZone,
+      include: DateTimePart.time,
+    );
 
+    // Format start and end dates
+    final startDate = formatDate(
+      date: formatDateTimeWithZone(
+        dateTimeInput: data.timelineStartDate.toString(),
+        timeZone: timeZone,
+        include: DateTimePart.date,
+      ),
+      format: "dd MMM",
+    );
+    final endDate = formatDate(
+      date: formatDateTimeWithZone(
+        dateTimeInput: data.timelineEndDate.toString(),
+        timeZone: timeZone,
+        include: DateTimePart.date,
+      ),
+      format: "dd MMM",
+    );
 
-   String startDate= formatDate(date: data.timelineStartDate.toString(),format:"dd MMM" );
-   String endDate= formatDate(date: data.timelineEndDate.toString(),format: "dd MMM");
-
-
-
-  String timeZone = formatDateTimeWithZone(dateTimeInput: data.timelineStartDate.toString(),timeZone: Get.find<AppSettingController>().orgSetting?.getOrganizationSetting?.timeZone??"");
-
-
-
-  print("timeZone ::: ${Get.find<AppSettingController>().orgSetting?.getOrganizationSetting?.timeZone}");
-
-
-
-   if(startDate.contains(endDate)){
-     return 'Today ($startTime - $endTime)';
-   }else{
-     return '$startDate - $endDate ($startTime - $endTime)';
-   }
-
-
-
-
+    // Determine if start and end dates are the same
+    return startDate == endDate
+        ? 'Today ($startTime - $endTime)'
+        : '$startDate - $endDate ($startTime - $endTime)';
   }
 
+
 }
-
-
-
 
   // Helper method for individual rows
   Widget _buildDetailRow(String label, String value) {

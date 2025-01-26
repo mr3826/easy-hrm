@@ -19,7 +19,8 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
         onTap: () {
           showDialog<String>(
             context: context,
-            builder: (BuildContext context) => Dialog(child: _openDateRangeDialog()),
+            builder: (BuildContext context) =>
+                Dialog(child: _openDateRangeDialog()),
           );
         },
         child: Padding(
@@ -31,7 +32,8 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
                 onTap: () {
                   showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => Dialog(child: _openDateRangeDialog()),
+                    builder: (BuildContext context) =>
+                        Dialog(child: _openDateRangeDialog()),
                   );
                 },
                 child: const Icon(
@@ -40,7 +42,8 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
                   size: 18,
                 ),
               ),
-              Obx(() => Column(
+              Obx(
+                () => Column(
                   children: [
                     Text(
                       controller.currentDate.value,
@@ -50,7 +53,6 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -58,7 +60,8 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
                 onTap: () {
                   showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => Dialog(child: _openDateRangeDialog()),
+                    builder: (BuildContext context) =>
+                        Dialog(child: _openDateRangeDialog()),
                   );
                 },
                 child: const Icon(
@@ -73,6 +76,7 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
       ),
     );
   }
+
   _openDateRangeDialog() {
     return Container(
       decoration: BoxDecoration(
@@ -83,57 +87,57 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
           Obx(() => _createDialogTitle(_retrieveSelectedDate(controller))),
-
           customSpacerHeight(height: 16),
-
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: controller.dayList.length <= 5 ? controller.dayList.length * 60.0 : 310),
+            constraints: BoxConstraints(
+                maxHeight: controller.dayList.length <= 5
+                    ? controller.dayList.length * 60.0
+                    : 310),
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: controller.dayList.length,
               itemBuilder: (context, index) {
                 return Obx(() => InkWell(
-                  onTap: () {
-                    controller.currentDate.value = controller.dayList[index];
-                    controller.listIndex.value = index;
-                    controller.onDaySelected(index.toString());
+                      onTap: () {
+                        controller.currentDate.value =
+                            controller.dayList[index];
+                        controller.listIndex.value = index;
+                        controller.onDaySelected(index.toString());
 
-                    if (controller.dayList[index] == "Custom" &&
-                        controller.listIndex.value == 6) {
+                        if (controller.dayList[index] == "Custom" &&
+                            controller.listIndex.value == 6) {
+                          controller.clearRange();
 
-                      controller.clearRange();
-
-                      _showCustomDateRangeDialog(index, context);
-                    } else {
-                      //controller.rangeStart.toString();
-                      //controller.rangeEnd.toString();
-                      Navigator.pop(context);
-
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Container(
-                      color: controller.listIndex.value == index
-                          ? AppColor.primaryColor.withOpacity(0.1)
-                          : AppColor.cardColor,
+                          _showCustomDateRangeDialog(index, context);
+                        } else {
+                          controller.getTimesheetByDate(
+                              startDate: controller.rangeStart.toString(),
+                              endDate: controller.rangeEnd.toString());
+                          Navigator.pop(context);
+                        }
+                      },
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          controller.dayList[index],
-                          style: AppStyle.mid_large_text.copyWith(
-                            color: controller.listIndex.value == index
-                                ? AppColor.secondaryColor
-                                : AppColor.normalTextColor,
-                            fontSize: Dimensions.fontSizeDefault + 1,
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: Container(
+                          color: controller.listIndex.value == index
+                              ? AppColor.primaryColor.withOpacity(0.1)
+                              : AppColor.cardColor,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              controller.dayList[index],
+                              style: AppStyle.mid_large_text.copyWith(
+                                color: controller.listIndex.value == index
+                                    ? AppColor.secondaryColor
+                                    : AppColor.normalTextColor,
+                                fontSize: Dimensions.fontSizeDefault + 1,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ));
+                    ));
               },
             ),
           ),
@@ -143,11 +147,6 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
     );
   }
 }
-
-
-
-
-
 
 _createDialogTitle(String text) {
   return Column(
@@ -177,7 +176,6 @@ String _retrieveSelectedDate(TimeSheetController controller) {
   return controller.dayList[controller.listIndex.value];
 }
 
-
 void _showCustomDateRangeDialog(int index, context) async {
   final weekendDays = [DateTime.saturday, DateTime.sunday];
 
@@ -193,9 +191,10 @@ void _showCustomDateRangeDialog(int index, context) async {
         holidayDates: const []),
   );
   if (selectedRange != null) {
-    var startDate = selectedRange["start"];
-    var endDate = selectedRange["end"];
-
-    //Api called if is needed
+    DateTime? startDate = selectedRange["start"];
+    DateTime? endDate = selectedRange["end"];
+    Get.find<TimeSheetController>().getTimesheetByDate(
+        startDate: startDate.toString(), endDate: endDate.toString());
+    Get.back(canPop: false);
   }
 }
