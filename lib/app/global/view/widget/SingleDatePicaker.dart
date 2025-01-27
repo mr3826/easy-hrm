@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/calendar_date_controller.dart';
@@ -70,18 +71,25 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
               },
             ),
             _divider(),
+
             _buttonLayout(onAction: () {
               if (widget.isCalledFormTimeLog == false) {
+
                 Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                 Get.find<DateController>().currentDate.value = today;
+
               } else if (widget.isCalledFormTimeLog == true) {
+
                 Get.find<DateController>().currentDate.value = today;
 
-                Get.find<DateTimeController>().requestedDate.value =
-                    DateFormat('yyyy-MM-dd').format(today);
 
-                DateTime date =
-                DateTime.parse(DateFormat('yyyy-MM-dd').format(today));
+                Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(today);
+
+
+                DateTime date = DateTime.parse(DateFormat('yyyy-MM-dd').format(today));
+
+
+
 
                 Get.find<TimelineController>().getCalendarTimelineDataByDate(
                     startDate:
@@ -89,12 +97,34 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                     endDate:
                     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
-                //add selected date info
-                Get.find<TimelineController>().getTimelineSummaryByDate(
+
+
+
+                Get.find<HrTimelineController>().getTimelineCalenderByDate(
                     startDate:
                     "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                     endDate:
                     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+
+
+
+
+
+                Get.find<HrTimelineController>().getTimelineSummaryByDate(
+                    startDate:
+                    "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                    endDate:
+                    "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
+
+
+
+                // //add selected date info
+                // Get.find<TimelineController>().getTimelineSummaryByDate(
+                //     startDate:
+                //     "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
+                //     endDate:
+                //     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
               } else {
                 Get.find<DateTimeController>().requestedDate.value =

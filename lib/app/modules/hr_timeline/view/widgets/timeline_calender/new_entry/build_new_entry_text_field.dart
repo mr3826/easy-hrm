@@ -22,7 +22,7 @@ import '../../../../../../../common/widget/timePicker/date_time_picker_controlle
 import '../../../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
-import '../../../../controllers/timeline_controller.dart';
+import '../../../../controllers/hr_timeline_controller.dart';
 import 'build_task_view.dart';
 import 'new_entry_duration_time_with_status.dart';
 

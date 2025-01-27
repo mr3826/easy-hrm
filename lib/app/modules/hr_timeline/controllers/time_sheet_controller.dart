@@ -1,23 +1,61 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import '../../../../utils/app_string.dart';
+import '../models/time_sheet_model.dart';
+import '../repositories/timeline_data_source.dart';
 
 
-class TimeSheetController  {
+class TimeSheetController extends GetxController {
 
-  RxString currentDate = "This month".obs;
+  final TimelineDataSource _timelineDataSource;
+  TimeSheetController(this._timelineDataSource);
+
+  RxString currentDate = "Today".obs;
   List<String> dayList = ["Today", "Yesterday", "This week", "Last week", "This month", "Last month", "Custom"];
-
   RxInt listIndex = 0.obs;
-
-
   // The start and end of the selected date range.
   var rangeStart = Rxn<DateTime>();
   var rangeEnd = Rxn<DateTime>();
+
+
+  TimeSheetModel? timeSheetModel;
+
+  final isTimeSheetLoading = false.obs;
+
+
+  Future<void> getTimesheetByDate({String ?startDate,  String? endDate, String ?orgId}) async {
+
+    final String formattedStartDate = startDate ?? DateTime.now().toString();
+    final String formattedEndDate = endDate ?? DateTime.now().toString();
+
+    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+
+    isTimeSheetLoading(true);
+    timeSheetModel = await _timelineDataSource.getTimesheetByDate(startDate: formattedStartDate, endDate: formattedEndDate, orgId: organizationId);
+    isTimeSheetLoading(false);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /// Clears the current date range and resets selection mode.
   void clearRange() {
     rangeStart.value = null;
     rangeEnd.value = null;
   }
+
+
 
   /// Handles selection of predefined date ranges.
   void onDaySelected(String day) {
@@ -77,6 +115,12 @@ class TimeSheetController  {
     // Print the selected range
     log("Selected range: ${rangeStart.value} to ${rangeEnd.value}");
   }
+
+
+
+
+
+
 
 
 

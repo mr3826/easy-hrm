@@ -11,6 +11,8 @@ import '../services/auth_token_service.dart';
 import '../services/graphql_api_service.dart';
 import '../services/token_refresh_service.dart';
 
+
+
 class GlobalBindings extends Bindings {
   @override
   void dependencies() async {
@@ -33,3 +35,4 @@ class GlobalBindings extends Bindings {
     Get.put(UserInfoController(), permanent: true);
   }
 }
+

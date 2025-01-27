@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import 'app/home/view/screen/main_screen.dart';

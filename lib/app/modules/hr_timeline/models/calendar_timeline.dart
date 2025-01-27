@@ -1,4 +1,4 @@
-import '../../leave/domain/leave_record_response.dart';
+import '../../../../modules/leave/domain/leave_record_response.dart';
 
 class CalendarTimeline {
   GetCalenderTimelinesForApp? getCalenderTimelinesForApp;

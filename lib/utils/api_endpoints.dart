@@ -396,6 +396,18 @@ query GetAnOrganizationSubscription {
   }
 }
 ''';
+const getOrgSettingQuery = r'''
+query GetOrganizationSetting {
+  getOrganizationSetting {
+    id
+    time_zone
+    time_format
+    country_code
+    date_format
+    language
+  }
+}
+''';
 
 const timelineSummaryInfoDashboardQuery = '''
 query GetMonthlyTimelog {
@@ -1240,6 +1252,38 @@ query GET_TEAM_NOTES($queryData: TeamNoteQueryInput!, $optionData: OptionDataTyp
         }
       }
       immutable
+    }
+  }
+}
+''';
+
+//Timeline v2
+const getTimeSheetByDateQuery = r'''
+query GET_USERS_TIMESHEET($queryData: UsersTimeSheetQueryData, $optionData: OptionDataType) {
+  getUsersTimeSheet(queryData: $queryData, optionData: $optionData) {
+    data {
+ organization_user {
+        id
+        roles {
+          name
+        }
+        department {
+          name
+        }
+        profile {
+          first_name
+          last_name
+          image
+        }
+      }
+  org_user_id
+  timeline_start_date
+  timeline_end_date
+      total_scheduled_seconds
+      logged_total_seconds
+      is_flagged_timelog
+      total_leaves_seconds
+      balance
     }
   }
 }

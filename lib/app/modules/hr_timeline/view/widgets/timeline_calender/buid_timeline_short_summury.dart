@@ -12,6 +12,8 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../global/view/widget/app_margin.dart';
 import '../../../controllers/timeline_controller.dart';
 
+import '../../../controllers/hr_timeline_controller.dart';
+
 Widget buildTimelineShortSummary() {
   return SizedBox(
     height: AppLayout.getHeight(118),
