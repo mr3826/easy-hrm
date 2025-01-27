@@ -13,11 +13,7 @@ class TimelineApiService {
 
 
 
-
-
-
   Future<QueryResult<Object?>> getTimeSheets(String startDate,String endDate,String orgId) async {
-
       Map<String, dynamic> variable ={
           "queryData": {
             "start_date": startDate,
@@ -27,8 +23,6 @@ class TimelineApiService {
             ]
           },
           "optionData": {
-            "limit": 50,
-            "offset": 0,
             "order": [
               [
                 "sh.name",
@@ -37,7 +31,6 @@ class TimelineApiService {
             ]
           }
       };
-
     return await _apiService.gqlCall(
         queryString: getTimeSheetByDateQuery, variables: variable);
   }
@@ -49,12 +42,31 @@ class TimelineApiService {
         "end_date": endDate,
       }
     };
-
     if (orgUserId != null) {
       variables["queryData"]?["org_user_ids"] = orgUserId;
     }
-    return await _apiService.gqlCall(
-        queryString: getTimelineSummaryByDateQuery, variables: variables);
+    return await _apiService.gqlCall(queryString: getTimelineSummaryByDateQuery, variables: variables);
   }
+
+
+  Future<QueryResult<Object?>> getTimelineCalender(String startDate, String endDate, {String? orgUserId}) async {
+
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "start_time": startDate,
+        "end_time": endDate,
+      }
+    };
+    if (orgUserId != null) {
+      variables["queryData"]?["org_user_id"] = orgUserId;
+    }
+    return await _apiService.gqlCall(queryString: getCalendarTimelineQuery, variables: variables);
+  }
+
+
+
+
+
+
 
 }

@@ -146,13 +146,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               Expanded(
                 child: Text(
                   searchController.text,
-                  style:
-                      AppStyle.normal_text.copyWith(color: AppColor.hintColor),
+                  style: AppStyle.normal_text.copyWith(color: AppColor.normalTextColor.withOpacity(0.7)),
                 ),
               ),
               InkWell(
                 onTap: () => setState(() {
                  widget. onClearAction!();
+                 profileImgKey="";
                   searchController.text = "Search employee";
                 }),
                 child: const Icon(CupertinoIcons.clear,

@@ -20,7 +20,6 @@ import '../../../../modules/profile/controller/user_profile_controller.dart';
 import '../../../../modules/profile/view/screen/user_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
-import '../../../../modules/timeline/view/screen/timeline.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';

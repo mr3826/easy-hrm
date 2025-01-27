@@ -95,7 +95,7 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
       include: DateTimePart.time,
     );
 
-    final endTime = data.timelineEndDate==null?"OnGoing":
+    final endTime = data.timelineEndDate==null?"Ongoing":
     formatDateTimeWithZone(
       dateTimeInput: data.timelineEndDate.toString(),
       timeZone: timeZone,

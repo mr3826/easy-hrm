@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import '../../../../../../utils/app_color.dart';
-
-
+import '../../../../../../utils/utils.dart';
 
 class TimelineCalendar extends StatelessWidget {
-  const TimelineCalendar({super.key});
+  final TimelineSummaryByDate? timelineSummaryByDate;
+  const TimelineCalendar({super.key, this.timelineSummaryByDate});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         const TimeLineCalendar(),
-        Positioned(top: 0,child: _summaryLayout(context)),
+        Positioned(top: 0, child: _summaryLayout(context)),
       ],
     );
   }
+
+  _summaryLayout(BuildContext context) {
+    return Container(
+      color: AppColor.cardColor,
+      width: MediaQuery.of(context).size.width,
+      child: workingScheduleLayout(
+          schedule: getConvertSecondsToHours(timelineSummaryByDate
+                  ?.getTimelogSummaryForApp?.totalScheduledSeconds ??
+              ""),
+          balanceTime: getConvertSecondsToHours(
+              timelineSummaryByDate?.getTimelogSummaryForApp?.balance ?? ""),
+          loggedTime: getConvertSecondsToHours(timelineSummaryByDate
+                  ?.getTimelogSummaryForApp?.loggedTotalSeconds ??
+              ""),
+          paidLeave: getConvertSecondsToHours(timelineSummaryByDate
+                  ?.getTimelogSummaryForApp?.totalLeavesSeconds ??
+              "")),
+    );
+  }
 }
-
-
-
-Widget _summaryLayout(BuildContext context) {
-  return Container(
-    color: AppColor.cardColor,
-    width: MediaQuery.of(context).size.width,
-    child: workingScheduleLayout(
-        schedule: "12",
-        balanceTime: "!2",
-        loggedTime: "3423",
-        paidLeave: "5423"),
-  );
-}
-
-

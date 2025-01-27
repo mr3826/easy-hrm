@@ -1,13 +1,10 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/bindings/time_sheet_bindings.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../common/widget/hr_timeline/floating_timmer_button.dart';
@@ -17,18 +14,25 @@ import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
-import '../../../../global/controller/user_info_controller.dart';
-import '../../../../global/view/custom_tabbar_with_search.dart';
-import '../../../../global/view/widget/show_subscription_dialog.dart';
-import '../../../settings/bindings/setting_bindings.dart';
-import '../../bindings/timeline_bindings.dart';
-import '../../controllers/start_timer_controller.dart';
-import '../widgets/time_sheet/build_select_month.dart';
-import '../widgets/time_sheet/build_timesheet_list.dart';
-import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
+import 'app/global/controller/user_info_controller.dart';
+import 'app/global/view/custom_tabbar_with_search.dart';
+import 'app/global/view/widget/show_subscription_dialog.dart';
+import 'app/modules/hr_timeline/bindings/timeline_bindings.dart';
+import 'app/modules/hr_timeline/controllers/start_timer_controller.dart';
+import 'app/modules/hr_timeline/view/widgets/time_sheet/build_select_month.dart';
+import 'app/modules/hr_timeline/view/widgets/time_sheet/build_timesheet_list.dart';
+import 'app/modules/hr_timeline/view/widgets/timeline_calender/buid_timeline_short_summury.dart';
+import 'app/modules/hr_timeline/view/widgets/timeline_calender/build_hr_timeline_calendar.dart';
+import 'app/modules/settings/bindings/setting_bindings.dart';
+
+
+
+
+bool isEmployee = false;
 
 class HrTimelineScreen extends StatefulWidget {
   const HrTimelineScreen({super.key});
+
 
   @override
   State<HrTimelineScreen> createState() => _HrTimelineScreenState();
@@ -40,18 +44,23 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
   @override
   void initState() {
+
     TimelineBindings().dependencies();
     SettingBindings().dependencies();
-    _tabController = TabController(length: 2, vsync: this);
+
+    _tabController = TabController(length: isEmployee == true ? 1 : 2, vsync: this);
     _tabController.addListener(() {
+
       if (_tabController.indexIsChanging) {
         setState(() {});
-        if (_tabController.index == 1) {
+        if(_tabController.index==1){
           TimeSheetBindings().dependencies();
           Get.find<TimeSheetController>().getTimesheetByDate();
         }
       }
+
     });
+
     super.initState();
   }
 
@@ -61,14 +70,18 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
       length: 2, // Number of tabs
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
-            _isAdminSilverAppbar(_tabController),
+            isEmployee == true
+                ? _isEmployeeSilverAppbar
+                : _isAdminSilverAppbar(_tabController),
             _sliverAppbarBody(_tabController),
           ],
         ),
@@ -76,6 +89,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       ),
     );
   }
+
 
   _isAdminSilverAppbar(TabController tabController) {
     return SliverAppBar(
@@ -99,16 +113,14 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                     labelColor: AppColor.cardColor,
                     controller: tabController,
                     unselectedLabelColor: AppColor.normalTextColor,
-                    unselectedLabelStyle: AppStyle.normal_text
-                        .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
+                    unselectedLabelStyle: AppStyle.normal_text.copyWith(fontSize: Dimensions.fontSizeDefault + 1),
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       color: AppColor.primaryColor,
                     ),
                     indicatorPadding: EdgeInsets.zero,
                     indicatorSize: TabBarIndicatorSize.tab,
-                    labelStyle: AppStyle.normal_text
-                        .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
+                    labelStyle: AppStyle.normal_text.copyWith(fontSize: Dimensions.fontSizeDefault + 1),
                     tabs: [
                       Tab(text: AppString.textCalendar.tr),
                       Tab(text: AppString.text_time_sheet.tr),
@@ -117,7 +129,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                 ),
               ),
               const SizedBox(height: 20),
-              _buildEmployeeSearch(tabController),
+              _buildEmployeeSearch(),
             ],
           ),
         ),
@@ -127,23 +139,52 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 
+
+  SliverAppBar get _isEmployeeSilverAppbar {
+    return SliverAppBar(
+      expandedHeight: AppLayout.getHeight(276),
+      elevation: 0,
+      bottom: _bottomLayout(),
+      pinned: true,
+      floating: true,
+      backgroundColor: AppColor.primaryColor,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Padding(
+          padding: const EdgeInsets.only(left: 18, right: 18),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customSpacerHeight(height: 45),
+                  _timelineText(),
+                  customSpacerHeight(height: 12),
+                  buildTimelineShortSummary(),
+                  customSpacerHeight(height: 6),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
   _sliverAppbarBody(TabController tabController) {
-    HrTimelineController controller = Get.find<HrTimelineController>();
     return SliverList(
       delegate: SliverChildListDelegate([
-        tabController.index == 0
-            ? Obx(() => controller.isTimelineCalendarByDateLoading.isTrue ||
-                    controller.isTimelineSummaryByDateLoading.isTrue
-                ? const CupertinoActivityIndicator(
-                    color: AppColor.primaryColor,
-                    radius: 20,
-                  )
-                : TimelineCalendar(
-                    timelineSummaryByDate: controller.timelineSummaryByDate))
-            : _buildTimeSheet(),
+        if (isEmployee)
+          const TimelineCalendar()
+        else
+          tabController.index == 0
+              ? const TimelineCalendar()
+              : _buildTimeSheet(),
       ]),
     );
   }
+
 
   _buildAppbar() {
     return Padding(
@@ -167,6 +208,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 
+
   _bottomLayout([int? tabIndex]) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(86),
@@ -178,10 +220,15 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                 topLeft: Radius.circular(Dimensions.radiusMid + 15))),
         width: double.maxFinite,
         padding: const EdgeInsets.only(top: 12, bottom: 15),
-        child: tabIndex == 0 ? _buildSelectedDate() : const BuildSelectMonth(),
+        child: isEmployee == true
+            ? const BuildSelectDateLayout()
+            : tabIndex == 0
+            ? const BuildSelectDateLayout()
+            : const BuildSelectMonth(),
       ),
     );
   }
+
 
   _timerBtnLayout(BuildContext context) {
     final StartTimerController controller = Get.find<StartTimerController>();
@@ -194,7 +241,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         children: [
           controller.isRunning.value
               ? _timerStringOpenBtn(
-                  time: controller.starTimeDashboard.toString())
+              time: controller.starTimeDashboard.toString())
               : _timerStringBtn(context),
           customSpacerWidth(width: 18),
           _addTimeEntryBtn(),
@@ -202,6 +249,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       ),
     );
   }
+
 
   _timerStringBtn(BuildContext context) {
     return floatingTimmerButton(
@@ -218,6 +266,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         btnText: AppString.text_stat_timer.tr);
   }
 
+
   _addTimeEntryBtn() {
     return floatingTimmerButton(
         bgBtnColor: AppColor.primaryColor,
@@ -227,6 +276,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         btnText: AppString.text_add_time_entry.tr);
   }
 
+
   _timerStringOpenBtn({required time}) {
     return startTimerOpenBtn(
         bgBtnColor: AppColor.secondaryColor,
@@ -234,55 +284,33 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         btnText: time.toString());
   }
 
+
+  _timelineText() {
+    return Text(
+      AppString.text_time_line.tr,
+      style: AppStyle.mid_large_text.copyWith(fontSize: 20),
+    );
+  }
+
+
   _buildTimeSheet() {
     return const BuildTimesheetList();
   }
 
-  _buildEmployeeSearch(TabController tabController) {
-    return CustomSearchBar(
-      onValueSelected: (String orgId) async{
-        if(tabController.index==0){
-          Navigator.pop(context);
+  _buildEmployeeSearch() {
+    return  CustomSearchBar(
+      onValueSelected: (String orgId){
 
-          String startDate="${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-          String endDate="${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-
-          await Get.find<HrTimelineController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate,orgId: orgId);
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate,orgId: orgId);
-
-
-        }else{
-          Navigator.pop(context);
-          Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
-        }
+        Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
+        Navigator.pop(context);
 
       },
-      onClearAction: () async{
-        if(tabController.index==0){
-          String startDate="${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-          String endDate="${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-
-          await Get.find<HrTimelineController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
-
-        }else{
-          Get.find<TimeSheetController>().getTimesheetByDate();
-        }
-
+      onClearAction: (){
+        Get.find<TimeSheetController>().getTimesheetByDate();
       },
     );
   }
 
-  _buildSelectedDate() {
-    return BuildSelectDateLayout(
-      dateRange: (date) async {
-        String startDate="${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-        String endDate="${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-        await Get.find<HrTimelineController>().getTimelineSummaryByDate(
-            startDate: startDate, endDate: endDate);
-        await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-            startDate: startDate, endDate: endDate);
-      },
-    );
-  }
+
+
 }

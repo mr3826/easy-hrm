@@ -11,7 +11,7 @@ class TimeSheetController extends GetxController {
   final TimelineDataSource _timelineDataSource;
   TimeSheetController(this._timelineDataSource);
 
-  RxString currentDate = "This month".obs;
+  RxString currentDate = "Today".obs;
   List<String> dayList = ["Today", "Yesterday", "This week", "Last week", "This month", "Last month", "Custom"];
   RxInt listIndex = 0.obs;
   // The start and end of the selected date range.
@@ -19,21 +19,9 @@ class TimeSheetController extends GetxController {
   var rangeEnd = Rxn<DateTime>();
 
 
-
-
-
   TimeSheetModel? timeSheetModel;
 
-
   final isTimeSheetLoading = false.obs;
-
-
-
-
-
-
-
-
 
 
   Future<void> getTimesheetByDate({String ?startDate,  String? endDate, String ?orgId}) async {

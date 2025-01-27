@@ -12,7 +12,7 @@ import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
 import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
-import 'package:payrun_mobile/modules/timeline/model/timeline_summary_by_date.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
@@ -24,7 +24,7 @@ import '../../../common/domain/last_input_model.dart';
 import '../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../network/exception_helper.dart';
 import '../../dashboard/presentation/controller/dashbpard_controller.dart';
-import '../model/calendar_timeline.dart';
+import '../../../app/modules/hr_timeline/models/calendar_timeline.dart';
 
 class TimelineController extends GetxController with StateMixin {
   final isLoading = false.obs;
