@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
+import 'package:payrun_mobile/app/global/enum/user_enum.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/hr_timeline_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -28,7 +29,6 @@ import '../../../modules/leave_hr/presentation/controller/hr_leave_controller.da
 import '../../../modules/leave_hr/presentation/view/screen/leave_hr_screen.dart';
 import '../widget/main_screen_widget.dart';
 
-
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key, this.routeIndex = 2}) : super(key: key);
   final int? routeIndex;
@@ -46,6 +46,12 @@ class _MainScreenState extends State<MainScreen> {
       initialIndex: widget.routeIndex ?? 2,
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -122,8 +128,12 @@ class _MainScreenState extends State<MainScreen> {
 
   _screenListLayout() {
     bool isEmployee = false;
+    if (Get.find<UserInfoController>().userRole != UserEnum.employee) {
+      isEmployee = true;
+    }
+
     return [
-      isEmployee ? const TimelineScreen(): HrTimelineScreen(),
+      isEmployee ? const TimelineScreen() : HrTimelineScreen(),
       isEmployee ? const LeaveScreen() : const LeaveHrScreen(),
       isEmployee ? const Dashboard() : HrDashboardScreen(),
       isEmployee ? const NotificationScreen() : const EmployeeScreen(),

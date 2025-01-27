@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:payrun_mobile/app/global/enum/user_enum.dart';
 import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/common/domain/user_info.dart';
 import '../../../modules/auth/domain/org_subscription_Info_model.dart';
@@ -10,19 +11,22 @@ import 'package:dio/dio.dart' as dio;
 class UserInfoController {
   RxBool isSubscriptionExpired = false.obs;
   RxBool isSubscriptionTimeTrackingIsAllow = true.obs;
+  UserEnum userRole = UserEnum.employee;
 
   Future<UserInfo?> getUserInfo() async {
     final dio.Response? response =
         await Get.find<ApiService>().get(Api.USER_INFO);
-    return UserInfo.fromJson(response?.data);
+    UserInfo userInfo = UserInfo.fromJson(response?.data);
+    userRole = _getUserRole(userInfo.user?.roles ?? <String>[]);
+    return userInfo;
   }
 
   /// Fetches the organization subscription information
   /// and checks the subscription status.
   Future<bool> getOrgSubscriptionInfo() async {
     try {
-      final QueryResult<Object?> response =
-          await Get.find<ApiService>().gqlCall(query: getOrgSubscriptionInfoQuery);
+      final QueryResult<Object?> response = await Get.find<ApiService>()
+          .gqlCall(query: getOrgSubscriptionInfoQuery);
       if (response.data != null) {
         return _checkIfSubscription(
             OrgSubscriptionInfoModel.fromJson(response.data!));
@@ -66,5 +70,23 @@ class UserInfoController {
       log("_checkIfSubscription: $e");
       return true;
     }
+  }
+
+  UserEnum _getUserRole(List<String> roles) {
+    if (roles.contains("org_owner")) {
+      return UserEnum.owner;
+    }
+
+    if (roles.contains("org_dept_head")) {
+      return roles.contains("org_hiring_team")
+          ? UserEnum.owner
+          : UserEnum.dept_head;
+    }
+
+    if (roles.contains("org_hiring_team")) {
+      return UserEnum.hr_manager;
+    }
+
+    return UserEnum.employee;
   }
 }
