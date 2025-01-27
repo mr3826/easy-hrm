@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/controllers/hr_deshboard_controller.dart';
+import 'package:payrun_mobile/app/modules/profile/bindings/hr_profile_bindings.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -11,6 +12,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../global/view/widget/app_margin.dart';
+import '../../../profile/controller/global_profile_controller.dart';
 import '../../bindings/dashboard_bindings.dart';
 import '../widgets/build_employee_overview.dart';
 import '../widgets/build_job_opening.dart';
@@ -23,6 +25,8 @@ class HrDashboardScreen extends GetView<HrDashBoardController> {
   @override
   Widget build(BuildContext context) {
     DashboardBindings().dependencies();
+    HrProfileBindings().dependencies();
+    Get.put(ProfileGlobalController());
     return controller.obx(
         (state) => RefreshIndicator(
               onRefresh: _refreshScreen,

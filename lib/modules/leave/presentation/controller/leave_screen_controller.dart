@@ -8,7 +8,7 @@ import 'package:payrun_mobile/modules/leave/domain/leave_summary_dashboard.dart'
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/controller/date_time_controller.dart';
-import '../../../dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../../dashboard/presentation/controller/employee_dashboard_controller.dart';
 import '../../../timeline/controller/timelog_summary_controller.dart';
 import '../../domain/leave_details_by_date.dart';
 import '../../domain/workshief_response_by_date.dart';
@@ -120,7 +120,7 @@ void updateData() {
     ..getLeaveDetailsByDate();
 
   Get.find<LeaveRecordsController>().getLeaveRecordsData();
-  Get.find<DashboardController>().getUpComingInfoForDashboard();
+  Get.find<EmployeeDashboardController>().getUpComingInfoForDashboard();
   _updateTimelineData();
 }
 

@@ -5,14 +5,12 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/change_email/email_verification_otp.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../controller/global_profile_controller.dart';
 import '../../edit_profile_text_field.dart';
-import '../../../../app/global/view/widget/app_margin.dart';
-import 'edit_profile_widget.dart';
 
 class ChangEmailFieldLayout extends StatelessWidget {
   ChangEmailFieldLayout({super.key});

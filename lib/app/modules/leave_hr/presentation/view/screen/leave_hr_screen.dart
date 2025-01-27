@@ -50,7 +50,7 @@ class LeaveHrScreen extends StatelessWidget {
 
             ///Tab-bar view according to index
             Obx(
-                  () => Get.find<LeaveController>().tabLength.value == 0
+              () => Get.find<LeaveController>().tabLength.value == 0
                   ? _buildCalendar()
                   : _leaveRecordeList(),
             ),
@@ -94,9 +94,9 @@ class LeaveHrScreen extends StatelessWidget {
     if (Get.find<HrLeaveController>().isHrLeaveCalendarLoading.isTrue) {
       return const Center(
           child: CupertinoActivityIndicator(
-            color: AppColor.primaryColor,
-            radius: 17,
-          ));
+        color: AppColor.primaryColor,
+        radius: 17,
+      ));
     }
     return const Expanded(
       child: Column(
@@ -153,7 +153,7 @@ class LeaveHrScreen extends StatelessWidget {
                     style: AppStyle.normal_text_black.copyWith(
                         fontSize: Dimensions.fontSizeMid - 3,
                         color: controller.selectedEmployeeInfo.value ==
-                            AppString.textSearchEmployee
+                                AppString.textSearchEmployee
                             ? AppColor.hintColor
                             : AppColor.normalTextColor,
                         overflow: TextOverflow.ellipsis),
@@ -189,11 +189,6 @@ class LeaveHrScreen extends StatelessWidget {
       onPressed: () {
         Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
-        final userProfileController = Get.find<UserProfileController>();
-
-        final userDetails = userProfileController
-            .userDetails?.getOrganizationUserDetails?.profile;
-        leaveNoteController.clear();
 
         // Fetch available leave types
         hrLeaveController.getAvailableLeaveType();
@@ -211,11 +206,11 @@ class LeaveHrScreen extends StatelessWidget {
 
         // Set selected employee info
         hrLeaveController.selectedEmployeeInfo.value =
-        "${userProfileController.employeeName.value} (You)";
+            "${Get.find<ProfileGlobalController>().employeeName.value} (You)";
 
         // Set selected employee image key
         hrLeaveController.selectedEmployeeImgKey.value =
-            userProfileController.employeeImeKey.value;
+            Get.find<ProfileGlobalController>().employeeImeKey.value;
       },
       backgroundColor: AppColor.primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
@@ -225,7 +220,7 @@ class LeaveHrScreen extends StatelessWidget {
 
   void _clear() {
     Get.find<LeaveController>().leaveTypeSelectedIndex.value =
-    (-1); //clear selection index
+        (-1); //clear selection index
     Get.find<HrLeaveController>().selectedEmployeeInfo.value =
         AppString.textSearchEmployee.tr;
     Get.find<HrLeaveController>().storageForUpload.filePath.value = "";
@@ -275,8 +270,8 @@ _customAntButtonSheet({
         return Material(
           color: AppColor.noColor,
           child: Container(
-            height:
-            computedHeight, // Ensure the height matches the bottom sheet's height
+            height: computedHeight,
+            // Ensure the height matches the bottom sheet's height
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(Dimensions.radiusMid),

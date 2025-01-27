@@ -23,7 +23,7 @@ import '../../../app/home/view/screen/main_screen.dart';
 import '../../../common/domain/last_input_model.dart';
 import '../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../network/exception_helper.dart';
-import '../../dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../dashboard/presentation/controller/employee_dashboard_controller.dart';
 import '../model/calendar_timeline.dart';
 
 class TimelineController extends GetxController with StateMixin {
@@ -242,8 +242,8 @@ class TimelineController extends GetxController with StateMixin {
         _resetFields();
 
         // Refresh dashboard and timeline data
-        Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
-        Get.find<DashboardController>().getProfileInfoForDashboard();
+        Get.find<EmployeeDashboardController>().getMonthlyTimelineInfoForDashboard();
+        Get.find<EmployeeDashboardController>().getProfileInfoForDashboard();
         _refreshTimeline();
 
         // Navigate to the main screen

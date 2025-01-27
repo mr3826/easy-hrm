@@ -103,11 +103,6 @@ class AppPages {
       page: () => const NotificationScreen(),
     ),
     GetPage(
-      name: _Paths.HOME_SCREEN,
-      transition: Transition.size,
-      page: () => const Dashboard(),
-    ),
-    GetPage(
       name: _Paths.TIME_LOG_SUMMARY,
       transition: Transition.size,
       page: () => const TimeLogSummary(),

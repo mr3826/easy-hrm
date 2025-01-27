@@ -12,6 +12,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../modules/timeline/view/widget/timeline_calendar.dart';
+import '../../../../global/view/widget/app_margin.dart';
 import '../../controller/global_profile_controller.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../models/user_profile.dart';

@@ -11,6 +11,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../common/widget/employee/department_info_widget.dart';
+import '../../../../global/view/widget/app_margin.dart';
 
 
 class BuildEmployeeStatusLayout extends StatelessWidget {

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/profile/controller/global_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
-import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
 import '../../../../../common/widget/custom_dialog.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
-import '../../../../../modules/profile/controller/user_profile_controller.dart';
+import '../../../../../modules/dashboard/domain/profile_summary_for_dashboard.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
@@ -15,19 +15,14 @@ import '../../../../../utils/images.dart';
 import '../../../../../utils/utils.dart';
 
 userInfoAppbarLayout(BuildContext context) {
-  /// todo profile info data add to profile controller
-  Profile? user = Get.find<UserProfileController>()
-      .userDetails
-      ?.getOrganizationUserDetails
-      ?.profile;
   final double statusBarHeight = MediaQuery.of(context).viewPadding.top;
   return Padding(
-    padding:  EdgeInsets.only(top: statusBarHeight),
+    padding: EdgeInsets.only(top: statusBarHeight),
     child: Row(
       children: [
         _userImageLayout(
-          user?.image ?? "",
-          "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
+          Get.find<ProfileGlobalController>().employeeImeKey.value,
+          Get.find<ProfileGlobalController>().employeeName.value,
         ),
         customSpacerWidth(width: 16),
         Column(
@@ -40,7 +35,7 @@ userInfoAppbarLayout(BuildContext context) {
                   fontSize: Dimensions.fontSizeDefault),
             ),
             Text(
-              "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
+              Get.find<ProfileGlobalController>().employeeName.value,
               style: AppStyle.normal_text_grey.copyWith(
                   color: AppColor.normalTextColor,
                   fontSize: Dimensions.fontSizeMid),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/profile/controller/global_profile_controller.dart';
 import '../../../../../app/modules/profile/models/user_profile.dart';
 import '../../../../../common/widget/custom_network_image.dart';
@@ -10,10 +11,10 @@ import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
-import '../../controller/dashbpard_controller.dart';
+import '../../controller/employee_dashboard_controller.dart';
 import 'dashboad_widget.dart';
 
-class ProgressbarLayout extends GetView<DashboardController> {
+class ProgressbarLayout extends GetView<EmployeeDashboardController> {
   ProgressbarLayout({super.key});
 
   final PageController _pageController = PageController();
@@ -236,7 +237,7 @@ _golTimeLayout(
 }
 
 _userInfoAppbarLayout() {
-  var controller = Get.find<DashboardController>();
+  var controller = Get.find<EmployeeDashboardController>();
   return Row(
     children: [
       _userImageLayout(),
@@ -265,7 +266,7 @@ _userInfoAppbarLayout() {
 }
 
 _userImageLayout() {
-  var controller = Get.find<DashboardController>();
+  var controller = Get.find<EmployeeDashboardController>();
  UserDetails userDetails =UserDetails();
 
   return CustomNetworkImage(

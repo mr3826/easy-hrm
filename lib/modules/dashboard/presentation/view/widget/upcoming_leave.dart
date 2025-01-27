@@ -11,7 +11,7 @@ import '../../../../timeline/view/widget/timeline_calendar.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/utils.dart';
-import '../../controller/dashbpard_controller.dart';
+import '../../controller/employee_dashboard_controller.dart';
 import 'dashboad_widget.dart';
 
 class UpcomingLeaveLayout extends StatelessWidget {
@@ -19,7 +19,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<DashboardController>();
+    var controller = Get.find<EmployeeDashboardController>();
     return Padding(
       padding: marginLayout.copyWith(top: 8),
       child: ListView.builder(
@@ -185,7 +185,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
     );
   }
 
-  _leaveInfoRow(int index, DashboardController controller) {
+  _leaveInfoRow(int index, EmployeeDashboardController controller) {
     String? leaveDate;
 
     String starDate = dateMonthFormatFromDatetime(controller

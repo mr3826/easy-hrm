@@ -15,6 +15,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../common/widget/loading_indicator.dart';
+import '../../../../global/view/widget/app_margin.dart';
 import '../../controller/global_profile_controller.dart';
 
 

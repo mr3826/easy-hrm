@@ -13,7 +13,7 @@ import '../../../../common/domain/upload_policy.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../utils/utils.dart';
-import '../../../../modules/dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../../../modules/dashboard/presentation/controller/employee_dashboard_controller.dart';
 import 'log_out_controller.dart';
 
 class UpdateProfileController extends GetxController {
@@ -46,7 +46,7 @@ class UpdateProfileController extends GetxController {
       Get.back(canPop: false);
       showSuccessMessage(message: AppString.profile_update_successfully_text.tr);
       Get.find<PikedProfileImgController>().storageForUpload.filePath.value="";
-      Get.find<DashboardController>().getProfileInfoForDashboard();
+      Get.find<EmployeeDashboardController>().getProfileInfoForDashboard();
     }
 
     isLoading(false);

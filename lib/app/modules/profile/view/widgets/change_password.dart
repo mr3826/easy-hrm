@@ -8,7 +8,7 @@ import 'package:payrun_mobile/common/widget/error_message.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-'../../../../app/global/view/widget/app_margin.dart';
+import '../../../../global/view/widget/app_margin.dart';
 import 'edit_profile_text_field.dart';
 
 class ChangePasswordScreen extends StatelessWidget {

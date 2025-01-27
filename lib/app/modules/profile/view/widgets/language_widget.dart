@@ -10,9 +10,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../common/controller/language_controller.dart';
 import '../../../../../enum.dart';
-import '../../../../app/global/view/widget/app_margin.dart';
-import '../../../../common/controller/language_controller.dart';
-import '../../../../enum.dart';
+import '../../../../global/view/widget/app_margin.dart';
 
 class LanguageLayout extends StatelessWidget {
   LanguageLayout({super.key});

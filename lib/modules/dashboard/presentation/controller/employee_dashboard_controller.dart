@@ -6,14 +6,14 @@ import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard
 import '../../../../utils/app_string.dart';
 import '../../domain/profile_summary_for_dashboard.dart';
 
-/// [DashboardController] handles the fetching of dashboard-related data
+/// [EmployeeDashboardController] handles the fetching of dashboard-related data
 /// such as profile information, monthly timeline, and upcoming leaves.
 ///
 /// This controller makes API requests through the [DashboardRemoteDataSource]
 /// to get necessary data and stores it in the local state.
 /// It uses the GetX `StateMixin` to manage the loading and success states
 /// for the UI.
-class DashboardController extends GetxController with StateMixin {
+class EmployeeDashboardController extends GetxController with StateMixin {
   /// Remote data source that communicates with the backend API.
   final DashboardRemoteDataSource _dashboardRemoteDataSource =
   Get.find<DashboardRemoteDataSource>();

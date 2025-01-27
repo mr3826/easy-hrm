@@ -34,7 +34,7 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/images.dart';
 import '../../../../utils/utils.dart';
-import '../../../../modules/dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../../../modules/dashboard/presentation/controller/employee_dashboard_controller.dart';
 import '../../../../modules/leave/domain/leave_record_response.dart';
 import '../../../../modules/leave/domain/leave_type.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
@@ -44,6 +44,7 @@ import 'package:dio/dio.dart' as di;
 import '../repositories/profile_data_source.dart';
 
 class ProfileGlobalController extends GetxController with StateMixin {
+
   @override
   void onInit() {
     getUserLogHistory();
@@ -242,7 +243,6 @@ class ProfileGlobalController extends GetxController with StateMixin {
   }
 
   switchOrganization({required String orgId, required String email}) async {
-    print("ordId: $orgId");
     if (GetStorage().read(orgId) != null) {
       isOrganizationChangeLoading(true);
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
@@ -532,7 +532,7 @@ switchOrganisationDataChange() async {
   Get.find<LeaveScreenController>()
     ..getLeaveSummaryForDashboard()
     ..getLeaveDetailsByDate();
-  Get.find<DashboardController>()
+  Get.find<EmployeeDashboardController>()
     ..getProfileInfoForDashboard()
     ..getMonthlyTimelineInfoForDashboard()
     ..getUpComingInfoForDashboard();

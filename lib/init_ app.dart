@@ -78,7 +78,10 @@ Future<void> initApp() async {
   Get.put(DateTimeController());
 
   Get.lazyPut(() => UpdateProfileController(), fenix: true);
+
+
   Get.put(LeaveDataSource(client), permanent: true);
+
 
 
 }

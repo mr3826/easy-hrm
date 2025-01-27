@@ -9,7 +9,7 @@ import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../../app/global/view/widget/app_margin.dart';
+import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../../common/domain/files_model.dart';
 import '../../../../../../../common/widget/custom_dotted_border.dart';
 import '../../../../../../../common/widget/custom_drawer.dart';

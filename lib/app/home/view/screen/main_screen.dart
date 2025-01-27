@@ -11,14 +11,14 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../../common/widget/custom_svg_image.dart';
-import '../../../../modules/dashboard/presentation/controller/dashbpard_controller.dart';
 import '../../../../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../../../../modules/leave/presentation/controller/leave_record_controller.dart';
 import '../../../../modules/leave/presentation/controller/update_leave_controller.dart';
 import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/notification/presentation/view/screen/notification.dart';
-import '../../../modules/profile/controller/global_profile_controller.dart';
+import '../../../../modules/timeline/view/screen/timeline.dart';
+import '../../../modules/profile/view/screens/employee_profile.dart';
 import '../../../modules/profile/view/screens/hr_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
@@ -28,7 +28,6 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/images.dart';
 import '../../../modules/employee/view/screen/employee_screen.dart';
-import '../../../modules/leave_hr/presentation/controller/hr_leave_controller.dart';
 import '../../../modules/leave_hr/presentation/view/screen/leave_hr_screen.dart';
 import '../widget/main_screen_widget.dart';
 
@@ -45,6 +44,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late PersistentTabController controller;
+  bool isEmployee = true;
 
   @override
   void initState() {
@@ -65,6 +65,12 @@ class _MainScreenState extends State<MainScreen> {
     /// initialController controller
 
     _initialController();
+    if (Get.find<UserInfoController>().userRole != UserEnum.employee) {
+      print(
+          'role:${Get.find<UserInfoController>().userRole} enum: ${UserEnum.employee} b:${Get.find<UserInfoController>().userRole != UserEnum.employee}  ');
+      isEmployee = false;
+    }
+    print("isEmployee: $isEmployee");
 
     return WillPopScope(
       onWillPop: () => appExitChecker,
@@ -107,36 +113,34 @@ class _MainScreenState extends State<MainScreen> {
 
   void _initialController() async {
     bool isEmployee = true;
-    Get.put(DashboardController());
     Get.put(TimelineController());
     Get.put(NotificationController());
     Get.put(TimelineSummaryController());
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
-    Get.put(ProfileGlobalController());
-    if (!isEmployee) {
-      Get.put(HrLeaveController());
-    }
     Get.put(UpDateLeaveController());
   }
 
   _screenListLayout() {
-    bool isEmployee = false;
-    if (Get.find<UserInfoController>().userRole != UserEnum.employee) {
-      isEmployee = true;
+    if (isEmployee) {
+      return [
+        const TimelineScreen(),
+        const LeaveScreen(),
+        const Dashboard(),
+        const NotificationScreen(),
+        const EmployeeProfileScreen(),
+      ];
+    } else {
+      return [
+        HrTimelineScreen(),
+        const LeaveHrScreen(),
+        const HrDashboardScreen(),
+        const EmployeeScreen(),
+        const HrProfileScreen(),
+      ];
     }
-
-    return [
-      isEmployee ? const TimelineScreen() : HrTimelineScreen(),
-      isEmployee ? const LeaveScreen() : const LeaveHrScreen(),
-      isEmployee ? const Dashboard() : HrDashboardScreen(),
-      isEmployee ? const NotificationScreen() : const EmployeeScreen(),
-     // const ProfileScreen(),
-      const HrProfileScreen()
-     // EmployeeProfileScreen()
-     //ProfileRouteBase()
-    ];
   }
+
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     bool isEmployee = true;

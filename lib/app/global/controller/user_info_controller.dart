@@ -17,7 +17,9 @@ class UserInfoController {
     final dio.Response? response =
         await Get.find<ApiService>().get(Api.USER_INFO);
     UserInfo userInfo = UserInfo.fromJson(response?.data);
+    print('user role b:$userRole');
     userRole = _getUserRole(userInfo.user?.roles ?? <String>[]);
+    print('user role a:$userRole');
     return userInfo;
   }
 

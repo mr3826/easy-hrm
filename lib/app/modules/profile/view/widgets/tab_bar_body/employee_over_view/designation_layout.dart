@@ -12,11 +12,9 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../../auth/view/screens/otp_screen.dart';
+import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../controller/global_profile_controller.dart';
 import '../../../../models/employee_work_history.dart';
-import '../../../../app/global/view/widget/app_margin.dart';
-import '../../model/employee_work_history.dart';
 
 class DesignationLayout extends GetView<ProfileGlobalController> {
   const DesignationLayout({super.key});
