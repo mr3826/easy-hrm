@@ -24,7 +24,9 @@ import '../app/modules/employee/bindings/update_org_user_binding.dart';
 import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
 import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
 import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
+import '../app/modules/hr_timeline/bindings/start_timer_bindings.dart';
 import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
+import '../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
@@ -71,17 +73,11 @@ class AppPages {
       transition: Transition.size,
       page: () => const PasswordUpdateScreen(),
     ),
-
-
-
     GetPage(
       name: _Paths.TIMER_SCREEN,
       binding: StartTimerBindings(),
       page: () => const StartTimerScreen(),
     ),
-
-
-
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,
@@ -115,7 +111,7 @@ class AppPages {
     GetPage(
       name: _Paths.PROFILE_SCREEN,
       transition: Transition.size,
-      page: () =>   ProfileScreen(),
+      page: () => ProfileScreen(),
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE_SCREEN,
@@ -139,39 +135,29 @@ class AppPages {
       page: () => const EmployeeProfileViewScreen(),
     ),
     GetPage(
-      name: _Paths.EDIT_EMPOLYEE_VIEW,
-      transition: Transition.size,
-      page: () => EditEmployee(),
-    ),
+        name: _Paths.EDIT_EMPOLYEE_VIEW,
+        transition: Transition.size,
+        page: () => EditEmployee(),
+        binding: UpdateOrgUserInfoBindings()),
     GetPage(
       name: _Paths.ALL_CANDIDATES,
       transition: Transition.size,
       page: () => const AllCandidatesScreen(),
     ),
-      page: () =>  EditEmployee(),
-      binding: UpdateOrgUserInfoBindings()
-
-
     GetPage(
       name: _Paths.EDIT_CANDIDATES,
       transition: Transition.size,
       page: () => BuildEditCandidate(),
     ),
-
     GetPage(
       name: _Paths.JOB_DETAILS,
       transition: Transition.size,
       page: () => const JobDetailsScreen(),
     ),
-   GetPage(
+    GetPage(
       name: _Paths.CANDIDATES_DETAILS,
       transition: Transition.size,
       page: () => const CandidateDetailsScreen(),
     ),
-
-
-
-
-
   ];
 }

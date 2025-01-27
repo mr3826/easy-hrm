@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
 
 import '../../../../utils/api_endpoints.dart';
+import '../../../global/services/api_service.dart';
 
 class EmployeeApiService {
   final ApiService _apiService;

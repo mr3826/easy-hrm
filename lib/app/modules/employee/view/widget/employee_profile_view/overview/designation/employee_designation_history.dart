@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../../../common/widget/employee/dottend_style_layout.dart';
-import '../../../../../../../../global/view/widget/app_margin.dart';
+import '../../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../controller/employment_controller.dart';
 
 class DesignationHistoryLayout extends GetView<EmploymentController> {

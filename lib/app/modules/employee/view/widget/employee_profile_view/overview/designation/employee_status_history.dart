@@ -13,7 +13,7 @@ import '../../../../../../../../../common/controller/convart_color_code_controll
 import '../../../../../../../../../common/widget/employee/department_info_widget.dart';
 import '../../../../../../../../../common/widget/employee/dottend_style_layout.dart';
 import '../../../../../../../../../utils/utils.dart';
-import '../../../../../../../../global/view/widget/app_margin.dart';
+import '../../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../controller/employment_controller.dart';
 
 /// [EmploymentHistoryLayout] displays the employment status history of an employee.

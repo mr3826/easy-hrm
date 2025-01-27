@@ -9,7 +9,7 @@ import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/images.dart';
-import '../../../employee/presentation/view/widget/employee_list/search_with_filter.dart';
+import '../../../employee/view/widget/employee_list/search_with_filter.dart';
 import '../widgets/candidates/search_candidate_list.dart';
 
 class AllCandidatesScreen extends GetView<HrDashBoardController> {

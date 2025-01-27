@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
-import '../../../../../global/view/widget/app_margin.dart';
+import '../../../../global/view/widget/app_margin.dart';
 import '../../controller/employment_controller.dart';
 import '../widget/employee_profile_view/leave/leave_widget.dart';
 import '../widget/employee_profile_view/leave_summary/leave_summary_widget.dart';

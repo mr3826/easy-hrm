@@ -10,7 +10,7 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import '../../../../../../../../../utils/utils.dart';
-import '../../../../../../../../global/view/widget/app_margin.dart';
+import '../../../../../../../global/view/widget/app_margin.dart';
 
 class DepartmentLayout extends StatelessWidget {
   final DepartmentModel departmentModel;

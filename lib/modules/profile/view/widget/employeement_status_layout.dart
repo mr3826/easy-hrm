@@ -14,61 +14,68 @@ import 'package:payrun_mobile/utils/images.dart';
 import '../../../../app/global/view/widget/app_margin.dart';
 import '../../../../common/controller/convart_color_code_controller.dart';
 import '../../../../utils/utils.dart';
+import '../../../../app/modules/auth/view/screens/otp_screen.dart';
+import '../../model/employee_work_history.dart';
 import 'department_layout_widget.dart';
 
-class EmploymentLayout extends StatelessWidget {
+class EmploymentLayout extends GetView<UserProfileController> {
   const EmploymentLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        customButtonSheetAppbar(
+    return Obx(() {
+      if (controller.isEmployeeInfoLoading.isTrue) {
+        return const LoadingIndicator();
+      }
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          customButtonSheetAppbar(
             text: AppString.text_employment.tr,
-            subtext: AppString.text_history.tr),
-        Expanded(
-            child: ListView.builder(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const BouncingScrollPhysics(),
-          itemCount: Get.find<UserProfileController>()
-                  .employeeWorkHistory
-                  ?.getOrganizationUserHistory
-                  ?.employmentHistories
-                  ?.length ??
-              0,
-          itemBuilder: (context, index) {
-            final employmentHistories = Get.find<UserProfileController>()
-                .employeeWorkHistory
-                ?.getOrganizationUserHistory
-                ?.employmentHistories;
+            subtext: AppString.text_history.tr,
+          ),
+          if (controller.employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories == null)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Text(
+                  "No employee status!",
+                  style: AppStyle.normal_text_black
+                      .copyWith(color: AppColor.hintColor),
+                ),
+              ),
+            )
+          else
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                itemCount: controller
+                    .employeeWorkHistory
+                    ?.getOrganizationUserHistory
+                    ?.employmentHistories
+                    ?.length ??
+                    0,
+                itemBuilder: (context, index) {
+                  final employmentHistory = controller.employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index];
 
-            bool isLastItem =
-                (employmentHistories != null && employmentHistories.isNotEmpty)
-                    ? index == employmentHistories.length - 1
-                    : false;
-
-            return EmployeeStatusInfoLayout(
-              isLastItem: isLastItem,
-              developerStatus:
-                  employmentHistories?[index].employmentStatus?.name ?? '',
-              date: getDateTimeFormat(
-                  employmentHistories?[index].startDate ?? ""),
-              durationText:
-                  "${employmentHistories?[index].endDate != null ? "" : AppString.text_form_last.tr} ${workingTimeSinceFormString(employmentHistories?[index].startDate ?? "", employmentHistories?[index].endDate ?? "")}",
-              employeeCurrentStatus: employmentHistories?[index].endDate == null
-                  ? AppString.textPresent.tr
-                  : dateMonthYearFormatFromDatetime(
-                      employmentHistories?[index].endDate ?? ""),
-              statusColor: HexColor(
-                  employmentHistories?[index].employmentStatus?.color ??
-                      "#8F99AD"),
-            );
-          },
-        ))
-      ],
-    );
+                  return EmploymentStatusItem(
+                    employmentHistory: employmentHistory,
+                    isLastItem: index == (controller
+                        .employeeWorkHistory
+                        ?.getOrganizationUserHistory
+                        ?.employmentHistories
+                        ?.length ??
+                        1) -
+                        1,
+                  );
+                },
+              ),
+            ),
+        ],
+      );
+    });
   }
 }
 
@@ -140,7 +147,7 @@ class EmploymentStatusItem extends StatelessWidget {
                           ),
                         ),
                         _buildEmploymentStatus(employmentHistory),
-                         _verticalDividerWidget(),
+                        _verticalDividerWidget(),
                         Text(
                           _calculateDuration(employmentHistory),
                           style: baseTextStyle.copyWith(
@@ -203,5 +210,3 @@ Widget _verticalDividerWidget(){
     ),
   );
 }
-
-

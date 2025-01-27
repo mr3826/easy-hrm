@@ -8,7 +8,7 @@ class DashBoardApiService {
 
   Future<Map<String, dynamic>?> getEmployeeOverView() async {
     QueryResult<Object?> response =
-        await _apiService.gqlCall(query: getEmployeeOverviewQuery);
+        await _apiService.gqlCall(queryString: getEmployeeOverviewQuery);
     return response.data;
     ///todo [one line]
   }
@@ -21,13 +21,13 @@ class DashBoardApiService {
     };
 
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getJobOpeningQuery, variables: variables);
+        queryString: getJobOpeningQuery, variables: variables);
     return response.data;
   }
 
   Future<Map<String, dynamic>?> getLeaveAndTimeLogSummary() async {
     QueryResult<Object?> response =
-        await _apiService.gqlCall(query: getLeaveAndTimeLogQuery);
+        await _apiService.gqlCall(queryString: getLeaveAndTimeLogQuery);
     return response.data;
   }
 
@@ -38,7 +38,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getJobApplicationBoardQuery, variables: variables);
+        queryString: getJobApplicationBoardQuery, variables: variables);
     return response.data;
   }
 
@@ -51,7 +51,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: updateJobApplicationQuery, variables: variables);
+        queryString: updateJobApplicationQuery, variables: variables);
     return response.data;
   }
 
@@ -61,7 +61,7 @@ class DashBoardApiService {
       "updatingData": {"status": "unpublished"}
     };
     QueryResult<Object?> response =
-        await _apiService.gqlCall(query: updateJobQuery, variables: variables);
+        await _apiService.gqlCall(queryString: updateJobQuery, variables: variables);
     return response.data;
   }
 
@@ -74,7 +74,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: removeJobApplicationQuery, variables: variables);
+        queryString: removeJobApplicationQuery, variables: variables);
     return response.data;
   }
 
@@ -88,7 +88,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: createCandidateReviewQuery, variables: variables);
+        queryString: createCandidateReviewQuery, variables: variables);
     return response.data;
   }
 
@@ -102,7 +102,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: createTeamNoteQuery, variables: variables);
+        queryString: createTeamNoteQuery, variables: variables);
     return response.data;
   }
 
@@ -114,7 +114,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: deleteTeamNoteQuery, variables: variables);
+        queryString: deleteTeamNoteQuery, variables: variables);
     return response.data;
   }
 
@@ -124,7 +124,7 @@ class DashBoardApiService {
       "inputData": {"team_note_id": noteId, "note": note}
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: updateTeamNoteQuery, variables: variables);
+        queryString: updateTeamNoteQuery, variables: variables);
     return response.data;
   }
 
@@ -137,7 +137,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getCandidateLogsQuery, variables: variables);
+        queryString: getCandidateLogsQuery, variables: variables);
     return response.data;
   }
 
@@ -147,7 +147,7 @@ class DashBoardApiService {
       "queryData": {"candidate_id": candidateId, "job_id": jobId}
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getJobApplicationPreviewQuery, variables: variables);
+        queryString: getJobApplicationPreviewQuery, variables: variables);
     return response.data;
   }
 
@@ -159,7 +159,7 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getCandidateDetailsQuery, variables: variables);
+        queryString: getCandidateDetailsQuery, variables: variables);
     return response.data;
   }
 
@@ -171,14 +171,14 @@ class DashBoardApiService {
       }
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getTeamNotesQuery, variables: variables);
+        queryString: getTeamNotesQuery, variables: variables);
     return response.data;
   }
 
   Future<Map<String, dynamic>?> getFileSignUrl(String fileKey) async {
     Map<String, dynamic> variables = {"fileKey": fileKey, "isDownload": false};
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getFileSignUrlQuery, variables: variables);
+        queryString: getFileSignUrlQuery, variables: variables);
     return response.data;
   }
 
@@ -193,19 +193,19 @@ class DashBoardApiService {
       },
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: getCandidateListQuery, variables: variables);
+        queryString: getCandidateListQuery, variables: variables);
     return response.data;
   }
 
   Future<Map<String, dynamic>?> getHiringStages() async {
     QueryResult<Object?> response =
-        await _apiService.gqlCall(query: getHiringStagesQuery);
+        await _apiService.gqlCall(queryString: getHiringStagesQuery);
     return response.data;
   }
 
   Future<Map<String, dynamic>?> getJobsDropdown() async {
     QueryResult<Object?> response =
-        await _apiService.gqlCall(query: getJobsDropdownQuery);
+        await _apiService.gqlCall(queryString: getJobsDropdownQuery);
     return response.data;
   }
 
@@ -221,7 +221,7 @@ class DashBoardApiService {
       },
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: updateCandidateQuery, variables: variables);
+        queryString: updateCandidateQuery, variables: variables);
     return response.data;
   }
 
@@ -231,7 +231,7 @@ class DashBoardApiService {
       "inputData": {"candidate_id": candidateId, "job_id": jobId},
     };
     QueryResult<Object?> response = await _apiService.gqlCall(
-        query: removeCandidateQuery, variables: variables);
+        queryString: removeCandidateQuery, variables: variables);
     return response.data;
   }
 }
