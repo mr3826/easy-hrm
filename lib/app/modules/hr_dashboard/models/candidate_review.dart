@@ -93,7 +93,7 @@ class Data {
 class CandidateReview {
   String? createdAt;
   String? id;
-  Null? jobApplicationId;
+  String? jobApplicationId;
   int? rate;
   String? updatedAt;
 
@@ -145,8 +145,8 @@ class CreatedBy {
 class Profile {
   String? firstName;
   String? lastName;
-  Null? userId;
-  Null? image;
+  String? userId;
+  String? image;
   String? id;
 
   Profile({this.firstName, this.lastName, this.userId, this.image, this.id});

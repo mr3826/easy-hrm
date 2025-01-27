@@ -150,61 +150,56 @@ class TabBarWidget extends GetView<HrDashBoardController> {
                     ? AppColor.primaryColor
                     : AppColor.normalTextColor.withOpacity(0.5);
 
-                return GestureDetector(
-                  onTap: () {
-                    controller.jobDetailsSelectedIndex.value = index;
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 18.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Spacer(),
-                        Row(
-                          children: [
-                            Text(
-                              data[index].title ?? "",
-                              style: AppStyle.normal_text_black.copyWith(
-                                color: textColor,
-                                fontSize: Dimensions.fontSizeExtraDefault - 0.5,
-                              ),
+                return Padding(
+                  padding: const EdgeInsets.only(right: 18.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Spacer(),
+                      Row(
+                        children: [
+                          Text(
+                            data[index].title ?? "",
+                            style: AppStyle.normal_text_black.copyWith(
+                              color: textColor,
+                              fontSize: Dimensions.fontSizeExtraDefault - 0.5,
                             ),
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColor.primaryColor.withOpacity(0.1)
+                                  : Colors.grey.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              data[index].noOfApplicant.toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
                                 color: isSelected
-                                    ? AppColor.primaryColor.withOpacity(0.1)
-                                    : Colors.grey.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                data[index].noOfApplicant.toString(),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: isSelected
-                                      ? AppColor.primaryColor
-                                      : AppColor.normalTextColor
-                                          .withOpacity(0.5),
-                                ),
+                                    ? AppColor.primaryColor
+                                    : AppColor.normalTextColor
+                                        .withOpacity(0.5),
                               ),
                             ),
-                          ],
-                        ),
-                        const Spacer(),
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 50),
-                          height: 2,
-                          width: isSelected
-                              ? _getTextWidth(
-                                  "${data[index].title ?? ""} ${data[index].noOfApplicant ?? ""}")
-                              : 0, // Smooth width transition
-                          color: AppColor.primaryColor,
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 50),
+                        height: 2,
+                        width: isSelected
+                            ? _getTextWidth(
+                                "${data[index].title ?? ""} ${data[index].noOfApplicant ?? ""}")
+                            : 0, // Smooth width transition
+                        color: AppColor.primaryColor,
+                      ),
+                    ],
                   ),
                 );
               });

@@ -53,13 +53,11 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
           ),
         ),
         customSpacerHeight(height: 12),
-        _buildCandidateName(
-            "${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
+        _buildCandidateName("${getCandidateDetails?.candidate?.firstName ?? ""} ${getCandidateDetails?.candidate?.lastName ?? ""}"),
         customSpacerHeight(height: 2),
         _buildAppliedJobInfo(getCandidateDetails?.job?.title ?? ""),
         customSpacerHeight(height: 6),
-        _buildReviewRow(getCandidateDetails?.totalReview ?? 0,
-            getCandidateDetails?.avgRating ?? 0),
+        _buildReviewRow(getCandidateDetails?.totalReview ?? 0, getCandidateDetails?.avgRating ?? 0),
         customSpacerHeight(height: 12),
         _buildCandidateStatusButton(context),
         customSpacerHeight(height: 14),
@@ -127,15 +125,15 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   }
 
   Widget _buildCandidateStatusButton(BuildContext context) {
-    GetCandidateDetails? getCandidateDetails =
-        controller.candidateDetails?.getCandidateDetails;
+    GetCandidateDetails? getCandidateDetails = controller.candidateDetails?.getCandidateDetails;
 
     return GestureDetector(
       onTap: () {
+        Get.find<HrDashBoardController>().getJobApplicationBoard(entityId: getCandidateDetails?.job?.id??"");
         customButtonSheet(
           height: 0.8,
           context: context,
-          child: _buildStatusBottomSheet(),
+          child: Obx(()=>_buildStatusBottomSheet()),
         );
       },
       child: Center(
@@ -171,52 +169,56 @@ class CandidateDetailsScreen extends GetView<CandidateDetailsController> {
   Widget _buildStatusBottomSheet() {
     RxInt selectedIndex = 0.obs;
     HrDashBoardController controller = Get.find<HrDashBoardController>();
-    List<HiringStages>? hiringStages =
-        controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages;
+    List<HiringStages>? hiringStages = controller.jobApplicationBoard?.getJobApplicationBoard?.hiringStages;
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _buildBottomSheetHeader(),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: hiringStages?.length ?? 0,
-            itemBuilder: (context, index) {
-              return _buildBottomSheetOptionItem(
-                onTap: () {
-                  selectedIndex.value = index;
-                  controller
-                      .updateJobApplication(
-                          hiringStageId: hiringStages?[index].id ?? "",
-                          jobApplicationId:
-                              controller.selectedJobApplicationId.value,
-                          entryId: controller.jobApplicationBoard
-                                  ?.getJobApplicationBoard?.id ??
-                              "")
-                      .then((v) {
-                    Get.back(canPop: false);
-                    Get.back(canPop: false);
-                  });
-                },
-                textWidget: Obx(
-                  () => controller.isJobApplicationUpdateLoading.isTrue &&
-                          selectedIndex.value == index
-                      ? const CupertinoActivityIndicator()
-                      : Text(
-                          hiringStages?[index].title ?? "",
-                          style: AppStyle.normal_text_black.copyWith(
-                            color: AppColor.normalTextColor.withOpacity(0.8),
-                            fontSize: Dimensions.fontSizeDefault + 1,
-                          ),
-                        ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    if(controller.isJobApplicationBoardLoading.isTrue){
+      return const LoadingIndicator();
+    }else{
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildBottomSheetHeader(),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: hiringStages?.length ?? 0,
+              itemBuilder: (context, index) {
+                return _buildBottomSheetOptionItem(
+                  onTap: () {
+                    selectedIndex.value = index;
+                    controller
+                        .updateJobApplication(
+                        hiringStageId: hiringStages?[index].id ?? "",
+                        jobApplicationId:
+                        controller.selectedJobApplicationId.value,
+                        entryId: controller.jobApplicationBoard
+                            ?.getJobApplicationBoard?.id ??
+                            "")
+                        .then((v) {
+                      Get.back(canPop: false);
+                      Get.back(canPop: false);
+                    });
+                  },
+                  textWidget: Obx(
+                        () => controller.isJobApplicationUpdateLoading.isTrue &&
+                        selectedIndex.value == index
+                        ? const CupertinoActivityIndicator()
+                        : Text(
+                      hiringStages?[index].title ?? "",
+                      style: AppStyle.normal_text_black.copyWith(
+                        color: AppColor.normalTextColor.withOpacity(0.8),
+                        fontSize: Dimensions.fontSizeDefault + 1,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    }
+ 
   }
 
   Widget _buildBottomSheetHeader() {

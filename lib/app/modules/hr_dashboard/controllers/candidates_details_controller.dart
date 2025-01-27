@@ -83,6 +83,14 @@ class CandidateDetailsController extends GetxController with StateMixin {
   }
 
   Future createCandidateNoteReview({required String jobApplicationId, required String jobId, required String note}) async {
+
+    print(''''
+    jobApplicationId $jobApplicationId
+    jobId $jobId
+    note $note
+    
+    ''''');
+
     isCreateReviewLoading(true);
     bool? response = await _dasBoardDataSource.createCandidateNoteReview(jobApplicationId: jobApplicationId, jobId: jobId, note: note);
     if (response == true) {

@@ -24,7 +24,7 @@ class GetLogs {
   CreatedByUser? createdByUser;
   Job? job;
   Candidate? candidate;
-  Null? review;
+  String? review;
   List<Files>? files;
   NewHiringStage? newHiringStage;
 
@@ -105,7 +105,7 @@ class CreatedByUser {
 class Profile {
   String? firstName;
   String? lastName;
-  Null? image;
+  String? image;
 
   Profile({this.firstName, this.lastName, this.image});
 

@@ -67,10 +67,11 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
   }
 
   void _onUserTap(Data user) {
+    print("create_all_details");
+
     CandidatesBindings().dependencies();
     Get.find<CandidateDetailsController>().getCandidateDetails(user.id ?? "");
-    Get.find<CandidateDetailsController>()
-        .getJobApplicationPreview(user.job?.id ?? "", user.candidate?.id ?? "");
+    Get.find<CandidateDetailsController>().getJobApplicationPreview(user.job?.id ?? "", user.candidate?.id ?? "");
     Get.find<CandidateDetailsController>()
         .candidateReviewModel
         ?.getTeamNotes
@@ -82,8 +83,7 @@ class BuildAllCandidates extends GetView<HrDashBoardController> {
         ?.clear();
     controller.selectedJobApplicationId(user.id ?? "");
     Get.find<CandidateDetailsController>().initialTabIndex = 0;
-    controller.selectedJobId(
-        controller.jobApplicationBoard?.getJobApplicationBoard?.id ?? "");
+    controller.selectedJobId(user.job?.id ?? "");
     Get.toNamed(Routes.CANDIDATES_DETAILS);
   }
 
