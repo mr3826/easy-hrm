@@ -379,8 +379,71 @@ class AppString {
   static const String text_we_have_sent_a_verification_etc =
       "text_we_have_sent_a_verification_etc";
   static String text_time_entry = "Add time entry";
+
+
+
+  ///hr dash-board string
+
+static String text_candidate="Candidates";
+static String text_no_one_addded_yet ="No one added yet.";
+static String text_applied="Applied for";
+static String text_job_details="Job details";
+static String text_edit_candidate="Edit Candidates";
+static String text_remove_candidate="Remove candidate";
+static String text_unpublish_job="Unpublish Job";
+static String text_you_are_going_to_unpublish_this_job_etc="You are going to unpublish this job. You can publish this job again by login from web browser.";
+
+static String text_share="Share";
+static String text_unpublish="Unpublish";
+
+
+static String text_job_post="Job post";
+static String text_stage="Stage";
+static String text_department="Department";
+static String text_rating="Rating";
+
+static String text_move_to_the_next="Move to the next";
+static String text_edit_this_review="Edit this review";
+static String text_remove_this_review="Remove this review";
+static String text_move_anywhere="Move anywhere";
+
+static String text_interrview="Interview";
+static String text_this_is_visible_to_everyone_etc="This jobs is visible to everyone. All interested candidates can view and apply for this job";
+
+
+
+static String text_only_admin_and_etc="Only admin and the hiring team members can view this candidate";
+
+
+
+static String text_are_you_sure_deleted_candidate="Are you sure want to delete this candidate? Once deleted, this action cannot be undone.";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   static String text_employee_type = "Employee & type";
   static String text_time_sheet = "Time sheet";
 
   static String pleaseProvideATerminationType='Please select a termination type';
+  static String text_present = "Present";
+  static String text_on_leave = "On Leave";
+  static String text_all_candidate = "All candidates";
+  static String text_leave_req = "Leave request";
+  static String text_log_request = "Log request";
+  static String text_absent = "Absent";
+  static String text_employee_overview = "Employee overview";
+
+  static const String text_sure_you_want_t0_details_candidate_etc =
+      "Are you sure you want to details the candidate? Once deleted this action cannot be undone.";
 }

@@ -13,6 +13,7 @@ class InputNote extends StatelessWidget {
   final Color? hintColor;
   final Color? borderColor;
   final int? maxLength;
+   final BorderRadius ? borderRadius ;
   final String? Function(String?)? validator;
   final String? Function(String?)? onChanged;
 
@@ -20,6 +21,7 @@ class InputNote extends StatelessWidget {
     super.key,
     required this.controller,
     this.hintColor,
+    this.borderRadius,
     this.borderColor,
     this.maxLength,
     this.onChanged,
@@ -56,11 +58,11 @@ class InputNote extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: borderColor ?? AppColor.primaryColor),
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+          borderRadius:borderRadius?? BorderRadius.circular(Dimensions.radiusDefault),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: borderColor ?? AppColor.solidGray),
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+          borderRadius:borderRadius?? BorderRadius.circular(Dimensions.radiusDefault),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: borderColor ?? AppColor.solidGray),

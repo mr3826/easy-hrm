@@ -12,7 +12,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../../../common/widget/employee/dottend_style_layout.dart';
-import '../../../../../../../modules/auth/view/screens/otp_screen.dart';
+import '../../../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../controller/employment_controller.dart';
 
 class DesignationHistoryLayout extends GetView<EmploymentController> {
@@ -129,7 +129,7 @@ class DesignationHistoryLayout extends GetView<EmploymentController> {
     );
   }
 
-  /// Builds a divider widgets used between date ranges and duration.
+  /// Builds a divider widget used between date ranges and duration.
   Widget _divider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6.0),

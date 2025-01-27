@@ -7,7 +7,9 @@ class Images {
 
   Images.__();
 
+  static String demoImage ="https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=";
   static String appLogo = "assets/images/app_logo.svg";
+
   static String networkError = "assets/images/network_error.svg";
   static String splashLogo = "assets/images/splash_logo.svg";
   static String employeeOn = "assets/images/employee_on.svg";
@@ -83,12 +85,31 @@ class Images {
   static String EMAIL_ICON = "assets/images/email_icon.png";
 
   static String EMPLOYEE_STATUS = "assets/images/employee_status.svg";
+
+
+  static String INTERVIEW_CANDIDATES = "assets/images/interview_candidates.svg";
+  static String LEAVE_REQ = "assets/images/leave_req.svg";
+  static String TIMELOG_REQ = "assets/images/timelog_req.svg";
+  static String SHEAR_JOB_ICON = "assets/images/share_job.svg";
+
+  static String WHATS_APPS_ICON = "assets/images/whats_app.svg";
+  static String SLACK_ICON = "assets/images/slack_icon.svg";
+  static String MESSENGER_ICON = "assets/images/messengers.svg";
+  static String COPY_ICON = "assets/images/copy_icon.svg";
+  static String LINKDIN = "assets/images/linkdin.svg";
+  static String REMOVE_ICON = "assets/images/remove_icon.svg";
+  static String UNPUBLISH_ICON = "assets/images/unpublish_icon.svg";
+  static String NOT_ADDED_YET = "assets/images/not_added_yet.svg";
+
+
+
+
   static String FLAG = "assets/images/flag.svg";
   static String FLAG_PNG = "assets/images/flag.png";
   static String EDIT_ICON = "assets/images/edit_icon.png";
   static String KEY_ICON = "assets/images/key.png";
   static String ORG = "assets/images/org.png";
+  static String MOVE_ANY_WHERE_ICON = "assets/images/move_any_where_icon.png";
   static String timer_animation = "assets/json/timer.json";
-  static String timer_stop_line_animation =
-      "assets/json/timer_stop_horizontal_line.json";
+  static String timer_stop_line_animation = "assets/json/timer_stop_horizontal_line.json";
 }

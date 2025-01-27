@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_layout.dart';
 import '../../../../app/global/controller/exit_app_controller.dart';
+import '../../../../app/global/view/widget/app_margin.dart';
 import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../common/widget/custom_spacer.dart';
@@ -15,9 +14,8 @@ import '../../../../utils/app_color.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/utils.dart';
-import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../common/widget/custom_title_text_widget.dart';
 import '../../../leave/presentation/view/widget/status_btn_widget.dart';
-import '../../../../app/modules/onboard/view/onboarding_screen.dart';
 
 class AddToTaskScreen extends StatelessWidget {
   const AddToTaskScreen({super.key});

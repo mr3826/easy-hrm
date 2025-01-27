@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         translations: Internationalization(),
         locale: GetStorage().read("languageCode") != null
             ? Locale(GetStorage().read("languageCode"),
-                GetStorage().read("countryCode"))
+            GetStorage().read("countryCode"))
             : const Locale("en", "US"),
         fallbackLocale: const Locale("en", "US"),
         initialRoute: AppPages.INITIAL,

@@ -924,3 +924,323 @@ query GET_LEAVE_DETAILS_BY_ID($queryData: LeaveDetailsInput!) {
   }
 }
 ''';
+
+//'hr dashboard'
+
+const getEmployeeOverviewQuery = r'''
+query GET_EMPLOYEE_OVERVIEW {
+getEmployeeOverview {
+working_today
+on_leave_today
+not_working_today
+}
+}
+''';
+
+
+
+
+const getJobOpeningQuery = r'''
+query GET_JOBS($queryData: JobsQueryInputType, $optionData: OptionDataType) {
+  getJobs(queryData: $queryData, optionData: $optionData) {
+    data {
+      id
+      title
+      status
+      last_date_of_apply
+      location
+      no_of_vacancy
+      thumbnail
+      type
+      hiring_stages {
+        title
+        no_of_applicant
+      }
+    }
+ 
+  }
+}
+''';
+
+
+const getCandidateListQuery = r'''
+query GET_CANDIDATES($queryData: CandidateQueryData, $optionData: OptionDataType) {
+  getCandidates(queryData: $queryData, optionData: $optionData) {
+    data {
+      id
+      avg_rating
+      candidate {
+        id
+        avatar_key
+        first_name
+        email
+        last_name
+      }
+      hiring_stage {
+        id
+        title
+      }
+      job {
+        id
+        title
+        type
+        department {
+          name
+        }
+      }
+    }
+  }
+}
+''';
+
+const getHiringStagesQuery = r'''
+query GET_HIRING_STATGES_DROPDOWN($optionData: OptionDataType) {
+  getHiringStagesForDropDown(optionData: $optionData) {
+    data {
+      stage_ids
+      title
+    }
+  }
+}
+''';
+
+const getJobsDropdownQuery = r'''
+query GET_JOBS_DROPDOWN($queryData: DropdownFilterInputType, $optionData: OptionDataType) {
+  getJobsDropdown(queryData: $queryData, optionData: $optionData) {
+    id
+    title
+    slug
+    department {
+      id
+      name
+    }
+  }
+}
+''';
+
+const updateCandidateQuery = r'''
+mutation UPDATE_CANDIDATE($inputData: UpdateCandidateInputData!) {
+  updateCandidate(inputData: $inputData) {
+    job_application_id
+  }
+}
+''';
+const removeCandidateQuery = r'''
+mutation REMOVE_CANDIDATE($inputData: RemoveCandidateInputData!) {
+  removeCandidate(inputData: $inputData) {
+    result
+  }
+}
+''';
+
+
+
+
+const getLeaveAndTimeLogQuery = r'''
+query GET_LEAVE_AND_TIMELOG_REQUEST_SUMMARY {
+getLeaveAndTimelogRequestSummary {
+total_candidates
+leave_request
+timelog_request
+  }
+}
+''';
+
+const getJobApplicationBoardQuery = r'''
+query GetJobApplicationBoard($optionData: OptionDataType, $queryData: JobApplicationBoardQueryType!) {
+  getJobApplicationBoard(optionData: $optionData, queryData: $queryData) {
+    id
+    title
+    type
+    last_date_of_apply
+    location
+    status
+    department {
+      name
+    }
+    hiring_stages {
+      id
+      title
+      priority
+      no_of_applicant
+      job_applications {
+        id
+        priority
+        candidate {
+          id
+          first_name
+          last_name
+           email
+          avatar_key
+        }
+      }
+    }
+  }
+}
+''';
+
+const updateJobApplicationQuery = r'''
+mutation UPDATE_A_JOB_Application($inputData: UpdateJobApplicationInputType!) {
+  updateAJobApplication(inputData: $inputData) {
+    id
+  }
+}
+''';
+const updateJobQuery = r'''
+mutation UPDATE_A_JOB($queryData: CommonEntityIdQueryDataType!, $updatingData: UpdateJobInputDataType!) {
+  updateJob(queryData: $queryData, updatingData: $updatingData) {
+    id
+  }
+}
+''';
+
+const removeJobApplicationQuery = r'''
+mutation REMOVE_CANDIDATE($inputData: RemoveCandidateInputData!) {
+  removeCandidate(inputData: $inputData) {
+    result
+  }
+}
+''';
+const createCandidateReviewQuery = r'''
+mutation CREATE_A_CANDIDATE_REWVIW($inputData: CreateCandidateReviewInput!) {
+  createACandidateReview(inputData: $inputData) {
+    id
+  }
+}
+''';
+
+const createTeamNoteQuery = r'''
+mutation CREATE_A_TEAM_NOTE($inputData: CreateTeamNoteInput!) {
+  createATeamNote(inputData: $inputData) {
+    id
+    note
+  }
+}
+''';
+const deleteTeamNoteQuery = r'''
+mutation DELETE_A_TEAM_NOTE($inputData: CommonEntityIdQueryDataType!) {
+  deleteATeamNote(inputData: $inputData) {
+    result
+  }
+}
+''';
+
+const updateTeamNoteQuery = r'''
+mutation UPDATE_A_TEAM_NOTE($inputData: UpdateTeamNoteInput!) {
+  updateATeamNote(inputData: $inputData) {
+    id
+    note
+  }
+}
+''';
+
+const getCandidateLogsQuery = r'''
+query GET_CANDIDATE_LOGS($optionData: OptionDataType, $queryData: LogQueryType) {
+  getLogs(optionData: $optionData, queryData: $queryData) {
+    id
+    context
+    action
+    createdAt
+    new_number
+    new_text
+    createdByUser {
+      id
+      profile {
+        first_name
+        last_name
+        image
+      }
+    }
+    candidate {
+      id
+      first_name
+      last_name
+    }
+     newHiringStage {
+      id
+      title
+    }
+    job {
+      id
+      title
+    }
+    review {
+      rate
+    }
+    files {
+      id
+      name
+      key
+    }
+  }
+}
+''';
+const getJobApplicationPreviewQuery = r'''
+query GET_JOB_APPLICATION_PREWVIEW($queryData: JobApplicationPreviewQueryData!) {
+  getJobApplicationPreview(queryData: $queryData) {
+    data {
+      id
+      form_fields
+      is_duplicatable
+      is_questionable
+      name
+      organization_id
+    }
+  }
+}
+''';
+const getCandidateDetailsQuery = r'''
+query GET_CANDIDATE_DETAILS($queryData: CandidateDetailsQueryData!) {
+  getCandidateDetails(queryData: $queryData) {
+    id
+    avg_rating
+    total_review
+    candidate {
+      avatar_key
+      first_name
+      id
+      email
+      last_name
+    }
+    hiring_stage {
+      id
+      title
+    }
+    job {
+      id
+      title
+    }
+  }
+}
+''';
+
+const getTeamNotesQuery = r'''
+query GET_TEAM_NOTES($queryData: TeamNoteQueryInput!, $optionData: OptionDataType) {
+  getTeamNotes(queryData: $queryData, optionData: $optionData) {
+    data {
+      candidate_review {
+        createdAt
+        id
+        job_application_id
+        rate
+        updatedAt
+      }
+      id
+      note
+      type
+      createdAt
+      created_by
+      createdBy {
+        profile {
+          first_name
+          last_name
+          user_id
+          image
+          id
+        }
+      }
+      immutable
+    }
+  }
+}
+''';

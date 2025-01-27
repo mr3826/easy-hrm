@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
+import 'package:payrun_mobile/app/global/enum/user_enum.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/hr_timeline_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -21,6 +23,9 @@ import '../../../../modules/profile/view/screen/user_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
 import '../../../../modules/timeline/view/screen/timeline.dart';
+import '../../../modules/hr_dashboard/view/screens/hr_dashboard_screen.dart';
+import '../../../modules/employee/presentation/controller/employment_controller.dart';
+import '../../../modules/employee/presentation/view/screen/employee_screen.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
@@ -50,6 +55,12 @@ class _MainScreenState extends State<MainScreen> {
       initialIndex: widget.routeIndex ?? 2,
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -114,10 +125,14 @@ class _MainScreenState extends State<MainScreen> {
 
   _screenListLayout() {
     bool isEmployee = false;
+    if (Get.find<UserInfoController>().userRole != UserEnum.employee) {
+      isEmployee = true;
+    }
+
     return [
-      HrTimelineScreen(),
+      isEmployee ? const TimelineScreen() : HrTimelineScreen(),
       isEmployee ? const LeaveScreen() : const LeaveHrScreen(),
-      const Dashboard(),
+      isEmployee ? const Dashboard() : HrDashboardScreen(),
       isEmployee ? const NotificationScreen() : const EmployeeScreen(),
       const ProfileScreen(),
     ];

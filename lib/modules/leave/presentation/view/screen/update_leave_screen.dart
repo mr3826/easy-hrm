@@ -7,6 +7,7 @@ import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controll
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
+import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../common/widget/custom_card_style.dart';
@@ -16,9 +17,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/add_attachemnt_file_widget.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/widget/custom_title_text_widget.dart';
+import 'package:payrun_mobile/common/widget/custom_title_text_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -26,7 +26,6 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../controller/apply_leave_controller.dart';
 import '../../controller/file_upload_controller.dart';
 import '../../../domain/leave_type.dart';
-import '../widget/apply_leave_dropdown.dart';
 
 class UpdateLeave extends StatelessWidget {
   final GetLeaveRecords? leaveRecords;

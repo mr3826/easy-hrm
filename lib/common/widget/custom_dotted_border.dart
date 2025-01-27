@@ -28,10 +28,12 @@ Widget horizontalDashLayout(){
 }
 
 class DashedLinePainter extends CustomPainter {
+  Color ?color;
+  DashedLinePainter({this.color});
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = AppColor.hintColor.withOpacity(0.8)
+      ..color = color??AppColor.hintColor.withOpacity(0.8)
       ..strokeWidth = .7;
     double dashWidth = 4;
     double dashSpace = 4;

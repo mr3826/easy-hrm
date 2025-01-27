@@ -23,6 +23,10 @@ abstract class Routes {
   static const SUBSCRIPTION_SCREEN = _Paths.SUBSCRIPTION_SCREEN;
   static const EMPOLYEE_VIEW_PROFILE = _Paths.EMPOLYEE_VIEW_PROFILE;
   static const EDIT_EMPOLYEE_VIEW = _Paths.EDIT_EMPOLYEE_VIEW;
+  static const ALL_CANDIDATES = _Paths.ALL_CANDIDATES;
+  static const EDIT_CANDIDATES = _Paths.EDIT_CANDIDATES;
+  static const JOB_DETAILS = _Paths.JOB_DETAILS;
+  static const CANDIDATES_DETAILS = _Paths.CANDIDATES_DETAILS;
 }
 
 abstract class _Paths {
@@ -48,4 +52,8 @@ abstract class _Paths {
   static const SUBSCRIPTION_SCREEN = '/subscription_screen';
   static const EMPOLYEE_VIEW_PROFILE = '/employee_view_profile_screen';
   static const EDIT_EMPOLYEE_VIEW = '/edit_employee_view_screen';
+  static const ALL_CANDIDATES = '/all_candidates_view_screen';
+  static const EDIT_CANDIDATES = '/edit_candidates_screen';
+  static const JOB_DETAILS = '/job_details_screen';
+  static const CANDIDATES_DETAILS = '/candidate_details';
 }

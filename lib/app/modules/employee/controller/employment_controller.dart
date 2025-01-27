@@ -81,10 +81,17 @@ class EmploymentController extends GetxController with StateMixin {
     isEmployeesInfoLoading(true);
 
     List<String> departmentIds = getSelectedCheckBoxValues(departmentList);
-    List<String> employmentStatusIds =
-        getSelectedCheckBoxValues(employmentStatusList);
+    List<String> employmentStatusIds = getSelectedCheckBoxValues(employmentStatusList);
     List<String> userStatusIds = getSelectedCheckBoxValues(userStatusList);
     List<String> attendanceIds = getSelectedCheckBoxValues(attendanceList);
+
+    print('''
+    departmentIds ; $departmentIds
+    employmentStatusIds $employmentStatusIds
+    userStatusIds $userStatusIds
+    attendanceIds $attendanceIds
+    ''');
+
 
     Map<String, Map<String, Object>> queryMap = {
       "queryData": {
@@ -134,9 +141,8 @@ class EmploymentController extends GetxController with StateMixin {
     isEmploymentHistoryApiCalled = true;
     employmentStatuses = await _employeeDataSource.getEmploymentsStatus();
     if (employmentStatuses != null) {
-      employmentStatusList = employmentStatuses!.statuses
-          .map(
-            (emp_wrk_inf.EmploymentStatus employmentStatus) => CheckBoxModel(
+
+      employmentStatusList = employmentStatuses!.statuses.map((emp_wrk_inf.EmploymentStatus employmentStatus) => CheckBoxModel(
                 checkBoxName: employmentStatus.name,
                 checkBoxNameValue: employmentStatus.id),
           )

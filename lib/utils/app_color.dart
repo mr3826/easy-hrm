@@ -35,4 +35,12 @@ class AppColor {
   static const Color primaryRed = Color(0xFFFF6347);
   static const Color lightGrey = Color(0xFFDFDFDF);
   static const Color greyDark = Color(0xFF9397A0);
+
+
+  static const Color interViewCandidatesColor = Color(0XFF2F79A3);
+  static const Color timeLogRequestColor = Color(0XFF5A49B4);
+
+
+
+
 }

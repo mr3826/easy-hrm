@@ -24,7 +24,6 @@ class TimelineRepoImpl implements TimelineRepository {
 }
 
 
-
 class TimelineApiServices {
   ApiService apiService;
   TimelineApiServices(this.apiService);
@@ -42,8 +41,7 @@ class TimelineApiServices {
     if (orgUserId != null) {
       variables["queryData"]?["org_user_ids"] = orgUserId;
     }
-    return await apiService.gqlCall(
-        queryString: getTimelineSummaryByDateQuery, variables: variables);
+    return await apiService.gqlCall(query: getTimelineSummaryByDateQuery, variables: variables);
   }
 }
 

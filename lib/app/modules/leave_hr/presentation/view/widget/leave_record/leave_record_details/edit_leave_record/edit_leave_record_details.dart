@@ -16,11 +16,12 @@ import '../../../../../../../../../common/widget/timePicker/custom_time_picker_i
 import '../../../../../../../../../common/widget/timePicker/custom_time_picker_out_time.dart';
 import '../../../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../../../common/widget/warning_message.dart';
-import '../../../../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
+import '../../../../../../../../../common/widget/custom_title_text_widget.dart';
 import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../../utils/utils.dart';
+import '../../../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../controller/hr_leave_controller.dart';
 import '../../../../../controller/hr_update_leave_controller.dart';
 import '../../../../../controller/leave_controller.dart';
@@ -63,9 +64,9 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
         padding: EdgeInsets.only(top: 28.0),
         child: Center(
             child: CupertinoActivityIndicator(
-              color: AppColor.primaryColor,
-              radius: 15,
-            )),
+          color: AppColor.primaryColor,
+          radius: 15,
+        )),
       );
     }
     return Expanded(
@@ -90,6 +91,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
 
               _buildLeaveYear(),
               ///Timeline [This year,Next year]
+
               _spacer(18),
               _buildTitleText(
                   text: AppString.textLeaveType.tr, isRequired: true),
@@ -142,33 +144,34 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               /// Displays the action buttons.
 
               Obx(
-                    () => Get.find<HrUpdateLeaveController>()
-                    .isUpdateLeaveLoading
-                    .isTrue
+                () => Get.find<HrUpdateLeaveController>()
+                        .isUpdateLeaveLoading
+                        .isTrue
                     ? const Center(
-                  child: CupertinoActivityIndicator(
-                      color: AppColor.primaryColor, radius: 15),
-                )
+                      child: CupertinoActivityIndicator(
+                          color: AppColor.primaryColor, radius: 15),
+                    )
                     : CustomDoubleAppButton(onAction: () {
-                  if (Get.find<HrLeaveController>()
-                      .calculateAllowanceOfLeave
-                      .value
-                      .isNotEmpty &&
-                      Get.find<HrLeaveController>()
-                          .calculateAllowanceOfLeave
-                          .value !=
-                          "0") {
-                    _updateLeaveMethod();
-                  } else {
-                    showWarningMessage(
-                        message: AppString.text_no_available_leave.tr);
-                  }
-                }, cancelAction: () {
-                  /// Clears the file upload path and navigates back.
-                  Get.find<LeaveFileUploadController>().path.value = "";
-                  Get.back(canPop: false);
-                }),
+                        if (Get.find<HrLeaveController>()
+                                .calculateAllowanceOfLeave
+                                .value
+                                .isNotEmpty &&
+                            Get.find<HrLeaveController>()
+                                    .calculateAllowanceOfLeave
+                                    .value !=
+                                "0") {
+                          _updateLeaveMethod();
+                        } else {
+                          showWarningMessage(
+                              message: AppString.text_no_available_leave.tr);
+                        }
+                      }, cancelAction: () {
+                        /// Clears the file upload path and navigates back.
+                        Get.find<LeaveFileUploadController>().path.value = "";
+                        Get.back(canPop: false);
+                      }),
               ),
+
 
               _spacer(100),
             ],

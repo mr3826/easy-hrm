@@ -73,8 +73,7 @@ class HrLeaveRemoteDataSource {
 
   ///todo [Download link]
   Future<DownloadFile?> getFileSignUrl(String? fileKey) async {
-    final urlPath =
-        '${"files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$fileKey';
+    final urlPath = '${"files"}/${GetStorage().read(AppString.ORGANIZATION_ID)}/$fileKey';
     try {
       final response = await networkClient.graphRequest(
           queryString: getFileSignUrlQuery,
