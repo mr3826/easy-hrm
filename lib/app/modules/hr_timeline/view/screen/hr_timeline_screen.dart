@@ -11,12 +11,14 @@ import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../common/widget/hr_timeline/floating_timmer_button.dart';
+import '../../../../../modules/timeline/controller/timer_controller.dart';
 import '../../../../../routes/app_pages.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
+import '../../../../global/controller/timmer_controller.dart';
 import '../../../../global/controller/user_info_controller.dart';
 import '../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
@@ -72,7 +74,8 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
             _sliverAppbarBody(_tabController),
           ],
         ),
-        floatingActionButton: _timerBtnLayout(context),
+        floatingActionButton: Obx(()=>_timerBtnLayout(context)),
+
       ),
     );
   }
@@ -184,7 +187,8 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   }
 
   _timerBtnLayout(BuildContext context) {
-    final StartTimerController controller = Get.find<StartTimerController>();
+    final TimeCounterController controller = Get.find<TimeCounterController>();
+
     return Padding(
       padding: EdgeInsets.only(
           left: 35.0,
@@ -192,16 +196,22 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           top: Platform.isAndroid ? 0 : 40),
       child: Row(
         children: [
+
           controller.isRunning.value
               ? _timerStringOpenBtn(
                   time: controller.starTimeDashboard.toString())
               : _timerStringBtn(context),
+
           customSpacerWidth(width: 18),
+
           _addTimeEntryBtn(),
+
         ],
       ),
     );
   }
+
+
 
   _timerStringBtn(BuildContext context) {
     return floatingTimmerButton(

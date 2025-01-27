@@ -10,6 +10,7 @@ import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
+import '../../../../global/controller/timmer_controller.dart';
 import '../../../../global/controller/user_info_controller.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
 import '../../../settings/bindings/setting_bindings.dart';
@@ -122,7 +123,7 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
 
 
   _timerBtnLayout(BuildContext context) {
-    final StartTimerController controller = Get.find<StartTimerController>();
+    final TimeCounterController controller = Get.find<TimeCounterController>();
     return Padding(
       padding: EdgeInsets.only(
           left: 35.0,

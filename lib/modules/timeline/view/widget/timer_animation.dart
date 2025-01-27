@@ -6,8 +6,8 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../app/global/controller/timmer_controller.dart';
 import '../../../../utils/images.dart';
-import '../../controller/timer_controller.dart';
 
 class TimerAnimation extends GetView<TimeCounterController> {
   const TimerAnimation({super.key});

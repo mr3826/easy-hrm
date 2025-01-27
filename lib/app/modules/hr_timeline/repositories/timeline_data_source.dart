@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../../../../modules/timeline/model/start_or_end_timer_response.dart';
 import '../models/timeline_summary_by_date.dart';
 import '../models/calendar_timeline.dart';
 import '../models/time_sheet_model.dart';
@@ -8,6 +10,7 @@ abstract class TimelineDataSource {
   Future<TimelineSummaryByDate?> getTimelineSummaryByDate({required String startDate, required String endDate,String?orgUserId});
   Future<TimeSheetModel?>  getTimesheetByDate({required String startDate, required String endDate,required String orgId});
   Future<CalendarTimeline?> getTimelineCalender({required String startDate, required String endDate,String ?orgUserId});
+  Future<StartOrEndTimerResponse?> startOrEndTimer({required  String timerTyp});
 }
 
 
@@ -55,6 +58,22 @@ class TimelineDataImpl implements TimelineDataSource {
 
 
 
+
+
+ @override
+ Future<StartOrEndTimerResponse?> startOrEndTimer({required  String timerTyp}) async {
+  try{
+    Map<String, dynamic>? response = await  _timelineApiService.startOrEndTimer(timerTyp);
+    if (response != null) {
+      return StartOrEndTimerResponse.fromJson(response);
+    }
+    return null;
+  }catch(x){
+    log("startOrEndTimer $x");
+  }
+
+
+  }
 }
 
 

@@ -23,6 +23,7 @@ import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/domain/last_input_model.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../modules/dashboard/controller/dashbpard_controller.dart';
+import '../../../global/controller/timmer_controller.dart';
 import '../models/calendar_timeline.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../home/view/screen/main_screen.dart';
@@ -469,22 +470,10 @@ class HrTimelineController extends GetxController with StateMixin {
   /// Throws: Exception handled by [ExceptionHelper.errorHandler].
   Future<bool> startOrEndTimer({required String timerType}) async {
     try {
-      // Make the GraphQL request to start or stop the timer.
-      final response = await NetworkClient()
-          .graphRequest(queryString: startOrEndTimerQueryData, variables: {
-        "inputData": {"timer_type": timerType}
-      });
 
-      // Handle exception from response
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "saveTimeEntry");
-        return false;
-      }
+      startOrEndTimerResponse =  await  _timelineDataSource.startOrEndTimer(timerTyp: timerType);
 
-      // Parse response data
-      startOrEndTimerResponse =
-          StartOrEndTimerResponse.fromJson(response.data!);
+
 
       // If endDate is null, the timer has started
       if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {

@@ -50,7 +50,6 @@ class TimelineApiService {
 
 
   Future<QueryResult<Object?>> getTimelineCalender(String startDate, String endDate, {String? orgUserId}) async {
-
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
         "start_time": startDate,
@@ -65,6 +64,17 @@ class TimelineApiService {
 
 
 
+
+
+
+  Future<Map<String, dynamic>?>? startOrEndTimer(String timerType) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {"timer_type": timerType}
+    };
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: startOrEndTimerQueryData, variables: variables);
+    return response.data;
+  }
 
 
 

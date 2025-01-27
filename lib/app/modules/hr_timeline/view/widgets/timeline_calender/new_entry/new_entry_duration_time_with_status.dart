@@ -12,6 +12,7 @@ import '../../../../../../../enum.dart';
 import '../../../../../../../utils/app_string.dart';
 
 Widget newEntryDurationTime({String? status}) {
+  Get.lazyPut(()=>DateTimePickerController());
   return SizedBox(
     width: double.infinity,
     child: Padding(

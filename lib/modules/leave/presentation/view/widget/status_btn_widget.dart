@@ -188,6 +188,8 @@ _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
     padding: marginLayout,
     child: CustomAppButton(
+      borderRadius: 30,
+
       buttonText: Text(
         AppString.text_details.tr,
         style: AppStyle.mid_large_text.copyWith(
@@ -206,7 +208,7 @@ _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
             ));
       },
       buttonColor: AppColor.primaryColor,
-      isButtonExpanded: false,
+      isButtonExpanded: true,
     ),
   );
 }

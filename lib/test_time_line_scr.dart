@@ -14,6 +14,7 @@ import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
+import 'app/global/controller/timmer_controller.dart';
 import 'app/global/controller/user_info_controller.dart';
 import 'app/global/view/custom_tabbar_with_search.dart';
 import 'app/global/view/widget/show_subscription_dialog.dart';
@@ -231,7 +232,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
 
   _timerBtnLayout(BuildContext context) {
-    final StartTimerController controller = Get.find<StartTimerController>();
+    final TimeCounterController controller = Get.find<TimeCounterController>();
     return Padding(
       padding: EdgeInsets.only(
           left: 35.0,

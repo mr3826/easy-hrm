@@ -76,7 +76,7 @@ class AppPages {
     GetPage(
       name: _Paths.TIMER_SCREEN,
       binding: StartTimerBindings(),
-      page: () => const StartTimerScreen(),
+      page: () => const TimerScreen(),
     ),
 
 
