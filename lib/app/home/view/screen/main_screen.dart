@@ -18,11 +18,10 @@ import '../../../../modules/leave/presentation/controller/update_leave_controlle
 import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/notification/presentation/view/screen/notification.dart';
-import '../../../../modules/profile/controller/user_profile_controller.dart';
-import '../../../../modules/profile/view/screen/user_profile.dart';
+import '../../../modules/profile/controller/global_profile_controller.dart';
+import '../../../modules/profile/view/screens/hr_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
 import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
-import '../../../../modules/timeline/view/screen/timeline.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../modules/hr_dashboard/view/screens/hr_dashboard_screen.dart';
 import '../../../../utils/app_string.dart';
@@ -114,7 +113,7 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(TimelineSummaryController());
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
-    Get.put(UserProfileController());
+    Get.put(ProfileGlobalController());
     if (!isEmployee) {
       Get.put(HrLeaveController());
     }
@@ -132,7 +131,10 @@ class _MainScreenState extends State<MainScreen> {
       isEmployee ? const LeaveScreen() : const LeaveHrScreen(),
       isEmployee ? const Dashboard() : HrDashboardScreen(),
       isEmployee ? const NotificationScreen() : const EmployeeScreen(),
-      const ProfileScreen(),
+     // const ProfileScreen(),
+      const HrProfileScreen()
+     // EmployeeProfileScreen()
+     //ProfileRouteBase()
     ];
   }
 

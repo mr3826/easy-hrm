@@ -1,0 +1,546 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:payrun_mobile/common/domain/token_model.dart';
+import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/common/widget/error_message.dart';
+import 'package:payrun_mobile/common/widget/success_message.dart';
+import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
+import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
+import 'package:payrun_mobile/app/modules/profile/controller/profile_image_selected_controller.dart';
+import 'package:payrun_mobile/app/modules/profile/controller/update_profile_controller.dart';
+import 'package:payrun_mobile/app/modules/profile/models/employee_work_history.dart';
+import 'package:payrun_mobile/app/modules/profile/models/leave_summary.dart';
+import 'package:payrun_mobile/app/modules/profile/models/user_log_history.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
+import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
+import 'package:payrun_mobile/network/network_client.dart';
+import 'package:payrun_mobile/routes/app_pages.dart';
+import 'package:payrun_mobile/utils/api_endpoints.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
+import '../../../global/controller/user_info_controller.dart';
+import '../../auth/models/signin_res.dart';
+import '../../../../common/controller/date_time_controller.dart';
+import '../../../../common/domain/user_info.dart';
+import '../../../../common/widget/custom_password_text_field.dart';
+import '../../../../utils/app_color.dart';
+import '../../../../utils/app_string.dart';
+import '../../../../utils/dimensions.dart';
+import '../../../../utils/images.dart';
+import '../../../../utils/utils.dart';
+import '../../../../modules/dashboard/presentation/controller/dashbpard_controller.dart';
+import '../../../../modules/leave/domain/leave_record_response.dart';
+import '../../../../modules/leave/domain/leave_type.dart';
+import '../../../../modules/notification/presentation/controller/notification_controller.dart';
+import '../../../../modules/timeline/controller/timer_controller.dart';
+import '../models/organization_info.dart';
+import 'package:dio/dio.dart' as di;
+import '../repositories/profile_data_source.dart';
+
+class ProfileGlobalController extends GetxController with StateMixin {
+  @override
+  void onInit() {
+    getUserLogHistory();
+    getOrganizationInfo();
+    startTimer();
+    super.onInit();
+  }
+
+  RxInt seconds = 59.obs;
+  RxBool timerActive = false.obs;
+  RxBool isOTPProvided = false.obs;
+  String otpCode = "";
+  String isSelectLeaveType = "";
+  String leaveTypeId = "";
+  RxString calculateAllowanceBy = "".obs;
+  RxString availableLeave = "".obs;
+  RxString employeeName = "".obs;
+  RxString employeeImeKey = "".obs;
+
+  final NetworkClient _networkClient = Get.find<NetworkClient>();
+
+  void startTimer() {
+    timerActive.value = true;
+    Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (seconds.value == 0) {
+        timer.cancel();
+        timerActive.value = false;
+      } else {
+        seconds.value--;
+      }
+    });
+  }
+
+  RxBool isValue = true.obs;
+
+  changeVal() {
+    return isValue.value = !isValue.value;
+  }
+
+  var firstName = "".obs;
+  var lastName = "".obs;
+  var address = "".obs;
+  var description = "".obs;
+
+  bool get isEnableEditButton {
+    return firstName.isNotEmpty ||
+        lastName.isNotEmpty ||
+        address.isNotEmpty ||
+        Get.find<UpdateProfileController>()
+            .initialEmergencyPhoneNumber
+            .value
+            .isNotEmpty ||
+        Get.find<UpdateProfileController>()
+            .initialPersonalPhoneNumber
+            .value
+            .isNotEmpty ||
+        description.isNotEmpty ||
+        Get.find<PikedProfileImgController>()
+            .storageForUpload
+            .filePath
+            .value
+            .isNotEmpty;
+  }
+
+  EmployeeWorkHistory? employeeWorkHistory;
+  UserLogHistory? userLogHistory;
+  OrganizationInfoDetails? organizationInfo;
+  LeaveSummary? leaveSummary;
+  final isLoading = false.obs;
+  final isLoadingChangeEmail = false.obs;
+  final isOrganizationChangeLoading = false.obs;
+  final isEmployeeInfoLoading = false.obs;
+  final isNewOrganizationChangeLoading = false.obs;
+  final isViewOrganizationLoading = false.obs;
+  final isViewLeaveRecordLoading = false.obs;
+  final isViewLeaveSummaryLoading = false.obs;
+  final isLeaveTypeLoading = false.obs;
+
+  final isVerificationApiLoading = false.obs;
+  RxBool isSelected = false.obs;
+  final resendOtpLoading = false.obs;
+  var isOtpString = ''.obs;
+
+  bool get isButtonEnabledForOTP {
+    return isOtpString.isNotEmpty;
+  }
+
+  final passwordInputController = TextEditingController();
+  final editEmployeeIDController = TextEditingController();
+
+  final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
+
+
+  List<GetLeaveRecordsForApp>? leaveRecordList;
+
+  LeaveTypeDropdown? leaveTypeDropdown;
+
+  RxInt offset = 0.obs;
+  int limit = 30;
+
+
+
+  Future<void> getUserLogHistory() async {
+    change(null, status: RxStatus.loading());
+    userLogHistory =
+        (await _profileDataSource.getUserLogHistory()) ?? UserLogHistory();
+    change(null, status: RxStatus.success());
+  }
+
+  Future<void> getEmploymentInfo({String ?ordId}) async {
+    isEmployeeInfoLoading(true);
+    employeeWorkHistory = (await _profileDataSource.getEmploymentInfo(ordId??GetStorage().read(AppString.ORGANIZATION_USER_ID))) ?? EmployeeWorkHistory();
+    isEmployeeInfoLoading(false);
+  }
+
+  Future<void> getOrganizationInfo() async {
+    isViewOrganizationLoading(true);
+    organizationInfo = (await _profileDataSource.getOrganizationInfo()) ??
+        OrganizationInfoDetails();
+    isViewOrganizationLoading(false);
+  }
+
+
+
+
+  Future<bool> getPasswordVerification({required String password}) async {
+    bool validation = false;
+    isLoading(true);
+    try {
+      final response = await _networkClient
+          .postRequest(Api.VERIFY_PASSWORD, {"password": password});
+      if (response.statusCode == 200) {
+        ChangeMailResponse value = ChangeMailResponse.fromJson(response.data);
+        validation = value.valid!;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    isLoading(false);
+    return validation;
+  }
+
+  Future<bool> changeMail({required String newEmail}) async {
+    bool validation = false;
+
+    isLoadingChangeEmail(true);
+    try {
+      final response = await _networkClient.postRequest(Api.CHANGE_MAIL, {
+        "newEmail": newEmail,
+        "employeeId": GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? ""
+      });
+      if (response.statusCode == 200) {
+        validation = true;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    isLoadingChangeEmail(false);
+    return validation;
+  }
+
+  submitVerificationCode({required String verificationCode}) async {
+    isVerificationApiLoading(true);
+    try {
+      final response =
+      await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+        "confirmationCode": verificationCode,
+        "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
+      });
+      if (response.statusCode == 200) {
+        _handleResponseSuccess();
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    isVerificationApiLoading(false);
+  }
+
+  resendOtp({required String emailAddress}) async {
+    resendOtpLoading(true);
+    try {
+      final response = await _networkClient.postRequest(
+          Api.RESEND_OTP_CHANGE_EMAIL, {
+        "email": emailAddress,
+        "orgId": GetStorage().read(AppString.ORGANIZATION_ID)
+      });
+      if (response.statusCode == 200) {
+        seconds.value = 59;
+        startTimer();
+        showSuccessMessage(message: AppString.resend_otp_text.tr);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    resendOtpLoading(false);
+  }
+
+  switchOrganization({required String orgId, required String email}) async {
+    print("ordId: $orgId");
+    if (GetStorage().read(orgId) != null) {
+      isOrganizationChangeLoading(true);
+      Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
+      TokenModel tokenModel = TokenModel.fromJson(jsonMap);
+      if (_checkTokenExpiration(accessToken: tokenModel.accessToken ?? "")
+          .isNegative ||
+          _checkTokenExpiration(accessToken: tokenModel.accessToken ?? "") <
+              1) {
+        _getNewToken(
+            refreshToken: tokenModel.refreshToken ?? "",
+            orgId: orgId,
+            accessToken: tokenModel.accessToken ?? "")
+            .then((value) {
+          if (value == true) {
+            Get.find<UserInfoController>().getOrgSubscriptionInfo();
+            if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+              switchOrganisationDataChange();
+            }
+          } else {
+            showErrorMessage(message: AppString.error_text);
+          }
+        });
+      } else {
+        await GetStorage()
+            .write(AppString.ACCESS_TOKEN, tokenModel.accessToken);
+        await GetStorage()
+            .write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
+
+        final userInfoResponse =
+        await Get.find<UserInfoController>().getUserInfo();
+
+        _handleUserInfo(userInfoResponse);
+
+        Get.find<UserInfoController>().getOrgSubscriptionInfo();
+        if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+          switchOrganisationDataChange();
+        }
+      }
+      Get.back(canPop: false);
+      Get.back(canPop: false);
+      isOrganizationChangeLoading(false);
+    } else {
+      Get.dialog(
+          barrierDismissible: true,
+          Dialog(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
+              child: Obx(
+                    () => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(AppString.text_password.tr),
+                    customSpacerHeight(height: 10),
+                    _orgPassword(),
+                    customSpacerHeight(height: 10),
+                    isNewOrganizationChangeLoading.isTrue
+                        ? const Center(
+                      child: CupertinoActivityIndicator(
+                        color: Colors.blueAccent,
+                        radius: 14,
+                      ),
+                    )
+                        : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                            onTap: () => Get.back(canPop: false),
+                            child: Text(AppString.text_cancel.tr)),
+                        customSpacerWidth(width: 36),
+                        InkWell(
+                            onTap: () async {
+                              String deviceToken = "";
+                              if (Platform.isAndroid) {
+                                deviceToken = await Pushy.register();
+                              }
+                              isNewOrganizationChangeLoading(true);
+                              try {
+                                if (passwordInputController
+                                    .text.isNotEmpty) {
+                                  di.Response response =
+                                  await Get.find<NetworkClient>()
+                                      .postRequest(Api.LOGIN, {
+                                    "email": email,
+                                    "password":
+                                    passwordInputController.text,
+                                    "orgId": orgId,
+                                    "device_token": Platform.isIOS
+                                        ? GetStorage().read(
+                                        AppString.IOS_DEVICE_TOKEN)
+                                        : deviceToken,
+                                    "push_notification_platform":
+                                    Platform.isIOS ? "apns" : "pushy"
+                                  });
+
+                                  if (response.statusCode == 200) {
+                                    _handleTokenInfo(response);
+
+                                    final userInfoResponse = await Get
+                                        .find<UserInfoController>()
+                                        .getUserInfo();
+
+                                    _handleLoginSuccess(
+                                        response, userInfoResponse);
+
+                                    Get.find<UserInfoController>()
+                                        .getOrgSubscriptionInfo();
+                                    if (Get.find<UserInfoController>()
+                                        .isSubscriptionExpired
+                                        .isFalse) {
+                                      switchOrganisationDataChange();
+
+                                      Get.back(canPop: false);
+                                      Get.back(canPop: false);
+                                      Get.back(canPop: false);
+
+                                      passwordInputController.clear();
+                                    }
+                                  }
+                                }
+                              } catch (e) {
+                                log(e.toString());
+                              }
+                              isNewOrganizationChangeLoading(false);
+                            },
+                            child: Text(AppString.text_ok.tr)),
+                        customSpacerWidth(width: 16),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ));
+    }
+  }
+
+  int _checkTokenExpiration({required String accessToken}) {
+    DateTime now = DateTime.now();
+
+    // Specify the target date and time
+    DateTime targetDate = JwtDecoder.getExpirationDate(accessToken);
+
+    // Calculate the difference
+    Duration difference = targetDate.difference(now);
+
+    return difference.inHours;
+  }
+
+  Future<bool> _getNewToken(
+      {required String accessToken,
+        required String refreshToken,
+        required String orgId}) async {
+    try {
+      var response = await Get.find<NetworkClient>().postRequest(
+          Api.REFRESH_TOKEN,
+          {"accessToken": accessToken, "refreshToken": refreshToken});
+
+      if (response.statusCode != 200) {
+        return false;
+      } else {
+        _handleTokenInfo(response);
+
+        final userInfoResponse =
+        await Get.find<UserInfoController>().getUserInfo();
+
+        _handleLoginSuccess(response, userInfoResponse);
+
+        return true;
+      }
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  _orgPassword() {
+    return CustomPasswordInputField(
+      controller: passwordInputController,
+      hitText: AppString.text_password.tr,
+      prefixIcon: Image.asset(Images.LOCK_ICON),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return AppString.the_password_field_is_required.tr;
+        } else if (value.length < 6) {
+          return AppString.incorrect_user_or_password.tr;
+        } else {
+          return null;
+        }
+      },
+      hintStyle: TextStyle(
+          color: AppColor.normalTextColor.withOpacity(0.4),
+          fontFamily: "Poppins",
+          fontSize: Dimensions.fontSizeDefault + 1),
+    );
+  }
+
+  void _handleTokenInfo(di.Response response) async {
+    await GetStorage().write(AppString.ACCESS_TOKEN, SignInResponse.fromJson(response.data).data?.accessToken);
+    await GetStorage().write(AppString.REFRESH_TOKEN,
+        SignInResponse.fromJson(response.data).data?.refreshToken);
+  }
+
+  void _handleLoginSuccess(di.Response response, UserInfo? userInfo) {
+    // Save token information
+    TokenModel tokenModel = TokenModel(
+      accessToken:
+      SignInResponse.fromJson(response.data).data?.accessToken ?? "",
+      refreshToken:
+      SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
+    );
+    String tokenJson = jsonEncode(tokenModel.toJson());
+
+    // Store tokens in local storage
+    GetStorage().write(userInfo?.user?.organizationId ?? "", tokenJson);
+
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    // Store the organization user ID in GetStorage.
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+  }
+
+  void _handleUserInfo(UserInfo? userInfo) {
+    GetStorage()
+        .write(AppString.ORGANIZATION_ID, userInfo?.user?.organizationId ?? "");
+    // Store the organization user ID in GetStorage.
+    GetStorage()
+        .write(AppString.ORGANIZATION_USER_ID, userInfo?.user?.orgUserId ?? "");
+  }
+
+  void _handleResponseSuccess() {
+    changeEmailController.clear();
+    Get.back(canPop: false);
+    Get.back(canPop: false);
+    GetStorage().remove(AppString.ACCESS_TOKEN);
+    GetStorage().remove(AppString.LOGGED_IN);
+    Get.offAllNamed(Routes.SIGN_IN_SCREEN);
+  }
+}
+
+class ChangeMailResponse {
+  bool? valid;
+
+  ChangeMailResponse({this.valid});
+
+  ChangeMailResponse.fromJson(Map<String, dynamic> json) {
+    valid = json['valid'];
+  }
+}
+
+switchOrganisationDataChange() async {
+  await Get.find<TimeCounterController>().timerStatus();
+
+  Get.find<ProfileGlobalController>()
+    // ..getUserProfile()
+    ..getEmploymentInfo()
+    ..getUserLogHistory()
+    ..getOrganizationInfo();
+
+  Get.find<TimelineController>()
+    ..getTimelineSummaryByMonth(
+        startDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
+    ..getCalendarTimelineDataByDate(
+        startDate:
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
+    ..getTimelineSummaryByDate(
+        startDate:
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+
+  Get.find<TimelineSummaryController>()
+    ..getTimelineByMonth()
+    ..getTimelogDetailsByMonth();
+  Get.find<NotificationController>()
+    ..getNewNotifications()
+    ..getSeenNotification();
+  Get.find<LeaveRecordsController>().getLeaveRecordsData();
+  Get.find<LeaveScreenController>()
+    ..getLeaveSummaryForDashboard()
+    ..getLeaveDetailsByDate();
+  Get.find<DashboardController>()
+    ..getProfileInfoForDashboard()
+    ..getMonthlyTimelineInfoForDashboard()
+    ..getUpComingInfoForDashboard();
+}
+
+
+
+
+
+
+

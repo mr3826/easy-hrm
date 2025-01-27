@@ -1,0 +1,45 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payrun_mobile/utils/app_color.dart';
+import 'package:payrun_mobile/utils/app_layout.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
+import 'package:payrun_mobile/utils/app_style.dart';
+import 'package:payrun_mobile/utils/dimensions.dart';
+
+AppBar buildProfileAppBar({
+  required VoidCallback? onAction,
+  Color? backgroundColor,
+  Widget? leadingWidget,
+  IconData? actionIcon,
+}) {
+  return AppBar(
+    leadingWidth: AppLayout.getWidth(200),
+    backgroundColor:backgroundColor?? AppColor.primaryColor,
+    elevation: 0,
+    actions: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: IconButton(
+          onPressed: onAction,
+          padding: EdgeInsets.zero,
+          icon: Icon(
+            actionIcon ?? Icons.menu,
+            color: AppColor.normalTextColor,
+          ),
+        ),
+      ),
+    ],
+    leading:leadingWidget ?? Padding(
+      padding: const EdgeInsets.only(left: 18),
+      child:
+          Text(
+            AppString.text_profile.tr,
+            style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.normalTextColor,
+              fontWeight: FontWeight.w600,
+              fontSize: Dimensions.fontSizeMid + 1,
+            ),
+          ),
+    ),
+  );
+}

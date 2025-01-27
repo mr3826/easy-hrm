@@ -1,8 +1,8 @@
 import 'dart:developer';
 
-import '../../../../modules/profile/model/employee_work_history.dart';
-import '../../../../modules/profile/model/user_log_history.dart';
-import '../../../../modules/profile/model/user_profile.dart';
+import '../../profile/models/employee_work_history.dart';
+import '../../profile/models/user_log_history.dart';
+import '../../profile/models/user_profile.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../../network/network_client.dart';
 import '../../../../utils/api_endpoints.dart';

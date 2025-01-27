@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart' as gs;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:payrun_mobile/app/modules/employee/model/employee_info.dart';
-import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/custom_search_field.dart';
@@ -15,6 +14,7 @@ import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../profile/controller/global_profile_controller.dart';
 import '../../../controller/employment_controller.dart';
 
 class SearchEmployeeList extends StatelessWidget {
@@ -56,30 +56,19 @@ class SearchEmployeeList extends StatelessWidget {
                             onValueSelected?.call(gs.GetStorage()
                                     .read(AppString.ORGANIZATION_USER_ID) ??
                                 "");
-                            userInfo?.call(UserInfo(
-                                "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""} (You)",
-                                Get.find<UserProfileController>()
-                                        .userDetails
-                                        ?.getOrganizationUserDetails
-                                        ?.profile
-                                        ?.image ??
-                                    ""));
+                            userInfo?.call(UserInfo("${Get.find<ProfileGlobalController>().employeeName.value} (You)", Get.find<ProfileGlobalController>().employeeImeKey.value)
+
+
+                                );
                             onClickRouteAction.call();
                           },
                           child: _buildOwnInfo(
-                              name:
-                                  "${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${Get.find<UserProfileController>().userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}",
-                              role: Get.find<UserProfileController>()
-                                      .userDetails
-                                      ?.getOrganizationUserDetails
-                                      ?.department
-                                      ?.name ??
-                                  "",
-                              imgUrl: Get.find<UserProfileController>()
-                                      .userDetails
-                                      ?.getOrganizationUserDetails
-                                      ?.profile
-                                      ?.image ??
+                              name:Get.find<ProfileGlobalController>()
+                                  .employeeName.value,
+                              role: Get.find<ProfileGlobalController>()
+                                  .employeeName.value,
+                              imgUrl: Get.find<ProfileGlobalController>()
+                                      .employeeImeKey.value ??
                                   ""),
                         ),
 
@@ -107,17 +96,14 @@ class SearchEmployeeList extends StatelessWidget {
                               .searchedEmployeeList
                               ?.length ??
                           0,
-                      itemBuilder: (context, index) {
-                        final employee = Get.find<EmploymentController>()
+                      itemBuilder: (context, index) {final employee = Get.find<EmploymentController>()
                             .searchedEmployeeList?[index];
                         return GestureDetector(
                           onTap: () {
                             Get.find<EmploymentController>()
-                                .addRecentSearchData(employee!);
-                            userInfo?.call(UserInfo(
-                                "${employee.profile?.firstName ?? ""} ${employee.profile?.lastName ?? ""}",
-                                employee.profile?.image ?? ""));
-                            onValueSelected?.call(employee.id ?? "");
+                                .addRecentSearchData(employee !);
+                            userInfo?.call(UserInfo("${employee.profile?.firstName ?? ""} ${employee?.profile?.lastName ?? ""}", employee?.profile?.image ?? ""));
+                        onValueSelected?.call(employee?.id ?? "");
 
                             onClickRouteAction.call();
                           },
@@ -259,9 +245,7 @@ class SearchEmployeeList extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         onValueSelected?.call(employeeData.id ?? "");
-        userInfo?.call(UserInfo(
-            "${employeeData.profile?.firstName ?? ""} ${employeeData.profile?.lastName ?? ""}",
-            employeeData.profile?.image ?? ""));
+        userInfo?.call(UserInfo("${employeeData.profile?.firstName ?? ""} ${employeeData.profile?.lastName ?? ""}", employeeData.profile?.image ?? ""));
         onClickRouteAction.call();
       },
       child: Padding(

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
+import 'package:payrun_mobile/app/modules/profile/models/employee_work_history.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';

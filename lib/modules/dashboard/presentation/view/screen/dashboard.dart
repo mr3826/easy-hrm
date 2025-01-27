@@ -6,6 +6,8 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../app/modules/profile/bindings/hr_profile_bindings.dart';
+import '../../../../../app/modules/profile/controller/global_profile_controller.dart';
 import '../../controller/dashbpard_controller.dart';
 import '../widget/entry_time_widget.dart';
 import '../widget/progress_bar_layout.dart';
@@ -15,6 +17,10 @@ class Dashboard extends GetView<DashboardController> {
   const Dashboard({super.key});
   @override
   Widget build(BuildContext context) {
+
+    HrProfileBindings().dependencies();
+    Get.put(ProfileGlobalController());
+
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: AppColor.backgroundColor,

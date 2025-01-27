@@ -13,7 +13,6 @@ import 'package:payrun_mobile/app/modules/auth/view/screens/sign_in.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/screens/candidate_details_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
-import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/app/modules/splash/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import '../app/modules/hr_dashboard/view/screens/all_candidates_screen.dart';
@@ -107,16 +106,6 @@ class AppPages {
       name: _Paths.HOME_SCREEN,
       transition: Transition.size,
       page: () => const Dashboard(),
-    ),
-    GetPage(
-      name: _Paths.PROFILE_SCREEN,
-      transition: Transition.size,
-      page: () => ProfileScreen(),
-    ),
-    GetPage(
-      name: _Paths.EDIT_PROFILE_SCREEN,
-      transition: Transition.size,
-      page: () => EditProfileScreen(),
     ),
     GetPage(
       name: _Paths.TIME_LOG_SUMMARY,

@@ -13,10 +13,11 @@ import 'app/modules/employee/data/employee_remote_data_source.dart';
 import 'app/modules/employee/model/employee_info.dart';
 import 'app/modules/leave_hr/data/apply_and_update_leave_date_source.dart';
 import 'app/modules/leave_hr/data/leave_remote_data_source.dart';
+import 'app/modules/profile/repositories/profile_data_source.dart';
 import 'modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'modules/leave/data/remote/leave_remote_data_source.dart';
 import 'modules/notification/data/remote/notification_remote_data_source.dart';
-import 'modules/profile/controller/log_out_controller.dart';
+import 'modules/profile/controller/profile_module/hr_profile_controller.dart';
 import 'network/network_client.dart';
 
 import '../../../common/controller/date_time_controller.dart';
@@ -26,9 +27,9 @@ import '../../../common/controller/leave_helper/leave_data_source.dart';
 import '../../../common/controller/profile_helper/profile_data_source.dart';
 import '../../../modules/leave/presentation/controller/calendar_date_controller.dart';
 import '../../../modules/leave/presentation/controller/file_upload_controller.dart';
-import '../../../modules/profile/controller/log_out_controller.dart';
-import '../../../modules/profile/controller/profile_image_selected_controller.dart';
-import '../../../modules/profile/controller/update_profile_controller.dart';
+import 'app/modules/profile/controller/log_out_controller.dart';
+import 'app/modules/profile/controller/profile_image_selected_controller.dart';
+import 'app/modules/profile/controller/update_profile_controller.dart';
 import '../../../modules/timeline/controller/selected_task_controller.dart';
 
 Future<void> initApp() async {
@@ -59,7 +60,6 @@ Future<void> initApp() async {
 
   Get.put(HrLeaveRemoteDataSource(client), permanent: true);
   Get.put(ApplyAndUpdateLeaveDateSource(client), permanent: true);
-  Get.lazyPut(()=>LogoutController());
 
   Get.lazyPut(() => LanguageController(), fenix: true);
 
@@ -78,9 +78,6 @@ Future<void> initApp() async {
   Get.put(DateTimeController());
 
   Get.lazyPut(() => UpdateProfileController(), fenix: true);
-
-  Get.put(ProfileDataSource(client), permanent: true);
-
   Get.put(LeaveDataSource(client), permanent: true);
 
 
