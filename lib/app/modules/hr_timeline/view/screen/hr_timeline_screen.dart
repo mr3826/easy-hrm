@@ -25,6 +25,8 @@ import '../widgets/time_sheet/build_timesheet_list.dart';
 import '../widgets/timeline_calender/buid_timeline_short_summury.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
 
+
+
 bool isEmployee = false;
 
 class HrTimelineScreen extends StatefulWidget {
@@ -46,14 +48,20 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     SettingBindings().dependencies();
 
     _tabController = TabController(length: isEmployee == true ? 1 : 2, vsync: this);
+
     _tabController.addListener(() {
+
       if (_tabController.indexIsChanging) {
         setState(() {});
         if(_tabController.index==1){
           TimeSheetBindings().dependencies();
           Get.find<TimeSheetController>().getTimesheetByDate();
+
+
         }
       }
+
+
     });
 
     super.initState();
@@ -99,7 +107,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           padding: const EdgeInsets.only(left: 18.0, right: 18),
           child: Column(
             children: [
-             _buildAppbar(),
+            _buildAppbar(),
               Padding(
                 padding: const EdgeInsets.only(top: 22.0),
                 child: SizedBox(
@@ -300,7 +308,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       },
       onClearAction: (){
         Get.find<TimeSheetController>().getTimesheetByDate();
-
       },
     );
   }
