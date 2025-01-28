@@ -250,10 +250,12 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
     designation {
       id
       name
+      start_date
     }
     employment_status {
       id
       name
+      start_date
     }
     employee_id
     join_date

@@ -10,11 +10,6 @@ class ProfileRouteBaseController extends GetxController {
   final ProfileDataSource _profileDataSource;
   ProfileRouteBaseController(this._profileDataSource);
 
-  @override
-  void onInit() {
-    getUserProfile();
-    super.onInit();
-  }
   final isLoadingProfile = false.obs;
 
   UserDetails? userDetails;

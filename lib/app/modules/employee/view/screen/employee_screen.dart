@@ -12,6 +12,7 @@ import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/images.dart';
+import '../../../profile/view/screens/profile_route_base.dart';
 import '../../controller/employment_controller.dart';
 import '../../model/employee_info.dart';
 import '../widget/employee_list/employee_list.dart';
@@ -110,15 +111,17 @@ class EmployeeScreen extends StatelessWidget {
           Data? employee =
               Get.find<EmploymentController>().employeeList?[index];
           return GestureDetector(
-            onTap: () async {
-              Get.find<EmploymentController>()
-                ..getEmployeeProfile(orgUserId: employee?.id ?? "")
-                ..getEmployeesEmploymentInfo(orgUserId: employee?.id ?? "")
-                ..getUserLogHistory(orgUserId: employee?.id ?? "");
-              Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+            onTap: () {
+              print("GestureDetector clicked");
+              // Get.find<EmploymentController>()
+              //   ..getEmployeeProfile(orgUserId: employee?.id ?? "")
+              //   ..getEmployeesEmploymentInfo(orgUserId: employee?.id ?? "")
+              //   ..getUserLogHistory(orgUserId: employee?.id ?? "");
+              // Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+              Get.to(ProfileRouteBase(orgUserId: employee?.id ?? ""));
             },
             child: EmployeeListInfo(
-              orgUserId:employee?.id ?? "",
+              orgUserId: employee?.id ?? "",
               firstName: employee?.profile?.firstName ?? "Unknown",
               lastName: employee?.profile?.lastName ?? "",
               imgUrlKey: employee?.profile?.image ?? "",

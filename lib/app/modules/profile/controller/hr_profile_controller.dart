@@ -15,10 +15,10 @@ import 'global_profile_controller.dart';
 
 
 class HrProfileController extends GetxController with StateMixin {
- final ProfileDataSource _profileDataSource;
- HrProfileController(this._profileDataSource);
- final LeaveRemoteDataSource _remoteDataSource = Get.find<LeaveRemoteDataSource>();
- final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
+  final ProfileDataSource _profileDataSource;
+  HrProfileController(this._profileDataSource);
+  final LeaveRemoteDataSource _remoteDataSource = Get.find<LeaveRemoteDataSource>();
+  final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
 
 
   @override
@@ -57,10 +57,10 @@ class HrProfileController extends GetxController with StateMixin {
   }
 
 
- void _addUserInfo() {
-   Get.find<ProfileGlobalController>().employeeName.value ="${userDetails?.getOrganizationUserDetails?.profile?.firstName??""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName??""}";
-   Get.find<ProfileGlobalController>().employeeImeKey.value =userDetails?.getOrganizationUserDetails?.profile?.image??"";
- }
+  void _addUserInfo() {
+    Get.find<ProfileGlobalController>().employeeName.value ="${userDetails?.getOrganizationUserDetails?.profile?.firstName??""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName??""}";
+    Get.find<ProfileGlobalController>().employeeImeKey.value =userDetails?.getOrganizationUserDetails?.profile?.image??"";
+  }
 
 
   getLeaveRecordsData() async {

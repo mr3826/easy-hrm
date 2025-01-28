@@ -20,11 +20,13 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../app/home/view/screen/main_screen.dart';
+import '../../../app/modules/hr_timeline/models/calendar_timeline.dart';
 import '../../../common/domain/last_input_model.dart';
 import '../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../network/exception_helper.dart';
 import '../../dashboard/presentation/controller/employee_dashboard_controller.dart';
-import '../model/calendar_timeline.dart';
+
+
 class TimelineController extends GetxController with StateMixin {
   final isLoading = false.obs;
   final isManualEntryLoading = false.obs;
@@ -241,8 +243,8 @@ class TimelineController extends GetxController with StateMixin {
         _resetFields();
 
         // Refresh dashboard and timeline data
-        Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
-        Get.find<DashboardController>().getProfileInfoForDashboard();
+        Get.find<EmployeeDashboardController>().getMonthlyTimelineInfoForDashboard();
+        Get.find<EmployeeDashboardController>().getProfileInfoForDashboard();
         _refreshTimeline();
 
         // Navigate to the main screen

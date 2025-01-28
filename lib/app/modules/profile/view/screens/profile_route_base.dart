@@ -9,6 +9,7 @@ import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/images.dart';
 import '../../../../../common/widget/loading_indicator.dart';
+import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
@@ -16,73 +17,77 @@ import '../../bindings/route_base_profile_binding.dart';
 import '../../controller/global_profile_controller.dart';
 import '../../controller/route_base_profile_controller.dart';
 import '../widgets/profile_appbar.dart';
+import '../widgets/profile_tab_bar.dart';
 
 class ProfileRouteBase extends StatelessWidget {
-  const ProfileRouteBase({super.key});
+  final String orgUserId;
+
+  const ProfileRouteBase({super.key, required this.orgUserId});
+
   @override
   Widget build(BuildContext context) {
     RouteBaseProfileBinding().dependencies();
+    Get.find<ProfileRouteBaseController>().getUserProfile(ordId: orgUserId);
     Get.put(ProfileGlobalController());
-
-    UserLogHistory? userLogHistory = Get.find<ProfileGlobalController>().userLogHistory;
-    return Obx(() {
-      if (Get.find<ProfileRouteBaseController>().isLoadingProfile.isTrue) {
-        return const LoadingIndicator();
-      } else {
-        return Scaffold(
-            backgroundColor: AppColor.backgroundColor,
-            appBar: _profileAppbar(context),
-            body: Column(
-              children: [
-                UserInfoLayout(
-                  information:
-                      Get.find<ProfileRouteBaseController>().userDetails ??
-                          UserDetails(),
-                  editIconUrl: Images.EDIT_ICON,
-                ),
-                customSpacerHeight(height: 30),
-                LeaveStatusGoal(
-                  userLogHistory: userLogHistory ?? UserLogHistory(),
-                ),
-                Expanded(
-                  child: ProfileOverView(
+    UserLogHistory? userLogHistory =
+        Get.find<ProfileGlobalController>().userLogHistory;
+    return DefaultTabController(
+      length: 3, // Number of tabs
+      child: Obx(() {
+        if (Get.find<ProfileRouteBaseController>().isLoadingProfile.isTrue) {
+          return const LoadingIndicator();
+        } else {
+          return Scaffold(
+              backgroundColor: AppColor.backgroundColor,
+              appBar: _profileAppbar(),
+              body: Column(
+                children: [
+                  UserInfoLayout(
+                    information:
+                        Get.find<ProfileRouteBaseController>().userDetails ??
+                            UserDetails(),
+                    editIconUrl: Images.EDIT_ICON,
+                  ),
+                  customSpacerHeight(height: 30),
+                  LeaveStatusGoal(
+                    userLogHistory: userLogHistory ?? UserLogHistory(),
+                  ),
+                  customSpacerHeight(height: 30),
+                  ProfileTabBar(
                     userDetails:
                         Get.find<ProfileRouteBaseController>().userDetails ??
                             UserDetails(),
-                    onRefresh: () {
-                      Get.find<ProfileRouteBaseController>().getUserProfile();
-                    },
-                  ),
-                ),
-              ],
-            ));
-      }
-    });
+                  )
+                ],
+              ));
+        }
+      }),
+    );
   }
 
-  _profileAppbar(BuildContext context) {
-    return buildProfileAppBar(
-      backgroundColor: AppColor.backgroundColor,
-      leadingWidget: Row(
+  _profileAppbar() {
+    return AppBar(
+      leadingWidth: AppLayout.getWidth(200),
+      leading: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () {}, icon: const Icon(Icons.arrow_back_ios)),
-          const SizedBox(
-            width: 8,
+            color: AppColor.normalTextColor,
+            icon: const Icon(Icons.arrow_back_ios), // Back button icon
+            onPressed: () {
+              Get.back(canPop: false); // Navigate back
+            },
           ),
           Text(
             AppString.text_profile.tr,
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor,
               fontWeight: FontWeight.w600,
-              fontSize: Dimensions.fontSizeMid,
+              fontSize: Dimensions.fontSizeMid + 1,
             ),
           ),
         ],
       ),
-      actionIcon: CupertinoIcons.bell,
-      onAction: () {},
     );
   }
 }

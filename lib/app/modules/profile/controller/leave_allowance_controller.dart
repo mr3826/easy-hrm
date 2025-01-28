@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class EmploymentController extends GetxController {
+class LeaveAllowanceController extends GetxController {
   RxInt daysCount = 0.obs;
   RxInt applicationBalanceCount = 0.obs;
   RxInt applicationMaxDaysCount = 0.obs;

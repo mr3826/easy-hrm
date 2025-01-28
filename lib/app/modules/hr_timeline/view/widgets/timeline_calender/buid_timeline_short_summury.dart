@@ -10,7 +10,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../global/view/widget/app_margin.dart';
-import '../../../controllers/timeline_controller.dart';
 
 import '../../../controllers/hr_timeline_controller.dart';
 

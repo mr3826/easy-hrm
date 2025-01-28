@@ -37,7 +37,7 @@ final Function onEmployeeStatus;
         if (designation != null)
           Expanded(
             child: GestureDetector(
-              onTap: ()=>onDesignation,
+              onTap: ()=>onDesignation(),
               child: SizedBox(
                 child: Card(
                   elevation: 0,
@@ -66,7 +66,7 @@ final Function onEmployeeStatus;
           customSpacerWidth(width: 4),
           Expanded(
             child: GestureDetector(
-              onTap: ()=>onEmployeeStatus,
+              onTap: ()=>onEmployeeStatus(),
               child: SizedBox(
                 child: Card(
                   elevation: 0,

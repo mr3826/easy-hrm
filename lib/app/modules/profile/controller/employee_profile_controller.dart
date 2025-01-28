@@ -19,7 +19,6 @@ class EmployeeProfileController extends GetxController with StateMixin {
 
   UserDetails? userDetails;
 
-
    Future<void> getUserProfile({String ?ordId}) async {
      isLoadingProfile(true);
      userDetails = (await _profileDataSource.getProfileInfo(ordId??GetStorage().read(AppString.ORGANIZATION_USER_ID))) ?? UserDetails();
@@ -31,6 +30,5 @@ class EmployeeProfileController extends GetxController with StateMixin {
     Get.find<ProfileGlobalController>().employeeName.value ="${userDetails?.getOrganizationUserDetails?.profile?.firstName??""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName??""}";
     Get.find<ProfileGlobalController>().employeeImeKey.value =userDetails?.getOrganizationUserDetails?.profile?.image??"";
   }
-
 
 }

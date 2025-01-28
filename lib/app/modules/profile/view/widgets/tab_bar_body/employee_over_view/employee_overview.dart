@@ -23,6 +23,7 @@ import 'employee_status_layout.dart';
 class ProfileOverView extends StatelessWidget {
   final UserDetails userDetails;
   final Function onRefresh;
+
   const ProfileOverView(
       {super.key, required this.userDetails, required this.onRefresh});
 
@@ -184,11 +185,13 @@ class ProfileOverView extends StatelessWidget {
     return BuildEmployeeStatusLayout(
       userDetails: userDetails,
       onDesignation: () {
+        print("BuildEmployeeStatusLayout clicked");
         Get.find<ProfileGlobalController>().getEmploymentInfo();
         customAntButtonSheet(
             child: const DesignationLayout(), context: context);
       },
       onEmployeeStatus: () {
+        print("BuildEmployeeStatusLayout clicked");
         Get.find<ProfileGlobalController>().getEmploymentInfo();
         customAntButtonSheet(context: context, child: const EmploymentLayout());
       },

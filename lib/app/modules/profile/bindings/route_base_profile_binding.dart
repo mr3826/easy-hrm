@@ -12,6 +12,5 @@ class RouteBaseProfileBinding  extends Bindings {
     ProfileApiService profileApiService = Get.put(ProfileApiService(Get.find<ApiService>()));
     ProfileDataSource profileDataSource  = Get.put(ProfileDataSourceImpl(profileApiService));
     Get.put(ProfileRouteBaseController(profileDataSource));
-
   }
 }

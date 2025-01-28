@@ -22,10 +22,10 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/domain/last_input_model.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
-import '../../../../modules/timeline/model/calendar_timeline.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../home/view/screen/main_screen.dart';
-import '../repositories/timline_repository.dart';
+import '../models/calendar_timeline.dart';
+import '../repositories/timeline_data_source.dart';
 
 
 class HrTimelineController extends GetxController with StateMixin {

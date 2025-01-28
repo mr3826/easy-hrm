@@ -3,9 +3,10 @@ import '../models/org_setting.dart';
 import '../repository/setting_data_source.dart';
 
 class AppSettingController extends GetxController {
+  final SettingDataSource _settingDataSource;
 
- final SettingDataSource _settingDataSource;
-  AppSettingController(this._settingDataSource);
+  AppSettingController(SettingDataSource settingDataSource)
+      : _settingDataSource = settingDataSource;
 
   @override
   void onInit() {
@@ -13,12 +14,10 @@ class AppSettingController extends GetxController {
     super.onInit();
   }
 
-
   OrgSetting? orgSetting;
 
-  Future<OrgSetting?> getAppSetting() async {
-    print("called_get_setting");
-    orgSetting= await _settingDataSource.getAppSetting();
-    return null;
+  Future<void> getAppSetting() async {
+
+    orgSetting = await _settingDataSource.getAppSetting();
   }
 }

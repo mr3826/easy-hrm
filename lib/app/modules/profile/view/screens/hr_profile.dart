@@ -51,7 +51,10 @@ class HrProfileScreen extends StatelessWidget {
 
                   customSpacerHeight(height: 30),
 
-                  const ProfileTabBar()
+                  ProfileTabBar(
+                    userDetails: Get.find<HrProfileController>().userDetails ??
+                        UserDetails(),
+                  )
                 ],
               ));
         }
