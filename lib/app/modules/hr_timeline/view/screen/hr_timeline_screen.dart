@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/bindings/time_sheet_bindings.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../common/controller/date_time_controller.dart';
@@ -22,9 +21,7 @@ import '../../../../global/controller/timmer_controller.dart';
 import '../../../../global/controller/user_info_controller.dart';
 import '../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
-import '../../../settings/bindings/setting_bindings.dart';
 import '../../bindings/timeline_bindings.dart';
-import '../../bindings/timeline_employee_bindings.dart';
 import '../widgets/time_sheet/build_select_month.dart';
 import '../widgets/time_sheet/build_timesheet_list.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
@@ -43,8 +40,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   @override
   void initState() {
     TimelineBindings().dependencies();
-    SettingBindings().dependencies();
-    TimelineGlobalBindings().dependencies();
 
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {

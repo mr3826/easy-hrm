@@ -22,6 +22,7 @@ import '../../../../../../../common/widget/timePicker/custom_time_picker_in_time
 import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
+import '../../../../controllers/global_timline_controller.dart';
 import '../../../../controllers/hr_timeline_controller.dart';
 import 'build_task_view.dart';
 import 'new_entry_duration_time_with_status.dart';
@@ -49,35 +50,27 @@ class BuildNewEntryTextField extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSpacerHeight(height: 12),
-
-
                 _employeeSearch(),
                 customSpacerHeight(height: 20),
-
-                customAppTitleText(
-                    text: AppString.text_date.tr, isRequired: true),
+                customAppTitleText(text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 Obx(() => _dateLayoutField()),
                 customSpacerHeight(height: 8),
                 _dayScheduleLayout(),
                 customSpacerHeight(height: 20),
                 Obx(() => _timerLayout(context)),
-
                 customSpacerHeight(height: 20),
                 customAppTitleText(text: AppString.text_status.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 _buildStatusTabSelector(),
                 customSpacerHeight(height: 20),
-
                 customAppTitleText(text: AppString.text_project_or_task.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 _selectedTaskLayout(context),
                 customSpacerHeight(height: 20),
                 customAppTitleText(text: AppString.text_description.tr),
                 customSpacerHeight(height: 8),
-                InputNote(
-                    controller:
-                        Get.find<HrTimelineController>().descriptionController),
+                InputNote(controller: Get.find<TimelineGlobalController>().descriptionController),
                 customSpacerHeight(height: 20),
                 _buildButton(context),
                 customSpacerHeight(height: 40)
@@ -252,7 +245,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   _buildButton(BuildContext context) {
-    final timelineController = Get.find<HrTimelineController>();
+    final timelineController = Get.find<TimelineGlobalController>();
 
     if (status == "reject") {
       return CustomAppButton(
@@ -290,6 +283,7 @@ class BuildNewEntryTextField extends StatelessWidget {
                   timelineController.updateTimelineLogDetails();
                 } else {
                   timelineController.createManualEntry();
+
                 }
               }
             : () {},
@@ -301,7 +295,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   void _showRemoveTimeLogDialog(
-      BuildContext context, HrTimelineController controller) {
+      BuildContext context, TimelineGlobalController controller) {
     showCustomAlertDialog(
       context: context,
       onConfirm: () async {
@@ -549,7 +543,7 @@ class _InTimePicker extends StatelessWidget {
                   if (Get.find<DateTimePickerController>().inTime.value !=
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 0${time.toString()}"))) {
-                    Get.find<HrTimelineController>()
+                    Get.find<TimelineGlobalController>()
                         .isValueChangeForTimeLogUpdate(true);
                   }
 
@@ -560,7 +554,7 @@ class _InTimePicker extends StatelessWidget {
                   if (Get.find<DateTimePickerController>().inTime.value !=
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 ${time.toString()}"))) {
-                    Get.find<HrTimelineController>()
+                    Get.find<TimelineGlobalController>()
                         .isValueChangeForTimeLogUpdate(true);
                   }
 
@@ -625,7 +619,7 @@ class _OutTimePicker extends StatelessWidget {
                     if (Get.find<DateTimePickerController>().outTime.value !=
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 0${time.toString()}"))) {
-                      Get.find<HrTimelineController>()
+                      Get.find<TimelineGlobalController>()
                           .isValueChangeForTimeLogUpdate(true);
                     }
 
@@ -636,7 +630,7 @@ class _OutTimePicker extends StatelessWidget {
                     if (Get.find<DateTimePickerController>().outTime.value !=
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 ${time.toString()}"))) {
-                      Get.find<HrTimelineController>()
+                      Get.find<TimelineGlobalController>()
                           .isValueChangeForTimeLogUpdate(true);
                     }
 

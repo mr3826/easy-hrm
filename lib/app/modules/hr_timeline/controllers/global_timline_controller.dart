@@ -1,12 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/success_message.dart';
+import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../enum.dart';
 import '../../../../modules/timeline/model/start_or_end_timer_response.dart';
-import '../../../../modules/timeline/model/timer_entry_response.dart';
 import '../../../../utils/app_string.dart';
-import '../../../../utils/utils.dart';
 import '../../../global/controller/timmer_controller.dart';
 import '../../../home/view/screen/main_screen.dart';
 import '../models/project_dropdown_response.dart';
@@ -18,10 +18,23 @@ class TimelineGlobalController extends GetxController {
 
   final isProjectListLoading = false.obs;
   final isProistLoading = false.obs;
+  final isManualEntryLoading = false.obs;
+  final isUpdateTimeLogLoading = false.obs;
   final isStartAndEndTimerLoading = false.obs;
   final isEndTimerLoading = false.obs;
   final isTimelogEntryOrRemoveLoading = false.obs;
+  RxBool isValueChangeForTimeLogUpdate = false.obs;
+
   String addTimeLogId = "";
+  RxString taskId = "".obs;
+  RxString taskName = "".obs;
+  RxString projectId = "".obs;
+  RxString projectColor = "".obs;
+  RxString timeLineId = "".obs;
+
+
+  TextEditingController descriptionController=TextEditingController();
+
   ProjectDropDownResponse? projectDropDownResponse;
   StartOrEndTimerResponse? startOrEndTimerResponse;
 
@@ -29,7 +42,14 @@ class TimelineGlobalController extends GetxController {
     isProjectListLoading(true);
     projectDropDownResponse =
         await _timelineDataSource.getProjectList(searchText: searchText ?? "");
+    final taskInfo = projectDropDownResponse?.getProjectsDropdown?.first;
 
+    taskName.value = taskInfo?.name ?? "";
+    projectId.value = taskInfo?.id ?? "";
+   projectColor.value = taskInfo?.color ?? "";
+    if (taskInfo?.tasks != null && taskInfo!.tasks!.isNotEmpty) {
+      taskId.value = taskInfo.tasks!.first.taskId.toString();
+    }
     isProjectListLoading(false);
     return null;
   }
@@ -49,6 +69,10 @@ class TimelineGlobalController extends GetxController {
 
    if(response==true){
      showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
+     _refreshTimeline();
+     Get.find<TimeCounterController>().reset();
+     Get.find<TimeCounterController>().isTotalCount(true);
+     Get.to(() => const MainScreen(routeIndex: 0));
    }
 
     isProjectListLoading(false);
@@ -103,18 +127,120 @@ class TimelineGlobalController extends GetxController {
     return true;
   }
 
+
+
+
+
+
+
+
+
+  Future<bool?> createManualEntry() async {
+    isManualEntryLoading(true);
+    bool? response= await   _timelineDataSource.createManualEntry(
+      startDate: DateTime.parse(
+          "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
+          .toUtc()
+          .toString(),
+
+      endDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString(),
+      des: descriptionController.text,
+      projectId: projectId.toString(),
+      taskId: taskId.toString()
+    );
+    if(response){
+      showSuccessMessage(message: "Time entry created successfully");
+      taskId.value = "";
+      taskName.value = '';
+      projectId.value = '';
+      descriptionController.clear();
+      Get.off(() => const MainScreen(routeIndex: 0));
+      _refreshTimeline();
+    }
+
+    isManualEntryLoading(false);
+    return null;
+  }
+
+
+
+
+
+
+  Future<bool?> updateTimelineLogDetails() async {
+    isUpdateTimeLogLoading(true);
+    bool? response= await   _timelineDataSource.updateTimelineLogDetails(
+      startDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
+
+      endDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
+      des: descriptionController.text,
+      projectId: projectId.toString(),
+      taskId: taskId.toString(), timelineId: timeLineId.toString(),
+    );
+    if(response){
+      showSuccessMessage(message: "Time entry update successfully");
+      taskId.value = "";
+      taskName.value = '';
+      projectId.value = '';
+      timeLineId.value = '';
+      descriptionController.clear();
+      Get.off(() => const MainScreen(routeIndex: 0));
+      _refreshTimeline();
+    }
+
+    isUpdateTimeLogLoading(false);
+    return null;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /// Formats the date string to UTC format. Defaults to the current date and time if [date] is null.
   String _formatDate(String? date) {
     return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
   }
+
+
+  @override
+  void dispose() {
+   descriptionController.dispose();
+    super.dispose();
+  }
+
 }
+
+
+
+
+
+
+
+
 
 bool isEmployee = false;
 
 _refreshTimeline() async {
   if (isEmployee == true) {
     HrTimelineController controller = Get.find<HrTimelineController>();
-    controller.taskId.value = "";
+    Get.find<TimelineGlobalController>().taskId.value = "";
     await controller.getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
@@ -128,7 +254,7 @@ _refreshTimeline() async {
             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   } else {
     HrTimelineController controller = Get.find<HrTimelineController>();
-    controller.taskId.value = "";
+    Get.find<TimelineGlobalController>().taskId.value = "";
     await controller.getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
@@ -142,3 +268,4 @@ _refreshTimeline() async {
             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   }
 }
+

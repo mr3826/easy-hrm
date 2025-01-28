@@ -26,6 +26,7 @@ import '../models/calendar_timeline.dart';
 import '../../../../network/exception_helper.dart';
 import '../../../home/view/screen/main_screen.dart';
 import '../repositories/timeline_data_source.dart';
+import 'global_timline_controller.dart';
 
 
 class HrTimelineController extends GetxController with StateMixin {
@@ -38,18 +39,18 @@ class HrTimelineController extends GetxController with StateMixin {
   final isTimelineCalendarByDateLoading = false.obs;
   final isTimelineSummaryByDateLoading = false.obs;
   final isUpdateTimeLogLoading = false.obs;
-  final taskName = "".obs;
+  // final taskName = "".obs;
   final isTimeInvalid = false.obs;
-  final taskId = "".obs;
-  final projectId = "".obs;
+  // final taskId = "".obs;
+  // final projectId = "".obs;
   RxString selectedSummaryDate = "".obs;
   RxInt selectedYearIndex = 10.obs;
   RxInt currentYear = DateTime.now().year.obs;
   String timeLogStatus = "";
   String timeLogDuration = "";
-  String timeLineID = "";
+  // String timeLineID = "";
   Color timeLogColor = AppColor.primaryColor;
-  RxString projectColor = ''.obs;
+  //RxString projectColor = ''.obs;
   final searchInputData = TextEditingController().obs;
   late Timer updateDataTime;
   RxString isSelectDate = ''.obs;
@@ -58,7 +59,7 @@ class HrTimelineController extends GetxController with StateMixin {
   /// List of status options to categorize leave requests (e.g., Pending, Approved).
   final List<String> statusOptions = ["Pending", "Approved"];
   /// Method to check if the button should be enabled
-  RxBool isValueChangeForTimeLogUpdate = false.obs;
+  //RxBool isValueChangeForTimeLogUpdate = false.obs;
   TextEditingController descriptionController =TextEditingController();
   CalendarTimeline calendarTimeline = CalendarTimeline();
 
@@ -108,8 +109,9 @@ class HrTimelineController extends GetxController with StateMixin {
     isTimelogEntryOrRemoveLoading(true);
     bool response= await _timelineDataSource.removeTimelineEntry(timeLogId:id.toString());
     if(response){
+      TimelineGlobalController controller=Get.find<TimelineGlobalController>();
       showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-      taskId.value = ""; taskName.value = ""; projectColor.value = "";
+      controller.taskId.value = ""; controller.taskName.value = ""; controller.projectColor.value = "";
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
@@ -130,20 +132,10 @@ class HrTimelineController extends GetxController with StateMixin {
     final String formattedEndDate = endDate ?? DateTime.now().toString();
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
-    log("getTimelineCalenderByDate start & end ==>$startDate And $endDate");
+    log("getTimelineCalenderByDate start & end ==>$startDate And $endDate org : $organizationId");
     calendarTimeline= await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId)??CalendarTimeline();
 
     calendarTimeline.getCalenderTimelinesForApp?.timelines?.forEach((e){
-
-      print(''''
-    get_timeline_response :
-    startDate:  ${e.startDate},
-
-    endDate:   ${e.endDate},
-
-    status:   ${e.status},
-
-    ''''');
 
     });
 
@@ -185,7 +177,6 @@ class HrTimelineController extends GetxController with StateMixin {
     }).toList();
     timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
         ?.map((e) {
-      //todo
       /// add files info
       ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
@@ -277,197 +268,135 @@ class HrTimelineController extends GetxController with StateMixin {
 
 
 
-  /// Starts or stops the timer based on the [timerType].
-  ///
-  /// This method sends a GraphQL request to start or stop a timer based on the
-  /// [timerType] ("start" or "end"). It handles the response and updates the UI
-  /// accordingly, either starting the timer or stopping it based on the server's response.
-  ///
-  /// If the timer is successfully started, it triggers a success message and starts
-  /// the timer in the [TimeCounterController]. If the timer is stopped, it also stops
-  /// the animation and the timer in the same controller.
-  ///
-  /// Returns `true` if the timer was successfully started or stopped, and `false` if
-  /// an exception occurred during the API call.
-  ///
-  /// Throws: Exception handled by [ExceptionHelper.errorHandler].
 
 
 
-  /// Saves a time entry based on the current timer data.
-  ///
-  /// This method sends a GraphQL request to save the time entry using the start and end dates from the
-  /// [startOrEndTimerResponse], along with optional task and project IDs if provided.
-  ///
-  /// If the time entry is successfully saved, the method:
-  /// - Clears the task and project data.
-  /// - Resets the time entry description.
-  /// - Resets the [TimeCounterController] and refreshes the dashboard and timeline data.
-  /// - Navigates back to the main screen.
-  ///
-  /// If there is an exception during the request, it is handled by [ExceptionHelper.errorHandler].
-  ///
-  /// The [isTimelogEntryOrRemoveLoading] flag is used to show loading state during the API call.
-  Future<void> saveTimeEntry() async {
-    // Show loading indicator
-    isTimelogEntryOrRemoveLoading(true);
 
-    // Prepare variables for the GraphQL request
-    final variables = {
-      "inputData": {
-        "description": descriptionController.text,
-        "end_date": _formatDate(startOrEndTimerResponse?.startOrStopTimer?.endDate),
-        "start_date": _formatDate(startOrEndTimerResponse?.startOrStopTimer?.startDate),
-        "status": "pending",
-        "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-        "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-        "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
-      }
-    };
 
-    try {
-      // Make the GraphQL request to save the timer entry
-      final response = await NetworkClient().graphRequest(
-        queryString: saveTimerQueryData,
-        variables: variables,
-      );
 
-      // Handle response exception
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "saveTimeEntry");
-      } else {
-        // Success: Show a success message and process the response
-        showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
-        timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
 
-        // Reset fields and controllers after successful save
-        _resetFields();
 
-        // Refresh dashboard and timeline data
-        Get.find<DashboardController>().getMonthlyTimelineInfoForDashboard();
-        Get.find<DashboardController>().getProfileInfoForDashboard();
-        _refreshTimeline();
 
-        // Navigate to the main screen
-        Get.to(() => const MainScreen(routeIndex: 0));
-      }
-    } finally {
-      // Hide loading indicator after completion
-      isTimelogEntryOrRemoveLoading(false);
-    }
-  }
 
-  /// Formats the date string to UTC format. Defaults to the current date and time if [date] is null.
-  String _formatDate(String? date) {
-    return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
-  }
 
-  /// Resets the task, project, and description fields and the time counter.
-  void _resetFields() {
-    taskId.value = "";
-    taskName.value = '';
-    projectId.value = '';
-    descriptionController.clear();
-    Get.find<TimeCounterController>().reset();
-    Get.find<TimeCounterController>().isTotalCount(true);
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   ///dev check
   ///with utc
-  createManualEntry() async {
-    isManualEntryLoading(true);
-
-    Duration timeDifference = DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-        .difference(DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-    if (!timeDifference.isNegative) {
-      isTimeInvalid(false);
-      final response = await NetworkClient()
-          .graphRequest(queryString: createNewEntryQuery, variables: {
-        "inputData": {
-          "end_date": DateTime.parse(
-              "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-              .toUtc()
-              .toString(),
-          "description": descriptionController.text,
-          "start_date": DateTime.parse(
-              "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
-              .toUtc()
-              .toString(),
-          "status": "pending",
-          "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-          "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-        }
-      });
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "createManualEntry");
-      } else {
-        showSuccessMessage(message: "Time entry created successfully");
-        taskId.value = "";
-        taskName.value = '';
-        projectId.value = '';
-        descriptionController.clear();
-        Get.off(() => const MainScreen(routeIndex: 0));
-        _refreshTimeline();
-      }
-    } else {
-      showWarningMessage(message: "Provide a valid project/task ");
-    }
-    isManualEntryLoading(false);
-  }
+  // createManualEntry() async {
+  //   isManualEntryLoading(true);
+  //
+  //   Duration timeDifference = DateTime.parse(
+  //       "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+  //       .difference(DateTime.parse(
+  //       "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+  //   if (!timeDifference.isNegative) {
+  //     isTimeInvalid(false);
+  //     final response = await NetworkClient()
+  //         .graphRequest(queryString: createNewEntryQuery, variables: {
+  //       "inputData": {
+  //         "end_date": DateTime.parse(
+  //             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+  //             .toUtc()
+  //             .toString(),
+  //         "description": descriptionController.text,
+  //         "start_date": DateTime.parse(
+  //             "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
+  //             .toUtc()
+  //             .toString(),
+  //         "status": "pending",
+  //         "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+  //         "project_id": projectId.value.isNotEmpty ? projectId.value : null,
+  //       }
+  //     });
+  //     if (response.hasException) {
+  //       ExceptionHelper.errorHandler(
+  //           exception: response.exception!, methodName: "createManualEntry");
+  //     } else {
+  //       showSuccessMessage(message: "Time entry created successfully");
+  //       taskId.value = "";
+  //       taskName.value = '';
+  //       projectId.value = '';
+  //       descriptionController.clear();
+  //       Get.off(() => const MainScreen(routeIndex: 0));
+  //       _refreshTimeline();
+  //     }
+  //   } else {
+  //     showWarningMessage(message: "Provide a valid project/task ");
+  //   }
+  //   isManualEntryLoading(false);
+  // }
 
   ///dev check
   ///with utc
-  updateTimelineLogDetails() async {
-    isUpdateTimeLogLoading(true);
-
-    Duration timeDifference = DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-        .difference(DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-
-    if (!timeDifference.isNegative) {
-      isTimeInvalid(false);
-      final response = await NetworkClient().graphRequest(
-          queryString: updateTimelineLogDetailsQueryData,
-          variables: {
-            "inputData": {
-              "timeline_id": timeLineID,
-              "description": descriptionController.text,
-              "end_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
-              "start_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-              "status": "pending",
-              "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-              "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-            }
-          });
-
-      log(response.toString(), error: 0);
-
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!,
-            methodName: "updateTimelineLogDetails");
-      } else {
-        descriptionController.clear();
-        timeLineID = '';
-        taskId.value = "";
-        taskName.value = '';
-        projectId.value = '';
-        Get.off(() => const MainScreen(routeIndex: 0));
-        _refreshTimeline();
-      }
-    } else {
-      isTimeInvalid(true);
-    }
-
-    isUpdateTimeLogLoading(false);
-  }
+  // updateTimelineLogDetails() async {
+  //   isUpdateTimeLogLoading(true);
+  //
+  //   Duration timeDifference = DateTime.parse(
+  //       "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+  //       .difference(DateTime.parse(
+  //       "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+  //
+  //   if (!timeDifference.isNegative) {
+  //     isTimeInvalid(false);
+  //     final response = await NetworkClient().graphRequest(
+  //         queryString: updateTimelineLogDetailsQueryData,
+  //         variables: {
+  //           "inputData": {
+  //             "timeline_id": timeLineID,
+  //             "description": descriptionController.text,
+  //             "end_date":
+  //             "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
+  //             "start_date":
+  //             "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
+  //             "status": "pending",
+  //             "task_id": taskId.value.isNotEmpty ? taskId.value : null,
+  //             "project_id": projectId.value.isNotEmpty ? projectId.value : null,
+  //           }
+  //         });
+  //
+  //     log(response.toString(), error: 0);
+  //
+  //     if (response.hasException) {
+  //       ExceptionHelper.errorHandler(
+  //           exception: response.exception!,
+  //           methodName: "updateTimelineLogDetails");
+  //     } else {
+  //       descriptionController.clear();
+  //       timeLineID = '';
+  //       taskId.value = "";
+  //       taskName.value = '';
+  //       projectId.value = '';
+  //       Get.off(() => const MainScreen(routeIndex: 0));
+  //       _refreshTimeline();
+  //     }
+  //   } else {
+  //     isTimeInvalid(true);
+  //   }
+  //
+  //   isUpdateTimeLogLoading(false);
+  // }
 
   // getProjectDropdown() async {
   //   isLoading(true);

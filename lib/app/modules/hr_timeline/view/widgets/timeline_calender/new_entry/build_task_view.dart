@@ -107,35 +107,35 @@ _projectListLayout(int index, context) {
                         /// then it became task name that shown in ui
                         /// pass its name to task name
 
-                        if (Get.find<HrTimelineController>().projectId.value !=
+                        if (Get.find<TimelineGlobalController>().projectId.value !=
                             Get.find<HrTimelineController>()
                                 .projectDropDownResponse
                                 ?.getProjectsDropdown?[index]
                                 .projectId) {
-                          Get.find<HrTimelineController>()
+                          Get.find<TimelineGlobalController>()
                               .isValueChangeForTimeLogUpdate(true);
                         }
 
-                        Get.find<HrTimelineController>().taskName.value =
+                        Get.find<TimelineGlobalController>().taskName.value =
                             Get.find<HrTimelineController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .name ??
                                 "";
-                        Get.find<HrTimelineController>().projectId.value =
+                        Get.find<TimelineGlobalController>().projectId.value =
                             Get.find<HrTimelineController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .projectId ??
                                 "";
-                        Get.find<HrTimelineController>().projectColor.value =
+                        Get.find<TimelineGlobalController>().projectColor.value =
                             Get.find<HrTimelineController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .color ??
                                 "";
 
-                        Get.find<HrTimelineController>().taskId.value = "";
+                        Get.find<TimelineGlobalController>().taskId.value = "";
                         taskSearchController.clear();
                         Navigator.pop(context);
                       },
@@ -183,14 +183,14 @@ _projectListLayout(int index, context) {
 Widget _taskLayout(Tasks task, context) {
   return InkWell(
     onTap: () {
-      if (Get.find<HrTimelineController>().taskId.value != task.taskId) {
-        Get.find<HrTimelineController>().isValueChangeForTimeLogUpdate(true);
+      if (Get.find<TimelineGlobalController>().taskId.value != task.taskId) {
+        Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
       }
       taskSearchController.text = task.name ?? "";
-      Get.find<HrTimelineController>().taskName.value = task.name ?? "";
-      Get.find<HrTimelineController>().taskId.value = task.taskId ?? "";
-      Get.find<HrTimelineController>().projectId.value = "";
-      Get.find<HrTimelineController>().projectColor.value = "";
+      Get.find<TimelineGlobalController>().taskName.value = task.name ?? "";
+      Get.find<TimelineGlobalController>().taskId.value = task.taskId ?? "";
+      Get.find<TimelineGlobalController>().projectId.value = "";
+      Get.find<TimelineGlobalController>().projectColor.value = "";
       Navigator.pop(context);
       taskSearchController.clear();
     },

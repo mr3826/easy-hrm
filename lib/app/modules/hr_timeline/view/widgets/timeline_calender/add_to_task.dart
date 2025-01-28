@@ -69,10 +69,10 @@ class AddToTaskScreen extends StatelessWidget {
     return taskInputFieldLayout(
         color: isEmployee == true
             ? Get.find<EmployeeTimelineController>().projectColor.value
-            : Get.find<HrTimelineController>().projectColor.value,
+            : Get.find<TimelineGlobalController>().projectColor.value,
         projectName: isEmployee == true
             ? Get.find<EmployeeTimelineController>().taskName.value
-            : Get.find<HrTimelineController>().taskName.value,
+            : Get.find<TimelineGlobalController>().taskName.value,
         onAction: () {
           customButtonSheet(
               context: context,
@@ -134,8 +134,8 @@ class AddToTaskScreen extends StatelessWidget {
               buttonText: AppString.text_save.tr,
               onAction: () async {
                 Get.find<TimelineGlobalController>().saveTimelineEntry(
-                    taskId: Get.find<HrTimelineController>().taskId.value,
-                    projectId: Get.find<HrTimelineController>().projectId.value);
+                    taskId: Get.find<TimelineGlobalController>().taskId.value,
+                    projectId: Get.find<TimelineGlobalController>().projectId.value);
               },
               cancelText: AppString.text_remove,
               cancelAction: () {

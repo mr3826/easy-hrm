@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../../../../modules/timeline/model/timer_entry_response.dart';
 import '../models/project_dropdown_response.dart';
 import '../../../../modules/timeline/model/start_or_end_timer_response.dart';
 import '../models/timeline_summary_by_date.dart';
@@ -12,9 +11,11 @@ abstract class TimelineDataSource {
   Future<TimelineSummaryByDate?> getTimelineSummaryByDate({required String startDate, required String endDate,String?orgUserId});
   Future<TimeSheetModel?>  getTimesheetByDate({required String startDate, required String endDate,required String orgId});
   Future<CalendarTimeline?> getTimelineCalender({required String startDate, required String endDate,String ?orgUserId});
-  Future<StartOrEndTimerResponse?> startOrEndTimer({required  String timerTyp});
+  Future<StartOrEndTimerResponse?> startOrEndTimer({required String timerTyp});
   Future<ProjectDropDownResponse?>  getProjectList({required String searchText});
   Future<bool> removeTimelineEntry({required String timeLogId});
+  Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String des,required String projectId,required String timelineId,String ?taskId});
+  Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId});
   Future<bool?> saveTimelineEntry({required String des,required String startDate,required String endDate,required String taskId,required String projectId,required String timelineId});}
 
 
@@ -109,6 +110,46 @@ class TimelineDataImpl implements TimelineDataSource {
      }
    } catch (e) {
      log('Error in removeTimelineEntry: $e');
+   }
+   return false;
+ }
+
+
+ @override
+ Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId}) async {
+
+    print('''
+    startDate $startDate
+    endDate $endDate
+    des $des
+    projectId $projectId
+    taskId $taskId
+    
+ 
+    ''');
+   try {
+     Map<String, dynamic>? response =
+     await  _timelineApiService.createManualEntry( startDate, endDate, des, projectId,taskId);
+     print("createManualEntry : $response");
+     if (response != null) {
+       return true;
+     }
+   } catch (e) {
+     log('Error in createManualEntry: $e');
+   }
+   return false;
+ }
+
+ @override
+ Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String des,required String projectId,required String timelineId,String ?taskId}) async {
+   try {
+     Map<String, dynamic>? response =
+     await  _timelineApiService.updateTimelineLogDetails( startDate, endDate, des, projectId, timelineId,taskId);
+     if (response != null) {
+       return true;
+     }
+   } catch (e) {
+     log('Error in updateTimelineLogDetails: $e');
    }
    return false;
  }

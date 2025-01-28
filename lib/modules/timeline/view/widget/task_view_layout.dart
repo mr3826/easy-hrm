@@ -131,22 +131,22 @@ class TaskViewLayout extends StatelessWidget {
           /// then it became task name that shown in ui
           /// pass its name to task name
 
-          if (Get.find<HrTimelineController>().projectId.value != data?.projectId) {
-            Get.find<HrTimelineController>()
+          if (Get.find<TimelineGlobalController>().projectId.value != data?.projectId) {
+            Get.find<TimelineGlobalController>()
                 .isValueChangeForTimeLogUpdate(true);
           }
 
 
-          Get.find<HrTimelineController>().taskName.value = data?.name ?? "";
-          Get.find<HrTimelineController>().projectId.value = data?.projectId ?? "";
-          Get.find<HrTimelineController>().projectColor.value = data?.color ?? "";
-          Get.find<HrTimelineController>().taskId.value = "";
+          Get.find<TimelineGlobalController>().taskName.value = data?.name ?? "";
+          Get.find<TimelineGlobalController>().projectId.value = data?.projectId ?? "";
+          Get.find<TimelineGlobalController>().projectColor.value = data?.color ?? "";
+          Get.find<TimelineGlobalController>().taskId.value = "";
           taskSearchController.clear();
           print(''''
           
-          task_newma: ${ Get.find<HrTimelineController>().taskName.value}
-          projectId: ${ Get.find<HrTimelineController>().projectId.value}
-          projectColor: ${ Get.find<HrTimelineController>().projectColor.value}
+          task_newma: ${ Get.find<TimelineGlobalController>().taskName.value}
+          projectId: ${ Get.find<TimelineGlobalController>().projectId.value}
+          projectColor: ${ Get.find<TimelineGlobalController>().projectColor.value}
           
           ''');
           Navigator.pop(context);
@@ -227,14 +227,14 @@ Widget _taskLayout(Tasks task, context) {
         Navigator.pop(context);
         taskSearchController.clear();
       }else{
-        if (Get.find<HrTimelineController>().taskId.value != task.taskId) {
-          Get.find<HrTimelineController>().isValueChangeForTimeLogUpdate(true);
+        if (Get.find<TimelineGlobalController>().taskId.value != task.taskId) {
+          Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
         }
         taskSearchController.text = task.name ?? "";
-        Get.find<HrTimelineController>().taskName.value = task.name ?? "";
-        Get.find<HrTimelineController>().taskId.value = task.taskId ?? "";
-        Get.find<HrTimelineController>().projectId.value = "";
-        Get.find<HrTimelineController>().projectColor.value = "";
+        Get.find<TimelineGlobalController>().taskName.value = task.name ?? "";
+        Get.find<TimelineGlobalController>().taskId.value = task.taskId ?? "";
+        Get.find<TimelineGlobalController>().projectId.value = "";
+        Get.find<TimelineGlobalController>().projectColor.value = "";
         Navigator.pop(context);
         print("taskSearchController.text : ${taskSearchController.text}");
 

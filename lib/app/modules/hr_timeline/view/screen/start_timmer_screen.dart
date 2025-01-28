@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/enum.dart';
@@ -65,7 +64,7 @@ class StartTimerForAdmin extends StatelessWidget {
                               .then((v) {
 
                             final timelineController = Get.find<TimelineGlobalController>();
-                            final hrTimelineController = Get.find<HrTimelineController>();
+                            final hrTimelineController = Get.find<TimelineGlobalController>();
 
                             final taskInfo = timelineController.projectDropDownResponse?.getProjectsDropdown?.first;
 
@@ -84,10 +83,10 @@ class StartTimerForAdmin extends StatelessWidget {
                             print('''
                             
                      
-                            task_name: ${Get.find<HrTimelineController>().taskName.value}
-                            projectId : ${ Get.find<HrTimelineController>().projectId.value}
-                            task_id : ${ Get.find<HrTimelineController>().taskId.value}
-                            task_color : ${ Get.find<HrTimelineController>().projectColor.value}
+                            task_name: ${Get.find<TimelineGlobalController>().taskName.value}
+                            projectId : ${ Get.find<TimelineGlobalController>().projectId.value}
+                            task_id : ${ Get.find<TimelineGlobalController>().taskId.value}
+                            task_color : ${ Get.find<TimelineGlobalController>().projectColor.value}
                             
                         
                         
@@ -122,6 +121,9 @@ class StartTimerForAdmin extends StatelessWidget {
     );
   }
 }
+
+
+
 
 class StartTimerForEmployee extends StatelessWidget {
   const StartTimerForEmployee({super.key});
