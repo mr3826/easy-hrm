@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
-import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -12,6 +12,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
+import '../../../../controllers/global_timline_controller.dart';
 import '../../../../controllers/hr_timeline_controller.dart';
 
 class BuildTaskView extends StatelessWidget {
@@ -222,7 +223,7 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
         style: subTextFieldTitleStyle,
         onChanged: (value) {
           setState(() {});
-          Get.find<HrTimelineController>().getProjectDropdown();
+          Get.find<TimelineGlobalController>().getProjectList();
         },
         decoration: InputDecoration(
           hintText: AppString.text_select_option.tr,
@@ -230,7 +231,7 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
             onTap: () {
               setState(() {});
               taskSearchController.clear();
-              Get.find<HrTimelineController>().getProjectDropdown();
+              Get.find<TimelineGlobalController>().getProjectList();
             },
             child: taskSearchController.text.isNotEmpty
                 ? const Icon(

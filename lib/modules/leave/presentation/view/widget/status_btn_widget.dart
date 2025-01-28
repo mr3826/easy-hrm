@@ -172,11 +172,7 @@ void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
 }
 
 removeTextLayout() {
-  return Get.find<TimelineController>().isTimelogEntryOrRemoveLoading.value
-      ? const CupertinoActivityIndicator(
-          color: AppColor.cardColor,
-        )
-      : Text(
+  return  Text(
           AppString.text_remove.tr,
           style: AppStyle.normal_text_grey.copyWith(
               fontSize: Dimensions.fontSizeDefault + 1,

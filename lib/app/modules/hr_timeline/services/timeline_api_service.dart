@@ -79,4 +79,74 @@ class TimelineApiService {
 
 
 
+
+  Future<QueryResult<Object?>> getProjectList(String searchText) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "searchText": searchText,
+      }
+    };
+    return await _apiService.gqlCall(queryString: getProjectDropdownQuery, variables: variables);
+  }
+
+
+
+
+
+
+
+
+
+  Future<Map<String, dynamic>?>? saveTimelineEntry(String des,String startDate,String endDate,String projectId,String timelineId,[String ?taskId]) async {
+
+
+    print('''
+ 
+    Api_services: => 
+    
+    des $des
+    startDate $startDate
+    endDate $endDate
+    projectId $projectId
+    timelineId $timelineId
+    taskId $taskId
+    
+   
+    ''');
+
+
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "description": des,
+        "end_date": endDate,
+        "start_date": startDate,
+        "status": "pending",
+        "task_id": taskId,
+        "project_id": projectId,
+        "timeline_id": timelineId
+      }
+    };
+
+    if (taskId != null) {
+      variables["inputData"]?["task_id"] = taskId;
+    }
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: saveTimerQueryData, variables: variables);
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>?>? removeTimelineEntry(String timeLogId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "inputData": {
+        "timeline_id": timeLogId,
+      }
+    };
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: removeTimerQueryData, variables: variables);
+    return response.data;
+  }
+
+
+
 }
+

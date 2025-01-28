@@ -305,11 +305,10 @@ class BuildNewEntryTextField extends StatelessWidget {
     showCustomAlertDialog(
       context: context,
       onConfirm: () async {
-        final result =
-            await controller.removeTimeEntry(timeLogId: controller.timeLineID);
-        if (result == true) {
-          Navigator.pop(context);
-        }
+      //  final result = await controller.removeTimeEntry(timeLogId: controller.timeLineID);
+      //   if (result == true) {
+      //     Navigator.pop(context);
+      //   }
       },
       iconData: CupertinoIcons.delete,
       titleText: AppString.text_remove_timelog.tr,

@@ -10,7 +10,7 @@ import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
-import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
@@ -413,7 +413,6 @@ class TimelineController extends GetxController with StateMixin {
       return false;
     } else {
       showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-      taskId.value = "";
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
@@ -515,6 +514,7 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   _refreshTimeline() async {
+    taskId.value = "";
     await getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",

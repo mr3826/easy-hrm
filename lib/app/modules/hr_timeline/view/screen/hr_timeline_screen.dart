@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/bindings/time_sheet_bindings.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../common/widget/hr_timeline/floating_timmer_button.dart';
-import '../../../../../modules/timeline/controller/timer_controller.dart';
 import '../../../../../routes/app_pages.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
@@ -24,7 +24,7 @@ import '../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../global/view/widget/show_subscription_dialog.dart';
 import '../../../settings/bindings/setting_bindings.dart';
 import '../../bindings/timeline_bindings.dart';
-import '../../controllers/start_timer_controller.dart';
+import '../../bindings/timeline_employee_bindings.dart';
 import '../widgets/time_sheet/build_select_month.dart';
 import '../widgets/time_sheet/build_timesheet_list.dart';
 import '../widgets/timeline_calender/build_hr_timeline_calendar.dart';
@@ -44,6 +44,8 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   void initState() {
     TimelineBindings().dependencies();
     SettingBindings().dependencies();
+    TimelineGlobalBindings().dependencies();
+
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
@@ -74,8 +76,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
             _sliverAppbarBody(_tabController),
           ],
         ),
-        floatingActionButton: Obx(()=>_timerBtnLayout(context)),
-
+        floatingActionButton: Obx(() => _timerBtnLayout(context)),
       ),
     );
   }
@@ -187,8 +188,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   }
 
   _timerBtnLayout(BuildContext context) {
-    final TimeCounterController controller = Get.find<TimeCounterController>();
-
     return Padding(
       padding: EdgeInsets.only(
           left: 35.0,
@@ -196,22 +195,16 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           top: Platform.isAndroid ? 0 : 40),
       child: Row(
         children: [
-
-          controller.isRunning.value
+          Get.find<TimeCounterController>().isRunning.value
               ? _timerStringOpenBtn(
-                  time: controller.starTimeDashboard.toString())
+                  time: Get.find<TimeCounterController>().starTimeDashboard.toString())
               : _timerStringBtn(context),
-
           customSpacerWidth(width: 18),
-
           _addTimeEntryBtn(),
-
         ],
       ),
     );
   }
-
-
 
   _timerStringBtn(BuildContext context) {
     return floatingTimmerButton(
@@ -222,7 +215,8 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
               .isFalse) {
             showSubscriptionDialog(context);
           } else {
-            Get.toNamed(Routes.TIMER_SCREEN);
+            Get.find<TimeCounterController>().timerStatus();
+           Get.toNamed(Routes.ADMIN_TIMER_SCREEN);
           }
         },
         btnText: AppString.text_stat_timer.tr);
@@ -250,35 +244,38 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
   _buildEmployeeSearch(TabController tabController) {
     return CustomSearchBar(
-      onValueSelected: (String orgId) async{
-        if(tabController.index==0){
+      onValueSelected: (String orgId) async {
+        if (tabController.index == 0) {
           Navigator.pop(context);
 
-          String startDate="${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-          String endDate="${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+          String startDate =
+              "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+          String endDate =
+              "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
 
-          await Get.find<HrTimelineController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate,orgId: orgId);
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate,orgId: orgId);
-
-
-        }else{
+          await Get.find<HrTimelineController>().getTimelineSummaryByDate(
+              startDate: startDate, endDate: endDate, orgId: orgId);
+          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+              startDate: startDate, endDate: endDate, orgId: orgId);
+        } else {
           Navigator.pop(context);
           Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
         }
-
       },
-      onClearAction: () async{
-        if(tabController.index==0){
-          String startDate="${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-          String endDate="${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+      onClearAction: () async {
+        if (tabController.index == 0) {
+          String startDate =
+              "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+          String endDate =
+              "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
 
-          await Get.find<HrTimelineController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
-
-        }else{
+          await Get.find<HrTimelineController>()
+              .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
+          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+              startDate: startDate, endDate: endDate);
+        } else {
           Get.find<TimeSheetController>().getTimesheetByDate();
         }
-
       },
     );
   }
@@ -286,12 +283,14 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   _buildSelectedDate() {
     return BuildSelectDateLayout(
       dateRange: (date) async {
-        String startDate="${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-        String endDate="${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-        await Get.find<HrTimelineController>().getTimelineSummaryByDate(
-            startDate: startDate, endDate: endDate);
-        await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-            startDate: startDate, endDate: endDate);
+        String startDate =
+            "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+        String endDate =
+            "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+        await Get.find<HrTimelineController>()
+            .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
+        await Get.find<HrTimelineController>()
+            .getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
       },
     );
   }

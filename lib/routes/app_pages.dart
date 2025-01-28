@@ -74,9 +74,14 @@ class AppPages {
 
 
     GetPage(
-      name: _Paths.TIMER_SCREEN,
+      name: _Paths.EMPLOYRR_TIMER_SCREEN,
       binding: StartTimerBindings(),
-      page: () => const TimerScreen(),
+      page: () => const StartTimerForEmployee(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_TIMER_SCREEN,
+      binding: StartTimerBindings(),
+      page: () => const StartTimerForAdmin(),
     ),
 
 
