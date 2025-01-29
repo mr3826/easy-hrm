@@ -14,46 +14,42 @@ import '../../bindings/hr_profile_bindings.dart';
 import '../../controller/global_profile_controller.dart';
 import '../widgets/profile_appbar.dart';
 
-
-class HrProfileScreen extends StatelessWidget {
+class HrProfileScreen extends GetView<HrProfileController> {
   const HrProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    HrProfileBindings().dependencies();
-    Get.put(ProfileGlobalController());
+    _initializationDependencies();
 
     ///todo [UserProfileController]
     ///todo global
-    UserLogHistory? userLogHistory = Get.find<ProfileGlobalController>().userLogHistory;
+    UserLogHistory? userLogHistory =
+        Get.find<ProfileGlobalController>().userLogHistory;
     return DefaultTabController(
       length: 3, // Number of tabs
       child: Obx(() {
-        if (Get.find<HrProfileController>().isLoadingProfile.isTrue) {
+        if (controller.isLoadingProfile.isTrue) {
           return const LoadingIndicator();
         } else {
           return Scaffold(
               backgroundColor: AppColor.backgroundColor,
-              appBar: _profileAppbar(context,
-                  Get.find<HrProfileController>().userDetails ?? UserDetails()),
+              appBar: _profileAppbar(
+                  context, controller.userDetails ?? UserDetails()),
               body: Column(
                 children: [
                   UserInfoLayout(
-                    information: Get.find<HrProfileController>().userDetails ?? UserDetails(),
+                    information: controller.userDetails ?? UserDetails(),
                     editIconUrl: Images.EDIT_ICON,
                   ),
-
                   customSpacerHeight(height: 30),
-
                   LeaveStatusGoal(
                     userLogHistory: userLogHistory ?? UserLogHistory(),
                   ),
-
                   customSpacerHeight(height: 30),
-
                   ProfileTabBar(
-                    userDetails: Get.find<HrProfileController>().userDetails ??
-                        UserDetails(),
+                    userDetails: controller.userDetails ?? UserDetails(),
+                    isDataLoading: controller.isViewLeaveRecordLoading,
+                    leaveRecordList: [],
                   )
                 ],
               ));
@@ -78,4 +74,8 @@ class HrProfileScreen extends StatelessWidget {
     );
   }
 
+  void _initializationDependencies() {
+    HrProfileBindings().dependencies();
+    Get.put(ProfileGlobalController());
+  }
 }

@@ -2,29 +2,110 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/modules/profile/repositories/profile_data_source.dart';
+import '../../../../common/controller/leave_helper/leave_data_source.dart';
+import '../../../../common/widget/error_message.dart';
+import '../../../../common/widget/success_message.dart';
+import '../../../../modules/leave/data/remote/leave_remote_data_source.dart';
+import '../../../../modules/leave/domain/leave_record_response.dart';
+import '../../../../modules/leave/domain/leave_type.dart';
+import '../models/leave_summary.dart';
 import '../models/user_profile.dart';
 import '../../../../utils/app_string.dart';
 import 'global_profile_controller.dart';
 
 class ProfileRouteBaseController extends GetxController {
   final ProfileDataSource _profileDataSource;
-  ProfileRouteBaseController(this._profileDataSource);
+  final LeaveRemoteDataSource _remoteDataSource;
+  final LeaveDataSource _leaveDataSource;
+
+  ProfileRouteBaseController(
+      this._profileDataSource, this._remoteDataSource, this._leaveDataSource);
 
   final isLoadingProfile = false.obs;
+  final isViewLeaveSummaryLoading = false.obs;
+  final isViewLeaveRecordLoading = false.obs;
+  final isLeaveTypeLoading = false.obs;
+  List<GetLeaveRecordsForApp>? leaveRecordList;
+  LeaveSummary? leaveSummary;
+  LeaveTypeDropdown? leaveTypeDropdown;
+  String leaveStatusId = "";
 
   UserDetails? userDetails;
 
-
-  Future<void> getUserProfile({String ?ordId}) async {
+  Future<void> getUserProfile({String? ordId}) async {
     isLoadingProfile(true);
-    userDetails = (await _profileDataSource.getProfileInfo(ordId??GetStorage().read(AppString.ORGANIZATION_USER_ID))) ?? UserDetails();
+    userDetails = (await _profileDataSource.getProfileInfo(
+            ordId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID))) ??
+        UserDetails();
     _addUserInfo();
     isLoadingProfile(false);
   }
+
   void _addUserInfo() {
-    Get.find<ProfileGlobalController>().employeeName.value ="${userDetails?.getOrganizationUserDetails?.profile?.firstName??""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName??""}";
-    Get.find<ProfileGlobalController>().employeeImeKey.value =userDetails?.getOrganizationUserDetails?.profile?.image??"";
+    Get.find<ProfileGlobalController>().employeeName.value =
+        "${userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}";
+    Get.find<ProfileGlobalController>().employeeImeKey.value =
+        userDetails?.getOrganizationUserDetails?.profile?.image ?? "";
   }
 
+  getLeaveRecordsData({required String orgUserId}) async {
+    isViewLeaveRecordLoading(true);
+    leaveRecordList =
+        await _remoteDataSource.getLeaveRecordList(orgUserId: orgUserId,limit: 20, offset: 0);
+    isViewLeaveRecordLoading(false);
+  }
 
+  getLeaveSummary() async {
+    isViewLeaveSummaryLoading(true);
+    leaveSummary = await _leaveDataSource.getLeaveSummary();
+    isViewLeaveSummaryLoading(false);
+  }
+
+  getLeaveTypeDropdown() async {
+    isLeaveTypeLoading(true);
+    leaveTypeDropdown = await _remoteDataSource.getLeaveTypeDropdown();
+    isLeaveTypeLoading(false);
+  }
+
+  Future<void> updateORGLeaveAvailability(
+      {int? numberOfDays,
+      int? numberOfApplication,
+      int? maximumConsecutiveDays,
+      String? calculateAllowanceBy}) async {
+    isLeaveTypeLoading(true);
+
+    Map<String, dynamic> inputData = {
+      "inputData": {
+        "leave_status_id": leaveStatusId,
+        if (calculateAllowanceBy == "no_of_application") ...{
+          "available_number_of_applications": numberOfApplication,
+          "maximum_consecutive_days": maximumConsecutiveDays,
+        } else ...{
+          "available_number_of_days": numberOfDays,
+        },
+      }
+    };
+
+    try {
+      bool response =
+          await _leaveDataSource.updateORGLeaveAvailability(inputData);
+      if (response) {
+        _updateDate();
+      } else {
+        showErrorMessage(
+            message: "Failed to update leave allowance. Please try again.");
+      }
+    } catch (e) {
+      showErrorMessage(message: "An error occurred: ${e.toString()}");
+    } finally {
+      isLeaveTypeLoading(false);
+    }
+  }
+
+  void _updateDate() {
+    showSuccessMessage(message: "Leave allowance has been added successfully!");
+    Get.back(canPop: false);
+    Get.back(canPop: false);
+    getLeaveSummary();
+  }
 }

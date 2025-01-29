@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/profile/controller/global_profile_controller.dart';
-import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
@@ -18,43 +16,37 @@ import '../../../../../../../common/widget/status_button_helper.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../../../modules/leave/presentation/view/widget/leave_record_details_view.dart';
 
-class BuildLeaveRecord extends GetView<HrProfileController> {
-  const BuildLeaveRecord({super.key});
+class BuildLeaveRecord extends StatelessWidget {
+  final RxBool isDataLoading;
+  final List<GetLeaveRecordsForApp> leaveRecordList;
+
+  const BuildLeaveRecord(
+      {required this.isDataLoading, required this.leaveRecordList, super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isViewLeaveRecordLoading.isTrue) {
+      if (isDataLoading.value) {
         return const LoadingIndicator(
           radius: 18,
         );
       }
 
-      if (controller.leaveRecordList == null ||
-          controller.leaveRecordList!.isEmpty) {
+      if (leaveRecordList.isEmpty) {
         return Center(
             child: Text(
           "No leave record!",
           style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
         ));
       }
-      return RefreshIndicator(
-        backgroundColor: AppColor.cardColor,
-        color: AppColor.primaryColor,
-        onRefresh: _refreshScreen,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.zero,
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.leaveRecordList?.length ?? 0,
-            itemBuilder: (context, index) => Column(children: [
-              _dateTextLayout(date: controller.leaveRecordList?[index].date),
-              _leaveRecordViewLayout(index)
-            ]),
-          ),
-        ),
+      return ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        itemCount: leaveRecordList.length,
+        itemBuilder: (context, index) => Column(children: [
+          _dateTextLayout(date: leaveRecordList[index].date),
+          _leaveRecordViewLayout(index)
+        ]),
       );
     });
   }
@@ -63,7 +55,7 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
     return ListView.builder(
       shrinkWrap: true,
       padding: marginLayout,
-      itemCount: controller.leaveRecordList?[monthIndex].data?.length ?? 0,
+      itemCount: leaveRecordList[monthIndex].data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         Color itemColor =
@@ -73,76 +65,89 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
           context: context,
           bgColor: itemColor,
           leaveRecord: GetLeaveRecords(
-              startDate: controller
-                  .leaveRecordList?[monthIndex].data?[index].startDate,
-              endDate:
-                  controller.leaveRecordList?[monthIndex].data?[index].endDate,
-              status:
-                  controller.leaveRecordList?[monthIndex].data?[index].status,
-              duration: controller
-                  .leaveRecordList?[monthIndex].data?[index].numberOfDays,
-              createdAt: controller
-                  .leaveRecordList?[monthIndex].data?[index].createdAt,
+              startDate: leaveRecordList[monthIndex].data?[index].startDate,
+              endDate: leaveRecordList[monthIndex].data?[index].endDate,
+              status: leaveRecordList[monthIndex].data?[index].status,
+              duration: leaveRecordList[monthIndex].data?[index].numberOfDays,
+              createdAt: leaveRecordList[monthIndex].data?[index].createdAt,
               files: [
-                (controller.leaveRecordList?[monthIndex].data?[index].files !=
-                            null &&
-                        controller.leaveRecordList![monthIndex].data![index]
-                            .files!.isNotEmpty)
+                (leaveRecordList[monthIndex].data?[index].files != null &&
+                        leaveRecordList[monthIndex]
+                            .data![index]
+                            .files!
+                            .isNotEmpty)
                     ? Files(
-                        createdAt: controller.leaveRecordList?[monthIndex]
-                                .data?[index].files?[0].createdAt ??
+                        createdAt: leaveRecordList[monthIndex]
+                                .data?[index]
+                                .files?[0]
+                                .createdAt ??
                             "",
-                        size: controller.leaveRecordList?[monthIndex]
-                                .data?[index].files?[0].size ??
+                        size: leaveRecordList[monthIndex]
+                                .data?[index]
+                                .files?[0]
+                                .size ??
                             "",
-                        name: controller.leaveRecordList?[monthIndex]
-                                .data?[index].files?[0].name ??
+                        name: leaveRecordList[monthIndex]
+                                .data?[index]
+                                .files?[0]
+                                .name ??
                             "",
-                        id: controller.leaveRecordList?[monthIndex].data?[index]
-                                .files?[0].id ??
+                        id: leaveRecordList[monthIndex]
+                                .data?[index]
+                                .files?[0]
+                                .id ??
                             "",
-                        key: controller.leaveRecordList?[monthIndex]
-                                .data?[index].files?[0].key ??
+                        key: leaveRecordList[monthIndex]
+                                .data?[index]
+                                .files?[0]
+                                .key ??
                             "",
                       )
                     : Files()
               ],
               leaveDetails: [
-                (controller.leaveRecordList?[monthIndex].data?[index]
-                                .leaveDetails !=
+                (leaveRecordList[monthIndex].data?[index].leaveDetails !=
                             null &&
-                        controller.leaveRecordList![monthIndex].data![index]
-                            .leaveDetails!.isNotEmpty)
+                        leaveRecordList[monthIndex]
+                            .data![index]
+                            .leaveDetails!
+                            .isNotEmpty)
                     ? LeaveDetails(
-                        scheduleHour: controller.leaveRecordList?[monthIndex]
-                                .data?[index].leaveDetails?[0].scheduleSecond
+                        scheduleHour: leaveRecordList[monthIndex]
+                                .data?[index]
+                                .leaveDetails?[0]
+                                .scheduleSecond
                                 .toString() ??
                             "",
-                        leaveHour: controller.leaveRecordList?[monthIndex]
-                                .data?[index].leaveDetails?[0].leaveSecond
+                        leaveHour: leaveRecordList[monthIndex]
+                                .data?[index]
+                                .leaveDetails?[0]
+                                .leaveSecond
                                 .toString() ??
                             "",
                       )
                     : LeaveDetails()
               ],
               leaveType: LeaveType(
-                isAttachDocumentRequired: controller
-                    .leaveRecordList?[monthIndex]
+                isAttachDocumentRequired: leaveRecordList[monthIndex]
                     .data![index]
                     .leaveType
                     ?.isAttachDocumentRequired,
-                isAddNoteRequired: controller.leaveRecordList?[monthIndex]
-                    .data![index].leaveType?.isAddNoteRequired,
-                leaveName: controller.leaveRecordList?[monthIndex].data![index]
-                    .leaveType?.leaveName,
-                leaveId: controller.leaveRecordList?[monthIndex].data![index]
-                    .leaveType?.leaveId,
-                type: controller
-                    .leaveRecordList?[monthIndex].data![index].leaveType?.type,
+                isAddNoteRequired: leaveRecordList[monthIndex]
+                    .data![index]
+                    .leaveType
+                    ?.isAddNoteRequired,
+                leaveName: leaveRecordList[monthIndex]
+                    .data![index]
+                    .leaveType
+                    ?.leaveName,
+                leaveId:
+                    leaveRecordList[monthIndex].data![index].leaveType?.leaveId,
+                type: leaveRecordList[monthIndex].data![index].leaveType?.type,
               ),
-              id: controller.leaveRecordList?[monthIndex].data![index].id,
-              description: controller
-                  .leaveRecordList?[monthIndex].data![index].description),
+              id: leaveRecordList[monthIndex].data![index].id,
+              description:
+                  leaveRecordList[monthIndex].data![index].description),
         );
       },
     );
@@ -262,7 +267,7 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
           child: Text(
             getLeaveDuration(
               leaveRecord.leaveDetails?[0].leaveHour ?? "",
-              leaveRecord.duration.toString() ?? "",
+              leaveRecord.duration.toString(),
             ),
             style: AppStyle.mid_large_text.copyWith(
               color: AppColor.normalTextColor.withOpacity(0.7),
@@ -291,10 +296,6 @@ class BuildLeaveRecord extends GetView<HrProfileController> {
       default:
         return Container();
     }
-  }
-
-  Future<void> _refreshScreen() async {
-    controller.getLeaveRecordsData();
   }
 }
 

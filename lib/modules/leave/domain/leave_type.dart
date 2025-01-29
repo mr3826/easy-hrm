@@ -11,15 +11,6 @@ class LeaveTypeDropdown {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getAvailableLeaveTypes != null) {
-      data['getAvailableLeaveTypes'] =
-          this.getAvailableLeaveTypes!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class GetAvailableLeaveTypes {
@@ -58,18 +49,4 @@ class GetAvailableLeaveTypes {
     type = json['type'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['add_note_required'] = this.addNoteRequired;
-    data['attach_document_required'] = this.attachDocumentRequired;
-    data['availableLeave'] = this.availableLeave;
-    data['calculate_allowance_by'] = this.calculateAllowanceBy;
-    data['is_default'] = this.isDefault;
-    data['is_enable'] = this.isEnable;
-    data['leave_type_id'] = this.leaveTypeId;
-    data['leave_status_id'] = this.leaveStatusId;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    return data;
-  }
 }

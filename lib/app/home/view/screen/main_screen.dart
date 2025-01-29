@@ -132,7 +132,7 @@ class _MainScreenState extends State<MainScreen> {
       ];
     } else {
       return [
-        HrTimelineScreen(),
+        const HrTimelineScreen(),
         const LeaveHrScreen(),
         const HrDashboardScreen(),
         const EmployeeScreen(),
@@ -143,7 +143,6 @@ class _MainScreenState extends State<MainScreen> {
 
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
-    bool isEmployee = true;
     return [
       _navbarIcon(
           activeIcon: Images.timelineIconNav,

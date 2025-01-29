@@ -13,20 +13,21 @@ import '../../../../utils/app_string.dart';
 import '../repositories/profile_data_source.dart';
 import 'global_profile_controller.dart';
 
-
 class HrProfileController extends GetxController with StateMixin {
   final ProfileDataSource _profileDataSource;
-  HrProfileController(this._profileDataSource);
-  final LeaveRemoteDataSource _remoteDataSource = Get.find<LeaveRemoteDataSource>();
-  final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
 
+  HrProfileController(this._profileDataSource);
+
+  final LeaveRemoteDataSource _remoteDataSource =
+      Get.find<LeaveRemoteDataSource>();
+  final LeaveDataSource _leaveDataSource = Get.find<LeaveDataSource>();
 
   @override
   void onInit() {
     getUserProfile();
+
     super.onInit();
   }
-
 
   int initialTabIndex = 0;
   final isViewLeaveRecordLoading = false.obs;
@@ -42,26 +43,25 @@ class HrProfileController extends GetxController with StateMixin {
   RxInt offset = 0.obs;
   int limit = 30;
 
-
   UserDetails? userDetails;
   List<GetLeaveRecordsForApp>? leaveRecordList;
   LeaveTypeDropdown? leaveTypeDropdown;
-  LeaveSummary? leaveSummary;
 
-
-  Future<void> getUserProfile({String ?ordId}) async {
+  Future<void> getUserProfile({String? ordId}) async {
     isLoadingProfile(true);
-    userDetails = (await _profileDataSource.getProfileInfo(ordId??GetStorage().read(AppString.ORGANIZATION_USER_ID))) ?? UserDetails();
+    userDetails = (await _profileDataSource.getProfileInfo(
+            ordId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID))) ??
+        UserDetails();
     _addUserInfo();
     isLoadingProfile(false);
   }
 
-
   void _addUserInfo() {
-    Get.find<ProfileGlobalController>().employeeName.value ="${userDetails?.getOrganizationUserDetails?.profile?.firstName??""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName??""}";
-    Get.find<ProfileGlobalController>().employeeImeKey.value =userDetails?.getOrganizationUserDetails?.profile?.image??"";
+    Get.find<ProfileGlobalController>().employeeName.value =
+        "${userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}";
+    Get.find<ProfileGlobalController>().employeeImeKey.value =
+        userDetails?.getOrganizationUserDetails?.profile?.image ?? "";
   }
-
 
   getLeaveRecordsData() async {
     isViewLeaveRecordLoading(true);
@@ -70,10 +70,11 @@ class HrProfileController extends GetxController with StateMixin {
     isViewLeaveRecordLoading(false);
   }
 
-  getLeaveSummary() async {
+  Future<LeaveSummary> getLeaveSummary() async {
     isViewLeaveSummaryLoading(true);
-    leaveSummary = await _leaveDataSource.getLeaveSummary();
+    LeaveSummary leaveSummary = await _leaveDataSource.getLeaveSummary()??LeaveSummary();
     isViewLeaveSummaryLoading(false);
+    return leaveSummary;
   }
 
   getLeaveTypeDropdown() async {
@@ -82,10 +83,12 @@ class HrProfileController extends GetxController with StateMixin {
     isLeaveTypeLoading(false);
   }
 
-  Future<void> updateORGLeaveAvailability({int? numberOfDays, int? numberOfApplication, int? maximumConsecutiveDays, String? calculateAllowanceBy}) async {
-
+  Future<void> updateORGLeaveAvailability(
+      {int? numberOfDays,
+      int? numberOfApplication,
+      int? maximumConsecutiveDays,
+      String? calculateAllowanceBy}) async {
     isLeaveTypeLoading(true);
-
     Map<String, dynamic> inputData = {
       "inputData": {
         "leave_status_id": leaveStatusId,
@@ -98,12 +101,14 @@ class HrProfileController extends GetxController with StateMixin {
       }
     };
 
-
     try {
-      bool response = await _leaveDataSource.updateORGLeaveAvailability(inputData);
+      bool response =
+          await _leaveDataSource.updateORGLeaveAvailability(inputData);
       if (response) {
         _updateDate();
-      } else {showErrorMessage(message: "Failed to update leave allowance. Please try again.");
+      } else {
+        showErrorMessage(
+            message: "Failed to update leave allowance. Please try again.");
       }
     } catch (e) {
       showErrorMessage(message: "An error occurred: ${e.toString()}");
@@ -111,6 +116,7 @@ class HrProfileController extends GetxController with StateMixin {
       isLeaveTypeLoading(false);
     }
   }
+
   void _updateDate() {
     showSuccessMessage(message: "Leave allowance has been added successfully!");
     Get.back(canPop: false);

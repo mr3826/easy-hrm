@@ -16,77 +16,83 @@ import '../../../../controller/global_profile_controller.dart';
 import '../../../../controller/leave_allowance_controller.dart';
 import 'leave_allowance.dart';
 
-class BuildProfileLeaveSummary extends GetView<HrProfileController> {
-  const BuildProfileLeaveSummary({super.key});
+class BuildProfileLeaveSummary extends StatelessWidget {
+  final Future<LeaveSummary> Function() leaveSummaryApiCall;
+
+  const BuildProfileLeaveSummary(
+      {required this.leaveSummaryApiCall, super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.isViewLeaveSummaryLoading.isTrue) {
-        return const LoadingIndicator(
-          radius: 18,
-        );
-      }
-      if (controller.leaveSummary?.getOrganizationUsersLeaveSummary == null ||
-          controller.leaveSummary!.getOrganizationUsersLeaveSummary!.isEmpty) {
-        return Center(
-            child: Text(
-          "No leave summary!",
-          style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
-        ));
-      }
-      return Padding(
-        padding: marginLayout.copyWith(top: 20),
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          itemCount: controller
-                  .leaveSummary?.getOrganizationUsersLeaveSummary?.length ??
-              0,
-          itemBuilder: (context, index) {
-            GetOrganizationUsersLeaveSummary? leaveSummary = controller
-                .leaveSummary?.getOrganizationUsersLeaveSummary?[index];
+    return FutureBuilder(
+      future: leaveSummaryApiCall(),
+      builder: (context, AsyncSnapshot<LeaveSummary> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingIndicator(
+            radius: 18,
+          );
+        }
+        if (snapshot.hasError ||
+            snapshot.data?.getOrganizationUsersLeaveSummary == null ||
+            snapshot.data!.getOrganizationUsersLeaveSummary!.isEmpty) {
+          return Center(
+              child: Text(
+            "No leave summary!",
+            style:
+                AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+          ));
+        }
+        return Padding(
+          padding: marginLayout.copyWith(top: 20),
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: snapshot.data?.getOrganizationUsersLeaveSummary?.length,
+            itemBuilder: (context, index) {
+              GetOrganizationUsersLeaveSummary? leaveSummary =
+                  snapshot.data?.getOrganizationUsersLeaveSummary?[index];
 
-            return Card(
-              elevation: 0,
-              color: AppColor.leaveRecordCardColor,
-              shape: roundedRectangleBorder.copyWith(
-                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 12.0),
-                child: Wrap(
-                  children: [
-                    _buildHeader(
-                        leaveSummary ?? GetOrganizationUsersLeaveSummary(),context),
-                    customSpacerHeight(height: 12),
-                    _buildLeaveDetailsRow(
-                        staticText1: "Allowance: ",
-                        dynamicText1: _getAllowance(leaveSummary),
-                        staticText2: "Earned: ",
-                        dynamicText2: _getEarnedDays(leaveSummary),
-                        staticText3: "Taken: ",
-                        dynamicText3: leaveSummary?.taken ?? "0"),
-                    customSpacerHeight(height: 8),
-                    _buildLeaveDetailsRow(
-                        staticText1: "Approved: ",
-                        dynamicText1: leaveSummary?.approved.toString() ?? "",
-                        staticText2: "Available: ",
-                        dynamicText2: _getAvailable(leaveSummary)),
-                    customSpacerHeight(height: 8),
-                    _buildPendingRequest(
-                        leaveSummary ?? GetOrganizationUsersLeaveSummary()),
-                  ],
+              return Card(
+                elevation: 0,
+                color: AppColor.leaveRecordCardColor,
+                shape: roundedRectangleBorder.copyWith(
+                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 ),
-              ),
-            );
-          },
-        ),
-      );
-    });
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 12.0),
+                  child: Wrap(
+                    children: [
+                      _buildHeader(leaveSummary!, context),
+                      customSpacerHeight(height: 12),
+                      _buildLeaveDetailsRow(
+                          staticText1: "Allowance: ",
+                          dynamicText1: _getAllowance(leaveSummary),
+                          staticText2: "Earned: ",
+                          dynamicText2: _getEarnedDays(leaveSummary),
+                          staticText3: "Taken: ",
+                          dynamicText3: leaveSummary.taken ?? "0"),
+                      customSpacerHeight(height: 8),
+                      _buildLeaveDetailsRow(
+                          staticText1: "Approved: ",
+                          dynamicText1: leaveSummary.approved.toString(),
+                          staticText2: "Available: ",
+                          dynamicText2: _getAvailable(leaveSummary)),
+                      customSpacerHeight(height: 8),
+                      _buildPendingRequest(leaveSummary),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 
   // Build header with title and more button
-  Widget _buildHeader(GetOrganizationUsersLeaveSummary leaveSummary,BuildContext context) {
+  Widget _buildHeader(
+      GetOrganizationUsersLeaveSummary leaveSummary, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -116,10 +122,12 @@ class BuildProfileLeaveSummary extends GetView<HrProfileController> {
           onPressed: () {
             Get.find<ProfileGlobalController>().leaveTypeId =
                 leaveSummary.leaveTypeId ?? "";
-            controller.leaveStatusId =
+            Get.find<HrProfileController>().leaveStatusId =
                 leaveSummary.leaveStatusId ?? "";
             showAddAllowance(
-                headerText: leaveSummary.name, subText: leaveSummary.type,context: context);
+                headerText: leaveSummary.name,
+                subText: leaveSummary.type,
+                context: context);
           },
           icon: Icon(
             Icons.more_horiz,
@@ -256,10 +264,11 @@ class BuildProfileLeaveSummary extends GetView<HrProfileController> {
   }
 }
 
-void showAddAllowance({String? headerText, String? subText,required BuildContext context}) {
+void showAddAllowance(
+    {String? headerText, String? subText, required BuildContext context}) {
   Get.put(LeaveAllowanceController());
   customButtonSheet(
-    context:Get.context!,
+    context: Get.context!,
     child: Column(
       children: [
         _buildHeader(headerText ?? "", subText ?? ""),
@@ -269,15 +278,18 @@ void showAddAllowance({String? headerText, String? subText,required BuildContext
           child: GestureDetector(
             onTap: () {
               Get.find<HrProfileController>().getLeaveTypeDropdown();
-              Get.find<LeaveAllowanceController>().applicationMaxDaysCount.value = 0;
-              Get.find<LeaveAllowanceController>().applicationBalanceCount.value = 0;
+              Get.find<LeaveAllowanceController>()
+                  .applicationMaxDaysCount
+                  .value = 0;
+              Get.find<LeaveAllowanceController>()
+                  .applicationBalanceCount
+                  .value = 0;
               Get.find<LeaveAllowanceController>().daysCount.value = 0;
               customButtonSheet(
-                context:Get.context!,
+                context: Get.context!,
                 child: LeaveAllowance(),
                 height: 0.7,
               );
-
             },
             child: Row(
               children: [

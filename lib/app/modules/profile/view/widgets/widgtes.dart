@@ -156,8 +156,6 @@ class UserInfoLayout extends StatelessWidget {
           userDetails: information));
   }
 
-
-
 }
 
 

@@ -1,5 +1,7 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/employee/model/user_work_info_dropdown.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -19,15 +21,19 @@ class LeaveTypeDropDown extends StatefulWidget {
 
 class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
   String? dropDownValue;
+
   @override
   void initState() {
     super.initState();
     // Get the controller instance
     HrProfileController controller = Get.find<HrProfileController>();
     // Set the default value if available, with null checks
-    dropDownValue = (controller.leaveTypeId.isNotEmpty) ? controller.leaveTypeId : null;
+    dropDownValue =
+        (controller.leaveTypeId.isNotEmpty) ? controller.leaveTypeId : null;
   }
-HrProfileController controller=Get.find<HrProfileController>();
+
+  HrProfileController controller = Get.find<HrProfileController>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,10 +53,7 @@ HrProfileController controller=Get.find<HrProfileController>();
           icon: const SizedBox.shrink(),
           underline: const SizedBox.shrink(),
           isExpanded: true,
-          items: controller
-              .leaveTypeDropdown
-              ?.getAvailableLeaveTypes!
-              .map((e) {
+          items: controller.leaveTypeDropdown?.getAvailableLeaveTypes!.map((e) {
             return DropdownMenuItem(
               value: e.leaveTypeId,
               child: SizedBox(
@@ -79,8 +82,7 @@ HrProfileController controller=Get.find<HrProfileController>();
                           ],
                         ),
                       ),
-                      if (e.leaveTypeId ==
-                          controller.leaveTypeId)
+                      if (e.leaveTypeId == controller.leaveTypeId)
                         const Icon(
                           Icons.done,
                           color: AppColor.secondaryColor,
@@ -97,19 +99,92 @@ HrProfileController controller=Get.find<HrProfileController>();
               controller.leaveTypeId = valueType;
             });
 
-            GetAvailableLeaveTypes? getLeaveTypesDropdown =
-                controller
-                    .leaveTypeDropdown
-                    ?.getAvailableLeaveTypes
-                    ?.firstWhere((element) => element.leaveTypeId == valueType);
+            GetAvailableLeaveTypes? getLeaveTypesDropdown = controller
+                .leaveTypeDropdown?.getAvailableLeaveTypes
+                ?.firstWhere((element) => element.leaveTypeId == valueType);
 
             controller.calculateAllowanceBy.value =
                 getLeaveTypesDropdown?.calculateAllowanceBy ?? "";
             controller.availableLeave.value =
                 getLeaveTypesDropdown?.availableLeave ?? "";
-            Get.find<HrProfileController>().leaveStatusId = getLeaveTypesDropdown?.leaveStatusId ?? "";
-            Get.find<LeaveAllowanceController>().daysCount.value = int.parse(getLeaveTypesDropdown?.availableLeave ?? "");
+            Get.find<HrProfileController>().leaveStatusId =
+                getLeaveTypesDropdown?.leaveStatusId ?? "";
+            Get.find<LeaveAllowanceController>().daysCount.value =
+                int.parse(getLeaveTypesDropdown?.availableLeave ?? "");
           }),
     );
   }
+}
+
+Widget leaveTypeDropdown(
+    {required String title,
+    required List<GetAvailableLeaveTypes> items,
+    required String initValue,
+    bool isRequired = false,
+    required ValueChanged<GetAvailableLeaveTypes> onChanged}) {
+  return DropdownButtonFormField2(
+    value: initValue.isNotEmpty ? initValue : null,
+    decoration: _buildDropdownDecoration(),
+    isExpanded: true,
+    items: items
+        .map((item) => DropdownMenuItem<String>(
+              value: item.leaveTypeId,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  customSpacerWidth(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name ?? "",
+                          style: AppStyle.normal_text_grey
+                              .copyWith(color: Colors.black),
+                        ),
+                        Text(
+                          item.type ?? "",
+                          style: AppStyle.normal_text_grey.copyWith(
+                              color: AppColor.hintColor,
+                              fontSize: Dimensions.fontSizeSmall),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (item.leaveTypeId == initValue)
+                    const Icon(
+                      Icons.done,
+                      color: AppColor.secondaryColor,
+                    ),
+                ],
+              ),
+            ))
+        .toList(),
+    onChanged: (String? value) =>
+        items.firstWhere((element) => element.leaveTypeId == value),
+  );
+}
+
+InputDecoration _buildDropdownDecoration() {
+  return InputDecoration(
+    isDense: true,
+    disabledBorder: _outlineInputBorder,
+    enabledBorder: _outlineInputBorder,
+    focusedBorder: _outlineInputBorder,
+    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+  );
+}
+
+OutlineInputBorder get _outlineInputBorder {
+  return OutlineInputBorder(
+    borderRadius: BorderRadius.circular(6),
+    borderSide: const BorderSide(color: AppColor.hintColor, width: 1),
+  );
+}
+
+class LeaveTypeDropdownModel extends DropdownItem {
+  final String leaveType;
+
+  LeaveTypeDropdownModel(this.leaveType,
+      {required super.id, required super.name});
 }
