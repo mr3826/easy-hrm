@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
@@ -107,11 +108,7 @@ class _SingleDatePickerState extends State<SingleDatePicker> {
                     "${DateTime(date.year, date.month, date.day, 23, 59, 59)}");
 
 
-
-
-
-
-                Get.find<HrTimelineController>().getTimelineSummaryByDate(
+                Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
                     startDate:
                     "${DateTime(date.year, date.month, date.day, 0, 0, 0)}",
                     endDate:

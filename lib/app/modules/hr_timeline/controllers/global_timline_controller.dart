@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/success_message.dart';
@@ -11,6 +13,7 @@ import '../../../../utils/app_string.dart';
 import '../../../global/controller/timmer_controller.dart';
 import '../../../home/view/screen/main_screen.dart';
 import '../models/project_dropdown_response.dart';
+import '../models/timeline_summary_by_date.dart';
 import '../repositories/timeline_data_source.dart';
 
 class TimelineGlobalController extends GetxController {
@@ -20,6 +23,7 @@ class TimelineGlobalController extends GetxController {
   final isProjectListLoading = false.obs;
   final isProistLoading = false.obs;
   final isManualEntryLoading = false.obs;
+  final isTimelineSummaryByDateLoading = false.obs;
   final isUpdateTimeLogLoading = false.obs;
   final isStartTimerLoading = false.obs;
   final isEndTimerLoading = false.obs;
@@ -40,6 +44,8 @@ class TimelineGlobalController extends GetxController {
 
   ProjectDropDownResponse? projectDropDownResponse;
   StartOrEndTimerResponse? startOrEndTimerResponse;
+  TimelineSummaryByDate? timelineSummaryByDate;
+
 
   Future<ProjectDropDownResponse?> getProjectList({String? searchText}) async {
     isProjectListLoading(true);
@@ -53,19 +59,6 @@ class TimelineGlobalController extends GetxController {
     if (taskInfo?.tasks != null && taskInfo!.tasks!.isNotEmpty) {
       taskId.value = taskInfo.tasks!.first.taskId.toString();
     }
-
-    print('''
-                            
-                     
-                            task_name: ${Get.find<TimelineGlobalController>().taskName.value}
-                            projectId : ${ Get.find<TimelineGlobalController>().projectId.value}
-                            task_id : ${ Get.find<TimelineGlobalController>().taskId.value}
-                            task_color : ${ Get.find<TimelineGlobalController>().projectColor.value}
-                            
-                        
-                        
-                            ''');
-
     isProjectListLoading(false);
     return null;
   }
@@ -103,23 +96,6 @@ class TimelineGlobalController extends GetxController {
     return false;
   }
 
-  removeTimelineEntry({String? timeLogId}) async {
-    String? id = addTimeLogId.isNotEmpty ? addTimeLogId : timeLogId;
-    isTimelogEntryOrRemoveLoading(true);
-    bool response =
-        await _timelineDataSource.removeTimelineEntry(timeLogId: id.toString());
-    if (response) {
-      showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-      Get.find<TimeCounterController>().isTotalCount(true);
-      descriptionController.clear();
-      Get.find<TimeCounterController>().reset();
-      Get.off(() => const MainScreen(routeIndex: 0));
-      isTimelogEntryOrRemoveLoading(false);
-      _refreshTimeline();
-      return true;
-    }
-    isTimelogEntryOrRemoveLoading(false);
-  }
 
   Future<bool> startOrEndTimer({required String timerType}) async {
     if (timerType == StartOrEndTimer.end.name) {
@@ -127,19 +103,7 @@ class TimelineGlobalController extends GetxController {
     } else {
       isStartTimerLoading(true);
     }
-
     startOrEndTimerResponse = await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
-
-    print('''
-    startOrEndTimer : =>
-    type: $timerType
-    start_date : ${
-        startOrEndTimerResponse?.startOrStopTimer?.startDate
-    }   end_date : ${
-        startOrEndTimerResponse?.startOrStopTimer?.endDate
-    }
-    
-    ''');
     if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
       showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
       Get.find<TimeCounterController>().start();
@@ -221,10 +185,23 @@ class TimelineGlobalController extends GetxController {
     return null;
   }
 
+
+  getTimelineSummaryByDate({String ?startDate, String ?endDate,String ?orgId}) async {
+    isTimelineSummaryByDateLoading(true);
+    final String formattedStartDate = startDate ?? DateTime.now().toString();
+    final String formattedEndDate = endDate ?? DateTime.now().toString();
+    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
+    timelineSummaryByDate= await _timelineDataSource.getTimelineSummaryByDate(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId);
+    isTimelineSummaryByDateLoading(false);
+  }
+
+
   /// Formats the date string to UTC format. Defaults to the current date and time if [date] is null.
   String _formatDate(String? date) {
     return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
   }
+
 
   @override
   void dispose() {
@@ -245,7 +222,7 @@ _refreshTimeline() async {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
-    await controller.getTimelineSummaryByDate(
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
         startDate:
             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
@@ -259,7 +236,7 @@ _refreshTimeline() async {
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
-    await controller.getTimelineSummaryByDate(
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
         startDate:
             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:

@@ -136,13 +136,7 @@ class AddToTaskScreen extends StatelessWidget {
                 showCustomAlertDialog(
                     context: context,
                     onConfirm: () async {
-                      Get.find<HrTimelineController>()
-                          .removeTimelineEntry()
-                          .then((value) {
-                        if (value == true) {
-                          Navigator.pop(context);
-                        }
-                      });
+                      Get.find<HrTimelineController>().removeTimelineEntry();
                     },
                     iconData: CupertinoIcons.delete,
                     titleText: AppString.text_remove_timelog.tr,
@@ -154,7 +148,7 @@ class AddToTaskScreen extends StatelessWidget {
                     extraInfoText: "",
                     descriptionFontSize: Dimensions.fontSizeDefault,
                     confirmButtonChild: Obx(() =>
-                        Get.find<TimelineGlobalController>()
+                        Get.find<HrTimelineController>()
                                 .isTimelogEntryOrRemoveLoading
                                 .value
                             ? const CupertinoActivityIndicator(

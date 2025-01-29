@@ -119,19 +119,6 @@ class TimelineDataImpl implements TimelineDataSource {
 
  @override
  Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status}) async {
-
-   print('''
-   startDate $startDate
-   endDate $endDate
-   des $des
-   projectId $projectId
-   taskId $taskId
-   orgId $orgId
-   status $status
-   
-   ''');
-
-
     try {
      Map<String, dynamic>? response = await  _timelineApiService.createManualEntry( startDate, endDate, des, projectId,taskId,orgId,status);
      if (response != null) {

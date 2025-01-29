@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/enum.dart';
@@ -16,11 +15,12 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../modules/timeline/view/widget/timer_animation.dart';
 import '../../../../global/controller/timmer_controller.dart';
-import '../../bindings/timeline_employee_bindings.dart';
+import '../../bindings/timeline_global_bindings.dart';
 import '../../controllers/global_timline_controller.dart';
 
-class StartTimerForAdmin extends StatelessWidget {
-  const StartTimerForAdmin({super.key});
+class StartTimerScreen extends StatelessWidget {
+  final bool isEmployee;
+  const StartTimerScreen({super.key,required this.isEmployee});
   @override
   Widget build(BuildContext context) {
     TimelineGlobalBindings().dependencies();
@@ -34,74 +34,8 @@ class StartTimerForAdmin extends StatelessWidget {
           _buildCurrentDate(),
           _buildStartTimer(
             onTap: () async {
-
               if (Get.find<TimeCounterController>().isRunning.isFalse) {
-                await Get.find<TimelineGlobalController>().startOrEndTimer(timerType: StartOrEndTimer.start.name);
-                Get.find<TimeCounterController>().isRunningHorizontalLine(true);
-              }
-
-
-            },
-          ),
-          const Spacer(
-            flex: 2,
-          ),
-          Obx(
-            () => Get.find<TimelineGlobalController>()
-                    .isEndTimerLoading
-                    .isTrue
-                ? const CupertinoActivityIndicator(
-                    color: AppColor.cardColor,
-                  )
-                : _buildSaveButton(
-                    onAction: () async {
-                      if (Get.find<TimeCounterController>().isRunning.isTrue) {
-
-                        await Get.find<TimelineGlobalController>().startOrEndTimer(timerType: StartOrEndTimer.end.name)
-                            .then((value) {
-                          Get.find<TimelineGlobalController>().getProjectList();
-                          if (context.mounted) {
-                            customButtonSheet(
-                                height: .6,
-                                context: context,
-                                isDismissible: false,
-                                child: const AddToTaskScreen(
-                                  isEmployee: false,
-                                ));
-                          }
-                        });
-                      }
-                    },
-                  ),
-          ),
-          const Spacer(
-            flex: 2,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-
-
-class StartTimerForEmployee extends StatelessWidget {
-  const StartTimerForEmployee({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppbar(),
-      backgroundColor: AppColor.secondaryColor,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildCurrentDate(),
-          _buildStartTimer(
-            onTap: () async {
-              if (Get.find<TimeCounterController>().isRunning.isFalse) {
-                await Get.find<EmployeeTimelineController>()
+                await Get.find<TimelineGlobalController>()
                     .startOrEndTimer(timerType: StartOrEndTimer.start.name);
                 Get.find<TimeCounterController>().isRunningHorizontalLine(true);
               }
@@ -110,26 +44,32 @@ class StartTimerForEmployee extends StatelessWidget {
           const Spacer(
             flex: 2,
           ),
-          _buildSaveButton(
-            onAction: () async {
-              if (Get.find<TimeCounterController>().isRunning.isTrue) {
-
-                await Get.find<TimelineGlobalController>()
-                    .startOrEndTimer(timerType: StartOrEndTimer.end.name)
-                    .then((value) {
-                  Get.find<TimelineGlobalController>().getProjectList();
-                  if (context.mounted) {
-                    customButtonSheet(
-                        height: .6,
-                        context: context,
-                        isDismissible: false,
-                        child: const AddToTaskScreen(
-                          isEmployee: true,
-                        ));
-                  }
-                });
-              }
-            },
+          Obx(
+            () => Get.find<TimelineGlobalController>().isEndTimerLoading.isTrue
+                ? const CupertinoActivityIndicator(
+                    color: AppColor.cardColor,
+                  )
+                : _buildSaveButton(
+                    onAction: () async {
+                      if (Get.find<TimeCounterController>().isRunning.isTrue) {
+                        await Get.find<TimelineGlobalController>()
+                            .startOrEndTimer(
+                                timerType: StartOrEndTimer.end.name)
+                            .then((value) {
+                          Get.find<TimelineGlobalController>().getProjectList();
+                          if (context.mounted) {
+                            customButtonSheet(
+                                height: .6,
+                                context: context,
+                                isDismissible: false,
+                                child:  AddToTaskScreen(
+                                  isEmployee: isEmployee,
+                                ));
+                          }
+                        });
+                      }
+                    },
+                  ),
           ),
           const Spacer(
             flex: 2,

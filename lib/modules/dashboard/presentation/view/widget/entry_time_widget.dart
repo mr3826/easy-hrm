@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import '../../../../../app/global/controller/timmer_controller.dart';
+import '../../../../../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_dialog.dart';
@@ -96,7 +97,7 @@ _addTimeEntry(BuildContext context) {
 _startingTimeOpen({required time, context}) {
   return InkWell(
     onTap: () async {
-      Get.toNamed(Routes.TIMER_SCREEN);
+      Get.to(const StartTimerScreen(isEmployee: true,));
     },
     child: Stack(
       children: [
@@ -146,7 +147,7 @@ void _checkIfSubscription() {
     alertForSubscriptionRequired();
   } else {
     Get.put(TimeCounterController()).timerStatus();
-    Get.toNamed(Routes.TIMER_SCREEN);
+    Get.to(const StartTimerScreen(isEmployee: true,));
   }
 }
 

@@ -18,8 +18,6 @@ abstract class Routes {
   static const EDIT_PROFILE_SCREEN = _Paths.EDIT_PROFILE_SCREEN;
   static const TIME_LOG_SUMMARY = _Paths.TIME_LOG_SUMMARY;
   static const NEW_ENTRY_SCREEN = _Paths.NEW_ENTRY_SCREEN;
-  static const TIMER_SCREEN = _Paths.EMPLOYRR_TIMER_SCREEN;
-  static const ADMIN_TIMER_SCREEN = _Paths.ADMIN_TIMER_SCREEN;
   static const HOME_SCREEN = _Paths.HOME_SCREEN;
   static const SUBSCRIPTION_SCREEN = _Paths.SUBSCRIPTION_SCREEN;
   static const EMPOLYEE_VIEW_PROFILE = _Paths.EMPOLYEE_VIEW_PROFILE;
@@ -44,8 +42,6 @@ abstract class _Paths {
   static const EDIT_PROFILE_SCREEN = '/edit_profile_screen';
   static const TIME_LOG_SUMMARY = '/time_log_summary_screen';
   static const NEW_ENTRY_SCREEN = '/new_entry_screen';
-  static const EMPLOYRR_TIMER_SCREEN = '/employee_timer_screen';
-  static const ADMIN_TIMER_SCREEN = '/admin_timer_screen';
   static const HOME_SCREEN = '/home_screen';
   static const SUBSCRIPTION_SCREEN = '/subscription_screen';
   static const EMPOLYEE_VIEW_PROFILE = '/employee_view_profile_screen';

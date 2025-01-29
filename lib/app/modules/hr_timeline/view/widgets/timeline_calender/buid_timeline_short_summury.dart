@@ -10,10 +10,9 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../models/timeline_summary_by_date.dart';
 
-import '../../../controllers/hr_timeline_controller.dart';
-
-Widget buildTimelineShortSummary() {
+Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) {
   return SizedBox(
     height: AppLayout.getHeight(118),
     width: double.infinity,
@@ -33,9 +32,8 @@ Widget buildTimelineShortSummary() {
                 children: [
                   _countLayout(
                       dynamicText: getConvertSecondsToHours(
-                          Get.find<HrTimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
+                              timelineSummaryByMonth
+                              .getTimelogSummaryForApp
                               ?.totalScheduledSeconds.toString() ??
                               ""),
                       staticText: AppString.text_schedule.tr),
@@ -44,9 +42,8 @@ Widget buildTimelineShortSummary() {
                   const Spacer(),
                   _countLayout(
                       dynamicText: getConvertSecondsToHours(
-                          Get.find<HrTimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
+                         timelineSummaryByMonth
+                              .getTimelogSummaryForApp
                               ?.loggedTotalSeconds.toString() ??
                               ""),
                       staticText: AppString.text_logged.tr),
@@ -55,9 +52,8 @@ Widget buildTimelineShortSummary() {
                   const Spacer(),
                   _countLayout(
                       dynamicText: getConvertSecondsToHours(
-                          Get.find<HrTimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
+                          timelineSummaryByMonth
+                              .getTimelogSummaryForApp
                               ?.totalLeavesSeconds.toString() ??
                               ""),
                       staticText: AppString.text_paid_leave.tr),
@@ -66,9 +62,8 @@ Widget buildTimelineShortSummary() {
                   const Spacer(),
                   _countLayout(
                       dynamicText: getConvertSecondsToHours(
-                          Get.find<HrTimelineController>()
-                              .timelineSummaryByMonth
-                              ?.getTimelogSummaryForApp
+                         timelineSummaryByMonth
+                              .getTimelogSummaryForApp
                               ?.balance.toString() ??
                               ""),
                       staticText: AppString.text_balance.tr),

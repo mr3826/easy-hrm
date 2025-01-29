@@ -72,20 +72,6 @@ class AppPages {
     ),
 
 
-
-    GetPage(
-      name: _Paths.EMPLOYRR_TIMER_SCREEN,
-      binding: StartTimerBindings(),
-      page: () => const StartTimerForEmployee(),
-    ),
-    GetPage(
-      name: _Paths.ADMIN_TIMER_SCREEN,
-      binding: StartTimerBindings(),
-      page: () => const StartTimerForAdmin(),
-    ),
-
-
-
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,

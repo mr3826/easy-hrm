@@ -4,7 +4,7 @@ import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../bindings/timeline_employee_bindings.dart';
+import '../../bindings/timeline_global_bindings.dart';
 import '../widgets/timeline_calender/new_entry/build_new_entry_text_field.dart';
 
 

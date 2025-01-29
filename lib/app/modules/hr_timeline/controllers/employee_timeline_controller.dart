@@ -99,23 +99,6 @@ class EmployeeTimelineController extends GetxController with StateMixin {
 
 
 
-  removeTimelineEntry({String ?timeLogId}) async {
-    String? id=  timeLogId ?? startOrEndTimerResponse?.startOrStopTimer?.id ?? "";
-    isTimelogEntryOrRemoveLoading(true);
-    bool response= await _timelineDataSource.removeTimelineEntry(timeLogId:id.toString());
-    if(response){
-      showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-      taskId.value = "";
-      Get.find<TimeCounterController>().isTotalCount(true);
-      descriptionController.clear();
-      Get.find<TimeCounterController>().reset();
-      Get.off(() => const MainScreen(routeIndex: 0));
-      isTimelogEntryOrRemoveLoading(false);
-      _refreshTimeline();
-      return true;
-    }
-    isTimelogEntryOrRemoveLoading(false);
-  }
 
 
 
