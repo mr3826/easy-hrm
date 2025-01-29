@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import '../../../modules/timeline/model/timer_status_response.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
+import '../../../utils/utils.dart';
+import '../../modules/settings/controller/app_setting_controller.dart';
 
 class TimeCounterController extends SuperController {
   @override
@@ -101,11 +104,41 @@ class TimeCounterController extends SuperController {
       TimerResponse timerResponse = TimerResponse.fromJson(response.data!);
       if (timerResponse.checkStartOrStopTimeline != null) {
 
-        print("timmer ${timerResponse.checkStartOrStopTimeline!.startDate!}");
-        DateTime timestamp =
-        DateTime.parse(timerResponse.checkStartOrStopTimeline!.startDate!);
+
+
+        DateTime timestamp = DateTime.parse(timerResponse.checkStartOrStopTimeline!.startDate!);
         Duration duration = DateTime.now().difference(timestamp);
         _seconds = duration.inSeconds;
+
+            // final timeZone = Get.find<AppSettingController>().orgSetting?.getOrganizationSetting?.timeZone ?? "";
+//
+// final startTimeNow = formatDateTimeWithZone(
+//           dateTimeInput: DateTime.now().toString(),
+//           timeZone: timeZone,
+//         );
+//
+//
+//
+//    final startTimeFromServer = formatDateTimeWithZone(
+//           dateTimeInput: timestamp.toString(),
+//           timeZone: timeZone,
+//         );
+//
+//
+//         print('''
+//         zone $timeZone
+//         startTime1 $startTimeNow
+//         timezone_now_time : ${startTimeFromServer
+//
+//
+//         },
+//
+//         both: ${DateFormat("yyyy-MM-dd hh:mm a").format(DateTime.parse(startTimeFromServer))}
+//         normal_time $timestamp
+//
+//         ''');
+
+
         start();
         Get.find<TimeCounterController>().isRunningHorizontalLine(true);
       } else {
@@ -114,6 +147,11 @@ class TimeCounterController extends SuperController {
     }
     isLoading(false);
   }
+
+
+
+
+
 
   void _timeViewAccordingToTime(hours, minutes, seconds) {
     if (_twoDigits(hours) == "00" && _twoDigits(minutes) == "00") {

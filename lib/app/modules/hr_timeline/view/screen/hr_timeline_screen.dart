@@ -229,7 +229,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   _timerStringOpenBtn({required time}) {
     return startTimerOpenBtn(
         bgBtnColor: AppColor.secondaryColor,
-        onAction: () => Get.toNamed(Routes.TIMER_SCREEN),
+        onAction: () => Get.toNamed(Routes.ADMIN_TIMER_SCREEN),
         btnText: time.toString());
   }
 
