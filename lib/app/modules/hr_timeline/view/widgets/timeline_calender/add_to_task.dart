@@ -136,7 +136,7 @@ class AddToTaskScreen extends StatelessWidget {
                 showCustomAlertDialog(
                     context: context,
                     onConfirm: () async {
-                      Get.find<HrTimelineController>().removeTimelineEntry();
+                      Get.find<TimelineGlobalController>().removeTimelineEntry();
                     },
                     iconData: CupertinoIcons.delete,
                     titleText: AppString.text_remove_timelog.tr,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
@@ -151,14 +152,10 @@ void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
   showCustomAlertDialog(
       context: context,
       onConfirm: () async {
-        await Get.find<TimelineController>()
-            .removeTimeEntry(timeLogId: taskInfo.timeLineId)
-            .then((value) {
-          if (value == true) {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          }
-        });
+        await Get.find<TimelineGlobalController>()
+            .removeTimelineEntry(timeLogId: taskInfo.timeLineId);
+        Get.back(canPop: false);
+        Get.back(canPop: false);
       },
       iconData: Icons.delete_outline_outlined,
       titleText: AppString.text_remove_timelog.tr,
@@ -168,16 +165,21 @@ void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
       confirmButtonText: "",
       extraInfoText: "",
       descriptionFontSize: Dimensions.fontSizeDefault - 1,
-      confirmButtonChild: Obx(() => removeTextLayout()));
+      confirmButtonChild: Obx(() => Get.find<TimelineGlobalController>()
+              .isTimelogEntryOrRemoveLoading
+              .isTrue
+          ? const CupertinoActivityIndicator(
+              color: Colors.white,
+            )
+          : removeTextLayout()));
 }
 
 removeTextLayout() {
-  return  Text(
-          AppString.text_remove.tr,
-          style: AppStyle.normal_text_grey.copyWith(
-              fontSize: Dimensions.fontSizeDefault + 1,
-              color: AppColor.cardColor),
-        );
+  return Text(
+    AppString.text_remove.tr,
+    style: AppStyle.normal_text_grey.copyWith(
+        fontSize: Dimensions.fontSizeDefault + 1, color: AppColor.cardColor),
+  );
 }
 
 _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
@@ -185,7 +187,6 @@ _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
     padding: marginLayout,
     child: CustomAppButton(
       borderRadius: 30,
-
       buttonText: Text(
         AppString.text_details.tr,
         style: AppStyle.mid_large_text.copyWith(

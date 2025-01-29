@@ -50,15 +50,18 @@ class TaskSolidLayout extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+
         Text(
           endDateTime.isNotEmpty
               ? timeFormatTo24h(DateTime.parse(endDateTime))
               : timeFormatTo24h(DateTime.now()),
+
           style: AppStyle.mid_large_text.copyWith(
               color: statusColor,
               fontSize: Dimensions.fontSizeDefault - 2,
               overflow: TextOverflow.ellipsis),
         ),
+
         Icon(
           statusIcon,
           color: iconColor,

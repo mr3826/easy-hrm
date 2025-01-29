@@ -64,16 +64,7 @@ class HrTimelineController extends GetxController with StateMixin {
 
 
 
- Future<bool?> removeTimelineEntry({String ?timeLogId}) async {
-    String? id=  timeLogId ?? Get.find<TimelineGlobalController>().startOrEndTimerResponse?.startOrStopTimer?.id ?? "";
-    isTimelogEntryOrRemoveLoading(true);
-    bool response= await _timelineDataSource.removeTimelineEntry(timeLogId:id.toString());
-    if(response){
-    _updateRouteWithTimeEntry();
-    }
-    isTimelogEntryOrRemoveLoading(false);
-    return null;
-  }
+
 
 
   getTimelineCalenderByDate({String ?startDate, String ?endDate,String ?orgId}) async {
@@ -378,21 +369,7 @@ class HrTimelineController extends GetxController with StateMixin {
     super.disposeId(id);
   }
 
-  void _updateRouteWithTimeEntry() {
-    showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-    _refreshTimeline();
-    Get.off(() => const MainScreen(routeIndex: 0));
-    TimelineGlobalController controller=Get.find<TimelineGlobalController>();
 
-    controller.taskId.value = "";
-    controller.taskName.value = "";
-    controller.projectColor.value = "";
-
-    Get.find<TimeCounterController>().isTotalCount(true);
-    descriptionController.clear();
-    Get.find<TimeCounterController>().reset();
-    isTimelogEntryOrRemoveLoading(false);
-  }
 
 
 

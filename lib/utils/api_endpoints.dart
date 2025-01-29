@@ -628,6 +628,61 @@ query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
 ''';
 
 
+// const getCalendarTimelineQuery = r'''
+// query GET_CALENDAR_TIMELINES($queryData: TimelinesQueryDataInputType, $optionData: OptionDataType) {
+//   getCalenderTimelines(queryData: $queryData, optionData: $optionData) {
+//     data {
+//       timelines {
+//         id
+//         start_date
+//         end_date
+//         organization_user {
+//           id
+//         }
+//         status
+//         description
+//         logged_total_seconds
+//         project {
+//           id
+//           name
+//           color
+//         }
+//         task {
+//           id
+//           name
+//           project_id
+//           project {
+//             id
+//             name
+//             color
+//           }
+//         }
+//       }
+//       leaves {
+//         id
+//         type
+//         start_date
+//         end_date
+//         status
+//         organization_user {
+//           id
+//         }
+//         leaveType {
+//           id
+//           name
+//         }
+//         leave_details {
+//           date
+//           leave_seconds
+//           schedule_seconds
+//         }
+//       }
+//     }
+//   }
+// }
+// ''';
+
+
 
 
 /// notification apis

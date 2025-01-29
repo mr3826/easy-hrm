@@ -238,6 +238,7 @@ class TimeLineCalendar extends StatelessWidget {
                           .substring(1, projectColor.toString().length - 1),
                     )
                   : LeaveRecordDetails(
+
                       status: status
                           .toString()
                           .substring(1, status.toString().length - 1),
@@ -314,6 +315,7 @@ class TimeLineCalendar extends StatelessWidget {
                             type: type.substring(1, type.length - 1)),
                       ),
                       leaveId: '',
+
                     ),
             );
           },
