@@ -62,7 +62,7 @@ class HrTimelineController extends GetxController with StateMixin {
   CalendarTimeline calendarTimeline = CalendarTimeline();
 
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
-  final isTimelogEntryOrRemoveLoading = false.obs;
+ final isTimelogEntryOrRemoveLoading = false.obs;
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;

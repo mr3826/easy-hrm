@@ -454,7 +454,7 @@ Widget _newEntryEndTime({required BuildContext context}) {
 }
 
 _removeTextLayout() {
-  return Get.find<HrTimelineController>().isTimelogEntryOrRemoveLoading.value
+  return Get.find<TimelineGlobalController>().isTimelogEntryOrRemoveLoading.value
       ? const CupertinoActivityIndicator(
           color: AppColor.cardColor,
         )

@@ -100,6 +100,8 @@ class TimeCounterController extends SuperController {
     } else {
       TimerResponse timerResponse = TimerResponse.fromJson(response.data!);
       if (timerResponse.checkStartOrStopTimeline != null) {
+
+        print("timmer ${timerResponse.checkStartOrStopTimeline!.startDate!}");
         DateTime timestamp =
         DateTime.parse(timerResponse.checkStartOrStopTimeline!.startDate!);
         Duration duration = DateTime.now().difference(timestamp);
@@ -178,4 +180,3 @@ class TimeCounterController extends SuperController {
     restoreElapsedTime();
   }
 }
-

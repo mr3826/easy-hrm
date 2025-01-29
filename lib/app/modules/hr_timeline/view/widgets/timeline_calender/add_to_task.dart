@@ -93,6 +93,7 @@ class AddToTaskScreen extends StatelessWidget {
   }
 
   _buildButton(BuildContext context) {
+    ///For employee only save button
     if (isEmployee) {
       return Get.find<EmployeeTimelineController>()
               .isTimelogEntryOrRemoveLoading
@@ -115,7 +116,8 @@ class AddToTaskScreen extends StatelessWidget {
               },
               buttonColor: AppColor.primaryColor);
     } else {
-      return Get.find<HrTimelineController>()
+      ///For admin  save button and remove button
+      return Get.find<TimelineGlobalController>()
               .isTimelogEntryOrRemoveLoading
               .isTrue
           ? const Center(
@@ -127,9 +129,7 @@ class AddToTaskScreen extends StatelessWidget {
           : CustomDoubleAppButton(
               buttonText: AppString.text_save.tr,
               onAction: () async {
-                Get.find<TimelineGlobalController>().saveTimelineEntry(
-                    taskId: Get.find<TimelineGlobalController>().taskId.value,
-                    projectId: Get.find<TimelineGlobalController>().projectId.value);
+                Get.find<TimelineGlobalController>().saveTimelineEntry();
               },
               cancelText: AppString.text_remove,
               cancelAction: () {
@@ -154,7 +154,7 @@ class AddToTaskScreen extends StatelessWidget {
                     extraInfoText: "",
                     descriptionFontSize: Dimensions.fontSizeDefault,
                     confirmButtonChild: Obx(() =>
-                        Get.find<HrTimelineController>()
+                        Get.find<TimelineGlobalController>()
                                 .isTimelogEntryOrRemoveLoading
                                 .value
                             ? const CupertinoActivityIndicator(

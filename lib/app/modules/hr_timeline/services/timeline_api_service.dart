@@ -102,17 +102,17 @@ class TimelineApiService {
         "start_date": startDate,
         "end_date": endDate,
         "status": "pending",
-        "task_id": taskId,
         "project_id": projectId,
         "timeline_id": timelineId
       }
     };
 
-    if (taskId != null) {
+    if (taskId != null && taskId.isNotEmpty) {
       variables["inputData"]?["task_id"] = taskId;
     }
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: saveTimerQueryData, variables: variables);
+    print('saveTimelineEntry_service : ${response.data}');
     return response.data;
   }
 

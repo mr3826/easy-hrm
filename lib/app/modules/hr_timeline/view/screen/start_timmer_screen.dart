@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/enum.dart';
@@ -35,11 +34,13 @@ class StartTimerForAdmin extends StatelessWidget {
           _buildCurrentDate(),
           _buildStartTimer(
             onTap: () async {
+
               if (Get.find<TimeCounterController>().isRunning.isFalse) {
-                await Get.find<TimelineGlobalController>()
-                    .startOrEndTimer(timerType: StartOrEndTimer.start.name);
+                await Get.find<TimelineGlobalController>().startOrEndTimer(timerType: StartOrEndTimer.start.name);
                 Get.find<TimeCounterController>().isRunningHorizontalLine(true);
               }
+
+
             },
           ),
           const Spacer(
@@ -47,7 +48,7 @@ class StartTimerForAdmin extends StatelessWidget {
           ),
           Obx(
             () => Get.find<TimelineGlobalController>()
-                    .isStartAndEndTimerLoading
+                    .isEndTimerLoading
                     .isTrue
                 ? const CupertinoActivityIndicator(
                     color: AppColor.cardColor,
@@ -56,48 +57,10 @@ class StartTimerForAdmin extends StatelessWidget {
                     onAction: () async {
                       if (Get.find<TimeCounterController>().isRunning.isTrue) {
 
-
                         await Get.find<TimelineGlobalController>().startOrEndTimer(timerType: StartOrEndTimer.end.name)
                             .then((value) {
-                          Get.find<TimelineGlobalController>()
-                              .getProjectList()
-                              .then((v) {
-
-                            final timelineController = Get.find<TimelineGlobalController>();
-                            final hrTimelineController = Get.find<TimelineGlobalController>();
-
-                            final taskInfo = timelineController.projectDropDownResponse?.getProjectsDropdown?.first;
-
-                            hrTimelineController.taskName.value = taskInfo?.name ?? "";
-                            hrTimelineController.projectId.value = taskInfo?.id ?? "";
-                            hrTimelineController.projectColor.value = taskInfo?.color ?? "";
-
-
-                            if (taskInfo?.tasks != null && taskInfo!.tasks!.isNotEmpty) {
-
-                              hrTimelineController.taskId.value = taskInfo.tasks!.first.taskId.toString();
-
-                            }
-
-
-                            print('''
-                            
-                     
-                            task_name: ${Get.find<TimelineGlobalController>().taskName.value}
-                            projectId : ${ Get.find<TimelineGlobalController>().projectId.value}
-                            task_id : ${ Get.find<TimelineGlobalController>().taskId.value}
-                            task_color : ${ Get.find<TimelineGlobalController>().projectColor.value}
-                            
-                        
-                        
-                            ''');
-
-
-
-                          });
+                          Get.find<TimelineGlobalController>().getProjectList();
                           if (context.mounted) {
-
-
                             customButtonSheet(
                                 height: .6,
                                 context: context,
@@ -105,8 +68,6 @@ class StartTimerForAdmin extends StatelessWidget {
                                 child: const AddToTaskScreen(
                                   isEmployee: false,
                                 ));
-
-
                           }
                         });
                       }

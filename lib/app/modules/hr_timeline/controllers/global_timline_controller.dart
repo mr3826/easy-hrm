@@ -21,7 +21,7 @@ class TimelineGlobalController extends GetxController {
   final isProistLoading = false.obs;
   final isManualEntryLoading = false.obs;
   final isUpdateTimeLogLoading = false.obs;
-  final isStartAndEndTimerLoading = false.obs;
+  final isStartTimerLoading = false.obs;
   final isEndTimerLoading = false.obs;
   final isTimelogEntryOrRemoveLoading = false.obs;
   RxBool isValueChangeForTimeLogUpdate = false.obs;
@@ -53,34 +53,53 @@ class TimelineGlobalController extends GetxController {
     if (taskInfo?.tasks != null && taskInfo!.tasks!.isNotEmpty) {
       taskId.value = taskInfo.tasks!.first.taskId.toString();
     }
+
+    print('''
+                            
+                     
+                            task_name: ${Get.find<TimelineGlobalController>().taskName.value}
+                            projectId : ${ Get.find<TimelineGlobalController>().projectId.value}
+                            task_id : ${ Get.find<TimelineGlobalController>().taskId.value}
+                            task_color : ${ Get.find<TimelineGlobalController>().projectColor.value}
+                            
+                        
+                        
+                            ''');
+
     isProjectListLoading(false);
     return null;
   }
 
-  Future<bool> saveTimelineEntry({
-    String? taskId,
-    required String projectId,
-  }) async {
-    isProjectListLoading(true);
+  Future<bool> saveTimelineEntry() async {
+    isTimelogEntryOrRemoveLoading(true);
     bool? response = await _timelineDataSource.saveTimelineEntry(
         des: descriptionController.text,
         startDate:
             _formatDate(startOrEndTimerResponse?.startOrStopTimer?.startDate),
         endDate:
             _formatDate(startOrEndTimerResponse?.startOrStopTimer?.endDate),
-        taskId: taskId ?? "",
-        projectId: projectId,
+        taskId: taskId.value,
+        projectId: projectId.value,
         timelineId: startOrEndTimerResponse?.startOrStopTimer?.id ?? "");
 
     if (response == true) {
       showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
+
       _refreshTimeline();
+
       Get.find<TimeCounterController>().reset();
+
       Get.find<TimeCounterController>().isTotalCount(true);
+
       Get.to(() => const MainScreen(routeIndex: 0));
+
+      taskId.value = "";
+      taskName.value = '';
+      projectId.value = '';
+      orgUserId.value = '';
     }
 
-    isProjectListLoading(false);
+    isTimelogEntryOrRemoveLoading(false);
     return false;
   }
 
@@ -104,13 +123,23 @@ class TimelineGlobalController extends GetxController {
 
   Future<bool> startOrEndTimer({required String timerType}) async {
     if (timerType == StartOrEndTimer.end.name) {
-      isStartAndEndTimerLoading(true);
-    } else {
       isEndTimerLoading(true);
+    } else {
+      isStartTimerLoading(true);
     }
 
-    startOrEndTimerResponse =
-        await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
+    startOrEndTimerResponse = await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
+
+    print('''
+    startOrEndTimer : =>
+    type: $timerType
+    start_date : ${
+        startOrEndTimerResponse?.startOrStopTimer?.startDate
+    }   end_date : ${
+        startOrEndTimerResponse?.startOrStopTimer?.endDate
+    }
+    
+    ''');
     if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
       showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
       Get.find<TimeCounterController>().start();
@@ -122,10 +151,11 @@ class TimelineGlobalController extends GetxController {
         Get.find<TimeCounterController>().isRunningHorizontalLine(false);
       }
     }
-    if (timerType == StartOrEndTimer.start.name) {
-      isStartAndEndTimerLoading(false);
-    } else {
+    if (timerType == StartOrEndTimer.end.name) {
       isEndTimerLoading(false);
+    } else {
+      isStartTimerLoading(false);
+
     }
     return true;
   }
