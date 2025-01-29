@@ -9,6 +9,7 @@ import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
+import '../../../../../../../modules/leave/domain/leave_type.dart';
 import '../../../../controller/global_profile_controller.dart';
 import '../../../../controller/leave_allowance_controller.dart';
 import 'leave_type.dart';
@@ -38,7 +39,10 @@ class LeaveAllowance extends GetView<HrProfileController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const LeaveTypeDropDown(),
+                  leaveTypeDropdown(
+                      items: [],
+                      initValue: '',
+                      onChanged: (GetAvailableLeaveTypes value) {}),
 
                   customSpacerHeight(height: 20),
 
@@ -240,10 +244,14 @@ class LeaveAllowance extends GetView<HrProfileController> {
   }
 
   Widget _buildButtons() {
-    final LeaveAllowanceController employmentController = Get.find<LeaveAllowanceController>();
+    final LeaveAllowanceController employmentController =
+        Get.find<LeaveAllowanceController>();
 
     // Determine if the Save button should be enabled
-    final bool isSaveEnabled = employmentController.applicationBalanceCount.value > 0 || employmentController.applicationMaxDaysCount.value > 0 || employmentController.daysCount > 0;
+    final bool isSaveEnabled =
+        employmentController.applicationBalanceCount.value > 0 ||
+            employmentController.applicationMaxDaysCount.value > 0 ||
+            employmentController.daysCount > 0;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
@@ -271,8 +279,10 @@ class LeaveAllowance extends GetView<HrProfileController> {
               onPressed: () {
                 if (isSaveEnabled) {
                   controller.updateORGLeaveAvailability(
-                    maximumConsecutiveDays: employmentController.applicationMaxDaysCount.value,
-                    numberOfApplication: employmentController.applicationBalanceCount.value,
+                    maximumConsecutiveDays:
+                        employmentController.applicationMaxDaysCount.value,
+                    numberOfApplication:
+                        employmentController.applicationBalanceCount.value,
                     numberOfDays: employmentController.daysCount.value,
                     calculateAllowanceBy: controller.calculateAllowanceBy.value,
                   );

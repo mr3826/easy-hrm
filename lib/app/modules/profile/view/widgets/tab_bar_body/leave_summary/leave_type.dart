@@ -117,8 +117,7 @@ class _ApplyLeaveDropDownState extends State<LeaveTypeDropDown> {
 }
 
 Widget leaveTypeDropdown(
-    {required String title,
-    required List<GetAvailableLeaveTypes> items,
+    {required List<GetAvailableLeaveTypes> items,
     required String initValue,
     bool isRequired = false,
     required ValueChanged<GetAvailableLeaveTypes> onChanged}) {
