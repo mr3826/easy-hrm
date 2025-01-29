@@ -13,7 +13,6 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
 import '../../../../controllers/global_timline_controller.dart';
-import '../../../../controllers/hr_timeline_controller.dart';
 
 class BuildTaskView extends StatelessWidget {
   const BuildTaskView({super.key});
@@ -33,11 +32,11 @@ class BuildTaskView extends StatelessWidget {
               const TaskSearchInputField(),
               customSpacerHeight(height: 12),
               Obx(() {
-                if (Get.find<HrTimelineController>().isLoading.isTrue) {
+                if (Get.find<TimelineGlobalController>().isProjectListLoading.isTrue) {
                   return const Center(child: CupertinoActivityIndicator());
                 }
 
-                final projectDropDownResponse = Get.find<HrTimelineController>().projectDropDownResponse;
+                final projectDropDownResponse = Get.find<TimelineGlobalController>().projectDropDownResponse;
                 if (projectDropDownResponse?.getProjectsDropdown?.isEmpty ??
                     true) {
                   return Center(
@@ -70,7 +69,7 @@ class BuildTaskView extends StatelessWidget {
 _projectListLayout(int index, context) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Get.find<HrTimelineController>()
+    child: Get.find<TimelineGlobalController>()
                 .projectDropDownResponse
                 ?.getProjectsDropdown?[index]
                 .name !=
@@ -83,12 +82,12 @@ _projectListLayout(int index, context) {
                 child: Icon(
                   Icons.circle,
                   size: 13,
-                  color: Get.find<HrTimelineController>()
+                  color: Get.find<TimelineGlobalController>()
                               .projectDropDownResponse
                               ?.getProjectsDropdown?[index]
                               .color !=
                           null
-                      ? HexColor(Get.find<HrTimelineController>()
+                      ? HexColor(Get.find<TimelineGlobalController>()
                               .projectDropDownResponse
                               ?.getProjectsDropdown?[index]
                               .color ??
@@ -108,7 +107,7 @@ _projectListLayout(int index, context) {
                         /// pass its name to task name
 
                         if (Get.find<TimelineGlobalController>().projectId.value !=
-                            Get.find<HrTimelineController>()
+                            Get.find<TimelineGlobalController>()
                                 .projectDropDownResponse
                                 ?.getProjectsDropdown?[index]
                                 .projectId) {
@@ -117,19 +116,19 @@ _projectListLayout(int index, context) {
                         }
 
                         Get.find<TimelineGlobalController>().taskName.value =
-                            Get.find<HrTimelineController>()
+                            Get.find<TimelineGlobalController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .name ??
                                 "";
                         Get.find<TimelineGlobalController>().projectId.value =
-                            Get.find<HrTimelineController>()
+                            Get.find<TimelineGlobalController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .projectId ??
                                 "";
                         Get.find<TimelineGlobalController>().projectColor.value =
-                            Get.find<HrTimelineController>()
+                            Get.find<TimelineGlobalController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .color ??
@@ -140,7 +139,7 @@ _projectListLayout(int index, context) {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        Get.find<HrTimelineController>()
+                        Get.find<TimelineGlobalController>()
                                 .projectDropDownResponse
                                 ?.getProjectsDropdown?[index]
                                 .name ??
@@ -153,7 +152,7 @@ _projectListLayout(int index, context) {
                     customSpacerHeight(height: 8),
                     Column(
                       children: [
-                        ...?Get.find<HrTimelineController>()
+                        ...?Get.find<TimelineGlobalController>()
                             .projectDropDownResponse
                             ?.getProjectsDropdown?[index]
                             .tasks
@@ -169,7 +168,7 @@ _projectListLayout(int index, context) {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...?Get.find<HrTimelineController>()
+              ...?Get.find<TimelineGlobalController>()
                   .projectDropDownResponse
                   ?.getProjectsDropdown?[index]
                   .tasks

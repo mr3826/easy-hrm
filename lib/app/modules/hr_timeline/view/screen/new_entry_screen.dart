@@ -18,7 +18,7 @@ class AddTimeEntryScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppbar(title: AppString.text_new_entry.tr),
       backgroundColor: AppColor.bgColorWithTimeline,
-      body: const BuildNewEntryTextField(),
+      body: const BuildNewEntryTextField(isEmployee: false,), //todo
     );
   }
 

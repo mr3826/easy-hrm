@@ -28,14 +28,15 @@ import 'build_task_view.dart';
 import 'new_entry_duration_time_with_status.dart';
 
 class BuildNewEntryTextField extends StatelessWidget {
+  final bool isEmployee;
   final bool? isFromUpdateTimelogEntry;
   final String? status;
   const BuildNewEntryTextField(
-      {this.isFromUpdateTimelogEntry = false, this.status, super.key});
+      {this.isFromUpdateTimelogEntry = false, this.status, required this.isEmployee,super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.find<HrTimelineController>().isTimeInvalid(false);
+    Get.find<TimelineGlobalController>().isTimeInvalid(false);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -50,8 +51,12 @@ class BuildNewEntryTextField extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSpacerHeight(height: 12),
-                _employeeSearch(),
-                customSpacerHeight(height: 20),
+
+                if(isEmployee==false)...[
+                  _employeeSearch(context),
+                  customSpacerHeight(height: 20),
+                ]
+               ,
                 customAppTitleText(text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 Obx(() => _dateLayoutField()),
@@ -60,10 +65,12 @@ class BuildNewEntryTextField extends StatelessWidget {
                 customSpacerHeight(height: 20),
                 Obx(() => _timerLayout(context)),
                 customSpacerHeight(height: 20),
-                customAppTitleText(text: AppString.text_status.tr, isRequired: true),
-                customSpacerHeight(height: 8),
-                _buildStatusTabSelector(),
-                customSpacerHeight(height: 20),
+                if(isEmployee==false)...[
+                  customAppTitleText(text: AppString.text_status.tr, isRequired: true),
+                  customSpacerHeight(height: 8),
+                  _buildStatusTabSelector(),
+                  customSpacerHeight(height: 20),
+                ],
                 customAppTitleText(text: AppString.text_project_or_task.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 _selectedTaskLayout(context),
@@ -151,7 +158,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   _timeInvalidMessage() {
-    return Get.find<HrTimelineController>().isTimeInvalid.isTrue
+    return Get.find<TimelineGlobalController>().isTimeInvalid.isTrue
         ? Text(
             AppString.inputTimeInvalidMessage.tr,
             style:
@@ -316,18 +323,23 @@ class BuildNewEntryTextField extends StatelessWidget {
     );
   }
 
-  _employeeSearch() {
+  _employeeSearch(BuildContext context) {
     return CustomSearchBar(
-      onValueSelected: (value) {},
-      onClickRouteAction: () {},
-      userInfo: (data) {
+      onValueSelected: (String orgId) async {
+        Navigator.pop(context);
+        Get.find<TimelineGlobalController>().orgUserId(orgId);
+      },
+      onClearAction: () async {
+        Get.find<TimelineGlobalController>().orgUserId.value="";
       },
     );
   }
 
   /// Builds a horizontal tab selector for leave status options.
   Widget _buildStatusTabSelector() {
-    final leaveController = Get.find<HrTimelineController>();
+    RxInt selectedStatusIndex = 0.obs;
+    final List<String> statusOptions = ["Pending", "Approved"];
+
     return SizedBox(
       height: AppLayout.getHeight(44),
       child: Container(
@@ -338,25 +350,28 @@ class BuildNewEntryTextField extends StatelessWidget {
           Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
         ),
         child: ListView.builder(
-          itemCount: leaveController.statusOptions.length,
+          itemCount: statusOptions.length,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return Obx(() {
               // Checks if the current index is selected.
-              final isSelected = index == leaveController.selectedStatusIndex.value;
+              final isSelected = index == selectedStatusIndex.value;
               return GestureDetector(
-                onTap: () => leaveController.selectedStatusIndex.value = index,
+                onTap: (){
+                  selectedStatusIndex.value = index;
+                  Get.find<TimelineGlobalController>().status(selectedStatusIndex.value==0?"pending":"approved");
+                },
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
                     color:
-                    isSelected ? AppColor.pendingColor : Colors.transparent,
+                    isSelected ? selectedStatusIndex.value==0?   AppColor.pendingColor:AppColor.successColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    leaveController.statusOptions[index],
+                    statusOptions[index],
                     style: AppStyle.normal_text.copyWith(
                       color:
                       isSelected ? AppColor.cardColor : AppColor.hintColor,

@@ -14,7 +14,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 
 
 
-Widget taskInputFieldLayout({required Function onAction,String? projectName,String ?color}) {
+Widget taskInputFieldLayout({required Function onAction}) {
   return InkWell(
     onTap: () => onAction(),
     child: Container(
@@ -28,27 +28,27 @@ Widget taskInputFieldLayout({required Function onAction,String? projectName,Stri
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          color !=null
+          Get.find<TimelineGlobalController>().projectId.value.isNotEmpty
               ? Padding(
             padding: const EdgeInsets.only(top: 2),
             child: Icon(
               Icons.circle,
               size: 14,
               color: HexColor(
-                color,
+                Get.find<TimelineGlobalController>().projectColor.value,
               ),
             ),
           )
               : Container(),
           customSpacerWidth(width: 8),
           Expanded(
-            child: projectName !=null
+            child:  Get.find<TimelineGlobalController>().taskName.value.isNotEmpty
                 ? SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
                       Text(
-                        projectName,
+                        Get.find<TimelineGlobalController>().taskName.value,
                         style: AppStyle.mid_large_text.copyWith(
                           fontSize: Dimensions.fontSizeDefault + 1,
                           color: AppColor.normalTextColor,

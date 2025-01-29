@@ -40,7 +40,6 @@ class HrTimelineController extends GetxController with StateMixin {
   final isTimelineSummaryByDateLoading = false.obs;
   final isUpdateTimeLogLoading = false.obs;
   // final taskName = "".obs;
-  final isTimeInvalid = false.obs;
   // final taskId = "".obs;
   // final projectId = "".obs;
   RxString selectedSummaryDate = "".obs;
@@ -57,7 +56,6 @@ class HrTimelineController extends GetxController with StateMixin {
   /// The index of the selected time entry status, used for updating time entry status (e.g., Pending, Approved).
   RxInt selectedStatusIndex = 0.obs;
   /// List of status options to categorize leave requests (e.g., Pending, Approved).
-  final List<String> statusOptions = ["Pending", "Approved"];
   /// Method to check if the button should be enabled
   //RxBool isValueChangeForTimeLogUpdate = false.obs;
   TextEditingController descriptionController =TextEditingController();
@@ -307,10 +305,7 @@ class HrTimelineController extends GetxController with StateMixin {
   // createManualEntry() async {
   //   isManualEntryLoading(true);
   //
-  //   Duration timeDifference = DateTime.parse(
-  //       "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-  //       .difference(DateTime.parse(
-  //       "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+  //   Duration timeDifference = DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").difference(DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
   //   if (!timeDifference.isNegative) {
   //     isTimeInvalid(false);
   //     final response = await NetworkClient()

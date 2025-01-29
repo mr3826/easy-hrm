@@ -67,12 +67,6 @@ class AddToTaskScreen extends StatelessWidget {
 
   _selectedTaskLayout(BuildContext context) {
     return taskInputFieldLayout(
-        color: isEmployee == true
-            ? Get.find<EmployeeTimelineController>().projectColor.value
-            : Get.find<TimelineGlobalController>().projectColor.value,
-        projectName: isEmployee == true
-            ? Get.find<EmployeeTimelineController>().taskName.value
-            : Get.find<TimelineGlobalController>().taskName.value,
         onAction: () {
           customButtonSheet(
               context: context,

@@ -4,6 +4,7 @@ import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_co
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/success_message.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../common/widget/warning_message.dart';
 import '../../../../enum.dart';
 import '../../../../modules/timeline/model/start_or_end_timer_response.dart';
 import '../../../../utils/app_string.dart';
@@ -24,6 +25,7 @@ class TimelineGlobalController extends GetxController {
   final isEndTimerLoading = false.obs;
   final isTimelogEntryOrRemoveLoading = false.obs;
   RxBool isValueChangeForTimeLogUpdate = false.obs;
+  final isTimeInvalid = false.obs;
 
   String addTimeLogId = "";
   RxString taskId = "".obs;
@@ -31,9 +33,10 @@ class TimelineGlobalController extends GetxController {
   RxString projectId = "".obs;
   RxString projectColor = "".obs;
   RxString timeLineId = "".obs;
+  RxString orgUserId = "".obs;
+  RxString status = "".obs;
 
-
-  TextEditingController descriptionController=TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   ProjectDropDownResponse? projectDropDownResponse;
   StartOrEndTimerResponse? startOrEndTimerResponse;
@@ -46,7 +49,7 @@ class TimelineGlobalController extends GetxController {
 
     taskName.value = taskInfo?.name ?? "";
     projectId.value = taskInfo?.id ?? "";
-   projectColor.value = taskInfo?.color ?? "";
+    projectColor.value = taskInfo?.color ?? "";
     if (taskInfo?.tasks != null && taskInfo!.tasks!.isNotEmpty) {
       taskId.value = taskInfo.tasks!.first.taskId.toString();
     }
@@ -55,31 +58,31 @@ class TimelineGlobalController extends GetxController {
   }
 
   Future<bool> saveTimelineEntry({
-     String? taskId,
+    String? taskId,
     required String projectId,
   }) async {
     isProjectListLoading(true);
-   bool? response=  await _timelineDataSource.saveTimelineEntry(
+    bool? response = await _timelineDataSource.saveTimelineEntry(
         des: descriptionController.text,
-        startDate: _formatDate(startOrEndTimerResponse?.startOrStopTimer?.startDate),
-        endDate: _formatDate(startOrEndTimerResponse?.startOrStopTimer?.endDate),
-        taskId: taskId??"",
+        startDate:
+            _formatDate(startOrEndTimerResponse?.startOrStopTimer?.startDate),
+        endDate:
+            _formatDate(startOrEndTimerResponse?.startOrStopTimer?.endDate),
+        taskId: taskId ?? "",
         projectId: projectId,
         timelineId: startOrEndTimerResponse?.startOrStopTimer?.id ?? "");
 
-   if(response==true){
-     showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
-     _refreshTimeline();
-     Get.find<TimeCounterController>().reset();
-     Get.find<TimeCounterController>().isTotalCount(true);
-     Get.to(() => const MainScreen(routeIndex: 0));
-   }
+    if (response == true) {
+      showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
+      _refreshTimeline();
+      Get.find<TimeCounterController>().reset();
+      Get.find<TimeCounterController>().isTotalCount(true);
+      Get.to(() => const MainScreen(routeIndex: 0));
+    }
 
     isProjectListLoading(false);
     return false;
   }
-
-
 
   removeTimelineEntry({String? timeLogId}) async {
     String? id = addTimeLogId.isNotEmpty ? addTimeLogId : timeLogId;
@@ -127,62 +130,58 @@ class TimelineGlobalController extends GetxController {
     return true;
   }
 
-
-
-
-
-
-
-
-
   Future<bool?> createManualEntry() async {
     isManualEntryLoading(true);
-    bool? response= await   _timelineDataSource.createManualEntry(
-      startDate: DateTime.parse(
-          "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
-          .toUtc()
-          .toString(),
-
-      endDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString(),
-      des: descriptionController.text,
-      projectId: projectId.toString(),
-      taskId: taskId.toString()
-    );
-    if(response){
-      showSuccessMessage(message: "Time entry created successfully");
-      taskId.value = "";
-      taskName.value = '';
-      projectId.value = '';
-      descriptionController.clear();
-      Get.off(() => const MainScreen(routeIndex: 0));
-      _refreshTimeline();
+    Duration timeDifference = DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+        .difference(DateTime.parse(
+            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+    if (!timeDifference.isNegative) {
+      bool? response = await _timelineDataSource.createManualEntry(startDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString(),
+          endDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString(),
+          des: descriptionController.text,
+          projectId: projectId.value,
+          taskId: taskId.value,
+          orgId: orgUserId.value,
+          status:status.value
+      );
+      if (response) {
+        showSuccessMessage(message: "Time entry created successfully");
+        taskId.value = "";
+        taskName.value = '';
+        projectId.value = '';
+        orgUserId.value = '';
+        status.value = '';
+        descriptionController.clear();
+        Get.off(() => const MainScreen(routeIndex: 0));
+        _refreshTimeline();
+      }
+    } else {
+      showWarningMessage(message: "Provide a valid project/task ");
     }
-
     isManualEntryLoading(false);
     return null;
   }
 
-
-
-
-
-
   Future<bool?> updateTimelineLogDetails() async {
     isUpdateTimeLogLoading(true);
-    bool? response= await   _timelineDataSource.updateTimelineLogDetails(
-      startDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-
-      endDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
+    bool? response = await _timelineDataSource.updateTimelineLogDetails(
+      startDate:
+          "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
+      endDate:
+          "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
       des: descriptionController.text,
       projectId: projectId.toString(),
-      taskId: taskId.toString(), timelineId: timeLineId.toString(),
+      taskId: taskId.toString(),
+      timelineId: timeLineId.toString(),
     );
-    if(response){
+    if (response) {
       showSuccessMessage(message: "Time entry update successfully");
       taskId.value = "";
       taskName.value = '';
       projectId.value = '';
       timeLineId.value = '';
+      orgUserId.value = '';
+      status.value = '';
       descriptionController.clear();
       Get.off(() => const MainScreen(routeIndex: 0));
       _refreshTimeline();
@@ -192,48 +191,17 @@ class TimelineGlobalController extends GetxController {
     return null;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   /// Formats the date string to UTC format. Defaults to the current date and time if [date] is null.
   String _formatDate(String? date) {
     return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
   }
 
-
   @override
   void dispose() {
-   descriptionController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
-
 }
-
-
-
-
-
-
-
-
 
 bool isEmployee = false;
 
@@ -268,4 +236,3 @@ _refreshTimeline() async {
             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
   }
 }
-

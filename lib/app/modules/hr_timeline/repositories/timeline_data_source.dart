@@ -15,7 +15,8 @@ abstract class TimelineDataSource {
   Future<ProjectDropDownResponse?>  getProjectList({required String searchText});
   Future<bool> removeTimelineEntry({required String timeLogId});
   Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String des,required String projectId,required String timelineId,String ?taskId});
-  Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId});
+  Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status});
+
   Future<bool?> saveTimelineEntry({required String des,required String startDate,required String endDate,required String taskId,required String projectId,required String timelineId});}
 
 
@@ -116,21 +117,22 @@ class TimelineDataImpl implements TimelineDataSource {
 
 
  @override
- Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId}) async {
+ Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status}) async {
 
-    print('''
-    startDate $startDate
-    endDate $endDate
-    des $des
-    projectId $projectId
-    taskId $taskId
-    
- 
-    ''');
-   try {
-     Map<String, dynamic>? response =
-     await  _timelineApiService.createManualEntry( startDate, endDate, des, projectId,taskId);
-     print("createManualEntry : $response");
+   print('''
+   startDate $startDate
+   endDate $endDate
+   des $des
+   projectId $projectId
+   taskId $taskId
+   orgId $orgId
+   status $status
+   
+   ''');
+
+
+    try {
+     Map<String, dynamic>? response = await  _timelineApiService.createManualEntry( startDate, endDate, des, projectId,taskId,orgId,status);
      if (response != null) {
        return true;
      }
@@ -139,6 +141,11 @@ class TimelineDataImpl implements TimelineDataSource {
    }
    return false;
  }
+
+
+
+
+
 
  @override
  Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String des,required String projectId,required String timelineId,String ?taskId}) async {

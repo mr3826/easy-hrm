@@ -46,10 +46,8 @@ class EmployeeApiService {
     return response.data;
   }
 
-  Future<Map<String, dynamic>?>? terminateAUser(
-      TerminateUserModel terminateUserModel) async {
-    QueryResult<Object?> response =
-        await _apiService.gqlCall(queryString: terminateAOrgUser, variables: {
+  Future<Map<String, dynamic>?>? terminateAUser(TerminateUserModel terminateUserModel) async {
+    QueryResult<Object?> response = await _apiService.gqlCall(queryString: terminateAOrgUser, variables: {
       "inputData": {
         "org_user_id": terminateUserModel.orgUserId,
         "status_type": terminateUserModel.terminationTypeEnum,
