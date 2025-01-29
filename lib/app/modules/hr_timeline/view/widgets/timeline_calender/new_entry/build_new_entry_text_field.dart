@@ -23,7 +23,6 @@ import '../../../../../../../common/widget/timePicker/date_time_picker_controlle
 import '../../../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
 import '../../../../controllers/global_timline_controller.dart';
-import '../../../../controllers/hr_timeline_controller.dart';
 import 'build_task_view.dart';
 import 'new_entry_duration_time_with_status.dart';
 
@@ -32,7 +31,10 @@ class BuildNewEntryTextField extends StatelessWidget {
   final bool? isFromUpdateTimelogEntry;
   final String? status;
   const BuildNewEntryTextField(
-      {this.isFromUpdateTimelogEntry = false, this.status, required this.isEmployee,super.key});
+      {this.isFromUpdateTimelogEntry = false,
+      this.status,
+      required this.isEmployee,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,19 +47,16 @@ class BuildNewEntryTextField extends StatelessWidget {
             decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24))),
             padding: marginLayout.copyWith(top: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSpacerHeight(height: 12),
-
-                if(isEmployee==false)...[
-                  _employeeSearch(context),
-                  customSpacerHeight(height: 20),
-                ]
-               ,
-                customAppTitleText(text: AppString.text_date.tr, isRequired: true),
+                _buildEmployeeSearch(context),
+                customAppTitleText(
+                    text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 Obx(() => _dateLayoutField()),
                 customSpacerHeight(height: 8),
@@ -65,19 +64,17 @@ class BuildNewEntryTextField extends StatelessWidget {
                 customSpacerHeight(height: 20),
                 Obx(() => _timerLayout(context)),
                 customSpacerHeight(height: 20),
-                if(isEmployee==false)...[
-                  customAppTitleText(text: AppString.text_status.tr, isRequired: true),
-                  customSpacerHeight(height: 8),
-                  _buildStatusTabSelector(),
-                  customSpacerHeight(height: 20),
-                ],
-                customAppTitleText(text: AppString.text_project_or_task.tr, isRequired: true),
+                _buildStatus(),
+                customAppTitleText(
+                    text: AppString.text_project_or_task.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 _selectedTaskLayout(context),
                 customSpacerHeight(height: 20),
                 customAppTitleText(text: AppString.text_description.tr),
                 customSpacerHeight(height: 8),
-                InputNote(controller: Get.find<TimelineGlobalController>().descriptionController),
+                InputNote(
+                    controller: Get.find<TimelineGlobalController>()
+                        .descriptionController),
                 customSpacerHeight(height: 20),
                 _buildButton(context),
                 customSpacerHeight(height: 40)
@@ -274,8 +271,7 @@ class BuildNewEntryTextField extends StatelessWidget {
         return const Center(child: CupertinoActivityIndicator());
       }
 
-      final isValueChanged =
-          timelineController.isValueChangeForTimeLogUpdate.value;
+      bool isValueChanged = timelineController.isValueChangeForTimeLogUpdate.value||timelineController.status.value=="approved";
 
       return CustomDoubleAppButton(
         buttonText: isFromUpdateTimelogEntry == true
@@ -290,7 +286,6 @@ class BuildNewEntryTextField extends StatelessWidget {
                   timelineController.updateTimelineLogDetails();
                 } else {
                   timelineController.createManualEntry();
-
                 }
               }
             : () {},
@@ -306,10 +301,10 @@ class BuildNewEntryTextField extends StatelessWidget {
     showCustomAlertDialog(
       context: context,
       onConfirm: () async {
-      //  final result = await controller.removeTimeEntry(timeLogId: controller.timeLineID);
-      //   if (result == true) {
-      //     Navigator.pop(context);
-      //   }
+        final result = await controller.removeTimelineEntry();
+        if (result == true) {
+          Navigator.pop(context);
+        }
       },
       iconData: CupertinoIcons.delete,
       titleText: AppString.text_remove_timelog.tr,
@@ -330,7 +325,7 @@ class BuildNewEntryTextField extends StatelessWidget {
         Get.find<TimelineGlobalController>().orgUserId(orgId);
       },
       onClearAction: () async {
-        Get.find<TimelineGlobalController>().orgUserId.value="";
+        Get.find<TimelineGlobalController>().orgUserId.value = "";
       },
     );
   }
@@ -338,6 +333,11 @@ class BuildNewEntryTextField extends StatelessWidget {
   /// Builds a horizontal tab selector for leave status options.
   Widget _buildStatusTabSelector() {
     RxInt selectedStatusIndex = 0.obs;
+
+    if (isFromUpdateTimelogEntry == true) {
+      status == "pending" ? selectedStatusIndex(0) : selectedStatusIndex(1);
+    }
+
     final List<String> statusOptions = ["Pending", "Approved"];
 
     return SizedBox(
@@ -347,7 +347,7 @@ class BuildNewEntryTextField extends StatelessWidget {
           color: AppColor.cardColor,
           borderRadius: BorderRadius.circular(4),
           border:
-          Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
+              Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
         ),
         child: ListView.builder(
           itemCount: statusOptions.length,
@@ -358,15 +358,19 @@ class BuildNewEntryTextField extends StatelessWidget {
               // Checks if the current index is selected.
               final isSelected = index == selectedStatusIndex.value;
               return GestureDetector(
-                onTap: (){
+                onTap: () {
                   selectedStatusIndex.value = index;
-                  Get.find<TimelineGlobalController>().status(selectedStatusIndex.value==0?"pending":"approved");
+                  Get.find<TimelineGlobalController>().status(
+                      selectedStatusIndex.value == 0 ? "pending" : "approved");
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
-                    color:
-                    isSelected ? selectedStatusIndex.value==0?   AppColor.pendingColor:AppColor.successColor : Colors.transparent,
+                    color: isSelected
+                        ? selectedStatusIndex.value == 0
+                            ? AppColor.pendingColor
+                            : AppColor.successColor
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   alignment: Alignment.center,
@@ -374,7 +378,7 @@ class BuildNewEntryTextField extends StatelessWidget {
                     statusOptions[index],
                     style: AppStyle.normal_text.copyWith(
                       color:
-                      isSelected ? AppColor.cardColor : AppColor.hintColor,
+                          isSelected ? AppColor.cardColor : AppColor.hintColor,
                     ),
                   ),
                 ),
@@ -384,6 +388,30 @@ class BuildNewEntryTextField extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _buildStatus() {
+    if (isEmployee == false) {
+      return Column(
+        children: [
+          customAppTitleText(text: AppString.text_status.tr, isRequired: true),
+          customSpacerHeight(height: 8),
+          _buildStatusTabSelector(),
+          customSpacerHeight(height: 20),
+        ],
+      );
+    }
+  }
+
+  _buildEmployeeSearch(BuildContext context) {
+    if (isEmployee == false) {
+      return Column(
+        children: [
+          _employeeSearch(context),
+          customSpacerHeight(height: 20),
+        ],
+      );
+    }
   }
 }
 
@@ -454,7 +482,9 @@ Widget _newEntryEndTime({required BuildContext context}) {
 }
 
 _removeTextLayout() {
-  return Get.find<TimelineGlobalController>().isTimelogEntryOrRemoveLoading.value
+  return Get.find<TimelineGlobalController>()
+          .isTimelogEntryOrRemoveLoading
+          .value
       ? const CupertinoActivityIndicator(
           color: AppColor.cardColor,
         )

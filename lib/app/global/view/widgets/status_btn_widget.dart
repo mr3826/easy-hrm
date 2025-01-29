@@ -7,15 +7,13 @@ import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
-import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../../common/widget/custom_dialog.dart';
-import '../../../../../utils/utils.dart';
-import '../../../../timeline/view/screen/update_timeline.dart';
+import '../../../../common/widget/custom_dialog.dart';
+import '../../../../modules/timeline/view/screen/update_timeline.dart';
 
 Widget approvedStatusBtn() {
   return CustomStatusButton(
@@ -211,19 +209,17 @@ _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
 }
 
 void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
-  Get.find<TimelineController>().timeLogStatus = taskInfo.status ?? "";
-  Get.find<TimelineController>().timeLineID = taskInfo.timeLineId ?? "";
-  Get.find<TimelineController>().taskId.value = taskInfo.taskId ?? "";
-  Get.find<TimelineController>().projectId.value = taskInfo.projectId ?? "";
-  Get.find<TimelineController>().projectColor.value =
-      taskInfo.projectColor ?? "";
-  Get.find<TimelineController>().taskName.value =
-      taskInfo.taskOrProjectName ?? "";
-
-  descriptionController.text = taskInfo.description ?? "";
+  Get.find<TimelineGlobalController>().status.value = taskInfo.status ?? "";
+  Get.find<TimelineGlobalController>().taskId.value = taskInfo.timeLineId ?? "";
+  Get.find<TimelineGlobalController>().taskId.value = taskInfo.taskId ?? "";
+  Get.find<TimelineGlobalController>().projectId.value = taskInfo.projectId ?? "";
+  Get.find<TimelineGlobalController>().projectColor.value = taskInfo.projectColor ?? "";
+  Get.find<TimelineGlobalController>().taskName.value = taskInfo.taskOrProjectName ?? "";
+  Get.find<TimelineGlobalController>().descriptionController.text = taskInfo.description ?? "";
+  Get.find<TimelineGlobalController>().timeLineId.value = taskInfo.timeLineId ?? "";
 
   ///Initially we get data from serve and don't need to update any thing. so..
   ///value=false
   ///if data change then value became true
-  Get.find<TimelineController>().isValueChangeForTimeLogUpdate(false);
+  Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(false);
 }

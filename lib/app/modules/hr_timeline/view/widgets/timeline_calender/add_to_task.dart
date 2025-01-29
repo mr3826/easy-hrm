@@ -20,7 +20,7 @@ import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../../../modules/leave/presentation/view/widget/custom_title_text_widget.dart';
-import '../../../../../../modules/leave/presentation/view/widget/status_btn_widget.dart';
+import '../../../../../global/view/widgets/status_btn_widget.dart';
 
 class AddToTaskScreen extends StatelessWidget {
   final bool isEmployee;

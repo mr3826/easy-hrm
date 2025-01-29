@@ -111,7 +111,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     log("getTimelineCalenderByDate start & end ==>$startDate And $endDate");
     calendarTimeline= await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId)??CalendarTimeline();
 
-    calendarTimeline.getCalenderTimelinesForApp?.timelines?.forEach((e){
+    calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.forEach((e){
 
       print(''''
     get_timeline_response :
@@ -131,7 +131,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
       }
     }
     timelogList?.clear();
-    timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+    timelogList = calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
       ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "",
@@ -161,7 +161,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
           title: '',
           description: objData);
     }).toList();
-    timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
+    timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.data?.leaves
         ?.map((e) {
       //todo
       /// add files info
@@ -657,7 +657,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
         }
       }
 
-      timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+      timelogList = calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",
@@ -689,7 +689,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
       }).toList();
 
       timelogList?.addAll(
-          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.leaves?.map((e) {
             //todo
             /// add files info
             ModelForDescription modelForDescription = ModelForDescription(

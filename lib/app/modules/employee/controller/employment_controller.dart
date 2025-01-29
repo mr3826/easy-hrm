@@ -7,7 +7,6 @@ import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source
 import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/profile/model/user_profile.dart';
-
 import '../../../../../modules/leave/domain/leave_record_response.dart' as lr;
 import '../model/employee_info.dart';
 import '../model/user_work_info_dropdown.dart' as emp_wrk_inf;
@@ -123,9 +122,9 @@ class EmploymentController extends GetxController with StateMixin {
       "optionData": {"limit": 20, "offset": 0}
     };
 
-    final EmployeeInfo? employees =
-        await _employeeDataSource.getEmployees(queryVariable: queryMap);
+    final EmployeeInfo? employees = await _employeeDataSource.getEmployees(queryVariable: queryMap);
     searchedEmployeeList = employees?.getOrganizationUsers?.data ?? [];
+
     isSearchInfoLoading(false);
   }
 

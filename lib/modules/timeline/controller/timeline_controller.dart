@@ -539,7 +539,21 @@ class TimelineController extends GetxController with StateMixin {
 
     final responseForCalendar = await NetworkClient()
         .graphRequest(queryString: getCalendarTimelineQuery, variables: {
-      "queryData": {"start_time": startDate, "end_time": endDate}
+      "queryData": {
+        "org_user_ids": [
+          "0871acc7-644b-4a9a-b329-a9f6430e35c6"
+        ],
+        "start_date": "2025-01-26T00:00:00.000Z",
+        "end_date": "2025-01-26T23:59:59.999Z"
+      },
+      "optionData": {
+        "limit": 1000000000,
+        "order": [
+          [
+            "user"
+          ]
+        ]
+      }
     });
 
     if (responseForCalendar.hasException) {
@@ -558,7 +572,7 @@ class TimelineController extends GetxController with StateMixin {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
       timelogList =
-          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",
@@ -588,7 +602,7 @@ class TimelineController extends GetxController with StateMixin {
             title: '',
             description: objData);
       }).toList();
-      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
+      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.data?.leaves
               ?.map((e) {
             //todo
             /// add files info
@@ -673,7 +687,7 @@ class TimelineController extends GetxController with StateMixin {
       }
 
       timelogList =
-          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",
@@ -705,7 +719,7 @@ class TimelineController extends GetxController with StateMixin {
       }).toList();
 
       timelogList?.addAll(
-          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.leaves?.map((e) {
                 //todo
                 /// add files info
                 ModelForDescription modelForDescription = ModelForDescription(

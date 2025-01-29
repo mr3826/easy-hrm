@@ -14,7 +14,7 @@ abstract class TimelineDataSource {
   Future<StartOrEndTimerResponse?> startOrEndTimer({required String timerTyp});
   Future<ProjectDropDownResponse?>  getProjectList({required String searchText});
   Future<bool> removeTimelineEntry({required String timeLogId});
-  Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String des,required String projectId,required String timelineId,String ?taskId});
+  Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String status,required String des,required String projectId,required String timelineId,String ?taskId});
   Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status});
 
   Future<bool?> saveTimelineEntry({required String des,required String startDate,required String endDate,required String taskId,required String projectId,required String timelineId});}
@@ -28,7 +28,6 @@ class TimelineDataImpl implements TimelineDataSource {
   @override
   Future<TimelineSummaryByDate?> getTimelineSummaryByDate({required String startDate, required String endDate,String ?orgUserId}) async {
     QueryResult<Object?> response = await _timelineApiService.getTimelineSummary(startDate, endDate,orgUserId: orgUserId);
-    print("getTimelineSummaryByDate :: $response");
     if (response.data != null) {
       return TimelineSummaryByDate.fromJson(response.data!);
     }
@@ -136,10 +135,10 @@ class TimelineDataImpl implements TimelineDataSource {
 
 
  @override
- Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String des,required String projectId,required String timelineId,String ?taskId}) async {
+ Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String status,required String des,required String projectId,required String timelineId,String ?taskId}) async {
    try {
      Map<String, dynamic>? response =
-     await  _timelineApiService.updateTimelineLogDetails( startDate, endDate, des, projectId, timelineId,taskId);
+     await  _timelineApiService.updateTimelineLogDetails( startDate, endDate, des, projectId, timelineId,status,taskId);
      if (response != null) {
        return true;
      }
@@ -153,22 +152,9 @@ class TimelineDataImpl implements TimelineDataSource {
 
  @override
  Future<bool?> saveTimelineEntry({required String des,required String startDate,required String endDate,required String taskId,required String projectId,required String timelineId}) async {
-
-
-    print('''
-    saveTimelineEntry=> 
-    des $des
-    startDate $startDate
-    endDate $endDate
-    taskId $taskId
-    projectId $projectId
-    timelineId $timelineId
-    ''');
-
    try {
      Map<String, dynamic>? response =
      await  _timelineApiService.saveTimelineEntry( des,  startDate,  endDate,  projectId,  timelineId, taskId);
-     print("saveTimelineEntry: ${response}");
      if (response != null && response["updateTimelineEntry"] !=null) {
        return true;
      }

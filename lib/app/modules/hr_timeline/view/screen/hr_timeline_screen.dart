@@ -67,7 +67,11 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
             _sliverAppbarBody(_tabController),
           ],
         ),
-        floatingActionButton: Obx(()=>timerBtnLayout(context,()=> Get.to(const StartTimerScreen(isEmployee: false,)))),
+        floatingActionButton: Obx(() => timerBtnLayout(
+            context,
+            () => Get.to(const StartTimerScreen(
+                  isEmployee: false,
+                )))),
       ),
     );
   }
@@ -134,8 +138,9 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                     radius: 20,
                   )
                 : TimelineCalendar(
-                    timelineSummaryByDate: Get.find<TimelineGlobalController>().timelineSummaryByDate??TimelineSummaryByDate()
-        ))
+                    timelineSummaryByDate: Get.find<TimelineGlobalController>()
+                            .timelineSummaryByDate ??
+                        TimelineSummaryByDate()))
             : _buildTimeSheet(),
       ]),
     );
@@ -188,16 +193,11 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       onValueSelected: (String orgId) async {
         if (tabController.index == 0) {
           Navigator.pop(context);
+          String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+          String endDate = "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+          await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate, orgId: orgId);
+          await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate, orgId: orgId);
 
-          String startDate =
-              "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-          String endDate =
-              "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-
-          await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-              startDate: startDate, endDate: endDate, orgId: orgId);
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-              startDate: startDate, endDate: endDate, orgId: orgId);
         } else {
           Navigator.pop(context);
           Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
@@ -222,6 +222,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   }
 
   _buildSelectedDate() {
+
     return BuildSelectDateLayout(
       dateRange: (date) async {
         String startDate =
@@ -236,4 +237,3 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     );
   }
 }
-

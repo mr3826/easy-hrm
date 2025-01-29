@@ -14,7 +14,7 @@ import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/widget/status_btn_widget.dart';
+import 'package:payrun_mobile/app/global/view/widgets/status_btn_widget.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/screen/update_leave_screen.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';

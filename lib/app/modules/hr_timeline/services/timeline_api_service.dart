@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
-
 import '../../../../utils/api_endpoints.dart';
 
 class TimelineApiService {
@@ -48,13 +45,15 @@ class TimelineApiService {
       String startDate, String endDate,
       {String? orgUserId}) async {
     Map<String, Map<String, dynamic>> variables = {
-      "queryData": {
-        "start_time": startDate,
-        "end_time": endDate,
+      "queryData": {"start_date": startDate, "end_date": endDate},
+      "optionData": {
+        "order": [
+          ["user"]
+        ]
       }
     };
     if (orgUserId != null) {
-      variables["queryData"]?["org_user_id"] = orgUserId;
+      variables["queryData"]?["org_user_ids"] = orgUserId;
     }
     return await _apiService.gqlCall(
         queryString: getCalendarTimelineQuery, variables: variables);
@@ -81,21 +80,7 @@ class TimelineApiService {
 
   Future<Map<String, dynamic>?>? saveTimelineEntry(String des, String startDate,
       String endDate, String projectId, String timelineId,
-      [String? taskId]) async {
-    print('''
- 
-    Api_services: => 
-    
-    des $des
-    startDate $startDate
-    endDate $endDate
-    projectId $projectId
-    timelineId $timelineId
-    taskId $taskId
-    
-   
-    ''');
-
+      [String? taskId, String? status]) async {
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
         "description": des,
@@ -110,9 +95,9 @@ class TimelineApiService {
     if (taskId != null && taskId.isNotEmpty) {
       variables["inputData"]?["task_id"] = taskId;
     }
+
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: saveTimerQueryData, variables: variables);
-    print('saveTimelineEntry_service : ${response.data}');
     return response.data;
   }
 
@@ -127,61 +112,77 @@ class TimelineApiService {
     return response.data;
   }
 
-
-
-  Future<Map<String, dynamic>?>? createManualEntry(String startDate,String endDate,String des,String projectId,[String ?taskId,String ?orgId,String?status]) async {
+  Future<Map<String, dynamic>?>? createManualEntry(
+      String startDate, String endDate, String des, String projectId,
+      [String? taskId, String? orgId, String ?status]) async {
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
-        "start_date":startDate,
-        "end_date":endDate,
+        "start_date": startDate,
+        "end_date": endDate,
         "description": des,
-        "status": status?? "pending",
+        "status": status?.isNotEmpty == true ? status : "pending",
         "project_id": projectId,
       }
     };
+
     if (taskId != null && taskId.isNotEmpty) {
       variables["inputData"]?["task_id"] = taskId;
     }
     if (orgId != null && orgId.isNotEmpty) {
       variables["inputData"]?["org_user_id"] = orgId;
     }
-    QueryResult<Object?> response = await _apiService.gqlCall(queryString: createNewEntryQuery, variables: variables);
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: createNewEntryQuery, variables: variables);
     return response.data;
   }
 
-  Future<Map<String, dynamic>?>? terminateAUser(TerminateUserModel terminateUserModel) async {
-    QueryResult<Object?> response = await _apiService.gqlCall(queryString: terminateAOrgUser, variables: {
+  Future<Map<String, dynamic>?>? terminateAUser(
+      TerminateUserModel terminateUserModel) async {
+    QueryResult<Object?> response =
+        await _apiService.gqlCall(queryString: terminateAOrgUser, variables: {
       "inputData": {
         "org_user_id": terminateUserModel.orgUserId,
         "status_type": terminateUserModel.terminationTypeEnum,
         "termination_or_resignation_date":
-        terminateUserModel.terminationOrResignationDate,
+            terminateUserModel.terminationOrResignationDate,
         "termination_or_resignation_reason":
-        terminateUserModel.terminationOrResignationReason
+            terminateUserModel.terminationOrResignationReason
       }
     });
     return response.data;
   }
 
-
-
-  Future<Map<String, dynamic>?>? updateTimelineLogDetails(String startDate,String endDate,String des,String projectId,String timelineId,[String ?taskId]) async {
+  Future<Map<String, dynamic>?>? updateTimelineLogDetails(String startDate,
+      String endDate, String des, String projectId, String timelineId,
+      [String? status, String? taskId]) async {
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
-        "start_date":startDate,
-        "end_date":endDate,
+        "start_date": startDate,
+        "end_date": endDate,
         "description": des,
-        "status": "pending",
+        "status": status ?? "pending",
         "project_id": projectId,
-        "timeline_id":timelineId
+        "timeline_id": timelineId
       }
     };
-    if (taskId != null) {
+    print('''
+    startDate: $startDate
+    endDate $endDate
+    
+    des $des
+    projectId $projectId
+    timelineId $timelineId
+    
+    
+    
+    
+    ''');
+
+    if (taskId != null && taskId.isNotEmpty) {
       variables["inputData"]?["task_id"] = taskId;
     }
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: updateTimelineLogDetailsQueryData, variables: variables);
-
 
     return response.data;
   }

@@ -1,33 +1,39 @@
 import '../../../../modules/leave/domain/leave_record_response.dart';
 
+
 class CalendarTimeline {
   GetCalenderTimelinesForApp? getCalenderTimelinesForApp;
 
   CalendarTimeline({this.getCalenderTimelinesForApp});
 
   CalendarTimeline.fromJson(Map<String, dynamic> json) {
-    getCalenderTimelinesForApp = json['getCalenderTimelinesForApp'] != null
+    getCalenderTimelinesForApp = json['getCalenderTimelines'] != null
         ? GetCalenderTimelinesForApp.fromJson(
-            json['getCalenderTimelinesForApp'])
+        json['getCalenderTimelines'])
         : null;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (getCalenderTimelinesForApp != null) {
-      data['getCalenderTimelinesForApp'] = getCalenderTimelinesForApp!.toJson();
-    }
-    return data;
-  }
 }
 
 class GetCalenderTimelinesForApp {
+  CalendarData? data;
+  GetCalenderTimelinesForApp({this.data});
+
+  GetCalenderTimelinesForApp.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? new CalendarData.fromJson(json['data']) : null;
+  }
+
+}
+
+
+class CalendarData {
+
   List<Data>? leaves;
   List<Timelines>? timelines;
 
-  GetCalenderTimelinesForApp({this.leaves, this.timelines});
+  CalendarData({this.leaves, this.timelines});
 
-  GetCalenderTimelinesForApp.fromJson(Map<String, dynamic> json) {
+  CalendarData.fromJson(Map<String, dynamic> json) {
     if (json['leaves'] != null) {
       leaves = <Data>[];
       json['leaves'].forEach((v) {
@@ -42,14 +48,7 @@ class GetCalenderTimelinesForApp {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    if (this.timelines != null) {
-      data['timelines'] = this.timelines!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class Timelines {
@@ -64,13 +63,13 @@ class Timelines {
 
   Timelines(
       {this.id,
-      this.description,
-      this.endDate,
-      this.startDate,
-      this.status,
-      this.task,
-      this.totalMinutes,
-      this.project});
+        this.description,
+        this.endDate,
+        this.startDate,
+        this.status,
+        this.task,
+        this.totalMinutes,
+        this.project});
 
   Timelines.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,7 +80,7 @@ class Timelines {
     task = json['task'] != null ? Task.fromJson(json['task']) : null;
     totalMinutes = json['total_minutes'];
     project =
-        json['project'] != null ? Project.fromJson(json['project']) : null;
+    json['project'] != null ? Project.fromJson(json['project']) : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -7,8 +7,7 @@ import '../model/org_user_info.dart';
 import '../model/user_work_info_dropdown.dart';
 
 abstract class EmployeeDataSource {
-  Future<EmployeeInfo?> getEmployees(
-      {required Map<String, Map<String, Object>> queryVariable});
+  Future<EmployeeInfo?> getEmployees({required Map<String, Map<String, Object>> queryVariable});
 
   Future<EmploymentStatusList?>? getEmploymentsStatus();
 
@@ -72,8 +71,7 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
   }
 
   @override
-  Future<EmployeeInfo?> getEmployees(
-      {required Map<String, Map<String, Object>> queryVariable}) async {
+  Future<EmployeeInfo?> getEmployees({required Map<String, Map<String, Object>> queryVariable}) async {
     try {
       Map<String, dynamic>? response =
           await _employeeApiService.getEmployees(queryVariable: queryVariable);

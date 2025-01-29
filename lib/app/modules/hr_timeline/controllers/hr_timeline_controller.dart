@@ -68,6 +68,7 @@ class HrTimelineController extends GetxController with StateMixin {
 
 
   getTimelineCalenderByDate({String ?startDate, String ?endDate,String ?orgId}) async {
+    print("called_getTimelineCalenderByDate");
     isTimelineCalendarByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
@@ -76,7 +77,16 @@ class HrTimelineController extends GetxController with StateMixin {
     log("getTimelineCalenderByDate start & end ==>$startDate And $endDate org : $organizationId");
     calendarTimeline= await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId)??CalendarTimeline();
 
-    calendarTimeline.getCalenderTimelinesForApp?.timelines?.forEach((e){
+    calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.forEach((e){
+
+     print('''
+     check_model:
+     
+     ${e.startDate}
+     ${e.endDate}
+     ${e.status}
+     
+     ''');
 
     });
 
@@ -86,7 +96,7 @@ class HrTimelineController extends GetxController with StateMixin {
       }
     }
     timelogList?.clear();
-    timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+    timelogList = calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
       ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "",
@@ -116,7 +126,7 @@ class HrTimelineController extends GetxController with StateMixin {
           title: '',
           description: objData);
     }).toList();
-    timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
+    timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.data?.leaves
         ?.map((e) {
       /// add files info
       ModelForDescription modelForDescription = ModelForDescription(
@@ -271,7 +281,7 @@ class HrTimelineController extends GetxController with StateMixin {
         }
       }
 
-      timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+      timelogList = calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
             ModelForDescription modelForDescription = ModelForDescription(
                 status: e.status ?? "",
                 description: e.description ?? "",
@@ -303,7 +313,7 @@ class HrTimelineController extends GetxController with StateMixin {
           }).toList();
 
       timelogList?.addAll(
-          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.leaves?.map((e) {
             //todo
             /// add files info
             ModelForDescription modelForDescription = ModelForDescription(

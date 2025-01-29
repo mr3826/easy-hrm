@@ -104,12 +104,8 @@ class SearchEmployeeList extends StatelessWidget {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      itemCount: Get.find<EmploymentController>()
-                              .searchedEmployeeList
-                              ?.length ??
-                          0,
-                      itemBuilder: (context, index) {final employee = Get.find<EmploymentController>()
-                            .searchedEmployeeList?[index];
+                      itemCount: Get.find<EmploymentController>().searchedEmployeeList?.length ?? 0,
+                      itemBuilder: (context, index) {final employee = Get.find<EmploymentController>().searchedEmployeeList?[index];
                         return GestureDetector(
                           onTap: () {
                             Get.find<EmploymentController>()
@@ -148,8 +144,11 @@ class SearchEmployeeList extends StatelessWidget {
         onSearchChanged: (value) async {
           _onSearchValueChanged(value);
           if (value.isNotEmpty) {
-            await Get.find<EmploymentController>()
-                .getEmployeesBySearch(searchQuery: value);
+
+            print("value_text ::::::::::; $value");
+
+            await Get.find<EmploymentController>().getEmployeesBySearch(searchQuery: value);
+
           }
         },
         searchController: Get.find<EmploymentController>().searchController,

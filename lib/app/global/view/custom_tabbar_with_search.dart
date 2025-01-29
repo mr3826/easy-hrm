@@ -128,8 +128,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           child: Row(
             children: [
               customSpacerWidth(width: 12),
-              const Icon(CupertinoIcons.search,
-                  color: AppColor.hintColor, size: 25),
+              const Icon(CupertinoIcons.search, color: AppColor.hintColor, size: 25),
               customSpacerWidth(width: 8),
               if (profileImgKey.isNotEmpty)
                 CircularNetworkImage(
