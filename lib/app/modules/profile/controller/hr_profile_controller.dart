@@ -25,7 +25,6 @@ class HrProfileController extends GetxController with StateMixin {
   @override
   void onInit() {
     getUserProfile();
-
     super.onInit();
   }
 

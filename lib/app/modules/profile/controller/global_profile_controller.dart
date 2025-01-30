@@ -25,6 +25,7 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
+import '../../../../modules/leave/data/remote/leave_remote_data_source.dart';
 import '../../../global/controller/user_info_controller.dart';
 import '../../auth/models/signin_res.dart';
 import '../../../../common/controller/date_time_controller.dart';
@@ -120,7 +121,6 @@ class ProfileGlobalController extends GetxController with StateMixin {
   final isViewOrganizationLoading = false.obs;
   final isViewLeaveRecordLoading = false.obs;
   final isViewLeaveSummaryLoading = false.obs;
-  final isLeaveTypeLoading = false.obs;
 
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
@@ -135,13 +135,16 @@ class ProfileGlobalController extends GetxController with StateMixin {
   final editEmployeeIDController = TextEditingController();
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
-
-  List<GetLeaveRecordsForApp>? leaveRecordList;
-
-  LeaveTypeDropdown? leaveTypeDropdown;
+  final LeaveRemoteDataSource _remoteDataSource =
+      Get.find<LeaveRemoteDataSource>();
 
   RxInt offset = 0.obs;
   int limit = 30;
+
+  Future<LeaveTypeDropdown> getLeaveTypeDropdown() async {
+    return await _remoteDataSource.getLeaveTypeDropdown() ??
+        LeaveTypeDropdown();
+  }
 
   Future<void> getUserLogHistory() async {
     change(null, status: RxStatus.loading());
