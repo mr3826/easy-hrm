@@ -13,7 +13,7 @@ import '../../../../../utils/utils.dart';
 import '../../bindings/TimelineSummaryBindings.dart';
 
 class TimeLogSummary extends StatelessWidget {
- final bool isEmployee;
+  final bool isEmployee;
   const TimeLogSummary({super.key,required this.isEmployee});
 
   @override
@@ -32,49 +32,49 @@ class TimeLogSummary extends StatelessWidget {
           child: Column(
             children: [
               if(isEmployee==true)
-               SummaryTimeLogCalendar(),
+                SummaryTimeLogCalendar(),
 
               Obx(() => Get.find<TimelineSummaryController>()
-                      .isMonthlySummaryDataLoading
-                      .isTrue
+                  .isMonthlySummaryDataLoading
+                  .isTrue
                   ? Center(
-                      child: Padding(
-                          padding: EdgeInsets.only(top: Get.height * .35),
-                          child: const CupertinoActivityIndicator(
-                            color: Colors.blueAccent,
-                            radius: 18,
-                          )),
-                    )
-                  : Column(
-                      children: [
-                        workingScheduleLayout(
-                            schedule: getConvertSecondsToHours(
-                                Get.find<TimelineSummaryController>()
-                                        .timelineSummaryByDate
-                                        ?.getTimelogSummaryForApp
-                                        ?.totalScheduledSeconds.toString() ??
-                                    ""),
-                            balanceTime: getConvertSecondsToHours(
-                                Get.find<TimelineSummaryController>()
-                                        .timelineSummaryByDate
-                                        ?.getTimelogSummaryForApp
-                                        ?.balance.toString()  ??
-                                    ""),
-                            loggedTime: getConvertSecondsToHours(
-                                Get.find<TimelineSummaryController>()
-                                        .timelineSummaryByDate
-                                        ?.getTimelogSummaryForApp
-                                        ?.loggedTotalSeconds.toString()  ??
-                                    ""),
-                            paidLeave: getConvertSecondsToHours(
-                                Get.find<TimelineSummaryController>()
-                                        .timelineSummaryByDate
-                                        ?.getTimelogSummaryForApp
-                                        ?.totalLeavesSeconds.toString()  ??
-                                    "")),
-                        _timelogDetails()
-                      ],
+                child: Padding(
+                    padding: EdgeInsets.only(top: Get.height * .35),
+                    child: const CupertinoActivityIndicator(
+                      color: Colors.blueAccent,
+                      radius: 18,
                     )),
+              )
+                  : Column(
+                children: [
+                  workingScheduleLayout(
+                      schedule: getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.totalScheduledSeconds.toString() ??
+                              ""),
+                      balanceTime: getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.balance.toString()  ??
+                              ""),
+                      loggedTime: getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.loggedTotalSeconds.toString()  ??
+                              ""),
+                      paidLeave: getConvertSecondsToHours(
+                          Get.find<TimelineSummaryController>()
+                              .timelineSummaryByDate
+                              ?.getTimelogSummaryForApp
+                              ?.totalLeavesSeconds.toString()  ??
+                              "")),
+                  _timelogDetails()
+                ],
+              )),
             ],
           ),
         ),

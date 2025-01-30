@@ -9,6 +9,5 @@ class TimeSheetBindings extends Bindings{
     Get.lazyPut(()=>TimelineSummaryController(Get.find<TimelineDataSource>()));
   }
 
-
 }
 

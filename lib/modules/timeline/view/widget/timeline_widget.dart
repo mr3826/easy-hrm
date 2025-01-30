@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
@@ -13,6 +14,7 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../app/modules/hr_timeline/bindings/TimelineSummaryBindings.dart';
 import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import '../../../../app/modules/hr_timeline/view/screen/timelog_summary.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/utils.dart';
 
 Widget timelineLayout() {
@@ -89,10 +91,17 @@ Widget timelineLayout() {
 _tabToViewTimeLogSummery() {
   return GestureDetector(
     onTap: (){
+
       TimeSheetBindings().dependencies();
-      Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
+
+      Get.find<DateTimeController>().requestedDate.value=DateFormat('yyyy-MM-dd').format(DateTime.now());
+      Get.find<DateTimeController>().requestedEndDate.value=DateFormat('yyyy-MM-dd').format(DateTime.now());
       Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+
       Get.to(()=>const TimeLogSummary(isEmployee: true,));
+
+
+
     },
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,

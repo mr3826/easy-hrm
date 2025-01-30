@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
-import '../../../../common/controller/date_time_controller.dart';
+import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/dimensions.dart';
-import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 
 class SummaryTimeLogCalendar extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
@@ -33,7 +32,7 @@ class SummaryTimeLogCalendar extends StatelessWidget {
   ];
 
   final Map<int, List<String>> _dateMap =
-      _generateDateMap(DateTime.now().year - 1, DateTime.now().year + 1);
+  _generateDateMap(DateTime.now().year - 1, DateTime.now().year + 1);
 
   void _scrollToCurrentMonth() {
     _scrollToMonth(_controller.selectedValue.value);
@@ -57,15 +56,25 @@ class SummaryTimeLogCalendar extends StatelessWidget {
     _scrollToMonth(_controller.selectedValue.value);
 
     int monthNumber = monthToNumber[month] ?? 0;
-    // //add selected date info
-        Get.find<DateTimeController>().requestedDate.value =
+    // // //add selected date info
+    // Get.find<TimelineSummaryController>().selectedMonthStartDate.value =
+    // "${DateTime(year, monthNumber, 1, 0, 0, 0)}";
+    //
+    // Get.find<TimelineSummaryController>().selectedMonthEndDate.value =
+    // "${DateTime(year, monthNumber + 1, 0, 23, 59, 59)}";
+
+
+    print('''
         "${DateTime(year, monthNumber, 1, 0, 0, 0)}";
+      "${DateTime(year, monthNumber + 1, 2, 23, 59, 59)}";
+    
+    ''');
 
-    Get.find<DateTimeController>().requestedDate.value =
-        "${DateTime(year, monthNumber + 1, 0, 23, 59, 59)}";
 
-    await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
-    await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+    // await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
+    // await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+
+
   }
 
   @override
@@ -82,7 +91,7 @@ class SummaryTimeLogCalendar extends StatelessWidget {
             widgets.add(Card(
                 shape: roundedRectangleBorder.copyWith(
                     borderRadius:
-                        BorderRadius.circular(Dimensions.radiusExtraLarge)),
+                    BorderRadius.circular(Dimensions.radiusExtraLarge)),
                 elevation: 0,
                 color: AppColor.hintColor.withOpacity(0.8),
                 child: Padding(
@@ -103,30 +112,30 @@ class SummaryTimeLogCalendar extends StatelessWidget {
                 return Padding(
                   key: monthGlobalKey,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 18.0, vertical: 4),
+                  const EdgeInsets.symmetric(horizontal: 18.0, vertical: 4),
                   child: GestureDetector(
                     onTap: () => _handleMonthTap(entry.key, month),
                     child: Column(
                       children: [
                         Obx(() => Text(
-                              month,
-                              style: AppStyle.normal_text_grey.copyWith(
-                                  color: monthKey ==
-                                          _controller.selectedValue.value
-                                      ? AppColor.primaryColor
-                                      : AppColor.hintColor,
-                                  fontSize: monthKey ==
-                                          _controller.selectedValue.value
-                                      ? Dimensions.fontSizeDefault + 1
-                                      : Dimensions.fontSizeDefault),
-                            )),
+                          month,
+                          style: AppStyle.normal_text_grey.copyWith(
+                              color: monthKey ==
+                                  _controller.selectedValue.value
+                                  ? AppColor.primaryColor
+                                  : AppColor.hintColor,
+                              fontSize: monthKey ==
+                                  _controller.selectedValue.value
+                                  ? Dimensions.fontSizeDefault + 1
+                                  : Dimensions.fontSizeDefault),
+                        )),
                         Obx(() => monthKey == _controller.selectedValue.value
                             ? Text(
-                                entry.key.toString(),
-                                style: AppStyle.mid_large_text.copyWith(
-                                    color: AppColor.hintColor,
-                                    fontSize: Dimensions.fontSizeDefault),
-                              )
+                          entry.key.toString(),
+                          style: AppStyle.mid_large_text.copyWith(
+                              color: AppColor.hintColor,
+                              fontSize: Dimensions.fontSizeDefault),
+                        )
                             : Container()),
                       ],
                     ),

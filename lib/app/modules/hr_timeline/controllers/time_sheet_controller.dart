@@ -37,9 +37,6 @@ class TimeSheetController extends GetxController {
   }
 
 
-
-
-
   /// Clears the current date range and resets selection mode.
   void clearRange() {
     rangeStart.value = null;
@@ -106,12 +103,6 @@ class TimeSheetController extends GetxController {
     // Print the selected range
     log("Selected range: ${rangeStart.value} to ${rangeEnd.value}");
   }
-
-
-
-
-
-
 
 
 

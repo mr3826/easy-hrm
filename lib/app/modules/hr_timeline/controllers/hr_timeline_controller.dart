@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
-import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
@@ -16,9 +15,7 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/last_input_model.dart';
-import '../../../global/controller/timmer_controller.dart';
 import '../models/calendar_timeline.dart';
-import '../../../home/view/screen/main_screen.dart';
 import '../repositories/timeline_data_source.dart';
 import 'global_timline_controller.dart';
 
@@ -76,19 +73,6 @@ class HrTimelineController extends GetxController with StateMixin {
 
     log("getTimelineCalenderByDate start & end ==>$startDate And $endDate org : $organizationId");
     calendarTimeline= await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId)??CalendarTimeline();
-
-    calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.forEach((e){
-
-     print('''
-     check_model:
-     
-     ${e.startDate}
-     ${e.endDate}
-     ${e.status}
-     
-     ''');
-
-    });
 
     if (timelogList?.isNotEmpty??false) {
       for (var value in timelogList!) {

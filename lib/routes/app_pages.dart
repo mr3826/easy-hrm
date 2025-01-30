@@ -19,16 +19,12 @@ import '../app/modules/employee/bindings/update_org_user_binding.dart';
 import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
 import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
 import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
-import '../app/modules/hr_timeline/bindings/start_timer_bindings.dart';
 import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
-import '../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/timelog_summary.dart';
 import '../modules/notification/presentation/view/screen/notification.dart';
 import '../app/modules/onboard/view/onboarding_screen.dart';
-import '../modules/timeline/view/screen/new_entry.dart';
 
 part 'app_routes.dart';
 
