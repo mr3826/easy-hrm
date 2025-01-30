@@ -72,7 +72,6 @@ class TimelineGlobalController extends GetxController {
 
 
   Future<TimeEntryDetails?> getTimeEntryDetails({String? orgId,required String timelindId}) async {
-    print('timelindId : $timelindId');
     isTimeEntryLoading(true);
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
     timeEntryDetails = await _timelineDataSource.getTimeEntryDetails(timelineId: timelindId.toString(),orgId:organizationId);

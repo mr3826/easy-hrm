@@ -7,6 +7,7 @@ import '../models/time_entry_details.dart';
 import '../models/timeline_summary_by_date.dart';
 import '../models/calendar_timeline.dart';
 import '../models/time_sheet_model.dart';
+import '../models/timelog_entries_details.dart';
 import '../services/timeline_api_service.dart';
 
 abstract class TimelineDataSource {
@@ -17,6 +18,7 @@ abstract class TimelineDataSource {
   Future<ProjectDropDownResponse?>  getProjectList({required String searchText});
   Future<bool> removeTimelineEntry({required String timeLogId});
   Future<TimeEntryDetails?>  getTimeEntryDetails({required  String timelineId,required String orgId});
+  Future<TimeLogsEntriesDetails?> getTimeLogEntries({required String startDate, required String endDate,String ?orgUserId});
   Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String status,required String des,required String projectId,required String timelineId,String ?taskId});
   Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status});
   Future<TimelogDetailsByMonth?> getTimelogDetailsByMonth({required String startDate, required String endDate,String ?orgUserId});
@@ -41,6 +43,19 @@ class TimelineDataImpl implements TimelineDataSource {
     QueryResult<Object?> response = await _timelineApiService.getTimelogDetailsByMonth(startDate, endDate,orgUserId);
     if (response.data != null) {
       return TimelogDetailsByMonth.fromJson(response.data!);
+    }
+    return null;
+  }
+
+
+  @override
+  Future<TimeLogsEntriesDetails?> getTimeLogEntries({required String startDate, required String endDate,String ?orgUserId}) async {
+    QueryResult<Object?> response = await _timelineApiService.getTimeLogEntries(startDate, endDate,orgUserId);
+
+
+    print("getTimeLogEntries : ${response.data}");
+    if (response.data != null) {
+      return TimeLogsEntriesDetails.fromJson(response.data!);
     }
     return null;
   }

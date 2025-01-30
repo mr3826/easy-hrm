@@ -9,12 +9,11 @@ import 'package:payrun_mobile/modules/leave/domain/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import '../../../../app/modules/hr_timeline/view/widgets/timeline_calender/timelog_details.dart';
+import '../../../../app/modules/hr_timeline/view/widgets/timeline_calender/calendar_timelog_details.dart';
 import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../leave/domain/leave_records.dart';
-import '../widget/task_view_widget.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});

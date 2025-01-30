@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
@@ -12,6 +13,7 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../bindings/TimelineSummaryBindings.dart';
+import '../../../bindings/hr_timeline_bindings.dart';
 import '../../screen/timelog_summary.dart';
 
 class BuildTimesheetList extends GetView<TimeSheetController> {
@@ -36,6 +38,7 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
           padding: EdgeInsets.zero,
           itemBuilder: (context, index) {
             Data? data=controller.timeSheetModel?.getUsersTimeSheet?.data?[index];
+
             return _timeSheetDetailsCard(data??Data());
           },);
       }
@@ -52,6 +55,7 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
         Get.to(()=>const TimeLogSummary(isEmployee: false,));
         Get.find<TimelineSummaryController>().getTimelineSummaryByDate(orgId: orgId);
         Get.find<TimelineSummaryController>().getTimelogDetailsByMonth(orgId: orgId);
+        Get.find<HrTimelineController>().orgUserId=data.organizationUser?.id??"";
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

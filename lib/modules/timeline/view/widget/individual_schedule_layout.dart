@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/hr_timeline_bindings.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/timelog_summary_details.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
@@ -12,11 +16,12 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../app/global/view/widget/app_margin.dart';
+import '../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../utils/utils.dart';
 
 class IndividualTimeLayout extends StatelessWidget {
-final  bool isEmployee;
-  const IndividualTimeLayout({super.key,required this.isEmployee});
+  final bool isEmployee;
+  const IndividualTimeLayout({super.key, required this.isEmployee});
 
   @override
   Widget build(BuildContext context) {
@@ -32,43 +37,38 @@ final  bool isEmployee;
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () async {
-
-
               /// call api according to given date
               /// change showing date by updating request date value
 
+              DateTime requestedDate = DateTime.parse(
+                  Get.find<TimelineSummaryController>()
+                          .timelogDetailsByMonth
+                          ?.getDailyTimeEntries
+                          ?.data?[index]
+                          .entryDay ??
+                      DateTime.now().toString());
 
-              if(isEmployee==true){
-                DateTime requestedDate = DateTime.parse(
-                    Get.find<TimelineSummaryController>()
-                        .timelogDetailsByMonth
-                        ?.getDailyTimeEntries
-                        ?.data?[index]
-                        .entryDay ??
-                        DateTime.now().toString());
-
-                Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(requestedDate);
+              if (isEmployee == true) {
+                Get.find<DateTimeController>().requestedDate.value =
+                    DateFormat('yyyy-MM-dd').format(requestedDate);
 
                 Get.back(canPop: false);
 
                 await Get.find<EmployeeTimelineController>().getTimelineCalenderByDate(
                     startDate:
-                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                        "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                     endDate:
-                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
-
+                        "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
 
                 await Get.find<EmployeeTimelineController>().getTimelineSummaryByDate(
                     startDate:
-                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                        "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                     endDate:
-                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+                        "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+              } else {
+
+                _showLeaveRecordDetailsSheet(requestedDate);
               }
-
-
-
-
-
             },
             child: _infoTextLayout(index));
       },
@@ -218,6 +218,22 @@ final  bool isEmployee;
           ),
         ),
       ),
+    );
+  }
+
+  void _showLeaveRecordDetailsSheet(DateTime entryDate) {
+
+    Get.find<HrTimelineController>().getTimeEntryDetails(
+        startDate:
+            "${DateTime(entryDate.year, entryDate.month, entryDate.day, 0, 0, 0)}",
+        endDate:
+            "${DateTime(entryDate.year, entryDate.month, entryDate.day, 23, 59, 59)}",
+        orgUserId: Get.find<HrTimelineController>().orgUserId);
+
+    showCustomBottomSheet(
+      context: Get.context!,
+      height: MediaQuery.of(Get.context!).size.height / 1.5,
+      child: const TimeLogSummaryDetails(),
     );
   }
 

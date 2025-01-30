@@ -16,6 +16,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/last_input_model.dart';
 import '../models/calendar_timeline.dart';
+import '../models/timelog_entries_details.dart';
 import '../repositories/timeline_data_source.dart';
 import 'global_timline_controller.dart';
 
@@ -30,7 +31,9 @@ class HrTimelineController extends GetxController with StateMixin {
   final isTimelineCalendarByDateLoading = false.obs;
   final isTimelineSummaryByDateLoading = false.obs;
   final isUpdateTimeLogLoading = false.obs;
+  final isTimeEntryLoading = false.obs;
   RxString selectedSummaryDate = "".obs;
+  String orgUserId = "";
   RxInt selectedYearIndex = 10.obs;
   late Timer updateDataTime;
 
@@ -42,6 +45,7 @@ class HrTimelineController extends GetxController with StateMixin {
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
   TimelineSummaryByMonth? timelineSummaryByMonth;
+  TimeLogsEntriesDetails? timeLogsEntriesDetails;
 
 
 
@@ -60,6 +64,15 @@ class HrTimelineController extends GetxController with StateMixin {
   }
 
 
+
+
+  Future<TimeLogsEntriesDetails?> getTimeEntryDetails({required String startDate, required String endDate,String ?orgUserId}) async {
+    isTimeEntryLoading(true);
+    final String organizationId = orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    timeLogsEntriesDetails = await _timelineDataSource.getTimeLogEntries(startDate: startDate,endDate: endDate,orgUserId: organizationId,);
+    isTimeEntryLoading(false);
+    return null;
+  }
 
 
 

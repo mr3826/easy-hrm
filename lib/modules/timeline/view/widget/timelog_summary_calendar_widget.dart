@@ -6,7 +6,6 @@ import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controll
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/dimensions.dart';
-import '../../../../utils/utils.dart';
 
 class SummaryTimeLogCalendar extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();

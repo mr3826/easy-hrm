@@ -579,6 +579,38 @@ query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: Op
 }
 ''';
 
+const getTimeLogEntriesQuery = r'''
+query GET_TIMELINE_ENTRIES($queryData: TimelineEntriesQueryData, $optionData: OptionDataType) {
+  getTimeLineEntries(queryData: $queryData, optionData: $optionData) {
+    data {
+      id
+      start_date
+      end_date
+      status
+      description
+      logged_total_seconds
+      org_user_id
+      is_flagged_timelog
+      project {
+        id
+        name
+        color
+      }
+      task {
+        id
+        name
+        project_id
+        project {
+          id
+          name
+          color
+        }
+      }
+    }
+  }
+}
+''';
+
 const getTimeEntryDetailsQuery = r'''
 query GET_TIMELINE_ENTRY_DETAILS($queryData: TimeEntryDetailsQueryData) {
   getTimeEntryDetails(queryData: $queryData) {

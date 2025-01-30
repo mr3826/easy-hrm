@@ -120,6 +120,20 @@ class TimelineApiService {
   }
 
 
+    Future<QueryResult<Object?>> getTimeLogEntries(String startDate,String endDate,[String ?orgId]) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "start_date": startDate,
+        "end_date": endDate
+      },
+    };
+    if (orgId != null && orgId.isNotEmpty) {
+      variables["queryData"]?["org_user_id"] = orgId;
+    }
+    return await _apiService.gqlCall(queryString: getTimeLogEntriesQuery, variables: variables);
+  }
+
+
 
 
 
