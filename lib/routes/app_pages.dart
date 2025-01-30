@@ -16,6 +16,8 @@ import '../app/home/view/screen/main_screen.dart';
 import '../app/modules/employee/bindings/update_org_user_binding.dart';
 import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
 import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
+import '../app/modules/hr_dashboard/view/screens/all_candidates_screen.dart';
+import '../app/modules/hr_dashboard/view/screens/job_details_screen.dart';
 import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
 import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
@@ -60,12 +62,20 @@ class AppPages {
       page: () => ResetPasswordScreen(),
     ),
     GetPage(
+      name: _Paths.ALL_CANDIDATES,
+      transition: Transition.size,
+      page: () => AllCandidatesScreen(),
+    ),
+    GetPage(
+      name: _Paths.JOB_DETAILS,
+      transition: Transition.size,
+      page: () => JobDetailsScreen(),
+    ),
+    GetPage(
       name: _Paths.PASSWORD_UPDATE_SCRREN,
       transition: Transition.size,
       page: () => const PasswordUpdateScreen(),
     ),
-
-
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,
@@ -96,30 +106,21 @@ class AppPages {
       transition: Transition.size,
       page: () => const Dashboard(),
     ),
-
-
-
     GetPage(
       name: _Paths.NEW_ENTRY_SCREEN,
       transition: Transition.size,
       binding: AddNewEntryBindings(),
       page: () => const AddTimeEntryScreen(),
     ),
-
     GetPage(
       name: _Paths.EMPOLYEE_VIEW_PROFILE,
       transition: Transition.size,
       page: () => const EmployeeProfileViewScreen(),
     ),
-
     GetPage(
-      name: _Paths.EDIT_EMPOLYEE_VIEW,
-      transition: Transition.size,
-      page: () =>  EditEmployee(),
-      binding: UpdateOrgUserInfoBindings()
-
-    ),
-
-
+        name: _Paths.EDIT_EMPOLYEE_VIEW,
+        transition: Transition.size,
+        page: () => EditEmployee(),
+        binding: UpdateOrgUserInfoBindings()),
   ];
 }

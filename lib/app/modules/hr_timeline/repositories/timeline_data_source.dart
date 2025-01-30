@@ -103,7 +103,7 @@ class TimelineDataImpl implements TimelineDataSource {
     }
     return null;
   }catch(x){
-    log("startOrEndTimer $x");
+    log("startOrEndTimer_ex $x");
   }
   return null;
 

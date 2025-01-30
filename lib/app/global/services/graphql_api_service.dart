@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:payrun_mobile/common/widget/error_message.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../utils/api_endpoints.dart';
 import 'auth_token_service.dart';
 import 'token_refresh_service.dart';
@@ -88,6 +90,8 @@ class GraphQLApiService {
     );
     if (result.exception?.graphqlErrors != null) {
       print("result.hasException:: ${result.exception?.graphqlErrors[0].message}");
+
+      showErrorMessage(message: result.exception?.graphqlErrors[0].message.toString()??"Something want wrong");
     }
     return result;
   }

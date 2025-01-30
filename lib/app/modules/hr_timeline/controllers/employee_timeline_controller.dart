@@ -51,7 +51,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
 
   /// Method to check if the button should be enabled
   RxBool isValueChangeForTimeLogUpdate = false.obs;
-  RxBool   isTimelineSummaryLoading= false.obs;
+  RxBool isTimelineSummaryLoading = false.obs;
   TextEditingController descriptionController = TextEditingController();
   CalendarTimeline calendarTimeline = CalendarTimeline();
 
@@ -75,7 +75,8 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     super.onInit();
   }
 
-  getTimelineSummaryByDate({String? startDate, String? endDate, String? orgId}) async {
+  getTimelineSummaryByDate(
+      {String? startDate, String? endDate, String? orgId}) async {
     isTimelineSummaryByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
@@ -90,7 +91,8 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     isTimelineSummaryByDateLoading(false);
   }
 
-  getTimelineCalenderByDate({String? startDate, String? endDate, String? orgId}) async {
+  getTimelineCalenderByDate(
+      {String? startDate, String? endDate, String? orgId}) async {
     isTimelineCalendarByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
@@ -218,9 +220,9 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     isTimelineCalendarByDateLoading(false);
   }
 
-  getTimelineSummaryByMonth({required String startDate, required String endDate}) async {
+  getTimelineSummaryByMonth(
+      {required String startDate, required String endDate}) async {
     isTimelineSummaryLoading(true);
-
 
     final response = await NetworkClient()
         .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {

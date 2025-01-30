@@ -19,8 +19,6 @@ class TimeLogSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TimeSheetBindings().dependencies();
-
-
     return Scaffold(
       appBar: customAppbar(title: AppString.text_time_log_summary.tr),
       body: RefreshIndicator(

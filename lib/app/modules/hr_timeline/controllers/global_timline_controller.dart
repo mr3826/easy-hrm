@@ -24,8 +24,6 @@ class TimelineGlobalController extends GetxController {
   TimelineGlobalController(this._timelineDataSource);
 
 
-
-
   final isProjectListLoading = false.obs;
   final isProistLoading = false.obs;
   final isManualEntryLoading = false.obs;
@@ -110,17 +108,20 @@ class TimelineGlobalController extends GetxController {
     }
     startOrEndTimerResponse = await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
 
-    if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
-      showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
-      Get.find<TimeCounterController>().start();
-      _refreshTimeline();
-    } else {
-      if (Get.find<TimeCounterController>().timer.isActive &&
-          Get.find<TimeCounterController>().animationTimer.isActive) {
-        Get.find<TimeCounterController>().stop();
-        Get.find<TimeCounterController>().isRunningHorizontalLine(false);
+    if(startOrEndTimerResponse?.startOrStopTimer !=null){
+      if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
+        showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
+        Get.find<TimeCounterController>().start();
+        _refreshTimeline();
+      }else {
+        if (Get.find<TimeCounterController>().timer.isActive &&
+            Get.find<TimeCounterController>().animationTimer.isActive) {
+          Get.find<TimeCounterController>().stop();
+          Get.find<TimeCounterController>().isRunningHorizontalLine(false);
+        }
       }
     }
+
     if (timerType == StartOrEndTimer.end.name) {
       isEndTimerLoading(false);
     } else {

@@ -34,14 +34,9 @@ class StartTimerScreen extends StatelessWidget {
           _buildCurrentDate(),
           _buildStartTimer(
             onTap: () async {
-              if (Get.find<TimeCounterController>().isRunning.isFalse &&
-                  Get.find<TimelineGlobalController>()
-                          .startOrEndTimerResponse
-                          ?.startOrStopTimer !=
-                      null) {
+              if (Get.find<TimeCounterController>().isRunning.isFalse) {
                 await Get.find<TimelineGlobalController>()
                     .startOrEndTimer(timerType: StartOrEndTimer.start.name);
-
                 Get.find<TimeCounterController>().isRunningHorizontalLine(true);
               }
             },
