@@ -63,12 +63,12 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
                         ],
                       ),
                       _buildText("45m",AppColor.hintColor),
-                      _buildText("project"),
-                      _buildText("No task",AppColor.hintColor),
+                      _buildText(data?.project?.name??""),
+                      _buildText(data?.task??"No task added",AppColor.hintColor),
                       const SizedBox(height: 8,),
                       SizedBox(
                           width: AppLayout.getWidth(100),
-                          child: StatusBtnHelper.approvedStatusBtn())
+                          child: _showStatusButton(data?.status??""))
 
 
                     ],
@@ -92,7 +92,24 @@ Widget _buildText(String text,[Color? color,TextStyle ?textStyle]){
     )
 ;
 }
-
+  Widget _showStatusButton(String status) {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return StatusBtnHelper.approvedStatusBtn();
+      case 'rejected':
+        return StatusBtnHelper.rejectedStatusBtn();
+      case 'pending':
+        return StatusBtnHelper.pendingStatusBtn();
+      case 'taken':
+        return StatusBtnHelper.tokenStatusBtn();
+      case 'cancelled':
+        return StatusBtnHelper.cancelledStatusBtn();
+      case 'cancel':
+        return StatusBtnHelper.cancelStatusBtn();
+      default:
+        return Container();
+    }
+  }
 
   /// Builds the header containing profile image, name, and leave details.
   Widget _buildHeader({String? imageUrl, String? name, String? details}) {
