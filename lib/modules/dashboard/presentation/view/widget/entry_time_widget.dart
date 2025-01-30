@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import '../../../../../app/global/controller/timmer_controller.dart';
+import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_card_style.dart';
@@ -15,7 +16,6 @@ import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
-import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 
 Widget entryAndStartTimeLayout(context) {
   final TimeCounterController controller = Get.put(TimeCounterController());

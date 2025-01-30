@@ -14,8 +14,6 @@ abstract class Routes {
   static const LEAVE_SCREEN = _Paths.LEAVE_SCREEN;
   static const LEAVE_RECORD_SCREEN = _Paths.LEAVE_RECORD_SCREEN;
   static const NOTIFICATION_SCREEN = _Paths.NOTIFICATION_SCREEN;
-  static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
-  static const EDIT_PROFILE_SCREEN = _Paths.EDIT_PROFILE_SCREEN;
   static const NEW_ENTRY_SCREEN = _Paths.NEW_ENTRY_SCREEN;
   static const HOME_SCREEN = _Paths.HOME_SCREEN;
   static const SUBSCRIPTION_SCREEN = _Paths.SUBSCRIPTION_SCREEN;
@@ -41,8 +39,6 @@ abstract class _Paths {
   static const LEAVE_SCREEN = '/leave_screen';
   static const LEAVE_RECORD_SCREEN = '/leave_record_screen';
   static const NOTIFICATION_SCREEN = '/notification_screen';
-  static const PROFILE_SCREEN = '/profile_screen';
-  static const EDIT_PROFILE_SCREEN = '/edit_profile_screen';
   static const NEW_ENTRY_SCREEN = '/new_entry_screen';
   static const HOME_SCREEN = '/home_screen';
   static const SUBSCRIPTION_SCREEN = '/subscription_screen';

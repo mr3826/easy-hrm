@@ -65,12 +65,10 @@ class HrTimelineController extends GetxController with StateMixin {
 
 
   getTimelineCalenderByDate({String ?startDate, String ?endDate,String ?orgId}) async {
-    print("called_getTimelineCalenderByDate");
     isTimelineCalendarByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
-
     log("getTimelineCalenderByDate start & end ==>$startDate And $endDate org : $organizationId");
     calendarTimeline= await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId)??CalendarTimeline();
 
@@ -175,9 +173,7 @@ class HrTimelineController extends GetxController with StateMixin {
         .addAll(timelogList ?? []);
 
     if (updateDataTime.isActive) {
-      print("updateDataTime.isActive ${updateDataTime.isActive}");
       updateDataTime.cancel();
-      print("updateDataTime.isActive ${updateDataTime.isActive}");
     }
     updateDataAfterTwoMinutes();
 

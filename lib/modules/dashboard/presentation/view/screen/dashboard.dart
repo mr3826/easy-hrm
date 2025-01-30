@@ -7,12 +7,12 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../app/modules/settings/bindings/setting_bindings.dart';
-import '../../controller/dashbpard_controller.dart';
+import '../../controller/employee_dashboard_controller.dart';
 import '../widget/entry_time_widget.dart';
 import '../widget/progress_bar_layout.dart';
 import '../widget/upcoming_leave.dart';
 
-class Dashboard extends GetView<DashboardController> {
+class Dashboard extends GetView<EmployeeDashboardController> {
   const Dashboard({super.key});
   @override
   Widget build(BuildContext context) {

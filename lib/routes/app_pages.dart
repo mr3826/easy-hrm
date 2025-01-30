@@ -10,8 +10,6 @@ import 'package:payrun_mobile/app/modules/auth/view/screens/password_update.dart
 import 'package:payrun_mobile/app/modules/auth/view/screens/reset_password.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/sign_in.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/screen/leave_screen.dart';
-import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
-import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/app/modules/splash/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import '../app/home/view/screen/main_screen.dart';
@@ -98,16 +96,7 @@ class AppPages {
       transition: Transition.size,
       page: () => const Dashboard(),
     ),
-    GetPage(
-      name: _Paths.PROFILE_SCREEN,
-      transition: Transition.size,
-      page: () =>   ProfileScreen(),
-    ),
-    GetPage(
-      name: _Paths.EDIT_PROFILE_SCREEN,
-      transition: Transition.size,
-      page: () => EditProfileScreen(),
-    ),
+
 
 
     GetPage(

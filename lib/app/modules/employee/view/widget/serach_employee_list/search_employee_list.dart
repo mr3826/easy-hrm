@@ -6,7 +6,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:payrun_mobile/app/modules/employee/bindings/employee_bindings.dart';
 import 'package:payrun_mobile/app/modules/employee/model/employee_info.dart';
-import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
 import '../../../../../../../common/widget/custom_search_field.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';

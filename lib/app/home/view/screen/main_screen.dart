@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import 'package:payrun_mobile/app/global/enum/user_enum.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_global_bindings.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/employee_timeline_screen.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/hr_timeline_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -17,11 +20,9 @@ import '../../../../modules/leave/presentation/controller/update_leave_controlle
 import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/notification/presentation/view/screen/notification.dart';
-import '../../../../modules/timeline/view/screen/timeline.dart';
 import '../../../modules/profile/view/screens/employee_profile.dart';
 import '../../../modules/profile/view/screens/hr_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
-import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../modules/hr_dashboard/view/screens/hr_dashboard_screen.dart';
 import '../../../../utils/app_string.dart';
@@ -66,11 +67,15 @@ class _MainScreenState extends State<MainScreen> {
 
     _initialController();
     if (Get.find<UserInfoController>().userRole != UserEnum.employee) {
-      print(
-          'role:${Get.find<UserInfoController>().userRole} enum: ${UserEnum.employee} b:${Get.find<UserInfoController>().userRole != UserEnum.employee}  ');
+
+      print('role:${Get.find<UserInfoController>().userRole} enum: ${UserEnum.employee} b:${Get.find<UserInfoController>().userRole != UserEnum.employee}  ');
+
       isEmployee = false;
     }
+
+
     print("isEmployee: $isEmployee");
+
 
     return WillPopScope(
       onWillPop: () => appExitChecker,
@@ -112,10 +117,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _initialController() async {
-    bool isEmployee = true;
     Get.put(TimelineController());
     Get.put(NotificationController());
-    Get.put(TimelineSummaryController());
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
     Get.put(UpDateLeaveController());
@@ -124,7 +127,7 @@ class _MainScreenState extends State<MainScreen> {
   _screenListLayout() {
     if (isEmployee) {
       return [
-        const TimelineScreen(),
+        const EmployeeTimelineScreen(),
         const LeaveScreen(),
         const Dashboard(),
         const NotificationScreen(),

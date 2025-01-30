@@ -6,7 +6,6 @@ import 'package:payrun_mobile/common/controller/convart_color_code_controller.da
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -14,6 +13,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../modules/timeline/view/screen/update_timeline.dart';
+import '../widget/app_margin.dart';
 
 Widget approvedStatusBtn() {
   return CustomStatusButton(

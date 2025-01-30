@@ -1,15 +1,17 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_summary_dashboard.dart';
-import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../dashboard/presentation/controller/employee_dashboard_controller.dart';
-import '../../../timeline/controller/timelog_summary_controller.dart';
 import '../../domain/leave_details_by_date.dart';
 import '../../domain/workshief_response_by_date.dart';
 
@@ -130,11 +132,11 @@ void _updateTimelineData() {
   final DateTime requestedDate =
       DateTime.parse(dateTimeController.requestedDate.value);
 
-  final TimelineController timelineController = Get.find<TimelineController>();
-  final TimelineSummaryController timelineSummaryController =
-      Get.find<TimelineSummaryController>();
+  final TimelineGlobalController timelineController = Get.find<TimelineGlobalController>();
 
-  timelineController.getTimelineSummaryByMonth(
+  final TimelineSummaryController timelineSummaryController = Get.find<TimelineSummaryController>();
+
+  timelineController.getTimelineSummaryByDate(
     startDate: DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)
         .toString(),
     endDate:
@@ -151,15 +153,33 @@ void _updateTimelineData() {
         .toString(),
   );
 
-  timelineController.getCalendarTimelineDataByDate(
-    startDate: DateTime(
-            requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)
-        .toString(),
-    endDate: DateTime(requestedDate.year, requestedDate.month,
-            requestedDate.day, 23, 59, 59)
-        .toString(),
-  );
 
-  timelineSummaryController.getTimelineByMonth();
+  if(Get.find<TimelineGlobalController>().isEmployee.isTrue){
+    Get.find<EmployeeTimelineController>().getTimelineCalenderByDate(
+      startDate: DateTime(
+          requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)
+          .toString(),
+      endDate: DateTime(requestedDate.year, requestedDate.month,
+          requestedDate.day, 23, 59, 59)
+          .toString(),
+    );
+  }else{
+    Get.find<HrTimelineController>().getTimelineCalenderByDate(
+      startDate: DateTime(
+          requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)
+          .toString(),
+      endDate: DateTime(requestedDate.year, requestedDate.month,
+          requestedDate.day, 23, 59, 59)
+          .toString(),
+    );
+  }
+
+
+
+
+
+
+
+  timelineSummaryController.getTimelineSummaryByDate();
   timelineSummaryController.getTimelogDetailsByMonth();
 }
