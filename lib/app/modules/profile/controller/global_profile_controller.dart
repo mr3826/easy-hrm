@@ -136,7 +136,6 @@ class ProfileGlobalController extends GetxController with StateMixin {
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
 
-
   List<GetLeaveRecordsForApp>? leaveRecordList;
 
   LeaveTypeDropdown? leaveTypeDropdown;
@@ -144,18 +143,18 @@ class ProfileGlobalController extends GetxController with StateMixin {
   RxInt offset = 0.obs;
   int limit = 30;
 
-
-
   Future<void> getUserLogHistory() async {
     change(null, status: RxStatus.loading());
     userLogHistory =
-        (await _profileDataSource.getUserLogHistory()) ?? UserLogHistory();
+        await _profileDataSource.getUserLogHistory() ?? UserLogHistory();
     change(null, status: RxStatus.success());
   }
 
-  Future<void> getEmploymentInfo({String ?ordId}) async {
+  Future<void> getEmploymentInfo({String? ordId}) async {
     isEmployeeInfoLoading(true);
-    employeeWorkHistory = (await _profileDataSource.getEmploymentInfo(ordId??GetStorage().read(AppString.ORGANIZATION_USER_ID))) ?? EmployeeWorkHistory();
+    employeeWorkHistory = (await _profileDataSource.getEmploymentInfo(
+            ordId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID))) ??
+        EmployeeWorkHistory();
     isEmployeeInfoLoading(false);
   }
 
@@ -165,9 +164,6 @@ class ProfileGlobalController extends GetxController with StateMixin {
         OrganizationInfoDetails();
     isViewOrganizationLoading(false);
   }
-
-
-
 
   Future<bool> getPasswordVerification({required String password}) async {
     bool validation = false;
@@ -209,7 +205,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
     isVerificationApiLoading(true);
     try {
       final response =
-      await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+          await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
@@ -248,13 +244,13 @@ class ProfileGlobalController extends GetxController with StateMixin {
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
       TokenModel tokenModel = TokenModel.fromJson(jsonMap);
       if (_checkTokenExpiration(accessToken: tokenModel.accessToken ?? "")
-          .isNegative ||
+              .isNegative ||
           _checkTokenExpiration(accessToken: tokenModel.accessToken ?? "") <
               1) {
         _getNewToken(
-            refreshToken: tokenModel.refreshToken ?? "",
-            orgId: orgId,
-            accessToken: tokenModel.accessToken ?? "")
+                refreshToken: tokenModel.refreshToken ?? "",
+                orgId: orgId,
+                accessToken: tokenModel.accessToken ?? "")
             .then((value) {
           if (value == true) {
             Get.find<UserInfoController>().getOrgSubscriptionInfo();
@@ -272,7 +268,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
             .write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
 
         final userInfoResponse =
-        await Get.find<UserInfoController>().getUserInfo();
+            await Get.find<UserInfoController>().getUserInfo();
 
         _handleUserInfo(userInfoResponse);
 
@@ -293,7 +289,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(12)),
               child: Obx(
-                    () => Column(
+                () => Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -303,77 +299,77 @@ class ProfileGlobalController extends GetxController with StateMixin {
                     customSpacerHeight(height: 10),
                     isNewOrganizationChangeLoading.isTrue
                         ? const Center(
-                      child: CupertinoActivityIndicator(
-                        color: Colors.blueAccent,
-                        radius: 14,
-                      ),
-                    )
+                            child: CupertinoActivityIndicator(
+                              color: Colors.blueAccent,
+                              radius: 14,
+                            ),
+                          )
                         : Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                            onTap: () => Get.back(canPop: false),
-                            child: Text(AppString.text_cancel.tr)),
-                        customSpacerWidth(width: 36),
-                        InkWell(
-                            onTap: () async {
-                              String deviceToken = "";
-                              if (Platform.isAndroid) {
-                                deviceToken = await Pushy.register();
-                              }
-                              isNewOrganizationChangeLoading(true);
-                              try {
-                                if (passwordInputController
-                                    .text.isNotEmpty) {
-                                  di.Response response =
-                                  await Get.find<NetworkClient>()
-                                      .postRequest(Api.LOGIN, {
-                                    "email": email,
-                                    "password":
-                                    passwordInputController.text,
-                                    "orgId": orgId,
-                                    "device_token": Platform.isIOS
-                                        ? GetStorage().read(
-                                        AppString.IOS_DEVICE_TOKEN)
-                                        : deviceToken,
-                                    "push_notification_platform":
-                                    Platform.isIOS ? "apns" : "pushy"
-                                  });
-
-                                  if (response.statusCode == 200) {
-                                    _handleTokenInfo(response);
-
-                                    final userInfoResponse = await Get
-                                        .find<UserInfoController>()
-                                        .getUserInfo();
-
-                                    _handleLoginSuccess(
-                                        response, userInfoResponse);
-
-                                    Get.find<UserInfoController>()
-                                        .getOrgSubscriptionInfo();
-                                    if (Get.find<UserInfoController>()
-                                        .isSubscriptionExpired
-                                        .isFalse) {
-                                      switchOrganisationDataChange();
-
-                                      Get.back(canPop: false);
-                                      Get.back(canPop: false);
-                                      Get.back(canPop: false);
-
-                                      passwordInputController.clear();
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                  onTap: () => Get.back(canPop: false),
+                                  child: Text(AppString.text_cancel.tr)),
+                              customSpacerWidth(width: 36),
+                              InkWell(
+                                  onTap: () async {
+                                    String deviceToken = "";
+                                    if (Platform.isAndroid) {
+                                      deviceToken = await Pushy.register();
                                     }
-                                  }
-                                }
-                              } catch (e) {
-                                log(e.toString());
-                              }
-                              isNewOrganizationChangeLoading(false);
-                            },
-                            child: Text(AppString.text_ok.tr)),
-                        customSpacerWidth(width: 16),
-                      ],
-                    ),
+                                    isNewOrganizationChangeLoading(true);
+                                    try {
+                                      if (passwordInputController
+                                          .text.isNotEmpty) {
+                                        di.Response response =
+                                            await Get.find<NetworkClient>()
+                                                .postRequest(Api.LOGIN, {
+                                          "email": email,
+                                          "password":
+                                              passwordInputController.text,
+                                          "orgId": orgId,
+                                          "device_token": Platform.isIOS
+                                              ? GetStorage().read(
+                                                  AppString.IOS_DEVICE_TOKEN)
+                                              : deviceToken,
+                                          "push_notification_platform":
+                                              Platform.isIOS ? "apns" : "pushy"
+                                        });
+
+                                        if (response.statusCode == 200) {
+                                          _handleTokenInfo(response);
+
+                                          final userInfoResponse = await Get
+                                                  .find<UserInfoController>()
+                                              .getUserInfo();
+
+                                          _handleLoginSuccess(
+                                              response, userInfoResponse);
+
+                                          Get.find<UserInfoController>()
+                                              .getOrgSubscriptionInfo();
+                                          if (Get.find<UserInfoController>()
+                                              .isSubscriptionExpired
+                                              .isFalse) {
+                                            switchOrganisationDataChange();
+
+                                            Get.back(canPop: false);
+                                            Get.back(canPop: false);
+                                            Get.back(canPop: false);
+
+                                            passwordInputController.clear();
+                                          }
+                                        }
+                                      }
+                                    } catch (e) {
+                                      log(e.toString());
+                                    }
+                                    isNewOrganizationChangeLoading(false);
+                                  },
+                                  child: Text(AppString.text_ok.tr)),
+                              customSpacerWidth(width: 16),
+                            ],
+                          ),
                   ],
                 ),
               ),
@@ -396,8 +392,8 @@ class ProfileGlobalController extends GetxController with StateMixin {
 
   Future<bool> _getNewToken(
       {required String accessToken,
-        required String refreshToken,
-        required String orgId}) async {
+      required String refreshToken,
+      required String orgId}) async {
     try {
       var response = await Get.find<NetworkClient>().postRequest(
           Api.REFRESH_TOKEN,
@@ -409,7 +405,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
         _handleTokenInfo(response);
 
         final userInfoResponse =
-        await Get.find<UserInfoController>().getUserInfo();
+            await Get.find<UserInfoController>().getUserInfo();
 
         _handleLoginSuccess(response, userInfoResponse);
 
@@ -443,7 +439,8 @@ class ProfileGlobalController extends GetxController with StateMixin {
   }
 
   void _handleTokenInfo(di.Response response) async {
-    await GetStorage().write(AppString.ACCESS_TOKEN, SignInResponse.fromJson(response.data).data?.accessToken);
+    await GetStorage().write(AppString.ACCESS_TOKEN,
+        SignInResponse.fromJson(response.data).data?.accessToken);
     await GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken);
   }
@@ -452,9 +449,9 @@ class ProfileGlobalController extends GetxController with StateMixin {
     // Save token information
     TokenModel tokenModel = TokenModel(
       accessToken:
-      SignInResponse.fromJson(response.data).data?.accessToken ?? "",
+          SignInResponse.fromJson(response.data).data?.accessToken ?? "",
       refreshToken:
-      SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
+          SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
     );
     String tokenJson = jsonEncode(tokenModel.toJson());
 
@@ -500,7 +497,7 @@ switchOrganisationDataChange() async {
   await Get.find<TimeCounterController>().timerStatus();
 
   Get.find<ProfileGlobalController>()
-  // ..getUserProfile()
+    // ..getUserProfile()
     ..getEmploymentInfo()
     ..getUserLogHistory()
     ..getOrganizationInfo();
@@ -508,19 +505,19 @@ switchOrganisationDataChange() async {
   Get.find<TimelineController>()
     ..getTimelineSummaryByMonth(
         startDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
     ..getCalendarTimelineDataByDate(
         startDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
     ..getTimelineSummaryByDate(
         startDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 
   Get.find<TimelineSummaryController>()
     ..getTimelineByMonth()
@@ -537,9 +534,3 @@ switchOrganisationDataChange() async {
     ..getMonthlyTimelineInfoForDashboard()
     ..getUpComingInfoForDashboard();
 }
-
-
-
-
-
-

@@ -27,8 +27,6 @@ class ProfileRouteBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _initializationDependencies();
-    UserLogHistory? userLogHistory =
-        Get.find<ProfileGlobalController>().userLogHistory;
     return DefaultTabController(
       length: 3, // Number of tabs
       child: Obx(() {
@@ -48,7 +46,8 @@ class ProfileRouteBase extends StatelessWidget {
                   ),
                   customSpacerHeight(height: 30),
                   LeaveStatusGoal(
-                    userLogHistory: userLogHistory ?? UserLogHistory(),
+                    userLogHistory:
+                        Get.find<ProfileRouteBaseController>().userLogHistory,
                   ),
                   customSpacerHeight(height: 30),
                   ProfileTabBar(
@@ -98,6 +97,8 @@ class ProfileRouteBase extends StatelessWidget {
   void _initializationDependencies() {
     RouteBaseProfileBinding().dependencies();
     Get.put(ProfileGlobalController());
-    Get.find<ProfileRouteBaseController>().getUserProfile(ordId: orgUserId);
+    Get.find<ProfileRouteBaseController>()
+      ..getUserProfile(ordUserId: orgUserId)
+      ..getUserLogHistory(ordUserId: orgUserId);
   }
 }
