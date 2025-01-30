@@ -12,6 +12,8 @@ import '../../../../enum.dart';
 import '../../../../modules/timeline/model/start_or_end_timer_response.dart';
 import '../../../../utils/app_string.dart';
 import '../../../global/controller/timmer_controller.dart';
+import '../../../global/controller/user_info_controller.dart';
+import '../../../global/enum/user_enum.dart';
 import '../../../home/view/screen/main_screen.dart';
 import '../models/project_dropdown_response.dart';
 import '../models/timeline_summary_by_date.dart';
@@ -20,6 +22,9 @@ import '../repositories/timeline_data_source.dart';
 class TimelineGlobalController extends GetxController {
   final TimelineDataSource _timelineDataSource;
   TimelineGlobalController(this._timelineDataSource);
+
+
+
 
   final isProjectListLoading = false.obs;
   final isProistLoading = false.obs;
@@ -244,11 +249,24 @@ class TimelineGlobalController extends GetxController {
     return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
   }
 
+
+  @override
+  void onInit() {
+    if(Get.find<UserInfoController>().userRole != UserEnum.employee){
+      isEmployee(false);
+    }else{
+      isEmployee(true);
+    }
+    super.onInit();
+  }
+
   @override
   void dispose() {
     descriptionController.dispose();
     super.dispose();
   }
+
+
 }
 
 

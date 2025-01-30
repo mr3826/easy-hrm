@@ -51,6 +51,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
 
   /// Method to check if the button should be enabled
   RxBool isValueChangeForTimeLogUpdate = false.obs;
+  RxBool   isTimelineSummaryLoading= false.obs;
   TextEditingController descriptionController = TextEditingController();
   CalendarTimeline calendarTimeline = CalendarTimeline();
 
@@ -219,9 +220,10 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     isTimelineCalendarByDateLoading(false);
   }
 
-  getTimelineSummaryByMonth(
-      {required String startDate, required String endDate}) async {
-    change(null, status: RxStatus.loading());
+  getTimelineSummaryByMonth({required String startDate, required String endDate}) async {
+    isTimelineSummaryLoading(true);
+
+
     final response = await NetworkClient()
         .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
@@ -234,7 +236,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     } else {
       timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
     }
-    change(null, status: RxStatus.success());
+    isTimelineSummaryLoading(false);
   }
 
   DateTime _createEndDateForTimeLine(

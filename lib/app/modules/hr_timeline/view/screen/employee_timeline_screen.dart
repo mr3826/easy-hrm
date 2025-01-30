@@ -6,6 +6,7 @@ import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timel
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_spacer.dart';
@@ -44,23 +45,25 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, // Number of tabs
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            _isEmployeeSilverAppbar,
-            _sliverAppbarBody(_tabController),
-          ],
-        ),
-        floatingActionButton: Obx(() => timerBtnLayout(
-            context,
-            () => Get.to(()=>const StartTimerScreen(
-              isEmployee: true,
-            )
-            ))),
-      ),
-    );
+    return Obx(() =>
+        Get.find<EmployeeTimelineController>().isTimelineSummaryLoading.isTrue
+            ? const LoadingIndicator()
+            : DefaultTabController(
+                length: 2, // Number of tabs
+                child: Scaffold(
+                  body: CustomScrollView(
+                    slivers: [
+                      _isEmployeeSilverAppbar,
+                      _sliverAppbarBody(_tabController),
+                    ],
+                  ),
+                  floatingActionButton: Obx(() => timerBtnLayout(
+                      context,
+                      () => Get.to(() => const StartTimerScreen(
+                            isEmployee: true,
+                          )))),
+                ),
+              ));
   }
 
   SliverAppBar get _isEmployeeSilverAppbar {
