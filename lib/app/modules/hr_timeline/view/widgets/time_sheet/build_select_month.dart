@@ -112,7 +112,8 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
                         } else {
 
                           Get.find<DateTimeController>().requestedDate.value=formatDate(date: controller.rangeStart.toString(),format: "yyyy-MM-dd");
-                          Get.find<DateTimeController>().requestedEndDate.value=formatDate(date: controller.rangeStart.toString(),format: "yyyy-MM-dd");
+                          Get.find<DateTimeController>().requestedEndDate.value=formatDate(date: controller.rangeEnd.toString(),format: "yyyy-MM-dd");
+
                           controller.getTimesheetByDate();
                           Navigator.pop(context);
 

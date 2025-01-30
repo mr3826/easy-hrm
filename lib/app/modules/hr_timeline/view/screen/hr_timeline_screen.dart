@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/bindings/time_sheet_bindings.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
@@ -44,6 +45,10 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         setState(() {});
         if (_tabController.index == 1) {
           TimeSheetBindings().dependencies();
+
+         Get.find<DateTimeController>().requestedDate.value= DateFormat('yyyy-MM-dd').format(DateTime.parse(DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0).toString()));
+         Get.find<DateTimeController>().requestedEndDate.value= DateFormat('yyyy-MM-dd').format(DateTime.parse(DateTime(DateTime.now().year, DateTime.now().month + 1,0).toString()));
+
           Get.find<TimeSheetController>().getTimesheetByDate();
         }
       }
