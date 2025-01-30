@@ -24,6 +24,7 @@ import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
+import '../../../../modules/leave/data/remote/leave_remote_data_source.dart';
 import '../../../global/controller/timmer_controller.dart';
 import '../../../global/controller/user_info_controller.dart';
 import '../../auth/models/signin_res.dart';
@@ -35,7 +36,6 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/images.dart';
 import '../../../../utils/utils.dart';
-import '../../../../modules/leave/domain/leave_record_response.dart';
 import '../../../../modules/leave/domain/leave_type.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../hr_timeline/controllers/timelog_summary_controller.dart';
@@ -120,7 +120,6 @@ class ProfileGlobalController extends GetxController with StateMixin {
   final isViewOrganizationLoading = false.obs;
   final isViewLeaveRecordLoading = false.obs;
   final isViewLeaveSummaryLoading = false.obs;
-  final isLeaveTypeLoading = false.obs;
 
   final isVerificationApiLoading = false.obs;
   RxBool isSelected = false.obs;
@@ -135,27 +134,29 @@ class ProfileGlobalController extends GetxController with StateMixin {
   final editEmployeeIDController = TextEditingController();
 
   final ProfileDataSource _profileDataSource = Get.find<ProfileDataSource>();
-
-
-  List<GetLeaveRecordsForApp>? leaveRecordList;
-
-  LeaveTypeDropdown? leaveTypeDropdown;
+  final LeaveRemoteDataSource _remoteDataSource =
+      Get.find<LeaveRemoteDataSource>();
 
   RxInt offset = 0.obs;
   int limit = 30;
 
-
+  Future<LeaveTypeDropdown> getLeaveTypeDropdown() async {
+    return await _remoteDataSource.getLeaveTypeDropdown() ??
+        LeaveTypeDropdown();
+  }
 
   Future<void> getUserLogHistory() async {
     change(null, status: RxStatus.loading());
     userLogHistory =
-        (await _profileDataSource.getUserLogHistory()) ?? UserLogHistory();
+        await _profileDataSource.getUserLogHistory() ?? UserLogHistory();
     change(null, status: RxStatus.success());
   }
 
-  Future<void> getEmploymentInfo({String ?ordId}) async {
+  Future<void> getEmploymentInfo({String? ordId}) async {
     isEmployeeInfoLoading(true);
-    employeeWorkHistory = (await _profileDataSource.getEmploymentInfo(ordId??GetStorage().read(AppString.ORGANIZATION_USER_ID))) ?? EmployeeWorkHistory();
+    employeeWorkHistory = (await _profileDataSource.getEmploymentInfo(
+            ordId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID))) ??
+        EmployeeWorkHistory();
     isEmployeeInfoLoading(false);
   }
 
@@ -165,9 +166,6 @@ class ProfileGlobalController extends GetxController with StateMixin {
         OrganizationInfoDetails();
     isViewOrganizationLoading(false);
   }
-
-
-
 
   Future<bool> getPasswordVerification({required String password}) async {
     bool validation = false;
@@ -209,7 +207,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
     isVerificationApiLoading(true);
     try {
       final response =
-      await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
+          await _networkClient.postRequest(Api.VERIFY_CHANGE_MAIL_OTP, {
         "confirmationCode": verificationCode,
         "accessToken": GetStorage().read(AppString.ACCESS_TOKEN)
       });
@@ -248,13 +246,13 @@ class ProfileGlobalController extends GetxController with StateMixin {
       Map<String, dynamic> jsonMap = json.decode(GetStorage().read(orgId));
       TokenModel tokenModel = TokenModel.fromJson(jsonMap);
       if (_checkTokenExpiration(accessToken: tokenModel.accessToken ?? "")
-          .isNegative ||
+              .isNegative ||
           _checkTokenExpiration(accessToken: tokenModel.accessToken ?? "") <
               1) {
         _getNewToken(
-            refreshToken: tokenModel.refreshToken ?? "",
-            orgId: orgId,
-            accessToken: tokenModel.accessToken ?? "")
+                refreshToken: tokenModel.refreshToken ?? "",
+                orgId: orgId,
+                accessToken: tokenModel.accessToken ?? "")
             .then((value) {
           if (value == true) {
             Get.find<UserInfoController>().getOrgSubscriptionInfo();
@@ -272,7 +270,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
             .write(AppString.REFRESH_TOKEN, tokenModel.refreshToken);
 
         final userInfoResponse =
-        await Get.find<UserInfoController>().getUserInfo();
+            await Get.find<UserInfoController>().getUserInfo();
 
         _handleUserInfo(userInfoResponse);
 
@@ -500,7 +498,7 @@ switchOrganisationDataChange() async {
   await Get.find<TimeCounterController>().timerStatus();
 
   Get.find<ProfileGlobalController>()
-  // ..getUserProfile()
+    // ..getUserProfile()
     ..getEmploymentInfo()
     ..getUserLogHistory()
     ..getOrganizationInfo();
@@ -510,17 +508,17 @@ switchOrganisationDataChange() async {
         startDate:
         "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
+            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
     ..getCalendarTimelineDataByDate(
         startDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}")
     ..getTimelineSummaryByDate(
         startDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 
   Get.find<TimelineSummaryController>()
     ..getTimelineSummaryByDate()
@@ -537,9 +535,3 @@ switchOrganisationDataChange() async {
     ..getMonthlyTimelineInfoForDashboard()
     ..getUpComingInfoForDashboard();
 }
-
-
-
-
-
-

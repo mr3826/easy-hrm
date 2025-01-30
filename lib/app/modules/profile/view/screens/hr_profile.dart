@@ -48,8 +48,8 @@ class HrProfileScreen extends GetView<HrProfileController> {
                   customSpacerHeight(height: 30),
                   ProfileTabBar(
                     userDetails: controller.userDetails ?? UserDetails(),
-                    isDataLoading: controller.isViewLeaveRecordLoading,
-                    leaveRecordList: [],
+                    leaveSummaryApiCall: () => controller.getLeaveSummary(),
+                    getLeaveRecordList: () => controller.getLeaveRecordsData(),
                   )
                 ],
               ));

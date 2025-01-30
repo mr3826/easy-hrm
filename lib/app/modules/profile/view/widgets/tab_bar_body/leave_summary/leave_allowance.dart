@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/profile/controller/global_profile_controller.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import '../../../../../../../../../common/widget/custom_app_button.dart';
@@ -10,58 +11,67 @@ import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../modules/leave/domain/leave_type.dart';
-import '../../../../controller/global_profile_controller.dart';
 import '../../../../controller/leave_allowance_controller.dart';
+import '../../../../models/leave_summary.dart';
 import 'leave_type.dart';
 
-class LeaveAllowance extends GetView<HrProfileController> {
-  LeaveAllowance({super.key});
-
+class LeaveAllowance extends StatelessWidget {
   final LeaveAllowanceController employmentController =
       Get.find<LeaveAllowanceController>();
 
+  final GetOrganizationUsersLeaveSummary leaveSummary;
+
+  LeaveAllowance({required this.leaveSummary, super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.isLeaveTypeLoading.isTrue) {
-        return const LoadingIndicator(
-          radius: 16,
-        );
-      }
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: FutureBuilder(
+                future:
+                    Get.find<ProfileGlobalController>().getLeaveTypeDropdown(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const LoadingIndicator(
+                      radius: 16,
+                    );
+                  }
 
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  leaveTypeDropdown(
-                      items: [],
-                      initValue: '',
-                      onChanged: (GetAvailableLeaveTypes value) {}),
+                  if (snapshot.hasError) return Container();
 
-                  customSpacerHeight(height: 20),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      leaveTypeDropdown(
+                        items: snapshot.data?.getAvailableLeaveTypes ?? [],
+                        initValue: leaveSummary.leaveTypeId ?? '',
+                        onChanged: (value) {
+                          print(
+                              "leaveTypeDropdown: name: ${value.name} type: ${value.type}");
+                        },
+                      ),
+                      customSpacerHeight(height: 12),
+                      _buildAllowanceCounterLayout(),
 
-                  Obx(() => _buildAllowanceCounterLayout()),
+                      customSpacerHeight(height: 12),
+                      _alertMessageLayout(),
 
-                  customSpacerHeight(height: 12),
-                  _alertMessageLayout(),
+                      customSpacerHeight(height: 50),
 
-                  customSpacerHeight(height: 50),
-
-                  _buildButtons(), // Buttons at the bottom
-                ],
-              ),
-            ),
-            customSpacerHeight(height: 200),
-          ],
-        ),
-      );
-    });
+                      _buildButtons(), // Buttons at the bottom
+                    ],
+                  );
+                }),
+          ),
+          customSpacerHeight(height: 200),
+        ],
+      ),
+    );
   }
 
   _alertMessageLayout() {
@@ -278,13 +288,15 @@ class LeaveAllowance extends GetView<HrProfileController> {
                   : AppColor.primaryColor.withOpacity(0.5),
               onPressed: () {
                 if (isSaveEnabled) {
-                  controller.updateORGLeaveAvailability(
+                  Get.find<HrProfileController>().updateORGLeaveAvailability(
                     maximumConsecutiveDays:
                         employmentController.applicationMaxDaysCount.value,
                     numberOfApplication:
                         employmentController.applicationBalanceCount.value,
                     numberOfDays: employmentController.daysCount.value,
-                    calculateAllowanceBy: controller.calculateAllowanceBy.value,
+                    calculateAllowanceBy: Get.find<HrProfileController>()
+                        .calculateAllowanceBy
+                        .value,
                   );
                 }
               },
@@ -336,8 +348,7 @@ class LeaveAllowance extends GetView<HrProfileController> {
   }
 
   _buildAllowanceCounterLayout() {
-    if (Get.find<ProfileGlobalController>().calculateAllowanceBy.value ==
-        "no_of_application") {
+    if (leaveSummary.calculateAllowanceBy == "no_of_application") {
       return _numberOfApplication();
     } else {
       return _numberOfDays();

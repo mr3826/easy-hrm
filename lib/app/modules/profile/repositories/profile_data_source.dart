@@ -5,20 +5,20 @@ import '../models/user_log_history.dart';
 import '../models/user_profile.dart';
 import '../services/profile_api_service.dart';
 
-
 abstract class ProfileDataSource {
   Future<UserDetails?> getProfileInfo(String ordId);
-  Future<UserLogHistory?> getUserLogHistory();
-  Future<EmployeeWorkHistory?> getEmploymentInfo(String ordId);
-  Future<OrganizationInfoDetails?> getOrganizationInfo();
 
+  Future<UserLogHistory?> getUserLogHistory([String? ordUserId]);
+
+  Future<EmployeeWorkHistory?> getEmploymentInfo(String ordId);
+
+  Future<OrganizationInfoDetails?> getOrganizationInfo();
 }
 
 class ProfileDataSourceImpl implements ProfileDataSource {
-
   final ProfileApiService _profileApiService;
-  ProfileDataSourceImpl(this._profileApiService);
 
+  ProfileDataSourceImpl(this._profileApiService);
 
   @override
   Future<UserDetails?> getProfileInfo(String ordId) async {
@@ -34,11 +34,10 @@ class ProfileDataSourceImpl implements ProfileDataSource {
     }
   }
 
-
   @override
-  Future<UserLogHistory?> getUserLogHistory() async {
+  Future<UserLogHistory?> getUserLogHistory([String? ordUserId]) async {
     try {
-      final response = await _profileApiService.getUserLogHistory();
+      final response = await _profileApiService.getUserLogHistory(ordUserId);
       if (response != null) {
         return UserLogHistory.fromJson(response);
       }
@@ -49,7 +48,7 @@ class ProfileDataSourceImpl implements ProfileDataSource {
     }
   }
 
-    @override
+  @override
   Future<EmployeeWorkHistory?> getEmploymentInfo(String ordId) async {
     try {
       final response = await _profileApiService.getEmploymentInfo(ordId);
@@ -63,7 +62,7 @@ class ProfileDataSourceImpl implements ProfileDataSource {
     }
   }
 
-      @override
+  @override
   Future<OrganizationInfoDetails?> getOrganizationInfo() async {
     try {
       final response = await _profileApiService.getOrganizationInfo();
@@ -76,9 +75,4 @@ class ProfileDataSourceImpl implements ProfileDataSource {
       return null;
     }
   }
-
-
-
-
-
 }

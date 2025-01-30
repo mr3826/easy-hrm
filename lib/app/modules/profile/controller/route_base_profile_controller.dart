@@ -9,6 +9,7 @@ import '../../../../modules/leave/data/remote/leave_remote_data_source.dart';
 import '../../../../modules/leave/domain/leave_record_response.dart';
 import '../../../../modules/leave/domain/leave_type.dart';
 import '../models/leave_summary.dart';
+import '../models/user_log_history.dart';
 import '../models/user_profile.dart';
 import '../../../../utils/app_string.dart';
 import 'global_profile_controller.dart';
@@ -25,40 +26,43 @@ class ProfileRouteBaseController extends GetxController {
   final isViewLeaveSummaryLoading = false.obs;
   final isViewLeaveRecordLoading = false.obs;
   final isLeaveTypeLoading = false.obs;
-  List<GetLeaveRecordsForApp>? leaveRecordList;
   LeaveSummary? leaveSummary;
   LeaveTypeDropdown? leaveTypeDropdown;
   String leaveStatusId = "";
 
   UserDetails? userDetails;
+  late UserLogHistory userLogHistory;
 
-  Future<void> getUserProfile({String? ordId}) async {
+  Future<void> getUserProfile({required String ordUserId}) async {
     isLoadingProfile(true);
-    userDetails = (await _profileDataSource.getProfileInfo(
-            ordId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID))) ??
-        UserDetails();
-    _addUserInfo();
+    userDetails =
+        await _profileDataSource.getProfileInfo(ordUserId) ?? UserDetails();
     isLoadingProfile(false);
   }
 
-  void _addUserInfo() {
-    Get.find<ProfileGlobalController>().employeeName.value =
-        "${userDetails?.getOrganizationUserDetails?.profile?.firstName ?? ""} ${userDetails?.getOrganizationUserDetails?.profile?.lastName ?? ""}";
-    Get.find<ProfileGlobalController>().employeeImeKey.value =
-        userDetails?.getOrganizationUserDetails?.profile?.image ?? "";
+  Future<void> getUserLogHistory({required String ordUserId}) async {
+    isLoadingProfile(true);
+    userLogHistory = (await _profileDataSource.getUserLogHistory(ordUserId)) ??
+        UserLogHistory();
+    isLoadingProfile(false);
   }
 
-  getLeaveRecordsData({required String orgUserId}) async {
+  Future<List<GetLeaveRecordsForApp>> getLeaveRecordsData(
+      {required String orgUserId}) async {
     isViewLeaveRecordLoading(true);
-    leaveRecordList =
-        await _remoteDataSource.getLeaveRecordList(orgUserId: orgUserId,limit: 20, offset: 0);
+    List<GetLeaveRecordsForApp> leaveRecordList = await _remoteDataSource
+            .getLeaveRecordList(orgUserId: orgUserId, limit: 20, offset: 0) ??
+        [];
     isViewLeaveRecordLoading(false);
+    return leaveRecordList;
   }
 
-  getLeaveSummary() async {
+  Future<LeaveSummary> getLeaveSummary({required String orgUserId}) async {
     isViewLeaveSummaryLoading(true);
-    leaveSummary = await _leaveDataSource.getLeaveSummary();
+    LeaveSummary leaveSummary =
+        await _leaveDataSource.getLeaveSummary() ?? LeaveSummary();
     isViewLeaveSummaryLoading(false);
+    return leaveSummary;
   }
 
   getLeaveTypeDropdown() async {
@@ -106,6 +110,6 @@ class ProfileRouteBaseController extends GetxController {
     showSuccessMessage(message: "Leave allowance has been added successfully!");
     Get.back(canPop: false);
     Get.back(canPop: false);
-    getLeaveSummary();
+    // getLeaveSummary();
   }
 }

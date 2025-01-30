@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/employee/model/user_work_info_dropdown.dart';
@@ -122,16 +123,18 @@ Widget leaveTypeDropdown(
     bool isRequired = false,
     required ValueChanged<GetAvailableLeaveTypes> onChanged}) {
   return DropdownButtonFormField2(
+    iconStyleData: const IconStyleData(iconSize: 0),
     value: initValue.isNotEmpty ? initValue : null,
     decoration: _buildDropdownDecoration(),
+    buttonStyleData: const ButtonStyleData(
+      height: 40,
+    ),
     isExpanded: true,
     items: items
         .map((item) => DropdownMenuItem<String>(
               value: item.leaveTypeId,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  customSpacerWidth(width: 8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,8 +162,13 @@ Widget leaveTypeDropdown(
               ),
             ))
         .toList(),
-    onChanged: (String? value) =>
-        items.firstWhere((element) => element.leaveTypeId == value),
+    onChanged: (String? value) {
+      if (value != null) {
+        final selectedItem =
+            items.firstWhere((element) => element.leaveTypeId == value);
+        onChanged(selectedItem); // Call the provided onChanged callback
+      }
+    },
   );
 }
 
@@ -170,7 +178,6 @@ InputDecoration _buildDropdownDecoration() {
     disabledBorder: _outlineInputBorder,
     enabledBorder: _outlineInputBorder,
     focusedBorder: _outlineInputBorder,
-    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
   );
 }
 
@@ -181,9 +188,3 @@ OutlineInputBorder get _outlineInputBorder {
   );
 }
 
-class LeaveTypeDropdownModel extends DropdownItem {
-  final String leaveType;
-
-  LeaveTypeDropdownModel(this.leaveType,
-      {required super.id, required super.name});
-}

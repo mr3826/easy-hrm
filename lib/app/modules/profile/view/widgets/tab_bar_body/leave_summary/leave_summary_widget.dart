@@ -120,14 +120,7 @@ class BuildProfileLeaveSummary extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            Get.find<ProfileGlobalController>().leaveTypeId =
-                leaveSummary.leaveTypeId ?? "";
-            Get.find<HrProfileController>().leaveStatusId =
-                leaveSummary.leaveStatusId ?? "";
-            showAddAllowance(
-                headerText: leaveSummary.name,
-                subText: leaveSummary.type,
-                context: context);
+            _showAddAllowance(leaveSummary, context);
           },
           icon: Icon(
             Icons.more_horiz,
@@ -264,20 +257,19 @@ class BuildProfileLeaveSummary extends StatelessWidget {
   }
 }
 
-void showAddAllowance(
-    {String? headerText, String? subText, required BuildContext context}) {
+_showAddAllowance(
+    GetOrganizationUsersLeaveSummary leaveSummary, BuildContext context) {
   Get.put(LeaveAllowanceController());
   customButtonSheet(
-    context: Get.context!,
+    context: context,
     child: Column(
       children: [
-        _buildHeader(headerText ?? "", subText ?? ""),
+        _buildHeader(leaveSummary.name ?? "", leaveSummary.type ?? ""),
         customSpacerHeight(height: 20),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: GestureDetector(
             onTap: () {
-              Get.find<HrProfileController>().getLeaveTypeDropdown();
               Get.find<LeaveAllowanceController>()
                   .applicationMaxDaysCount
                   .value = 0;
@@ -286,8 +278,10 @@ void showAddAllowance(
                   .value = 0;
               Get.find<LeaveAllowanceController>().daysCount.value = 0;
               customButtonSheet(
-                context: Get.context!,
-                child: LeaveAllowance(),
+                context: context,
+                child: LeaveAllowance(
+                  leaveSummary: leaveSummary,
+                ),
                 height: 0.7,
               );
             },
