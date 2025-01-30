@@ -48,21 +48,21 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
     return Obx(() =>
         Get.find<EmployeeTimelineController>().isTimelineSummaryLoading.isTrue
             ? const LoadingIndicator()
-            : DefaultTabController(
-                length: 2, // Number of tabs
-                child: Scaffold(
-                  body: CustomScrollView(
+            : Scaffold(
+                body: RefreshIndicator(
+                  onRefresh: _refreshScreen,
+                  child: CustomScrollView(
                     slivers: [
                       _isEmployeeSilverAppbar,
                       _sliverAppbarBody(_tabController),
                     ],
                   ),
-                  floatingActionButton: Obx(() => timerBtnLayout(
-                      context,
-                      () => Get.to(() => const StartTimerScreen(
-                            isEmployee: true,
-                          )))),
                 ),
+                floatingActionButton: Obx(() => timerBtnLayout(
+                    context,
+                    () => Get.to(() => const StartTimerScreen(
+                          isEmployee: true,
+                        )))),
               ));
   }
 
@@ -211,4 +211,23 @@ _timerStringOpenBtn({required time, required Function onRoute}) {
       bgBtnColor: AppColor.secondaryColor,
       onAction: () => onRoute(),
       btnText: time.toString());
+}
+
+Future<void> _refreshScreen() async {
+  String startDates =
+      "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}";
+  String endDates =
+      "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}";
+
+  await Get.find<EmployeeTimelineController>().getTimelineSummaryByMonth(
+      startDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+      endDate:
+          "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+
+  await Get.find<EmployeeTimelineController>()
+      .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
+
+  await Get.find<EmployeeTimelineController>()
+      .getTimelineSummaryByDate(startDate: startDates, endDate: endDates);
 }

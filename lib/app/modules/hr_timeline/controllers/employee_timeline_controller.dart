@@ -75,8 +75,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     super.onInit();
   }
 
-  getTimelineSummaryByDate(
-      {String? startDate, String? endDate, String? orgId}) async {
+  getTimelineSummaryByDate({String? startDate, String? endDate, String? orgId}) async {
     isTimelineSummaryByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
@@ -91,8 +90,7 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     isTimelineSummaryByDateLoading(false);
   }
 
-  getTimelineCalenderByDate(
-      {String? startDate, String? endDate, String? orgId}) async {
+  getTimelineCalenderByDate({String? startDate, String? endDate, String? orgId}) async {
     isTimelineCalendarByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
