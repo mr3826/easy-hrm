@@ -3,11 +3,13 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
+import '../../../../app/modules/hr_timeline/view/widgets/timeline_calender/timelog_details.dart';
 import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../utils/dimensions.dart';
@@ -20,6 +22,8 @@ class TimeLineCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _modelHeightAccordingScreenSize();
+    TimelineGlobalController controller = Get.find<TimelineGlobalController>();
+
     return SizedBox(
       height: MediaQuery.of(context).size.height + 2500,
       child: Padding(
@@ -197,49 +201,19 @@ class TimeLineCalendar extends StatelessWidget {
             /// have to sub string
             /// otherwise it returns with (value) pattern
 
+            controller.getTimeEntryDetails(
+                timelindId: timeLId
+                    .toString()
+                    .substring(1, timeLId.toString().length - 1));
+
             customAntButtonSheet(
               context: context,
               child: leaveId.substring(1, leaveId.length - 1) == "null"
-                  ? TaskView(
+                  ? BuildTaskDetails(
                       taskName: taskName.substring(1, taskName.toString().length - 1),
-                      employeeId:"" ,
-                      employeeName: "",
-                      date: startDate
-                          .toString()
-                          .substring(1, startDate.toString().length - 1),
-                      startTime: startDate
-                          .toString()
-                          .substring(1, startDate.toString().length - 1),
-                      endTime: endDate
-                          .toString()
-                          .substring(1, endDate.toString().length - 1),
-                      status: status
-                          .toString()
-                          .substring(1, status.toString().length - 1),
-                      totalDur: duration
-                          .toString()
-                          .substring(1, duration.toString().length - 1),
-                      description: description
-                          .toString()
-                          .substring(1, description.toString().length - 1),
-                      timeLineId: timeLId
-                          .toString()
-                          .substring(1, timeLId.toString().length - 1),
-                      taskId: taskId
-                          .toString()
-                          .substring(1, taskId.toString().length - 1),
-                      projectId: projectId
-                          .toString()
-                          .substring(1, projectId.toString().length - 1),
-                      projectName: projectName
-                          .toString()
-                          .substring(1, projectName.toString().length - 1),
-                      projectColor: projectColor
-                          .toString()
-                          .substring(1, projectColor.toString().length - 1),
+                      taskId: taskId.substring(1, taskName.toString().length - 1),
                     )
                   : LeaveRecordDetails(
-
                       status: status
                           .toString()
                           .substring(1, status.toString().length - 1),
@@ -316,7 +290,6 @@ class TimeLineCalendar extends StatelessWidget {
                             type: type.substring(1, type.length - 1)),
                       ),
                       leaveId: '',
-
                     ),
             );
           },

@@ -201,21 +201,34 @@ List<Map<String, dynamic>> onboardInfoList = [
   },
 ];
 
+
 String getTimeDifference(String startTimeString, String endTimeString) {
   if (startTimeString.isEmpty || endTimeString.isEmpty) return "";
-  // Parse the time strings into DateTime objects
-  DateTime startTime = DateTime.parse("2023-01-01 $startTimeString");
-  DateTime endTime = DateTime.parse("2023-01-01 $endTimeString");
 
-  // Calculate the duration between the two times
-  Duration duration = endTime.difference(startTime);
-  "${duration.inHours} h : ${duration.inMinutes % 60} m";
+  try {
+    // Directly parse the full date-time strings
+    DateTime startTime = DateTime.parse(startTimeString);
+    DateTime endTime = DateTime.parse(endTimeString);
 
-  if (duration.inMinutes % 60 == 0) return "${duration.inHours}h";
-  if (duration.inHours % 60 == 0) return "${duration.inMinutes % 60}m";
+    // Calculate the duration
+    Duration duration = endTime.difference(startTime);
 
-  return "${duration.inHours} h : ${duration.inMinutes % 60} m";
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes % 60;
+    int seconds = duration.inSeconds % 60;
+
+    // Format output based on conditions
+    if (minutes == 0 && seconds == 0) return "${hours}h";
+    if (hours == 0 && seconds == 0) return "${minutes}m";
+    if (hours == 0 && minutes == 0) return "${seconds}s";
+
+    return "$hours h : $minutes m";
+  } catch (e) {
+    return "Invalid date format";
+  }
 }
+
+
 
 String workingTimeSinceFormString(
     String startDateString, String? endDateString) {

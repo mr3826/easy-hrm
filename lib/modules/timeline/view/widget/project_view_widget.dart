@@ -4,15 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/app/global/view/widgets/status_btn_widget.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../app/global/view/widget/app_margin.dart';
 
-Widget btnSheetViewLayout(
-    {required BuildContext context, required TaskInfo taskInfo}) {
+Widget btnSheetViewLayout({required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
     padding: marginLayout.copyWith(left: 4, right: 4),
     child: Column(
@@ -98,4 +96,36 @@ Widget _projectNameLayout({required Color? color, required name}) {
       )
     ],
   );
+}
+
+
+
+class TaskInfo {
+  final String startTime;
+  final String endTime;
+  final String? status;
+  final String? totalDur;
+  final String? description;
+  final String? timeLineId;
+  final String? taskOrProjectName;
+  final String? taskId;
+  final String? projectId;
+  final String projectColor;
+  final String employeeName;
+  final String employeeId;
+
+
+  TaskInfo(
+      {required this.startTime,
+        required this.endTime,
+        this.status,
+        this.totalDur,
+        required this.employeeId,
+        required this.employeeName,
+        this.description,
+        this.timeLineId,
+        this.taskOrProjectName,
+        this.taskId,
+        this.projectId,
+        required this.projectColor});
 }

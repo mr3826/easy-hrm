@@ -6,13 +6,13 @@ import 'package:payrun_mobile/common/controller/convart_color_code_controller.da
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/task_view_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../modules/timeline/view/screen/update_timeline.dart';
+import '../../../../modules/timeline/view/widget/project_view_widget.dart';
 import '../widget/app_margin.dart';
 
 Widget approvedStatusBtn() {
@@ -212,11 +212,16 @@ void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
   Get.find<TimelineGlobalController>().status.value = taskInfo.status ?? "";
   Get.find<TimelineGlobalController>().taskId.value = taskInfo.timeLineId ?? "";
   Get.find<TimelineGlobalController>().taskId.value = taskInfo.taskId ?? "";
-  Get.find<TimelineGlobalController>().projectId.value = taskInfo.projectId ?? "";
-  Get.find<TimelineGlobalController>().projectColor.value = taskInfo.projectColor ?? "";
-  Get.find<TimelineGlobalController>().taskName.value = taskInfo.taskOrProjectName ?? "";
-  Get.find<TimelineGlobalController>().descriptionController.text = taskInfo.description ?? "";
-  Get.find<TimelineGlobalController>().timeLineId.value = taskInfo.timeLineId ?? "";
+  Get.find<TimelineGlobalController>().projectId.value =
+      taskInfo.projectId ?? "";
+  Get.find<TimelineGlobalController>().projectColor.value =
+      taskInfo.projectColor ?? "";
+  Get.find<TimelineGlobalController>().taskName.value =
+      taskInfo.taskOrProjectName ?? "";
+  Get.find<TimelineGlobalController>().descriptionController.text =
+      taskInfo.description ?? "";
+  Get.find<TimelineGlobalController>().timeLineId.value =
+      taskInfo.timeLineId ?? "";
 
   ///Initially we get data from serve and don't need to update any thing. so..
   ///value=false

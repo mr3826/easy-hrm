@@ -84,6 +84,21 @@ class TimelineApiService {
 
 
 
+  Future<QueryResult<Object?>> getTimeEntryDetails(String timelineId,String orgId) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "timeline_id": timelineId,
+        "org_user_id": orgId
+      }
+    };
+    return await _apiService.gqlCall(
+        queryString: getTimeEntryDetailsQuery, variables: variables);
+  }
+
+
+
+
+
     Future<QueryResult<Object?>> getTimelogDetailsByMonth(String startDate,String endDate,[String ?orgId]) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {

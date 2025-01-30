@@ -579,6 +579,50 @@ query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: Op
 }
 ''';
 
+const getTimeEntryDetailsQuery = r'''
+query GET_TIMELINE_ENTRY_DETAILS($queryData: TimeEntryDetailsQueryData) {
+  getTimeEntryDetails(queryData: $queryData) {
+    id
+    start_date
+    end_date
+    status
+    description
+    project {
+      id
+      name
+      color
+    }
+    task {
+      id
+      name
+      project_id
+      project {
+        id
+        name
+        color
+      }
+    }
+    organization_user {
+      id
+      roles {
+        name
+      }
+      department {
+        id
+        name
+      }
+      profile {
+        id
+        first_name
+        last_name
+        image
+      }
+      user_id
+    }
+  }
+}
+''';
+
 
 
 const getCalendarTimelineQuery = r'''

@@ -72,13 +72,11 @@ class BuildNewEntryTextField extends StatelessWidget {
                 customSpacerHeight(height: 20),
                 customAppTitleText(text: AppString.text_description.tr),
                 customSpacerHeight(height: 8),
-                InputNote(controller: Get.find<TimelineGlobalController>().descriptionController),
+                InputNote(
+                    controller: Get.find<TimelineGlobalController>()
+                        .descriptionController),
                 customSpacerHeight(height: 20),
-
-
-
                 _buildButton(context),
-
                 customSpacerHeight(height: 40)
               ],
             ),
@@ -267,15 +265,15 @@ class BuildNewEntryTextField extends StatelessWidget {
       );
     }
 
-
-
-
     return Obx(() {
-      if (timelineController.isManualEntryLoading.isTrue || timelineController.isUpdateTimeLogLoading.isTrue) {
+      if (timelineController.isManualEntryLoading.isTrue ||
+          timelineController.isUpdateTimeLogLoading.isTrue) {
         return const Center(child: CupertinoActivityIndicator());
       }
 
-      bool isValueChanged = timelineController.isValueChangeForTimeLogUpdate.value|| timelineController.status.value=="approved";
+      bool isValueChanged =
+          timelineController.isValueChangeForTimeLogUpdate.value ||
+              timelineController.status.value == "approved";
 
       return CustomDoubleAppButton(
         buttonText: isFromUpdateTimelogEntry == true
@@ -287,13 +285,14 @@ class BuildNewEntryTextField extends StatelessWidget {
         onAction: isValueChanged
             ? () {
                 if (isFromUpdateTimelogEntry == true) {
-                  if(isEmployee==true && status=="approved" && isFromUpdateTimelogEntry==true){
-                    timelineController.status.value="";
+                  if (isEmployee == true &&
+                      status == "approved" &&
+                      isFromUpdateTimelogEntry == true) {
+                    timelineController.status.value = "";
                     timelineController.updateTimelineLogDetails();
-                  }else{
+                  } else {
                     timelineController.updateTimelineLogDetails();
                   }
-
                 } else {
                   timelineController.createManualEntry();
                 }
@@ -330,6 +329,15 @@ class BuildNewEntryTextField extends StatelessWidget {
 
   _employeeSearch(BuildContext context) {
     return CustomSearchBar(
+      employeeName:
+          "${Get.find<TimelineGlobalController>().timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.firstName ?? ""} ${Get.find<TimelineGlobalController>().timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.lastName ?? ""}",
+      employeeImage: Get.find<TimelineGlobalController>()
+              .timeEntryDetails
+              ?.getTimeEntryDetails
+              ?.organizationUser
+              ?.profile
+              ?.image ??
+          "",
       onValueSelected: (String orgId) async {
         Navigator.pop(context);
         Get.find<TimelineGlobalController>().orgUserId(orgId);
@@ -410,7 +418,7 @@ class BuildNewEntryTextField extends StatelessWidget {
           customSpacerHeight(height: 20),
         ],
       );
-    }else{
+    } else {
       return const SizedBox.shrink();
     }
   }
@@ -423,7 +431,7 @@ class BuildNewEntryTextField extends StatelessWidget {
           customSpacerHeight(height: 20),
         ],
       );
-    }else{
+    } else {
       return const SizedBox.shrink();
     }
   }

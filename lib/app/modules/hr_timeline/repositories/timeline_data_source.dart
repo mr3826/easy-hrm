@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../../../../modules/timeline/model/timelog_details_by_month.dart';
 import '../models/project_dropdown_response.dart';
 import '../../../../modules/timeline/model/start_or_end_timer_response.dart';
+import '../models/time_entry_details.dart';
 import '../models/timeline_summary_by_date.dart';
 import '../models/calendar_timeline.dart';
 import '../models/time_sheet_model.dart';
@@ -15,6 +16,7 @@ abstract class TimelineDataSource {
   Future<StartOrEndTimerResponse?> startOrEndTimer({required String timerTyp});
   Future<ProjectDropDownResponse?>  getProjectList({required String searchText});
   Future<bool> removeTimelineEntry({required String timeLogId});
+  Future<TimeEntryDetails?>  getTimeEntryDetails({required  String timelineId,required String orgId});
   Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String status,required String des,required String projectId,required String timelineId,String ?taskId});
   Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status});
   Future<TimelogDetailsByMonth?> getTimelogDetailsByMonth({required String startDate, required String endDate,String ?orgUserId});
@@ -72,9 +74,10 @@ class TimelineDataImpl implements TimelineDataSource {
   }
 
 
+
+
    @override
    Future<ProjectDropDownResponse?>  getProjectList({required String searchText}) async {
-
 
     try{
       QueryResult<Object?> response = await _timelineApiService.getProjectList(searchText);
@@ -84,6 +87,22 @@ class TimelineDataImpl implements TimelineDataSource {
       return null;
     }catch(e){
       log("getProjectList ex : $e");
+    }
+    return null;
+
+  }
+
+  @override
+   Future<TimeEntryDetails?>  getTimeEntryDetails({required  String timelineId,required String orgId}) async {
+
+    try{
+      QueryResult<Object?> response = await _timelineApiService.getTimeEntryDetails(timelineId,orgId);
+      if (response.data != null) {
+        return TimeEntryDetails.fromJson(response.data!);
+      }
+      return null;
+    }catch(e){
+      log("getTimeEntryDetails ex : $e");
     }
     return null;
 

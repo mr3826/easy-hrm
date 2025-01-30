@@ -16,6 +16,7 @@ import '../../../global/controller/user_info_controller.dart';
 import '../../../global/enum/user_enum.dart';
 import '../../../home/view/screen/main_screen.dart';
 import '../models/project_dropdown_response.dart';
+import '../models/time_entry_details.dart';
 import '../models/timeline_summary_by_date.dart';
 import '../repositories/timeline_data_source.dart';
 
@@ -30,6 +31,7 @@ class TimelineGlobalController extends GetxController {
   final isTimelineSummaryByDateLoading = false.obs;
   final isUpdateTimeLogLoading = false.obs;
   final isStartTimerLoading = false.obs;
+  final isTimeEntryLoading = false.obs;
   final isEndTimerLoading = false.obs;
   final isTimelogEntryOrRemoveLoading = false.obs;
   RxBool isValueChangeForTimeLogUpdate = false.obs;
@@ -50,6 +52,7 @@ class TimelineGlobalController extends GetxController {
   ProjectDropDownResponse? projectDropDownResponse;
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimelineSummaryByDate? timelineSummaryByDate;
+  TimeEntryDetails? timeEntryDetails;
 
   Future<ProjectDropDownResponse?> getProjectList({String? searchText}) async {
     isProjectListLoading(true);
@@ -66,6 +69,19 @@ class TimelineGlobalController extends GetxController {
     isProjectListLoading(false);
     return null;
   }
+
+
+  Future<TimeEntryDetails?> getTimeEntryDetails({String? orgId,required String timelindId}) async {
+    print('timelindId : $timelindId');
+    isTimeEntryLoading(true);
+    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    timeEntryDetails = await _timelineDataSource.getTimeEntryDetails(timelineId: timelindId.toString(),orgId:organizationId);
+    isTimeEntryLoading(false);
+    return null;
+  }
+
+
+
 
   Future<bool> saveTimelineEntry() async {
     isTimelogEntryOrRemoveLoading(true);

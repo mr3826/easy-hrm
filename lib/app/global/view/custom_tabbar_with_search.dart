@@ -10,7 +10,6 @@ import '../../../common/widget/custom_buttom_sheet.dart';
 import '../../../utils/utils.dart';
 import '../../modules/employee/view/widget/serach_employee_list/search_employee_list.dart';
 
-
 class TabBarWidget extends StatefulWidget {
   final List<TabItem> tabs;
   final ValueChanged<int> onTabSelect;
@@ -98,12 +97,16 @@ class CustomSearchBar extends StatefulWidget {
   final Function(UserInfo)? userInfo;
   final Function? onClickRouteAction;
   final Function? onClearAction;
+  final String? employeeName;
+  final String? employeeImage;
 
   const CustomSearchBar({
     Key? key,
     this.onValueSelected,
+    this.employeeName,
     this.userInfo,
     this.onClickRouteAction,
+    this.employeeImage,
     this.onClearAction,
   }) : super(key: key);
 
@@ -112,11 +115,13 @@ class CustomSearchBar extends StatefulWidget {
 }
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
-  final TextEditingController searchController = TextEditingController(text: "Search employee");
+  final TextEditingController searchController =
+      TextEditingController(text: "Search employee");
   String profileImgKey = "";
 
   @override
   Widget build(BuildContext context) {
+    print("employee ${widget.employeeName}");
     return GestureDetector(
       onTap: () => _showSearchBottomSheet(),
       child: SizedBox(
@@ -129,27 +134,29 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           child: Row(
             children: [
               customSpacerWidth(width: 12),
-              const Icon(CupertinoIcons.search, color: AppColor.hintColor, size: 25),
+              const Icon(CupertinoIcons.search,
+                  color: AppColor.hintColor, size: 25),
               customSpacerWidth(width: 8),
               if (profileImgKey.isNotEmpty)
                 CircularNetworkImage(
-                  imageUrl: buildImgIxUrl(imagePath: profileImgKey,isPublic: true),
+                  imageUrl:
+                      buildImgIxUrl(imagePath: profileImgKey, isPublic: true),
                   errorText: getInitials(searchController.text),
                   radius: 12,
                   borderColor: Colors.transparent,
-
                 ),
               customSpacerWidth(width: 6),
               Expanded(
                 child: Text(
-                  searchController.text,
-                  style: AppStyle.normal_text.copyWith(color: AppColor.normalTextColor.withOpacity(0.7)),
+                  widget.employeeName?? searchController.text,
+                  style: AppStyle.normal_text.copyWith(
+                      color: AppColor.normalTextColor.withOpacity(0.7)),
                 ),
               ),
               InkWell(
                 onTap: () => setState(() {
-                 widget. onClearAction!();
-                 profileImgKey="";
+                  widget.onClearAction!();
+                  profileImgKey = "";
                   searchController.text = "Search employee";
                 }),
                 child: const Icon(CupertinoIcons.clear,
