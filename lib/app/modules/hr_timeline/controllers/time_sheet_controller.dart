@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/app_string.dart';
 import '../models/time_sheet_model.dart';
 import '../repositories/timeline_data_source.dart';
@@ -24,29 +25,14 @@ class TimeSheetController extends GetxController {
   final isTimeSheetLoading = false.obs;
 
 
-  Future<void> getTimesheetByDate({String ?startDate,  String? endDate, String ?orgId}) async {
-
-    final String formattedStartDate = startDate ?? DateTime.now().toString();
-    final String formattedEndDate = endDate ?? DateTime.now().toString();
-
+  Future<void> getTimesheetByDate({String ?orgId}) async {
+    String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+    String endDate = "${Get.find<DateTimeController>().requestedEndDate.value} 23:59:59.000";
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
-
     isTimeSheetLoading(true);
-    timeSheetModel = await _timelineDataSource.getTimesheetByDate(startDate: formattedStartDate, endDate: formattedEndDate, orgId: organizationId);
+    timeSheetModel = await _timelineDataSource.getTimesheetByDate(startDate: startDate, endDate: endDate, orgId: organizationId);
     isTimeSheetLoading(false);
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   /// Clears the current date range and resets selection mode.
@@ -115,12 +101,6 @@ class TimeSheetController extends GetxController {
     // Print the selected range
     log("Selected range: ${rangeStart.value} to ${rangeEnd.value}");
   }
-
-
-
-
-
-
 
 
 

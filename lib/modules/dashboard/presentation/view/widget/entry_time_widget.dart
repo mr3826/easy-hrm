@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
-import '../../../../../app/global/view/widget/app_margin.dart';
+import '../../../../../app/global/controller/timmer_controller.dart';
+import '../../../../../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_dialog.dart';
@@ -14,8 +15,7 @@ import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
-import '../../../../timeline/controller/timer_controller.dart';
-
+import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 
 Widget entryAndStartTimeLayout(context) {
   final TimeCounterController controller = Get.put(TimeCounterController());
@@ -95,7 +95,9 @@ _addTimeEntry(BuildContext context) {
 _startingTimeOpen({required time, context}) {
   return InkWell(
     onTap: () async {
-      Get.toNamed(Routes.TIMER_SCREEN);
+      Get.to(() => const StartTimerScreen(
+            isEmployee: true,
+          ));
     },
     child: Stack(
       children: [
@@ -141,11 +143,15 @@ _startingTime(context) {
 }
 
 void _checkIfSubscription() {
-  if (Get.find<UserInfoController>().isSubscriptionTimeTrackingIsAllow.isFalse) {
+  if (Get.find<UserInfoController>()
+      .isSubscriptionTimeTrackingIsAllow
+      .isFalse) {
     alertForSubscriptionRequired();
   } else {
-    Get.put(TimeCounterController()).timerStatus();
-    Get.toNamed(Routes.TIMER_SCREEN);
+    Get.find<TimeCounterController>().timerStatus();
+    Get.to(() => const StartTimerScreen(
+          isEmployee: true,
+        ));
   }
 }
 

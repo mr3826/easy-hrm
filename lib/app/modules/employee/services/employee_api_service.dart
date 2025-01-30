@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
-
 import '../../../../utils/api_endpoints.dart';
 import '../../../global/services/api_service.dart';
 
@@ -46,10 +43,8 @@ class EmployeeApiService {
     return response.data;
   }
 
-  Future<Map<String, dynamic>?>? terminateAUser(
-      TerminateUserModel terminateUserModel) async {
-    QueryResult<Object?> response =
-        await _apiService.gqlCall(queryString: terminateAOrgUser, variables: {
+  Future<Map<String, dynamic>?>? terminateAUser(TerminateUserModel terminateUserModel) async {
+    QueryResult<Object?> response = await _apiService.gqlCall(queryString: terminateAOrgUser, variables: {
       "inputData": {
         "org_user_id": terminateUserModel.orgUserId,
         "status_type": terminateUserModel.terminationTypeEnum,

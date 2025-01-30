@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../enum.dart';
 import '../../../../../utils/app_color.dart';
-import '../../../../leave/presentation/view/widget/status_btn_widget.dart';
+import '../../../../../app/global/view/widgets/status_btn_widget.dart';
 
 Widget getStatusButton(String leaveStatus) {
   if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {

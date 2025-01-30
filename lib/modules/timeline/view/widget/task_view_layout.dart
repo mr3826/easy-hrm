@@ -1,63 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
-import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../app/global/view/widget/app_margin.dart';
-import '../../../../common/widget/custom_title_text_widget.dart';
+import '../../../../app/modules/hr_timeline/controllers/global_timline_controller.dart';
+import '../../../leave/presentation/view/widget/custom_title_text_widget.dart';
 
 class TaskViewLayout extends StatelessWidget {
-  const TaskViewLayout({super.key});
+  final bool isEmployee;
+  const TaskViewLayout({super.key, required this.isEmployee});
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
           padding: marginLayout.copyWith(top: 20, bottom: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              customTitleText(text: AppString.text_project_task.tr, isRequired: true),
+            children: [customTitleText(text: AppString.text_project_task.tr, isRequired: true),
               customSpacerHeight(height: 8),
-
-             const TaskSearchInputField(),
+              const TaskSearchInputField(),
 
               customSpacerHeight(height: 12),
               Obx(() {
-                if (Get.find<TimelineController>().isLoading.isTrue) {
-                  return const Center(child: CupertinoActivityIndicator());
+                if (isEmployee == true) {
+                  return _buildEmployeeTaskList();
+                } else {
+                  return _buildAdminTaskList();
                 }
-
-                final projectDropDownResponse = Get.find<TimelineController>().projectDropDownResponse;
-
-                if (projectDropDownResponse?.getProjectsDropdown?.isEmpty ?? true) {
-                  return Center(
-                    child: Text(
-                      AppString.text_no_data_found.tr,
-                      style: AppStyle.normal_text_black.copyWith(color: AppColor.normalTextColor.withOpacity(0.4)),
-                    ),
-                  );
-
-                }
-
-                return ListView.builder(
-                  itemCount: projectDropDownResponse?.getProjectsDropdown?.length??0,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                   return _projectListLayout(index, context);
-                  },
-                );
               }),
             ],
           ),
@@ -65,148 +46,211 @@ class TaskViewLayout extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildEmployeeTaskList() {
+    if (Get.find<TimelineGlobalController>().isProjectListLoading.isTrue) {
+      return const Center(child: CupertinoActivityIndicator());
+    }
+
+    final projectDropDownResponse = Get.find<TimelineGlobalController>().projectDropDownResponse;
+
+    if (projectDropDownResponse?.getProjectsDropdown?.isEmpty ?? true) {
+      return Center(
+        child: Text(
+          AppString.text_no_data_found.tr,
+          style: AppStyle.normal_text_black
+              .copyWith(color: AppColor.normalTextColor.withOpacity(0.4)),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: projectDropDownResponse?.getProjectsDropdown?.length ?? 0,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+
+        GetProjectsDropdown? data = projectDropDownResponse?.getProjectsDropdown?[index];
+
+        return _projectListLayout(context, data ?? GetProjectsDropdown(),(){
+          /// when it select project
+          /// then it became task name that shown in ui
+          /// pass its name to task name
+
+          if (Get.find<EmployeeTimelineController>().projectId.value != data?.projectId) {
+            Get.find<EmployeeTimelineController>().isValueChangeForTimeLogUpdate(true);
+          }
+
+
+          Get.find<EmployeeTimelineController>().taskName.value = data?.name ?? "";
+
+
+          Get.find<EmployeeTimelineController>().projectId.value = data?.projectId ?? "";
+
+          Get.find<EmployeeTimelineController>().projectColor.value = data?.color ?? "";
+
+          Get.find<EmployeeTimelineController>().taskId.value = "";
+
+          taskSearchController.clear();
+
+          Navigator.pop(context);
+
+
+        });
+      },
+    );
+  }
+
+  Widget _buildAdminTaskList() {
+    print("_buildAdminTaskList_called");
+    if (Get.find<TimelineGlobalController>().isProjectListLoading.isTrue) {
+      return const Center(child: CupertinoActivityIndicator());
+    }
+
+    final projectDropDownResponse = Get.find<TimelineGlobalController>().projectDropDownResponse;
+
+    if (projectDropDownResponse?.getProjectsDropdown?.isEmpty ?? true) {
+      return Center(
+        child: Text(
+          AppString.text_no_data_found.tr,
+          style: AppStyle.normal_text_black
+              .copyWith(color: AppColor.normalTextColor.withOpacity(0.4)),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: projectDropDownResponse?.getProjectsDropdown?.length ?? 0,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        GetProjectsDropdown? data =
+            projectDropDownResponse?.getProjectsDropdown?[index];
+        return _projectListLayout(context, data ?? GetProjectsDropdown(),(){
+          /// when it select project
+          /// then it became task name that shown in ui
+          /// pass its name to task name
+
+          if (Get.find<TimelineGlobalController>().projectId.value != data?.projectId) {
+            Get.find<TimelineGlobalController>()
+                .isValueChangeForTimeLogUpdate(true);
+          }
+
+
+          Get.find<TimelineGlobalController>().taskName.value = data?.name ?? "";
+          Get.find<TimelineGlobalController>().projectId.value = data?.projectId ?? "";
+          Get.find<TimelineGlobalController>().projectColor.value = data?.color ?? "";
+          Get.find<TimelineGlobalController>().taskId.value = "";
+          taskSearchController.clear();
+          print(''''
+          
+          task_newma: ${ Get.find<TimelineGlobalController>().taskName.value}
+          projectId: ${ Get.find<TimelineGlobalController>().projectId.value}
+          projectColor: ${ Get.find<TimelineGlobalController>().projectColor.value}
+          
+          ''');
+          Navigator.pop(context);
+        });
+      },
+    );
+  }
 }
 
-
-
-  _projectListLayout(int index, context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Get.find<TimelineController>()
-                  .projectDropDownResponse
-                  ?.getProjectsDropdown?[index]
-                  .name !=
-              null
-          ? Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Icon(
-                    Icons.circle,
-                    size: 13,
-                    color: Get.find<TimelineController>()
-                                .projectDropDownResponse
-                                ?.getProjectsDropdown?[index]
-                                .color !=
-                            null
-                        ? HexColor(Get.find<TimelineController>()
-                                .projectDropDownResponse
-                                ?.getProjectsDropdown?[index]
-                                .color ??
-                            "")
-                        : Colors.black87,
-                  ),
+_projectListLayout(BuildContext context, GetProjectsDropdown data, Function onSelect) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: data.name != null
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Icon(
+                  Icons.circle,
+                  size: 13,
+                  color: data.color != null
+                      ? HexColor(data.color ?? "")
+                      : Colors.black87,
                 ),
-                customSpacerWidth(width: 6),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          /// when it select project
-                          /// then it became task name that shown in ui
-                          /// pass its name to task name
-
-                          if (Get.find<TimelineController>().projectId.value !=
-                              Get.find<TimelineController>()
-                                  .projectDropDownResponse
-                                  ?.getProjectsDropdown?[index]
-                                  .projectId) {
-                            Get.find<TimelineController>()
-                                .isValueChangeForTimeLogUpdate(true);
-                          }
-
-                          Get.find<TimelineController>().taskName.value =
-                              Get.find<TimelineController>()
-                                      .projectDropDownResponse
-                                      ?.getProjectsDropdown?[index]
-                                      .name ??
-                                  "";
-                          Get.find<TimelineController>().projectId.value =
-                              Get.find<TimelineController>()
-                                      .projectDropDownResponse
-                                      ?.getProjectsDropdown?[index]
-                                      .projectId ??
-                                  "";
-                          Get.find<TimelineController>().projectColor.value =
-                              Get.find<TimelineController>()
-                                      .projectDropDownResponse
-                                      ?.getProjectsDropdown?[index]
-                                      .color ??
-                                  "";
-
-                          Get.find<TimelineController>().taskId.value = "";
-                          taskSearchController.clear();
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          Get.find<TimelineController>()
-                                  .projectDropDownResponse
-                                  ?.getProjectsDropdown?[index]
-                                  .name ??
-                              "",
-                          style: AppStyle.mid_large_text.copyWith(
-                              fontSize: Dimensions.fontSizeMid - 3,
-                              color: AppColor.normalTextColor),
-                        ),
+              ),
+              customSpacerWidth(width: 6),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () => onSelect(),
+                      child: Text(
+                        data.name ?? "",
+                        style: AppStyle.mid_large_text.copyWith(
+                            fontSize: Dimensions.fontSizeMid - 3,
+                            color: AppColor.normalTextColor),
                       ),
-                      customSpacerHeight(height: 8),
-                      Column(
-                        children: [
-                          ...?Get.find<TimelineController>()
-                              .projectDropDownResponse
-                              ?.getProjectsDropdown?[index]
-                              .tasks
-                              ?.map((Tasks task) => _taskLayout(task, context))
-                              .toList(growable: true),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    customSpacerHeight(height: 8),
+                    Column(
+                      children: [
+                        ...?data.tasks
+                            ?.map((Tasks task) => _taskLayout(task, context))
+                            .toList(growable: true),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...?Get.find<TimelineController>()
-                    .projectDropDownResponse
-                    ?.getProjectsDropdown?[index]
-                    .tasks
-                    ?.map((Tasks tasks) => _taskLayout(tasks, context))
-                    .toList(growable: true),
-              ],
-            ),
-    );
-  }
+              ),
+            ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...?data.tasks
+                  ?.map((Tasks tasks) => _taskLayout(tasks, context))
+                  .toList(growable: true),
+            ],
+          ),
+  );
+}
 
-  Widget _taskLayout(Tasks task, context) {
-    return InkWell(
-      onTap: () {
-        if (Get.find<TimelineController>().taskId.value != task.taskId) {
-          Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
+Widget _taskLayout(Tasks task, context) {
+
+  TimelineGlobalController controller=Get.find<TimelineGlobalController>();
+  return InkWell(
+    onTap: () {
+      if(controller.isEmployee.isTrue){
+        if (Get.find<EmployeeTimelineController>().taskId.value != task.taskId) {
+          Get.find<EmployeeTimelineController>().isValueChangeForTimeLogUpdate(true);
         }
         taskSearchController.text = task.name ?? "";
-        Get.find<TimelineController>().taskName.value = task.name ?? "";
-        Get.find<TimelineController>().taskId.value = task.taskId ?? "";
-        Get.find<TimelineController>().projectId.value = "";
-        Get.find<TimelineController>().projectColor.value = "";
+        Get.find<EmployeeTimelineController>().taskName.value = task.name ?? "";
+        Get.find<EmployeeTimelineController>().taskId.value = task.taskId ?? "";
+        Get.find<EmployeeTimelineController>().projectId.value = "";
+        Get.find<EmployeeTimelineController>().projectColor.value = "";
         Navigator.pop(context);
         taskSearchController.clear();
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Wrap(
-          children: [
-            Text(task.name??''),
-          ],
-        ),
-      ),
-    );
-  }
+      }else{
+        if (Get.find<TimelineGlobalController>().taskId.value != task.taskId) {
+          Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
+        }
+        taskSearchController.text = task.name ?? "";
+        Get.find<TimelineGlobalController>().taskName.value = task.name ?? "";
+        Get.find<TimelineGlobalController>().taskId.value = task.taskId ?? "";
+        Get.find<TimelineGlobalController>().projectId.value = "";
+        Get.find<TimelineGlobalController>().projectColor.value = "";
+        Navigator.pop(context);
+        taskSearchController.clear();
+      }
 
+    },
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Wrap(
+        children: [
+          Text(task.name ?? ''),
+        ],
+      ),
+    ),
+  );
+}
 
 class TaskSearchInputField extends StatefulWidget {
   const TaskSearchInputField({super.key});
@@ -226,7 +270,7 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
         style: subTextFieldTitleStyle,
         onChanged: (value) {
           setState(() {});
-          Get.find<TimelineController>().getProjectDropdown();
+          Get.find<TimelineGlobalController>().getProjectList(searchText: value);
         },
         decoration: InputDecoration(
           hintText: AppString.text_select_option.tr,
@@ -234,14 +278,14 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
             onTap: () {
               setState(() {});
               taskSearchController.clear();
-              Get.find<TimelineController>().getProjectDropdown();
+              Get.find<TimelineGlobalController>().getProjectList();
             },
             child: taskSearchController.text.isNotEmpty
                 ? const Icon(
-              Icons.close,
-              size: 30,
-              color: AppColor.hintColor,
-            )
+                    Icons.close,
+                    size: 30,
+                    color: AppColor.hintColor,
+                  )
                 : const Icon(CupertinoIcons.search),
           ),
           hintStyle: TextStyle(
@@ -250,7 +294,7 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
               fontSize: Dimensions.fontSizeDefault + 1),
           border: OutlineInputBorder(
             borderSide:
-            const BorderSide(width: 0.0, color: AppColor.primaryColor),
+                const BorderSide(width: 0.0, color: AppColor.primaryColor),
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault + 2),
           ),
           focusColor: AppColor.primaryColor,
@@ -267,13 +311,6 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
     );
   }
 }
-
-
-
-
-
-
-
 
 class HexColor extends Color {
   static int _getColor(String hex) {

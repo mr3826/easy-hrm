@@ -7,9 +7,9 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../../../utils/images.dart';
-import '../../../../controllers/start_timer_controller.dart';
+import '../../../../../../global/controller/timmer_controller.dart';
 
-class TimerAnimation extends GetView<StartTimerController> {
+class TimerAnimation extends GetView<TimeCounterController> {
   const TimerAnimation({super.key});
 
   @override
@@ -21,8 +21,8 @@ class TimerAnimation extends GetView<StartTimerController> {
             controller.isTotalCount.value == false
                 ? _totalCountContainer()
                 : _normalContainer(),
-            Obx(() => (Get.find<StartTimerController>().isRunning.isTrue &&
-                    Get.find<StartTimerController>()
+            Obx(() => (Get.find<TimeCounterController>().isRunning.isTrue &&
+                    Get.find<TimeCounterController>()
                         .isRunningHorizontalLine
                         .isTrue)
                 ? _horizontalLineAnimation()
@@ -58,7 +58,7 @@ class TimerAnimation extends GetView<StartTimerController> {
             child: Obx(() => CircleAvatar(
                   radius: 80,
                   backgroundColor: AppColor.primaryColor,
-                  child: Get.find<StartTimerController>().isLoading.isTrue
+                  child: Get.find<TimeCounterController>().isLoading.isTrue
                       ? const CupertinoActivityIndicator(
                           radius: 20,
                           color: Colors.white,

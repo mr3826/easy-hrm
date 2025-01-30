@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -9,7 +11,10 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../app/global/view/widget/app_margin.dart';
+import '../../../../app/modules/hr_timeline/bindings/TimelineSummaryBindings.dart';
+import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
+import '../../../../app/modules/hr_timeline/view/screen/timelog_summary.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/utils.dart';
 
 Widget timelineLayout() {
@@ -35,7 +40,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.totalScheduledSeconds.toString() ??
+                                  ?.totalScheduledSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
@@ -46,7 +52,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.loggedTotalSeconds.toString() ??
+                                  ?.loggedTotalSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
@@ -57,7 +64,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.totalLeavesSeconds.toString() ??
+                                  ?.totalLeavesSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
@@ -68,7 +76,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.balance.toString() ??
+                                  ?.balance
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_balance.tr),
                 ],
@@ -85,7 +94,23 @@ Widget timelineLayout() {
 
 _tabToViewTimeLogSummery() {
   return GestureDetector(
-    onTap: () => Get.toNamed(Routes.TIME_LOG_SUMMARY),
+    onTap: () {
+      TimeSheetBindings().dependencies();
+
+      DateTime now = DateTime.now();
+
+      Get.find<DateTimeController>()
+          .requestedDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
+      Get.find<DateTimeController>()
+          .requestedEndDate(DateTime(now.year, now.month + 1, 0).toString());
+
+      Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+      Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
+
+      Get.to(() => const TimeLogSummary(
+            isEmployee: true,
+          ));
+    },
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

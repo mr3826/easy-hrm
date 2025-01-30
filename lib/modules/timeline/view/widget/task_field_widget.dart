@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_global_bindings.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
@@ -26,27 +28,27 @@ Widget taskInputFieldLayout({required Function onAction}) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Get.find<TimelineController>().projectColor.value.isNotEmpty
+          Get.find<TimelineGlobalController>().projectId.value.isNotEmpty
               ? Padding(
             padding: const EdgeInsets.only(top: 2),
             child: Icon(
               Icons.circle,
               size: 14,
               color: HexColor(
-                Get.find<TimelineController>().projectColor.value,
+                Get.find<TimelineGlobalController>().projectColor.value,
               ),
             ),
           )
               : Container(),
           customSpacerWidth(width: 8),
           Expanded(
-            child: Get.find<TimelineController>().taskName.value.isNotEmpty
+            child:  Get.find<TimelineGlobalController>().taskName.value.isNotEmpty
                 ? SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
                       Text(
-                        Get.find<TimelineController>().taskName.value,
+                        Get.find<TimelineGlobalController>().taskName.value,
                         style: AppStyle.mid_large_text.copyWith(
                           fontSize: Dimensions.fontSizeDefault + 1,
                           color: AppColor.normalTextColor,
@@ -70,7 +72,7 @@ Widget taskInputFieldLayout({required Function onAction}) {
           customSpacerWidth(width: 3),
 
 
-          Get.find<TimelineController>().isLoading.isTrue
+          Get.find<TimelineGlobalController>().isProjectListLoading.isTrue
               ? const CupertinoActivityIndicator(
             color: Colors.blueAccent,
             radius: 12,

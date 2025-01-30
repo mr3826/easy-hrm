@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/time_sheet_model.dart';
+import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../enum.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/utils.dart';
+import '../../../bindings/TimelineSummaryBindings.dart';
+import '../../screen/timelog_summary.dart';
 
 class BuildTimesheetList extends GetView<TimeSheetController> {
   const BuildTimesheetList({super.key});
@@ -41,42 +45,51 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
 
 
   _timeSheetDetailsCard(Data data) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: AppColor.leaveRecordCardColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _profileInfo(data),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 10.0, // Horizontal space between items
-                  runSpacing: 12.0, // Vertical space between rows
-                  children: [
-                    _buildDetailRow('Date:', _getTime(data)),
-                    Row(
-                      children: [
-                        Flexible(child: _buildDetailRow('Scheduled:', getConvertSecondsToHours (data.totalScheduledSeconds.toString())
+    String? orgId=data.orgUserId;
+    return GestureDetector(
+      onTap: (){
+        TimeSheetBindings().dependencies();
+        Get.to(()=>const TimeLogSummary(isEmployee: false,));
+        Get.find<TimelineSummaryController>().getTimelineSummaryByDate(orgId: orgId);
+        Get.find<TimelineSummaryController>().getTimelogDetailsByMonth(orgId: orgId);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: AppColor.leaveRecordCardColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _profileInfo(data),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 10.0, // Horizontal space between items
+                    runSpacing: 12.0, // Vertical space between rows
+                    children: [
+                      _buildDetailRow('Date:', _getTime(data)),
+                      Row(
+                        children: [
+                          Flexible(child: _buildDetailRow('Scheduled:', getConvertSecondsToHours (data.totalScheduledSeconds.toString())
 
-                        )),
-                        const SizedBox(width: 12),
-                        Flexible(child: _buildDetailRow('Logged:',  getConvertSecondsToHours (data.loggedTotalSeconds.toString())
-                        )),
-                      ],
-                    ),
-                    _buildBalanceRow(data),
-                  ],
-                ),
-              ],
+                          )),
+                          const SizedBox(width: 12),
+                          Flexible(child: _buildDetailRow('Logged:',  getConvertSecondsToHours (data.loggedTotalSeconds.toString())
+                          )),
+                        ],
+                      ),
+                      _buildBalanceRow(data),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -10,7 +10,7 @@ import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
-import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
@@ -19,6 +19,7 @@ import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../app/global/controller/timmer_controller.dart';
 import '../../../app/home/view/screen/main_screen.dart';
 import '../../../app/modules/hr_timeline/models/calendar_timeline.dart';
 import '../../../common/domain/last_input_model.dart';
@@ -413,7 +414,6 @@ class TimelineController extends GetxController with StateMixin {
       return false;
     } else {
       showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-      taskId.value = "";
       Get.find<TimeCounterController>().isTotalCount(true);
       descriptionController.clear();
       Get.find<TimeCounterController>().reset();
@@ -515,6 +515,7 @@ class TimelineController extends GetxController with StateMixin {
   }
 
   _refreshTimeline() async {
+    taskId.value = "";
     await getTimelineSummaryByMonth(
         startDate:
             "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
@@ -539,7 +540,21 @@ class TimelineController extends GetxController with StateMixin {
 
     final responseForCalendar = await NetworkClient()
         .graphRequest(queryString: getCalendarTimelineQuery, variables: {
-      "queryData": {"start_time": startDate, "end_time": endDate}
+      "queryData": {
+        "org_user_ids": [
+          "0871acc7-644b-4a9a-b329-a9f6430e35c6"
+        ],
+        "start_date": "2025-01-26T00:00:00.000Z",
+        "end_date": "2025-01-26T23:59:59.999Z"
+      },
+      "optionData": {
+        "limit": 1000000000,
+        "order": [
+          [
+            "user"
+          ]
+        ]
+      }
     });
 
     if (responseForCalendar.hasException) {
@@ -558,7 +573,7 @@ class TimelineController extends GetxController with StateMixin {
       calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
 
       timelogList =
-          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",
@@ -588,7 +603,7 @@ class TimelineController extends GetxController with StateMixin {
             title: '',
             description: objData);
       }).toList();
-      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
+      timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.data?.leaves
               ?.map((e) {
             //todo
             /// add files info
@@ -673,7 +688,7 @@ class TimelineController extends GetxController with StateMixin {
       }
 
       timelogList =
-          calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
         ModelForDescription modelForDescription = ModelForDescription(
             status: e.status ?? "",
             description: e.description ?? "",
@@ -705,7 +720,7 @@ class TimelineController extends GetxController with StateMixin {
       }).toList();
 
       timelogList?.addAll(
-          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.leaves?.map((e) {
                 //todo
                 /// add files info
                 ModelForDescription modelForDescription = ModelForDescription(

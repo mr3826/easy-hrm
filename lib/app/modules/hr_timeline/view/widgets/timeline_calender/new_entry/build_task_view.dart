@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
+import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
-import '../../../../controllers/hr_timeline_controller.dart';
+import '../../../../controllers/global_timline_controller.dart';
 
 class BuildTaskView extends StatelessWidget {
   const BuildTaskView({super.key});
@@ -32,11 +32,11 @@ class BuildTaskView extends StatelessWidget {
               const TaskSearchInputField(),
               customSpacerHeight(height: 12),
               Obx(() {
-                if (Get.find<HrTimelineController>().isLoading.isTrue) {
+                if (Get.find<TimelineGlobalController>().isProjectListLoading.isTrue) {
                   return const Center(child: CupertinoActivityIndicator());
                 }
 
-                final projectDropDownResponse = Get.find<HrTimelineController>().projectDropDownResponse;
+                final projectDropDownResponse = Get.find<TimelineGlobalController>().projectDropDownResponse;
                 if (projectDropDownResponse?.getProjectsDropdown?.isEmpty ??
                     true) {
                   return Center(
@@ -69,7 +69,7 @@ class BuildTaskView extends StatelessWidget {
 _projectListLayout(int index, context) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Get.find<HrTimelineController>()
+    child: Get.find<TimelineGlobalController>()
                 .projectDropDownResponse
                 ?.getProjectsDropdown?[index]
                 .name !=
@@ -82,12 +82,12 @@ _projectListLayout(int index, context) {
                 child: Icon(
                   Icons.circle,
                   size: 13,
-                  color: Get.find<HrTimelineController>()
+                  color: Get.find<TimelineGlobalController>()
                               .projectDropDownResponse
                               ?.getProjectsDropdown?[index]
                               .color !=
                           null
-                      ? HexColor(Get.find<HrTimelineController>()
+                      ? HexColor(Get.find<TimelineGlobalController>()
                               .projectDropDownResponse
                               ?.getProjectsDropdown?[index]
                               .color ??
@@ -106,40 +106,40 @@ _projectListLayout(int index, context) {
                         /// then it became task name that shown in ui
                         /// pass its name to task name
 
-                        if (Get.find<HrTimelineController>().projectId.value !=
-                            Get.find<HrTimelineController>()
+                        if (Get.find<TimelineGlobalController>().projectId.value !=
+                            Get.find<TimelineGlobalController>()
                                 .projectDropDownResponse
                                 ?.getProjectsDropdown?[index]
                                 .projectId) {
-                          Get.find<HrTimelineController>()
+                          Get.find<TimelineGlobalController>()
                               .isValueChangeForTimeLogUpdate(true);
                         }
 
-                        Get.find<HrTimelineController>().taskName.value =
-                            Get.find<HrTimelineController>()
+                        Get.find<TimelineGlobalController>().taskName.value =
+                            Get.find<TimelineGlobalController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .name ??
                                 "";
-                        Get.find<HrTimelineController>().projectId.value =
-                            Get.find<HrTimelineController>()
+                        Get.find<TimelineGlobalController>().projectId.value =
+                            Get.find<TimelineGlobalController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .projectId ??
                                 "";
-                        Get.find<HrTimelineController>().projectColor.value =
-                            Get.find<HrTimelineController>()
+                        Get.find<TimelineGlobalController>().projectColor.value =
+                            Get.find<TimelineGlobalController>()
                                     .projectDropDownResponse
                                     ?.getProjectsDropdown?[index]
                                     .color ??
                                 "";
 
-                        Get.find<HrTimelineController>().taskId.value = "";
+                        Get.find<TimelineGlobalController>().taskId.value = "";
                         taskSearchController.clear();
                         Navigator.pop(context);
                       },
                       child: Text(
-                        Get.find<HrTimelineController>()
+                        Get.find<TimelineGlobalController>()
                                 .projectDropDownResponse
                                 ?.getProjectsDropdown?[index]
                                 .name ??
@@ -152,7 +152,7 @@ _projectListLayout(int index, context) {
                     customSpacerHeight(height: 8),
                     Column(
                       children: [
-                        ...?Get.find<HrTimelineController>()
+                        ...?Get.find<TimelineGlobalController>()
                             .projectDropDownResponse
                             ?.getProjectsDropdown?[index]
                             .tasks
@@ -168,7 +168,7 @@ _projectListLayout(int index, context) {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...?Get.find<HrTimelineController>()
+              ...?Get.find<TimelineGlobalController>()
                   .projectDropDownResponse
                   ?.getProjectsDropdown?[index]
                   .tasks
@@ -182,14 +182,14 @@ _projectListLayout(int index, context) {
 Widget _taskLayout(Tasks task, context) {
   return InkWell(
     onTap: () {
-      if (Get.find<HrTimelineController>().taskId.value != task.taskId) {
-        Get.find<HrTimelineController>().isValueChangeForTimeLogUpdate(true);
+      if (Get.find<TimelineGlobalController>().taskId.value != task.taskId) {
+        Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
       }
       taskSearchController.text = task.name ?? "";
-      Get.find<HrTimelineController>().taskName.value = task.name ?? "";
-      Get.find<HrTimelineController>().taskId.value = task.taskId ?? "";
-      Get.find<HrTimelineController>().projectId.value = "";
-      Get.find<HrTimelineController>().projectColor.value = "";
+      Get.find<TimelineGlobalController>().taskName.value = task.name ?? "";
+      Get.find<TimelineGlobalController>().taskId.value = task.taskId ?? "";
+      Get.find<TimelineGlobalController>().projectId.value = "";
+      Get.find<TimelineGlobalController>().projectColor.value = "";
       Navigator.pop(context);
       taskSearchController.clear();
     },
@@ -222,7 +222,7 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
         style: subTextFieldTitleStyle,
         onChanged: (value) {
           setState(() {});
-          Get.find<HrTimelineController>().getProjectDropdown();
+          Get.find<TimelineGlobalController>().getProjectList();
         },
         decoration: InputDecoration(
           hintText: AppString.text_select_option.tr,
@@ -230,7 +230,7 @@ class _TaskSearchInputFieldState extends State<TaskSearchInputField> {
             onTap: () {
               setState(() {});
               taskSearchController.clear();
-              Get.find<HrTimelineController>().getProjectDropdown();
+              Get.find<TimelineGlobalController>().getProjectList();
             },
             child: taskSearchController.text.isNotEmpty
                 ? const Icon(

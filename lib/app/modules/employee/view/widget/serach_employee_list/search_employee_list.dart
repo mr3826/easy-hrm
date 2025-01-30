@@ -6,8 +6,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:payrun_mobile/app/modules/employee/bindings/employee_bindings.dart';
 import 'package:payrun_mobile/app/modules/employee/model/employee_info.dart';
+import 'package:payrun_mobile/modules/profile/controller/user_profile_controller.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
-import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/custom_search_field.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
@@ -15,6 +15,8 @@ import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../../../common/widget/hr_timeline/custom_network_image.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../profile/controller/global_profile_controller.dart';
 import '../../../controller/employment_controller.dart';
 
@@ -160,11 +162,10 @@ class SearchEmployeeList extends StatelessWidget {
           const EdgeInsets.only(left: 20.0, right: 20, top: 14, bottom: 16),
       child: Row(
         children: [
-          CustomNetworkImage(
-            imgUrlKey: "", // Replace with actual image URL key
-            profileImageKey: imgUrl,
-            errorText: 'ER',
-            height: 22,
+          CircularNetworkImage(
+            imageUrl: buildImgIxUrl(imagePath: imgUrl,isPublic: true),
+            errorText: getInitials(name),
+            radius: 22,
           ),
           customSpacerWidth(width: 14),
           Expanded(
@@ -191,11 +192,10 @@ class SearchEmployeeList extends StatelessWidget {
           const EdgeInsets.only(left: 20.0, right: 20, top: 14, bottom: 16),
       child: Row(
         children: [
-          CustomNetworkImage(
-            imgUrlKey: "", // Replace with actual image URL key
-            profileImageKey: imgUrl,
-            errorText: 'ER',
-            height: 22,
+          CircularNetworkImage(
+            imageUrl: buildImgIxUrl(isPublic: true,imagePath: imgUrl), // Replace with actual image URL key
+            errorText: getInitials(name),
+            radius: 22,
           ),
           customSpacerWidth(width: 14),
           Expanded(child: _buildEmployeeDetails(name, role)),
@@ -257,10 +257,10 @@ class SearchEmployeeList extends StatelessWidget {
             const EdgeInsets.only(left: 16.0, right: 20, top: 14, bottom: 8),
         child: Row(
           children: [
-            const CustomNetworkImage(
-              imgUrlKey: "", // Replace with actual image URL key
-              errorText: 'ER',
-              height: 22,
+             CircularNetworkImage(
+              imageUrl: buildImgIxUrl(isPublic: true,imagePath:  employeeData.profile?.image ?? ""), // Replace with actual image URL key
+              errorText: getInitials("${employeeData.profile?.firstName ?? ""} ${employeeData.profile?.lastName ?? ""}"),
+              radius: 22,
             ),
             customSpacerWidth(width: 14),
             Expanded(

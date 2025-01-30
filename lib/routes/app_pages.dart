@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:payrun_mobile/app/global/services/network_connectivity_service.dart';
 import 'package:payrun_mobile/app/modules/auth/bindings/forgot_password_binding.dart';
@@ -10,25 +9,20 @@ import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/password_update.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/reset_password.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/sign_in.dart';
-import 'package:payrun_mobile/app/modules/hr_dashboard/view/screens/candidate_details_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/screen/leave_screen.dart';
 import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
+import 'package:payrun_mobile/modules/profile/view/screen/user_profile.dart';
 import 'package:payrun_mobile/app/modules/splash/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
-import '../app/modules/hr_dashboard/view/screens/all_candidates_screen.dart';
-import '../app/modules/hr_dashboard/view/screens/job_details_screen.dart';
-import '../app/modules/hr_dashboard/view/widgets/candidates/build_edit_candidate.dart';
 import '../app/home/view/screen/main_screen.dart';
 import '../app/modules/employee/bindings/update_org_user_binding.dart';
 import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
 import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
 import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
-import '../app/modules/hr_timeline/bindings/start_timer_bindings.dart';
 import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
-import '../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
-import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
+import 'package:get/get_navigation/src/routes/get_route.dart';
 import '../modules/notification/presentation/view/screen/notification.dart';
 import '../app/modules/onboard/view/onboarding_screen.dart';
 
@@ -72,11 +66,8 @@ class AppPages {
       transition: Transition.size,
       page: () => const PasswordUpdateScreen(),
     ),
-    GetPage(
-      name: _Paths.TIMER_SCREEN,
-      binding: StartTimerBindings(),
-      page: () => const StartTimerScreen(),
-    ),
+
+
     GetPage(
       name: _Paths.SUBSCRIPTION_SCREEN,
       transition: Transition.size,
@@ -103,45 +94,43 @@ class AppPages {
       page: () => const NotificationScreen(),
     ),
     GetPage(
-      name: _Paths.TIME_LOG_SUMMARY,
+      name: _Paths.HOME_SCREEN,
       transition: Transition.size,
-      page: () => const TimeLogSummary(),
+      page: () => const Dashboard(),
     ),
+    GetPage(
+      name: _Paths.PROFILE_SCREEN,
+      transition: Transition.size,
+      page: () =>   ProfileScreen(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFILE_SCREEN,
+      transition: Transition.size,
+      page: () => EditProfileScreen(),
+    ),
+
+
     GetPage(
       name: _Paths.NEW_ENTRY_SCREEN,
       transition: Transition.size,
       binding: AddNewEntryBindings(),
       page: () => const AddTimeEntryScreen(),
     ),
+
     GetPage(
       name: _Paths.EMPOLYEE_VIEW_PROFILE,
       transition: Transition.size,
       page: () => const EmployeeProfileViewScreen(),
     ),
+
     GetPage(
-        name: _Paths.EDIT_EMPOLYEE_VIEW,
-        transition: Transition.size,
-        page: () => EditEmployee(),
-        binding: UpdateOrgUserInfoBindings()),
-    GetPage(
-      name: _Paths.ALL_CANDIDATES,
+      name: _Paths.EDIT_EMPOLYEE_VIEW,
       transition: Transition.size,
-      page: () => const AllCandidatesScreen(),
+      page: () =>  EditEmployee(),
+      binding: UpdateOrgUserInfoBindings()
+
     ),
-    GetPage(
-      name: _Paths.EDIT_CANDIDATES,
-      transition: Transition.size,
-      page: () => BuildEditCandidate(),
-    ),
-    GetPage(
-      name: _Paths.JOB_DETAILS,
-      transition: Transition.size,
-      page: () => const JobDetailsScreen(),
-    ),
-    GetPage(
-      name: _Paths.CANDIDATES_DETAILS,
-      transition: Transition.size,
-      page: () => const CandidateDetailsScreen(),
-    ),
+
+
   ];
 }

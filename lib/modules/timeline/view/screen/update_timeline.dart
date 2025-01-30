@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/new_entry_text_field_widget.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../app/modules/hr_timeline/view/widgets/timeline_calender/new_entry/build_new_entry_text_field.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
 
@@ -24,18 +25,14 @@ class UpdateTimeLineLog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.isRegistered<DateTimePickerController>()) {
-      Get.delete<DateTimePickerController>();
-    }
-    Get.put(DateTimePickerController());
     _updateTimelogFromApiResponse();
     return Scaffold(
       backgroundColor: projectOrTaskColor,
       appBar: timeLogAppbar(context),
       body: SingleChildScrollView(
-          child: TimeLogEntryTextField(
+          child: BuildNewEntryTextField(
         isFromUpdateTimelogEntry: true,
-        status: status,
+        status: status, isEmployee: Get.find<TimelineGlobalController>().isEmployee.value,
       )),
     );
   }
@@ -57,6 +54,8 @@ class UpdateTimeLineLog extends StatelessWidget {
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
     setIndexForPrevTdayOrTomListTimelog(DateTime.parse(startDateTime));
+
+
   }
 }
 

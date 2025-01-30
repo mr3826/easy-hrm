@@ -46,9 +46,6 @@ Future<void> initApp() async {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
 
-
-  ///
-
   NetworkClient client = Get.put(NetworkClient());
 
   Get.put(DashboardRemoteDataSource(client), permanent: true);

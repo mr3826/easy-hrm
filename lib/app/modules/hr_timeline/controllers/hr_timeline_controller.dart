@@ -7,25 +7,17 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
-import 'package:payrun_mobile/common/widget/success_message.dart';
-import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
-import 'package:payrun_mobile/modules/timeline/controller/timer_controller.dart';
-import 'package:payrun_mobile/modules/timeline/model/project_dropdown_response.dart';
-import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../common/domain/last_input_model.dart';
-import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
-import '../../../../network/exception_helper.dart';
-import '../../../home/view/screen/main_screen.dart';
 import '../models/calendar_timeline.dart';
 import '../repositories/timeline_data_source.dart';
+import 'global_timline_controller.dart';
 
 
 class HrTimelineController extends GetxController with StateMixin {
@@ -33,40 +25,22 @@ class HrTimelineController extends GetxController with StateMixin {
   final TimelineDataSource _timelineDataSource;
   HrTimelineController(this._timelineDataSource);
   final isLoading = false.obs;
+  final isProjectListLoading = false.obs;
   final isManualEntryLoading = false.obs;
   final isTimelineCalendarByDateLoading = false.obs;
   final isTimelineSummaryByDateLoading = false.obs;
   final isUpdateTimeLogLoading = false.obs;
-  final taskName = "".obs;
-  final isTimeInvalid = false.obs;
-  final taskId = "".obs;
-  final projectId = "".obs;
   RxString selectedSummaryDate = "".obs;
   RxInt selectedYearIndex = 10.obs;
-  RxInt currentYear = DateTime.now().year.obs;
-  String timeLogStatus = "";
-  String timeLogDuration = "";
-  String timeLineID = "";
-  Color timeLogColor = AppColor.primaryColor;
-  RxString projectColor = ''.obs;
-  final searchInputData = TextEditingController().obs;
   late Timer updateDataTime;
-  RxString isSelectDate = ''.obs;
-  /// The index of the selected time entry status, used for updating time entry status (e.g., Pending, Approved).
-  RxInt selectedStatusIndex = 0.obs;
-  /// List of status options to categorize leave requests (e.g., Pending, Approved).
-  final List<String> statusOptions = ["Pending", "Approved"];
-  /// Method to check if the button should be enabled
-  RxBool isValueChangeForTimeLogUpdate = false.obs;
+
   TextEditingController descriptionController =TextEditingController();
   CalendarTimeline calendarTimeline = CalendarTimeline();
 
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
-  final isTimelogEntryOrRemoveLoading = false.obs;
-  StartOrEndTimerResponse? startOrEndTimerResponse;
+ final isTimelogEntryOrRemoveLoading = false.obs;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
-  TimelineSummaryByDate? timelineSummaryByDate;
   TimelineSummaryByMonth? timelineSummaryByMonth;
 
 
@@ -90,40 +64,15 @@ class HrTimelineController extends GetxController with StateMixin {
 
 
 
-  getTimelineSummaryByDate({String ?startDate, String ?endDate,String ?orgId}) async {
-    isTimelineSummaryByDateLoading(true);
-    final String formattedStartDate = startDate ?? DateTime.now().toString();
-    final String formattedEndDate = endDate ?? DateTime.now().toString();
-    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
-
-    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
-    timelineSummaryByDate= await _timelineDataSource.getTimelineSummaryByDate(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId);
-    isTimelineSummaryByDateLoading(false);
-  }
-
-
   getTimelineCalenderByDate({String ?startDate, String ?endDate,String ?orgId}) async {
+    print("called_getTimelineCalenderByDate");
     isTimelineCalendarByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
-    log("getTimelineCalenderByDate start & end ==>$startDate And $endDate");
+    log("getTimelineCalenderByDate start & end ==>$startDate And $endDate org : $organizationId");
     calendarTimeline= await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId)??CalendarTimeline();
-
-    calendarTimeline.getCalenderTimelinesForApp?.timelines?.forEach((e){
-
-      print(''''
-    get_timeline_response :
-   ${e.startDate},
-
-     ${e.endDate},
-
-     ${e.status},
-
-    ''''');
-
-    });
 
     if (timelogList?.isNotEmpty??false) {
       for (var value in timelogList!) {
@@ -131,7 +80,7 @@ class HrTimelineController extends GetxController with StateMixin {
       }
     }
     timelogList?.clear();
-    timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+    timelogList = calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
       ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "",
@@ -161,9 +110,8 @@ class HrTimelineController extends GetxController with StateMixin {
           title: '',
           description: objData);
     }).toList();
-    timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
+    timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.data?.leaves
         ?.map((e) {
-      //todo
       /// add files info
       ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
@@ -237,516 +185,6 @@ class HrTimelineController extends GetxController with StateMixin {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //
-  // getCalendarTimelineDataByDate({required String? startDate, String? endDate}) async {
-  //   isTimelineCalendarByDateLoading(true);
-  //
-  //   final responseForCalendar = await NetworkClient()
-  //       .graphRequest(queryString: getCalendarTimelineQuery, variables: {
-  //     "queryData": {"start_time": startDate, "end_time": endDate}
-  //   });
-  //
-  //   if (responseForCalendar.hasException) {
-  //     ExceptionHelper.errorHandler(
-  //         exception: responseForCalendar.exception!,
-  //         methodName: "getCalendarTimelineDataByDate");
-  //   } else {
-  //     if (timelogList!.isNotEmpty) {
-  //       for (var value in timelogList!) {
-  //         CalendarControllerProvider.of(Get.context!).controller.remove(value);
-  //       }
-  //     }
-  //
-  //     timelogList?.clear();
-  //
-  //     calendarTimeline = CalendarTimeline.fromJson(responseForCalendar.data!);
-  //
-  //     timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
-  //           ModelForDescription modelForDescription = ModelForDescription(
-  //               status: e.status ?? "",
-  //               description: e.description ?? "",
-  //               timeLId: e.id ?? "",
-  //               endDate: e.endDate ?? "",
-  //               duration: e.totalMinutes ?? "",
-  //               startDate: e.startDate ?? "",
-  //               taskName: e.task?.name ?? "",
-  //               taskId: e.task?.id ?? "",
-  //               projectId: e.project?.id ?? "",
-  //               projectName: e.project?.name ?? "",
-  //               projectColor: e.project?.color ?? "");
-  //
-  //           Map<String, dynamic> jsonModel = modelForDescription.toJson();
-  //           String objData = jsonEncode(jsonModel);
-  //
-  //           return CalendarEventData(
-  //               date: DateTime.parse("2024-01-24"),
-  //               startTime: e.startDate != null
-  //                   ? DateTime.parse("2024-01-24 ${e.startDate?.substring(11, 19)}")
-  //                   : DateTime.parse(
-  //                   "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
-  //               endTime: _createEndDateForTimeLine(
-  //                   startDate: e.startDate ?? DateTime.now().toString(),
-  //                   endDate: e.endDate),
-  //               event: "",
-  //               title: '',
-  //               description: objData);
-  //         }).toList();
-  //     timelogList?.addAll(calendarTimeline.getCalenderTimelinesForApp?.leaves
-  //         ?.map((e) {
-  //       //todo
-  //       /// add files info
-  //       ModelForDescription modelForDescription = ModelForDescription(
-  //           status: e.status ?? "",
-  //           description: e.description ?? "",
-  //           endDate: e.endDate ?? "",
-  //           startDate: e.startDate ?? "",
-  //           duration: e.totalLeaveMinutes ?? "",
-  //           numberOfDays: e.numberOfDays ?? 0,
-  //           createdAt: e.createdAt ?? "",
-  //           leaveId: e.id ?? "",
-  //           leaveDetails: [
-  //             e.leaveDetails != null && e.leaveDetails!.isNotEmpty
-  //                 ? LeaveDetails(
-  //               scheduleSecond: int.parse(e.leaveDetails?[0].scheduleSecond.toString()??""),
-  //               leaveSecond: int.parse(e.leaveDetails?[0].leaveSecond.toString()??""),
-  //             )
-  //                 : LeaveDetails()
-  //           ],
-  //           taskName: e.leaveType?.leaveName ?? "",
-  //           files: [
-  //             (e.files != null && e.files!.isNotEmpty)
-  //                 ? Files(
-  //               name: e.files?[0].name ?? "",
-  //               id: e.files?[0].id ?? "",
-  //               key: e.files?[0].key ?? "",
-  //               size: e.files?[0].size ?? "",
-  //               createdAt: e.files?[0].createdAt ?? "",
-  //             )
-  //                 : Files()
-  //           ],
-  //           leaveType: LeaveType(
-  //               type: e.leaveType?.type ?? "",
-  //               isAddNoteRequired: e.leaveType?.isAddNoteRequired ?? false,
-  //               isAttachDocumentRequired:
-  //               e.leaveType?.isAttachDocumentRequired ?? false,
-  //               leaveId: e.leaveType?.leaveId ?? "",
-  //               leaveName: e.leaveType?.leaveName ?? ""));
-  //
-  //       Map<String, dynamic> jsonModel = modelForDescription.toJson();
-  //
-  //       String objData = jsonEncode(jsonModel);
-  //       return CalendarEventData(
-  //         date: DateTime.parse("2024-01-24"),
-  //         startTime: e.startDate != null
-  //             ? DateTime.parse(
-  //             "2024-01-24 ${e.startDate?.substring(11, 19)}")
-  //             : DateTime.parse(
-  //             "2024-01-24 ${DateTime.now().toString().substring(11, 19)}"),
-  //         endTime: _createEndDateForTimeLine(
-  //             startDate: e.startDate ?? DateTime.now().toString(),
-  //             endDate: e.endDate),
-  //         event: "",
-  //         title: '',
-  //         description: objData,
-  //       );
-  //     }).toList() ??
-  //         []);
-  //
-  //     CalendarControllerProvider.of(Get.context!)
-  //         .controller
-  //         .addAll(timelogList ?? []);
-  //
-  //     if (updateDataTime.isActive) {
-  //       print("updateDataTime.isActive ${updateDataTime.isActive}");
-  //       updateDataTime.cancel();
-  //       print("updateDataTime.isActive ${updateDataTime.isActive}");
-  //     }
-  //     updateDataAfterTwoMinutes();
-  //   }
-  //
-  //   isTimelineCalendarByDateLoading(false);
-  // }
-  //
-  //
-  //
-  //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Future<bool> startOrEndTimer({required String timerType}) async {
-  //   final response = await NetworkClient()
-  //       .graphRequest(queryString: startOrEndTimerQueryData, variables: {
-  //     "inputData": {"timer_type": timerType}
-  //   });
-  //
-  //   if (response.hasException) {
-  //     ExceptionHelper.errorHandler(
-  //         exception: response.exception!, methodName: "saveTimeEntry");
-  //     return false;
-  //   } else {
-  //     startOrEndTimerResponse =
-  //         StartOrEndTimerResponse.fromJson(response.data!);
-  //     if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
-  //       showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
-  //       Get.find<TimeCounterController>().start();
-  //       _refreshTimeline();
-  //     } else {
-  //       if (Get.find<TimeCounterController>().timer.isActive &&
-  //           Get.find<TimeCounterController>().animationTimer.isActive) {
-  //         Get.find<TimeCounterController>().stop();
-  //         Get.find<TimeCounterController>().isRunningHorizontalLine(false);
-  //       }
-  //     }
-  //     return true;
-  //   }
-  // }
-
-  /// Starts or stops the timer based on the [timerType].
-  ///
-  /// This method sends a GraphQL request to start or stop a timer based on the
-  /// [timerType] ("start" or "end"). It handles the response and updates the UI
-  /// accordingly, either starting the timer or stopping it based on the server's response.
-  ///
-  /// If the timer is successfully started, it triggers a success message and starts
-  /// the timer in the [TimeCounterController]. If the timer is stopped, it also stops
-  /// the animation and the timer in the same controller.
-  ///
-  /// Returns `true` if the timer was successfully started or stopped, and `false` if
-  /// an exception occurred during the API call.
-  ///
-  /// Throws: Exception handled by [ExceptionHelper.errorHandler].
-  Future<bool> startOrEndTimer({required String timerType}) async {
-    try {
-      // Make the GraphQL request to start or stop the timer.
-      final response = await NetworkClient()
-          .graphRequest(queryString: startOrEndTimerQueryData, variables: {
-        "inputData": {"timer_type": timerType}
-      });
-
-      // Handle exception from response
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "saveTimeEntry");
-        return false;
-      }
-
-      // Parse response data
-      startOrEndTimerResponse =
-          StartOrEndTimerResponse.fromJson(response.data!);
-
-      // If endDate is null, the timer has started
-      if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
-        // Show success message and start timer in the controller
-        showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
-        Get.find<TimeCounterController>().start();
-        _refreshTimeline();
-      } else {
-        // If the timer is active, stop it along with the animation
-        TimeCounterController timerController =
-        Get.find<TimeCounterController>();
-        if (timerController.timer.isActive &&
-            timerController.animationTimer.isActive) {
-          timerController.stop();
-          timerController.isRunningHorizontalLine(false);
-        }
-      }
-
-      return true;
-    } catch (e) {
-      // Handle unexpected errors
-      log("startOrEndTimer:: ${e.toString()}");
-      return false;
-    }
-  }
-
-
-
-  /// Saves a time entry based on the current timer data.
-  ///
-  /// This method sends a GraphQL request to save the time entry using the start and end dates from the
-  /// [startOrEndTimerResponse], along with optional task and project IDs if provided.
-  ///
-  /// If the time entry is successfully saved, the method:
-  /// - Clears the task and project data.
-  /// - Resets the time entry description.
-  /// - Resets the [TimeCounterController] and refreshes the dashboard and timeline data.
-  /// - Navigates back to the main screen.
-  ///
-  /// If there is an exception during the request, it is handled by [ExceptionHelper.errorHandler].
-  ///
-  /// The [isTimelogEntryOrRemoveLoading] flag is used to show loading state during the API call.
-  Future<void> saveTimeEntry() async {
-    // Show loading indicator
-    isTimelogEntryOrRemoveLoading(true);
-
-    // Prepare variables for the GraphQL request
-    final variables = {
-      "inputData": {
-        "description": descriptionController.text,
-        "end_date":
-        _formatDate(startOrEndTimerResponse?.startOrStopTimer?.endDate),
-        "start_date":
-        _formatDate(startOrEndTimerResponse?.startOrStopTimer?.startDate),
-        "status": "pending",
-        "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-        "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-        "timeline_id": startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
-      }
-    };
-
-    try {
-      // Make the GraphQL request to save the timer entry
-      final response = await NetworkClient().graphRequest(
-        queryString: saveTimerQueryData,
-        variables: variables,
-      );
-
-      // Handle response exception
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "saveTimeEntry");
-      } else {
-        // Success: Show a success message and process the response
-        showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
-        timerEntryResponse = TimerEntryResponse.fromJson(response.data!);
-
-        // Reset fields and controllers after successful save
-        _resetFields();
-        _refreshTimeline();
-
-        // Navigate to the main screen
-        Get.to(() => const MainScreen(routeIndex: 0));
-      }
-    } finally {
-      // Hide loading indicator after completion
-      isTimelogEntryOrRemoveLoading(false);
-    }
-  }
-
-  /// Formats the date string to UTC format. Defaults to the current date and time if [date] is null.
-  String _formatDate(String? date) {
-    return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
-  }
-
-  /// Resets the task, project, and description fields and the time counter.
-  void _resetFields() {
-    taskId.value = "";
-    taskName.value = '';
-    projectId.value = '';
-    descriptionController.clear();
-    Get.find<TimeCounterController>().reset();
-    Get.find<TimeCounterController>().isTotalCount(true);
-  }
-
-  ///dev check
-  ///with utc
-  createManualEntry() async {
-    isManualEntryLoading(true);
-
-    Duration timeDifference = DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-        .difference(DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-    if (!timeDifference.isNegative) {
-      isTimeInvalid(false);
-      final response = await NetworkClient()
-          .graphRequest(queryString: createNewEntryQuery, variables: {
-        "inputData": {
-          "end_date": DateTime.parse(
-              "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-              .toUtc()
-              .toString(),
-          "description": descriptionController.text,
-          "start_date": DateTime.parse(
-              "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
-              .toUtc()
-              .toString(),
-          "status": "pending",
-          "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-          "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-        }
-      });
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!, methodName: "createManualEntry");
-      } else {
-        showSuccessMessage(message: "Time entry created successfully");
-        taskId.value = "";
-        taskName.value = '';
-        projectId.value = '';
-        descriptionController.clear();
-        Get.off(() => const MainScreen(routeIndex: 0));
-        _refreshTimeline();
-      }
-    } else {
-      showWarningMessage(message: "Provide a valid project/task ");
-    }
-    isManualEntryLoading(false);
-  }
-
-  ///dev check
-  ///with utc
-  updateTimelineLogDetails() async {
-    isUpdateTimeLogLoading(true);
-
-    Duration timeDifference = DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-        .difference(DateTime.parse(
-        "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
-
-    if (!timeDifference.isNegative) {
-      isTimeInvalid(false);
-      final response = await NetworkClient().graphRequest(
-          queryString: updateTimelineLogDetailsQueryData,
-          variables: {
-            "inputData": {
-              "timeline_id": timeLineID,
-              "description": descriptionController.text,
-              "end_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
-              "start_date":
-              "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-              "status": "pending",
-              "task_id": taskId.value.isNotEmpty ? taskId.value : null,
-              "project_id": projectId.value.isNotEmpty ? projectId.value : null,
-            }
-          });
-
-      log(response.toString(), error: 0);
-
-      if (response.hasException) {
-        ExceptionHelper.errorHandler(
-            exception: response.exception!,
-            methodName: "updateTimelineLogDetails");
-      } else {
-        descriptionController.clear();
-        timeLineID = '';
-        taskId.value = "";
-        taskName.value = '';
-        projectId.value = '';
-        Get.off(() => const MainScreen(routeIndex: 0));
-        _refreshTimeline();
-      }
-    } else {
-      isTimeInvalid(true);
-    }
-
-    isUpdateTimeLogLoading(false);
-  }
-
-  getProjectDropdown() async {
-    isLoading(true);
-    final response = await NetworkClient()
-        .graphRequest(queryString: getProjectDropdownQuery, variables: {
-      "queryData": {"searchText": taskSearchController.text},
-      "optionData": {"limit": 200}
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "getProjectDropdown");
-    } else {
-      projectDropDownResponse =
-          ProjectDropDownResponse.fromJson(response.data!);
-
-      if (taskSearchController.text.isEmpty &&
-          projectDropDownResponse?.getProjectsDropdown != null &&
-          projectDropDownResponse!.getProjectsDropdown!.isNotEmpty) {
-        taskName.value =
-            projectDropDownResponse?.getProjectsDropdown?.first.name ?? "";
-        projectId.value =
-            projectDropDownResponse?.getProjectsDropdown?.first.projectId ?? "";
-        projectColor.value =
-            projectDropDownResponse?.getProjectsDropdown?.first.color ?? "";
-      }
-    }
-    isLoading(false);
-  }
-
-  Future<bool> removeTimeEntry({String? timeLogId}) async {
-    isTimelogEntryOrRemoveLoading(true);
-    final response = await NetworkClient()
-        .graphRequest(queryString: removeTimerQueryData, variables: {
-      "inputData": {
-        "timeline_id":
-        timeLogId ?? startOrEndTimerResponse?.startOrStopTimer?.id ?? ""
-      }
-    });
-
-    if (response.hasException) {
-      ExceptionHelper.errorHandler(
-          exception: response.exception!, methodName: "removeTimeEntry");
-      isTimelogEntryOrRemoveLoading(false);
-      return false;
-    } else {
-      showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
-      taskId.value = "";
-      Get.find<TimeCounterController>().isTotalCount(true);
-      descriptionController.clear();
-      Get.find<TimeCounterController>().reset();
-      Get.off(() => const MainScreen(routeIndex: 0));
-      isTimelogEntryOrRemoveLoading(false);
-      _refreshTimeline();
-      return true;
-    }
-  }
-
-
-
-
-
-
   getTimelineSummaryByMonth({required String startDate, required String endDate}) async {
     print("getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
 
@@ -765,17 +203,6 @@ class HrTimelineController extends GetxController with StateMixin {
     }
     change(null, status: RxStatus.success());
   }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -823,7 +250,7 @@ class HrTimelineController extends GetxController with StateMixin {
         endDate:
         "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 
-    await getTimelineSummaryByDate(
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
         startDate:
         "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
@@ -838,7 +265,7 @@ class HrTimelineController extends GetxController with StateMixin {
         }
       }
 
-      timelogList = calendarTimeline.getCalenderTimelinesForApp?.timelines?.map((e) {
+      timelogList = calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
             ModelForDescription modelForDescription = ModelForDescription(
                 status: e.status ?? "",
                 description: e.description ?? "",
@@ -870,7 +297,7 @@ class HrTimelineController extends GetxController with StateMixin {
           }).toList();
 
       timelogList?.addAll(
-          calendarTimeline.getCalenderTimelinesForApp?.leaves?.map((e) {
+          calendarTimeline.getCalenderTimelinesForApp?.data?.leaves?.map((e) {
             //todo
             /// add files info
             ModelForDescription modelForDescription = ModelForDescription(
@@ -935,6 +362,8 @@ class HrTimelineController extends GetxController with StateMixin {
     descriptionController.dispose();
     super.disposeId(id);
   }
+
+
 
 
 

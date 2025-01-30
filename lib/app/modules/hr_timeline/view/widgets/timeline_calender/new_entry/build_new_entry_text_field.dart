@@ -22,19 +22,23 @@ import '../../../../../../../common/widget/timePicker/date_time_picker_controlle
 import '../../../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
-import '../../../../controllers/hr_timeline_controller.dart';
+import '../../../../controllers/global_timline_controller.dart';
 import 'build_task_view.dart';
 import 'new_entry_duration_time_with_status.dart';
 
 class BuildNewEntryTextField extends StatelessWidget {
+  final bool isEmployee;
   final bool? isFromUpdateTimelogEntry;
   final String? status;
   const BuildNewEntryTextField(
-      {this.isFromUpdateTimelogEntry = false, this.status, super.key});
+      {this.isFromUpdateTimelogEntry = false,
+      this.status,
+      required this.isEmployee,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.find<HrTimelineController>().isTimeInvalid(false);
+    Get.find<TimelineGlobalController>().isTimeInvalid(false);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -43,17 +47,14 @@ class BuildNewEntryTextField extends StatelessWidget {
             decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24))),
             padding: marginLayout.copyWith(top: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSpacerHeight(height: 12),
-
-
-                _employeeSearch(),
-                customSpacerHeight(height: 20),
-
+                _buildEmployeeSearch(context),
                 customAppTitleText(
                     text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
@@ -62,24 +63,22 @@ class BuildNewEntryTextField extends StatelessWidget {
                 _dayScheduleLayout(),
                 customSpacerHeight(height: 20),
                 Obx(() => _timerLayout(context)),
-
                 customSpacerHeight(height: 20),
-                customAppTitleText(text: AppString.text_status.tr, isRequired: true),
-                customSpacerHeight(height: 8),
-                _buildStatusTabSelector(),
-                customSpacerHeight(height: 20),
-
-                customAppTitleText(text: AppString.text_project_or_task.tr, isRequired: true),
+                _buildStatus(),
+                customAppTitleText(
+                    text: AppString.text_project_or_task.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 _selectedTaskLayout(context),
                 customSpacerHeight(height: 20),
                 customAppTitleText(text: AppString.text_description.tr),
                 customSpacerHeight(height: 8),
-                InputNote(
-                    controller:
-                        Get.find<HrTimelineController>().descriptionController),
+                InputNote(controller: Get.find<TimelineGlobalController>().descriptionController),
                 customSpacerHeight(height: 20),
+
+
+
                 _buildButton(context),
+
                 customSpacerHeight(height: 40)
               ],
             ),
@@ -158,7 +157,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   _timeInvalidMessage() {
-    return Get.find<HrTimelineController>().isTimeInvalid.isTrue
+    return Get.find<TimelineGlobalController>().isTimeInvalid.isTrue
         ? Text(
             AppString.inputTimeInvalidMessage.tr,
             style:
@@ -252,7 +251,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   _buildButton(BuildContext context) {
-    final timelineController = Get.find<HrTimelineController>();
+    final timelineController = Get.find<TimelineGlobalController>();
 
     if (status == "reject") {
       return CustomAppButton(
@@ -268,14 +267,15 @@ class BuildNewEntryTextField extends StatelessWidget {
       );
     }
 
+
+
+
     return Obx(() {
-      if (timelineController.isManualEntryLoading.isTrue ||
-          timelineController.isUpdateTimeLogLoading.isTrue) {
+      if (timelineController.isManualEntryLoading.isTrue || timelineController.isUpdateTimeLogLoading.isTrue) {
         return const Center(child: CupertinoActivityIndicator());
       }
 
-      final isValueChanged =
-          timelineController.isValueChangeForTimeLogUpdate.value;
+      bool isValueChanged = timelineController.isValueChangeForTimeLogUpdate.value|| timelineController.status.value=="approved";
 
       return CustomDoubleAppButton(
         buttonText: isFromUpdateTimelogEntry == true
@@ -287,7 +287,13 @@ class BuildNewEntryTextField extends StatelessWidget {
         onAction: isValueChanged
             ? () {
                 if (isFromUpdateTimelogEntry == true) {
-                  timelineController.updateTimelineLogDetails();
+                  if(isEmployee==true && status=="approved" && isFromUpdateTimelogEntry==true){
+                    timelineController.status.value="";
+                    timelineController.updateTimelineLogDetails();
+                  }else{
+                    timelineController.updateTimelineLogDetails();
+                  }
+
                 } else {
                   timelineController.createManualEntry();
                 }
@@ -301,12 +307,11 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   void _showRemoveTimeLogDialog(
-      BuildContext context, HrTimelineController controller) {
+      BuildContext context, TimelineGlobalController controller) {
     showCustomAlertDialog(
       context: context,
       onConfirm: () async {
-        final result =
-            await controller.removeTimeEntry(timeLogId: controller.timeLineID);
+        final result = await controller.removeTimelineEntry();
         if (result == true) {
           Navigator.pop(context);
         }
@@ -323,18 +328,28 @@ class BuildNewEntryTextField extends StatelessWidget {
     );
   }
 
-  _employeeSearch() {
+  _employeeSearch(BuildContext context) {
     return CustomSearchBar(
-      onValueSelected: (value) {},
-      onClickRouteAction: () {},
-      userInfo: (data) {
+      onValueSelected: (String orgId) async {
+        Navigator.pop(context);
+        Get.find<TimelineGlobalController>().orgUserId(orgId);
+      },
+      onClearAction: () async {
+        Get.find<TimelineGlobalController>().orgUserId.value = "";
       },
     );
   }
 
   /// Builds a horizontal tab selector for leave status options.
   Widget _buildStatusTabSelector() {
-    final leaveController = Get.find<HrTimelineController>();
+    RxInt selectedStatusIndex = 0.obs;
+
+    if (isFromUpdateTimelogEntry == true) {
+      status == "pending" ? selectedStatusIndex(0) : selectedStatusIndex(1);
+    }
+
+    final List<String> statusOptions = ["Pending", "Approved"];
+
     return SizedBox(
       height: AppLayout.getHeight(44),
       child: Container(
@@ -342,31 +357,38 @@ class BuildNewEntryTextField extends StatelessWidget {
           color: AppColor.cardColor,
           borderRadius: BorderRadius.circular(4),
           border:
-          Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
+              Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
         ),
         child: ListView.builder(
-          itemCount: leaveController.statusOptions.length,
+          itemCount: statusOptions.length,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return Obx(() {
               // Checks if the current index is selected.
-              final isSelected = index == leaveController.selectedStatusIndex.value;
+              final isSelected = index == selectedStatusIndex.value;
               return GestureDetector(
-                onTap: () => leaveController.selectedStatusIndex.value = index,
+                onTap: () {
+                  selectedStatusIndex.value = index;
+                  Get.find<TimelineGlobalController>().status(
+                      selectedStatusIndex.value == 0 ? "pending" : "approved");
+                },
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
-                    color:
-                    isSelected ? AppColor.pendingColor : Colors.transparent,
+                    color: isSelected
+                        ? selectedStatusIndex.value == 0
+                            ? AppColor.pendingColor
+                            : AppColor.successColor
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    leaveController.statusOptions[index],
+                    statusOptions[index],
                     style: AppStyle.normal_text.copyWith(
                       color:
-                      isSelected ? AppColor.cardColor : AppColor.hintColor,
+                          isSelected ? AppColor.cardColor : AppColor.hintColor,
                     ),
                   ),
                 ),
@@ -376,6 +398,34 @@ class BuildNewEntryTextField extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _buildStatus() {
+    if (isEmployee == false) {
+      return Column(
+        children: [
+          customAppTitleText(text: AppString.text_status.tr, isRequired: true),
+          customSpacerHeight(height: 8),
+          _buildStatusTabSelector(),
+          customSpacerHeight(height: 20),
+        ],
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+  }
+
+  _buildEmployeeSearch(BuildContext context) {
+    if (isEmployee == false) {
+      return Column(
+        children: [
+          _employeeSearch(context),
+          customSpacerHeight(height: 20),
+        ],
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
   }
 }
 
@@ -446,7 +496,9 @@ Widget _newEntryEndTime({required BuildContext context}) {
 }
 
 _removeTextLayout() {
-  return Get.find<HrTimelineController>().isTimelogEntryOrRemoveLoading.value
+  return Get.find<TimelineGlobalController>()
+          .isTimelogEntryOrRemoveLoading
+          .value
       ? const CupertinoActivityIndicator(
           color: AppColor.cardColor,
         )
@@ -550,7 +602,7 @@ class _InTimePicker extends StatelessWidget {
                   if (Get.find<DateTimePickerController>().inTime.value !=
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 0${time.toString()}"))) {
-                    Get.find<HrTimelineController>()
+                    Get.find<TimelineGlobalController>()
                         .isValueChangeForTimeLogUpdate(true);
                   }
 
@@ -561,7 +613,7 @@ class _InTimePicker extends StatelessWidget {
                   if (Get.find<DateTimePickerController>().inTime.value !=
                       DateFormat('HH:mm').format(
                           DateTime.parse("2024-01-01 ${time.toString()}"))) {
-                    Get.find<HrTimelineController>()
+                    Get.find<TimelineGlobalController>()
                         .isValueChangeForTimeLogUpdate(true);
                   }
 
@@ -626,7 +678,7 @@ class _OutTimePicker extends StatelessWidget {
                     if (Get.find<DateTimePickerController>().outTime.value !=
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 0${time.toString()}"))) {
-                      Get.find<HrTimelineController>()
+                      Get.find<TimelineGlobalController>()
                           .isValueChangeForTimeLogUpdate(true);
                     }
 
@@ -637,7 +689,7 @@ class _OutTimePicker extends StatelessWidget {
                     if (Get.find<DateTimePickerController>().outTime.value !=
                         DateFormat('HH:mm').format(
                             DateTime.parse("2024-01-01 ${time.toString()}"))) {
-                      Get.find<HrTimelineController>()
+                      Get.find<TimelineGlobalController>()
                           .isValueChangeForTimeLogUpdate(true);
                     }
 

@@ -18,10 +18,14 @@ class TaskView extends StatelessWidget {
   final String projectId;
   final String projectName;
   final String projectColor;
+  final String employeeName;
+  final String employeeId;
 
   const TaskView({
     required this.date,
     required this.description,
+    required this.employeeName,
+    required this.employeeId,
     required this.startTime,
     required this.endTime,
     required this.timeLineId,
@@ -75,6 +79,8 @@ class TaskView extends StatelessWidget {
                 projectColor: projectColor,
                 projectId: projectId,
                 taskId: taskId,
+                employeeName: employeeName,
+                employeeId: employeeId,
                 endTime: endTime,
                 startTime: startTime.isNotEmpty
                     ? startTime
@@ -120,12 +126,17 @@ class TaskInfo {
   final String? taskId;
   final String? projectId;
   final String projectColor;
+  final String employeeName;
+  final String employeeId;
+
 
   TaskInfo(
       {required this.startTime,
       required this.endTime,
       this.status,
       this.totalDur,
+      required this.employeeId,
+      required this.employeeName,
       this.description,
       this.timeLineId,
       this.taskOrProjectName,

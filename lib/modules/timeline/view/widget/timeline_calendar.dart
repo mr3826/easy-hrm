@@ -201,8 +201,9 @@ class TimeLineCalendar extends StatelessWidget {
               context: context,
               child: leaveId.substring(1, leaveId.length - 1) == "null"
                   ? TaskView(
-                      taskName:
-                          taskName.substring(1, taskName.toString().length - 1),
+                      taskName: taskName.substring(1, taskName.toString().length - 1),
+                      employeeId:"" ,
+                      employeeName: "",
                       date: startDate
                           .toString()
                           .substring(1, startDate.toString().length - 1),
@@ -238,6 +239,7 @@ class TimeLineCalendar extends StatelessWidget {
                           .substring(1, projectColor.toString().length - 1),
                     )
                   : LeaveRecordDetails(
+
                       status: status
                           .toString()
                           .substring(1, status.toString().length - 1),
@@ -314,6 +316,7 @@ class TimeLineCalendar extends StatelessWidget {
                             type: type.substring(1, type.length - 1)),
                       ),
                       leaveId: '',
+
                     ),
             );
           },

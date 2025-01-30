@@ -6,8 +6,8 @@ import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/utils.dart';
 
 class TimelineCalendar extends StatelessWidget {
-  final TimelineSummaryByDate? timelineSummaryByDate;
-  const TimelineCalendar({super.key, this.timelineSummaryByDate});
+  final TimelineSummaryByDate timelineSummaryByDate;
+  const TimelineCalendar({super.key, required this.timelineSummaryByDate});
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +25,15 @@ class TimelineCalendar extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: workingScheduleLayout(
           schedule: getConvertSecondsToHours(timelineSummaryByDate
-                  ?.getTimelogSummaryForApp?.totalScheduledSeconds ??
+                  .getTimelogSummaryForApp?.totalScheduledSeconds ??
               ""),
           balanceTime: getConvertSecondsToHours(
-              timelineSummaryByDate?.getTimelogSummaryForApp?.balance ?? ""),
+              timelineSummaryByDate.getTimelogSummaryForApp?.balance ?? ""),
           loggedTime: getConvertSecondsToHours(timelineSummaryByDate
-                  ?.getTimelogSummaryForApp?.loggedTotalSeconds ??
+                  .getTimelogSummaryForApp?.loggedTotalSeconds ??
               ""),
           paidLeave: getConvertSecondsToHours(timelineSummaryByDate
-                  ?.getTimelogSummaryForApp?.totalLeavesSeconds ??
+                  .getTimelogSummaryForApp?.totalLeavesSeconds ??
               "")),
     );
   }

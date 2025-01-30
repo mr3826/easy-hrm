@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:payrun_mobile/common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../common/widget/custom_card_style.dart';
-import '../../../../common/widget/custom_network_image.dart';
 import '../../../../common/widget/custom_spacer.dart';
 import '../../../common/widget/custom_buttom_sheet.dart';
+import '../../../utils/utils.dart';
 import '../../modules/employee/view/widget/serach_employee_list/search_employee_list.dart';
 
 
@@ -111,8 +112,7 @@ class CustomSearchBar extends StatefulWidget {
 }
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
-  final TextEditingController searchController =
-      TextEditingController(text: "Search employee");
+  final TextEditingController searchController = TextEditingController(text: "Search employee");
   String profileImgKey = "";
 
   @override
@@ -129,19 +129,15 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           child: Row(
             children: [
               customSpacerWidth(width: 12),
-              const Icon(CupertinoIcons.search,
-                  color: AppColor.hintColor, size: 25),
+              const Icon(CupertinoIcons.search, color: AppColor.hintColor, size: 25),
               customSpacerWidth(width: 8),
               if (profileImgKey.isNotEmpty)
-                CustomNetworkImage(
-                  imgUrlKey: profileImgKey,
-                  errorText: "er",
-                  height: 12,
+                CircularNetworkImage(
+                  imageUrl: buildImgIxUrl(imagePath: profileImgKey,isPublic: true),
+                  errorText: getInitials(searchController.text),
+                  radius: 12,
                   borderColor: Colors.transparent,
-                  errorTextStyle: AppStyle.normal_text_black.copyWith(
-                    fontSize: 14,
-                    color: AppColor.secondaryColor,
-                  ),
+
                 ),
               customSpacerWidth(width: 6),
               Expanded(
