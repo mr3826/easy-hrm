@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
@@ -57,11 +58,12 @@ class SummaryTimeLogCalendar extends StatelessWidget {
 
     int monthNumber = monthToNumber[month] ?? 0;
     // //add selected date info
-    Get.find<TimelineSummaryController>().selectedMonthStartDate.value =
+        Get.find<DateTimeController>().requestedDate.value =
         "${DateTime(year, monthNumber, 1, 0, 0, 0)}";
 
-    Get.find<TimelineSummaryController>().selectedMonthEndDate.value =
+    Get.find<DateTimeController>().requestedDate.value =
         "${DateTime(year, monthNumber + 1, 0, 23, 59, 59)}";
+
     await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
     await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
   }

@@ -10,6 +10,7 @@ class DateTimeController extends GetxController {
   String selectedInputMins = '30';
   String clockHrsFormat = 'PM';
   RxString requestedDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  RxString requestedEndDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
 
 
   RxString timeLogDate = "".obs;

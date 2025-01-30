@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../global/view/widgets/custom_date_picker.dart';
 import '../../../controllers/time_sheet_controller.dart';
@@ -100,21 +102,20 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
               itemBuilder: (context, index) {
                 return Obx(() => InkWell(
                       onTap: () {
-                        controller.currentDate.value =
-                            controller.dayList[index];
+                        controller.currentDate.value = controller.dayList[index];
                         controller.listIndex.value = index;
                         controller.onDaySelected(index.toString());
-
                         if (controller.dayList[index] == "Custom" &&
                             controller.listIndex.value == 6) {
                           controller.clearRange();
-
                           _showCustomDateRangeDialog(index, context);
                         } else {
-                          controller.getTimesheetByDate(
-                              startDate: controller.rangeStart.toString(),
-                              endDate: controller.rangeEnd.toString());
+
+                          Get.find<DateTimeController>().requestedDate.value=formatDate(date: controller.rangeStart.toString(),format: "yyyy-MM-dd");
+                          Get.find<DateTimeController>().requestedEndDate.value=formatDate(date: controller.rangeStart.toString(),format: "yyyy-MM-dd");
+                          controller.getTimesheetByDate();
                           Navigator.pop(context);
+
                         }
                       },
                       child: Padding(
@@ -193,8 +194,9 @@ void _showCustomDateRangeDialog(int index, context) async {
   if (selectedRange != null) {
     DateTime? startDate = selectedRange["start"];
     DateTime? endDate = selectedRange["end"];
-    Get.find<TimeSheetController>().getTimesheetByDate(
-        startDate: startDate.toString(), endDate: endDate.toString());
+    Get.find<DateTimeController>().requestedDate.value=formatDate(date: startDate.toString(),format: "yyyy-MM-dd");
+    Get.find<DateTimeController>().requestedEndDate.value=formatDate(date: endDate.toString(),format: "yyyy-MM-dd");
+    Get.find<TimeSheetController>().getTimesheetByDate();
     Get.back(canPop: false);
   }
 }

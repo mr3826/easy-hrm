@@ -7,8 +7,7 @@ class TimelineApiService {
   final ApiService _apiService;
   TimelineApiService(this._apiService);
 
-  Future<QueryResult<Object?>> getTimeSheets(
-      String startDate, String endDate, String orgId) async {
+  Future<QueryResult<Object?>> getTimeSheets(String startDate, String endDate, String orgId) async {
     Map<String, dynamic> variable = {
       "queryData": {
         "start_date": startDate,

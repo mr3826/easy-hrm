@@ -3,13 +3,14 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
-import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../bindings/TimelineSummaryBindings.dart';
+import '../../../controllers/timelog_summary_controller.dart';
 import '../../../models/timeline_summary_by_date.dart';
 import '../../screen/timelog_summary.dart';
 
@@ -82,7 +83,13 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
 
 _tabToViewTimeLogSummery() {
   return GestureDetector(
-    onTap: () => Get.to(()=>const TimeLogSummary(isEmployee: true,)),
+    onTap: (){
+      TimeSheetBindings().dependencies();
+      Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
+      Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+      Get.to(()=>const TimeLogSummary(isEmployee: true,));
+
+    } ,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

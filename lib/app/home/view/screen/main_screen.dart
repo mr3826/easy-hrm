@@ -25,6 +25,7 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
 import '../../../../utils/images.dart';
 import '../../../modules/employee/view/screen/employee_screen.dart';
+import '../../../modules/hr_timeline/view/screen/employee_timeline_screen.dart';
 import '../../../modules/leave_hr/presentation/controller/hr_leave_controller.dart';
 import '../../../modules/leave_hr/presentation/view/screen/leave_hr_screen.dart';
 import '../widget/main_screen_widget.dart';

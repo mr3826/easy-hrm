@@ -48,14 +48,10 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
     String? orgId=data.orgUserId;
     return GestureDetector(
       onTap: (){
-
         TimeSheetBindings().dependencies();
         Get.to(()=>const TimeLogSummary(isEmployee: false,));
-
-
         Get.find<TimelineSummaryController>().getTimelineSummaryByDate(orgId: orgId);
         Get.find<TimelineSummaryController>().getTimelogDetailsByMonth(orgId: orgId);
-
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
