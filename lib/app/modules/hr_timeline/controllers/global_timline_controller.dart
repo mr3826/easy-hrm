@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/success_message.dart';
@@ -167,10 +168,8 @@ class TimelineGlobalController extends GetxController {
   Future<bool?> updateTimelineLogDetails() async {
     isUpdateTimeLogLoading(true);
     bool? response = await _timelineDataSource.updateTimelineLogDetails(
-        startDate:
-            "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-        endDate:
-            "${DateTime.parse("${Get.find<DateTimePickerController>().outDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
+        startDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
+        endDate: "${DateTime.parse("${Get.find<DateTimePickerController>().outDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
         des: descriptionController.text,
         projectId: projectId.value,
         taskId: taskId.value,
@@ -252,11 +251,10 @@ class TimelineGlobalController extends GetxController {
   }
 }
 
-bool isEmployee = false;
 
 _refreshTimeline() async {
-  if (isEmployee == true) {
-    HrTimelineController controller = Get.find<HrTimelineController>();
+  if (Get.find<TimelineGlobalController>().isEmployee.isTrue) {
+    EmployeeTimelineController controller = Get.find<EmployeeTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";
     await controller.getTimelineCalenderByDate(
         startDate:

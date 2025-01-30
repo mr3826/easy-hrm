@@ -191,22 +191,37 @@ class TimelineApiService {
   Future<Map<String, dynamic>?>? updateTimelineLogDetails(String startDate,
       String endDate, String des, String projectId, String timelineId,
       [String? status, String? taskId]) async {
+
+    print('''
+    
+    "start_date": $startDate,
+        "end_date":$endDate,
+        "description": $des,
+        "status": $status ?? "pending",
+        "project_id": $projectId,
+        "timeline_id": $timelineId
+    ''');
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
         "start_date": startDate,
         "end_date": endDate,
         "description": des,
-        "status": status ?? "pending",
         "project_id": projectId,
         "timeline_id": timelineId
       }
     };
+
     if (taskId != null && taskId.isNotEmpty) {
       variables["inputData"]?["task_id"] = taskId;
     }
+  if (status != null && status.isNotEmpty) {
+      variables["inputData"]?["status"] = status;
+    }
+
+
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: updateTimelineLogDetailsQueryData, variables: variables);
-
+    print('response_updated: ${response.data}');
     return response.data;
   }
 }

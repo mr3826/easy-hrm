@@ -4,14 +4,12 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/modules/timeline/model/start_or_end_timer_response.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
@@ -111,19 +109,6 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     log("getTimelineCalenderByDate start & end ==>$startDate And $endDate");
     calendarTimeline= await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate,orgUserId:organizationId)??CalendarTimeline();
 
-    calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.forEach((e){
-
-      print(''''
-    get_timeline_response :
-    startDate:  ${e.startDate},
-
-    endDate:   ${e.endDate},
-
-    status:   ${e.status},
-
-    ''''');
-
-    });
 
     if (timelogList?.isNotEmpty??false) {
       for (var value in timelogList!) {

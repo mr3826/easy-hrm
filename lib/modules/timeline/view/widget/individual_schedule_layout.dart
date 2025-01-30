@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
@@ -50,15 +51,14 @@ final  bool isEmployee;
 
                 Get.back(canPop: false);
 
-                await Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                await Get.find<EmployeeTimelineController>().getTimelineCalenderByDate(
                     startDate:
                     "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                     endDate:
                     "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
 
 
-
-                await Get.find<TimelineController>().getTimelineSummaryByDate(
+                await Get.find<EmployeeTimelineController>().getTimelineSummaryByDate(
                     startDate:
                     "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                     endDate:

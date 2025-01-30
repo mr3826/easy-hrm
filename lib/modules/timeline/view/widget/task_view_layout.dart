@@ -212,10 +212,11 @@ _projectListLayout(BuildContext context, GetProjectsDropdown data, Function onSe
 }
 
 Widget _taskLayout(Tasks task, context) {
-  print("called_taskLayout");
+
+  TimelineGlobalController controller=Get.find<TimelineGlobalController>();
   return InkWell(
     onTap: () {
-      if(isEmployee==true){
+      if(controller.isEmployee.isTrue){
         if (Get.find<EmployeeTimelineController>().taskId.value != task.taskId) {
           Get.find<EmployeeTimelineController>().isValueChangeForTimeLogUpdate(true);
         }
@@ -236,10 +237,7 @@ Widget _taskLayout(Tasks task, context) {
         Get.find<TimelineGlobalController>().projectId.value = "";
         Get.find<TimelineGlobalController>().projectColor.value = "";
         Navigator.pop(context);
-        print("taskSearchController.text : ${taskSearchController.text}");
-
         taskSearchController.clear();
-        print("taskSearchController.text : ${taskSearchController.text}");
       }
 
     },

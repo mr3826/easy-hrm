@@ -590,6 +590,8 @@ query GET_CALENDAR_TIMELINES($queryData: TimelinesQueryDataInputType, $optionDat
         status
         description
         logged_total_seconds
+         total_minutes
+
         project {
           id
           name
