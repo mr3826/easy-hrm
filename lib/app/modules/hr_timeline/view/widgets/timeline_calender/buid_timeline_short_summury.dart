@@ -9,6 +9,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../bindings/TimelineSummaryBindings.dart';
 import '../../../controllers/timelog_summary_controller.dart';
 import '../../../models/timeline_summary_by_date.dart';
@@ -85,8 +86,13 @@ _tabToViewTimeLogSummery() {
   return GestureDetector(
     onTap: (){
       TimeSheetBindings().dependencies();
+      DateTime now=DateTime.now();
+      Get.find<DateTimeController>().requestedDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
+      Get.find<DateTimeController>().requestedEndDate(DateTime(now.year, now.month + 1,0).toString());
+
       Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
       Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+
       Get.to(()=>const TimeLogSummary(isEmployee: true,));
 
     } ,

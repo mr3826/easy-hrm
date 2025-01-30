@@ -34,7 +34,8 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelineSummaryByDate({String? startDate, String? endDate, String? orgId}) async {
     String startDate = "${formatDate(date: Get.find<DateTimeController>().requestedDate.value,format: "yyyy-MM-dd")} 00:00:00.000";
-    String endDate = "${formatDate(date: Get.find<DateTimeController>().requestedDate.value,format: "yyyy-MM-dd")} 23:59:59.000";
+    String endDate = "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value,format: "yyyy-MM-dd")} 23:59:59.000";
+
     isMonthlySummaryDataLoading(true);
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate orgId ; $organizationId");
@@ -50,7 +51,7 @@ class TimelineSummaryController extends GetxController with StateMixin {
 
   getTimelogDetailsByMonth({String? startDate, String? endDate, String? orgId}) async {
     String startDate = "${formatDate(date: Get.find<DateTimeController>().requestedDate.value,format: "yyyy-MM-dd")} 00:00:00.000";
-    String endDate = "${formatDate(date: Get.find<DateTimeController>().requestedDate.value,format: "yyyy-MM-dd")} 23:59:59.000";
+    String endDate = "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value,format: "yyyy-MM-dd")} 23:59:59.000";
     isMonthlySummaryDataLoading(true);
 
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);

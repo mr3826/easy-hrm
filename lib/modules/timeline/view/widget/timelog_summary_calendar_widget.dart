@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
+import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/dimensions.dart';
+import '../../../../utils/utils.dart';
 
 class SummaryTimeLogCalendar extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
@@ -54,25 +56,14 @@ class SummaryTimeLogCalendar extends StatelessWidget {
   void _handleMonthTap(int year, String month) async {
     _controller.selectedValue.value = '$year-$month';
     _scrollToMonth(_controller.selectedValue.value);
-
     int monthNumber = monthToNumber[month] ?? 0;
-    // // //add selected date info
-    // Get.find<TimelineSummaryController>().selectedMonthStartDate.value =
-    // "${DateTime(year, monthNumber, 1, 0, 0, 0)}";
-    //
-    // Get.find<TimelineSummaryController>().selectedMonthEndDate.value =
-    // "${DateTime(year, monthNumber + 1, 0, 23, 59, 59)}";
+
+    Get.find<DateTimeController>().requestedDate(DateTime(year, monthNumber, 1, 0, 0, 0).toString());
+    Get.find<DateTimeController>().requestedEndDate(DateTime(year, monthNumber + 1,0).toString());
 
 
-    print('''
-        "${DateTime(year, monthNumber, 1, 0, 0, 0)}";
-      "${DateTime(year, monthNumber + 1, 2, 23, 59, 59)}";
-    
-    ''');
-
-
-    // await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
-    // await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+     await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
+     await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
 
 
   }

@@ -40,7 +40,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.totalScheduledSeconds.toString() ??
+                                  ?.totalScheduledSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
@@ -51,7 +52,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.loggedTotalSeconds.toString() ??
+                                  ?.loggedTotalSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
@@ -62,7 +64,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.totalLeavesSeconds.toString() ??
+                                  ?.totalLeavesSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
@@ -73,7 +76,8 @@ Widget timelineLayout() {
                           Get.find<TimelineController>()
                                   .timelineSummaryByMonth
                                   ?.getTimelogSummaryForApp
-                                  ?.balance.toString() ??
+                                  ?.balance
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_balance.tr),
                 ],
@@ -90,18 +94,22 @@ Widget timelineLayout() {
 
 _tabToViewTimeLogSummery() {
   return GestureDetector(
-    onTap: (){
-
+    onTap: () {
       TimeSheetBindings().dependencies();
 
-      Get.find<DateTimeController>().requestedDate.value=DateFormat('yyyy-MM-dd').format(DateTime.now());
-      Get.find<DateTimeController>().requestedEndDate.value=DateFormat('yyyy-MM-dd').format(DateTime.now());
+      DateTime now = DateTime.now();
+
+      Get.find<DateTimeController>()
+          .requestedDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
+      Get.find<DateTimeController>()
+          .requestedEndDate(DateTime(now.year, now.month + 1, 0).toString());
+
       Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+      Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
 
-      Get.to(()=>const TimeLogSummary(isEmployee: true,));
-
-
-
+      Get.to(() => const TimeLogSummary(
+            isEmployee: true,
+          ));
     },
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
