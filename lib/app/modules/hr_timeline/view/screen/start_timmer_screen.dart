@@ -20,7 +20,7 @@ import '../../controllers/global_timline_controller.dart';
 
 class StartTimerScreen extends StatelessWidget {
   final bool isEmployee;
-  const StartTimerScreen({super.key,required this.isEmployee});
+  const StartTimerScreen({super.key, required this.isEmployee});
   @override
   Widget build(BuildContext context) {
     TimelineGlobalBindings().dependencies();
@@ -34,9 +34,14 @@ class StartTimerScreen extends StatelessWidget {
           _buildCurrentDate(),
           _buildStartTimer(
             onTap: () async {
-              if (Get.find<TimeCounterController>().isRunning.isFalse) {
+              if (Get.find<TimeCounterController>().isRunning.isFalse &&
+                  Get.find<TimelineGlobalController>()
+                          .startOrEndTimerResponse
+                          ?.startOrStopTimer !=
+                      null) {
                 await Get.find<TimelineGlobalController>()
                     .startOrEndTimer(timerType: StartOrEndTimer.start.name);
+
                 Get.find<TimeCounterController>().isRunningHorizontalLine(true);
               }
             },
@@ -62,7 +67,7 @@ class StartTimerScreen extends StatelessWidget {
                                 height: .6,
                                 context: context,
                                 isDismissible: false,
-                                child:  AddToTaskScreen(
+                                child: AddToTaskScreen(
                                   isEmployee: isEmployee,
                                 ));
                           }

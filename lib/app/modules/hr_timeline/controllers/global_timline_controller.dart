@@ -103,8 +103,8 @@ class TimelineGlobalController extends GetxController {
     } else {
       isStartTimerLoading(true);
     }
-    startOrEndTimerResponse =
-        await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
+    startOrEndTimerResponse = await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
+
     if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
       showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
       Get.find<TimeCounterController>().start();

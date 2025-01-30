@@ -17,7 +17,6 @@ import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/images.dart';
 import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 
-
 Widget entryAndStartTimeLayout(context) {
   final TimeCounterController controller = Get.put(TimeCounterController());
   return Padding(
@@ -36,7 +35,6 @@ Widget entryAndStartTimeLayout(context) {
           child: _addTimeEntry(context),
         ),
         customSpacerWidth(width: 22),
-
         controller.isRunning.value
             ? _startingTimeOpen(
                 time: "${controller.starTimeDashboard}", context: context)
@@ -97,7 +95,9 @@ _addTimeEntry(BuildContext context) {
 _startingTimeOpen({required time, context}) {
   return InkWell(
     onTap: () async {
-      Get.to(const StartTimerScreen(isEmployee: true,));
+      Get.to(() => const StartTimerScreen(
+            isEmployee: true,
+          ));
     },
     child: Stack(
       children: [
@@ -143,11 +143,15 @@ _startingTime(context) {
 }
 
 void _checkIfSubscription() {
-  if (Get.find<UserInfoController>().isSubscriptionTimeTrackingIsAllow.isFalse) {
+  if (Get.find<UserInfoController>()
+      .isSubscriptionTimeTrackingIsAllow
+      .isFalse) {
     alertForSubscriptionRequired();
   } else {
-    Get.put(TimeCounterController()).timerStatus();
-    Get.to(const StartTimerScreen(isEmployee: true,));
+    Get.find<TimeCounterController>().timerStatus();
+    Get.to(() => const StartTimerScreen(
+          isEmployee: true,
+        ));
   }
 }
 

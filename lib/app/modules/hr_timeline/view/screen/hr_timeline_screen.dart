@@ -70,9 +70,9 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         ),
         floatingActionButton: Obx(() => timerBtnLayout(
             context,
-            () => Get.to(const StartTimerScreen(
-                  isEmployee: false,
-                )))),
+            () => Get.to(()=>const StartTimerScreen(
+              isEmployee: false,
+            )))),
       ),
     );
   }

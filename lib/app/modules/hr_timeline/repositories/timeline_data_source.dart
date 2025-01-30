@@ -97,7 +97,7 @@ class TimelineDataImpl implements TimelineDataSource {
  Future<StartOrEndTimerResponse?> startOrEndTimer({required  String timerTyp}) async {
   try{
     Map<String, dynamic>? response = await  _timelineApiService.startOrEndTimer(timerTyp);
-    print('''startOrEndTimer ${response}''');
+    print('''startOrEndTimer $response''');
     if (response != null) {
       return StartOrEndTimerResponse.fromJson(response);
     }

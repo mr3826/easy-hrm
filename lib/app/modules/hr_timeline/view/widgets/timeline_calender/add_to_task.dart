@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
@@ -46,9 +45,7 @@ class AddToTaskScreen extends StatelessWidget {
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          customTitleText(
-                              text: AppString.text_project_task.tr,
-                              isRequired: true),
+                          customTitleText(text: AppString.text_project_task.tr, isRequired: true),
                           customSpacerHeight(height: 8),
                           _selectedTaskLayout(context),
                           customSpacerHeight(height: 20),
@@ -94,8 +91,8 @@ class AddToTaskScreen extends StatelessWidget {
 
   _buildButton(BuildContext context) {
     ///For employee only save button
-    if (isEmployee) {
-      return Get.find<EmployeeTimelineController>()
+    if (isEmployee==true) {
+      return Get.find<TimelineGlobalController>()
               .isTimelogEntryOrRemoveLoading
               .isTrue
           ? const Center(
@@ -112,7 +109,7 @@ class AddToTaskScreen extends StatelessWidget {
                     .copyWith(color: AppColor.cardColor),
               ),
               onPressed: () {
-                Get.find<EmployeeTimelineController>().saveTimeEntry();
+                Get.find<TimelineGlobalController>().saveTimelineEntry();
               },
               buttonColor: AppColor.primaryColor);
     } else {
