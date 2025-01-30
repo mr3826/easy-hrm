@@ -19,7 +19,7 @@ import 'package:payrun_mobile/modules/profile/model/employee_work_history.dart';
 import 'package:payrun_mobile/modules/profile/model/leave_summary.dart';
 import 'package:payrun_mobile/modules/profile/model/user_log_history.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
-import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
@@ -601,7 +601,7 @@ switchOrganisationDataChange() async {
         "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 
   Get.find<TimelineSummaryController>()
-    ..getTimelineByMonth()
+    ..getTimelineSummaryByDate()
     ..getTimelogDetailsByMonth();
   Get.find<NotificationController>()
     ..getNewNotifications()

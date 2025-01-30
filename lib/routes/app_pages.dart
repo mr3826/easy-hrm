@@ -25,7 +25,7 @@ import '../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/timelog_summary.dart';
 import '../modules/notification/presentation/view/screen/notification.dart';
 import '../app/modules/onboard/view/onboarding_screen.dart';
 import '../modules/timeline/view/screen/new_entry.dart';
@@ -112,11 +112,7 @@ class AppPages {
       transition: Transition.size,
       page: () => EditProfileScreen(),
     ),
-    GetPage(
-      name: _Paths.TIME_LOG_SUMMARY,
-      transition: Transition.size,
-      page: () => const TimeLogSummary(),
-    ),
+
 
     GetPage(
       name: _Paths.NEW_ENTRY_SCREEN,

@@ -10,6 +10,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../app/modules/hr_timeline/view/screen/timelog_summary.dart';
 import '../../../../utils/utils.dart';
 
 Widget timelineLayout() {
@@ -85,7 +86,7 @@ Widget timelineLayout() {
 
 _tabToViewTimeLogSummery() {
   return GestureDetector(
-    onTap: () => Get.toNamed(Routes.TIME_LOG_SUMMARY),
+    onTap: () => Get.to(()=>const TimeLogSummary(isEmployee: true,)),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

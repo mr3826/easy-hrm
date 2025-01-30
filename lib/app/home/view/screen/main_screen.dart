@@ -19,7 +19,7 @@ import '../../../../modules/notification/presentation/view/screen/notification.d
 import '../../../../modules/profile/controller/user_profile_controller.dart';
 import '../../../../modules/profile/view/screen/user_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';
-import '../../../../modules/timeline/controller/timelog_summary_controller.dart';
+import '../../../modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import '../../../../utils/app_layout.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/app_style.dart';
@@ -101,7 +101,6 @@ class _MainScreenState extends State<MainScreen> {
     Get.put(DashboardController());
     Get.put(TimelineController());
     Get.put(NotificationController());
-    Get.put(TimelineSummaryController());
     Get.put(LeaveScreenController());
     Get.put(LeaveRecordsController());
     Get.put(UserProfileController());

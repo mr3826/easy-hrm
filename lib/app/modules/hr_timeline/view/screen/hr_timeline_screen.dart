@@ -196,6 +196,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           Navigator.pop(context);
           String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
           String endDate = "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+
           await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate, orgId: orgId);
           await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate, orgId: orgId);
 

@@ -11,6 +11,7 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../models/timeline_summary_by_date.dart';
+import '../../screen/timelog_summary.dart';
 
 Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) {
   return SizedBox(
@@ -81,7 +82,7 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
 
 _tabToViewTimeLogSummery() {
   return GestureDetector(
-    onTap: () => Get.toNamed(Routes.TIME_LOG_SUMMARY),
+    onTap: () => Get.to(()=>const TimeLogSummary(isEmployee: true,)),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

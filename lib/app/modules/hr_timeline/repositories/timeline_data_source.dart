@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../../../../modules/timeline/model/timelog_details_by_month.dart';
 import '../models/project_dropdown_response.dart';
 import '../../../../modules/timeline/model/start_or_end_timer_response.dart';
 import '../models/timeline_summary_by_date.dart';
@@ -16,9 +17,8 @@ abstract class TimelineDataSource {
   Future<bool> removeTimelineEntry({required String timeLogId});
   Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String status,required String des,required String projectId,required String timelineId,String ?taskId});
   Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status});
-
+  Future<TimelogDetailsByMonth?> getTimelogDetailsByMonth({required String startDate, required String endDate,String ?orgUserId});
   Future<bool?> saveTimelineEntry({required String des,required String startDate,required String endDate,required String taskId,required String projectId,required String timelineId});}
-
 
 
 class TimelineDataImpl implements TimelineDataSource {
@@ -30,6 +30,15 @@ class TimelineDataImpl implements TimelineDataSource {
     QueryResult<Object?> response = await _timelineApiService.getTimelineSummary(startDate, endDate,orgUserId: orgUserId);
     if (response.data != null) {
       return TimelineSummaryByDate.fromJson(response.data!);
+    }
+    return null;
+  }
+
+  @override
+  Future<TimelogDetailsByMonth?> getTimelogDetailsByMonth({required String startDate, required String endDate,String ?orgUserId}) async {
+    QueryResult<Object?> response = await _timelineApiService.getTimelogDetailsByMonth(startDate, endDate,orgUserId);
+    if (response.data != null) {
+      return TimelogDetailsByMonth.fromJson(response.data!);
     }
     return null;
   }

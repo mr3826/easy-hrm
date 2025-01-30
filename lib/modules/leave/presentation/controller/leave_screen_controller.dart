@@ -9,7 +9,7 @@ import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.da
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../dashboard/presentation/controller/dashbpard_controller.dart';
-import '../../../timeline/controller/timelog_summary_controller.dart';
+import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import '../../domain/leave_details_by_date.dart';
 import '../../domain/workshief_response_by_date.dart';
 
@@ -160,6 +160,6 @@ void _updateTimelineData() {
         .toString(),
   );
 
-  timelineSummaryController.getTimelineByMonth();
+  timelineSummaryController.getTimelineSummaryByDate();
   timelineSummaryController.getTimelogDetailsByMonth();
 }

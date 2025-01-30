@@ -25,7 +25,7 @@ class TimelineApiService {
         queryString: getTimeSheetByDateQuery, variables: variable);
   }
 
-  Future<QueryResult<Object?>> getTimelineSummary(
+  Future<QueryResult<Object?>> getTimelineSummary( ///get_timeline summary by month
       String startDate, String endDate,
       {String? orgUserId}) async {
     Map<String, Map<String, dynamic>> variables = {
@@ -68,6 +68,9 @@ class TimelineApiService {
     return response.data;
   }
 
+
+
+
   Future<QueryResult<Object?>> getProjectList(String searchText) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
@@ -77,6 +80,34 @@ class TimelineApiService {
     return await _apiService.gqlCall(
         queryString: getProjectDropdownQuery, variables: variables);
   }
+
+
+
+
+
+    Future<QueryResult<Object?>> getTimelogDetailsByMonth(String startDate,String endDate,[String ?orgId]) async {
+    Map<String, Map<String, dynamic>> variables = {
+      "queryData": {
+        "start_date": startDate,
+        "end_date": endDate,
+        "leave_statuses": ["approved", "pending"],
+      },
+      "optionData": {
+        "offset": 0,
+        "order": [
+          ["ta.entry_day", "desc"]
+        ]
+      }
+    };
+    if (orgId != null && orgId.isNotEmpty) {
+      variables["queryData"]?["org_user_id"] = orgId;
+    }
+    return await _apiService.gqlCall(queryString: getTimelogDetailsByMonthQuery, variables: variables);
+  }
+
+
+
+
 
   Future<Map<String, dynamic>?>? saveTimelineEntry(String des, String startDate,
       String endDate, String projectId, String timelineId,
@@ -101,6 +132,9 @@ class TimelineApiService {
     return response.data;
   }
 
+
+
+
   Future<Map<String, dynamic>?>? removeTimelineEntry(String timeLogId) async {
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
@@ -111,6 +145,9 @@ class TimelineApiService {
         queryString: removeTimerQueryData, variables: variables);
     return response.data;
   }
+
+
+
 
   Future<Map<String, dynamic>?>? createManualEntry(
       String startDate, String endDate, String des, String projectId,
@@ -165,19 +202,6 @@ class TimelineApiService {
         "timeline_id": timelineId
       }
     };
-    print('''
-    startDate: $startDate
-    endDate $endDate
-    
-    des $des
-    projectId $projectId
-    timelineId $timelineId
-    
-    
-    
-    
-    ''');
-
     if (taskId != null && taskId.isNotEmpty) {
       variables["inputData"]?["task_id"] = taskId;
     }

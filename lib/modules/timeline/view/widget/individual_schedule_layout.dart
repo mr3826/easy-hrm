@@ -5,7 +5,7 @@ import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/modules/timeline/controller/timeline_controller.dart';
-import 'package:payrun_mobile/modules/timeline/controller/timelog_summary_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -14,7 +14,8 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../utils/utils.dart';
 
 class IndividualTimeLayout extends StatelessWidget {
-  const IndividualTimeLayout({super.key});
+final  bool isEmployee;
+  const IndividualTimeLayout({super.key,required this.isEmployee});
 
   @override
   Widget build(BuildContext context) {
@@ -30,33 +31,42 @@ class IndividualTimeLayout extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () async {
+
+
+
+
               /// call api according to given date
               /// change showing date by updating request date value
-              DateTime requestedDate = DateTime.parse(
-                  Get.find<TimelineSummaryController>()
-                          .timelogDetailsByMonth
-                          ?.getDailyTimeEntries
-                          ?.data?[index]
-                          .entryDay ??
-                      DateTime.now().toString());
-
-              Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(requestedDate);
-
-              Get.back(canPop: false);
-
-              await Get.find<TimelineController>().getCalendarTimelineDataByDate(
-                  startDate:
-                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
-                  endDate:
-                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
 
 
+              if(isEmployee==true){
+                DateTime requestedDate = DateTime.parse(
+                    Get.find<TimelineSummaryController>()
+                        .timelogDetailsByMonth
+                        ?.getDailyTimeEntries
+                        ?.data?[index]
+                        .entryDay ??
+                        DateTime.now().toString());
 
-              await Get.find<TimelineController>().getTimelineSummaryByDate(
-                  startDate:
-                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
-                  endDate:
-                      "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+                Get.find<DateTimeController>().requestedDate.value = DateFormat('yyyy-MM-dd').format(requestedDate);
+
+                Get.back(canPop: false);
+
+                await Get.find<TimelineController>().getCalendarTimelineDataByDate(
+                    startDate:
+                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                    endDate:
+                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+
+
+
+                await Get.find<TimelineController>().getTimelineSummaryByDate(
+                    startDate:
+                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+                    endDate:
+                    "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
+              }
+
 
 
 

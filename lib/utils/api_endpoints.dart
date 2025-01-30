@@ -574,58 +574,6 @@ query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: Op
 }
 ''';
 
-// const getCalendarTimelineQuery = r'''
-// query GetCalenderTimelinesForApp($queryData: CalenderTimelinesForAppQueryData) {
-//   getCalenderTimelinesForApp(queryData: $queryData) {
-//     leaves {
-//       createdAt
-//       description
-//       end_date
-//       files {
-//         name
-//         size
-//         createdAt
-//         key
-//         id
-//       }
-//       leave_details {
-//         schedule_seconds
-//         date
-//         leave_seconds
-//       }
-//       leaveType {
-//         name
-//         type
-//         id
-//         add_note_required
-//         attach_document_required
-//       }
-//       start_date
-//       status
-//       totalLeaveMinutes
-//       id
-//       number_of_days
-//     }
-//     timelines {
-//       id
-//       description
-//       end_date
-//       start_date
-//       status
-//       task {
-//         name
-//         id
-//       }
-//       total_minutes
-//       project {
-//         id
-//         name
-//         color
-//       }
-//     }
-//   }
-// }
-// ''';
 
 
 const getCalendarTimelineQuery = r'''
