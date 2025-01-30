@@ -63,16 +63,19 @@ class HrProfileController extends GetxController with StateMixin {
         userDetails?.getOrganizationUserDetails?.profile?.image ?? "";
   }
 
-  getLeaveRecordsData() async {
+  Future<List<GetLeaveRecordsForApp>> getLeaveRecordsData() async {
     isViewLeaveRecordLoading(true);
-    leaveRecordList = await _remoteDataSource.getLeaveRecordList(
-        limit: limit, offset: offset.value);
+    List<GetLeaveRecordsForApp> leaveRecordList = await _remoteDataSource
+            .getLeaveRecordList(limit: limit, offset: offset.value) ??
+        [];
     isViewLeaveRecordLoading(false);
+    return leaveRecordList;
   }
 
   Future<LeaveSummary> getLeaveSummary() async {
     isViewLeaveSummaryLoading(true);
-    LeaveSummary leaveSummary = await _leaveDataSource.getLeaveSummary()??LeaveSummary();
+    LeaveSummary leaveSummary =
+        await _leaveDataSource.getLeaveSummary() ?? LeaveSummary();
     isViewLeaveSummaryLoading(false);
     return leaveSummary;
   }

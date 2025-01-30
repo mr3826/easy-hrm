@@ -6,6 +6,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../modules/leave/domain/leave_record_response.dart';
+import '../../models/leave_summary.dart';
 import '../../models/user_profile.dart';
 import 'tab_bar_body/leave_record/build_profile_leave_record.dart';
 import 'tab_bar_body/leave_summary/leave_summary_widget.dart';
@@ -13,14 +14,15 @@ import 'tab_bar_body/employee_over_view/employee_overview.dart';
 
 class ProfileTabBar extends StatefulWidget {
   final UserDetails userDetails;
-  final RxBool isDataLoading;
-  final List<GetLeaveRecordsForApp> leaveRecordList;
+  final Future<LeaveSummary> Function() leaveSummaryApiCall;
+  final Future<List<GetLeaveRecordsForApp>> Function() getLeaveRecordList;
 
-  const ProfileTabBar(
-      {super.key,
-      required this.userDetails,
-      required this.isDataLoading,
-      required this.leaveRecordList});
+  const ProfileTabBar({
+    super.key,
+    required this.userDetails,
+    required this.leaveSummaryApiCall,
+    required this.getLeaveRecordList,
+  });
 
   @override
   State<ProfileTabBar> createState() => _CandidateDetailsTabBarState();
@@ -37,34 +39,10 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    // _tabController.addListener(_onTabChanged);
-  }
-
-  // void _onTabChanged() {
-  //   if (_tabController.index == 1) {
-  //     if (hrProfileController.leaveRecordList?.isEmpty ?? true) {
-  //       _getLeaveRecord();
-  //     }
-  //   } else if (_tabController.index == 2) {
-  //     if (hrProfileController
-  //             .leaveSummary?.getOrganizationUsersLeaveSummary?.isEmpty ??
-  //         true) {
-  //       _getLeaveSummary();
-  //     }
-  //   }
-  // }
-
-  // void _getLeaveRecord() {
-  //   hrProfileController.getLeaveRecordsData();
-  // }
-
-  void _getLeaveSummary() {
-    hrProfileController.getLeaveSummary();
   }
 
   @override
   void dispose() {
-    // _tabController.removeListener(_onTabChanged);
     _tabController.dispose();
     super.dispose();
   }
@@ -86,12 +64,10 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
                     onRefresh: () {},
                   ),
                   BuildLeaveRecord(
-                    isDataLoading: widget.isDataLoading,
-                    leaveRecordList: widget.leaveRecordList,
+                    getLeaveRecordList: () => widget.getLeaveRecordList(),
                   ),
                   BuildProfileLeaveSummary(
-                    leaveSummaryApiCall: () =>
-                        hrProfileController.getLeaveSummary(),
+                    leaveSummaryApiCall: () => widget.leaveSummaryApiCall(),
                   ),
                 ],
               ),

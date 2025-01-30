@@ -17,45 +17,48 @@ import '../../../../../../../utils/utils.dart';
 import '../../../../../../../modules/leave/presentation/view/widget/leave_record_details_view.dart';
 
 class BuildLeaveRecord extends StatelessWidget {
-  final RxBool isDataLoading;
-  final List<GetLeaveRecordsForApp> leaveRecordList;
+  final Future<List<GetLeaveRecordsForApp>> Function() getLeaveRecordList;
 
-  const BuildLeaveRecord(
-      {required this.isDataLoading, required this.leaveRecordList, super.key});
+  const BuildLeaveRecord({required this.getLeaveRecordList, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (isDataLoading.value) {
-        return const LoadingIndicator(
-          radius: 18,
+    return FutureBuilder(
+      future: getLeaveRecordList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingIndicator(
+            radius: 18,
+          );
+        }
+        if (snapshot.hasError ||
+            snapshot.data == null ||
+            snapshot.data!.isEmpty) {
+          return Center(
+              child: Text(
+            "No leave record!",
+            style:
+                AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
+          ));
+        }
+        return ListView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          itemCount: snapshot.data?.length,
+          itemBuilder: (context, index) => Column(children: [
+            _dateTextLayout(date: snapshot.data?[index].date),
+            _leaveRecordViewLayout(snapshot.data?[index].data)
+          ]),
         );
-      }
-
-      if (leaveRecordList.isEmpty) {
-        return Center(
-            child: Text(
-          "No leave record!",
-          style: AppStyle.normal_text_black.copyWith(color: AppColor.hintColor),
-        ));
-      }
-      return ListView.builder(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        itemCount: leaveRecordList.length,
-        itemBuilder: (context, index) => Column(children: [
-          _dateTextLayout(date: leaveRecordList[index].date),
-          _leaveRecordViewLayout(index)
-        ]),
-      );
-    });
+      },
+    );
   }
 
-  _leaveRecordViewLayout(int monthIndex) {
+  _leaveRecordViewLayout(List<Data>? data) {
     return ListView.builder(
       shrinkWrap: true,
       padding: marginLayout,
-      itemCount: leaveRecordList[monthIndex].data?.length ?? 0,
+      itemCount: data?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         Color itemColor =
@@ -65,62 +68,32 @@ class BuildLeaveRecord extends StatelessWidget {
           context: context,
           bgColor: itemColor,
           leaveRecord: GetLeaveRecords(
-              startDate: leaveRecordList[monthIndex].data?[index].startDate,
-              endDate: leaveRecordList[monthIndex].data?[index].endDate,
-              status: leaveRecordList[monthIndex].data?[index].status,
-              duration: leaveRecordList[monthIndex].data?[index].numberOfDays,
-              createdAt: leaveRecordList[monthIndex].data?[index].createdAt,
+              startDate: data?[index].startDate,
+              endDate: data?[index].endDate,
+              status: data?[index].status,
+              duration: data?[index].numberOfDays,
+              createdAt: data?[index].createdAt,
               files: [
-                (leaveRecordList[monthIndex].data?[index].files != null &&
-                        leaveRecordList[monthIndex]
-                            .data![index]
-                            .files!
-                            .isNotEmpty)
+                (data?[index].files != null && data![index].files!.isNotEmpty)
                     ? Files(
-                        createdAt: leaveRecordList[monthIndex]
-                                .data?[index]
-                                .files?[0]
-                                .createdAt ??
-                            "",
-                        size: leaveRecordList[monthIndex]
-                                .data?[index]
-                                .files?[0]
-                                .size ??
-                            "",
-                        name: leaveRecordList[monthIndex]
-                                .data?[index]
-                                .files?[0]
-                                .name ??
-                            "",
-                        id: leaveRecordList[monthIndex]
-                                .data?[index]
-                                .files?[0]
-                                .id ??
-                            "",
-                        key: leaveRecordList[monthIndex]
-                                .data?[index]
-                                .files?[0]
-                                .key ??
-                            "",
+                        createdAt: data[index].files?[0].createdAt ?? "",
+                        size: data[index].files?[0].size ?? "",
+                        name: data[index].files?[0].name ?? "",
+                        id: data[index].files?[0].id ?? "",
+                        key: data[index].files?[0].key ?? "",
                       )
                     : Files()
               ],
               leaveDetails: [
-                (leaveRecordList[monthIndex].data?[index].leaveDetails !=
-                            null &&
-                        leaveRecordList[monthIndex]
-                            .data![index]
-                            .leaveDetails!
-                            .isNotEmpty)
+                (data?[index].leaveDetails != null &&
+                        data![index].leaveDetails!.isNotEmpty)
                     ? LeaveDetails(
-                        scheduleHour: leaveRecordList[monthIndex]
-                                .data?[index]
+                        scheduleHour: data[index]
                                 .leaveDetails?[0]
                                 .scheduleSecond
                                 .toString() ??
                             "",
-                        leaveHour: leaveRecordList[monthIndex]
-                                .data?[index]
+                        leaveHour: data[index]
                                 .leaveDetails?[0]
                                 .leaveSecond
                                 .toString() ??
@@ -129,25 +102,15 @@ class BuildLeaveRecord extends StatelessWidget {
                     : LeaveDetails()
               ],
               leaveType: LeaveType(
-                isAttachDocumentRequired: leaveRecordList[monthIndex]
-                    .data![index]
-                    .leaveType
-                    ?.isAttachDocumentRequired,
-                isAddNoteRequired: leaveRecordList[monthIndex]
-                    .data![index]
-                    .leaveType
-                    ?.isAddNoteRequired,
-                leaveName: leaveRecordList[monthIndex]
-                    .data![index]
-                    .leaveType
-                    ?.leaveName,
-                leaveId:
-                    leaveRecordList[monthIndex].data![index].leaveType?.leaveId,
-                type: leaveRecordList[monthIndex].data![index].leaveType?.type,
+                isAttachDocumentRequired:
+                    data![index].leaveType?.isAttachDocumentRequired,
+                isAddNoteRequired: data[index].leaveType?.isAddNoteRequired,
+                leaveName: data[index].leaveType?.leaveName,
+                leaveId: data[index].leaveType?.leaveId,
+                type: data[index].leaveType?.type,
               ),
-              id: leaveRecordList[monthIndex].data![index].id,
-              description:
-                  leaveRecordList[monthIndex].data![index].description),
+              id: data[index].id,
+              description: data[index].description),
         );
       },
     );

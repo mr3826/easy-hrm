@@ -55,11 +55,12 @@ class ProfileRouteBase extends StatelessWidget {
                     userDetails:
                         Get.find<ProfileRouteBaseController>().userDetails ??
                             UserDetails(),
-                    isDataLoading: Get.find<ProfileRouteBaseController>()
-                        .isViewLeaveRecordLoading,
-                    leaveRecordList: Get.find<ProfileRouteBaseController>()
-                            .leaveRecordList ??
-                        [],
+                    leaveSummaryApiCall: () =>
+                        Get.find<ProfileRouteBaseController>()
+                            .getLeaveSummary(orgUserId: orgUserId),
+                    getLeaveRecordList: () =>
+                        Get.find<ProfileRouteBaseController>()
+                            .getLeaveRecordsData(orgUserId: orgUserId),
                   )
                 ],
               ));
@@ -97,8 +98,6 @@ class ProfileRouteBase extends StatelessWidget {
   void _initializationDependencies() {
     RouteBaseProfileBinding().dependencies();
     Get.put(ProfileGlobalController());
-    Get.find<ProfileRouteBaseController>()
-      ..getUserProfile(ordId: orgUserId)
-      ..getLeaveRecordsData(orgUserId: orgUserId);
+    Get.find<ProfileRouteBaseController>().getUserProfile(ordId: orgUserId);
   }
 }

@@ -19,6 +19,7 @@ import 'leave_allowance.dart';
 class BuildProfileLeaveSummary extends StatelessWidget {
   final Future<LeaveSummary> Function() leaveSummaryApiCall;
 
+
   const BuildProfileLeaveSummary(
       {required this.leaveSummaryApiCall, super.key});
 

@@ -25,7 +25,6 @@ class ProfileRouteBaseController extends GetxController {
   final isViewLeaveSummaryLoading = false.obs;
   final isViewLeaveRecordLoading = false.obs;
   final isLeaveTypeLoading = false.obs;
-  List<GetLeaveRecordsForApp>? leaveRecordList;
   LeaveSummary? leaveSummary;
   LeaveTypeDropdown? leaveTypeDropdown;
   String leaveStatusId = "";
@@ -48,17 +47,22 @@ class ProfileRouteBaseController extends GetxController {
         userDetails?.getOrganizationUserDetails?.profile?.image ?? "";
   }
 
-  getLeaveRecordsData({required String orgUserId}) async {
+  Future<List<GetLeaveRecordsForApp>> getLeaveRecordsData(
+      {required String orgUserId}) async {
     isViewLeaveRecordLoading(true);
-    leaveRecordList =
-        await _remoteDataSource.getLeaveRecordList(orgUserId: orgUserId,limit: 20, offset: 0);
+    List<GetLeaveRecordsForApp> leaveRecordList = await _remoteDataSource
+            .getLeaveRecordList(orgUserId: orgUserId, limit: 20, offset: 0) ??
+        [];
     isViewLeaveRecordLoading(false);
+    return leaveRecordList;
   }
 
-  getLeaveSummary() async {
+  Future<LeaveSummary> getLeaveSummary({required String orgUserId}) async {
     isViewLeaveSummaryLoading(true);
-    leaveSummary = await _leaveDataSource.getLeaveSummary();
+    LeaveSummary leaveSummary =
+        await _leaveDataSource.getLeaveSummary() ?? LeaveSummary();
     isViewLeaveSummaryLoading(false);
+    return leaveSummary;
   }
 
   getLeaveTypeDropdown() async {
@@ -106,6 +110,6 @@ class ProfileRouteBaseController extends GetxController {
     showSuccessMessage(message: "Leave allowance has been added successfully!");
     Get.back(canPop: false);
     Get.back(canPop: false);
-    getLeaveSummary();
+    // getLeaveSummary();
   }
 }
