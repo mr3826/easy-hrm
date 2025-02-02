@@ -288,10 +288,3 @@ class TimelineApiService {
   }
 }
 
-//
-// "start_date": "2025-02-19 14:35:00",
-// "end_date": "2025-02-19 21:35:00",
-// "description": des,
-// "status":"pending",
-// "project_id": "039a0d2f-f0f1-484b-b76e-e61a367fc23d",
-// "timeline_id": "1cb9bc05-43fd-4d38-af82-e4648aabb402"
