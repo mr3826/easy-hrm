@@ -39,13 +39,15 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   void initState() {
     HrTimelineBindings().dependencies();
     Get.find<TimelineGlobalController>().isEmployee(false);
-    _tabController = TabController(length: 2, vsync: this,initialIndex: Get.find<TimelineGlobalController>().initialIndex);
+    _tabController = TabController(
+        length: 2,
+        vsync: this,
+        initialIndex: Get.find<TimelineGlobalController>().initialIndex);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {});
         if (_tabController.index == 1) {
-       _updateTimeSheet();
-
+          _updateTimeSheet();
         }
       }
     });
@@ -259,14 +261,19 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     TimeSheetBindings().dependencies();
 
     Get.find<DateTimeController>().requestedDate.value =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0).toString()));
-    Get.find<DateTimeController>().requestedEndDate.value =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(
-            DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
-                .toString()));
-    if( Get.find<TimeSheetController>().timeSheetModel?.getUsersTimeSheet?.data?.isEmpty??true){
-      Get.find<TimeSheetController>().getTimesheetByDate();
+        DateFormat('yyyy-MM-dd').format(DateTime.now());
 
+    Get.find<DateTimeController>().requestedEndDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+
+    if (Get.find<TimeSheetController>()
+            .timeSheetModel
+            ?.getUsersTimeSheet
+            ?.data
+            ?.isEmpty ??
+        true) {
+      Get.find<TimeSheetController>().getTimesheetByDate();
     }
   }
 }

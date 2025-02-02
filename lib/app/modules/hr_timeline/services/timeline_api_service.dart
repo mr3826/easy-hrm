@@ -7,19 +7,25 @@ class TimelineApiService {
   final ApiService _apiService;
   TimelineApiService(this._apiService);
 
-  Future<QueryResult<Object?>> getTimeSheets(String startDate, String endDate, String orgId) async {
+  Future<QueryResult<Object?>> getTimeSheets(String startDate, String endDate, [String ?orgId]) async {
     Map<String, dynamic> variable = {
       "queryData": {
         "start_date": startDate,
         "end_date": endDate,
-        "org_user_ids": [orgId]
+
       },
       "optionData": {
+        "limit": 50,
+        "offset": 0,
         "order": [
           ["sh.name", "asc"]
         ]
       }
     };
+
+    if (orgId != null && orgId.isNotEmpty) {
+      variable["queryData"]?["org_user_ids"] = [orgId];
+    }
     return await _apiService.gqlCall(
         queryString: getTimeSheetByDateQuery, variables: variable);
   }

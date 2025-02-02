@@ -28,9 +28,14 @@ class TimeSheetController extends GetxController {
   Future<void> getTimesheetByDate({String ?orgId}) async {
     String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
     String endDate = "${Get.find<DateTimeController>().requestedEndDate.value} 23:59:59.000";
-    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    print('''
+    startDate $startDate
+    endDate $endDate
+    
+    ''');
+
     isTimeSheetLoading(true);
-    timeSheetModel = await _timelineDataSource.getTimesheetByDate(startDate: startDate, endDate: endDate, orgId: organizationId);
+    timeSheetModel = await _timelineDataSource.getTimesheetByDate(startDate: startDate, endDate: endDate, orgId: orgId??"");
     isTimeSheetLoading(false);
   }
 
