@@ -77,7 +77,9 @@ class BuildNewEntryTextField extends StatelessWidget {
                 customSpacerHeight(height: 8),
                 InputNote(
                     controller: Get.find<TimelineGlobalController>()
-                        .descriptionController),
+                        .descriptionController,onChanged: (v){
+                  Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
+                },),
                 customSpacerHeight(height: 20),
                 _buildButton(context),
                 customSpacerHeight(height: 40)

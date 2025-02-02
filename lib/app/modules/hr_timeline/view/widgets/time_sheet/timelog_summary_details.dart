@@ -271,6 +271,14 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
     Get.find<TimelineGlobalController>().timeLineId(data.id ?? "");
     Get.find<TimelineGlobalController>().projectId(data.project?.id ?? "");
     Get.find<TimelineGlobalController>().orgUserId(data.orgUserId ?? "");
+    Get.find<TimelineGlobalController>().status(data.status ?? "");
+    Get.find<TimelineGlobalController>().taskId(data.task?.id ?? "");
+    Get.find<TimelineGlobalController>()
+        .projectColor(data.project?.color ?? "");
+    Get.find<TimelineGlobalController>().taskName(data.task?.name ?? "");
+    Get.find<TimelineGlobalController>().descriptionController.text =
+        data.description ?? "";
+
     Get.to(() => UpdateTimeLineLog(
           projectOrTaskColor: data.task?.id?.isNotEmpty ?? false
               ? HexColor(data.task?.project?.color ?? "")
