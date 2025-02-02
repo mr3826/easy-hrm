@@ -46,23 +46,23 @@ class Data {
   String? startDate;
   String? endDate;
   String? status;
+  Project? project;
   String? description;
   String? loggedTotalSeconds;
   String? orgUserId;
   bool? isFlaggedTimelog;
-  Project? project;
-  dynamic task;
+  Task? task;
 
   Data(
       {this.id,
         this.startDate,
         this.endDate,
         this.status,
+        this.project,
         this.description,
         this.loggedTotalSeconds,
         this.orgUserId,
         this.isFlaggedTimelog,
-        this.project,
         this.task});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -70,13 +70,13 @@ class Data {
     startDate = json['start_date'];
     endDate = json['end_date'];
     status = json['status'];
+    project =
+    json['project'] != null ? new Project.fromJson(json['project']) : null;
     description = json['description'];
     loggedTotalSeconds = json['logged_total_seconds'];
     orgUserId = json['org_user_id'];
     isFlaggedTimelog = json['is_flagged_timelog'];
-    project =
-    json['project'] != null ? new Project.fromJson(json['project']) : null;
-    task = json['task'];
+    task = json['task'] != null ? new Task.fromJson(json['task']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -85,36 +85,66 @@ class Data {
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
     data['status'] = this.status;
+    if (this.project != null) {
+      data['project'] = this.project!.toJson();
+    }
     data['description'] = this.description;
     data['logged_total_seconds'] = this.loggedTotalSeconds;
     data['org_user_id'] = this.orgUserId;
     data['is_flagged_timelog'] = this.isFlaggedTimelog;
-    if (this.project != null) {
-      data['project'] = this.project!.toJson();
+    if (this.task != null) {
+      data['task'] = this.task!.toJson();
     }
-    data['task'] = this.task;
     return data;
   }
 }
 
 class Project {
   String? id;
-  String? name;
   String? color;
+  String? name;
 
-  Project({this.id, this.name, this.color});
+  Project({this.id, this.color, this.name});
 
   Project.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
     color = json['color'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['color'] = this.color;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class Task {
+  String? id;
+  String? name;
+  String? projectId;
+  Project? project;
+
+  Task({this.id, this.name, this.projectId, this.project});
+
+  Task.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    projectId = json['project_id'];
+    project =
+    json['project'] != null ? new Project.fromJson(json['project']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
-    data['color'] = this.color;
+    data['project_id'] = this.projectId;
+    if (this.project != null) {
+      data['project'] = this.project!.toJson();
+    }
     return data;
   }
 }

@@ -6,6 +6,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../app/modules/hr_timeline/view/widgets/time_sheet/timelog_summary_details.dart';
 import '../../../../app/modules/hr_timeline/view/widgets/timeline_calender/new_entry/build_new_entry_text_field.dart';
 import '../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../common/widget/timePicker/date_time_picker_controller.dart';
@@ -15,11 +16,12 @@ class UpdateTimeLineLog extends StatelessWidget {
   final String startDateTime;
   final String endDateTime;
   final Color projectOrTaskColor;
-
+ final LogSummaryUserInfo ?logSummaryUserInfo;
   const UpdateTimeLineLog(
       {this.status,
       required this.projectOrTaskColor,
       required this.startDateTime,
+        this.logSummaryUserInfo,
       required this.endDateTime,
       super.key});
 
@@ -32,6 +34,7 @@ class UpdateTimeLineLog extends StatelessWidget {
       body: SingleChildScrollView(
           child: BuildNewEntryTextField(
         isFromUpdateTimelogEntry: true,
+        logSummaryUserInfo: logSummaryUserInfo,
         status: status, isEmployee: Get.find<TimelineGlobalController>().isEmployee.value,
       )),
     );

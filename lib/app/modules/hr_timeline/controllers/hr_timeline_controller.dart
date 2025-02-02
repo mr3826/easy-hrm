@@ -90,6 +90,20 @@ class HrTimelineController extends GetxController with StateMixin {
     isTimeEntryUpdateLoading(true);
     updateTimelogEntry = await _timelineDataSource.updateTimeLogEntryById(
         status: entryStatus.toString(), timelineId: entryTimeLineId.toString());
+
+    if (updateTimelogEntry != null) {
+      DateTime requestedDate = DateTime.parse(
+          updateTimelogEntry?.updateTimelineEntry?.startDate ??
+              DateTime.now().toString());
+      Get.find<HrTimelineController>().getTimeEntryDetails(
+          startDate:
+              "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
+          endDate:
+              "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}",
+          orgUserId: updateTimelogEntry?.updateTimelineEntry?.orgUserId ?? "");
+      refreshTimeline();
+    }
+
     isTimeEntryUpdateLoading(false);
     return null;
   }

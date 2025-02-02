@@ -39,7 +39,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   void initState() {
     HrTimelineBindings().dependencies();
     Get.find<TimelineGlobalController>().isEmployee(false);
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this,initialIndex: Get.find<TimelineGlobalController>().initialIndex);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {});

@@ -1,23 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/view/widgets/custom_network_image.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timelog_entries_details.dart';
 import 'package:payrun_mobile/common/widget/employee/status_button_helper.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
-import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
+import '../../../../../../common/controller/convart_color_code_controller.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_card_style.dart';
 import '../../../../../../common/widget/custom_dialog.dart';
 import '../../../../../../enum.dart';
+import '../../../../../../modules/timeline/view/screen/update_timeline.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../settings/controller/app_setting_controller.dart';
 import '../../../controllers/global_timline_controller.dart';
+import '../../../controllers/timelog_summary_controller.dart';
 
 class TimeLogSummaryDetails extends GetView<HrTimelineController> {
   final String? leaveId;
@@ -104,7 +107,7 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
                               color: AppColor.hintColor),
                           _buildText(value: data?.project?.name ?? ""),
                           _buildText(
-                              value: data?.task ?? "No task added",
+                              value: data?.task?.name ?? "",
                               color: AppColor.hintColor),
                           const SizedBox(
                             height: 8,
@@ -146,10 +149,9 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
 
   /// Handles the selection of a menu item
   void _handleMenuSelection(String value, Data data, BuildContext context) {
-    print("Selected: $value"); // Debugging print
     switch (value) {
       case "Edit":
-        _edit();
+        _edit(data);
         break;
       case "Approve":
         _buildItemOnTab("approved", data.id ?? "");
@@ -217,10 +219,9 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
                 height: 4, width: 120, color: AppColor.backgroundColor),
           ),
           customSpacerHeight(height: 12),
-          CustomNetworkImage(
-            profileImageKey: imageUrl,
-            imgUrlKey: "",
-            errorText: "ER",
+          CircularNetworkImage(
+            imageUrl: buildImgIxUrl(imagePath: imageUrl, isPublic: true),
+            errorText: getInitials(name.toString()),
           ),
           customSpacerHeight(height: 12),
           Text(
@@ -266,8 +267,19 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
     return "$startTime - $endTime";
   }
 
-  void _edit() {
-    print("object");
+  void _edit(Data data) {
+    Get.find<TimelineGlobalController>().timeLineId(data.id ?? "");
+    Get.find<TimelineGlobalController>().projectId(data.project?.id ?? "");
+    Get.find<TimelineGlobalController>().orgUserId(data.orgUserId ?? "");
+    Get.to(() => UpdateTimeLineLog(
+          projectOrTaskColor: data.task?.id?.isNotEmpty ?? false
+              ? HexColor(data.task?.project?.color ?? "")
+              : AppColor.primaryColor,
+          endDateTime: data.endDate ?? "",
+          startDateTime: data.startDate ?? "",
+          status: data.status ?? "",
+          logSummaryUserInfo: logSummaryUserInfo,
+        ));
   }
 
   void _buildItemOnTab(String status, String timelineId) {
@@ -335,6 +347,10 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
               timeLogId: taskInfo.id, orgId: taskInfo.orgUserId);
           Get.back(canPop: false);
           Get.back(canPop: false);
+          Get.find<TimelineSummaryController>()
+              .getTimelineSummaryByDate(orgId: taskInfo.orgUserId);
+          Get.find<TimelineSummaryController>()
+              .getTimelogDetailsByMonth(orgId: taskInfo.orgUserId);
         },
         iconData: Icons.delete_outline_outlined,
         titleText: AppString.text_remove_timelog.tr,

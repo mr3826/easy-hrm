@@ -600,8 +600,14 @@ query GET_TIMELINE_ENTRIES($queryData: TimelineEntriesQueryData, $optionData: Op
       start_date
       end_date
       status
+      project {
+        id
+        color
+        name
+      }
       description
       logged_total_seconds
+
       org_user_id
       is_flagged_timelog
       project {

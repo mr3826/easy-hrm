@@ -37,6 +37,7 @@ class TimelineGlobalController extends GetxController {
   RxBool isValueChangeForTimeLogUpdate = false.obs;
   RxBool isEmployee = false.obs;
   final isTimeInvalid = false.obs;
+  int initialIndex=0;
 
   String addTimeLogId = "";
   RxString taskId = "".obs;
@@ -97,7 +98,7 @@ class TimelineGlobalController extends GetxController {
     if (response == true) {
       showSuccessMessage(message: AppString.timerSavedSuccessfulMessage.tr);
 
-      _refreshTimeline();
+      refreshTimeline();
 
       Get.find<TimeCounterController>().reset();
 
@@ -127,7 +128,7 @@ class TimelineGlobalController extends GetxController {
       if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
         showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
         Get.find<TimeCounterController>().start();
-        _refreshTimeline();
+        refreshTimeline();
       }else {
         if (Get.find<TimeCounterController>().timer.isActive &&
             Get.find<TimeCounterController>().animationTimer.isActive) {
@@ -177,7 +178,7 @@ class TimelineGlobalController extends GetxController {
         status.value = '';
         descriptionController.clear();
         Get.off(() => const MainScreen(routeIndex: 0));
-        _refreshTimeline();
+        refreshTimeline();
       }
     } else {
       showWarningMessage(message: "Provide a valid project/task ");
@@ -206,7 +207,7 @@ class TimelineGlobalController extends GetxController {
       status.value = '';
       descriptionController.clear();
       Get.off(() => const MainScreen(routeIndex: 0));
-      _refreshTimeline();
+      refreshTimeline();
     }
 
     isUpdateTimeLogLoading(false);
@@ -249,7 +250,7 @@ class TimelineGlobalController extends GetxController {
     showSuccessMessage(message: AppString.timerRemovedSuccessfulMessage.tr);
     Get.off(() => const MainScreen(routeIndex: 0));
     TimelineGlobalController controller = Get.find<TimelineGlobalController>();
-    _refreshTimeline();
+    refreshTimeline();
     controller.taskId.value = "";
     controller.taskName.value = "";
     controller.projectColor.value = "";
@@ -286,7 +287,7 @@ class TimelineGlobalController extends GetxController {
 }
 
 
-_refreshTimeline() async {
+refreshTimeline() async {
   if (Get.find<TimelineGlobalController>().isEmployee.isTrue) {
     EmployeeTimelineController controller = Get.find<EmployeeTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";

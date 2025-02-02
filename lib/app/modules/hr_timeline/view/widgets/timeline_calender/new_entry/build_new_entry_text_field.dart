@@ -23,6 +23,7 @@ import '../../../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
 import '../../../../controllers/global_timline_controller.dart';
+import '../../time_sheet/timelog_summary_details.dart';
 import 'build_task_view.dart';
 import 'new_entry_duration_time_with_status.dart';
 
@@ -30,10 +31,12 @@ class BuildNewEntryTextField extends StatelessWidget {
   final bool isEmployee;
   final bool? isFromUpdateTimelogEntry;
   final String? status;
+  final LogSummaryUserInfo? logSummaryUserInfo;
   const BuildNewEntryTextField(
       {this.isFromUpdateTimelogEntry = false,
       this.status,
       required this.isEmployee,
+      this.logSummaryUserInfo,
       super.key});
 
   @override
@@ -348,6 +351,24 @@ class BuildNewEntryTextField extends StatelessWidget {
     );
   }
 
+  _employeeSearchLogSummary(BuildContext context,
+      [LogSummaryUserInfo? logSummaryUserInfo]) {
+    return IgnorePointer(
+      ignoring: true,
+      child: CustomSearchBar(
+        employeeName: logSummaryUserInfo?.name ?? "",
+        employeeImage: logSummaryUserInfo?.imgUrl ?? "",
+        onValueSelected: (String orgId) async {
+          Navigator.pop(context);
+          Get.find<TimelineGlobalController>().orgUserId(orgId);
+        },
+        onClearAction: () async {
+          Get.find<TimelineGlobalController>().orgUserId.value = "";
+        },
+      ),
+    );
+  }
+
   /// Builds a horizontal tab selector for leave status options.
   Widget _buildStatusTabSelector() {
     RxInt selectedStatusIndex = 0.obs;
@@ -427,7 +448,10 @@ class BuildNewEntryTextField extends StatelessWidget {
     if (isEmployee == false) {
       return Column(
         children: [
-          _employeeSearch(context),
+          if (logSummaryUserInfo != null)
+            _employeeSearchLogSummary(context, logSummaryUserInfo)
+          else
+            _employeeSearch(context),
           customSpacerHeight(height: 20),
         ],
       );
