@@ -44,18 +44,8 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       if (_tabController.indexIsChanging) {
         setState(() {});
         if (_tabController.index == 1) {
-          TimeSheetBindings().dependencies();
+       _updateTimeSheet();
 
-          Get.find<DateTimeController>().requestedDate.value =
-              DateFormat('yyyy-MM-dd').format(DateTime.parse(DateTime(
-                      DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)
-                  .toString()));
-          Get.find<DateTimeController>().requestedEndDate.value =
-              DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                  DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
-                      .toString()));
-
-          Get.find<TimeSheetController>().getTimesheetByDate();
         }
       }
     });
@@ -263,5 +253,20 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
     await Get.find<HrTimelineController>()
         .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
+  }
+
+  void _updateTimeSheet() {
+    TimeSheetBindings().dependencies();
+
+    Get.find<DateTimeController>().requestedDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0).toString()));
+    Get.find<DateTimeController>().requestedEndDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(
+            DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
+                .toString()));
+    if( Get.find<TimeSheetController>().timeSheetModel?.getUsersTimeSheet?.data?.isEmpty??true){
+      Get.find<TimeSheetController>().getTimesheetByDate();
+
+    }
   }
 }
