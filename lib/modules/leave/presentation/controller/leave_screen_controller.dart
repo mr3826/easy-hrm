@@ -171,6 +171,9 @@ void _updateTimelineData() {
       endDate: DateTime(requestedDate.year, requestedDate.month,
           requestedDate.day, 23, 59, 59)
           .toString(),
+      orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
+
+
     );
   }
 

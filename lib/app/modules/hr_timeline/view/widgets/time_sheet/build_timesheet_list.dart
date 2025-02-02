@@ -6,7 +6,6 @@ import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/ti
 import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/time_sheet_model.dart';
-import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../enum.dart';
 import '../../../../../../utils/app_color.dart';
@@ -14,7 +13,6 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../bindings/TimelineSummaryBindings.dart';
-import '../../../bindings/hr_timeline_bindings.dart';
 import '../../screen/timelog_summary.dart';
 
 class BuildTimesheetList extends GetView<TimeSheetController> {
@@ -36,18 +34,22 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
           style: AppStyle.normal_text_grey,
         ));
       } else {
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount:
-              controller.timeSheetModel?.getUsersTimeSheet?.data?.length ?? 0,
-          padding: EdgeInsets.zero,
-          itemBuilder: (context, index) {
-            Data? data =
-                controller.timeSheetModel?.getUsersTimeSheet?.data?[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 120.0),
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
 
-            return _timeSheetDetailsCard(data ?? Data());
-          },
+            itemCount:
+                controller.timeSheetModel?.getUsersTimeSheet?.data?.length ?? 0,
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              Data? data =
+                  controller.timeSheetModel?.getUsersTimeSheet?.data?[index];
+
+              return _timeSheetDetailsCard(data ?? Data());
+            },
+          ),
         );
       }
     });

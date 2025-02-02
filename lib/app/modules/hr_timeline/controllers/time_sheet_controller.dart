@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../../../../common/controller/date_time_controller.dart';
-import '../../../../utils/app_string.dart';
+import 'package:intl/intl.dart';
 import '../models/time_sheet_model.dart';
 import '../repositories/timeline_data_source.dart';
 
@@ -12,6 +10,8 @@ class TimeSheetController extends GetxController {
   final TimelineDataSource _timelineDataSource;
   TimeSheetController(this._timelineDataSource);
 
+  RxString selectedStartDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  RxString selectedEndDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   RxString currentDate = "Today".obs;
   List<String> dayList = ["Today", "Yesterday", "This week", "Last week", "This month", "Last month", "Custom"];
   RxInt listIndex = 0.obs;
@@ -26,8 +26,8 @@ class TimeSheetController extends GetxController {
 
 
   Future<void> getTimesheetByDate({String ?orgId}) async {
-    String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-    String endDate = "${Get.find<DateTimeController>().requestedEndDate.value} 23:59:59.000";
+    String startDate = "${selectedStartDate.value} 00:00:00.000";
+    String endDate = "${selectedEndDate.value} 23:59:59.000";
     print('''
     startDate $startDate
     endDate $endDate

@@ -8,6 +8,7 @@ import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../global/view/widgets/custom_date_picker.dart';
+import '../../../controllers/global_timline_controller.dart';
 import '../../../controllers/time_sheet_controller.dart';
 
 class BuildSelectMonth extends GetView<TimeSheetController> {
@@ -111,10 +112,15 @@ class BuildSelectMonth extends GetView<TimeSheetController> {
                           _showCustomDateRangeDialog(index, context);
                         } else {
 
-                          Get.find<DateTimeController>().requestedDate.value=formatDate(date: controller.rangeStart.toString(),format: "yyyy-MM-dd");
-                          Get.find<DateTimeController>().requestedEndDate.value=formatDate(date: controller.rangeEnd.toString(),format: "yyyy-MM-dd");
+                          controller.selectedStartDate.value=formatDate(date: controller.rangeStart.toString(),format: "yyyy-MM-dd");
+                          controller.selectedEndDate.value=formatDate(date: controller.rangeEnd.toString(),format: "yyyy-MM-dd");
+                          if(Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
+                            controller.getTimesheetByDate(orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+                          }else {
+                            controller.getTimesheetByDate();
 
-                          controller.getTimesheetByDate();
+                          }
+
                           Navigator.pop(context);
 
                         }
@@ -195,9 +201,14 @@ void _showCustomDateRangeDialog(int index, context) async {
   if (selectedRange != null) {
     DateTime? startDate = selectedRange["start"];
     DateTime? endDate = selectedRange["end"];
-    Get.find<DateTimeController>().requestedDate.value=formatDate(date: startDate.toString(),format: "yyyy-MM-dd");
-    Get.find<DateTimeController>().requestedEndDate.value=formatDate(date: endDate.toString(),format: "yyyy-MM-dd");
-    Get.find<TimeSheetController>().getTimesheetByDate();
+    Get.find<TimeSheetController>().selectedStartDate.value=formatDate(date: startDate.toString(),format: "yyyy-MM-dd");
+    Get.find<TimeSheetController>().selectedEndDate.value=formatDate(date: endDate.toString(),format: "yyyy-MM-dd");
+    if(Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
+      Get.find<TimeSheetController>().getTimesheetByDate(orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+    }else {
+      Get.find<TimeSheetController>().getTimesheetByDate();
+
+    }
     Get.back(canPop: false);
   }
 }

@@ -211,18 +211,17 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         Get.find<TimelineGlobalController>().searchEmployeeId = orgId;
       },
       onClearAction: () async {
-          String startDate =
-              "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-          String endDate =
-              "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+        String startDate =
+            "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+        String endDate =
+            "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
 
-          await Get.find<TimelineGlobalController>()
-              .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-              startDate: startDate, endDate: endDate);
+        await Get.find<TimelineGlobalController>()
+            .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
+        await Get.find<HrTimelineController>()
+            .getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
 
-          Get.find<TimeSheetController>().getTimesheetByDate();
-
+        Get.find<TimeSheetController>().getTimesheetByDate();
       },
     );
   }
@@ -236,8 +235,11 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
             "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
         await Get.find<TimelineGlobalController>()
             .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-        await Get.find<HrTimelineController>()
-            .getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
+
+        await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+            startDate: startDate,
+            endDate: endDate,
+            orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
       },
     );
   }
@@ -248,19 +250,23 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     String endDates =
         "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}";
 
-    await Get.find<HrTimelineController>()
-        .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
-
-    await Get.find<HrTimelineController>()
-        .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
+    if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
+      await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+          startDate: startDates,
+          endDate: endDates,
+          orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+    } else {
+      await Get.find<HrTimelineController>()
+          .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
+    }
   }
 
   void _updateTimeSheet() {
     if (Get.find<TimelineGlobalController>().searchEmployeeId.isEmpty) {
-      Get.find<DateTimeController>().requestedDate.value =
+      Get.find<TimeSheetController>().selectedStartDate.value =
           DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-      Get.find<DateTimeController>().requestedEndDate.value =
+      Get.find<TimeSheetController>().selectedEndDate.value =
           DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
 

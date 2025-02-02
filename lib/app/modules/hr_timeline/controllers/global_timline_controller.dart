@@ -320,7 +320,12 @@ refreshTimeline() async {
   } else {
     HrTimelineController controller = Get.find<HrTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";
+
+
+
     await controller.getTimelineCalenderByDate(
+      orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
+
         startDate:
             "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
         endDate:
