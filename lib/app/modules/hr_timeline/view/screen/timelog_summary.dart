@@ -11,10 +11,12 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../utils/utils.dart';
 import '../../bindings/TimelineSummaryBindings.dart';
+import '../widgets/time_sheet/timelog_summary_details.dart';
 
 class TimeLogSummary extends StatelessWidget {
+ final LogSummaryUserInfo ?logSummaryUserInfo;
   final bool isEmployee;
-  const TimeLogSummary({super.key,required this.isEmployee});
+  const TimeLogSummary({super.key,required this.isEmployee,this.logSummaryUserInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,7 @@ class TimeLogSummary extends StatelessWidget {
         ),
       );
     } else {
-      return  IndividualTimeLayout(isEmployee: isEmployee,);
+      return  IndividualTimeLayout(isEmployee: isEmployee,logSummaryUserInfo: logSummaryUserInfo,);
     }
   }
 }

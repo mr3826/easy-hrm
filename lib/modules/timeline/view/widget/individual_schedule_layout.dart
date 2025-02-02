@@ -21,7 +21,8 @@ import '../../../../utils/utils.dart';
 
 class IndividualTimeLayout extends StatelessWidget {
   final bool isEmployee;
-  const IndividualTimeLayout({super.key, required this.isEmployee});
+ final LogSummaryUserInfo ? logSummaryUserInfo;
+  const IndividualTimeLayout({super.key, required this.isEmployee,this.logSummaryUserInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +234,7 @@ class IndividualTimeLayout extends StatelessWidget {
     showCustomBottomSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
-      child: const TimeLogSummaryDetails(),
+      child:  TimeLogSummaryDetails(logSummaryUserInfo:logSummaryUserInfo ,),
     );
   }
 

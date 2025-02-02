@@ -84,6 +84,7 @@ class TimelineApiService {
 
 
 
+
   Future<QueryResult<Object?>> getTimeEntryDetails(String timelineId,String orgId) async {
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
@@ -120,7 +121,25 @@ class TimelineApiService {
   }
 
 
+  Future<QueryResult<Object?>> updateTimeLogEntryById(String status,String timelineId) async {
+    Map<String, Map<String, dynamic>> variables = {
+        "inputData": {
+          "status": status,
+          "timeline_id": timelineId
+        }
+    };
+    return await _apiService.gqlCall(queryString: updateTimeLogEntry, variables: variables);
+  }
+
+
+
     Future<QueryResult<Object?>> getTimeLogEntries(String startDate,String endDate,[String ?orgId]) async {
+
+    print('''
+    startDate $startDate
+    endDate $endDate
+    
+    ''');
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
         "start_date": startDate,
@@ -163,12 +182,15 @@ class TimelineApiService {
 
 
 
-  Future<Map<String, dynamic>?>? removeTimelineEntry(String timeLogId) async {
+  Future<Map<String, dynamic>?>? removeTimelineEntry(String timeLogId,[String ?orgId]) async {
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
         "timeline_id": timeLogId,
       }
     };
+    if (orgId != null && orgId.isNotEmpty) {
+      variables["inputData"]?["org_user_id"] = orgId;
+    }
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: removeTimerQueryData, variables: variables);
     return response.data;

@@ -8,6 +8,7 @@ import '../models/timeline_summary_by_date.dart';
 import '../models/calendar_timeline.dart';
 import '../models/time_sheet_model.dart';
 import '../models/timelog_entries_details.dart';
+import '../models/update_timelog_entry.dart';
 import '../services/timeline_api_service.dart';
 
 abstract class TimelineDataSource {
@@ -16,9 +17,10 @@ abstract class TimelineDataSource {
   Future<CalendarTimeline?> getTimelineCalender({required String startDate, required String endDate,String ?orgUserId});
   Future<StartOrEndTimerResponse?> startOrEndTimer({required String timerTyp});
   Future<ProjectDropDownResponse?>  getProjectList({required String searchText});
-  Future<bool> removeTimelineEntry({required String timeLogId});
+  Future<bool> removeTimelineEntry({required String timeLogId,String ?orgId});
   Future<TimeEntryDetails?>  getTimeEntryDetails({required  String timelineId,required String orgId});
   Future<TimeLogsEntriesDetails?> getTimeLogEntries({required String startDate, required String endDate,String ?orgUserId});
+  Future<UpdateTimelogEntry?> updateTimeLogEntryById({required String status,required String timelineId});
   Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String status,required String des,required String projectId,required String timelineId,String ?taskId});
   Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status});
   Future<TimelogDetailsByMonth?> getTimelogDetailsByMonth({required String startDate, required String endDate,String ?orgUserId});
@@ -43,6 +45,16 @@ class TimelineDataImpl implements TimelineDataSource {
     QueryResult<Object?> response = await _timelineApiService.getTimelogDetailsByMonth(startDate, endDate,orgUserId);
     if (response.data != null) {
       return TimelogDetailsByMonth.fromJson(response.data!);
+    }
+    return null;
+  }
+
+  @override
+  Future<UpdateTimelogEntry?> updateTimeLogEntryById({required String status,required String timelineId}) async {
+    QueryResult<Object?> response = await _timelineApiService.updateTimeLogEntryById( status, timelineId);
+    print("updateTimeLogEntryById :: $response");
+    if (response.data != null) {
+      return UpdateTimelogEntry.fromJson(response.data!);
     }
     return null;
   }
@@ -146,10 +158,10 @@ class TimelineDataImpl implements TimelineDataSource {
 
 
  @override
- Future<bool> removeTimelineEntry({required String timeLogId}) async {
+ Future<bool> removeTimelineEntry({required String timeLogId,String ?orgId}) async {
    try {
      Map<String, dynamic>? response =
-     await  _timelineApiService.removeTimelineEntry(timeLogId);
+     await  _timelineApiService.removeTimelineEntry(timeLogId,orgId);
      if (response != null) {
        return true;
      }

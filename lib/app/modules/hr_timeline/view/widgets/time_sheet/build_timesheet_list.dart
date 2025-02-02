@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/timelog_summary_details.dart';
 import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/time_sheet_model.dart';
@@ -52,7 +53,7 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
     return GestureDetector(
       onTap: (){
         TimeSheetBindings().dependencies();
-        Get.to(()=>const TimeLogSummary(isEmployee: false,));
+        Get.to(()=> TimeLogSummary(isEmployee: false,logSummaryUserInfo: LogSummaryUserInfo(name: "${data.organizationUser?.profile?.firstName??""} ${data.organizationUser?.profile?.lastName??""}",departmentName: data.organizationUser?.department?.name??"",imgUrl: data.organizationUser?.profile?.image??""),));
         Get.find<TimelineSummaryController>().getTimelineSummaryByDate(orgId: orgId);
         Get.find<TimelineSummaryController>().getTimelogDetailsByMonth(orgId: orgId);
         Get.find<HrTimelineController>().orgUserId=data.organizationUser?.id??"";

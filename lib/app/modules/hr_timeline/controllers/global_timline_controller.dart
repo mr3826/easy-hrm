@@ -228,7 +228,7 @@ class TimelineGlobalController extends GetxController {
     isTimelineSummaryByDateLoading(false);
   }
 
-  Future<bool?> removeTimelineEntry({String? timeLogId}) async {
+  Future<bool?> removeTimelineEntry({String? timeLogId,String ?orgId}) async {
     String? id = timeLogId ??
         Get.find<TimelineGlobalController>()
             .startOrEndTimerResponse
@@ -237,7 +237,7 @@ class TimelineGlobalController extends GetxController {
         "";
     isTimelogEntryOrRemoveLoading(true);
     bool response =
-        await _timelineDataSource.removeTimelineEntry(timeLogId: id.toString());
+        await _timelineDataSource.removeTimelineEntry(timeLogId: id.toString(),orgId: orgId);
     if (response) {
       _updateRouteWithTimeEntry();
     }

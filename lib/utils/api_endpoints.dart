@@ -509,6 +509,9 @@ mutation RemoveTimeline($inputData: RemoveTimelineInputData) {
 }
 ''';
 
+
+
+
 const updateTimelineLogDetailsQueryData = r'''
 mutation UpdateTimelineEntry($inputData: UpdateTimelineInputData) {
   updateTimelineEntry(inputData: $inputData) {
@@ -575,6 +578,16 @@ query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: Op
       total_leaves_seconds
       balance  
     }
+  }
+}
+''';
+const updateTimeLogEntry = r'''
+mutation UPDATE_TIMELINE_ENTRY($inputData: UpdateTimelineInputData) {
+  updateTimelineEntry(inputData: $inputData) {
+    id
+    org_user_id
+    start_date
+    end_date
   }
 }
 ''';
@@ -651,6 +664,14 @@ query GET_TIMELINE_ENTRY_DETAILS($queryData: TimeEntryDetailsQueryData) {
       }
       user_id
     }
+  }
+}
+''';
+
+const removeTimelineQuery = r'''
+mutation REMOVE_TIMELINE($inputData: RemoveTimelineInputData) {
+  removeTimeline(inputData: $inputData) {
+    result
   }
 }
 ''';
