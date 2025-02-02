@@ -86,7 +86,7 @@ class TimeCounterController extends SuperController {
     final seconds = _seconds % 60;
     _timeViewAccordingToTime(hours, minutes, seconds);
     starTimeDashboard.value =
-    '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(seconds)}';
+        '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(seconds)}';
     totalTime = elapsedTime;
   }
 
@@ -95,7 +95,7 @@ class TimeCounterController extends SuperController {
   timerStatus() async {
     isLoading(true);
     final response =
-    await NetworkClient().graphRequest(queryString: timerStatusQuery);
+        await NetworkClient().graphRequest(queryString: timerStatusQuery);
 
     if (response.hasException) {
       ExceptionHelper.errorHandler(
@@ -103,42 +103,10 @@ class TimeCounterController extends SuperController {
     } else {
       TimerResponse timerResponse = TimerResponse.fromJson(response.data!);
       if (timerResponse.checkStartOrStopTimeline != null) {
-
-
-
-        DateTime timestamp = DateTime.parse(timerResponse.checkStartOrStopTimeline!.startDate!);
+        DateTime timestamp =
+            DateTime.parse(timerResponse.checkStartOrStopTimeline!.startDate!);
         Duration duration = DateTime.now().difference(timestamp);
         _seconds = duration.inSeconds;
-
-            // final timeZone = Get.find<AppSettingController>().orgSetting?.getOrganizationSetting?.timeZone ?? "";
-//
-// final startTimeNow = formatDateTimeWithZone(
-//           dateTimeInput: DateTime.now().toString(),
-//           timeZone: timeZone,
-//         );
-//
-//
-//
-//    final startTimeFromServer = formatDateTimeWithZone(
-//           dateTimeInput: timestamp.toString(),
-//           timeZone: timeZone,
-//         );
-//
-//
-//         print('''
-//         zone $timeZone
-//         startTime1 $startTimeNow
-//         timezone_now_time : ${startTimeFromServer
-//
-//
-//         },
-//
-//         both: ${DateFormat("yyyy-MM-dd hh:mm a").format(DateTime.parse(startTimeFromServer))}
-//         normal_time $timestamp
-//
-//         ''');
-
-
         start();
         Get.find<TimeCounterController>().isRunningHorizontalLine(true);
       } else {
@@ -147,11 +115,6 @@ class TimeCounterController extends SuperController {
     }
     isLoading(false);
   }
-
-
-
-
-
 
   void _timeViewAccordingToTime(hours, minutes, seconds) {
     if (_twoDigits(hours) == "00" && _twoDigits(minutes) == "00") {
