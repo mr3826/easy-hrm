@@ -99,12 +99,14 @@ class CustomSearchBar extends StatefulWidget {
   final Function? onClearAction;
   final String? employeeName;
   final String? employeeImage;
+ final TextEditingController? searchTextController;
 
   const CustomSearchBar({
     Key? key,
     this.onValueSelected,
     this.employeeName,
     this.userInfo,
+    this.searchTextController,
     this.onClickRouteAction,
     this.employeeImage,
     this.onClearAction,
@@ -198,6 +200,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     );
   }
 }
+
+
+
 
 class TabItem {
   final String label;

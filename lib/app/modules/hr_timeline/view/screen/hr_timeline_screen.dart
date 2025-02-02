@@ -38,6 +38,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   @override
   void initState() {
     HrTimelineBindings().dependencies();
+    TimeSheetBindings().dependencies();
     Get.find<TimelineGlobalController>().isEmployee(false);
     _tabController = TabController(
         length: 2,
@@ -195,21 +196,19 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   _buildEmployeeSearch(TabController tabController) {
     return CustomSearchBar(
       onValueSelected: (String orgId) async {
-        if (tabController.index == 0) {
-          Navigator.pop(context);
-          String startDate =
-              "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-          String endDate =
-              "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+        Navigator.pop(context);
+        String startDate =
+            "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+        String endDate =
+            "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+            startDate: startDate, endDate: endDate, orgId: orgId);
+        await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+            startDate: startDate, endDate: endDate, orgId: orgId);
 
-          await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-              startDate: startDate, endDate: endDate, orgId: orgId);
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-              startDate: startDate, endDate: endDate, orgId: orgId);
-        } else {
-          Navigator.pop(context);
-          Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
-        }
+        Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
+
+        Get.find<TimelineGlobalController>().searchEmployeeId = orgId;
       },
       onClearAction: () async {
         if (tabController.index == 0) {
@@ -258,14 +257,13 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   }
 
   void _updateTimeSheet() {
-    TimeSheetBindings().dependencies();
+    if (Get.find<TimelineGlobalController>().searchEmployeeId.isEmpty) {
+      Get.find<DateTimeController>().requestedDate.value =
+          DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-    Get.find<DateTimeController>().requestedDate.value =
-        DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-    Get.find<DateTimeController>().requestedEndDate.value =
-        DateFormat('yyyy-MM-dd').format(DateTime.now());
-
+      Get.find<DateTimeController>().requestedEndDate.value =
+          DateFormat('yyyy-MM-dd').format(DateTime.now());
+    }
 
     if (Get.find<TimeSheetController>()
             .timeSheetModel
@@ -273,7 +271,12 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
             ?.data
             ?.isEmpty ??
         true) {
-      Get.find<TimeSheetController>().getTimesheetByDate();
+      if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
+        Get.find<TimeSheetController>().getTimesheetByDate(
+            orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+      } else {
+        Get.find<TimeSheetController>().getTimesheetByDate();
+      }
     }
   }
 }

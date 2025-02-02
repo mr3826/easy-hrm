@@ -42,6 +42,7 @@ class TimelineGlobalController extends GetxController {
   RxBool isEmployee = false.obs;
   final isTimeInvalid = false.obs;
   int initialIndex=0;
+  String searchEmployeeId ="";
 
   String addTimeLogId = "";
   RxString taskId = "".obs;
@@ -53,6 +54,7 @@ class TimelineGlobalController extends GetxController {
   RxString status = "".obs;
 
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController searchTextController = TextEditingController();
 
   ProjectDropDownResponse? projectDropDownResponse;
   StartOrEndTimerResponse? startOrEndTimerResponse;
@@ -292,6 +294,7 @@ class TimelineGlobalController extends GetxController {
   @override
   void dispose() {
     descriptionController.dispose();
+    searchTextController.dispose();
     super.dispose();
   }
 

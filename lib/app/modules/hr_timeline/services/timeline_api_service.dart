@@ -24,8 +24,8 @@ class TimelineApiService {
     };
 
     if (orgId != null && orgId.isNotEmpty) {
-      variable["queryData"]?["org_user_ids"] = [orgId];
-    }
+      variable["queryData"]["org_user_ids"] = orgId;
+          }
     return await _apiService.gqlCall(
         queryString: getTimeSheetByDateQuery, variables: variable);
   }
