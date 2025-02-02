@@ -8,14 +8,6 @@ class TimeEntryDetails {
         ? new GetTimeEntryDetails.fromJson(json['getTimeEntryDetails'])
         : null;
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getTimeEntryDetails != null) {
-      data['getTimeEntryDetails'] = this.getTimeEntryDetails!.toJson();
-    }
-    return data;
-  }
 }
 
 class GetTimeEntryDetails {
@@ -25,7 +17,7 @@ class GetTimeEntryDetails {
   String? status;
   String? description;
   Project? project;
-  dynamic task;
+  Task? task;
   OrganizationUser? organizationUser;
 
   GetTimeEntryDetails(
@@ -46,28 +38,12 @@ class GetTimeEntryDetails {
     description = json['description'];
     project =
     json['project'] != null ? new Project.fromJson(json['project']) : null;
-    task = json['task'];
+    task = json['task'] != null ? new Task.fromJson(json['task']) : null;
     organizationUser = json['organization_user'] != null
         ? new OrganizationUser.fromJson(json['organization_user'])
         : null;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['status'] = this.status;
-    data['description'] = this.description;
-    if (this.project != null) {
-      data['project'] = this.project!.toJson();
-    }
-    data['task'] = this.task;
-    if (this.organizationUser != null) {
-      data['organization_user'] = this.organizationUser!.toJson();
-    }
-    return data;
-  }
 }
 
 class Project {
@@ -83,13 +59,24 @@ class Project {
     color = json['color'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['color'] = this.color;
-    return data;
+}
+
+class Task {
+  String? id;
+  String? name;
+  String? projectId;
+  Project? project;
+
+  Task({this.id, this.name, this.projectId, this.project});
+
+  Task.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    projectId = json['project_id'];
+    project =
+    json['project'] != null ? new Project.fromJson(json['project']) : null;
   }
+
 }
 
 class OrganizationUser {
@@ -118,21 +105,6 @@ class OrganizationUser {
     userId = json['user_id'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.roles != null) {
-      data['roles'] = this.roles!.map((v) => v.toJson()).toList();
-    }
-    if (this.department != null) {
-      data['department'] = this.department!.toJson();
-    }
-    if (this.profile != null) {
-      data['profile'] = this.profile!.toJson();
-    }
-    data['user_id'] = this.userId;
-    return data;
-  }
 }
 
 class Roles {
@@ -162,12 +134,6 @@ class Department {
     name = json['name'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    return data;
-  }
 }
 
 class Profile {
@@ -183,14 +149,5 @@ class Profile {
     firstName = json['first_name'];
     lastName = json['last_name'];
     image = json['image'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['image'] = this.image;
-    return data;
   }
 }

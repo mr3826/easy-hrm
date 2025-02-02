@@ -208,10 +208,7 @@ class TimeLineCalendar extends StatelessWidget {
             customAntButtonSheet(
               context: context,
               child: leaveId.substring(1, leaveId.length - 1) == "null"
-                  ? BuildTaskDetails(
-                      taskName: taskName.substring(1, taskName.toString().length - 1),
-                      taskId: taskId.substring(1, taskName.toString().length - 1),
-                    )
+                  ? const BuildTaskDetails()
                   : LeaveRecordDetails(
                       status: status
                           .toString()

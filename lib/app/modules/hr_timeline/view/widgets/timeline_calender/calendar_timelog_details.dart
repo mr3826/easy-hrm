@@ -12,10 +12,7 @@ import 'package:payrun_mobile/modules/timeline/view/widget/project_view_widget.d
     as pj;
 
 class BuildTaskDetails extends GetView<TimelineGlobalController> {
-  final String taskId;
-  final String taskName;
-  const BuildTaskDetails(
-      {super.key, required this.taskName, required this.taskId});
+  const BuildTaskDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +54,9 @@ class BuildTaskDetails extends GetView<TimelineGlobalController> {
                       projectId: controller.timeEntryDetails
                               ?.getTimeEntryDetails?.project?.id ??
                           "",
-                      taskId: taskId,
+                      taskId:  controller.timeEntryDetails
+                              ?.getTimeEntryDetails?.task?.id ??
+    "",
                       employeeName:
                           "${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.firstName ?? ""} ${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.lastName ?? ""}",
                       employeeId: controller
@@ -76,7 +75,9 @@ class BuildTaskDetails extends GetView<TimelineGlobalController> {
                               : DateTime.now().toString(),
                       status: controller.timeEntryDetails?.getTimeEntryDetails?.status ?? "",
                       description: controller.timeEntryDetails?.getTimeEntryDetails?.description ?? "",
-                      taskOrProjectName: controller.timeEntryDetails?.getTimeEntryDetails?.project?.name ?? taskName,
+                      taskOrProjectName: controller.timeEntryDetails?.getTimeEntryDetails?.project?.name ??  controller.timeEntryDetails
+        ?.getTimeEntryDetails?.task?.name ??
+    "",
                       timeLineId: controller.timeEntryDetails?.getTimeEntryDetails?.id ?? "",
                       totalDur: getTimeDifference(controller.timeEntryDetails?.getTimeEntryDetails?.startDate.toString() ?? "", controller.timeEntryDetails?.getTimeEntryDetails?.endDate.toString() ?? ""))),
             ],

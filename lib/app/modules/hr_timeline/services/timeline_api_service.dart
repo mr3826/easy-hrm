@@ -92,6 +92,11 @@ class TimelineApiService {
         "org_user_id": orgId
       }
     };
+    print('''
+    timeline_id $timelineId
+    org_user_id $orgId
+    
+    ''');
     return await _apiService.gqlCall(
         queryString: getTimeEntryDetailsQuery, variables: variables);
   }
@@ -239,9 +244,7 @@ class TimelineApiService {
     return response.data;
   }
 
-  Future<Map<String, dynamic>?>? updateTimelineLogDetails(String startDate,
-      String endDate, String des, String projectId, String timelineId,
-      [String? status, String? taskId]) async {
+  Future<Map<String, dynamic>?>? updateTimelineLogDetails(String startDate, String endDate, String des, String projectId, String timelineId, [String? status, String? taskId]) async {
 
     print('''
     
@@ -251,6 +254,7 @@ class TimelineApiService {
         "status": $status ?? "pending",
         "project_id": $projectId,
         "timeline_id": $timelineId
+        "timeline_id": $taskId
     ''');
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
@@ -258,16 +262,17 @@ class TimelineApiService {
         "end_date": endDate,
         "description": des,
         "project_id": projectId,
-        "timeline_id": timelineId
+        "timeline_id":timelineId
       }
     };
 
-    if (taskId != null && taskId.isNotEmpty) {
+    if (taskId != null || taskId!.isNotEmpty) {
       variables["inputData"]?["task_id"] = taskId;
     }
   if (status != null && status.isNotEmpty) {
       variables["inputData"]?["status"] = status;
     }
+
 
 
     QueryResult<Object?> response = await _apiService.gqlCall(
@@ -276,3 +281,11 @@ class TimelineApiService {
     return response.data;
   }
 }
+
+//
+// "start_date": "2025-02-19 14:35:00",
+// "end_date": "2025-02-19 21:35:00",
+// "description": des,
+// "status":"pending",
+// "project_id": "039a0d2f-f0f1-484b-b76e-e61a367fc23d",
+// "timeline_id": "1cb9bc05-43fd-4d38-af82-e4648aabb402"

@@ -76,10 +76,15 @@ class BuildNewEntryTextField extends StatelessWidget {
                 customAppTitleText(text: AppString.text_description.tr),
                 customSpacerHeight(height: 8),
                 InputNote(
-                    controller: Get.find<TimelineGlobalController>()
-                        .descriptionController,onChanged: (v){
-                  Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
-                },),
+                  controller: Get.find<TimelineGlobalController>()
+                      .descriptionController,
+                  onChanged: (value) {
+                    if (value != null) {
+                      Get.find<TimelineGlobalController>()
+                          .isValueChangeForTimeLogUpdate(true);
+                    }
+                  },
+                ),
                 customSpacerHeight(height: 20),
                 _buildButton(context),
                 customSpacerHeight(height: 40)
@@ -254,6 +259,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   _buildButton(BuildContext context) {
+    print("called");
     final timelineController = Get.find<TimelineGlobalController>();
 
     if (status == "reject") {
@@ -289,16 +295,28 @@ class BuildNewEntryTextField extends StatelessWidget {
             : AppColor.primaryColor.withOpacity(0.5),
         onAction: isValueChanged
             ? () {
+          print("called_1");
                 if (isFromUpdateTimelogEntry == true) {
+                  print("called_2");
+
                   if (isEmployee == true &&
                       status == "approved" &&
                       isFromUpdateTimelogEntry == true) {
                     timelineController.status.value = "";
+
+                    print("called_3");
+
                     timelineController.updateTimelineLogDetails();
                   } else {
+                    print("called_4");
+
+
                     timelineController.updateTimelineLogDetails();
                   }
                 } else {
+                  print("called_5");
+
+
                   timelineController.createManualEntry();
                 }
               }
