@@ -15,6 +15,8 @@ import '../../../global/controller/timmer_controller.dart';
 import '../../../global/controller/user_info_controller.dart';
 import '../../../global/enum/user_enum.dart';
 import '../../../home/view/screen/main_screen.dart';
+import '../../leave_hr/data/leave_remote_data_source.dart';
+import '../../leave_hr/presentation/model/leave_details_by_id.dart';
 import '../models/project_dropdown_response.dart';
 import '../models/time_entry_details.dart';
 import '../models/timeline_summary_by_date.dart';
@@ -24,6 +26,7 @@ class TimelineGlobalController extends GetxController {
   final TimelineDataSource _timelineDataSource;
   TimelineGlobalController(this._timelineDataSource);
 
+  final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
 
   final isProjectListLoading = false.obs;
   final isProistLoading = false.obs;
@@ -35,6 +38,7 @@ class TimelineGlobalController extends GetxController {
   final isEndTimerLoading = false.obs;
   final isTimelogEntryOrRemoveLoading = false.obs;
   RxBool isValueChangeForTimeLogUpdate = false.obs;
+  RxBool isLeaveDetailsByLoading = false.obs;
   RxBool isEmployee = false.obs;
   final isTimeInvalid = false.obs;
   int initialIndex=0;
@@ -54,6 +58,7 @@ class TimelineGlobalController extends GetxController {
   StartOrEndTimerResponse? startOrEndTimerResponse;
   TimelineSummaryByDate? timelineSummaryByDate;
   TimeEntryDetails? timeEntryDetails;
+  LeaveDetailsById? leaveDetailsById;
 
   Future<ProjectDropDownResponse?> getProjectList({String? searchText}) async {
     isProjectListLoading(true);
@@ -71,6 +76,13 @@ class TimelineGlobalController extends GetxController {
     return null;
   }
 
+  /// Fetches employee leave data and updates the [hrLeaveCalender] object.
+  Future<void> getLeaveDetailsById({required String leaveId}) async {
+    isLeaveDetailsByLoading(true);
+    leaveDetailsById =
+    await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
+    isLeaveDetailsByLoading(false);
+  }
 
   Future<TimeEntryDetails?> getTimeEntryDetails({String? orgId,required String timelindId}) async {
     isTimeEntryLoading(true);

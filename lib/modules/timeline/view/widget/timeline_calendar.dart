@@ -76,10 +76,7 @@ class TimeLineCalendar extends StatelessWidget {
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
                 .toString();
-            String taskName = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
-                .toString();
+
             String status = eventData
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).status)
@@ -117,10 +114,7 @@ class TimeLineCalendar extends StatelessWidget {
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).leaveId)
                 .toString();
-            String duration = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).duration)
-                .toString();
+
             String description = eventData
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).description)
@@ -132,23 +126,6 @@ class TimeLineCalendar extends StatelessWidget {
             String createdAt = eventData
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).createdAt)
-                .toString();
-            String taskId = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).taskId)
-                .toString();
-            String projectId = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).projectId)
-                .toString();
-            String projectName = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).projectName)
-                .toString();
-
-            String projectColor = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).projectColor)
                 .toString();
 
             String fileName = eventData
@@ -200,10 +177,12 @@ class TimeLineCalendar extends StatelessWidget {
             /// have to sub string
             /// otherwise it returns with (value) pattern
 
-            controller.getTimeEntryDetails(
-                timelindId: timeLId
-                    .toString()
-                    .substring(1, timeLId.toString().length - 1));
+            if (leaveId.substring(1, leaveId.length - 1) == "null") {
+              controller.getTimeEntryDetails(
+                  timelindId: timeLId
+                      .toString()
+                      .substring(1, timeLId.toString().length - 1));
+            }
 
             customAntButtonSheet(
               context: context,
