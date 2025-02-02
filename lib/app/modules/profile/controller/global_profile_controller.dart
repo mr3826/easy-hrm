@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:payrun_mobile/app/home/view/screen/main_screen.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
+import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/domain/token_model.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
@@ -58,8 +61,9 @@ class ProfileGlobalController extends GetxController with StateMixin {
   String otpCode = "";
   String isSelectLeaveType = "";
   String leaveTypeId = "";
-  RxString calculateAllowanceBy = "".obs;
+  String calculateAllowanceBy = "";
   RxString availableLeave = "".obs;
+  String leaveStatusId = "";
   RxString employeeName = "".obs;
   RxString employeeImeKey = "".obs;
 
@@ -118,6 +122,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
   final isEmployeeInfoLoading = false.obs;
   final isNewOrganizationChangeLoading = false.obs;
   final isViewOrganizationLoading = false.obs;
+  final isLeaveTypeLoading = false.obs;
   final isViewLeaveRecordLoading = false.obs;
   final isViewLeaveSummaryLoading = false.obs;
 
@@ -165,6 +170,31 @@ class ProfileGlobalController extends GetxController with StateMixin {
     organizationInfo = (await _profileDataSource.getOrganizationInfo()) ??
         OrganizationInfoDetails();
     isViewOrganizationLoading(false);
+  }
+
+  Future<bool?> updateOrgLeaveAvailability(
+      {required String leaveStatusId,
+        int? availableNumOfApplication,
+        int? maximumConsecutiveDays,
+        int? availableNumberOfDays}) async {
+    isLeaveTypeLoading(true);
+
+    bool? response = await _profileDataSource.updateOrgLeaveAvailability(
+        leaveStatusId: leaveStatusId,
+        maximumConsecutiveDays: maximumConsecutiveDays,
+        availableNumberOfDays: availableNumberOfDays,
+        availableNumOfApplication: availableNumOfApplication);
+
+    print("updateOrgLeaveAvailability_res: $response");
+
+    if (response == true) {
+      showSuccessMessage(message: "Leave allowance has been added successfully!");
+      Get.to(()=>const MainScreen(routeIndex: 4));
+      Get.find<HrProfileController>().getLeaveSummary();
+
+    }
+    isLeaveTypeLoading(false);
+    return false;
   }
 
   Future<bool> getPasswordVerification({required String password}) async {
@@ -291,7 +321,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(12)),
               child: Obx(
-                    () => Column(
+                () => Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -301,77 +331,77 @@ class ProfileGlobalController extends GetxController with StateMixin {
                     customSpacerHeight(height: 10),
                     isNewOrganizationChangeLoading.isTrue
                         ? const Center(
-                      child: CupertinoActivityIndicator(
-                        color: Colors.blueAccent,
-                        radius: 14,
-                      ),
-                    )
+                            child: CupertinoActivityIndicator(
+                              color: Colors.blueAccent,
+                              radius: 14,
+                            ),
+                          )
                         : Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                            onTap: () => Get.back(canPop: false),
-                            child: Text(AppString.text_cancel.tr)),
-                        customSpacerWidth(width: 36),
-                        InkWell(
-                            onTap: () async {
-                              String deviceToken = "";
-                              if (Platform.isAndroid) {
-                                deviceToken = await Pushy.register();
-                              }
-                              isNewOrganizationChangeLoading(true);
-                              try {
-                                if (passwordInputController
-                                    .text.isNotEmpty) {
-                                  di.Response response =
-                                  await Get.find<NetworkClient>()
-                                      .postRequest(Api.LOGIN, {
-                                    "email": email,
-                                    "password":
-                                    passwordInputController.text,
-                                    "orgId": orgId,
-                                    "device_token": Platform.isIOS
-                                        ? GetStorage().read(
-                                        AppString.IOS_DEVICE_TOKEN)
-                                        : deviceToken,
-                                    "push_notification_platform":
-                                    Platform.isIOS ? "apns" : "pushy"
-                                  });
-
-                                  if (response.statusCode == 200) {
-                                    _handleTokenInfo(response);
-
-                                    final userInfoResponse = await Get
-                                        .find<UserInfoController>()
-                                        .getUserInfo();
-
-                                    _handleLoginSuccess(
-                                        response, userInfoResponse);
-
-                                    Get.find<UserInfoController>()
-                                        .getOrgSubscriptionInfo();
-                                    if (Get.find<UserInfoController>()
-                                        .isSubscriptionExpired
-                                        .isFalse) {
-                                      switchOrganisationDataChange();
-
-                                      Get.back(canPop: false);
-                                      Get.back(canPop: false);
-                                      Get.back(canPop: false);
-
-                                      passwordInputController.clear();
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                  onTap: () => Get.back(canPop: false),
+                                  child: Text(AppString.text_cancel.tr)),
+                              customSpacerWidth(width: 36),
+                              InkWell(
+                                  onTap: () async {
+                                    String deviceToken = "";
+                                    if (Platform.isAndroid) {
+                                      deviceToken = await Pushy.register();
                                     }
-                                  }
-                                }
-                              } catch (e) {
-                                log(e.toString());
-                              }
-                              isNewOrganizationChangeLoading(false);
-                            },
-                            child: Text(AppString.text_ok.tr)),
-                        customSpacerWidth(width: 16),
-                      ],
-                    ),
+                                    isNewOrganizationChangeLoading(true);
+                                    try {
+                                      if (passwordInputController
+                                          .text.isNotEmpty) {
+                                        di.Response response =
+                                            await Get.find<NetworkClient>()
+                                                .postRequest(Api.LOGIN, {
+                                          "email": email,
+                                          "password":
+                                              passwordInputController.text,
+                                          "orgId": orgId,
+                                          "device_token": Platform.isIOS
+                                              ? GetStorage().read(
+                                                  AppString.IOS_DEVICE_TOKEN)
+                                              : deviceToken,
+                                          "push_notification_platform":
+                                              Platform.isIOS ? "apns" : "pushy"
+                                        });
+
+                                        if (response.statusCode == 200) {
+                                          _handleTokenInfo(response);
+
+                                          final userInfoResponse = await Get
+                                                  .find<UserInfoController>()
+                                              .getUserInfo();
+
+                                          _handleLoginSuccess(
+                                              response, userInfoResponse);
+
+                                          Get.find<UserInfoController>()
+                                              .getOrgSubscriptionInfo();
+                                          if (Get.find<UserInfoController>()
+                                              .isSubscriptionExpired
+                                              .isFalse) {
+                                            switchOrganisationDataChange();
+
+                                            Get.back(canPop: false);
+                                            Get.back(canPop: false);
+                                            Get.back(canPop: false);
+
+                                            passwordInputController.clear();
+                                          }
+                                        }
+                                      }
+                                    } catch (e) {
+                                      log(e.toString());
+                                    }
+                                    isNewOrganizationChangeLoading(false);
+                                  },
+                                  child: Text(AppString.text_ok.tr)),
+                              customSpacerWidth(width: 16),
+                            ],
+                          ),
                   ],
                 ),
               ),
@@ -394,8 +424,8 @@ class ProfileGlobalController extends GetxController with StateMixin {
 
   Future<bool> _getNewToken(
       {required String accessToken,
-        required String refreshToken,
-        required String orgId}) async {
+      required String refreshToken,
+      required String orgId}) async {
     try {
       var response = await Get.find<NetworkClient>().postRequest(
           Api.REFRESH_TOKEN,
@@ -407,7 +437,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
         _handleTokenInfo(response);
 
         final userInfoResponse =
-        await Get.find<UserInfoController>().getUserInfo();
+            await Get.find<UserInfoController>().getUserInfo();
 
         _handleLoginSuccess(response, userInfoResponse);
 
@@ -441,7 +471,8 @@ class ProfileGlobalController extends GetxController with StateMixin {
   }
 
   void _handleTokenInfo(di.Response response) async {
-    await GetStorage().write(AppString.ACCESS_TOKEN, SignInResponse.fromJson(response.data).data?.accessToken);
+    await GetStorage().write(AppString.ACCESS_TOKEN,
+        SignInResponse.fromJson(response.data).data?.accessToken);
     await GetStorage().write(AppString.REFRESH_TOKEN,
         SignInResponse.fromJson(response.data).data?.refreshToken);
   }
@@ -450,9 +481,9 @@ class ProfileGlobalController extends GetxController with StateMixin {
     // Save token information
     TokenModel tokenModel = TokenModel(
       accessToken:
-      SignInResponse.fromJson(response.data).data?.accessToken ?? "",
+          SignInResponse.fromJson(response.data).data?.accessToken ?? "",
       refreshToken:
-      SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
+          SignInResponse.fromJson(response.data).data?.refreshToken ?? "",
     );
     String tokenJson = jsonEncode(tokenModel.toJson());
 
@@ -506,7 +537,7 @@ switchOrganisationDataChange() async {
   Get.find<TimelineController>()
     ..getTimelineSummaryByMonth(
         startDate:
-        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
         endDate:
             "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}")
     ..getCalendarTimelineDataByDate(

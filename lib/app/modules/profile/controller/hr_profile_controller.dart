@@ -95,6 +95,7 @@ class HrProfileController extends GetxController with StateMixin {
       "inputData": {
         "leave_status_id": leaveStatusId,
         if (calculateAllowanceBy == "no_of_application") ...{
+
           "available_number_of_applications": numberOfApplication,
           "maximum_consecutive_days": maximumConsecutiveDays,
         } else ...{

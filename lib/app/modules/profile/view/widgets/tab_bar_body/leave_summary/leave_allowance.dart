@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/global_profile_controller.dart';
@@ -18,7 +19,6 @@ import 'leave_type.dart';
 class LeaveAllowance extends StatelessWidget {
   final LeaveAllowanceController employmentController =
       Get.find<LeaveAllowanceController>();
-
   final GetOrganizationUsersLeaveSummary leaveSummary;
 
   LeaveAllowance({required this.leaveSummary, super.key});
@@ -52,18 +52,24 @@ class LeaveAllowance extends StatelessWidget {
                         initValue: leaveSummary.leaveTypeId ?? '',
                         onChanged: (value) {
                           print(
-                              "leaveTypeDropdown: name: ${value.name} type: ${value.type}");
+                              "leaveTypeDropdown: name: ${value.name} type: ${value.type} id : ${value.leaveStatusId} cal: ${value.calculateAllowanceBy}");
+                          Get.find<ProfileGlobalController>().leaveStatusId =
+                              value.leaveStatusId.toString();
+                          Get.find<ProfileGlobalController>()
+                                  .calculateAllowanceBy =
+                              value.calculateAllowanceBy.toString();
                         },
                       ),
                       customSpacerHeight(height: 12),
                       _buildAllowanceCounterLayout(),
-
                       customSpacerHeight(height: 12),
                       _alertMessageLayout(),
-
                       customSpacerHeight(height: 50),
-
-                      _buildButtons(), // Buttons at the bottom
+                      Obx(() => Get.find<ProfileGlobalController>()
+                              .isLeaveTypeLoading
+                              .isTrue
+                          ? const Center(child: CupertinoActivityIndicator())
+                          : _buildButtons())
                     ],
                   );
                 }),
@@ -283,24 +289,60 @@ class LeaveAllowance extends StatelessWidget {
               icon: Icons.done,
               text: AppString.text_save.tr,
               textColor: AppColor.cardColor,
-              buttonColor: isSaveEnabled
+              buttonColor: isSaveEnabled &&
+                      Get.find<ProfileGlobalController>()
+                          .leaveStatusId
+                          .isNotEmpty
                   ? AppColor.primaryColor
                   : AppColor.primaryColor.withOpacity(0.5),
               onPressed: () {
-                if (isSaveEnabled) {
-                  Get.find<HrProfileController>().updateORGLeaveAvailability(
-                    maximumConsecutiveDays:
-                        employmentController.applicationMaxDaysCount.value,
-                    numberOfApplication:
-                        employmentController.applicationBalanceCount.value,
-                    numberOfDays: employmentController.daysCount.value,
-                    calculateAllowanceBy: Get.find<HrProfileController>()
-                        .calculateAllowanceBy
-                        .value,
-                  );
+                if (isSaveEnabled &&
+                    Get.find<ProfileGlobalController>()
+                        .leaveStatusId
+                        .isNotEmpty) {
+                  int maxConsecutiveDay =
+                      employmentController.applicationMaxDaysCount.value;
+                  int numOfApp =
+                      employmentController.applicationBalanceCount.value;
+                  int numOfDay = employmentController.daysCount.value;
+
+                  String leaveStatusId =
+                      Get.find<ProfileGlobalController>().leaveStatusId;
+                  String calculate =
+                      Get.find<ProfileGlobalController>().calculateAllowanceBy;
+
+                  print('''
+                  maxConsecutiveDay $maxConsecutiveDay
+                  numOfApp $numOfApp
+                  numOfDay $numOfDay
+                  leaveStatusId $leaveStatusId
+                  
+                  ''');
+
+                  print("calculate : $calculate");
+
+                  if (calculate == "no_of_application") {
+                    print("called_no_of_application");
+
+                    Get.find<ProfileGlobalController>()
+                        .updateOrgLeaveAvailability(
+                      leaveStatusId: leaveStatusId,
+                      availableNumOfApplication: numOfApp,
+                      availableNumberOfDays: numOfDay,
+                      maximumConsecutiveDays: maxConsecutiveDay,
+                    );
+                  } else {
+                    print("called_no_of_day $numOfDay $leaveStatusId");
+                    Get.find<ProfileGlobalController>()
+                        .updateOrgLeaveAvailability(
+                      leaveStatusId: leaveStatusId,
+                      availableNumberOfDays: numOfDay,
+                    );
+                  }
                 }
               },
-              isEnabled: isSaveEnabled,
+              isEnabled: isSaveEnabled &&
+                  Get.find<ProfileGlobalController>().leaveStatusId.isNotEmpty,
             ),
           ),
         ],

@@ -13,6 +13,7 @@ abstract class ProfileDataSource {
   Future<EmployeeWorkHistory?> getEmploymentInfo(String ordId);
 
   Future<OrganizationInfoDetails?> getOrganizationInfo();
+  Future<bool?> updateOrgLeaveAvailability({required String leaveStatusId, int? availableNumOfApplication, int? maximumConsecutiveDays, int? availableNumberOfDays});
 }
 
 class ProfileDataSourceImpl implements ProfileDataSource {
@@ -73,6 +74,27 @@ class ProfileDataSourceImpl implements ProfileDataSource {
     } catch (e) {
       log('Error in getOrganizationInfo: $e');
       return null;
+    }
+  }
+
+  @override
+  Future<bool?> updateOrgLeaveAvailability({required String leaveStatusId, int? availableNumOfApplication, int? maximumConsecutiveDays, int? availableNumberOfDays}) async {
+
+    try {
+      final response = await _profileApiService.updateOrgLeaveAvailability(
+          leaveStatusId,
+          availableNumOfApplication,
+          maximumConsecutiveDays,
+          availableNumberOfDays);
+
+      print("updateOrgLeaveAvailability : $response $leaveStatusId $availableNumberOfDays");
+      if (response != null) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      log('Error in updateOrgLeaveAvailability: $e');
+      return false;
     }
   }
 }

@@ -32,7 +32,8 @@ class LeaveRecordDetails extends StatelessWidget {
   dynamic leaveDate;
   dynamic leaveWeekday;
 
-  LeaveRecordDetails({super.key, this.status, this.leaveRecords, required String leaveId});
+  LeaveRecordDetails(
+      {super.key, this.status, this.leaveRecords, required String leaveId});
 
   @override
   Widget build(BuildContext context) {

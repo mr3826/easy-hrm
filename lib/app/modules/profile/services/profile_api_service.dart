@@ -38,4 +38,43 @@ class ProfileApiService {
         await _apiService.gqlCall(queryString: organizationInfoQuery);
     return response.data;
   }
+
+  Future<Map<String, dynamic>?>? updateOrgLeaveAvailability(String leaveStatusId,[int?availableNumOfApplication,int?maximumConsecutiveDays,int ?availableNumberOfDays]) async {
+
+    print('''
+    api_servorwe
+    leaveStatusId $leaveStatusId
+    availableNumOfApplication $availableNumOfApplication
+    maximumConsecutiveDays $maximumConsecutiveDays
+    availableNumberOfDays $availableNumberOfDays
+    
+    
+    
+    ''');
+
+    Map<String, dynamic> variables = {
+      "inputData": {
+        "leave_status_id": leaveStatusId,
+      }
+    };
+
+  if (availableNumOfApplication != null && availableNumOfApplication > 0) {
+    variables["inputData"]["available_number_of_applications"] = availableNumOfApplication.toString();
+  }
+  if (maximumConsecutiveDays != null && maximumConsecutiveDays > 0) {
+    variables["inputData"]["maximum_consecutive_days"] = maximumConsecutiveDays.toString();
+  }
+  if (availableNumberOfDays != null && availableNumberOfDays > 0) {
+    variables["inputData"]["available_number_of_days"] = availableNumberOfDays.toString();
+  }
+
+  QueryResult<Object?> response =
+        await _apiService.gqlCall(queryString: updateOrgUserLeaveAvailabilityQuery,variables:variables );
+    return response.data;
+  }
 }
+
+
+
+
+
