@@ -211,7 +211,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         Get.find<TimelineGlobalController>().searchEmployeeId = orgId;
       },
       onClearAction: () async {
-        if (tabController.index == 0) {
           String startDate =
               "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
           String endDate =
@@ -221,9 +220,9 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
               .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
           await Get.find<HrTimelineController>().getTimelineCalenderByDate(
               startDate: startDate, endDate: endDate);
-        } else {
+
           Get.find<TimeSheetController>().getTimesheetByDate();
-        }
+
       },
     );
   }

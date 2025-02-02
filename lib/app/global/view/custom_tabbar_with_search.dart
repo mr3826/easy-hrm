@@ -99,7 +99,7 @@ class CustomSearchBar extends StatefulWidget {
   final Function? onClearAction;
   final String? employeeName;
   final String? employeeImage;
- final TextEditingController? searchTextController;
+  final TextEditingController? searchTextController;
 
   const CustomSearchBar({
     Key? key,
@@ -123,7 +123,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    print("employee ${widget.employeeName}");
     return GestureDetector(
       onTap: () => _showSearchBottomSheet(),
       child: SizedBox(
@@ -150,20 +149,27 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               customSpacerWidth(width: 6),
               Expanded(
                 child: Text(
-                  widget.employeeName?? searchController.text,
+                  widget.employeeName ?? searchController.text,
                   style: AppStyle.normal_text.copyWith(
-                      color: AppColor.normalTextColor.withOpacity(0.7)),
+                      color: searchController.text.isNotEmpty &&
+                                  searchController.text != "Search employee" ||
+                              widget.employeeName != null
+                          ? Colors.black
+                          : AppColor.normalTextColor.withOpacity(0.7)),
                 ),
               ),
-              InkWell(
-                onTap: () => setState(() {
-                  widget.onClearAction!();
-                  profileImgKey = "";
-                  searchController.text = "Search employee";
-                }),
-                child: const Icon(CupertinoIcons.clear,
-                    color: AppColor.hintColor, size: 23),
-              ),
+              if (searchController.text.isNotEmpty &&
+                      searchController.text != "Search employee" ||
+                  widget.employeeName != null)
+                InkWell(
+                  onTap: () => setState(() {
+                    widget.onClearAction!();
+                    profileImgKey = "";
+                    searchController.text = "Search employee";
+                  }),
+                  child: const Icon(CupertinoIcons.clear,
+                      color: AppColor.hintColor, size: 23),
+                ),
               customSpacerWidth(width: 12),
             ],
           ),
@@ -200,9 +206,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     );
   }
 }
-
-
-
 
 class TabItem {
   final String label;
