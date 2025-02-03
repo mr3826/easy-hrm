@@ -10,12 +10,14 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_button_sheet_appbar.dart';
-import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../../modules/leave/presentation/controller/file_upload_controller.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/images.dart';
+import '../../../../../../../utils/utils.dart';
+import '../../../../../employee/controller/employment_controller.dart';
 import '../../../../../employee/view/widget/serach_employee_list/search_employee_list.dart';
 import '../../../controller/hr_leave_controller.dart';
 import '../../../controller/leave_controller.dart';
@@ -116,13 +118,11 @@ class AssignLeave extends GetView<HrLeaveController> {
                   color: AppColor.hintColor, size: 25),
               customSpacerWidth(width: 8),
               if (controller.selectedEmployeeImgKey.isNotEmpty) ...[
-                CustomNetworkImage(
-                  imgUrlKey: controller.selectedEmployeeImgKey.value,
-                  errorText: "Er",
-                  height: 12,
+                CircularNetworkImage(
+                  imageUrl: buildImgIxUrl(imagePath: controller.selectedEmployeeImgKey.value,isPublic: true),
+                  errorText:getInitials(controller.selectedEmployeeInfo.value.replaceAll("(You)", "")) ,
+                  radius: 12,
                   borderColor: Colors.transparent,
-                  errorTextStyle: AppStyle.normal_text_black
-                      .copyWith(fontSize: 14, color: AppColor.secondaryColor),
                 ),
                 customSpacerWidth(width: 6),
               ],
@@ -188,6 +188,7 @@ class AssignLeave extends GetView<HrLeaveController> {
     Get.find<HrLeaveController>().selectedEmployeeInfo.value =
         AppString.textSearchEmployee.tr;
     Get.find<FileUploadController>().storageForUpload.filePath.value = "";
+
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
   }
 }
@@ -374,6 +375,7 @@ void _showEmployeeSelectionSheet() {
           orgUserId: value,
         );
         Get.back(canPop: false);
+        controller.selectedEmployeeId = value;
       },
       userInfo: (name) {
         controller.selectedEmployeeInfo.value = name.name ?? "";

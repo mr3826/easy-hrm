@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/global/view/widgets/custom_network_image.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../../../../../common/widget/custom_double_app_button.dart';
@@ -301,6 +302,7 @@ class AssignLeaveSelectedValue extends StatelessWidget {
                     "0") {
 
               Get.find<HrLeaveController>().applyLeave(
+
                   status: Get.find<LeaveController>().selectedStatusIndex.value == 0
                       ? "pending"
                       : "approved");
@@ -420,13 +422,11 @@ Widget _buildSearchBar(BuildContext context, {required Function onSearch}) {
                 color: AppColor.hintColor, size: 25),
             customSpacerWidth(width: 8),
             if (controller.selectedEmployeeImgKey.isNotEmpty) ...[
-              CustomNetworkImage(
-                imgUrlKey: controller.selectedEmployeeImgKey.value,
-                errorText: "Er",
-                height: 12,
+              CircularNetworkImage(
+                imageUrl: buildImgIxUrl(imagePath: controller.selectedEmployeeImgKey.value,isPublic: true),
+                errorText:getInitials(controller.selectedEmployeeInfo.value.replaceAll("(You)", "")) ,
+                radius: 12,
                 borderColor: Colors.transparent,
-                errorTextStyle: AppStyle.normal_text_black
-                    .copyWith(fontSize: 14, color: AppColor.secondaryColor),
               ),
               customSpacerWidth(width: 6),
             ],

@@ -10,6 +10,7 @@ import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../modules/notification/presentation/view/screen/notification.dart';
+import '../../../../employee/controller/employment_controller.dart';
 import '../../../../profile/controller/global_profile_controller.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/app_style.dart';
@@ -74,7 +75,7 @@ class LeaveHrScreen extends StatelessWidget {
       actions: [
         GestureDetector(
           // onTap: ()=>Get.to(()=>NotificationScreen()),
-          onTap: (){},
+          onTap: () {},
           child: customSvgImage(
             imageUrl: Images.notificationIconNavOutLine,
             height: 26,
@@ -193,6 +194,7 @@ class LeaveHrScreen extends StatelessWidget {
       onPressed: () {
         Get.find<LeaveController>().leaveTypeSelectedIndex.value = (-1);
         final hrLeaveController = Get.find<HrLeaveController>();
+        Get.find<EmploymentController>().searchController.text = "";
 
         // Fetch available leave types
         hrLeaveController.getAvailableLeaveType();
@@ -227,6 +229,7 @@ class LeaveHrScreen extends StatelessWidget {
         (-1); //clear selection index
     Get.find<HrLeaveController>().selectedEmployeeInfo.value =
         AppString.textSearchEmployee.tr;
+    Get.find<HrLeaveController>().selectedEmployeeImgKey.value = "";
     Get.find<HrLeaveController>().storageForUpload.filePath.value = "";
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
   }
@@ -235,6 +238,7 @@ class LeaveHrScreen extends StatelessWidget {
 void _showEmployeeSelectionSheet() {
   HrLeaveController controller = Get.put(HrLeaveController());
   LeaveController leaveController = Get.put(LeaveController());
+
   customButtonSheet(
     context: Get.context!,
     child: SearchEmployeeList(
