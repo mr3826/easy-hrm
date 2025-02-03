@@ -33,7 +33,7 @@ class SummaryTimeLogCalendar extends StatelessWidget {
   ];
 
   final Map<int, List<String>> _dateMap =
-  _generateDateMap(DateTime.now().year - 1, DateTime.now().year + 1);
+      _generateDateMap(DateTime.now().year - 1, DateTime.now().year + 1);
 
   void _scrollToCurrentMonth() {
     _scrollToMonth(_controller.selectedValue.value);
@@ -57,14 +57,13 @@ class SummaryTimeLogCalendar extends StatelessWidget {
     _scrollToMonth(_controller.selectedValue.value);
     int monthNumber = monthToNumber[month] ?? 0;
 
-    Get.find<DateTimeController>().requestedDate(DateTime(year, monthNumber, 1, 0, 0, 0).toString());
-    Get.find<DateTimeController>().requestedEndDate(DateTime(year, monthNumber + 1,0).toString());
+    Get.find<DateTimeController>()
+        .requestedDate(DateTime(year, monthNumber, 1, 0, 0, 0).toString());
+    Get.find<DateTimeController>()
+        .requestedEndDate(DateTime(year, monthNumber + 1, 0).toString());
 
-
-     await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
-     await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
-
-
+    await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
+    await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
   }
 
   @override
@@ -81,7 +80,7 @@ class SummaryTimeLogCalendar extends StatelessWidget {
             widgets.add(Card(
                 shape: roundedRectangleBorder.copyWith(
                     borderRadius:
-                    BorderRadius.circular(Dimensions.radiusExtraLarge)),
+                        BorderRadius.circular(Dimensions.radiusExtraLarge)),
                 elevation: 0,
                 color: AppColor.hintColor.withOpacity(0.8),
                 child: Padding(
@@ -102,30 +101,30 @@ class SummaryTimeLogCalendar extends StatelessWidget {
                 return Padding(
                   key: monthGlobalKey,
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 18.0, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 18.0, vertical: 4),
                   child: GestureDetector(
                     onTap: () => _handleMonthTap(entry.key, month),
                     child: Column(
                       children: [
                         Obx(() => Text(
-                          month,
-                          style: AppStyle.normal_text_grey.copyWith(
-                              color: monthKey ==
-                                  _controller.selectedValue.value
-                                  ? AppColor.primaryColor
-                                  : AppColor.hintColor,
-                              fontSize: monthKey ==
-                                  _controller.selectedValue.value
-                                  ? Dimensions.fontSizeDefault + 1
-                                  : Dimensions.fontSizeDefault),
-                        )),
+                              month,
+                              style: AppStyle.normal_text_grey.copyWith(
+                                  color: monthKey ==
+                                          _controller.selectedValue.value
+                                      ? AppColor.primaryColor
+                                      : AppColor.hintColor,
+                                  fontSize: monthKey ==
+                                          _controller.selectedValue.value
+                                      ? Dimensions.fontSizeDefault + 1
+                                      : Dimensions.fontSizeDefault),
+                            )),
                         Obx(() => monthKey == _controller.selectedValue.value
                             ? Text(
-                          entry.key.toString(),
-                          style: AppStyle.mid_large_text.copyWith(
-                              color: AppColor.hintColor,
-                              fontSize: Dimensions.fontSizeDefault),
-                        )
+                                entry.key.toString(),
+                                style: AppStyle.mid_large_text.copyWith(
+                                    color: AppColor.hintColor,
+                                    fontSize: Dimensions.fontSizeDefault),
+                              )
                             : Container()),
                       ],
                     ),

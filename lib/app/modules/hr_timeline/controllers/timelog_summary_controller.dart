@@ -31,39 +31,37 @@ class TimelineSummaryController extends GetxController with StateMixin {
   TimelogDetailsByMonth? timelogDetailsByMonth;
   TimelineSummaryByDate? timelineSummaryByDate;
 
-
-
-  getTimelineSummaryByDate({String? startDate, String? endDate, String? orgId}) async {
-    String startDate = "${formatDate(date: Get.find<DateTimeController>().requestedDate.value,format: "yyyy-MM-dd")} 00:00:00.000";
-    String endDate = "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value,format: "yyyy-MM-dd")} 23:59:59.000";
+  getTimelineSummaryByDate(
+      {String? startDate, String? endDate, String? orgId}) async {
+    String startDate =
+        "${formatDate(date: Get.find<DateTimeController>().requestedDate.value, format: "yyyy-MM-dd")} 00:00:00.000";
+    String endDate =
+        "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value, format: "yyyy-MM-dd")} 23:59:59.000";
 
     isTimelineSummaryByDateLoading(true);
-    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    final String organizationId =
+        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate orgId ; $organizationId");
 
     timelineSummaryByDate = await _timelineDataSource.getTimelineSummaryByDate(
-        startDate: startDate,
-        endDate: endDate,
-        orgUserId: organizationId);
+        startDate: startDate, endDate: endDate, orgUserId: organizationId);
     isTimelineSummaryByDateLoading(false);
   }
 
-
-
-  getTimelogDetailsByMonth({String? startDate, String? endDate, String? orgId}) async {
-    String startDate = "${formatDate(date: Get.find<DateTimeController>().requestedDate.value,format: "yyyy-MM-dd")} 00:00:00.000";
-    String endDate = "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value,format: "yyyy-MM-dd")} 23:59:59.000";
+  getTimelogDetailsByMonth(
+      {String? startDate, String? endDate, String? orgId}) async {
+    String startDate =
+        "${formatDate(date: Get.find<DateTimeController>().requestedDate.value, format: "yyyy-MM-dd")} 00:00:00.000";
+    String endDate =
+        "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value, format: "yyyy-MM-dd")} 23:59:59.000";
     isMonthlySummaryDataLoading(true);
 
-    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    final String organizationId =
+        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
     log("getTimelogDetailsByMonth start & end ==>$startDate And $endDate orgId ; $organizationId");
 
     timelogDetailsByMonth = await _timelineDataSource.getTimelogDetailsByMonth(
-        startDate: startDate,
-        endDate: endDate,
-        orgUserId: organizationId);
+        startDate: startDate, endDate: endDate, orgUserId: organizationId);
     isMonthlySummaryDataLoading(false);
   }
-
-
 }

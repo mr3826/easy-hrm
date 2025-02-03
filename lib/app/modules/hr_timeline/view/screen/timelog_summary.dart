@@ -37,18 +37,20 @@ class TimeLogSummary extends GetView<TimelineSummaryController> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (isEmployee) SummaryTimeLogCalendar(),
-              Obx(
-                () => controller.isMonthlySummaryDataLoading.isTrue &&
-                        controller.isTimelineSummaryByDateLoading.isTrue
-                    ? _buildLoadingIndicator()
-                    : Column(
-                        children: [
-                          _buildWorkingSchedule(),
-                          _buildTimeLogDetails(),
-                        ],
-                      ),
-              ),
+              if (isEmployee)
+                Obx(() => _buildEmployeeTimeLog())
+              else
+                Obx(
+                  () => controller.isMonthlySummaryDataLoading.isTrue &&
+                          controller.isTimelineSummaryByDateLoading.isTrue
+                      ? _buildLoadingIndicator()
+                      : Column(
+                          children: [
+                            _buildWorkingSchedule(),
+                            _buildTimeLogDetails(),
+                          ],
+                        ),
+                ),
             ],
           ),
         ),
@@ -114,5 +116,22 @@ class TimeLogSummary extends GetView<TimelineSummaryController> {
               ),
             ),
           );
+  }
+
+  _buildEmployeeTimeLog() {
+    return Column(
+      children: [
+        SummaryTimeLogCalendar(),
+        controller.isMonthlySummaryDataLoading.isTrue ||
+                controller.isTimelineSummaryByDateLoading.isTrue
+            ? _buildLoadingIndicator()
+            : Column(
+                children: [
+                  _buildWorkingSchedule(),
+                  _buildTimeLogDetails(),
+                ],
+              )
+      ],
+    );
   }
 }
