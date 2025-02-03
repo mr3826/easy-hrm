@@ -22,6 +22,7 @@ import '../../../../../../../common/widget/timePicker/date_time_picker_controlle
 import '../../../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
+import '../../../../../profile/controller/global_profile_controller.dart';
 import '../../../../controllers/global_timline_controller.dart';
 import '../../time_sheet/timelog_summary_details.dart';
 import 'build_task_view.dart';
@@ -334,16 +335,10 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   _employeeSearch(BuildContext context) {
+    // Set selected employee info
     return CustomSearchBar(
-      employeeName:
-          "${Get.find<TimelineGlobalController>().timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.firstName ?? ""} ${Get.find<TimelineGlobalController>().timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.lastName ?? ""}",
-      employeeImage: Get.find<TimelineGlobalController>()
-              .timeEntryDetails
-              ?.getTimeEntryDetails
-              ?.organizationUser
-              ?.profile
-              ?.image ??
-          "",
+      employeeName:"${Get.find<ProfileGlobalController>().employeeName.value} (You)" ,
+      employeeImage: Get.find<ProfileGlobalController>().employeeImeKey.value,
       onValueSelected: (String orgId) async {
         Navigator.pop(context);
         Get.find<TimelineGlobalController>().orgUserId(orgId);
