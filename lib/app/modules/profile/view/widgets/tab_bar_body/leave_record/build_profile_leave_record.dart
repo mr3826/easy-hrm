@@ -8,6 +8,7 @@ import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../../common/domain/files_model.dart';
 import '../../../../../../../common/widget/custom_dotted_border.dart';
@@ -15,6 +16,8 @@ import '../../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../../common/widget/status_button_helper.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../../../modules/leave/presentation/view/widget/leave_record_details_view.dart';
+import '../../../../../leave_hr/presentation/model/leave_details_by_id.dart'as lv_del_by_id;
+import '../../../../controller/hr_profile_controller.dart';
 
 class BuildLeaveRecord extends StatelessWidget {
   final Future<List<GetLeaveRecordsForApp>> Function() getLeaveRecordList;
@@ -145,14 +148,25 @@ class BuildLeaveRecord extends StatelessWidget {
     Color? bgColor,
   }) {
     return GestureDetector(
-      onTap: () => _customAntButtonSheet(
-        context,
-        LeaveRecordDetails(
-          status: leaveRecord.status ?? "",
-          leaveRecords: leaveRecord,
-          leaveId: '',
-        ),
-      ),
+      onTap: (){
+        Get.find<HrProfileController>().getLeaveDetailsById(
+            leaveId: leaveRecord.id??"");
+
+        customAntButtonSheet(
+          context: context,
+          child: Obx(() => Get.find<HrProfileController>()
+              .isLeaveDetailsByLoading
+              .isTrue
+              ? const LoadingIndicator()
+              : LeaveRecordDetailsById(
+            isEmployee: false,
+            data: Get.find<HrProfileController>()
+                .leaveDetailsById
+                ?.getLeaveDetailsById ??
+                lv_del_by_id.GetLeaveDetailsById(),
+          )),
+        );
+      },
       child: Card(
         elevation: 0,
         shape: roundedRectangleBorder.copyWith(

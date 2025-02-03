@@ -16,6 +16,7 @@ import '../../../global/controller/user_info_controller.dart';
 import '../../../global/enum/user_enum.dart';
 import '../../../home/view/screen/main_screen.dart';
 import '../../leave_hr/data/leave_remote_data_source.dart';
+import '../../leave_hr/presentation/model/avaible_leave_type.dart';
 import '../../leave_hr/presentation/model/leave_details_by_id.dart';
 import '../models/project_dropdown_response.dart';
 import '../models/time_entry_details.dart';
@@ -41,6 +42,7 @@ class TimelineGlobalController extends GetxController {
   RxBool isLeaveDetailsByLoading = false.obs;
   RxBool isEmployee = false.obs;
   final isTimeInvalid = false.obs;
+  final isAvailableLeaveType = false.obs;
   int initialIndex=0;
   String searchEmployeeId ="";
 
@@ -61,6 +63,7 @@ class TimelineGlobalController extends GetxController {
   TimelineSummaryByDate? timelineSummaryByDate;
   TimeEntryDetails? timeEntryDetails;
   LeaveDetailsById? leaveDetailsById;
+  AvailableLeaveType? availableLeaveType;
 
   Future<ProjectDropDownResponse?> getProjectList({String? searchText}) async {
     isProjectListLoading(true);
@@ -78,6 +81,7 @@ class TimelineGlobalController extends GetxController {
     return null;
   }
 
+
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getLeaveDetailsById({required String leaveId}) async {
     isLeaveDetailsByLoading(true);
@@ -85,6 +89,18 @@ class TimelineGlobalController extends GetxController {
     await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
     isLeaveDetailsByLoading(false);
   }
+  /// Fetches leave type hr .
+  Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
+    isAvailableLeaveType(true);
+    availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(orgUserId:
+    orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
+        year: year ?? "${DateTime.now().year}");
+    isAvailableLeaveType(false);
+  }
+
+
+
+
 
   Future<TimeEntryDetails?> getTimeEntryDetails({String? orgId,required String timelindId}) async {
     isTimeEntryLoading(true);

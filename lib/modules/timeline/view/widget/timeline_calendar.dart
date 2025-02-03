@@ -5,11 +5,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../app/modules/hr_timeline/view/widgets/timeline_calender/calendar_timelog_details.dart';
+import '../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../utils/dimensions.dart';
@@ -182,90 +184,30 @@ class TimeLineCalendar extends StatelessWidget {
                   timelindId: timeLId
                       .toString()
                       .substring(1, timeLId.toString().length - 1));
+            } else {
+              Get.find<TimelineGlobalController>().getLeaveDetailsById(
+                  leaveId: leaveId
+                      .toString()
+                      .substring(1, leaveId.toString().length - 1));
             }
 
             customAntButtonSheet(
               context: context,
               child: leaveId.substring(1, leaveId.length - 1) == "null"
                   ? const BuildTaskDetails()
-                  : LeaveRecordDetails(
-                      status: status
-                          .toString()
-                          .substring(1, status.toString().length - 1),
-                      leaveRecords: GetLeaveRecords(
-                        leaveDetails: [
-                          LeaveDetails(
-                            leaveHour: leaveHour
-                                .toString()
-                                .substring(1, leaveHour.toString().length - 1),
-                            scheduleHour: scheduleHour.toString().substring(
-                                1, scheduleHour.toString().length - 1),
-                          )
-                        ],
-
-                        ///For view file
-                        files: [
-                          Files(
-                            name: fileName
-                                .toString()
-                                .substring(1, fileName.toString().length - 1),
-                            size: fileSize
-                                .toString()
-                                .substring(1, fileSize.toString().length - 1),
-                            key: fileKey
-                                .toString()
-                                .substring(1, fileKey.toString().length - 1),
-                            id: fileId
-                                .toString()
-                                .substring(1, fileId.toString().length - 1),
-                          )
-                        ],
-                        id: leaveId
-                            .toString()
-                            .substring(1, leaveId.toString().length - 1),
-                        status: status
-                            .toString()
-                            .substring(1, status.toString().length - 1),
-                        createdAt: createdAt
-                            .toString()
-                            .substring(1, createdAt.toString().length - 1)
-                            .toString(),
-                        startDate: startDate
-                            .toString()
-                            .substring(1, startDate.toString().length - 1)
-                            .toString(),
-                        endDate: endDate
-                            .toString()
-                            .substring(1, endDate.toString().length - 1)
-                            .toString(),
-                        duration:
-                            numberOfDays.substring(1, numberOfDays.length - 1),
-                        description: description
-                            .toString()
-                            .substring(1, description.toString().length - 1),
-                        leaveType: LeaveType(
-                            leaveName:
-                                leaveName.substring(1, leaveName.length - 1),
-                            leaveId: leaveTypeId.substring(
-                                1, leaveTypeId.length - 1),
-                            isAttachDocumentRequired: isAttachDocumentRequired
-                                        .substring(1,
-                                            isAttachDocumentRequired.length - 1)
-                                        .toLowerCase() ==
-                                    "true"
-                                ? true
-                                : false,
-                            isAddNoteRequired: isAddNoteRequired
-                                        .substring(
-                                            1, isAddNoteRequired.length - 1)
-                                        .toLowerCase() ==
-                                    "true"
-                                ? true
-                                : false,
-                            type: type.substring(1, type.length - 1)),
-                      ),
-                      leaveId: '',
-                    ),
+                  : Obx(() => Get.find<TimelineGlobalController>()
+                          .isLeaveDetailsByLoading
+                          .isTrue
+                      ? const LoadingIndicator()
+                      : LeaveRecordDetailsById(
+                          data: Get.find<TimelineGlobalController>()
+                                  .leaveDetailsById
+                                  ?.getLeaveDetailsById ??
+                              GetLeaveDetailsById(),
+                          isEmployee: Get.find<TimelineGlobalController>()
+                              .isEmployee
+                              .value,
+                        )),
             );
           },
           eventTileBuilder: (date, events, status, start, end) {

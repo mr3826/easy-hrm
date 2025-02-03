@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
+import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_card_style.dart';
@@ -19,14 +21,17 @@ class UpcomingLeaveLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<EmployeeDashboardController>();
+    EmployeeDashboardController controller =
+        Get.find<EmployeeDashboardController>();
     return Padding(
       padding: marginLayout.copyWith(top: 8),
       child: ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: controller.upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ?? 0,
+        itemCount: controller
+                .upcommingLeaveDashboard?.getUpcomingLeavesForApp?.length ??
+            0,
         itemBuilder: (context, index) {
           Color itemBgColor = index % 2 == 0
               ? AppColor.bgColorWithPrimary.withOpacity(0.3)
@@ -37,109 +42,27 @@ class UpcomingLeaveLayout extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: GestureDetector(
-                onTap: () => customAntButtonSheet(
-                  context: context,
-                  child: LeaveRecordDetails(
-                    status: controller.upcommingLeaveDashboard
-                            ?.getUpcomingLeavesForApp?[index].status ??
-                        "taken",
-                    leaveRecords: GetLeaveRecords(
-                      id: controller.upcommingLeaveDashboard
-                          ?.getUpcomingLeavesForApp?[index].id,
-                      status: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].status ??
-                          "",
-                      createdAt: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].createdAt ??
-                          "",
-                      startDate: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].startDate ??
-                          "",
-                      endDate: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].endDate ??
-                          "",
-                      files: [
-                        controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files !=
-                                    null &&
-                                controller
-                                    .upcommingLeaveDashboard!
-                                    .getUpcomingLeavesForApp![index]
-                                    .files!
-                                    .isNotEmpty
-                            ? Files(
-                                createdAt: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .createdAt ??
-                                    "",
-                                size: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .size ??
-                                    "",
-                                name: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .name ??
-                                    "",
-                                id: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .id ??
-                                    "",
-                                key: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .files?[0]
-                                        .key ??
-                                    "",
-                              )
-                            : Files()
-                      ],
-                      leaveType: controller.upcommingLeaveDashboard
-                          ?.getUpcomingLeavesForApp?[index].leaveType,
-                      duration: controller.upcommingLeaveDashboard
-                              ?.getUpcomingLeavesForApp?[index].numberOfDays ??
-                          0,
-                      description: controller.upcommingLeaveDashboard
-                          ?.getUpcomingLeavesForApp?[index].description,
-                      leaveDetails: [
-                        controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .leaveDetails !=
-                                    null &&
-                                controller
-                                    .upcommingLeaveDashboard!
-                                    .getUpcomingLeavesForApp![index]
-                                    .leaveDetails!
-                                    .isNotEmpty
-                            ? LeaveDetails(
-                                scheduleHour: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .leaveDetails?[0]
-                                        .scheduleSecond.toString() ??
-                                    "",
-                                leaveHour: controller
-                                        .upcommingLeaveDashboard
-                                        ?.getUpcomingLeavesForApp?[index]
-                                        .leaveDetails?[0]
-                                        .leaveSecond.toString() ??
-                                    "",
-                              )
-                            : LeaveDetails()
-                      ],
-                    ), leaveId: '',
-                  ),
-                ),
+                onTap: () {
+                  controller.getLeaveDetailsById(
+                      leaveId: controller.upcommingLeaveDashboard
+                              ?.getUpcomingLeavesForApp?[index].id
+                              .toString() ??
+                          "");
+
+                  customAntButtonSheet(
+                    context: context,
+                    child: Obx(() => controller.isLeaveDetailsByLoading.isTrue
+                        ? const LoadingIndicator()
+                        : LeaveRecordDetailsById(
+                      isEmployee: true,
+                      data: controller.leaveDetailsById?.getLeaveDetailsById??GetLeaveDetailsById(),
+
+                    )
+
+
+                    ),
+                  );
+                },
                 child: Card(
                   elevation: 0,
                   color: itemBgColor,

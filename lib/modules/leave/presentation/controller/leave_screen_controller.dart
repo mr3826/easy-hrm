@@ -10,6 +10,8 @@ import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record
 import 'package:payrun_mobile/modules/leave/domain/leave_summary_dashboard.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
+import '../../../../app/modules/leave_hr/data/leave_remote_data_source.dart';
+import '../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../common/controller/date_time_controller.dart';
 import '../../../dashboard/presentation/controller/employee_dashboard_controller.dart';
 import '../../domain/leave_details_by_date.dart';
@@ -24,9 +26,23 @@ class LeaveScreenController extends GetxController with StateMixin {
   String? endTime;
   List<int> holidays = <int>[6, 7];
   late RxString date;
+  final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
 
   final LeaveRemoteDataSource _leaveRemoteDataSource =
       Get.find<LeaveRemoteDataSource>();
+
+
+  LeaveDetailsById? leaveDetailsById;
+  RxBool isLeaveDetailsByLoading=false.obs;
+
+  /// Fetches employee leave data and updates the [hrLeaveCalender] object.
+  Future<void> getLeaveDetailsById({required String leaveId}) async {
+    isLeaveDetailsByLoading(true);
+    leaveDetailsById =
+    await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
+    isLeaveDetailsByLoading(false);
+  }
+
 
   /// Fetches the leave summary for the dashboard and updates the state.
   Future<void> getLeaveSummaryForDashboard() async {

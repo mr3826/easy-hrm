@@ -6,8 +6,8 @@ import 'package:payrun_mobile/common/widget/timePicker/custom_time_picker_out_ti
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/update_leave_controller.dart';
-import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
+import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../common/widget/custom_card_style.dart';
@@ -28,7 +28,7 @@ import '../../controller/file_upload_controller.dart';
 import '../../../domain/leave_type.dart';
 
 class UpdateLeave extends StatelessWidget {
-  final GetLeaveRecords? leaveRecords;
+  final GetLeaveDetailsById? leaveRecords;
 
   const UpdateLeave({super.key, this.leaveRecords});
 
@@ -66,7 +66,7 @@ class UpdateLeave extends StatelessWidget {
 
   void _updateDateFromResponse() {
     Get.find<UpDateLeaveController>().leaveId = leaveRecords?.id ?? '';
-    Get.find<UpDateLeaveController>().leaveTypeId = leaveRecords?.leaveType?.leaveId ?? "";
+    Get.find<UpDateLeaveController>().leaveTypeId = leaveRecords?.leaveType?.id ?? "";
 
     Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()));
     Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(leaveRecords?.startDate ?? DateTime.now().toString()));
@@ -80,14 +80,14 @@ class UpdateLeave extends StatelessWidget {
     Get.find<DateTimePickerController>().getOutDateTime();
 
     leaveNoteController.text = leaveRecords?.description ?? "";
-    Get.find<UpDateLeaveController>().isNoteRequired.value = leaveRecords?.leaveType?.isAddNoteRequired ?? false;
-
-    Get.find<UpDateLeaveController>().isDocumentRequired.value = leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
+    // Get.find<UpDateLeaveController>().isNoteRequired.value = leaveRecords?.leaveType?.isAddNoteRequired ?? false;
+    //
+    // Get.find<UpDateLeaveController>().isDocumentRequired.value = leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
   }
 }
 
 class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
-  final GetLeaveRecords? leaveRecords;
+  final GetLeaveDetailsById? leaveRecords;
 
   UpdateLeaveButtonLayout({super.key, this.leaveRecords});
 
@@ -109,7 +109,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
                       customSpacerHeight(height: 8),
                       UpdateLeaveDropdown(
                           dropdownValue:
-                              leaveRecords?.leaveType?.leaveId ?? ""),
+                              leaveRecords?.leaveType?.id ?? ""),
                       customSpacerHeight(height: 8),
                       _leaveCountStyleLayout(),
                       customSpacerHeight(height: 20),

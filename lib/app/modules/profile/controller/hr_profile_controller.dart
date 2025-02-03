@@ -7,6 +7,8 @@ import '../../../../common/widget/success_message.dart';
 import '../../../../modules/leave/data/remote/leave_remote_data_source.dart';
 import '../../../../modules/leave/domain/leave_record_response.dart';
 import '../../../../modules/leave/domain/leave_type.dart';
+import '../../leave_hr/data/leave_remote_data_source.dart';
+import '../../leave_hr/presentation/model/leave_details_by_id.dart';
 import '../models/leave_summary.dart';
 import '../models/user_profile.dart';
 import '../../../../utils/app_string.dart';
@@ -17,6 +19,7 @@ class HrProfileController extends GetxController with StateMixin {
   final ProfileDataSource _profileDataSource;
 
   HrProfileController(this._profileDataSource);
+  final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
 
   final LeaveRemoteDataSource _remoteDataSource =
       Get.find<LeaveRemoteDataSource>();
@@ -27,7 +30,8 @@ class HrProfileController extends GetxController with StateMixin {
     getUserProfile();
     super.onInit();
   }
-
+  LeaveDetailsById? leaveDetailsById;
+  RxBool isLeaveDetailsByLoading=false.obs;
   int initialTabIndex = 0;
   final isViewLeaveRecordLoading = false.obs;
   final isViewLeaveSummaryLoading = false.obs;
@@ -45,6 +49,15 @@ class HrProfileController extends GetxController with StateMixin {
   UserDetails? userDetails;
   List<GetLeaveRecordsForApp>? leaveRecordList;
   LeaveTypeDropdown? leaveTypeDropdown;
+
+
+
+  Future<void> getLeaveDetailsById({required String leaveId}) async {
+    isLeaveDetailsByLoading(true);
+    leaveDetailsById =
+    await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
+    isLeaveDetailsByLoading(false);
+  }
 
   Future<void> getUserProfile({String? ordId}) async {
     isLoadingProfile(true);

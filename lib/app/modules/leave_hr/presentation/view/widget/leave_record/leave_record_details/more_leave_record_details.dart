@@ -250,6 +250,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
       onClose: _clear,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
       child: EditLeaveRecordDetails(
+        isEmployee: false,
           getLeaveDetailsById: GetLeaveDetailsById(
               files: controller.leaveDetailsById?.getLeaveDetailsById?.files ??
                   [])),

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../../../../../auth/view/screens/otp_screen.dart';
 import '../../../../../model/leave_details_by_id.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -30,12 +29,12 @@ import '../../../assign_leave/add_attachment_file.dart';
 import '../../../assign_leave/assign_leave.dart';
 import '../../../assign_leave/leave_type.dart';
 
-
-
 /// A widget that displays and edits leave record details.
 class EditLeaveRecordDetails extends GetView<HrLeaveController> {
+  final bool isEmployee;
   final GetLeaveDetailsById? getLeaveDetailsById;
-  const EditLeaveRecordDetails({super.key, this.getLeaveDetailsById});
+  const EditLeaveRecordDetails(
+      {super.key, this.getLeaveDetailsById, required this.isEmployee});
 
   @override
   Widget build(BuildContext context) {
@@ -76,36 +75,45 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildText("Employee & type"),
-              _spacer(18),
+              if (isEmployee == false) ...[
+                _buildText("Employee & type"),
+                _spacer(18),
 
-              /// Displays the title and a required leave type dropdown.
-              _buildTitleText(text: AppString.textEmployees.tr, isRequired: true),
-              _spacer(8),
-              _buildSearchBar(context),
+                /// Displays the title and a required leave type dropdown.
+                _buildTitleText(
+                    text: AppString.textEmployees.tr, isRequired: true),
+                _spacer(8),
+                _buildSearchBar(context),
+              ],
 
               _spacer(18),
-              _buildTitleText(text: AppString.textLeaveYear.tr, isRequired: true),
+              _buildTitleText(
+                  text: AppString.textLeaveYear.tr, isRequired: true),
 
               _spacer(8),
 
               _buildLeaveYear(),
+
               ///Timeline [This year,Next year]
 
               _spacer(18),
               _buildTitleText(
                   text: AppString.textLeaveType.tr, isRequired: true),
-              _spacer(8), const LeaveTypeDropDown(),
+              _spacer(8),
+              const LeaveTypeDropDown(),
               _spacer(18),
               _leaveCountStyleLayout(),
 
-              /// Displays the title and a status selection tab.
-              _buildTitleText(text: AppString.text_status.tr),
-              _spacer(8),
+              if (isEmployee == false) ...[
+                /// Displays the title and a status selection tab.
+                _buildTitleText(text: AppString.text_status.tr),
+                _spacer(8),
 
-              _buildStatusTabSelector(),
+                _buildStatusTabSelector(),
 
-              _spacer(18),
+                _spacer(18),
+              ],
+
               _buildText("Application details"),
 
               _spacer(18),
@@ -148,30 +156,41 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
                         .isUpdateLeaveLoading
                         .isTrue
                     ? const Center(
-                      child: CupertinoActivityIndicator(
-                          color: AppColor.primaryColor, radius: 15),
-                    )
-                    : CustomDoubleAppButton(onAction: () {
-                        if (Get.find<HrLeaveController>()
-                                .calculateAllowanceOfLeave
-                                .value
-                                .isNotEmpty &&
-                            Get.find<HrLeaveController>()
+                        child: CupertinoActivityIndicator(
+                            color: AppColor.primaryColor, radius: 15),
+                      )
+                    : CustomDoubleAppButton(
+                        btnColor: Get.find<HrLeaveController>()
+                                .isUpdateLeaveChangeValue
+                                .isTrue
+                            ? AppColor.primaryColor
+                            : AppColor.primaryColor.withOpacity(0.5),
+                        onAction: () {
+                          if (Get.find<HrLeaveController>()
+                              .isUpdateLeaveChangeValue
+                              .isTrue) {
+                            if (Get.find<HrLeaveController>()
                                     .calculateAllowanceOfLeave
-                                    .value !=
-                                "0") {
-                          _updateLeaveMethod();
-                        } else {
-                          showWarningMessage(
-                              message: AppString.text_no_available_leave.tr);
-                        }
-                      }, cancelAction: () {
-                        /// Clears the file upload path and navigates back.
-                        Get.find<LeaveFileUploadController>().path.value = "";
-                        Get.back(canPop: false);
-                      }),
+                                    .value
+                                    .isNotEmpty &&
+                                Get.find<HrLeaveController>()
+                                        .calculateAllowanceOfLeave
+                                        .value !=
+                                    "0") {
+                              _updateLeaveMethod();
+                            } else {
+                              showWarningMessage(
+                                  message:
+                                      AppString.text_no_available_leave.tr);
+                            }
+                          }
+                        },
+                        cancelAction: () {
+                          /// Clears the file upload path and navigates back.
+                          Get.find<LeaveFileUploadController>().path.value = "";
+                          Get.back(canPop: false);
+                        }),
               ),
-
 
               _spacer(100),
             ],
@@ -184,7 +203,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
   void _updateLeaveMethod() {
     if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value)
         .difference(DateTime.parse(
-        Get.find<DateTimePickerController>().inDateTime.value))
+            Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {
       Get.find<HrUpdateLeaveController>().updateAssignLeave(
         leaveId: controller.leaveId.toString(),
@@ -211,7 +230,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
           color: AppColor.cardColor,
           borderRadius: BorderRadius.circular(4),
           border:
-          Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
+              Border.all(width: 1, color: AppColor.hintColor.withOpacity(0.5)),
         ),
         child: ListView.builder(
           itemCount: leaveController.statusOptions.length,
@@ -221,13 +240,21 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               // Checks if the current index is selected.
               final isSelected =
                   index == leaveController.selectedStatusIndex.value;
+
+              if (leaveController.selectedStatusIndex.value == 1) {
+                Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
+              }
+
               return GestureDetector(
                 onTap: () => leaveController.selectedStatusIndex.value = index,
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
-                    color:
-                    isSelected ? AppColor.pendingColor : Colors.transparent,
+                    color: isSelected
+                        ? leaveController.selectedStatusIndex.value == 0
+                            ? AppColor.pendingColor
+                            : AppColor.successColor
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   alignment: Alignment.center,
@@ -235,7 +262,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
                     leaveController.statusOptions[index],
                     style: AppStyle.normal_text.copyWith(
                       color:
-                      isSelected ? AppColor.cardColor : AppColor.hintColor,
+                          isSelected ? AppColor.cardColor : AppColor.hintColor,
                     ),
                   ),
                 ),
@@ -254,7 +281,9 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
       hintText: AppString.text_add_note.tr,
       borderColor: AppColor.hintColor.withOpacity(0.5),
       onChanged: (value) {
-        return null;
+        if (value != null) {
+          Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
+        }
       },
     );
   }
@@ -274,6 +303,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               ? "${DateTime.now().year}"
               : "${DateTime.now().year + 1}";
           Get.find<HrLeaveController>().getAvailableLeaveType(year: year);
+          Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
         });
   }
 }
@@ -324,17 +354,17 @@ Widget _buildHeader() {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child:
-          Container(height: 4, width: 120, color: AppColor.backgroundColor),
+              Container(height: 4, width: 120, color: AppColor.backgroundColor),
         ),
         customSpacerHeight(height: 12),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-              .day ==
-              DateTime.parse(
-                  Get.find<DateTimePickerController>().outDate.value)
-                  .day
+                      .day ==
+                  DateTime.parse(
+                          Get.find<DateTimePickerController>().outDate.value)
+                      .day
               ? DateFormat('d MMMM').format(DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value))
+                  Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))}- ${DateFormat('d MMMM').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.mid_large_text.copyWith(
             color: AppColor.secondaryColor,
@@ -344,12 +374,12 @@ Widget _buildHeader() {
         ),
         Text(
           DateTime.parse(Get.find<DateTimePickerController>().inDate.value)
-              .day ==
-              DateTime.parse(
-                  Get.find<DateTimePickerController>().outDate.value)
-                  .day
+                      .day ==
+                  DateTime.parse(
+                          Get.find<DateTimePickerController>().outDate.value)
+                      .day
               ? DateFormat('EEEE').format(DateTime.parse(
-              Get.find<DateTimePickerController>().inDate.value))
+                  Get.find<DateTimePickerController>().inDate.value))
               : "${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().inDate.value))} - ${DateFormat('EEEE').format(DateTime.parse(Get.find<DateTimePickerController>().outDate.value))}",
           style: AppStyle.small_text_black.copyWith(
             color: AppColor.hintColor,
@@ -425,11 +455,11 @@ Widget _buildDropdownField({
         style: AppStyle.normal_text_grey.copyWith(fontWeight: FontWeight.w500)),
     items: items
         .map((item) => DropdownMenuItem<String>(
-      value: item,
-      child: Text(item,
-          style: AppStyle.normal_text_black
-              .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
-    ))
+              value: item,
+              child: Text(item,
+                  style: AppStyle.normal_text_black
+                      .copyWith(fontSize: Dimensions.fontSizeDefault + 2)),
+            ))
         .toList(),
     onChanged: onChanged,
   );
@@ -437,38 +467,38 @@ Widget _buildDropdownField({
 
 _leaveCountStyleLayout() {
   return Obx(() =>
-  Get.find<HrLeaveController>().calculateAllowanceOfLeave.value.isNotEmpty
-      ? SizedBox(
-    width: double.infinity,
-    child: Card(
-      elevation: 0,
-      shape: roundedRectangleBorder,
-      color: AppColor.primaryColor.withOpacity(0.05),
-      child: Padding(
-        padding: marginLayout.copyWith(
-            top: 8, bottom: 8, left: 16, right: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              formatToTwoDecimalPlaces(Get.find<HrLeaveController>()
-                  .calculateAllowanceOfLeave
-                  .value),
-              style: AppStyle.mid_large_text
-                  .copyWith(color: AppColor.normalTextColor),
-            ),
-            Text(
-              _getCalculateLeave(),
-              style: AppStyle.mid_large_text.copyWith(
-                  color: AppColor.hintColor,
-                  fontSize: Dimensions.fontSizeDefault),
-            ),
-          ],
-        ),
-      ),
-    ),
-  )
-      : Container());
+      Get.find<HrLeaveController>().calculateAllowanceOfLeave.value.isNotEmpty
+          ? SizedBox(
+              width: double.infinity,
+              child: Card(
+                elevation: 0,
+                shape: roundedRectangleBorder,
+                color: AppColor.primaryColor.withOpacity(0.05),
+                child: Padding(
+                  padding: marginLayout.copyWith(
+                      top: 8, bottom: 8, left: 16, right: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        formatToTwoDecimalPlaces(Get.find<HrLeaveController>()
+                            .calculateAllowanceOfLeave
+                            .value),
+                        style: AppStyle.mid_large_text
+                            .copyWith(color: AppColor.normalTextColor),
+                      ),
+                      Text(
+                        _getCalculateLeave(),
+                        style: AppStyle.mid_large_text.copyWith(
+                            color: AppColor.hintColor,
+                            fontSize: Dimensions.fontSizeDefault),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Container());
 }
 
 String _getCalculateLeave() {

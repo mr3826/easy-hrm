@@ -99,6 +99,11 @@ class _LeaveTypeDropDownState extends State<LeaveTypeDropDown> {
           Get.find<HrLeaveController>().calculateAllowanceOfLeave.value =
               getAvailableLeaveTypes?.availableLeave ?? "0";
           Get.find<HrLeaveController>().leaveTypeId = valueType!;
+          if( Get.find<HrLeaveController>().calculateAllowanceOfLeave.value !="0"){
+            Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
+
+          }
+
         },
       ),
     );

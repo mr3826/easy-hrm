@@ -11,12 +11,14 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
+import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart'as lv_del_by_id;
 import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_dotted_border.dart';
 import '../../../../../enum.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../timeline/view/widget/timeline_calendar.dart';
 import '../../../domain/leave_record_response.dart';
+import '../../controller/leave_screen_controller.dart';
 import '../widget/leave_record_details_view.dart';
 import '../../../../../app/global/view/widgets/status_btn_widget.dart';
 import '../widget/widget.dart';
@@ -164,13 +166,26 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
 
   _infoLayoutView({required BuildContext context, required GetLeaveRecords leaveRecord, Color? cardBgColor}) {
     return GestureDetector(
-      onTap: () => customAntButtonSheet(
-        context: context,
-        child: LeaveRecordDetails(
-          status: leaveRecord.status ?? "",
-          leaveRecords: leaveRecord, leaveId: '',
-        ),
-      ),
+      onTap: (){
+        Get.find<LeaveRecordsController>().getLeaveDetailsById(
+            leaveId: leaveRecord.id??"");
+
+        customAntButtonSheet(
+          context: context,
+          child: Obx(() => Get.find<LeaveRecordsController>()
+              .isLeaveDetailsByLoading
+              .isTrue
+              ? const LoadingIndicator()
+              : LeaveRecordDetailsById(
+            isEmployee: true,
+            data: Get.find<LeaveRecordsController>()
+                .leaveDetailsById
+                ?.getLeaveDetailsById ??
+                lv_del_by_id.GetLeaveDetailsById(),
+          )),
+        );
+      },
+
       child: Card(
         elevation: 0,
         shape: roundedRectangleBorder.copyWith(

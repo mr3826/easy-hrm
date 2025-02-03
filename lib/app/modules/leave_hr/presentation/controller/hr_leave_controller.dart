@@ -39,6 +39,7 @@ class HrLeaveController extends GetxController {
   final isAssignLeaveLoaderLoading = false.obs;
   final isUploadPolicyLoading = false.obs;
   RxBool isFileUploadedSuccessfully = false.obs;
+  RxBool isUpdateLeaveChangeValue = false.obs;
 
   RxString selectedEmployeeInfo = AppString.textSearchEmployee.tr.obs;
   RxString selectedEmployeeImgKey = "".obs;
@@ -230,8 +231,7 @@ class HrLeaveController extends GetxController {
   /// Fetches leave type hr .
   Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
     isAvailableLeaveType(true);
-    availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(
-        orgUserId:
+    availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(orgUserId:
         orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
         year: year ?? "${DateTime.now().year}");
     isAvailableLeaveType(false);

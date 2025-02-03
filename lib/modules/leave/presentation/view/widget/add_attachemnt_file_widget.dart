@@ -13,13 +13,14 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_network_image.dart';
 import '../../../domain/leave_records.dart';
 
 class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;
-  final GetLeaveRecords? leaveRecords;
+  final GetLeaveDetailsById? leaveRecords;
 
   const AddAttachmentFile({this.isFromApplyLeave = false, super.key, this.leaveRecords});
 

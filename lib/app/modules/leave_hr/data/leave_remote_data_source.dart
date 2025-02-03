@@ -59,6 +59,8 @@ class HrLeaveRemoteDataSource {
           .graphRequest(queryString: getLeaveDetailsByIdQuery, variables: {
         "queryData": {"leave_id": leaveId}
       });
+
+      print("getLeaveDetailsById:: ${response.data}");
       if (response.hasException) {
         ExceptionHelper.errorHandler(
             exception: response.exception!, methodName: "getLeaveDetailsById");
