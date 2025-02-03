@@ -14,6 +14,7 @@ import '../../../../../../../common/widget/custom_status_button.dart';
 import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../../routes/app_pages.dart';
 import '../../../../../../../utils/dimensions.dart';
+import '../../../../profile/view/screens/profile_route_base.dart';
 import '../../../model/employee_info.dart';
 import '../../../controller/employment_controller.dart';
 import 'terminate_widget.dart';
@@ -109,9 +110,9 @@ class EmployeeListInfo extends StatelessWidget {
                     _buildHeader("$firstName $lastName",
                         department.name ?? "Unknown department", imgUrlKey),
                     _buildActionItem(AppString.textViewProfile.tr, () {
-                      Get.find<EmploymentController>()
-                          .getEmployeeProfile(orgUserId: orgUserId);
-                      Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
+
+                      Get.to(ProfileRouteBase(orgUserId: orgUserId));
+
                     }),
                     _divider(),
                     _buildActionItem(AppString.text_edit.tr, () {

@@ -14,7 +14,7 @@ import '../models/user_profile.dart';
 import '../../../../utils/app_string.dart';
 import 'global_profile_controller.dart';
 
-class ProfileRouteBaseController extends GetxController {
+class ProfileRouteBaseController extends GetxController with StateMixin {
   final ProfileDataSource _profileDataSource;
   final LeaveRemoteDataSource _remoteDataSource;
   final LeaveDataSource _leaveDataSource;
@@ -31,13 +31,13 @@ class ProfileRouteBaseController extends GetxController {
   String leaveStatusId = "";
 
   UserDetails? userDetails;
-  late UserLogHistory userLogHistory;
+  UserLogHistory? userLogHistory;
 
   Future<void> getUserProfile({required String ordUserId}) async {
-    isLoadingProfile(true);
+    change(null, status: RxStatus.loading());
     userDetails =
         await _profileDataSource.getProfileInfo(ordUserId) ?? UserDetails();
-    isLoadingProfile(false);
+    change(null, status: RxStatus.success());
   }
 
   Future<void> getUserLogHistory({required String ordUserId}) async {

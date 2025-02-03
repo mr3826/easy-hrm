@@ -118,16 +118,20 @@ class BuildProfileLeaveSummary extends StatelessWidget {
             ),
           ],
         ),
-        IconButton(
-          onPressed: () {
-            _showAddAllowance(leaveSummary, context);
-          },
-          icon: Icon(
-            Icons.more_horiz,
-            size: 25,
-            color: AppColor.normalTextColor.withOpacity(0.6),
-          ),
-        ),
+
+        /// not required for this version
+        /// might needed for next version
+
+        // IconButton(
+        //   onPressed: () {
+        //     _showAddAllowance(leaveSummary, context);
+        //   },
+        //   icon: Icon(
+        //     Icons.more_horiz,
+        //     size: 25,
+        //     color: AppColor.normalTextColor.withOpacity(0.6),
+        //   ),
+        // ),
       ],
     );
   }

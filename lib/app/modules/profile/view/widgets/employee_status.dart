@@ -13,23 +13,25 @@ import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../common/widget/employee/department_info_widget.dart';
 import '../../../../global/view/widget/app_margin.dart';
 
-
 class BuildEmployeeStatusLayout extends StatelessWidget {
-final  UserDetails userDetails;
-final Function onDesignation;
-final Function onEmployeeStatus;
-  const BuildEmployeeStatusLayout({super.key,required this.userDetails,required this.onDesignation,required this.onEmployeeStatus});
+  final UserDetails userDetails;
+  final Function onDesignation;
+  final Function onEmployeeStatus;
+
+  const BuildEmployeeStatusLayout({
+    super.key,
+    required this.userDetails,
+    required this.onDesignation,
+    required this.onEmployeeStatus,
+  });
 
   @override
   Widget build(BuildContext context) {
     Designation? designation =
-        userDetails
-        .getOrganizationUserDetails
-        ?.designation;
+        userDetails.getOrganizationUserDetails?.designation;
 
-    EmploymentStatusData? employmentStatus = userDetails
-        .getOrganizationUserDetails
-        ?.employmentStatus;
+    EmploymentStatusData? employmentStatus =
+        userDetails.getOrganizationUserDetails?.employmentStatus;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,26 +39,24 @@ final Function onEmployeeStatus;
         if (designation != null)
           Expanded(
             child: GestureDetector(
-              onTap: ()=>onDesignation(),
-              child: SizedBox(
-                child: Card(
-                  elevation: 0,
-                  color: AppColor.bgColorWithPrimary.withOpacity(0.3),
-                  shape: roundedRectangleBorder,
-                  child: Padding(
-                    padding: marginLayout.copyWith(top: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        customSvgImage(
-                            imageUrl: Images.EMPLOYEE_STATUS,
-                            height: 25,
-                            width: 25),
-                        customSpacerHeight(height: 12),
-                        _designationInfo(),
-                        customSpacerHeight(height: 12),
-                      ],
-                    ),
+              onTap: () => onDesignation(),
+              child: Card(
+                elevation: 0,
+                color: AppColor.bgColorWithPrimary.withOpacity(0.3),
+                shape: roundedRectangleBorder,
+                child: Padding(
+                  padding: marginLayout.copyWith(top: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      customSvgImage(
+                          imageUrl: Images.EMPLOYEE_STATUS,
+                          height: 25,
+                          width: 25),
+                      customSpacerHeight(height: 12),
+                      _designationInfo(),
+                      customSpacerHeight(height: 12),
+                    ],
                   ),
                 ),
               ),
@@ -66,24 +66,22 @@ final Function onEmployeeStatus;
           customSpacerWidth(width: 4),
           Expanded(
             child: GestureDetector(
-              onTap: ()=>onEmployeeStatus(),
-              child: SizedBox(
-                child: Card(
-                  elevation: 0,
-                  color: AppColor.bgColorWithPrimary.withOpacity(0.3),
-                  shape: roundedRectangleBorder,
-                  child: Padding(
-                    padding: marginLayout.copyWith(top: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        customSvgImage(
-                            imageUrl: Images.FLAG, height: 25, width: 25),
-                        customSpacerHeight(height: 12),
-                        _employmentInfo(),
-                        customSpacerHeight(height: 12),
-                      ],
-                    ),
+              onTap: () => onEmployeeStatus(),
+              child: Card(
+                elevation: 0,
+                color: AppColor.bgColorWithPrimary.withOpacity(0.3),
+                shape: roundedRectangleBorder,
+                child: Padding(
+                  padding: marginLayout.copyWith(top: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      customSvgImage(
+                          imageUrl: Images.FLAG, height: 25, width: 25),
+                      customSpacerHeight(height: 12),
+                      _employmentInfo(),
+                      customSpacerHeight(height: 12),
+                    ],
                   ),
                 ),
               ),
@@ -94,73 +92,61 @@ final Function onEmployeeStatus;
     );
   }
 
-
-
-_employmentInfo() {
-  EmploymentStatusData? employmentStatus =userDetails
-      .getOrganizationUserDetails
-      ?.employmentStatus;
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(
-        height: 40,
-        child: Text(
-          employmentStatus?.name ?? "",
-          style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor,
-              overflow: TextOverflow.ellipsis,
-              fontSize: Dimensions.fontSizeMid),
-          maxLines: 1,
+  _employmentInfo() {
+    EmploymentStatusData? employmentStatus =
+        userDetails.getOrganizationUserDetails?.employmentStatus;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 40,
+          child: Text(
+            employmentStatus?.name ?? "",
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.normalTextColor,
+                overflow: TextOverflow.ellipsis,
+                fontSize: Dimensions.fontSizeMid),
+            maxLines: 1,
+          ),
         ),
-      ),
-      customSpacerWidth(width: 4),
-      Text(
-        "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
-        style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.hintColor,
-            fontSize: Dimensions.fontSizeDefault - 1),
-      ),
-    ],
-  );
-}
-
-_designationInfo() {
-  Designation? designation = userDetails
-      .getOrganizationUserDetails
-      ?.designation;
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(
-        height: 40,
-        child: Text(
-          designation?.name ?? "",
+        customSpacerWidth(width: 4),
+        Text(
+          "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
           style: AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor,
-              overflow: TextOverflow.ellipsis,
-              fontSize: Dimensions.fontSizeMid),
-          maxLines: 1,
+              color: AppColor.hintColor,
+              fontSize: Dimensions.fontSizeDefault - 1),
         ),
-      ),
-      Text(
-        "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
-        ///todo [api query]
-        style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.hintColor,
-            fontSize: Dimensions.fontSizeDefault - 1),
-      ),
-    ],
-  );
+      ],
+    );
+  }
+
+  _designationInfo() {
+    Designation? designation =
+        userDetails.getOrganizationUserDetails?.designation;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 40,
+          child: Text(
+            designation?.name ?? "",
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.normalTextColor,
+                overflow: TextOverflow.ellipsis,
+                fontSize: Dimensions.fontSizeMid),
+            maxLines: 1,
+          ),
+        ),
+        Text(
+          "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
+
+          ///todo [api query]
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.hintColor,
+              fontSize: Dimensions.fontSizeDefault - 1),
+        ),
+      ],
+    );
+  }
 }
-}
-
-
-
-
-
-
-
-
-

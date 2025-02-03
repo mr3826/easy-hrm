@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/employee_over_view/expanded_text_layout.dart';
+import '../../../../../../../common/widget/custom_card_style.dart';
+import '../../../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../../../utils/images.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../auth/view/screens/otp_screen.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
@@ -23,52 +26,53 @@ import 'employee_status_layout.dart';
 class ProfileOverView extends StatelessWidget {
   final UserDetails userDetails;
   final Function onRefresh;
+  final String? orgUserId;
 
   const ProfileOverView(
-      {super.key, required this.userDetails, required this.onRefresh});
+      {super.key,
+      required this.userDetails,
+      required this.onRefresh,
+      this.orgUserId});
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _fetchProfileData, // Call the refresh method
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Padding(
-          padding: marginLayout,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              customSpacerHeight(height: 8),
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Padding(
+        padding: marginLayout,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customSpacerHeight(height: 8),
 
-              /// User description
-              _descriptionLayout(),
+            /// User description
+            _descriptionLayout(),
 
-              customSpacerHeight(height: 8),
+            customSpacerHeight(height: 8),
 
-              /// User email
-              _buildEmail(),
+            /// User email
+            _buildEmail(),
 
-              /// Phone number
-              customSpacerHeight(height: 15),
-              _phoneNumberText(),
-              customSpacerHeight(height: 15),
-              _emergencyPhoneNumber(),
-              customSpacerHeight(height: 15),
+            /// Phone number
+            customSpacerHeight(height: 15),
+            _phoneNumberText(),
+            customSpacerHeight(height: 15),
+            _emergencyPhoneNumber(),
+            customSpacerHeight(height: 15),
 
-              /// Employee address
-              _addressText(),
-              customSpacerHeight(height: 15),
+            /// Employee address
+            _addressText(),
+            customSpacerHeight(height: 15),
 
-              /// Department layout
-              _buildDepartmentLayout(context),
+            /// Department layout
+            _buildDepartmentLayout(context),
 
-              customSpacerHeight(height: 5),
+            customSpacerHeight(height: 5),
 
-              /// Designation history
-              _buildDesignationHistoryLayout(context),
-              customSpacerHeight(height: 50),
-            ],
-          ),
+            /// Designation history
+            _buildEmploymentHistoryLayout(context),
+            customSpacerHeight(height: 50),
+          ],
         ),
       ),
     );
@@ -181,18 +185,19 @@ class ProfileOverView extends StatelessWidget {
     return const SizedBox.shrink();
   }
 
-  Widget _buildDesignationHistoryLayout(BuildContext context) {
+  Widget _buildEmploymentHistoryLayout(BuildContext context) {
     return BuildEmployeeStatusLayout(
       userDetails: userDetails,
       onDesignation: () {
         print("BuildEmployeeStatusLayout clicked");
-        Get.find<ProfileGlobalController>().getEmploymentInfo();
+        Get.find<ProfileGlobalController>().getEmploymentInfo(ordId: orgUserId);
         customAntButtonSheet(
             child: const DesignationLayout(), context: context);
       },
       onEmployeeStatus: () {
         print("BuildEmployeeStatusLayout clicked");
-        Get.find<ProfileGlobalController>().getEmploymentInfo();
+        Get.find<ProfileGlobalController>().getEmploymentInfo(
+            ordId: orgUserId);
         customAntButtonSheet(context: context, child: const EmploymentLayout());
       },
     );
@@ -201,5 +206,32 @@ class ProfileOverView extends StatelessWidget {
   /// Fetches the latest profile data from the server.
   Future<void> _fetchProfileData() async {
     onRefresh();
+  }
+
+  _employmentHistoryInfo(title, date) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 40,
+          child: Text(
+            title,
+            style: AppStyle.mid_large_text.copyWith(
+                color: AppColor.normalTextColor,
+                overflow: TextOverflow.ellipsis,
+                fontSize: Dimensions.fontSizeMid),
+            maxLines: 1,
+          ),
+        ),
+        Text(
+          "${AppString.text_from.tr} - $date",
+
+          ///todo [api query]
+          style: AppStyle.mid_large_text.copyWith(
+              color: AppColor.hintColor,
+              fontSize: Dimensions.fontSizeDefault - 1),
+        ),
+      ],
+    );
   }
 }

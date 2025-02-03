@@ -22,8 +22,10 @@ class ProfileApiService {
 
   Future<Map<String, dynamic>?>? getEmploymentInfo(String ordId) async {
     Map<String, dynamic> variable = {"orgUserId": ordId};
+    print("orgUserId: $ordId");
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: getEmploymentInfoQuery, variables: variable);
+    print("orgUserId work his:: ${response.data}");
     return response.data;
   }
 

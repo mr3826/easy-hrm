@@ -25,37 +25,34 @@ class HrProfileScreen extends GetView<HrProfileController> {
     ///todo global
     UserLogHistory? userLogHistory =
         Get.find<ProfileGlobalController>().userLogHistory;
-    return DefaultTabController(
-      length: 3, // Number of tabs
-      child: Obx(() {
-        if (controller.isLoadingProfile.isTrue) {
-          return const LoadingIndicator();
-        } else {
-          return Scaffold(
-              backgroundColor: AppColor.backgroundColor,
-              appBar: _profileAppbar(
-                  context, controller.userDetails ?? UserDetails()),
-              body: Column(
-                children: [
-                  UserInfoLayout(
-                    information: controller.userDetails ?? UserDetails(),
-                    editIconUrl: Images.EDIT_ICON,
-                  ),
-                  customSpacerHeight(height: 30),
-                  LeaveStatusGoal(
-                    userLogHistory: userLogHistory ?? UserLogHistory(),
-                  ),
-                  customSpacerHeight(height: 30),
-                  ProfileTabBar(
-                    userDetails: controller.userDetails ?? UserDetails(),
-                    leaveSummaryApiCall: () => controller.getLeaveSummary(),
-                    getLeaveRecordList: () => controller.getLeaveRecordsData(),
-                  )
-                ],
-              ));
-        }
-      }),
-    );
+    return Obx(() {
+      if (controller.isLoadingProfile.isTrue) {
+        return const LoadingIndicator();
+      } else {
+        return Scaffold(
+            backgroundColor: AppColor.backgroundColor,
+            appBar: _profileAppbar(
+                context, controller.userDetails ?? UserDetails()),
+            body: Column(
+              children: [
+                UserInfoLayout(
+                  information: controller.userDetails ?? UserDetails(),
+                  editIconUrl: Images.EDIT_ICON,
+                ),
+                customSpacerHeight(height: 30),
+                LeaveStatusGoal(
+                  userLogHistory: userLogHistory ?? UserLogHistory(),
+                ),
+                customSpacerHeight(height: 30),
+                ProfileTabBar(
+                  userDetails: controller.userDetails ?? UserDetails(),
+                  leaveSummaryApiCall: () => controller.getLeaveSummary(),
+                  getLeaveRecordList: () => controller.getLeaveRecordsData(),
+                )
+              ],
+            ));
+      }
+    });
   }
 
   _profileAppbar(BuildContext context, UserDetails userDetails) {

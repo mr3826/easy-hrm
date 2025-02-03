@@ -50,30 +50,27 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: DefaultTabController(
-        length: 3,
-        child: Column(
-          children: [
-            _buildTabBar(),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  ProfileOverView(
-                    userDetails: widget.userDetails,
-                    onRefresh: () {},
-                  ),
-                  BuildLeaveRecord(
-                    getLeaveRecordList: () => widget.getLeaveRecordList(),
-                  ),
-                  BuildProfileLeaveSummary(
-                    leaveSummaryApiCall: () => widget.leaveSummaryApiCall(),
-                  ),
-                ],
-              ),
+      child: Column(
+        children: [
+          _buildTabBar(),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                ProfileOverView(
+                  userDetails: widget.userDetails,
+                  onRefresh: () {},
+                ),
+                BuildLeaveRecord(
+                  getLeaveRecordList: () => widget.getLeaveRecordList(),
+                ),
+                BuildProfileLeaveSummary(
+                  leaveSummaryApiCall: () => widget.leaveSummaryApiCall(),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
