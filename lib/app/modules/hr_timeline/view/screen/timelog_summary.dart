@@ -11,12 +11,18 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../utils/utils.dart';
 import '../../bindings/TimelineSummaryBindings.dart';
+import '../../controllers/hr_timeline_controller.dart';
 import '../widgets/time_sheet/timelog_summary_details.dart';
 
-class TimeLogSummary extends StatelessWidget {
- final LogSummaryUserInfo ?logSummaryUserInfo;
+class TimeLogSummary extends GetView<TimelineSummaryController> {
+  final LogSummaryUserInfo? logSummaryUserInfo;
   final bool isEmployee;
-  const TimeLogSummary({super.key,required this.isEmployee,this.logSummaryUserInfo});
+
+  const TimeLogSummary({
+    super.key,
+    required this.isEmployee,
+    this.logSummaryUserInfo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,50 +37,18 @@ class TimeLogSummary extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              if(isEmployee==true)
-                SummaryTimeLogCalendar(),
-
-              Obx(() => Get.find<TimelineSummaryController>()
-                  .isMonthlySummaryDataLoading
-                  .isTrue
-                  ? Center(
-                child: Padding(
-                    padding: EdgeInsets.only(top: Get.height * .35),
-                    child: const CupertinoActivityIndicator(
-                      color: Colors.blueAccent,
-                      radius: 18,
-                    )),
-              )
-                  : Column(
-                children: [
-                  workingScheduleLayout(
-                      schedule: getConvertSecondsToHours(
-                          Get.find<TimelineSummaryController>()
-                              .timelineSummaryByDate
-                              ?.getTimelogSummaryForApp
-                              ?.totalScheduledSeconds.toString() ??
-                              ""),
-                      balanceTime: getConvertSecondsToHours(
-                          Get.find<TimelineSummaryController>()
-                              .timelineSummaryByDate
-                              ?.getTimelogSummaryForApp
-                              ?.balance.toString()  ??
-                              ""),
-                      loggedTime: getConvertSecondsToHours(
-                          Get.find<TimelineSummaryController>()
-                              .timelineSummaryByDate
-                              ?.getTimelogSummaryForApp
-                              ?.loggedTotalSeconds.toString()  ??
-                              ""),
-                      paidLeave: getConvertSecondsToHours(
-                          Get.find<TimelineSummaryController>()
-                              .timelineSummaryByDate
-                              ?.getTimelogSummaryForApp
-                              ?.totalLeavesSeconds.toString()  ??
-                              "")),
-                  _timelogDetails()
-                ],
-              )),
+              if (isEmployee) SummaryTimeLogCalendar(),
+              Obx(
+                () => controller.isMonthlySummaryDataLoading.isTrue &&
+                        controller.isTimelineSummaryByDateLoading.isTrue
+                    ? _buildLoadingIndicator()
+                    : Column(
+                        children: [
+                          _buildWorkingSchedule(),
+                          _buildTimeLogDetails(),
+                        ],
+                      ),
+              ),
             ],
           ),
         ),
@@ -83,25 +57,62 @@ class TimeLogSummary extends StatelessWidget {
   }
 
   Future<void> _refreshScreen() async {
-    await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
-    await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
+    if (isEmployee == true) {
+      await controller.getTimelineSummaryByDate();
+      await controller.getTimelogDetailsByMonth();
+    } else {
+      controller.getTimelineSummaryByDate(
+          orgId: Get.find<HrTimelineController>().orgUserId);
+      controller.getTimelogDetailsByMonth(
+          orgId: Get.find<HrTimelineController>().orgUserId);
+    }
   }
 
-  _timelogDetails() {
-    final timelogDetails = Get.find<TimelineSummaryController>().timelogDetailsByMonth;
-
-    if (timelogDetails?.getDailyTimeEntries?.data?.isEmpty ?? true) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 14.0),
-        child: Center(
-          child: Text(
-            AppString.textWeDidNotEtc.tr,
-            style: AppStyle.small_text_grey,
-          ),
+  Widget _buildLoadingIndicator() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.only(top: Get.height * 0.35),
+        child: const CupertinoActivityIndicator(
+          color: Colors.blueAccent,
+          radius: 18,
         ),
-      );
-    } else {
-      return  IndividualTimeLayout(isEmployee: isEmployee,logSummaryUserInfo: logSummaryUserInfo,);
-    }
+      ),
+    );
+  }
+
+  Widget _buildWorkingSchedule() {
+    final summary = controller.timelineSummaryByDate?.getTimelogSummaryForApp;
+
+    return workingScheduleLayout(
+      schedule: getConvertSecondsToHours(
+          summary?.totalScheduledSeconds?.toString() ?? "0"),
+      balanceTime:
+          getConvertSecondsToHours(summary?.balance?.toString() ?? "0"),
+      loggedTime: getConvertSecondsToHours(
+          summary?.loggedTotalSeconds?.toString() ?? "0"),
+      paidLeave: getConvertSecondsToHours(
+          summary?.totalLeavesSeconds?.toString() ?? "0"),
+    );
+  }
+
+  Widget _buildTimeLogDetails() {
+    final timelogDetails = controller.timelogDetailsByMonth;
+    final hasData =
+        timelogDetails?.getDailyTimeEntries?.data?.isNotEmpty ?? false;
+
+    return hasData
+        ? IndividualTimeLayout(
+            isEmployee: isEmployee,
+            logSummaryUserInfo: logSummaryUserInfo,
+          )
+        : Padding(
+            padding: const EdgeInsets.only(top: 14.0),
+            child: Center(
+              child: Text(
+                AppString.textWeDidNotEtc.tr,
+                style: AppStyle.small_text_grey,
+              ),
+            ),
+          );
   }
 }

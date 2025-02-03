@@ -6,6 +6,7 @@ import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/ti
 import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/time_sheet_model.dart';
+import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../enum.dart';
 import '../../../../../../utils/app_color.dart';
@@ -30,7 +31,7 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
           false) {
         return Center(
             child: Text(
-          "Timesheet not found!",
+          "We did not find anything to show here!",
           style: AppStyle.normal_text_grey,
         ));
       } else {
@@ -56,10 +57,10 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
   }
 
   _timeSheetDetailsCard(Data data) {
-    String? orgId = data.orgUserId;
     return GestureDetector(
-      onTap: () {
+      onTap: () async{
         TimeSheetBindings().dependencies();
+
         Get.to(() => TimeLogSummary(
               isEmployee: false,
               logSummaryUserInfo: LogSummaryUserInfo(
@@ -69,13 +70,16 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
                   imgUrl: data.organizationUser?.profile?.image ?? ""),
             ));
 
-        Get.find<TimelineSummaryController>()
-            .getTimelineSummaryByDate(orgId: orgId);
-        Get.find<TimelineSummaryController>()
-            .getTimelogDetailsByMonth(orgId: orgId);
 
-        Get.find<HrTimelineController>().orgUserId =
-            data.organizationUser?.id ?? "";
+
+        Get.find<DateTimeController>().requestedDate(data.timelineStartDate);
+        Get.find<DateTimeController>().requestedEndDate(data.timelineEndDate);
+        Get.find<HrTimelineController>().orgUserId = data.organizationUser?.id ?? "";
+
+        Get.find<TimelineSummaryController>().getTimelineSummaryByDate(orgId:  Get.find<HrTimelineController>().orgUserId);
+        Get.find<TimelineSummaryController>().getTimelogDetailsByMonth(orgId:  Get.find<HrTimelineController>().orgUserId);
+
+
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

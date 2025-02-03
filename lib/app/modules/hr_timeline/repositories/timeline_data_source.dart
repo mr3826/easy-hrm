@@ -34,6 +34,14 @@ class TimelineDataImpl implements TimelineDataSource {
   @override
   Future<TimelineSummaryByDate?> getTimelineSummaryByDate({required String startDate, required String endDate,String ?orgUserId}) async {
     QueryResult<Object?> response = await _timelineApiService.getTimelineSummary(startDate, endDate,orgUserId: orgUserId);
+    print('''
+    getTimelineSummaryByDate ${response.data}
+    startDate : $startDate
+    endDate : $endDate
+    orgUserId : $orgUserId
+    
+    
+    ''');
     if (response.data != null) {
       return TimelineSummaryByDate.fromJson(response.data!);
     }
@@ -43,6 +51,13 @@ class TimelineDataImpl implements TimelineDataSource {
   @override
   Future<TimelogDetailsByMonth?> getTimelogDetailsByMonth({required String startDate, required String endDate,String ?orgUserId}) async {
     QueryResult<Object?> response = await _timelineApiService.getTimelogDetailsByMonth(startDate, endDate,orgUserId);
+    print('''
+    getTimelogDetailsByMonth ${response.data}
+    startDate : $startDate
+    endDate : $endDate
+        orgUserId : $orgUserId
+    
+    ''');
     if (response.data != null) {
       return TimelogDetailsByMonth.fromJson(response.data!);
     }
