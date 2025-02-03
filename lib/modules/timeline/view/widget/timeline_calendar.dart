@@ -70,111 +70,17 @@ class TimeLineCalendar extends StatelessWidget {
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
                 .toString();
-            String startDate = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).startDate)
-                .toString();
-            String endDate = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).endDate)
-                .toString();
 
-            String status = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).status)
-                .toString();
-            String leaveName = eventData
-                .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-                    .leaveType
-                    ?.leaveName)
-                .toString();
 
-            String leaveTypeId = eventData
-                .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-                    .leaveType
-                    ?.leaveId)
-                .toString();
-
-            String isAttachDocumentRequired = eventData
-                .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-                    .leaveType
-                    ?.isAttachDocumentRequired)
-                .toString();
-
-            String isAddNoteRequired = eventData
-                .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-                    .leaveType
-                    ?.isAddNoteRequired)
-                .toString();
-            String type = eventData
-                .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
-                    .leaveType
-                    ?.type)
-                .toString();
 
             String leaveId = eventData
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).leaveId)
                 .toString();
 
-            String description = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).description)
-                .toString();
-            String numberOfDays = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).numberOfDays)
-                .toString();
-            String createdAt = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).createdAt)
-                .toString();
 
-            String fileName = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e))
-                        .files?[0]
-                        .name ??
-                    "")
-                .toString();
 
-            String scheduleHour = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e))
-                        .leaveDetails?[0]
-                        .scheduleSecond ??
-                    "")
-                .toString();
 
-            String leaveHour = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e))
-                        .leaveDetails?[0]
-                        .leaveSecond ??
-                    "")
-                .toString();
-
-            String fileSize = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e))
-                        .files?[0]
-                        .size ??
-                    "")
-                .toString();
-            String fileKey = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e))
-                        .files?[0]
-                        .key ??
-                    "")
-                .toString();
-            String fileId = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e))
-                        .files?[0]
-                        .id ??
-                    "")
-                .toString();
 
             /// have to sub string
             /// otherwise it returns with (value) pattern

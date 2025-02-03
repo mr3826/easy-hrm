@@ -3,13 +3,11 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/widget/task_view_btn_sheet_appbar.dart'
-    as btn;
+import 'package:payrun_mobile/modules/leave/presentation/view/widget/task_view_btn_sheet_appbar.dart' as btn;
 import '../../../../../../modules/timeline/view/widget/project_view_widget.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/utils.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/project_view_widget.dart'
-    as pj;
+import 'package:payrun_mobile/modules/timeline/view/widget/project_view_widget.dart' as pj;
 
 class BuildTaskDetails extends GetView<TimelineGlobalController> {
   const BuildTaskDetails({super.key});
@@ -54,9 +52,9 @@ class BuildTaskDetails extends GetView<TimelineGlobalController> {
                       projectId: controller.timeEntryDetails
                               ?.getTimeEntryDetails?.project?.id ??
                           "",
-                      taskId:  controller.timeEntryDetails
-                              ?.getTimeEntryDetails?.task?.id ??
-    "",
+                      taskId: controller.timeEntryDetails?.getTimeEntryDetails
+                              ?.task?.id ??
+                          "",
                       employeeName:
                           "${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.firstName ?? ""} ${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.lastName ?? ""}",
                       employeeId: controller
@@ -66,18 +64,14 @@ class BuildTaskDetails extends GetView<TimelineGlobalController> {
                               ?.profile
                               ?.id ??
                           "",
-                      endTime: controller
-                              .timeEntryDetails?.getTimeEntryDetails?.endDate ??
+                      endTime: controller.timeEntryDetails?.getTimeEntryDetails?.endDate ??
                           "",
-                      startTime:
-                          controller.timeEntryDetails?.getTimeEntryDetails?.startDate != null
-                              ? "${controller.timeEntryDetails?.getTimeEntryDetails?.startDate}"
-                              : DateTime.now().toString(),
+                      startTime: controller.timeEntryDetails?.getTimeEntryDetails?.startDate != null
+                          ? "${controller.timeEntryDetails?.getTimeEntryDetails?.startDate}"
+                          : DateTime.now().toString(),
                       status: controller.timeEntryDetails?.getTimeEntryDetails?.status ?? "",
                       description: controller.timeEntryDetails?.getTimeEntryDetails?.description ?? "",
-                      taskOrProjectName: controller.timeEntryDetails?.getTimeEntryDetails?.project?.name ??  controller.timeEntryDetails
-        ?.getTimeEntryDetails?.task?.name ??
-    "",
+                      taskOrProjectName: controller.timeEntryDetails?.getTimeEntryDetails?.project?.name ?? controller.timeEntryDetails?.getTimeEntryDetails?.task?.name ?? "",
                       timeLineId: controller.timeEntryDetails?.getTimeEntryDetails?.id ?? "",
                       totalDur: getTimeDifference(controller.timeEntryDetails?.getTimeEntryDetails?.startDate.toString() ?? "", controller.timeEntryDetails?.getTimeEntryDetails?.endDate.toString() ?? ""))),
             ],
