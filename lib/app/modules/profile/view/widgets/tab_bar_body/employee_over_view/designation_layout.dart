@@ -56,8 +56,7 @@ class DesignationLayout extends GetView<ProfileGlobalController> {
                         designationHistories.designationHistories!.length - 1
                     : false;
 
-                return _employeeStatusInfoLayout(
-                    designationHistory, isLastItem);
+                return _employeeStatusInfoLayout(designationHistory, isLastItem);
               },
             ),
           ),

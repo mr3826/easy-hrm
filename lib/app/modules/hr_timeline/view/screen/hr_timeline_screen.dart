@@ -236,12 +236,19 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         await Get.find<TimelineGlobalController>()
             .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
 
+        print("called");
+
+
+
         if(Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
+          print("called1 org : ${Get.find<TimelineGlobalController>().searchEmployeeId}");
           await Get.find<HrTimelineController>().getTimelineCalenderByDate(
               startDate: startDate,
               endDate: endDate,
-              orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+            orgId: Get.find<TimelineGlobalController>().searchEmployeeId
+              );
         }else{
+          print("called2");
           await Get.find<HrTimelineController>().getTimelineCalenderByDate(
               startDate: startDate,
               endDate: endDate);

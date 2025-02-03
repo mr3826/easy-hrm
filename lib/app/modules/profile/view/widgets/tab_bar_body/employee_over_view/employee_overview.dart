@@ -170,8 +170,7 @@ class ProfileOverView extends StatelessWidget {
   }
 
   Widget _buildDepartmentLayout(BuildContext context) {
-    String? department =
-        userDetails.getOrganizationUserDetails?.department?.name;
+    String? department = userDetails.getOrganizationUserDetails?.department?.name;
     if (department != null) {
       return BuildDepartment(
         userDetails: userDetails,
@@ -187,18 +186,19 @@ class ProfileOverView extends StatelessWidget {
 
   Widget _buildEmploymentHistoryLayout(BuildContext context) {
     return BuildEmployeeStatusLayout(
-      userDetails: userDetails,
+      userDetails: userDetails, //todo
       onDesignation: () {
         print("BuildEmployeeStatusLayout clicked");
         Get.find<ProfileGlobalController>().getEmploymentInfo(ordId: orgUserId);
         customAntButtonSheet(
-            child: const DesignationLayout(), context: context);
+            child: const DesignationLayout(), context: context); //lodar
       },
       onEmployeeStatus: () {
         print("BuildEmployeeStatusLayout clicked");
-        Get.find<ProfileGlobalController>().getEmploymentInfo(
-            ordId: orgUserId);
+
+        Get.find<ProfileGlobalController>().getEmploymentInfo(ordId: orgUserId);
         customAntButtonSheet(context: context, child: const EmploymentLayout());
+
       },
     );
   }
