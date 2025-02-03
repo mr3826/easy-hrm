@@ -54,73 +54,75 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
                         .copyWith(color: AppColor.hintColor, letterSpacing: 4)),
               ),
 
-              Expanded(
-                  child: ListView.builder(
-                padding: const EdgeInsets.only(left: 12, right: 12, top: 6),
-                itemCount: controller.timeLogsEntriesDetails?.getTimeLineEntries
-                        ?.data?.length ??
-                    0,
-                itemBuilder: (context, index) {
-                  Data? data = controller
-                      .timeLogsEntriesDetails?.getTimeLineEntries?.data?[index];
+              /// Wrapping in Flexible to prevent overflow issues
+              Flexible(
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(left: 12, right: 12, top: 6),
+                  itemCount: controller.timeLogsEntriesDetails
+                          ?.getTimeLineEntries?.data?.length ??
+                      0,
+                  itemBuilder: (context, index) {
+                    Data? data = controller.timeLogsEntriesDetails
+                        ?.getTimeLineEntries?.data?[index];
 
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: AppColor.leaveRecordCardColor,
-                        borderRadius: BorderRadius.circular(8)),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, bottom: 14, top: 14),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(child: _buildText(data: data)),
-                              PopupMenuButton<String>(
-                                position: PopupMenuPosition.under,
-                                shadowColor: Colors.grey.shade100,
-                                onSelected: (value) => _handleMenuSelection(
-                                    value, data ?? Data(), context),
-                                shape: roundedRectangleBorder,
-                                color: AppColor.cardColor,
-                                surfaceTintColor: AppColor.cardColor,
-                                icon: const Icon(Icons
-                                    .more_horiz), // Keep the icon inside PopupMenuButton
-                                itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry<String>>[
-                                  _buildMenuItem("Edit"),
-                                  if (data?.status != "approved")
-                                    _buildMenuItem("Approve"),
-                                  if (data?.status != "reject")
-                                    _buildMenuItem("Reject"),
-                                  _buildMenuItem("View notes"),
-                                  _buildMenuItem("Remove"),
-                                ],
-                              ),
-                            ],
-                          ),
-                          _buildText(
-                              value: getConvertSecondsToHours(
-                                  data?.loggedTotalSeconds ?? "0"),
-                              color: AppColor.hintColor),
-                          _buildText(value: data?.project?.name ?? ""),
-                          _buildText(
-                              value: data?.task?.name ?? "",
-                              color: AppColor.hintColor),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          SizedBox(
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: AppColor.leaveRecordCardColor,
+                          borderRadius: BorderRadius.circular(8)),
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8, bottom: 14, top: 14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(child: _buildText(data: data)),
+                                PopupMenuButton<String>(
+                                  position: PopupMenuPosition.under,
+                                  shadowColor: Colors.grey.shade100,
+                                  onSelected: (value) => _handleMenuSelection(
+                                      value, data ?? Data(), context),
+                                  shape: roundedRectangleBorder,
+                                  color: AppColor.cardColor,
+                                  surfaceTintColor: AppColor.cardColor,
+                                  icon: const Icon(Icons.more_horiz),
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry<String>>[
+                                    _buildMenuItem("Edit"),
+                                    if (data?.status != "approved")
+                                      _buildMenuItem("Approve"),
+                                    if (data?.status != "approved")
+                                      if (data?.status != "reject")
+                                        _buildMenuItem("Reject"),
+                                    _buildMenuItem("View notes"),
+                                    _buildMenuItem("Remove"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            _buildText(
+                                value: getConvertSecondsToHours(
+                                    data?.loggedTotalSeconds ?? "0"),
+                                color: AppColor.hintColor),
+                            _buildText(value: data?.project?.name ?? ""),
+                            _buildText(
+                                value: data?.task?.name ?? "",
+                                color: AppColor.hintColor),
+
+                            /// Removing fixed height
+                            SizedBox(
                               width: AppLayout.getWidth(100),
-                              child: _showStatusButton(data?.status ?? ""))
-                        ],
+                              child: _showStatusButton(data?.status ?? ""),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              )),
+                    );
+                  },
+                ),
+              ),
 
               const SizedBox(
                 height: 30,
@@ -171,7 +173,7 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
   Widget _buildText(
       {String? value, Data? data, Color? color, TextStyle? textStyle}) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 4),
+      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 0),
       child: Text(
         value ?? _getTime(data ?? Data()),
         style: textStyle ??
@@ -273,9 +275,11 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
     Get.find<TimelineGlobalController>().orgUserId(data.orgUserId ?? "");
     Get.find<TimelineGlobalController>().status(data.status ?? "");
     Get.find<TimelineGlobalController>().taskId(data.task?.id ?? "");
-    Get.find<TimelineGlobalController>().projectColor(data.project?.color ?? "");
+    Get.find<TimelineGlobalController>()
+        .projectColor(data.project?.color ?? "");
     Get.find<TimelineGlobalController>().taskName(data.task?.name ?? "");
-    Get.find<TimelineGlobalController>().descriptionController.text = data.description ?? "";
+    Get.find<TimelineGlobalController>().descriptionController.text =
+        data.description ?? "";
 
     Get.to(() => UpdateTimeLineLog(
           projectOrTaskColor: data.task?.id?.isNotEmpty ?? false
@@ -294,7 +298,6 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
   }
 
   void _viewNotes(String note) {
-    Get.back(canPop: false);
     showCustomBottomSheet(
       context: Get.context!,
       height: MediaQuery.of(Get.context!).size.height / 1.5,
