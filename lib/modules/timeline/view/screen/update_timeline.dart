@@ -41,6 +41,7 @@ class UpdateTimeLineLog extends StatelessWidget {
   }
 
   void _updateTimelogFromApiResponse() {
+    Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(false);
     Get.find<DateTimePickerController>().inDate.value =
         DateFormat('yyyy-MM-dd').format(DateTime.parse(startDateTime));
     Get.find<DateTimePickerController>().inTime.value =

@@ -259,7 +259,6 @@ class BuildNewEntryTextField extends StatelessWidget {
   }
 
   _buildButton(BuildContext context) {
-    print("called");
     final timelineController = Get.find<TimelineGlobalController>();
 
     if (status == "reject") {
@@ -282,9 +281,7 @@ class BuildNewEntryTextField extends StatelessWidget {
         return const Center(child: CupertinoActivityIndicator());
       }
 
-      bool isValueChanged =
-          timelineController.isValueChangeForTimeLogUpdate.value ||
-              timelineController.status.value == "approved";
+      bool isValueChanged = timelineController.isValueChangeForTimeLogUpdate.value;
 
       return CustomDoubleAppButton(
         buttonText: isFromUpdateTimelogEntry == true
@@ -295,28 +292,14 @@ class BuildNewEntryTextField extends StatelessWidget {
             : AppColor.primaryColor.withOpacity(0.5),
         onAction: isValueChanged
             ? () {
-          print("called_1");
                 if (isFromUpdateTimelogEntry == true) {
-                  print("called_2");
-
-                  if (isEmployee == true &&
-                      status == "approved" &&
-                      isFromUpdateTimelogEntry == true) {
+                  if (isEmployee == true && status == "approved" && isFromUpdateTimelogEntry == true) {
                     timelineController.status.value = "";
-
-                    print("called_3");
-
                     timelineController.updateTimelineLogDetails();
                   } else {
-                    print("called_4");
-
-
                     timelineController.updateTimelineLogDetails();
                   }
                 } else {
-                  print("called_5");
-
-
                   timelineController.createManualEntry();
                 }
               }

@@ -92,9 +92,9 @@ class HrTimelineController extends GetxController with StateMixin {
         status: entryStatus.toString(), timelineId: entryTimeLineId.toString());
 
     if (updateTimelogEntry != null) {
-      DateTime requestedDate = DateTime.parse(
-          updateTimelogEntry?.updateTimelineEntry?.startDate ??
-              DateTime.now().toString());
+
+      DateTime requestedDate = DateTime.parse(updateTimelogEntry?.updateTimelineEntry?.startDate ?? DateTime.now().toString());
+
       Get.find<HrTimelineController>().getTimeEntryDetails(
           startDate:
               "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
