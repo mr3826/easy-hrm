@@ -19,7 +19,7 @@ import '../../controller/route_base_profile_controller.dart';
 import '../widgets/profile_appbar.dart';
 import '../widgets/profile_tab_bar.dart';
 
-class ProfileRouteBase extends StatelessWidget {
+class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
   final String orgUserId;
 
   const ProfileRouteBase({super.key, required this.orgUserId});
@@ -27,16 +27,11 @@ class ProfileRouteBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _initializationDependencies();
-    return DefaultTabController(
-      length: 3, // Number of tabs
-      child: Obx(() {
-        if (Get.find<ProfileRouteBaseController>().isLoadingProfile.isTrue) {
-          return const LoadingIndicator();
-        } else {
-          return Scaffold(
-              backgroundColor: AppColor.backgroundColor,
-              appBar: _profileAppbar(),
-              body: Column(
+    return Scaffold(
+      backgroundColor: AppColor.backgroundColor,
+      appBar: _profileAppbar(),
+      body: controller.obx(
+          (state) => Column(
                 children: [
                   UserInfoLayout(
                     information:
@@ -47,7 +42,8 @@ class ProfileRouteBase extends StatelessWidget {
                   customSpacerHeight(height: 30),
                   LeaveStatusGoal(
                     userLogHistory:
-                        Get.find<ProfileRouteBaseController>().userLogHistory,
+                        Get.find<ProfileRouteBaseController>().userLogHistory ??
+                            UserLogHistory(),
                   ),
                   customSpacerHeight(height: 30),
                   ProfileTabBar(
@@ -62,9 +58,8 @@ class ProfileRouteBase extends StatelessWidget {
                             .getLeaveRecordsData(orgUserId: orgUserId),
                   )
                 ],
-              ));
-        }
-      }),
+              ),
+          onLoading: const LoadingIndicator()),
     );
   }
 

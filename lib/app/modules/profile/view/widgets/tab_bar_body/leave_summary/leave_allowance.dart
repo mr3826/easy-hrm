@@ -10,7 +10,6 @@ import '../../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
-import '../../../../../../../modules/leave/domain/leave_type.dart';
 import '../../../../controller/leave_allowance_controller.dart';
 import '../../../../models/leave_summary.dart';
 import 'leave_type.dart';

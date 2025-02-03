@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/global/utils/time_format_helper.dart';
 import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
@@ -26,13 +27,12 @@ import '../../models/user_profile.dart';
 import 'language_widget.dart';
 import 'organization_widget.dart';
 
-
-
-
 class UserInfoLayout extends StatelessWidget {
   final UserDetails information;
   final String? editIconUrl;
-  const UserInfoLayout({super.key, required this.information, this.editIconUrl});
+
+  const UserInfoLayout(
+      {super.key, required this.information, this.editIconUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -62,18 +62,21 @@ class UserInfoLayout extends StatelessWidget {
   }
 
   _userImageLayout({double? height}) {
-    String userName = "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
+    String userName =
+        "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
     return CircularNetworkImage(
       errorText: getInitials(userName),
       radius: height ?? 28,
       imageUrl: buildImgIxUrl(
-          imagePath: information.getOrganizationUserDetails?.profile?.image ?? "",
+          imagePath:
+              information.getOrganizationUserDetails?.profile?.image ?? "",
           isPublic: true),
     );
   }
 
   _userNameAndDptLayout(BuildContext context) {
-    String userName = "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
+    String userName =
+        "${information.getOrganizationUserDetails?.profile?.firstName ?? ""} ${information.getOrganizationUserDetails?.profile?.lastName ?? ""}";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,11 +93,11 @@ class UserInfoLayout extends StatelessWidget {
             customSpacerWidth(width: 8),
             if (editIconUrl != null)
               GestureDetector(
-                onTap: ()=>_updateProfileAction(context),
+                onTap: () => _updateProfileAction(context),
                 child: SizedBox(
                     height: AppLayout.getHeight(17),
                     width: AppLayout.getWidth(17),
-                    child: Image.asset(editIconUrl??"")),
+                    child: Image.asset(editIconUrl ?? "")),
               )
           ],
         ),
@@ -148,22 +151,17 @@ class UserInfoLayout extends StatelessWidget {
     );
   }
 
-
   _updateProfileAction(BuildContext context) {
     customAntButtonSheet(
         context: context,
-        child: UpdateProfileActionView(
-          userDetails: information));
+        child: UpdateProfileActionView(userDetails: information));
   }
-
 }
-
-
 
 class LeaveStatusGoal extends StatelessWidget {
   final UserLogHistory userLogHistory;
 
-  const LeaveStatusGoal({super.key,required this.userLogHistory});
+  const LeaveStatusGoal({super.key, required this.userLogHistory});
 
   @override
   Widget build(BuildContext context) {
@@ -174,20 +172,20 @@ class LeaveStatusGoal extends StatelessWidget {
         children: [
           _infoTextLayout(
               value: formatToTwoDecimalPlaces(userLogHistory
-                  .geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
+                      .geTimelogAndLeaveAvailabilityForApp?.balanceLeave ??
                   ""),
               label: AppString.text_leave_balance.tr),
           _divider(),
           _infoTextLayout(
-              value: userLogHistory
-                  .geTimelogAndLeaveAvailabilityForApp?.totalSchedule ??
-                  "",
+              value: TimeFormatHelper.formatSecondsToHours(userLogHistory
+                      .geTimelogAndLeaveAvailabilityForApp?.totalSchedule ??
+                  ""),
               label: AppString.text_monthly_goal.tr),
           _divider(),
           _infoTextLayout(
-              value: userLogHistory
-                  .geTimelogAndLeaveAvailabilityForApp?.totalLogged ??
-                  "",
+              value: TimeFormatHelper.formatSecondsToHours(userLogHistory
+                      .geTimelogAndLeaveAvailabilityForApp?.totalLogged ??
+                  ""),
               label: AppString.text_logged_time.tr),
         ],
       ),
@@ -199,13 +197,14 @@ class LeaveStatusGoal extends StatelessWidget {
       children: [
         Text(
           value,
-          style: AppStyle.normal_text
-              .copyWith(color: AppColor.normalTextColor,fontSize: Dimensions.fontSizeMid),
+          style: AppStyle.normal_text.copyWith(
+              color: AppColor.normalTextColor,
+              fontSize: Dimensions.fontSizeMid),
         ),
         Text(
           label,
           style: AppStyle.mid_large_text.copyWith(
-              fontSize: Dimensions.fontSizeSmall-1,
+              fontSize: Dimensions.fontSizeSmall - 1,
               color: AppColor.hintColor),
         )
       ],
@@ -219,14 +218,7 @@ class LeaveStatusGoal extends StatelessWidget {
       color: AppColor.disableColor,
     );
   }
-
 }
-
-
-
-
-
-
 
 logoutLayout(context) {
   return GestureDetector(
@@ -317,8 +309,8 @@ languageLayout(context) {
   );
 }
 
-_organisationLayout(context,UserDetails userDetails) {
-  ProfileGlobalController controller=Get.find<ProfileGlobalController>();
+_organisationLayout(context, UserDetails userDetails) {
+  ProfileGlobalController controller = Get.find<ProfileGlobalController>();
   return Padding(
     padding: marginLayout,
     child: Column(
@@ -341,8 +333,7 @@ _organisationLayout(context,UserDetails userDetails) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                 userDetails.getOrganizationUserDetails
-                          ?.organization?.name ??
+                  userDetails.getOrganizationUserDetails?.organization?.name ??
                       "Not added yet",
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
@@ -353,7 +344,7 @@ _organisationLayout(context,UserDetails userDetails) {
                 if (controller.employeeWorkHistory?.getOrganizationUserHistory
                             ?.designationHistories !=
                         null &&
-                   controller.employeeWorkHistory!.getOrganizationUserHistory!
+                    controller.employeeWorkHistory!.getOrganizationUserHistory!
                         .designationHistories!.isNotEmpty)
                   Text(
                     controller.employeeWorkHistory?.getOrganizationUserHistory
@@ -368,7 +359,13 @@ _organisationLayout(context,UserDetails userDetails) {
                 GestureDetector(
                   onTap: () {
                     _customButtonSheet(
-                        context: context, child: OrganisationView(orgId: userDetails.getOrganizationUserDetails?.organization?.id.toString()??"",));
+                        context: context,
+                        child: OrganisationView(
+                          orgId: userDetails
+                                  .getOrganizationUserDetails?.organization?.id
+                                  .toString() ??
+                              "",
+                        ));
                   },
                   child: Text(
                     AppString.text_swich_organisation.tr,
@@ -401,7 +398,7 @@ _profileInfoDrawerLayout(UserDetails userDetails) {
         child: Center(
           child: Column(
             children: [
-               _userProfileImgLayout(userDetails),
+              _userProfileImgLayout(userDetails),
               customSpacerHeight(height: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -438,19 +435,16 @@ _profileInfoDrawerLayout(UserDetails userDetails) {
 }
 
 _userProfileImgLayout(UserDetails userDetails) {
-    String userName="${userDetails.getOrganizationUserDetails?.profile?.firstName} ${userDetails.getOrganizationUserDetails?.profile?.lastName}";
-    return CircularNetworkImage(
-      errorText: getInitials(userName),
-      radius:  28,
-      imageUrl:buildImgIxUrl(imgKey: userDetails.getOrganizationUserDetails?.profile?.image,isPublic: true),
-    );
+  String userName =
+      "${userDetails.getOrganizationUserDetails?.profile?.firstName} ${userDetails.getOrganizationUserDetails?.profile?.lastName}";
+  return CircularNetworkImage(
+    errorText: getInitials(userName),
+    radius: 28,
+    imageUrl: buildImgIxUrl(
+        imgKey: userDetails.getOrganizationUserDetails?.profile?.image,
+        isPublic: true),
+  );
 }
-
-
-
-
-
-
 
 employmentStatus(String? employmentStatus) {
   if (employmentStatus == null) {
@@ -491,16 +485,12 @@ organisationLogoLayout(UserDetails userDetails) {
         isPublic: true,
         fileDirectory: "profile_images"),
     errorText: getInitials(
-            userDetails
-            .getOrganizationUserDetails
-            ?.organization!
-            .name ??
-        ""),
+        userDetails.getOrganizationUserDetails?.organization!.name ?? ""),
     borderColor: Colors.transparent,
   );
 }
 
-endDrawer(BuildContext context,UserDetails userDetails) {
+endDrawer(BuildContext context, UserDetails userDetails) {
   return Drawer(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     shape: const RoundedRectangleBorder(
@@ -511,7 +501,7 @@ endDrawer(BuildContext context,UserDetails userDetails) {
         customSpacerHeight(height: 40),
         _profileInfoDrawerLayout(userDetails),
         customSpacerHeight(height: 40),
-        _organisationLayout(context,userDetails),
+        _organisationLayout(context, userDetails),
         const Spacer(),
         languageLayout(context),
         customSpacerHeight(height: 30),
