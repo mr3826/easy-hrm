@@ -65,68 +65,72 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
                     Data? data = controller.timeLogsEntriesDetails
                         ?.getTimeLineEntries?.data?[index];
 
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.leaveRecordCardColor,
-                          borderRadius: BorderRadius.circular(8)),
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, bottom: 14, top: 14),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(child: _buildText(data: data)),
-                                PopupMenuButton<String>(
-                                  position: PopupMenuPosition.under,
-                                  shadowColor: Colors.grey.shade100,
-                                  onSelected: (value) => _handleMenuSelection(
-                                      value, data ?? Data(), context),
-                                  shape: roundedRectangleBorder,
-                                  color: AppColor.cardColor,
-                                  surfaceTintColor: AppColor.cardColor,
-                                  icon: const Icon(Icons.more_horiz),
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry<String>>[
-                                    _buildMenuItem("Edit"),
-                                    if (data?.status != "approved")
-                                      _buildMenuItem("Approve"),
-                                    if (data?.status != "approved")
-                                      if (data?.status != "reject")
-                                        _buildMenuItem("Reject"),
-                                    _buildMenuItem("View notes"),
-                                    _buildMenuItem("Remove"),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            _buildText(
-                                value: getConvertSecondsToHours(
-                                    data?.loggedTotalSeconds ?? "0"),
-                                color: AppColor.hintColor),
-                            _buildText(value: data?.project?.name ?? ""),
-                            _buildText(
-                                value: data?.task?.name ?? "",
-                                color: AppColor.hintColor),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppColor.leaveRecordCardColor,
+                            borderRadius: BorderRadius.circular(8)),
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8, right: 8, bottom: 14, top: 14),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(child: _buildText(data: data)),
+                                  PopupMenuButton<String>(
+                                    position: PopupMenuPosition.under,
+                                    shadowColor: Colors.grey.shade100,
+                                    onSelected: (value) => _handleMenuSelection(
+                                        value, data ?? Data(), context),
+                                    shape: roundedRectangleBorder,
+                                    color: AppColor.cardColor,
+                                    surfaceTintColor: AppColor.cardColor,
+                                    icon: const Icon(Icons.more_horiz),
+                                    itemBuilder: (BuildContext context) =>
+                                        <PopupMenuEntry<String>>[
+                                      _buildMenuItem("Edit"),
+                                      if (data?.status != "approved")
+                                        _buildMenuItem("Approve"),
+                                      if (data?.status != "approved")
+                                        if (data?.status != "reject")
+                                          _buildMenuItem("Reject"),
+                                      _buildMenuItem("View notes"),
+                                      _buildMenuItem("Remove"),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              _buildText(
+                                  value: getConvertSecondsToHours(
+                                      data?.loggedTotalSeconds ?? "0"),
+                                  color: AppColor.hintColor),
+                              _buildText(value: data?.project?.name ?? ""),
+                              _buildText(
+                                  value: data?.project != null
+                                      ? data?.project?.name ?? ""
+                                      : data?.task?.name ?? "",
+                                  color: AppColor.hintColor),
+                              const SizedBox(
+                                height: 4,
+                              ),
 
-                            /// Removing fixed height
-                            SizedBox(
-                              width: AppLayout.getWidth(100),
-                              child: _showStatusButton(data?.status ?? ""),
-                            ),
-                          ],
+                              /// Removing fixed height
+                              SizedBox(
+                                width: AppLayout.getWidth(100),
+                                child: _showStatusButton(data?.status ?? ""),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
               ),
-
-              const SizedBox(
-                height: 30,
-              )
             ],
           ));
   }
@@ -173,7 +177,7 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
   Widget _buildText(
       {String? value, Data? data, Color? color, TextStyle? textStyle}) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 0),
+      padding: const EdgeInsets.only(left: 8.0, right: 8),
       child: Text(
         value ?? _getTime(data ?? Data()),
         style: textStyle ??
@@ -207,7 +211,7 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
     final screenHeight = MediaQuery.of(Get.context!).size.height;
 
     return Container(
-      height: screenHeight / 5,
+      height: screenHeight / 5.5,
       width: double.infinity,
       decoration: const BoxDecoration(
         color: AppColor.bgColorWithTimeline,
@@ -220,9 +224,10 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
             child: Container(
                 height: 4, width: 120, color: AppColor.backgroundColor),
           ),
-          customSpacerHeight(height: 12),
+          customSpacerHeight(height: 4),
           CircularNetworkImage(
             imageUrl: buildImgIxUrl(imagePath: imageUrl, isPublic: true),
+            radius: 30,
             errorText: getInitials(name.toString()),
           ),
           customSpacerHeight(height: 12),

@@ -58,7 +58,9 @@ class BuildNewEntryTextField extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSpacerHeight(height: 12),
-                _buildEmployeeSearch(context),
+                IgnorePointer(
+                    ignoring: isFromUpdateTimelogEntry == true ? true : false,
+                    child: _buildEmployeeSearch(context)),
                 customAppTitleText(
                     text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
@@ -282,7 +284,8 @@ class BuildNewEntryTextField extends StatelessWidget {
         return const Center(child: CupertinoActivityIndicator());
       }
 
-      bool isValueChanged = timelineController.isValueChangeForTimeLogUpdate.value;
+      bool isValueChanged =
+          timelineController.isValueChangeForTimeLogUpdate.value;
 
       return CustomDoubleAppButton(
         buttonText: isFromUpdateTimelogEntry == true
@@ -294,7 +297,9 @@ class BuildNewEntryTextField extends StatelessWidget {
         onAction: isValueChanged
             ? () {
                 if (isFromUpdateTimelogEntry == true) {
-                  if (isEmployee == true && status == "approved" && isFromUpdateTimelogEntry == true) {
+                  if (isEmployee == true &&
+                      status == "approved" &&
+                      isFromUpdateTimelogEntry == true) {
                     timelineController.status.value = "";
                     timelineController.updateTimelineLogDetails();
                   } else {
@@ -337,7 +342,8 @@ class BuildNewEntryTextField extends StatelessWidget {
   _employeeSearch(BuildContext context) {
     // Set selected employee info
     return CustomSearchBar(
-      employeeName:"${Get.find<ProfileGlobalController>().employeeName.value} (You)" ,
+      employeeName:
+          "${Get.find<ProfileGlobalController>().employeeName.value} (You)",
       employeeImage: Get.find<ProfileGlobalController>().employeeImeKey.value,
       onValueSelected: (String orgId) async {
         Navigator.pop(context);
@@ -442,7 +448,7 @@ class BuildNewEntryTextField extends StatelessWidget {
     }
   }
 
-  _buildEmployeeSearch(BuildContext context) {
+  Widget _buildEmployeeSearch(BuildContext context) {
     if (isEmployee == false) {
       return Column(
         children: [

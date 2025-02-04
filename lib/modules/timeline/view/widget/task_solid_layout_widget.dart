@@ -15,7 +15,6 @@ class TaskSolidLayout extends StatelessWidget {
   final String startDateTime;
   final String endDateTime;
   final String status;
-  final String duration;
   final String projectName;
   final String projectColors;
   final bool? isForLeave;
@@ -25,7 +24,6 @@ class TaskSolidLayout extends StatelessWidget {
       required this.startDateTime,
       required this.endDateTime,
       required this.status,
-      required this.duration,
       required this.projectName,
       required this.projectColors,
       this.isForLeave,
@@ -38,7 +36,6 @@ class TaskSolidLayout extends StatelessWidget {
   startDateTime:$startDateTime
   endDateTime:$endDateTime
   status:$status
-  duration:$duration
   isForLeave:$isForLeave
   colors:$projectColors
     """);
@@ -50,18 +47,15 @@ class TaskSolidLayout extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-
         Text(
           endDateTime.isNotEmpty
               ? timeFormatTo24h(DateTime.parse(endDateTime))
               : timeFormatTo24h(DateTime.now()),
-
           style: AppStyle.mid_large_text.copyWith(
               color: statusColor,
               fontSize: Dimensions.fontSizeDefault - 2,
               overflow: TextOverflow.ellipsis),
         ),
-
         Icon(
           statusIcon,
           color: iconColor,
@@ -200,13 +194,7 @@ class TaskSolidLayout extends StatelessWidget {
                 ),
                 customSpacerHeight(height: 6),
                 Text(
-                  duration.isNotEmpty
-                      ? convertMiniToHour(
-                          Duration(minutes: int.parse(duration)))
-                      : convertMiniToHour(Duration(
-                          minutes: DateTime.now()
-                              .difference(DateTime.parse(startDateTime))
-                              .inMinutes)),
+                  getTimeDifference(startDateTime, endDateTime),
                   style: AppStyle.mid_large_text.copyWith(
                       fontSize: Dimensions.fontSizeDefault - 2,
                       color: _updateColorAccordingToApiResponseForTimelog(),
@@ -357,13 +345,8 @@ class TaskSolidLayout extends StatelessWidget {
                     ),
                     customSpacerHeight(height: 6),
                     Text(
-                      duration.isNotEmpty
-                          ? convertMiniToHour(
-                              Duration(minutes: int.parse(duration)))
-                          : convertMiniToHour(Duration(
-                              minutes: DateTime.now()
-                                  .difference(DateTime.parse(startDateTime))
-                                  .inMinutes)),
+                      getTimeDifference(
+                          startDateTime, endDateTime),
                       style: AppStyle.mid_large_text.copyWith(
                           fontSize: Dimensions.fontSizeDefault - 2,
                           color: _updateColorAccordingToApiResponse(

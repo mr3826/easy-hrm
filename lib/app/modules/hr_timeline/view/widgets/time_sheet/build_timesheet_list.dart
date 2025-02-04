@@ -6,7 +6,6 @@ import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/ti
 import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/time_sheet_model.dart';
-import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../enum.dart';
 import '../../../../../../utils/app_color.dart';
@@ -72,8 +71,8 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
 
 
 
-        Get.find<DateTimeController>().requestedDate(data.timelineStartDate);
-        Get.find<DateTimeController>().requestedEndDate(data.timelineEndDate);
+        Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(data.timelineStartDate);
+        Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(data.timelineStartDate);
         Get.find<HrTimelineController>().orgUserId = data.organizationUser?.id ?? "";
 
         Get.find<TimelineSummaryController>().getTimelineSummaryByDate(orgId:  Get.find<HrTimelineController>().orgUserId);

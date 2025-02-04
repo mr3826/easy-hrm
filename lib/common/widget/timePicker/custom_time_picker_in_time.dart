@@ -175,6 +175,7 @@ class _InDatePickerState extends State<InDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(HrLeaveController());
     return Column(
       children: [
         Container(
@@ -235,21 +236,16 @@ class _InDatePickerState extends State<InDatePicker> {
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
                 ///For active timelog details button
-                Get.find<TimelineController>().isSelectDate.value =
-                    Get.find<DateTimePickerController>().inDate.value;
-
+                Get.find<TimelineController>().isSelectDate.value = Get.find<DateTimePickerController>().inDate.value;
                 ///For active update leave details button
-                Get.find<UpDateLeaveController>().isSelectDate.value =
-                    Get.find<DateTimePickerController>().inDate.value;
+                Get.find<UpDateLeaveController>().isSelectDate.value = Get.find<DateTimePickerController>().inDate.value;
+
 
                 ///others
-                if (!Get.find<LeaveScreenController>()
-                    .holidays
-                    .contains(today.weekday)) {
-                  if (widget.isFromIndividualLeave != null &&
-                      widget.isFromIndividualLeave == true) {
-                    Get.find<LeaveScreenController>().date.value =
-                        DateFormat('yyyy-MM-dd').format(today);
+                if (!Get.find<LeaveScreenController>().holidays.contains(today.weekday)) {
+
+                  if (widget.isFromIndividualLeave != null && widget.isFromIndividualLeave == true) {
+                    Get.find<LeaveScreenController>().date.value = DateFormat('yyyy-MM-dd').format(today);
 
                     if (!Get.isRegistered<DateTimePickerController>()) {
                       Get.put(DateTimePickerController());

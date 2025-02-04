@@ -95,9 +95,9 @@ _tabToViewTimeLogSummery() {
     onTap: () {
       TimeSheetBindings().dependencies();
       DateTime now = DateTime.now();
-      Get.find<DateTimeController>().requestedDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
-      Get.find<DateTimeController>().requestedEndDate(DateTime(now.year, now.month + 1, 0).toString());
 
+      Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
+      Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(DateTime(now.year, now.month + 1, 0).toString());
       Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
       Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
 

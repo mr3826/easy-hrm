@@ -147,17 +147,7 @@ class IndividualTimeLayout extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                      getConvertSecondsToHours(
-                          Get.find<TimelineSummaryController>()
-                                  .timelogDetailsByMonth
-                                  ?.getDailyTimeEntries
-                                  ?.data?[index]
-                                  .loggedTotalSeconds ??
-                              ""),
-                      style: AppStyle.small_text_grey.copyWith(
-                          color: AppColor.normalTextColor,
-                          fontSize: Dimensions.fontSizeDefault)),
+              _getTimeLog(index),
                   Text(
                     AppString.text_logged.tr,
                     style: AppStyle.mid_large_text.copyWith(
@@ -262,5 +252,44 @@ class IndividualTimeLayout extends StatelessWidget {
       default:
         return '';
     }
+  }
+
+  _getTimeLog(int index) {
+    if( Get.find<TimelineSummaryController>()
+        .timelogDetailsByMonth
+        ?.getDailyTimeEntries
+        ?.data?[index].isFlaggedTimelog==true){
+      return  Row(
+        children: [
+          Text(
+              getConvertSecondsToHours(
+                  Get.find<TimelineSummaryController>()
+                      .timelogDetailsByMonth
+                      ?.getDailyTimeEntries
+                      ?.data?[index]
+                      .loggedTotalSeconds ??
+                      ""),
+              style: AppStyle.small_text_grey.copyWith(
+                  color: AppColor.normalTextColor,
+                  fontSize: Dimensions.fontSizeDefault)),
+
+          Icon(Icons.flag_outlined,color: AppColor.errorColor.withOpacity(0.7),size: 16,)
+        ],
+      );
+    }else{
+      return Text(
+          getConvertSecondsToHours(
+              Get.find<TimelineSummaryController>()
+                  .timelogDetailsByMonth
+                  ?.getDailyTimeEntries
+                  ?.data?[index]
+                  .loggedTotalSeconds ??
+                  ""),
+          style: AppStyle.small_text_grey.copyWith(
+              color: AppColor.normalTextColor,
+              fontSize: Dimensions.fontSizeDefault));
+    }
+
+
   }
 }

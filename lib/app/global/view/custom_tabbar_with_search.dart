@@ -122,6 +122,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   String profileImgKey = "";
 
   @override
+  void initState() {
+    searchController.text = widget.employeeName ?? "Search employee";
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _showSearchBottomSheet(),
@@ -142,14 +148,14 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                 CircularNetworkImage(
                   imageUrl:
                       buildImgIxUrl(imagePath: profileImgKey, isPublic: true),
-                  errorText: getInitials(searchController.text),
+                  errorText: getInitials(searchController.text.replaceAll("(You)", "")),
                   radius: 12,
                   borderColor: Colors.transparent,
                 ),
               customSpacerWidth(width: 6),
               Expanded(
                 child: Text(
-                  widget.employeeName ?? searchController.text,
+                  searchController.text,
                   style: AppStyle.normal_text.copyWith(
                       color: searchController.text.isNotEmpty &&
                                   searchController.text != "Search employee" ||
@@ -188,6 +194,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             (name) {
               setState(() {
                 searchController.text = name.name ?? "";
+
                 profileImgKey = name.imgUrl ?? "";
               });
             },

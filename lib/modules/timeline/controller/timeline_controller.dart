@@ -548,7 +548,6 @@ class TimelineController extends GetxController with StateMixin {
         "end_date": "2025-01-26T23:59:59.999Z"
       },
       "optionData": {
-        "limit": 1000000000,
         "order": [
           [
             "user"

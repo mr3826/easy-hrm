@@ -57,10 +57,9 @@ class SummaryTimeLogCalendar extends StatelessWidget {
     _scrollToMonth(_controller.selectedValue.value);
     int monthNumber = monthToNumber[month] ?? 0;
 
-    Get.find<DateTimeController>()
-        .requestedDate(DateTime(year, monthNumber, 1, 0, 0, 0).toString());
-    Get.find<DateTimeController>()
-        .requestedEndDate(DateTime(year, monthNumber + 1, 0).toString());
+
+    Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(DateTime(year, monthNumber, 1, 0, 0, 0).toString());
+    Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(DateTime(year, monthNumber + 1, 0).toString());
 
     await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
     await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();

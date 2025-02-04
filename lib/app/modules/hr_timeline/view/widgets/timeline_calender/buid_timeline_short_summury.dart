@@ -8,7 +8,6 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
-import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../global/view/widget/app_margin.dart';
 import '../../../bindings/TimelineSummaryBindings.dart';
 import '../../../controllers/timelog_summary_controller.dart';
@@ -87,8 +86,10 @@ _tabToViewTimeLogSummery() {
     onTap: (){
       TimeSheetBindings().dependencies();
       DateTime now=DateTime.now();
-      Get.find<DateTimeController>().requestedDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
-      Get.find<DateTimeController>().requestedEndDate(DateTime(now.year, now.month + 1,0).toString());
+
+
+      Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
+      Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(DateTime(now.year, now.month + 1,0).toString());
 
       Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
       Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();

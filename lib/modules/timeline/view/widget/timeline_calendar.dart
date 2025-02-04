@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
-import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/leave/domain/leave_record_response.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/widget/leave_record_details_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_solid_layout_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -15,7 +13,6 @@ import '../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.
 import '../../../../common/domain/last_input_model.dart' as li;
 import '../../../../common/widget/custom_drawer.dart';
 import '../../../../utils/dimensions.dart';
-import '../../../leave/domain/leave_records.dart';
 
 class TimeLineCalendar extends StatelessWidget {
   const TimeLineCalendar({super.key});
@@ -71,25 +68,30 @@ class TimeLineCalendar extends StatelessWidget {
                     li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
                 .toString();
 
-
-
             String leaveId = eventData
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).leaveId)
                 .toString();
 
-
-
-
-
             /// have to sub string
             /// otherwise it returns with (value) pattern
 
             if (leaveId.substring(1, leaveId.length - 1) == "null") {
-              controller.getTimeEntryDetails(
-                  timelindId: timeLId
-                      .toString()
-                      .substring(1, timeLId.toString().length - 1));
+              if (Get.find<TimelineGlobalController>()
+                  .searchEmployeeId
+                  .isNotEmpty) {
+                controller.getTimeEntryDetails(
+                    orgId:
+                        Get.find<TimelineGlobalController>().searchEmployeeId,
+                    timelindId: timeLId
+                        .toString()
+                        .substring(1, timeLId.toString().length - 1));
+              } else {
+                controller.getTimeEntryDetails(
+                    timelindId: timeLId
+                        .toString()
+                        .substring(1, timeLId.toString().length - 1));
+              }
             } else {
               Get.find<TimelineGlobalController>().getLeaveDetailsById(
                   leaveId: leaveId
@@ -143,12 +145,6 @@ class TimeLineCalendar extends StatelessWidget {
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).taskName)
                 .toString();
-
-            String duration = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).duration)
-                .toString();
-
             String leaveId = eventData
                 .map((e) => li.ModelForDescription.fromJson(jsonDecode(e))
                     .leaveType
@@ -176,7 +172,6 @@ class TimeLineCalendar extends StatelessWidget {
                 startDateTime: startDate.substring(1, startDate.length - 1),
                 endDateTime: endDate.substring(1, endDate.length - 1),
                 taskName: taskName.substring(1, taskName.length - 1),
-                duration: duration.substring(1, duration.length - 1),
                 projectName: projectName.substring(1, projectName.length - 1),
                 projectColors:
                     projectColor.substring(1, projectColor.length - 1),

@@ -137,8 +137,11 @@ class TimelineDataImpl implements TimelineDataSource {
   @override
    Future<TimeEntryDetails?>  getTimeEntryDetails({required  String timelineId,required String orgId}) async {
 
+    print("getTimeEntryDetails: timelineId: $timelineId orgId $orgId");
+
     try{
       QueryResult<Object?> response = await _timelineApiService.getTimeEntryDetails(timelineId,orgId);
+      print("getTimeEntryDetails_response : ${response.data}");
       if (response.data != null) {
         return TimeEntryDetails.fromJson(response.data!);
       }

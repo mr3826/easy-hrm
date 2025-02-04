@@ -45,6 +45,7 @@ class TimelineGlobalController extends GetxController {
   final isAvailableLeaveType = false.obs;
   int initialIndex=0;
   String searchEmployeeId ="";
+  String searchEmployeeName ="";
 
   String addTimeLogId = "";
   RxString taskId = "".obs;
@@ -178,26 +179,17 @@ class TimelineGlobalController extends GetxController {
 
   Future<bool?> createManualEntry() async {
     isManualEntryLoading(true);
-    Duration timeDifference = DateTime.parse(
-            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-        .difference(DateTime.parse(
-            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+    Duration timeDifference = DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+        .difference(DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+
     if (!timeDifference.isNegative) {
       bool? response = await _timelineDataSource.createManualEntry(
-          startDate: DateTime.parse(
-                  "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
-              .toUtc()
-              .toString(),
-          endDate: DateTime.parse(
-                  "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-              .toUtc()
-              .toString(),
+          startDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString(),
+          endDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString(),
           des: descriptionController.text,
           projectId: projectId.value,
           taskId: taskId.value,
-          orgId: orgUserId.value.isEmpty
-              ? GetStorage().read(AppString.ORGANIZATION_USER_ID)
-              : orgUserId.value,
+          orgId: orgUserId.value.isEmpty ? GetStorage().read(AppString.ORGANIZATION_USER_ID) : orgUserId.value,
           status: status.value);
       if (response) {
         showSuccessMessage(message: "Time entry created successfully");
@@ -206,6 +198,7 @@ class TimelineGlobalController extends GetxController {
         projectId.value = '';
         orgUserId.value = '';
         status.value = '';
+        searchEmployeeId="";
         descriptionController.clear();
         Get.off(() => const MainScreen(routeIndex: 0));
         refreshTimeline();

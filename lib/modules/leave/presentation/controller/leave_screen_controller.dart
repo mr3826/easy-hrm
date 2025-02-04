@@ -193,12 +193,4 @@ void _updateTimelineData() {
     );
   }
 
-
-
-
-
-
-
-  timelineSummaryController.getTimelineSummaryByDate();
-  timelineSummaryController.getTimelogDetailsByMonth();
 }

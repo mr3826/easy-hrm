@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/utils/app_string.dart';
 import '../models/time_sheet_model.dart';
 import '../repositories/timeline_data_source.dart';
 
@@ -29,13 +31,15 @@ class TimeSheetController extends GetxController {
     String startDate = "${selectedStartDate.value} 00:00:00.000";
     String endDate = "${selectedEndDate.value} 23:59:59.000";
     print('''
+    getTimesheetByDate==> 
     startDate $startDate
     endDate $endDate
-    
+    orgId : $orgId
+   
     ''');
 
     isTimeSheetLoading(true);
-    timeSheetModel = await _timelineDataSource.getTimesheetByDate(startDate: startDate, endDate: endDate, orgId: orgId??"");
+    timeSheetModel = await _timelineDataSource.getTimesheetByDate(startDate: startDate, endDate: endDate, orgId: orgId??GetStorage().read(AppString.ORGANIZATION_USER_ID));
     isTimeSheetLoading(false);
   }
 

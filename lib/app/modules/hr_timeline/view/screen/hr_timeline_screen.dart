@@ -39,11 +39,14 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   void initState() {
     HrTimelineBindings().dependencies();
     TimeSheetBindings().dependencies();
+
     Get.find<TimelineGlobalController>().isEmployee(false);
+
     _tabController = TabController(
         length: 2,
         vsync: this,
         initialIndex: Get.find<TimelineGlobalController>().initialIndex);
+
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {});
@@ -73,11 +76,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           ],
         ),
       ),
-      floatingActionButton: Obx(() => timerBtnLayout(
-          context,
-          () => Get.to(() => const StartTimerScreen(
-                isEmployee: false,
-              )))),
+      floatingActionButton: Obx(() => timerBtnLayout(context, () => Get.to(() => const StartTimerScreen(isEmployee: false)))),
     );
   }
 
@@ -196,32 +195,30 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   _buildEmployeeSearch(TabController tabController) {
     return CustomSearchBar(
       onValueSelected: (String orgId) async {
+
         Navigator.pop(context);
-        String startDate =
-            "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-        String endDate =
-            "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-            startDate: startDate, endDate: endDate, orgId: orgId);
-        await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-            startDate: startDate, endDate: endDate, orgId: orgId);
 
+        String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+
+        String endDate = "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+
+        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate, orgId: orgId);
+
+        await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate, orgId: orgId);
         Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
-
         Get.find<TimelineGlobalController>().searchEmployeeId = orgId;
       },
       onClearAction: () async {
-        String startDate =
-            "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-        String endDate =
-            "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+        String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+        String endDate = "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
 
-        await Get.find<TimelineGlobalController>()
-            .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-        await Get.find<HrTimelineController>()
-            .getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
+        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
+        await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
+        Get.find<TimelineGlobalController>().searchEmployeeId="";
 
         Get.find<TimeSheetController>().getTimesheetByDate();
+
+
       },
     );
   }
@@ -236,19 +233,13 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
         await Get.find<TimelineGlobalController>()
             .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
 
-        print("called");
-
-
-
         if(Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
-          print("called1 org : ${Get.find<TimelineGlobalController>().searchEmployeeId}");
           await Get.find<HrTimelineController>().getTimelineCalenderByDate(
               startDate: startDate,
               endDate: endDate,
             orgId: Get.find<TimelineGlobalController>().searchEmployeeId
               );
         }else{
-          print("called2");
           await Get.find<HrTimelineController>().getTimelineCalenderByDate(
               startDate: startDate,
               endDate: endDate);

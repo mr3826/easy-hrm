@@ -13,7 +13,9 @@ class TimelineSummaryController extends GetxController with StateMixin {
   final TimelineDataSource _timelineDataSource;
   TimelineSummaryController(this._timelineDataSource);
 
-  var selectedValue = "".obs;
+  RxString selectedValue = "".obs;
+  RxString selectedTimeSheetStartDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  RxString selectedTimeSheetEndDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
 
   @override
   void onInit() async {
@@ -34,9 +36,9 @@ class TimelineSummaryController extends GetxController with StateMixin {
   getTimelineSummaryByDate(
       {String? startDate, String? endDate, String? orgId}) async {
     String startDate =
-        "${formatDate(date: Get.find<DateTimeController>().requestedDate.value, format: "yyyy-MM-dd")} 00:00:00.000";
+        "${formatDate(date: selectedTimeSheetStartDate.value, format: "yyyy-MM-dd")} 00:00:00.000";
     String endDate =
-        "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value, format: "yyyy-MM-dd")} 23:59:59.000";
+        "${formatDate(date: selectedTimeSheetEndDate.value, format: "yyyy-MM-dd")} 23:59:59.000";
 
     isTimelineSummaryByDateLoading(true);
     final String organizationId =

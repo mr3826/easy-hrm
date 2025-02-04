@@ -8,14 +8,6 @@ class TimelogDetailsByMonth {
         ? new GetDailyTimeEntries.fromJson(json['getDailyTimeEntries'])
         : null;
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getDailyTimeEntries != null) {
-      data['getDailyTimeEntries'] = this.getDailyTimeEntries!.toJson();
-    }
-    return data;
-  }
 }
 
 class GetDailyTimeEntries {
@@ -32,13 +24,6 @@ class GetDailyTimeEntries {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class Data {
@@ -47,31 +32,25 @@ class Data {
   String? loggedTotalSeconds;
   String? totalLeavesSeconds;
   String? balance;
+  bool? isFlaggedTimelog;
 
   Data(
       {this.entryDay,
         this.totalScheduledSeconds,
         this.loggedTotalSeconds,
         this.totalLeavesSeconds,
+        this.isFlaggedTimelog,
         this.balance});
 
   Data.fromJson(Map<String, dynamic> json) {
     entryDay = json['entry_day'];
     totalScheduledSeconds = json['total_scheduled_seconds'];
+    isFlaggedTimelog = json['is_flagged_timelog'];
     loggedTotalSeconds = json['logged_total_seconds'];
     totalLeavesSeconds = json['total_leaves_seconds'];
     balance = json['balance'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['entry_day'] = this.entryDay;
-    data['total_scheduled_seconds'] = this.totalScheduledSeconds;
-    data['logged_total_seconds'] = this.loggedTotalSeconds;
-    data['total_leaves_seconds'] = this.totalLeavesSeconds;
-    data['balance'] = this.balance;
-    return data;
-  }
 }
 
 

@@ -576,7 +576,8 @@ query GetDailyTimeEntries($queryData: DailyTimeEntriesQueryData, $optionData: Op
       total_scheduled_seconds
       logged_total_seconds
       total_leaves_seconds
-      balance  
+      balance
+      is_flagged_timelog
     }
   }
 }
