@@ -9,6 +9,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../app/global/view/widget/app_margin.dart';
+import '../../../../app/modules/hr_timeline/view/widgets/loged_details_button.dart';
 
 Widget btnSheetViewLayout({required BuildContext context, required TaskInfo taskInfo}) {
   return Padding(
@@ -18,10 +19,7 @@ Widget btnSheetViewLayout({required BuildContext context, required TaskInfo task
         ///start and end time layout
         Column(
           children: [
-            _infoLayout(
-                text: AppString.text_start.tr,
-                dynamicText: DateFormat('HH:mm')
-                    .format(DateTime.parse(taskInfo.startTime))),
+            _infoLayout(text: AppString.text_start.tr,dynamicText: DateFormat('HH:mm').format(DateTime.parse(taskInfo.startTime))),
             customSpacerHeight(height: 6),
             _infoLayout(
                 text: "${AppString.text_end.tr}:",
@@ -44,17 +42,17 @@ Widget btnSheetViewLayout({required BuildContext context, required TaskInfo task
             text: AppString.text_project_task_or_tag,
             widget: _projectNameLayout(
                 color: HexColor(taskInfo.projectColor),
-                name: taskInfo.taskOrProjectName)),
+                name: taskInfo.taskOrProjectName.toString())),
         customSpacerHeight(height: 50),
 
-        ///action double button
-        buttonLayout(context: context, taskInfo: taskInfo)
+        ///action double button according to context
+        LogDetailsButton(taskInfo: taskInfo)
       ],
     ),
   );
 }
 
-_infoLayout({required String text, String? dynamicText, widget}) {
+_infoLayout({required String text, String? dynamicText,Widget? widget}) {
   return Padding(
     padding: marginLayout.copyWith(left: 20, right: 20, top: 12, bottom: 4),
     child: Row(
@@ -78,10 +76,11 @@ _infoLayout({required String text, String? dynamicText, widget}) {
   );
 }
 
-Widget _projectNameLayout({required Color? color, required name}) {
+Widget _projectNameLayout({required Color? color, required String name}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
+      if( name != "" || name.isNotEmpty)
       Icon(
         Icons.circle,
         size: 13,
@@ -89,7 +88,7 @@ Widget _projectNameLayout({required Color? color, required name}) {
       ),
       customSpacerWidth(width: 4),
       Text(
-        "${name == "" ? "Not Added yet" : name}",
+        name == ""|| name.isEmpty ? "No project" : name,
         style: AppStyle.mid_large_text.copyWith(
             color: AppColor.normalTextColor,
             fontSize: Dimensions.fontSizeDefault + 1),

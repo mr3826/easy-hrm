@@ -239,14 +239,12 @@ class TimelineGlobalController extends GetxController {
     return null;
   }
 
-  getTimelineSummaryByDate(
-      {String? startDate, String? endDate, String? orgId}) async {
+  getTimelineSummaryByDate({String? startDate, String? endDate, String? orgId}) async {
     isTimelineSummaryByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
-    final String organizationId =
-        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
-    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
+    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate $organizationId");
     timelineSummaryByDate = await _timelineDataSource.getTimelineSummaryByDate(
         startDate: formattedStartDate,
         endDate: formattedEndDate,

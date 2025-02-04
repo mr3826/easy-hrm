@@ -5,14 +5,13 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_global_bindings.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
-import 'package:payrun_mobile/network/network_client.dart';
-import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/last_input_model.dart';
 import '../models/calendar_timeline.dart';
@@ -25,21 +24,11 @@ class HrTimelineController extends GetxController with StateMixin {
   final TimelineDataSource _timelineDataSource;
   HrTimelineController(this._timelineDataSource);
 
-
-
-
-
-  final isLoading = false.obs;
-  final isProjectListLoading = false.obs;
-  final isManualEntryLoading = false.obs;
   final isTimelineCalendarByDateLoading = false.obs;
   final isTimelineSummaryByDateLoading = false.obs;
-  final isUpdateTimeLogLoading = false.obs;
   final isTimeEntryLoading = false.obs;
   final isTimeEntryUpdateLoading = false.obs;
-  RxString selectedSummaryDate = "".obs;
   String orgUserId = "";
-  RxInt selectedYearIndex = 10.obs;
   late Timer updateDataTime;
 
   TextEditingController descriptionController = TextEditingController();
@@ -49,20 +38,21 @@ class HrTimelineController extends GetxController with StateMixin {
   final isTimelogEntryOrRemoveLoading = false.obs;
   TimerEntryResponse? timerEntryResponse;
   ProjectDropDownResponse? projectDropDownResponse;
-  TimelineSummaryByMonth? timelineSummaryByMonth;
   TimeLogsEntriesDetails? timeLogsEntriesDetails;
   UpdateTimelogEntry? updateTimelogEntry;
 
   @override
   void onInit() {
+
+    TimelineGlobalBindings().dependencies();
+    _refreshTimeline();
+
+
     if (!Get.isRegistered<DateTimeController>()) {
       Get.put(DateTimeController());
     }
     updateDataTime = Timer(Duration.zero, () {});
     updateDataAfterTwoMinutes();
-
-    _refreshTimeline();
-
     super.onInit();
   }
 
@@ -84,18 +74,10 @@ class HrTimelineController extends GetxController with StateMixin {
 
   Future<TimeLogsEntriesDetails?> updateTimeLogEntryById(
       {String? status, String? timelineId}) async {
-    String? entryStatus =
-        Get.find<TimelineGlobalController>().status.value.isEmpty
-            ? status
-            : Get.find<TimelineGlobalController>().status.value;
-    String? entryTimeLineId =
-        Get.find<TimelineGlobalController>().timeLineId.value.isEmpty
-            ? timelineId
-            : Get.find<TimelineGlobalController>().timeLineId.value;
+    String? entryStatus = Get.find<TimelineGlobalController>().status.value.isEmpty ? status : Get.find<TimelineGlobalController>().status.value;
+    String? entryTimeLineId = Get.find<TimelineGlobalController>().timeLineId.value.isEmpty ? timelineId : Get.find<TimelineGlobalController>().timeLineId.value;
     isTimeEntryUpdateLoading(true);
-    updateTimelogEntry = await _timelineDataSource.updateTimeLogEntryById(
-        status: entryStatus.toString(), timelineId: entryTimeLineId.toString());
-
+    updateTimelogEntry = await _timelineDataSource.updateTimeLogEntryById(status: entryStatus.toString(), timelineId: entryTimeLineId.toString());
     if (updateTimelogEntry != null) {
 
       DateTime requestedDate = DateTime.parse(updateTimelogEntry?.updateTimelineEntry?.startDate ?? DateTime.now().toString());
@@ -108,16 +90,19 @@ class HrTimelineController extends GetxController with StateMixin {
           orgUserId: updateTimelogEntry?.updateTimelineEntry?.orgUserId ?? "");
       refreshTimeline();
     }
-
     isTimeEntryUpdateLoading(false);
     return null;
   }
 
   getTimelineCalenderByDate({String? startDate, String? endDate, String? orgId}) async {
     isTimelineCalendarByDateLoading(true);
+
     final String formattedStartDate = startDate ?? DateTime.now().toString();
+
     final String formattedEndDate = endDate ?? DateTime.now().toString();
+
     final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+
     log("getTimelineCalenderByDate start & end ==>$startDate And $endDate org : $organizationId");
 
     calendarTimeline = await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate, orgUserId: organizationId) ?? CalendarTimeline();
@@ -232,37 +217,15 @@ class HrTimelineController extends GetxController with StateMixin {
     isTimelineCalendarByDateLoading(false);
   }
 
-  getTimelineSummaryByMonth(
-      {required String startDate, required String endDate}) async {
-    print(
-        "getTimelineSummaryByMonth_timeline ::: start_date $startDate end_date $endDate");
 
-    change(null, status: RxStatus.loading());
-    final response = await NetworkClient()
-        .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
-      "queryData": {
-        "start_date": startDate,
-        "end_date": endDate,
-      }
-    });
-    if (response.hasException) {
-      log("getTimelineByMonth:: ${response.exception.toString()}");
-    } else {
-      timelineSummaryByMonth = TimelineSummaryByMonth.fromJson(response.data!);
-    }
-    change(null, status: RxStatus.success());
-  }
-
-  DateTime _createEndDateForTimeLine(
-      {required String startDate, String? endDate}) {
+  DateTime _createEndDateForTimeLine({required String startDate, String? endDate}) {
     if (endDate != null) {
       int diffInMins = DateTime.parse(endDate)
           .difference(DateTime.parse(startDate))
           .inMinutes;
       if (!diffInMins.isNegative) {
         if (diffInMins <= 10) {
-          return DateTime.parse(
-              "2024-01-24 ${DateTime.parse(endDate).add(const Duration(minutes: 10)).toString().substring(11, 19)}");
+          return DateTime.parse("2024-01-24 ${DateTime.parse(endDate).add(const Duration(minutes: 10)).toString().substring(11, 19)}");
         } else {
           return DateTime.parse("2024-01-24 ${endDate.substring(11, 19)}");
         }
@@ -283,39 +246,19 @@ class HrTimelineController extends GetxController with StateMixin {
   }
 
   _refreshTimeline() async {
-    await getTimelineSummaryByMonth(
-        startDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
-        endDate:
-            "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+    TimelineGlobalController controller=Get.find<TimelineGlobalController>();
+    String startDate=controller.selectedTimeLineStartDate.value;
+    String endDte=controller.selectedTimeLineEndDate.value;
+
+    ///short time log summary
+    await controller. getTimelineSummaryByDate();
 
     if( Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
-      await getTimelineCalenderByDate(
-        orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
-
-      await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-          orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+      ///when employee user id not empty
+      _updatedSelectedEmployee(startDate,endDte);
     }else{
-      await getTimelineCalenderByDate(
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
-
-      await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+      ///Exiting  user (default user)
+      _defaultTimelineUpdate(startDate,endDte);
     }
 
 
@@ -426,4 +369,38 @@ class HrTimelineController extends GetxController with StateMixin {
     descriptionController.dispose();
     super.disposeId(id);
   }
+
+  void _updatedSelectedEmployee(String startDate,String endDte) async{
+    await getTimelineCalenderByDate(
+    orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
+    startDate:
+    "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+    endDate:
+    "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}"
+    );
+
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+        orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
+
+        startDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
+  }
+
+  void _defaultTimelineUpdate(String startDate, String endDte) async{
+    await getTimelineCalenderByDate(
+    startDate:
+    "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+    endDate:
+    "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
+
+
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+        startDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
+  }
+
 }

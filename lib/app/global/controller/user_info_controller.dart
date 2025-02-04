@@ -26,17 +26,19 @@ class UserInfoController {
 
 
 
-
-
   /// Fetches the organization subscription information
   /// and checks the subscription status.
   Future<bool> getOrgSubscriptionInfo() async {
+
     try {
-      final QueryResult<Object?> response = await Get.find<ApiService>()
-          .gqlCall(queryString: getOrgSubscriptionInfoQuery);
+      final QueryResult<Object?> response = await Get.find<ApiService>().gqlCall(queryString: getOrgSubscriptionInfoQuery);
+
+
+
       if (response.data != null) {
-        return _checkIfSubscription(
-            OrgSubscriptionInfoModel.fromJson(response.data!));
+
+        return _checkIfSubscription(OrgSubscriptionInfoModel.fromJson(response.data!));
+
       }
       return true;
     } catch (ex) {
@@ -55,21 +57,35 @@ class UserInfoController {
   ///
   /// [data] - The organization's subscription information.
   bool _checkIfSubscription(OrgSubscriptionInfoModel data) {
-    final GetAnOrganizationSubscription? orgSubscriptionInfo =
-        data.getAnOrganizationSubscription;
+
+    final GetAnOrganizationSubscription? orgSubscriptionInfo = data.getAnOrganizationSubscription;
+
+
+
 
     // Check if subscription is expired (paused or canceled)
     try {
+
       if (!orgSubscriptionInfo!.status!.contains("active")) {
         isSubscriptionExpired(true);
         return true;
+
       } else {
+
+
         // Check if "time_tracking" feature is enabled
         orgSubscriptionInfo.plan?.planFeatures?.forEach((feature) {
+
           if (feature.feature?.identifier == "time_tracking") {
+
             isSubscriptionTimeTrackingIsAllow(feature.isEnabled ?? false);
+
           }
+
+
         });
+
+
       }
       return false;
     } catch (e) {

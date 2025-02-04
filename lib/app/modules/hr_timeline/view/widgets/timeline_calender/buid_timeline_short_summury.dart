@@ -7,7 +7,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import 'package:payrun_mobile/utils/utils.dart';
+import '../../../../../global/utils/time_format_helper.dart';
 import '../../../../../global/view/widget/app_margin.dart';
 import '../../../bindings/TimelineSummaryBindings.dart';
 import '../../../controllers/timelog_summary_controller.dart';
@@ -33,7 +33,7 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _countLayout(
-                      dynamicText: getConvertSecondsToHours(
+                      dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
                               timelineSummaryByMonth
                               .getTimelogSummaryForApp
                               ?.totalScheduledSeconds.toString() ??
@@ -43,7 +43,7 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: getConvertSecondsToHours(
+                      dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
                          timelineSummaryByMonth
                               .getTimelogSummaryForApp
                               ?.loggedTotalSeconds.toString() ??
@@ -53,7 +53,7 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: getConvertSecondsToHours(
+                      dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
                           timelineSummaryByMonth
                               .getTimelogSummaryForApp
                               ?.totalLeavesSeconds.toString() ??
@@ -63,7 +63,7 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: getConvertSecondsToHours(
+                      dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
                          timelineSummaryByMonth
                               .getTimelogSummaryForApp
                               ?.balance.toString() ??
@@ -86,7 +86,6 @@ _tabToViewTimeLogSummery() {
     onTap: (){
       TimeSheetBindings().dependencies();
       DateTime now=DateTime.now();
-
 
       Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
       Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(DateTime(now.year, now.month + 1,0).toString());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/timelog_summary_details.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
@@ -47,7 +48,7 @@ class IndividualTimeLayout extends StatelessWidget {
                       DateTime.now().toString());
 
               if (isEmployee == true) {
-                Get.find<DateTimeController>().requestedDate.value =
+                Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value =
                     DateFormat('yyyy-MM-dd').format(requestedDate);
 
                 Get.back(canPop: false);

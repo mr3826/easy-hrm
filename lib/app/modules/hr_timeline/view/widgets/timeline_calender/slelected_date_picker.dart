@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../../../../common/controller/date_time_controller.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../global/view/widgets/custom_date_picker.dart';
+import '../../../controllers/global_timline_controller.dart';
 
 
 class BuildSelectDateLayout extends StatelessWidget {
@@ -30,10 +30,11 @@ class BuildSelectDateLayout extends StatelessWidget {
                     GestureDetector(
                         onTap: () async {
 
-                          Get.find<DateTimeController>().requestedDate.value =
+                          Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value =
+
                               DateFormat("yyyy-MM-dd").format(DateTime.parse(
-                                  Get.find<DateTimeController>()
-                                      .requestedDate
+                                  Get.find<TimelineGlobalController>()
+                                      .selectedTimeLineStartDate
                                       .value)
                                   .subtract(const Duration(days: 1)));
 
@@ -48,12 +49,12 @@ class BuildSelectDateLayout extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          Get.find<DateTimeController>().requestedDate.value ==
+                          Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value ==
                               DateFormat('yyyy-MM-dd').format(DateTime.now())
                               ? "Today"
                               : DateFormat('dd MMM yyyy').format(DateTime.parse(
-                              Get.find<DateTimeController>()
-                                  .requestedDate
+                              Get.find<TimelineGlobalController>()
+                                  .selectedTimeLineStartDate
                                   .value)),
                           style: AppStyle.mid_large_text.copyWith(
                               color: AppColor.secondaryColor,
@@ -63,8 +64,8 @@ class BuildSelectDateLayout extends StatelessWidget {
                         Center(
                             child: Text(
                               DateFormat("EEEE")
-                                  .format(DateTime.parse(Get.find<DateTimeController>()
-                                  .requestedDate
+                                  .format(DateTime.parse(Get.find<TimelineGlobalController>()
+                                  .selectedTimeLineStartDate
                                   .value))
                                   .toString(),
                               style: AppStyle.mid_large_text.copyWith(
@@ -75,10 +76,10 @@ class BuildSelectDateLayout extends StatelessWidget {
                     ),
                     GestureDetector(
                         onTap: () async {
-                          Get.find<DateTimeController>().requestedDate.value =
+                          Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value =
                               DateFormat("yyyy-MM-dd").format(DateTime.parse(
-                                  Get.find<DateTimeController>()
-                                      .requestedDate
+                                  Get.find<TimelineGlobalController>()
+                                      .selectedTimeLineStartDate
                                       .value)
                                   .add(const Duration(days: 1)));
                           dateRange?.call("");
@@ -113,7 +114,7 @@ class BuildSelectDateLayout extends StatelessWidget {
     if (selectedRange != null) {
       DateTime? startDate = selectedRange["start"];
       if(startDate !=null){
-        Get.find<DateTimeController>().requestedDate.value = DateFormat("yyyy-MM-dd").format(DateTime.parse(startDate.toString()));
+        Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value = DateFormat("yyyy-MM-dd").format(DateTime.parse(startDate.toString()));
       }
      dateRange?.call("");
 

@@ -159,6 +159,7 @@ class SignInScreen extends GetView<SignInController> {
       onPressed: () async {
         FocusScope.of(context).requestFocus(FocusNode());
         if (_formKey.currentState!.validate()) {
+
           // Attempt login
           bool value = await controller.loginWithCredentials(
               email: emailController.text, password: passwordController.text);
@@ -167,18 +168,22 @@ class SignInScreen extends GetView<SignInController> {
           if (value) {
             print("Login Successful");
             // Get subscription info only if login is successful
+            bool isSubscriptionExpired = await Get.find<UserInfoController>().getOrgSubscriptionInfo();
 
-            bool isSubscriptionExpired =
-                await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+            print("isSubscriptionExpired_check_bool :: $isSubscriptionExpired");
+
 
             print(isSubscriptionExpired
                 ? "Go to Sub expire screen"
                 : "Go to Main Screen");
 
-            if(!isSubscriptionExpired){
-              Get.offNamed(Routes.MAIN_SCREEN);
-            }
 
+            // if(isSubscriptionExpired){
+            //   Get.offNamed(Routes.MAIN_SCREEN);
+            // }
+
+
+            Get.offNamed(Routes.MAIN_SCREEN);
 
           } else {
             print("Login Unsuccessful");

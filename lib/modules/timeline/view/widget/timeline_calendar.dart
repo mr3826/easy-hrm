@@ -20,7 +20,6 @@ class TimeLineCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _modelHeightAccordingScreenSize();
-    TimelineGlobalController controller = Get.find<TimelineGlobalController>();
 
     return SizedBox(
       height: MediaQuery.of(context).size.height + 2500,
@@ -33,28 +32,15 @@ class TimeLineCalendar extends StatelessWidget {
           initialDay: DateTime.parse("2024-01-24"),
           timeLineOffset: 4,
           showHalfHours: true,
-          headerStyle: const HeaderStyle(
-              rightIconVisible: false,
-              leftIconVisible: false,
-              headerMargin: EdgeInsets.zero,
-              headerPadding: EdgeInsets.zero,
-              decoration: BoxDecoration(color: Colors.transparent)),
+          headerStyle: _headerStyle,
           heightPerMinute: 2,
           scrollPhysics: const NeverScrollableScrollPhysics(),
           pageViewPhysics: const NeverScrollableScrollPhysics(),
           safeAreaOption: const SafeAreaOption(
               right: false, left: false, top: false, bottom: true),
           scrollOffset: 0,
-          halfHourIndicatorSettings: HourIndicatorSettings(
-              dashWidth: 3,
-              offset: 20,
-              lineStyle: LineStyle.dashed,
-              color: AppColor.hintColor.withOpacity(0.6)),
-          hourIndicatorSettings: HourIndicatorSettings(
-              lineStyle: LineStyle.solid,
-              height: .5,
-              offset: 5,
-              color: AppColor.hintColor.withOpacity(0.6)),
+          halfHourIndicatorSettings: _halfHourIndicatorSettings,
+          hourIndicatorSettings: _hourIndicatorSettings,
           timeStringBuilder: (date, {secondaryDate}) {
             String formattedTime = DateFormat.Hm().format(date);
             return formattedTime;
@@ -62,7 +48,8 @@ class TimeLineCalendar extends StatelessWidget {
           timeLineWidth: 55,
           onEventTap: (events, date) {
             Iterable<String> eventData = events.map((e) => e.description!);
-
+            /// have to sub string
+            /// otherwise it returns with (value) pattern
             String timeLId = eventData
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
@@ -72,58 +59,21 @@ class TimeLineCalendar extends StatelessWidget {
                 .map((e) =>
                     li.ModelForDescription.fromJson(jsonDecode(e)).leaveId)
                 .toString();
+            ///Event according to api called
+            _updatedLogDetails(leaveId,timeLId);
 
-            /// have to sub string
-            /// otherwise it returns with (value) pattern
-
-            if (leaveId.substring(1, leaveId.length - 1) == "null") {
-              if (Get.find<TimelineGlobalController>()
-                  .searchEmployeeId
-                  .isNotEmpty) {
-                controller.getTimeEntryDetails(
-                    orgId:
-                        Get.find<TimelineGlobalController>().searchEmployeeId,
-                    timelindId: timeLId
-                        .toString()
-                        .substring(1, timeLId.toString().length - 1));
-              } else {
-                controller.getTimeEntryDetails(
-                    timelindId: timeLId
-                        .toString()
-                        .substring(1, timeLId.toString().length - 1));
-              }
-            } else {
-              Get.find<TimelineGlobalController>().getLeaveDetailsById(
-                  leaveId: leaveId
-                      .toString()
-                      .substring(1, leaveId.toString().length - 1));
-            }
-
+            ///Event according to event details view
             customAntButtonSheet(
               context: context,
               child: leaveId.substring(1, leaveId.length - 1) == "null"
                   ? const BuildTaskDetails()
-                  : Obx(() => Get.find<TimelineGlobalController>()
-                          .isLeaveDetailsByLoading
-                          .isTrue
-                      ? const LoadingIndicator()
-                      : LeaveRecordDetailsById(
-                          data: Get.find<TimelineGlobalController>()
-                                  .leaveDetailsById
-                                  ?.getLeaveDetailsById ??
-                              GetLeaveDetailsById(),
-                          isEmployee: Get.find<TimelineGlobalController>()
-                              .isEmployee
-                              .value,
-                        )),
+                  : _buildLeaveDetails(),
             );
           },
           eventTileBuilder: (date, events, status, start, end) {
             ///for building calendar uo
 
             List<String> eventData = events.map((e) => e.description!).toList();
-
-            print("event length :: ${eventData.length}");
 
             /// have to sub string
             /// otherwise it returns with (value) pattern
@@ -181,6 +131,67 @@ class TimeLineCalendar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  HeaderStyle get _headerStyle =>const HeaderStyle(
+      rightIconVisible: false,
+      leftIconVisible: false,
+      headerMargin: EdgeInsets.zero,
+      headerPadding: EdgeInsets.zero,
+      decoration: BoxDecoration(color: Colors.transparent));
+
+  HourIndicatorSettings  get _halfHourIndicatorSettings => HourIndicatorSettings(
+      dashWidth: 3,
+      offset: 20,
+      lineStyle: LineStyle.dashed,
+      color: AppColor.hintColor.withOpacity(0.6));
+
+  HourIndicatorSettings get _hourIndicatorSettings => HourIndicatorSettings(
+      lineStyle: LineStyle.solid,
+      height: .5,
+      offset: 5,
+      color: AppColor.hintColor.withOpacity(0.6));
+
+  void _updatedLogDetails(String leaveId,String timeLineId) {
+    TimelineGlobalController controller = Get.find<TimelineGlobalController>();
+    if (leaveId.substring(1, leaveId.length - 1) == "null") {
+      if (Get.find<TimelineGlobalController>()
+          .searchEmployeeId
+          .isNotEmpty) {
+        controller.getTimeEntryDetails(
+            orgId:
+            Get.find<TimelineGlobalController>().searchEmployeeId,
+            timelindId: timeLineId
+                .toString()
+                .substring(1, timeLineId.toString().length - 1));
+      } else {
+        controller.getTimeEntryDetails(
+            timelindId: timeLineId
+                .toString()
+                .substring(1, timeLineId.toString().length - 1));
+      }
+    } else {
+      Get.find<TimelineGlobalController>().getLeaveDetailsById(
+          leaveId: leaveId
+              .toString()
+              .substring(1, leaveId.toString().length - 1));
+    }
+  }
+
+  _buildLeaveDetails() {
+   return Obx(() => Get.find<TimelineGlobalController>()
+        .isLeaveDetailsByLoading
+        .isTrue
+        ? const LoadingIndicator()
+        : LeaveRecordDetailsById(
+      data: Get.find<TimelineGlobalController>()
+          .leaveDetailsById
+          ?.getLeaveDetailsById ??
+          GetLeaveDetailsById(),
+      isEmployee: Get.find<TimelineGlobalController>()
+          .isEmployee
+          .value,
+    ));
   }
 }
 

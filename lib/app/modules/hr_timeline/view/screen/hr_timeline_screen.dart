@@ -9,7 +9,6 @@ import 'package:payrun_mobile/app/modules/hr_timeline/controllers/time_sheet_con
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../../../common/controller/date_time_controller.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
@@ -76,7 +75,8 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           ],
         ),
       ),
-      floatingActionButton: Obx(() => timerBtnLayout(context, () => Get.to(() => const StartTimerScreen(isEmployee: false)))),
+      floatingActionButton: Obx(() => timerBtnLayout(context,
+          () => Get.to(() => const StartTimerScreen(isEmployee: false)))),
     );
   }
 
@@ -94,31 +94,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
           child: Column(
             children: [
               _buildAppbar(),
-              Padding(
-                padding: const EdgeInsets.only(top: 22.0),
-                child: SizedBox(
-                  height: AppLayout.getHeight(40),
-                  child: TabBar(
-                    labelColor: AppColor.cardColor,
-                    controller: tabController,
-                    unselectedLabelColor: AppColor.normalTextColor,
-                    unselectedLabelStyle: AppStyle.normal_text
-                        .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: AppColor.primaryColor,
-                    ),
-                    indicatorPadding: EdgeInsets.zero,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    labelStyle: AppStyle.normal_text
-                        .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
-                    tabs: [
-                      Tab(text: AppString.textCalendar.tr),
-                      Tab(text: AppString.text_time_sheet.tr),
-                    ],
-                  ),
-                ),
-              ),
+              _tabbarItem(tabController),
               const SizedBox(height: 20),
               _buildEmployeeSearch(tabController),
             ],
@@ -142,10 +118,9 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                     radius: 20,
                   )
                 : TimelineCalendar(
-                    timelineSummaryByDate: Get.find<TimelineGlobalController>().timelineSummaryByDate ??
-                        TimelineSummaryByDate())
-
-        )
+                    timelineSummaryByDate: Get.find<TimelineGlobalController>()
+                            .timelineSummaryByDate ??
+                        TimelineSummaryByDate()))
             : _buildTimeSheet(),
       ]),
     );
@@ -196,86 +171,41 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
   _buildEmployeeSearch(TabController tabController) {
     return CustomSearchBar(
       onValueSelected: (String orgId) async {
-
+        String startDate =
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";
+        String endDate =
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 23:59:59.000";
         Navigator.pop(context);
-
-        String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-
-        String endDate = "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-
-        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate, orgId: orgId);
-
-        await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate, orgId: orgId);
+        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+            startDate: startDate, endDate: endDate, orgId: orgId);
+        await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+            startDate: startDate, endDate: endDate, orgId: orgId);
         Get.find<TimeSheetController>().getTimesheetByDate(orgId: orgId);
         Get.find<TimelineGlobalController>().searchEmployeeId = orgId;
       },
       onClearAction: () async {
-        String startDate = "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
-        String endDate = "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
-
-        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-        await Get.find<HrTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
-        Get.find<TimelineGlobalController>().searchEmployeeId="";
-
-        Get.find<TimeSheetController>().getTimesheetByDate();
-
-
-      },
-    );
-  }
-
-  _buildSelectedDate() {
-    return BuildSelectDateLayout(
-      dateRange: (date) async {
         String startDate =
-            "${Get.find<DateTimeController>().requestedDate.value} 00:00:00.000";
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";
         String endDate =
-            "${Get.find<DateTimeController>().requestedDate.value} 23:59:59.000";
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 23:59:59.000";
+
         await Get.find<TimelineGlobalController>()
             .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-
-        if(Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-              startDate: startDate,
-              endDate: endDate,
-            orgId: Get.find<TimelineGlobalController>().searchEmployeeId
-              );
-        }else{
-          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-              startDate: startDate,
-              endDate: endDate);
-        }
-
+        await Get.find<HrTimelineController>()
+            .getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
+        Get.find<TimelineGlobalController>().searchEmployeeId = "";
+        Get.find<TimeSheetController>().getTimesheetByDate();
       },
     );
-  }
-
-  Future<void> _refreshScreen() async {
-    String startDates =
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}";
-    String endDates =
-        "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}";
-
-    if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
-      await Get.find<HrTimelineController>().getTimelineCalenderByDate(
-          startDate: startDates,
-          endDate: endDates,
-          orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
-    } else {
-      await Get.find<HrTimelineController>()
-          .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
-    }
   }
 
   void _updateTimeSheet() {
     if (Get.find<TimelineGlobalController>().searchEmployeeId.isEmpty) {
       Get.find<TimeSheetController>().selectedStartDate.value =
           DateFormat('yyyy-MM-dd').format(DateTime.now());
-
       Get.find<TimeSheetController>().selectedEndDate.value =
           DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
-
     if (Get.find<TimeSheetController>()
             .timeSheetModel
             ?.getUsersTimeSheet
@@ -288,6 +218,80 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       } else {
         Get.find<TimeSheetController>().getTimesheetByDate();
       }
+    }
+  }
+
+  _tabbarItem(TabController tabController) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 22.0),
+      child: SizedBox(
+        height: AppLayout.getHeight(40),
+        child: TabBar(
+          labelColor: AppColor.cardColor,
+          controller: tabController,
+          unselectedLabelColor: AppColor.normalTextColor,
+          unselectedLabelStyle: AppStyle.normal_text
+              .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: AppColor.primaryColor,
+          ),
+          indicatorPadding: EdgeInsets.zero,
+          indicatorSize: TabBarIndicatorSize.tab,
+          labelStyle: AppStyle.normal_text
+              .copyWith(fontSize: Dimensions.fontSizeDefault + 1),
+          tabs: [
+            Tab(text: AppString.textCalendar.tr),
+            Tab(text: AppString.text_time_sheet.tr),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildSelectedDate() {
+    return BuildSelectDateLayout(
+      dateRange: (date) async {
+        String startDate =
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";
+        String endDate =
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 23:59:59.000";
+
+        if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
+          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+              startDate: startDate,
+              endDate: endDate,
+              orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+          await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+              startDate: startDate,
+              endDate: endDate,
+              orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+        } else {
+          await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+              startDate: startDate, endDate: endDate);
+          await Get.find<TimelineGlobalController>()
+              .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
+        }
+      },
+    );
+  }
+
+  Future<void> _refreshScreen() async {
+    String startDat =
+        Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value;
+    String startDates =
+        "${DateTime(DateTime.parse(startDat).year, DateTime.parse(startDat).month, DateTime.parse(startDat).day, 0, 0, 0)}";
+    String endDates =
+        "${DateTime(DateTime.parse(startDat).year, DateTime.parse(startDat).month, DateTime.parse(startDat).day, 23, 59, 59)}";
+
+    if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
+      await Get.find<HrTimelineController>().getTimelineCalenderByDate(
+          startDate: startDates,
+          endDate: endDates,
+          orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+    } else {
+      await Get.find<HrTimelineController>()
+          .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
     }
   }
 }

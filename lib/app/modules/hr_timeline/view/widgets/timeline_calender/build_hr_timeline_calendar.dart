@@ -3,7 +3,7 @@ import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by
 import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/utils.dart';
+import '../../../../../global/utils/time_format_helper.dart';
 
 class TimelineCalendar extends StatelessWidget {
   final TimelineSummaryByDate timelineSummaryByDate;
@@ -24,15 +24,15 @@ class TimelineCalendar extends StatelessWidget {
       color: AppColor.cardColor,
       width: MediaQuery.of(context).size.width,
       child: workingScheduleLayout(
-          schedule: getConvertSecondsToHours(timelineSummaryByDate
+          schedule: TimeFormatHelper.formatSecondsToHoursSolid(timelineSummaryByDate
                   .getTimelogSummaryForApp?.totalScheduledSeconds ??
               ""),
-          balanceTime: getConvertSecondsToHours(
+          balanceTime: TimeFormatHelper.formatSecondsToHoursSolid(
               timelineSummaryByDate.getTimelogSummaryForApp?.balance ?? ""),
-          loggedTime: getConvertSecondsToHours(timelineSummaryByDate
+          loggedTime: TimeFormatHelper.formatSecondsToHoursSolid(timelineSummaryByDate
                   .getTimelogSummaryForApp?.loggedTotalSeconds ??
               ""),
-          paidLeave: getConvertSecondsToHours(timelineSummaryByDate
+          paidLeave: TimeFormatHelper.formatSecondsToHoursSolid(timelineSummaryByDate
                   .getTimelogSummaryForApp?.totalLeavesSeconds ??
               "")),
     );

@@ -1,97 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/models/time_entry_details.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/widget/task_view_btn_sheet_appbar.dart'
-    as btn;
+import 'package:payrun_mobile/modules/leave/presentation/view/widget/task_view_btn_sheet_appbar.dart' as btn;
 import '../../../../../../modules/timeline/view/widget/project_view_widget.dart';
 import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/utils.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/project_view_widget.dart'
-    as pj;
+import 'package:payrun_mobile/modules/timeline/view/widget/project_view_widget.dart' as pj;
+import '../../../../../global/utils/date_format_helper.dart';
+import '../../../../../global/utils/time_format_helper.dart';
 
 class BuildTaskDetails extends GetView<TimelineGlobalController> {
   const BuildTaskDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => controller.isTimeEntryLoading.isTrue
-        ? const LoadingIndicator()
-        : Column(
-            children: [
-              //button sheet appbar here
-              btn.projectViewBtnSheetAppbar(
-                  date: formatDate(
-                      date: controller
-                              .timeEntryDetails?.getTimeEntryDetails?.startDate
-                              .toString() ??
-                          "",
-                      format: "E, d MMMM - y"),
-                  duration: getTimeDifference(
-                      controller
-                              .timeEntryDetails?.getTimeEntryDetails?.startDate
-                              .toString() ??
-                          "",
-                      controller.timeEntryDetails?.getTimeEntryDetails?.endDate
-                              .toString() ??
-                          ""),
-                  bgColor: controller.timeEntryDetails?.getTimeEntryDetails
-                              ?.project?.color !=
-                          null
-                      ? HexColor(
-                          controller.timeEntryDetails?.getTimeEntryDetails
-                                  ?.project?.color ??
-                              "",
-                        )
-                      : AppColor.primaryColor),
-              pj.btnSheetViewLayout(
-                  context: context,
-                  taskInfo: TaskInfo(
-                      projectColor: controller.timeEntryDetails
-                              ?.getTimeEntryDetails?.project?.color ??
-                          "",
-                      projectId: controller.timeEntryDetails
-                              ?.getTimeEntryDetails?.project?.id ??
-                          "",
-                      taskId: controller.timeEntryDetails?.getTimeEntryDetails
-                              ?.task?.id ??
-                          "",
-                      employeeName:
-                          "${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.firstName ?? ""} ${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.lastName ?? ""}",
-                      employeeId: controller.timeEntryDetails
-                              ?.getTimeEntryDetails?.organizationUser?.id ??
-                          "",
-                      endTime: controller.timeEntryDetails?.getTimeEntryDetails?.endDate ??
-                          "",
-                      startTime: controller.timeEntryDetails?.getTimeEntryDetails?.startDate != null
-                          ? "${controller.timeEntryDetails?.getTimeEntryDetails?.startDate}"
-                          : DateTime.now().toString(),
-                      status: controller.timeEntryDetails?.getTimeEntryDetails?.status ?? "",
-                      description: controller.timeEntryDetails?.getTimeEntryDetails?.description ?? "",
-                      taskOrProjectName: controller.timeEntryDetails?.getTimeEntryDetails?.project?.name ?? controller.timeEntryDetails?.getTimeEntryDetails?.task?.name ?? "",
-                      timeLineId: controller.timeEntryDetails?.getTimeEntryDetails?.id ?? "",
-                      totalDur: getTimeDifference(controller.timeEntryDetails?.getTimeEntryDetails?.startDate.toString() ?? "", controller.timeEntryDetails?.getTimeEntryDetails?.endDate.toString() ?? ""))),
-            ],
-          ));
+    return Obx((){
+
+      if(controller.isTimeEntryLoading.isTrue){
+        return  const LoadingIndicator();
+      }else{
+        GetTimeEntryDetails? data =controller.timeEntryDetails?.getTimeEntryDetails;
+        return Column(
+          children: [
+            ///button sheet appbar here
+            _buildHeader(),
+            ///Details view
+            pj.btnSheetViewLayout(
+                context: context,
+                taskInfo: TaskInfo(projectColor: data?.project?.color ?? "", projectId: data?.project?.id ?? "",
+                    taskId: data?.task?.id ?? "",
+                    employeeName: "${data?.organizationUser?.profile?.firstName ?? ""} ${data?.organizationUser?.profile?.lastName ?? ""}",
+                    employeeId: data?.organizationUser?.id ?? "",
+                    endTime: data?.endDate ?? "",
+                    startTime: data?.startDate != null ? "${data?.startDate}" : DateTime.now().toString(),
+                    status: data?.status ?? "",
+                    description: data?.description ?? "",
+                    taskOrProjectName: data?.project?.name ?? data?.task?.name ?? "",
+                    timeLineId: data?.id ?? "",
+                    totalDur: TimeFormatHelper.timeDifference(data?.startDate.toString() ?? "", data?.endDate.toString() ?? ""))),
+          ],
+        );
+      }
+
+
+    });
+  }
+
+  _buildHeader() {
+   return btn.projectViewBtnSheetAppbar(
+        date: DateFormatHelper.formatDate(date: controller.timeEntryDetails?.getTimeEntryDetails?.startDate.toString() ?? "", format: "E, d MMMM - y"),
+
+        duration:TimeFormatHelper.timeDifference(
+            controller.timeEntryDetails?.getTimeEntryDetails?.startDate.toString() ?? "",
+            controller.timeEntryDetails?.getTimeEntryDetails?.endDate.toString() ?? ""),
+
+        bgColor: controller.timeEntryDetails?.getTimeEntryDetails?.project?.color != null
+            ? HexColor(
+          controller.timeEntryDetails?.getTimeEntryDetails
+              ?.project?.color ??
+              "",
+        )
+            : AppColor.primaryColor);
   }
 }
 
-statusColor(status) {
-  switch (status) {
-    case "approved":
-      return AppColor.primaryColor;
-    case "pending":
-      return AppColor.primaryOrange;
-    case "reject":
-      return AppColor.errorColorLight;
-    case "taken":
-      return AppColor.takenColor;
-    case "rejected":
-      return AppColor.errorColorLight;
-    case "cancelled":
-      return AppColor.errorColorLight;
-    default:
-      return AppColor.primaryColor;
-  }
-}

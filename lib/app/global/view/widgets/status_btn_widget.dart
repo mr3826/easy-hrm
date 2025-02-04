@@ -81,8 +81,7 @@ statusBtn({required status}) {
   }
 }
 
-Widget buttonLayout(
-    {required BuildContext context, required TaskInfo taskInfo}) {
+Widget buttonLayout({required BuildContext context, required TaskInfo taskInfo}) {
   if (taskInfo.status == "reject") {
     return _rejectedBtn(context: context, taskInfo: taskInfo);
   } else if (taskInfo.status == "pending") {
