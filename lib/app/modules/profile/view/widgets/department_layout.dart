@@ -17,14 +17,16 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 
 import '../../../../global/view/widget/app_margin.dart';
-
-
-
+import 'department_history_view.dart';
 
 class BuildDepartment extends StatelessWidget {
   final UserDetails userDetails;
-final  Function onDtpHistoryAction;
-  const BuildDepartment({super.key,required this.userDetails,required this.onDtpHistoryAction});
+  final String orgUserId;
+
+  const BuildDepartment(
+      {super.key,
+      required this.userDetails,
+      required this.orgUserId});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +41,11 @@ final  Function onDtpHistoryAction;
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              customSvgImage(imageUrl: Images.departmentNotification, color: AppColor.primaryColor, height: 25, width: 25),
-
+              customSvgImage(
+                  imageUrl: Images.departmentNotification,
+                  color: AppColor.primaryColor,
+                  height: 25,
+                  width: 25),
               customSpacerHeight(height: 12),
               _departmentHistoryInfo(context),
               customSpacerHeight(height: 12),
@@ -56,23 +61,27 @@ final  Function onDtpHistoryAction;
     Department? department = userDetails.getOrganizationUserDetails?.department;
 
     return GestureDetector(
-      onTap: ()=>onDtpHistoryAction(),
+      onTap: () => customAntButtonSheet(
+          context: context, child: DepartmentHistoryView(orgUserId: orgUserId)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             department?.name ?? "",
-            style:
-            AppStyle.mid_large_text.copyWith(color: AppColor.normalTextColor),
+            style: AppStyle.mid_large_text
+                .copyWith(color: AppColor.normalTextColor),
           ),
           Row(
             children: [
-              _parentDepartmentInfo(parentDepartmentName: _getParentDepartmentName()),
+              _parentDepartmentInfo(
+                  parentDepartmentName: _getParentDepartmentName()),
               if (department != null)
                 Expanded(
                   child: Text(
-                    "${AppString.text_from.tr} - ${_getDateTimeFormat("")}",///todo [query]
+                    "${AppString.text_from.tr} - ${_getDateTimeFormat("")}",
+
+                    ///todo [query]
                     style: AppStyle.mid_large_text.copyWith(
                         color: AppColor.hintColor,
                         fontSize: Dimensions.fontSizeDefault - 1,
@@ -85,6 +94,7 @@ final  Function onDtpHistoryAction;
       ),
     );
   }
+
   _workingShiftLayout(context) {
     return Expanded(
       child: Row(
@@ -95,11 +105,8 @@ final  Function onDtpHistoryAction;
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                userDetails
-                    .getOrganizationUserDetails
-                    ?.department
-                    ?.workShift
-                    ?.name ??
+                userDetails.getOrganizationUserDetails?.department?.workShift
+                        ?.name ??
                     "",
                 style: AppStyle.mid_large_text.copyWith(
                     color: AppColor.normalTextColor,
@@ -120,14 +127,11 @@ final  Function onDtpHistoryAction;
       ),
     );
   }
+
   _workShiftDetailsLayout() {
     // Check if schedule has some holiday same for each item
-    List<WorkSchedules>? workSchedules =
-    userDetails
-        .getOrganizationUserDetails
-        ?.department
-        ?.workShift
-        ?.workSchedules
+    List<WorkSchedules>? workSchedules = userDetails
+        .getOrganizationUserDetails?.department?.workShift?.workSchedules
         ?.where((element) => element.isHoliday == false)
         .map((e) => e)
         .toList();
@@ -138,7 +142,6 @@ final  Function onDtpHistoryAction;
           schedule.endTime == workSchedules[0].endTime;
     });
 
-
     return Row(
       children: [
         Text(
@@ -147,12 +150,12 @@ final  Function onDtpHistoryAction;
               : AppString.text_variable_time.tr,
           style: allTimesSame == true
               ? AppStyle.mid_large_text.copyWith(
-              color: AppColor.normalTextColor.withOpacity(0.7),
-              fontSize: Dimensions.fontSizeDefault + 1)
+                  color: AppColor.normalTextColor.withOpacity(0.7),
+                  fontSize: Dimensions.fontSizeDefault + 1)
               : AppStyle.mid_large_text.copyWith(
-              color: AppColor.hintColor,
-              fontSize: Dimensions.fontSizeDefault + 1,
-              overflow: TextOverflow.ellipsis),
+                  color: AppColor.hintColor,
+                  fontSize: Dimensions.fontSizeDefault + 1,
+                  overflow: TextOverflow.ellipsis),
         ),
         _divider(),
         GestureDetector(
@@ -170,16 +173,16 @@ final  Function onDtpHistoryAction;
           child: Text(
             allTimesSame == true
                 ? getTimeDifference(workSchedules?[0].startTime ?? "",
-                workSchedules?[0].endTime ?? "")
+                    workSchedules?[0].endTime ?? "")
                 : AppString.text_see_details,
             style: allTimesSame == true
                 ? AppStyle.mid_large_text.copyWith(
-                color: AppColor.hintColor,
-                fontSize: Dimensions.fontSizeDefault - 1)
+                    color: AppColor.hintColor,
+                    fontSize: Dimensions.fontSizeDefault - 1)
                 : AppStyle.mid_large_text.copyWith(
-                color: AppColor.normalTextColor.withOpacity(0.7),
-                fontSize: Dimensions.fontSizeDefault - 1,
-                overflow: TextOverflow.ellipsis),
+                    color: AppColor.normalTextColor.withOpacity(0.7),
+                    fontSize: Dimensions.fontSizeDefault - 1,
+                    overflow: TextOverflow.ellipsis),
           ),
         )
       ],
@@ -192,28 +195,29 @@ final  Function onDtpHistoryAction;
         customButtonSheetAppbar(text: AppString.workShiftText.tr),
         Expanded(
             child: ListView.separated(
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => customSpacerHeight(height: 10),
-              itemBuilder: (context, index) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                      color:
-                      index.isEven ? Colors.grey.shade200 : Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(8)),
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                          "Start: ${amPmFormatTimeFromString(workSchedules[index].startTime ?? "")}"),
-                      Text(
-                          "End: ${amPmFormatTimeFromString(workSchedules[index].endTime ?? "")}"),
-                      Text(
-                          "Total: ${getTimeDifference(workSchedules[index].startTime ?? "", workSchedules[index].endTime ?? "")}"),
-                    ],
-                  )),
-              itemCount: workSchedules.length,
-            ))
+          shrinkWrap: true,
+          separatorBuilder: (context, index) => customSpacerHeight(height: 10),
+          itemBuilder: (context, index) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                  color: index.isEven
+                      ? Colors.grey.shade200
+                      : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(8)),
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                      "Start: ${amPmFormatTimeFromString(workSchedules[index].startTime ?? "")}"),
+                  Text(
+                      "End: ${amPmFormatTimeFromString(workSchedules[index].endTime ?? "")}"),
+                  Text(
+                      "Total: ${getTimeDifference(workSchedules[index].startTime ?? "", workSchedules[index].endTime ?? "")}"),
+                ],
+              )),
+          itemCount: workSchedules.length,
+        ))
       ],
     );
   }
@@ -226,56 +230,43 @@ final  Function onDtpHistoryAction;
     );
   }
 
-
   _workingDaySchedule(context) {
     return SizedBox(
       height: AppLayout.getHeight(76),
       width: MediaQuery.of(context).size.width / 1.5,
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: userDetails
-            .getOrganizationUserDetails
-            ?.department
-            ?.workShift
-            ?.workSchedules
-            ?.length,
+        itemCount: userDetails.getOrganizationUserDetails?.department?.workShift
+            ?.workSchedules?.length,
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return Padding(
-            padding:
-            const EdgeInsets.only(left: 0.0, right: 30, top: 12, bottom: 12),
+            padding: const EdgeInsets.only(
+                left: 0.0, right: 30, top: 12, bottom: 12),
             child: Column(
               children: [
                 customSpacerWidth(width: 8),
                 Text(
-                  getDayAbbreviation(userDetails
-                      .getOrganizationUserDetails
-                      ?.department
-                      ?.workShift
-                      ?.workSchedules?[index]
-                      .day ??
+                  getDayAbbreviation(userDetails.getOrganizationUserDetails
+                          ?.department?.workShift?.workSchedules?[index].day ??
                       ""),
                   style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
                       fontSize: Dimensions.fontSizeDefault,
                       overflow: TextOverflow.ellipsis),
                 ),
-                userDetails
-                    .getOrganizationUserDetails
-                    ?.department
-                    ?.workShift
-                    ?.workSchedules?[index]
-                    .isHoliday ==
-                    true
+                userDetails.getOrganizationUserDetails?.department?.workShift
+                            ?.workSchedules?[index].isHoliday ==
+                        true
                     ? const Icon(
-                  Icons.close,
-                  color: AppColor.errorColor,
-                )
+                        Icons.close,
+                        color: AppColor.errorColor,
+                      )
                     : const Icon(
-                  Icons.done,
-                  color: AppColor.successColor,
-                ),
+                        Icons.done,
+                        color: AppColor.successColor,
+                      ),
               ],
             ),
           );
@@ -283,7 +274,6 @@ final  Function onDtpHistoryAction;
       ),
     );
   }
-
 
   _getDateTimeFormat(dateString) {
     if (dateString.isEmpty) return "";
@@ -306,19 +296,8 @@ final  Function onDtpHistoryAction;
     );
   }
 
-
-
-
-
-
-
-
   String _getParentDepartmentName() {
-    var parent =
-        userDetails
-            .getOrganizationUserDetails
-            ?.department
-            ?.parent;
+    var parent = userDetails.getOrganizationUserDetails?.department?.parent;
     if (parent != null) {
       return "${AppString.text_child_of_deparmtnet.tr} ${parent.name ?? ""}";
     } else {
@@ -332,15 +311,4 @@ final  Function onDtpHistoryAction;
       child: Container(width: 1, height: 12, color: AppColor.hintColor),
     );
   }
-
 }
-
-
-
-
-
-
-
-
-
-

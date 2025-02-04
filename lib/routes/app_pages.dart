@@ -12,7 +12,6 @@ import 'package:payrun_mobile/app/modules/auth/view/screens/reset_password.dart'
 import 'package:payrun_mobile/app/modules/auth/view/screens/sign_in.dart';
 import 'package:payrun_mobile/app/modules/hr_dashboard/view/screens/candidate_details_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/view/screen/leave_screen.dart';
-import 'package:payrun_mobile/modules/profile/view/screen/edit_profile.dart';
 import 'package:payrun_mobile/app/modules/splash/view/splash_screen.dart';
 import 'package:payrun_mobile/modules/subscription/view/subscription_screen.dart';
 import '../app/modules/hr_dashboard/view/screens/all_candidates_screen.dart';
@@ -20,13 +19,11 @@ import '../app/modules/hr_dashboard/view/screens/job_details_screen.dart';
 import '../app/modules/hr_dashboard/view/widgets/candidates/build_edit_candidate.dart';
 import '../app/home/view/screen/main_screen.dart';
 import '../app/modules/employee/bindings/update_org_user_binding.dart';
-import '../app/modules/employee/view/screen/employee_profile_view_screen.dart';
 import '../app/modules/employee/view/widget/employee_list/edit_employee.dart';
 import '../app/modules/hr_timeline/bindings/add_new_entry_bindings.dart';
 import '../app/modules/hr_timeline/bindings/start_timer_bindings.dart';
 import '../app/modules/hr_timeline/view/screen/new_entry_screen.dart';
 import '../app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
-import '../modules/dashboard/presentation/view/screen/dashboard.dart';
 import '../modules/leave/presentation/view/screen/leave_record.dart';
 import 'package:payrun_mobile/modules/timeline/view/screen/timelog_summary.dart';
 import '../modules/notification/presentation/view/screen/notification.dart';
@@ -112,11 +109,6 @@ class AppPages {
       transition: Transition.size,
       binding: AddNewEntryBindings(),
       page: () => const AddTimeEntryScreen(),
-    ),
-    GetPage(
-      name: _Paths.EMPOLYEE_VIEW_PROFILE,
-      transition: Transition.size,
-      page: () => const EmployeeProfileViewScreen(),
     ),
     GetPage(
         name: _Paths.EDIT_EMPOLYEE_VIEW,

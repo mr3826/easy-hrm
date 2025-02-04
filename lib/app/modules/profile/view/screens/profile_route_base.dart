@@ -47,6 +47,7 @@ class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
                   ),
                   customSpacerHeight(height: 30),
                   ProfileTabBar(
+                    orgUserId: orgUserId,
                     userDetails:
                         Get.find<ProfileRouteBaseController>().userDetails ??
                             UserDetails(),

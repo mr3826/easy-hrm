@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,61 +15,67 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../../../common/widget/loading_indicator.dart';
 import '../../../../global/view/widget/app_margin.dart';
 import '../../controller/global_profile_controller.dart';
 
-
 class DepartmentHistoryView extends GetView<ProfileGlobalController> {
-  const DepartmentHistoryView({super.key});
+  final String orgUserId;
+
+  const DepartmentHistoryView({required this.orgUserId, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.isEmployeeInfoLoading.isTrue) {
-        return const Center(child: LoadingIndicator());
-      }
-
-      final deptHistories = controller.employeeWorkHistory?.getOrganizationUserHistory?.deptHistories;
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          customButtonSheetAppbar(
-            text: AppString.text_deparmtnet.tr,
-            subtext: AppString.text_history.tr,
-          ),
-          if (deptHistories == null || deptHistories.isEmpty)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  "No department history!",
-                  style: AppStyle.normal_text_black.copyWith(
-                    color: AppColor.hintColor,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        customButtonSheetAppbar(
+          text: AppString.text_deparmtnet.tr,
+          subtext: AppString.text_history.tr,
+        ),
+        FutureBuilder(
+          future: controller.getOrgUserDeptHistory(ordUserId: orgUserId),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<DeptHistories>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CupertinoActivityIndicator(
+                  color: AppColor.primaryColor,
+                  radius: 14,
+                ),
+              );
+            }
+            if (snapshot.hasError || snapshot.data!.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    "No department history!",
+                    style: AppStyle.normal_text_black.copyWith(
+                      color: AppColor.hintColor,
+                    ),
                   ),
                 ),
-              ),
-            )
-          else
-            Expanded(
+              );
+            }
+            return Expanded(
               child: ListView.builder(
-                itemCount: deptHistories.length,
+                itemCount: snapshot.data?.length,
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final deptHistory = deptHistories[index];
-                  final isLastItem = index == deptHistories.length - 1;
+                  final deptHistory = snapshot.data?[index];
+                  final isLastItem = index == snapshot.data!.length - 1;
                   return _buildDepartmentInfo(
                     isLastIndex: isLastItem,
-                    deptHistory: deptHistory,
+                    deptHistory: deptHistory!,
                   );
                 },
               ),
-            ),
-        ],
-      );
-    });
+            );
+          },
+        ),
+      ],
+    );
   }
 
   Widget _buildDepartmentInfo({
@@ -95,7 +102,7 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      deptHistory.department?.name ?? "",
+                      deptHistory.department.name,
                       style: AppStyle.normal_text_grey.copyWith(
                         color: AppColor.normalTextColor,
                         fontSize: Dimensions.fontSizeMid - 3,
@@ -151,7 +158,8 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
 
   Widget _buildEmploymentDetails(DeptHistories deptHistory) {
     final startDate = _formatDate(deptHistory.startDate);
-    final endDate = _formatDate(deptHistory.endDate) ?? AppString.textPresent.tr;
+    final endDate =
+        _formatDate(deptHistory.endDate) ?? AppString.textPresent.tr;
     final parentDeptName = _getParentDepartmentName(deptHistory);
 
     return SizedBox(
@@ -159,20 +167,15 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
       child: Text.rich(
         TextSpan(
           children: [
-            if (parentDeptName.isNotEmpty)
+            if (deptHistory.department.parent.name.isNotEmpty)
               TextSpan(
-                text: parentDeptName,
+                text: '$parentDeptName  | ',
                 style: AppStyle.mid_large_text.copyWith(
                   color: AppColor.secondaryColor,
                   fontSize: Dimensions.fontSizeDefault - 3,
                   fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            if (parentDeptName.isNotEmpty)
-              const TextSpan(
-                text: '  | ',
-                style: TextStyle(color: AppColor.hintColor, fontSize: 10),
               ),
             TextSpan(
               text: "${AppString.text_from.tr} $startDate",
@@ -219,7 +222,9 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
               child: CircularNetworkImage(
                 errorText: initials, //Error text
                 radius: 18,
-                imageUrl: buildImgIxUrl(imgKey: deptHistory.department?.manager?.profile?.image ?? ""),
+                imageUrl: buildImgIxUrl(
+                    imgKey:
+                        deptHistory.department?.manager?.profile?.image ?? ""),
                 borderColor: Colors.transparent,
               ),
             ),
@@ -272,15 +277,13 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
   }
 
   String? _formatDate(String? date) {
-    return date != null
+    return date != null && date.isNotEmpty
         ? DateFormat('dd MMM, yyyy').format(DateTime.parse(date))
         : null;
   }
 
   String _getParentDepartmentName(DeptHistories deptHistory) {
-    return deptHistory.department?.parent?.name != null
-        ? "${AppString.text_child_of_deparmtnet.tr} ${deptHistory.department!.parent!.name!}"
-        : "";
+    return "${AppString.text_child_of_deparmtnet.tr} ${deptHistory.department.parent.name}";
   }
 
   String _getManagerFullName(DeptHistories deptHistory) {
@@ -290,9 +293,9 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
 
   String _getManagerInitials(DeptHistories deptHistory) {
     final profile = deptHistory.department?.manager?.profile;
-    final firstInitial = profile?.firstName?.substring(0, 1).toUpperCase() ?? "";
+    final firstInitial =
+        profile?.firstName?.substring(0, 1).toUpperCase() ?? "";
     final lastInitial = profile?.lastName?.substring(0, 1).toUpperCase() ?? "";
     return "$firstInitial$lastInitial";
   }
 }
-

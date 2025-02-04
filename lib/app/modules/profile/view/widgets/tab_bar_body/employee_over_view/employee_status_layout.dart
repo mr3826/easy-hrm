@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
@@ -14,68 +15,67 @@ import '../../../../../../../common/controller/convart_color_code_controller.dar
 import '../../../../../../../common/widget/employee/department_info_widget.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
-import '../../../../../auth/view/screens/otp_screen.dart';
 import '../../../../controller/global_profile_controller.dart';
 import '../../../../models/employee_work_history.dart';
 
 class EmploymentLayout extends GetView<ProfileGlobalController> {
-  const EmploymentLayout({super.key});
+  final String orgUserID;
+
+  const EmploymentLayout({required this.orgUserID, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.isEmployeeInfoLoading.isTrue) {
-        return const LoadingIndicator();
-      }
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          customButtonSheetAppbar(
-            text: AppString.text_employment.tr,
-            subtext: AppString.text_history.tr,
-          ),
-          if (controller.employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories == null)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  "No employee status!",
-                  style: AppStyle.normal_text_black
-                      .copyWith(color: AppColor.hintColor),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        customButtonSheetAppbar(
+          text: AppString.text_employment.tr,
+          subtext: AppString.text_history.tr,
+        ),
+        FutureBuilder(
+          future: controller.getOrgUserEmploymentHistory(ordUserId: orgUserID),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CupertinoActivityIndicator(
+                  color: AppColor.primaryColor,
+                  radius: 14,
                 ),
-              ),
-            )
-          else
-            Expanded(
+              );
+            }
+            if (snapshot.hasError || snapshot.data!.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    "No employment history!",
+                    style: AppStyle.normal_text_black.copyWith(
+                      color: AppColor.hintColor,
+                    ),
+                  ),
+                ),
+              );
+            }
+            return Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
-                itemCount: controller
-                        .employeeWorkHistory
-                        ?.getOrganizationUserHistory
-                        ?.employmentHistories
-                        ?.length ??
-                    0,
+                itemCount: snapshot.data?.length ?? 0,
                 itemBuilder: (context, index) {
-                  final employmentHistory = controller.employeeWorkHistory?.getOrganizationUserHistory?.employmentHistories?[index];
+                  final employmentHistory = snapshot.data?[index];
 
                   return EmploymentStatusItem(
                     employmentHistory: employmentHistory,
-                    isLastItem: index == (controller
-                                    .employeeWorkHistory
-                                    ?.getOrganizationUserHistory
-                                    ?.employmentHistories
-                                    ?.length ??
-                                1) -
-                            1,
+                    isLastItem: index == snapshot.data!.length - 1,
                   );
                 },
               ),
-            ),
-        ],
-      );
-    });
+            );
+          },
+        ),
+      ],
+    );
   }
 }
 
@@ -147,9 +147,9 @@ class EmploymentStatusItem extends StatelessWidget {
                           ),
                         ),
                         _buildEmploymentStatus(employmentHistory),
-                         _verticalDividerWidget(),
+                        _verticalDividerWidget(),
                         Text(
-                          _calculateDuration(employmentHistory),
+                          "from last ${_calculateDuration(employmentHistory!)}",
                           style: baseTextStyle.copyWith(
                             color: AppColor.hintColor,
                           ),
@@ -173,11 +173,10 @@ class EmploymentStatusItem extends StatelessWidget {
     );
   }
 
-  String _calculateDuration(EmploymentHistories? employmentHistory) {
-    if (employmentHistory == null) return "";
+  String _calculateDuration(EmploymentHistories employmentHistory) {
     final duration = workingTimeSinceFormString(
-      employmentHistory.startDate ?? "",
-      employmentHistory.endDate ?? "",
+      employmentHistory.startDate ,
+      employmentHistory.endDate,
     );
     return duration;
   }
@@ -185,9 +184,9 @@ class EmploymentStatusItem extends StatelessWidget {
   Widget _buildEmploymentStatus(EmploymentHistories? employmentHistory) {
     if (employmentHistory == null) return const SizedBox.shrink();
 
-    final status = employmentHistory.endDate == null
+    final status = employmentHistory.endDate.isEmpty
         ? AppString.textPresent.tr
-        : dateMonthYearFormatFromDatetime(employmentHistory.endDate ?? "");
+        : dateMonthYearFormatFromDatetime(employmentHistory.endDate);
 
     return Text(
       status,
@@ -200,7 +199,7 @@ class EmploymentStatusItem extends StatelessWidget {
   }
 }
 
-Widget _verticalDividerWidget(){
+Widget _verticalDividerWidget() {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 6.0),
     child: Container(
@@ -210,5 +209,3 @@ Widget _verticalDividerWidget(){
     ),
   );
 }
-
-

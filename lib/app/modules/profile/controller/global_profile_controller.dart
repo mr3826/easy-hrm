@@ -36,7 +36,6 @@ import '../../../../utils/app_string.dart';
 import '../../../../utils/dimensions.dart';
 import '../../../../utils/images.dart';
 import '../../../../utils/utils.dart';
-import '../../../../modules/leave/domain/leave_record_response.dart';
 import '../../../../modules/leave/domain/leave_type.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/timeline/controller/timer_controller.dart';
@@ -152,6 +151,24 @@ class ProfileGlobalController extends GetxController with StateMixin {
         await _profileDataSource.getUserLogHistory() ?? UserLogHistory();
     change(null, status: RxStatus.success());
   }
+
+  ///get dept history for the org user
+  ///need org user id (both owner n user)
+  Future<List<DeptHistories>> getOrgUserDeptHistory(
+          {required String ordUserId}) async =>
+      await _profileDataSource.getOrgUserDeptHistory(ordUserId);
+
+  ///get designation history for the org user
+  ///need org user id (both owner n user)
+  Future<List<DesignationHistories>> getOrgUserDesignationHistory(
+          {required String ordUserId}) async =>
+      await _profileDataSource.getOrgUserDesignationHistory(ordUserId);
+
+  ///get employment history for the org user
+  ///need org user id (both owner n user)
+  Future<List<EmploymentHistories>> getOrgUserEmploymentHistory(
+          {required String ordUserId}) async =>
+      await _profileDataSource.getOrgUserEmploymentHistory(ordUserId);
 
   Future<void> getEmploymentInfo({String? ordId}) async {
     isEmployeeInfoLoading(true);

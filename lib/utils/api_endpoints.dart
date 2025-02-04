@@ -346,6 +346,63 @@ query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
 }
 ''';
 
+
+const getOrgUserDeptHistoryQuery=r'''
+query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
+  getOrganizationUserHistory(org_user_id: $orgUserId) {
+    dept_histories {
+      start_date
+      end_date
+      department {
+        id
+        name
+        manager {
+          profile {
+            image
+            first_name
+            last_name
+          }
+        }
+        parent {
+          name
+        }
+      }
+    }
+  }
+}
+''';
+
+const getOrgUserDesignationHistoryQuery=r'''
+query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
+  getOrganizationUserHistory(org_user_id: $orgUserId) {
+    designation_histories {
+      start_date
+      end_date
+      designation {
+        id
+        name
+      }
+    }
+  }
+}
+''';
+
+const getOrgUserEmploymentHistoryQuery=r'''
+query GET_ORGANIZATION_USER_HISTORY($orgUserId: UUID) {
+  getOrganizationUserHistory(org_user_id: $orgUserId) {
+    employment_histories {
+      start_date
+      end_date
+      employment_status {
+        id
+        name
+        color
+      }
+    }
+  }
+}
+''';
+
 const userLogHistoryQuery = r'''
 query GeTimelogAndLeaveAvailabilityForApp($orgUserId: UUID) {
   geTimelogAndLeaveAvailabilityForApp(org_user_id: $orgUserId) {

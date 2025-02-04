@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_log_history.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/employee_over_view/employee_overview.dart';
@@ -8,6 +9,7 @@ import '../../../../../common/widget/custom_drawer.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/loading_indicator.dart';
 import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_string.dart';
 import '../../../../../utils/images.dart';
 import '../../bindings/employee_profile_bindings.dart';
 import '../../controller/employee_profile_controller.dart';
@@ -47,10 +49,7 @@ class EmployeeProfileScreen extends StatelessWidget {
               Expanded(
                   child: ProfileOverView(
                 userDetails:
-                    Get.find<EmployeeProfileController>().userDetails ?? UserDetails(),
-                onRefresh: () {
-                  Get.find<EmployeeProfileController>().getUserProfile();
-                },
+                    Get.find<EmployeeProfileController>().userDetails ?? UserDetails(), orgUserId: GetStorage().read(AppString.ORGANIZATION_USER_ID),
               )),
             ],
           ));
