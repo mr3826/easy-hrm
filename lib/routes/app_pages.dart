@@ -3,6 +3,7 @@ import 'package:payrun_mobile/app/global/services/network_connectivity_service.d
 import 'package:payrun_mobile/app/modules/auth/bindings/forgot_password_binding.dart';
 import 'package:payrun_mobile/app/modules/auth/bindings/otp_screen_bindings.dart';
 import 'package:payrun_mobile/app/modules/auth/bindings/signin_binding.dart';
+import 'package:payrun_mobile/app/modules/hr_dashboard/view/screens/candidate_details_screen.dart';
 import 'package:payrun_mobile/app/modules/splash/bindings/splash_bingings.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/forgot_password.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
@@ -70,6 +71,10 @@ class AppPages {
       name: _Paths.JOB_DETAILS,
       transition: Transition.size,
       page: () => JobDetailsScreen(),
+    ), GetPage(
+      name: _Paths.CANDIDATES_DETAILS,
+      transition: Transition.size,
+      page: () => CandidateDetailsScreen(),
     ),
     GetPage(
       name: _Paths.PASSWORD_UPDATE_SCRREN,
