@@ -114,7 +114,6 @@ class BuildSelectDateLayout extends StatelessWidget {
       DateTime? startDate = selectedRange["start"];
       if(startDate !=null){
         Get.find<DateTimeController>().requestedDate.value = DateFormat("yyyy-MM-dd").format(DateTime.parse(startDate.toString()));
-
       }
      dateRange?.call("");
 

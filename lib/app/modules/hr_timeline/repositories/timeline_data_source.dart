@@ -177,6 +177,9 @@ class TimelineDataImpl implements TimelineDataSource {
 
  @override
  Future<bool> removeTimelineEntry({required String timeLogId,String ?orgId}) async {
+
+
+    print("removeTimelineEntry : timeLogId::: $timeLogId  orgId :: $orgId");
    try {
      Map<String, dynamic>? response =
      await  _timelineApiService.removeTimelineEntry(timeLogId,orgId);

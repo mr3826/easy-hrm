@@ -151,7 +151,7 @@ void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
       context: context,
       onConfirm: () async {
         await Get.find<TimelineGlobalController>()
-            .removeTimelineEntry(timeLogId: taskInfo.timeLineId);
+            .removeTimelineEntry(timeLogId: taskInfo.timeLineId,orgId: taskInfo.employeeId);
         Get.back(canPop: false);
         Get.back(canPop: false);
       },

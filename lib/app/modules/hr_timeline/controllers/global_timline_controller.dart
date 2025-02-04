@@ -45,7 +45,6 @@ class TimelineGlobalController extends GetxController {
   final isAvailableLeaveType = false.obs;
   int initialIndex=0;
   String searchEmployeeId ="";
-  String searchEmployeeName ="";
 
   String addTimeLogId = "";
   RxString taskId = "".obs;

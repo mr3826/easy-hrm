@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import 'package:payrun_mobile/modules/leave/presentation/view/widget/task_view_btn_sheet_appbar.dart' as btn;
+import 'package:payrun_mobile/modules/leave/presentation/view/widget/task_view_btn_sheet_appbar.dart'
+    as btn;
 import '../../../../../../modules/timeline/view/widget/project_view_widget.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/utils.dart';
-import 'package:payrun_mobile/modules/timeline/view/widget/project_view_widget.dart' as pj;
+import 'package:payrun_mobile/modules/timeline/view/widget/project_view_widget.dart'
+    as pj;
 
 class BuildTaskDetails extends GetView<TimelineGlobalController> {
   const BuildTaskDetails({super.key});
@@ -57,12 +59,8 @@ class BuildTaskDetails extends GetView<TimelineGlobalController> {
                           "",
                       employeeName:
                           "${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.firstName ?? ""} ${controller.timeEntryDetails?.getTimeEntryDetails?.organizationUser?.profile?.lastName ?? ""}",
-                      employeeId: controller
-                              .timeEntryDetails
-                              ?.getTimeEntryDetails
-                              ?.organizationUser
-                              ?.profile
-                              ?.id ??
+                      employeeId: controller.timeEntryDetails
+                              ?.getTimeEntryDetails?.organizationUser?.id ??
                           "",
                       endTime: controller.timeEntryDetails?.getTimeEntryDetails?.endDate ??
                           "",

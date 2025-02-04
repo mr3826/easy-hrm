@@ -142,9 +142,10 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
                     radius: 20,
                   )
                 : TimelineCalendar(
-                    timelineSummaryByDate: Get.find<TimelineGlobalController>()
-                            .timelineSummaryByDate ??
-                        TimelineSummaryByDate()))
+                    timelineSummaryByDate: Get.find<TimelineGlobalController>().timelineSummaryByDate ??
+                        TimelineSummaryByDate())
+
+        )
             : _buildTimeSheet(),
       ]),
     );
