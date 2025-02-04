@@ -6,7 +6,7 @@ class TimeFormatHelper {
     num? seconds = num.tryParse(secondsStr);
 
     // If parsing fails, return an error message
-    if (seconds == null) return "Invalid input";
+    if (seconds == null) return "";
 
     bool isNegative = seconds < 0;
     int totalMinutes = seconds.abs().toInt() ~/ 60;

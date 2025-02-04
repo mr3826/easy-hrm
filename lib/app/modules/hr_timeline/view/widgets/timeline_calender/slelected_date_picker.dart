@@ -21,7 +21,7 @@ class BuildSelectDateLayout extends StatelessWidget {
         child: GestureDetector(
           onTap: ()=> _showCustomDateRangeDialog(context),
           child: Padding(
-            padding: const EdgeInsets.only(top: 8, left: 25, right: 25),
+            padding: const EdgeInsets.only(top: 0, left: 25, right: 25),
             child: Column(
               children: [
                 Row(

@@ -4,7 +4,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timelog_details_by_month.dart';
-import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../utils/utils.dart';
 import '../repositories/timeline_data_source.dart';
@@ -53,9 +52,9 @@ class TimelineSummaryController extends GetxController with StateMixin {
   getTimelogDetailsByMonth(
       {String? startDate, String? endDate, String? orgId}) async {
     String startDate =
-        "${formatDate(date: Get.find<DateTimeController>().requestedDate.value, format: "yyyy-MM-dd")} 00:00:00.000";
+        "${formatDate(date:selectedTimeSheetStartDate.value, format: "yyyy-MM-dd")} 00:00:00.000";
     String endDate =
-        "${formatDate(date: Get.find<DateTimeController>().requestedEndDate.value, format: "yyyy-MM-dd")} 23:59:59.000";
+        "${formatDate(date: selectedTimeSheetEndDate.value, format: "yyyy-MM-dd")} 23:59:59.000";
     isMonthlySummaryDataLoading(true);
 
     final String organizationId =

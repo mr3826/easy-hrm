@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
-import '../../../../common/controller/date_time_controller.dart';
 import '../../../../common/widget/custom_card_style.dart';
 import '../../../../utils/dimensions.dart';
 
@@ -57,9 +56,10 @@ class SummaryTimeLogCalendar extends StatelessWidget {
     _scrollToMonth(_controller.selectedValue.value);
     int monthNumber = monthToNumber[month] ?? 0;
 
-
-    Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(DateTime(year, monthNumber, 1, 0, 0, 0).toString());
-    Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(DateTime(year, monthNumber + 1, 0).toString());
+    Get.find<TimelineSummaryController>()
+        .selectedTimeSheetStartDate(DateTime(year, monthNumber, 1, 0, 0, 0).toString());
+    Get.find<TimelineSummaryController>()
+        .selectedTimeSheetEndDate(DateTime(year, monthNumber + 1, 0).toString());
 
     await Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
     await Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();

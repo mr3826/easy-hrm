@@ -175,7 +175,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
   _bottomLayout([int? tabIndex]) {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(86),
+      preferredSize: const Size.fromHeight(89),
       child: Container(
         decoration: BoxDecoration(
             color: AppColor.backgroundColor,
@@ -245,8 +245,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
               startDate: startDate,
               endDate: endDate);
         }
-
-
 
       },
     );

@@ -24,6 +24,11 @@ import 'global_timline_controller.dart';
 class HrTimelineController extends GetxController with StateMixin {
   final TimelineDataSource _timelineDataSource;
   HrTimelineController(this._timelineDataSource);
+
+
+
+
+
   final isLoading = false.obs;
   final isProjectListLoading = false.obs;
   final isManualEntryLoading = false.obs;
@@ -108,34 +113,22 @@ class HrTimelineController extends GetxController with StateMixin {
     return null;
   }
 
-  getTimelineCalenderByDate(
-      {String? startDate, String? endDate, String? orgId}) async {
+  getTimelineCalenderByDate({String? startDate, String? endDate, String? orgId}) async {
     isTimelineCalendarByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
-    final String organizationId =
-        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
     log("getTimelineCalenderByDate start & end ==>$startDate And $endDate org : $organizationId");
-    calendarTimeline = await _timelineDataSource.getTimelineCalender(
-            startDate: formattedStartDate,
-            endDate: formattedEndDate,
-            orgUserId: organizationId) ??
-        CalendarTimeline();
 
+    calendarTimeline = await _timelineDataSource.getTimelineCalender(startDate: formattedStartDate, endDate: formattedEndDate, orgUserId: organizationId) ?? CalendarTimeline();
     if (timelogList?.isNotEmpty ?? false) {
       for (var value in timelogList!) {
         CalendarControllerProvider.of(Get.context!).controller.remove(value);
       }
     }
-    timelogList?.clear();
-    timelogList =
-        calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
 
-          print(''''
-          total_min ${e.totalMinutes}
-      
-          
-          ''');
+    timelogList?.clear();
+    timelogList = calendarTimeline.getCalenderTimelinesForApp?.data?.timelines?.map((e) {
       ModelForDescription modelForDescription = ModelForDescription(
           status: e.status ?? "",
           description: e.description ?? "",

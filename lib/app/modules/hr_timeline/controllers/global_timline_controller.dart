@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import '../../../../common/controller/date_time_controller.dart';
@@ -26,8 +27,10 @@ import '../repositories/timeline_data_source.dart';
 class TimelineGlobalController extends GetxController {
   final TimelineDataSource _timelineDataSource;
   TimelineGlobalController(this._timelineDataSource);
-
   final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
+
+  RxString selectedTimeLineStartDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  RxString selectedTimeLineEndDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
 
   final isProjectListLoading = false.obs;
   final isProistLoading = false.obs;
