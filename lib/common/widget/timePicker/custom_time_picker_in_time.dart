@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/hr_timeline_bindings.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_global_bindings.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../app/modules/hr_timeline/controllers/global_timline_controller.dart';
+import '../../../app/modules/hr_timeline/repositories/timeline_data_source.dart';
 import '../../../app/modules/leave_hr/presentation/controller/hr_leave_controller.dart';
 import '../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../modules/leave/presentation/controller/update_leave_controller.dart';
@@ -177,6 +180,8 @@ class _InDatePickerState extends State<InDatePicker> {
   @override
   Widget build(BuildContext context) {
     Get.put(HrLeaveController());
+    HrTimelineBindings().dependencies();
+    TimelineGlobalBindings().dependencies();
     return Column(
       children: [
         Container(
