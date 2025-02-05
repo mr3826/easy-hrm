@@ -1,10 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -17,52 +17,63 @@ import '../../../../controller/global_profile_controller.dart';
 import '../../../../models/employee_work_history.dart';
 
 class DesignationLayout extends GetView<ProfileGlobalController> {
-  const DesignationLayout({super.key});
+  final String orgUserId;
+
+  const DesignationLayout({required this.orgUserId,super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.isEmployeeInfoLoading.isTrue) {
-        return const LoadingIndicator();
-      }
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          customButtonSheetAppbar(
-              text: AppString.text_designation.tr,
-              subtext: AppString.text_history.tr),
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: controller
-                      .employeeWorkHistory
-                      ?.getOrganizationUserHistory
-                      ?.designationHistories
-                      ?.length ??
-                  0,
-              itemBuilder: (context, index) {
-                final designationHistory = controller.employeeWorkHistory
-                    ?.getOrganizationUserHistory?.designationHistories?[index];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        customButtonSheetAppbar(
+            text: AppString.text_designation.tr,
+            subtext: AppString.text_history.tr),
 
-                final designationHistories = Get.find<ProfileGlobalController>()
-                    .employeeWorkHistory
-                    ?.getOrganizationUserHistory;
+        FutureBuilder(future: controller.getOrgUserDesignationHistory(ordUserId: orgUserId), builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CupertinoActivityIndicator(
+                color: AppColor.primaryColor,
+                radius: 14,
+              ),
+            );
+          }
+          if (snapshot.hasError || snapshot.data!.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Text(
+                  "No designation history!",
+                  style: AppStyle.normal_text_black.copyWith(
+                    color: AppColor.hintColor,
+                  ),
+                ),
+              ),
+            );
+          }
+          return  Expanded(
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.zero,
+            itemCount:  snapshot.data?.length ??
+                0,
+            itemBuilder: (context, index) {
+              final designationHistory =  snapshot.data?[index];
+              bool isLastItem = snapshot.data!.isNotEmpty
+                  ? index ==
+                  snapshot.data!.length - 1
+                  : false;
 
-                bool isLastItem = (designationHistories != null &&
-                        designationHistories.designationHistories != null &&
-                        designationHistories.designationHistories!.isNotEmpty)
-                    ? index ==
-                        designationHistories.designationHistories!.length - 1
-                    : false;
-
-                return _employeeStatusInfoLayout(designationHistory, isLastItem);
-              },
-            ),
+              return _employeeStatusInfoLayout(
+                  designationHistory, isLastItem);
+            },
           ),
-        ],
-      );
-    });
+        );
+        },),
+
+      ],
+    );
   }
 
   Widget _employeeStatusInfoLayout(
@@ -72,13 +83,13 @@ class DesignationLayout extends GetView<ProfileGlobalController> {
       overflow: TextOverflow.ellipsis,
     );
 
-    final developerStatus = designationHistory?.designation?.name ?? "";
+    final developerStatus = designationHistory?.designation.name;
     final date = _formatDate(designationHistory?.startDate);
     final durationText =
         "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "", designationHistory?.endDate ?? "")}";
-    final employeeCurrentStatus = designationHistory?.endDate == null
+    final employeeCurrentStatus = designationHistory!.endDate.isEmpty
         ? AppString.textPresent.tr
-        : dateMonthYearFormatFromDatetime(designationHistory?.endDate ?? "");
+        : dateMonthYearFormatFromDatetime(designationHistory.endDate);
 
     return Stack(
       children: [
@@ -102,7 +113,7 @@ class DesignationLayout extends GetView<ProfileGlobalController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      developerStatus,
+                      developerStatus??"",
                       style: AppStyle.normal_text_grey.copyWith(
                         color: AppColor.normalTextColor,
                         fontSize: Dimensions.fontSizeMid - 2,

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_log_history.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/profile_tab_bar.dart';
-import 'package:payrun_mobile/app/modules/profile/view/widgets/widgtes.dart';
+import 'package:payrun_mobile/app/modules/profile/view/widgets/user_info_layout.dart';
 import '../../../../../common/widget/custom_drawer.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_string.dart';
 import '../../../../../utils/images.dart';
 import '../../bindings/hr_profile_bindings.dart';
 import '../../controller/global_profile_controller.dart';
@@ -48,6 +50,7 @@ class HrProfileScreen extends GetView<HrProfileController> {
                   userDetails: controller.userDetails ?? UserDetails(),
                   leaveSummaryApiCall: () => controller.getLeaveSummary(),
                   getLeaveRecordList: () => controller.getLeaveRecordsData(),
+                  orgUserId: GetStorage().read(AppString.ORGANIZATION_USER_ID),
                 )
               ],
             ));

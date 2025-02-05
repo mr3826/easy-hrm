@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../../../../../routes/app_pages.dart';
-import '../../../../../utils/app_color.dart';
-import '../../../../../utils/app_string.dart';
-import '../../../../../utils/app_style.dart';
-import '../../../../../utils/dimensions.dart';
-import '../../../../../utils/utils.dart';
+import '../../../../routes/app_pages.dart';
+import '../../../../utils/app_color.dart';
+import '../../../../utils/app_string.dart';
+import '../../../../utils/app_style.dart';
+import '../../../../utils/dimensions.dart';
+import '../../../../utils/utils.dart';
 
 Widget backToLoginLayout() {
   return GestureDetector(

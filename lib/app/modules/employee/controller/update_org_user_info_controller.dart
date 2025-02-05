@@ -89,10 +89,6 @@ class UpdateOrgUserInfoController extends GetxController with StateMixin {
       input['inputData']?['emergency_phone_number'] = changedEmergencyNumber;
     }
 
-    input.forEach(
-      (key, value) => print('key: $key value: $value'),
-    );
-
     bool response = await _employeeDataSource.updateOrgUserInfo(input: input);
     isUpdateDataLoading(false);
     return response;

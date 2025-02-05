@@ -6,7 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
 import 'package:payrun_mobile/app/modules/auth/controller/forgot_password_controller.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/widget/common_widget.dart';
+import 'package:payrun_mobile/app/modules/auth/models/common_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';

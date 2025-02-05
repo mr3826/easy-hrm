@@ -20,12 +20,32 @@ class ProfileApiService {
     return response.data;
   }
 
+
+  Future<Map<String, dynamic>?>? getOrgUserDeptHistory(String ordId) async {
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: getOrgUserDeptHistoryQuery, variables: {"orgUserId": ordId});
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>?>? getOrgUserDesignationHistory(String ordId) async {
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: getOrgUserDesignationHistoryQuery,
+        variables: {"orgUserId": ordId});
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>?>? getOrgUserEmploymentStatusHistory(
+      String ordId) async {
+    QueryResult<Object?> response = await _apiService.gqlCall(
+        queryString: getOrgUserEmploymentHistoryQuery,
+        variables: {"orgUserId": ordId});
+    return response.data;
+  }
+
   Future<Map<String, dynamic>?>? getEmploymentInfo(String ordId) async {
     Map<String, dynamic> variable = {"orgUserId": ordId};
-    print("orgUserId: $ordId");
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: getEmploymentInfoQuery, variables: variable);
-    print("orgUserId work his:: ${response.data}");
     return response.data;
   }
 

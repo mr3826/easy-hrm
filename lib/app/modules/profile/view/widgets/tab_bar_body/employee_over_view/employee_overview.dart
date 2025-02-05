@@ -25,14 +25,12 @@ import 'employee_status_layout.dart';
 
 class ProfileOverView extends StatelessWidget {
   final UserDetails userDetails;
-  final Function onRefresh;
-  final String? orgUserId;
+  final String orgUserId;
 
   const ProfileOverView(
       {super.key,
       required this.userDetails,
-      required this.onRefresh,
-      this.orgUserId});
+      required this.orgUserId});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +63,7 @@ class ProfileOverView extends StatelessWidget {
             customSpacerHeight(height: 15),
 
             /// Department layout
-            _buildDepartmentLayout(context),
+            _buildDepartmentLayout(),
 
             customSpacerHeight(height: 5),
 
@@ -169,16 +167,13 @@ class ProfileOverView extends StatelessWidget {
             userDetails.getOrganizationUserDetails?.profile?.address ?? "");
   }
 
-  Widget _buildDepartmentLayout(BuildContext context) {
-    String? department = userDetails.getOrganizationUserDetails?.department?.name;
+  Widget _buildDepartmentLayout() {
+    String? department =
+        userDetails.getOrganizationUserDetails?.department?.name;
     if (department != null) {
       return BuildDepartment(
         userDetails: userDetails,
-        onDtpHistoryAction: () {
-          Get.find<ProfileGlobalController>().getEmploymentInfo();
-          customAntButtonSheet(
-              context: context, child: const DepartmentHistoryView());
-        },
+        orgUserId: orgUserId,
       );
     }
     return const SizedBox.shrink();
@@ -186,26 +181,9 @@ class ProfileOverView extends StatelessWidget {
 
   Widget _buildEmploymentHistoryLayout(BuildContext context) {
     return BuildEmployeeStatusLayout(
-      userDetails: userDetails, //todo
-      onDesignation: () {
-        print("BuildEmployeeStatusLayout clicked");
-        Get.find<ProfileGlobalController>().getEmploymentInfo(ordId: orgUserId);
-        customAntButtonSheet(
-            child: const DesignationLayout(), context: context); //lodar
-      },
-      onEmployeeStatus: () {
-        print("BuildEmployeeStatusLayout clicked");
-
-        Get.find<ProfileGlobalController>().getEmploymentInfo(ordId: orgUserId);
-        customAntButtonSheet(context: context, child: const EmploymentLayout());
-
-      },
+      orgUserId: orgUserId,
+      userDetails: userDetails,
     );
-  }
-
-  /// Fetches the latest profile data from the server.
-  Future<void> _fetchProfileData() async {
-    onRefresh();
   }
 
   _employmentHistoryInfo(title, date) {

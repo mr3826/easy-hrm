@@ -3,25 +3,14 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:payrun_mobile/app/modules/employee/model/terminate_org_user.dart';
 import 'package:payrun_mobile/app/modules/employee/repository/employee_data_sourse.dart';
-import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source.dart';
-import 'package:payrun_mobile/app/modules/profile/models/employee_work_history.dart';
-import 'package:payrun_mobile/app/modules/profile/models/user_log_history.dart';
-import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
-import '../../../../../modules/leave/domain/leave_record_response.dart' as lr;
 import '../model/employee_info.dart';
 import '../model/user_work_info_dropdown.dart' as emp_wrk_inf;
-import '../data/employee_remote_data_source.dart';
 import '../view/widget/filter/check_box.dart';
 
 class EmploymentController extends GetxController with StateMixin {
   final EmployeeDataSource _employeeDataSource;
 
   EmploymentController(this._employeeDataSource);
-
-  final EmployeeRemoteDataSource _employeeRemoteDataSource =
-      Get.find<EmployeeRemoteDataSource>();
-  final LeaveRemoteDataSource _employeeLeaveRemoteDataSource =
-      Get.find<LeaveRemoteDataSource>();
 
   RxString selectedTerminationOption = ''.obs;
   Rx<DateTime> selectedTerminationDate = DateTime.now().obs;
@@ -30,7 +19,6 @@ class EmploymentController extends GetxController with StateMixin {
   RxBool isEmployeesInfoLoading = false.obs;
   RxBool isFilterInfoLoading = false.obs;
   bool isEmploymentHistoryApiCalled = false;
-  bool isProfileInfoApiCalled = false;
   RxBool isTerminatedUserDataLoading = false.obs;
 
   RxString searchQuery = ''.obs;
@@ -38,17 +26,6 @@ class EmploymentController extends GetxController with StateMixin {
   TextEditingController searchController = TextEditingController();
   TextEditingController terminationEditNoteController = TextEditingController();
 
-  RxInt daysCount = 0.obs;
-  RxInt applicationBalanceCount = 0.obs;
-  RxInt applicationMaxDaysCount = 0.obs;
-  RxBool hasChangedProfileInfo = false.obs;
-
-  EmployeeInfo? employeeInfo = EmployeeInfo();
-  UserDetails? employeeProfileInfo = UserDetails();
-  EmployeeWorkHistory? employeeWorkHistory = EmployeeWorkHistory();
-  UserLogHistory? employeesLogHistory = UserLogHistory();
-  List<lr.GetLeaveRecordsForApp?> getLeaveRecordList =
-      <lr.GetLeaveRecordsForApp?>[];
 
   List<Data>? employeeList = <Data>[];
 
@@ -83,14 +60,6 @@ class EmploymentController extends GetxController with StateMixin {
     List<String> employmentStatusIds = getSelectedCheckBoxValues(employmentStatusList);
     List<String> userStatusIds = getSelectedCheckBoxValues(userStatusList);
     List<String> attendanceIds = getSelectedCheckBoxValues(attendanceList);
-
-    print('''
-    departmentIds ; $departmentIds
-    employmentStatusIds $employmentStatusIds
-    userStatusIds $userStatusIds
-    attendanceIds $attendanceIds
-    ''');
-
 
     Map<String, Map<String, Object>> queryMap = {
       "queryData": {
@@ -129,7 +98,8 @@ class EmploymentController extends GetxController with StateMixin {
       "optionData": {"limit": 20, "offset": 0}
     };
 
-    final EmployeeInfo? employees = await _employeeDataSource.getEmployees(queryVariable: queryMap);
+    final EmployeeInfo? employees =
+        await _employeeDataSource.getEmployees(queryVariable: queryMap);
     searchedEmployeeList = employees?.getOrganizationUsers?.data ?? [];
     isSearchInfoLoading(false);
   }
@@ -183,34 +153,6 @@ class EmploymentController extends GetxController with StateMixin {
     return false;
   }
 
-  Future<void> getEmployeeProfile({required String orgUserId}) async {
-    change(null, status: RxStatus.loading());
-    employeeProfileInfo = await _employeeRemoteDataSource.getEmployeeProfile(
-        orgUserId: orgUserId);
-    change(null, status: RxStatus.success());
-  }
-
-  Future<void> getEmployeesEmploymentInfo({required String orgUserId}) async {
-    change(null, status: RxStatus.loading());
-    employeeWorkHistory = await _employeeRemoteDataSource
-        .getEmployeesEmploymentInfo(orgUserId: orgUserId);
-    change(null, status: RxStatus.success());
-  }
-
-  Future<void> getUserLogHistory({required String orgUserId}) async {
-    change(null, status: RxStatus.loading());
-    employeesLogHistory =
-        await _employeeRemoteDataSource.getUserLogHistory(orgUserId: orgUserId);
-    change(null, status: RxStatus.success());
-  }
-
-  _getEmployeeUserLeaveRecord({required String orgUserId}) async {
-    change(null, status: RxStatus.loading());
-    final List<lr.GetLeaveRecordsForApp>? res =
-        await _employeeLeaveRemoteDataSource.getLeaveRecordList(
-            limit: 20, offset: 0, orgUserId: orgUserId);
-    change(null, status: RxStatus.success());
-  }
 
   void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {
     for (CheckBoxModel item in checkBoxList) {
@@ -243,15 +185,6 @@ class EmploymentController extends GetxController with StateMixin {
     await box.clear();
   }
 
-  void increment() {
-    count++;
-  }
-
-  void decrement() {
-    if (count > 0) {
-      count--;
-    }
-  }
 
   final List<String> items = [
     'Permanent',
@@ -266,37 +199,6 @@ class EmploymentController extends GetxController with StateMixin {
         .toList();
   }
 
-  void dayIncrement() {
-    daysCount++;
-  }
-
-  var count = 0.obs;
-
-  void dayDecrement() {
-    if (daysCount > 0) {
-      daysCount--;
-    }
-  }
-
-  void applicationBalanceIncrement() {
-    applicationBalanceCount++;
-  }
-
-  void applicationBalanceDecrement() {
-    if (applicationBalanceCount > 0) {
-      applicationBalanceCount--;
-    }
-  }
-
-  void applicationMaxDayIncrement() {
-    applicationMaxDaysCount++;
-  }
-
-  void applicationMaxDayDecrement() {
-    if (applicationMaxDaysCount > 0) {
-      applicationMaxDaysCount--;
-    }
-  }
 
   @override
   void onInit() {

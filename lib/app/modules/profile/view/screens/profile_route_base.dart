@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_log_history.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/employee_over_view/employee_overview.dart';
-import 'package:payrun_mobile/app/modules/profile/view/widgets/widgtes.dart';
+import 'package:payrun_mobile/app/modules/profile/view/widgets/user_info_layout.dart';
 import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/images.dart';
@@ -21,7 +21,6 @@ import '../widgets/profile_tab_bar.dart';
 
 class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
   final String orgUserId;
-
   const ProfileRouteBase({super.key, required this.orgUserId});
 
   @override
@@ -37,7 +36,6 @@ class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
                     information:
                         Get.find<ProfileRouteBaseController>().userDetails ??
                             UserDetails(),
-                    editIconUrl: Images.EDIT_ICON,
                   ),
                   customSpacerHeight(height: 30),
                   LeaveStatusGoal(
@@ -47,6 +45,7 @@ class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
                   ),
                   customSpacerHeight(height: 30),
                   ProfileTabBar(
+                    orgUserId: orgUserId,
                     userDetails:
                         Get.find<ProfileRouteBaseController>().userDetails ??
                             UserDetails(),

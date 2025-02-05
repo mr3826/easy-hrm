@@ -10,6 +10,12 @@ abstract class ProfileDataSource {
 
   Future<UserLogHistory?> getUserLogHistory([String? ordUserId]);
 
+  Future<List<DeptHistories>> getOrgUserDeptHistory(String ordId);
+
+  Future<List<DesignationHistories>> getOrgUserDesignationHistory(String ordId);
+
+  Future<List<EmploymentHistories>> getOrgUserEmploymentHistory(String ordId);
+
   Future<EmployeeWorkHistory?> getEmploymentInfo(String ordId);
 
   Future<OrganizationInfoDetails?> getOrganizationInfo();
@@ -50,6 +56,20 @@ class ProfileDataSourceImpl implements ProfileDataSource {
   }
 
   @override
+  Future<OrganizationInfoDetails?> getOrganizationInfo() async {
+    try {
+      final response = await _profileApiService.getOrganizationInfo();
+      if (response != null) {
+        return OrganizationInfoDetails.fromJson(response);
+      }
+      return null;
+    } catch (e) {
+      log('Error in getOrganizationInfo: $e');
+      return null;
+    }
+  }
+
+  @override
   Future<EmployeeWorkHistory?> getEmploymentInfo(String ordId) async {
     try {
       final response = await _profileApiService.getEmploymentInfo(ordId);
@@ -64,17 +84,52 @@ class ProfileDataSourceImpl implements ProfileDataSource {
   }
 
   @override
-  Future<OrganizationInfoDetails?> getOrganizationInfo() async {
+  Future<List<DeptHistories>> getOrgUserDeptHistory(String ordId) async {
     try {
-      final response = await _profileApiService.getOrganizationInfo();
+      final response = await _profileApiService.getOrgUserDeptHistory(ordId);
       if (response != null) {
-        return OrganizationInfoDetails.fromJson(response);
+        return EmployeeWorkHistory.fromJson(response)
+            .getOrganizationUserHistory
+            .deptHistories;
       }
-      return null;
     } catch (e) {
-      log('Error in getOrganizationInfo: $e');
-      return null;
+      log('Error in getOrgUserDeptHistory: $e');
     }
+    return [];
+  }
+
+  @override
+  Future<List<DesignationHistories>> getOrgUserDesignationHistory(
+      String ordId) async {
+    try {
+      final response =
+          await _profileApiService.getOrgUserDesignationHistory(ordId);
+      if (response != null) {
+        return EmployeeWorkHistory.fromJson(response)
+            .getOrganizationUserHistory
+            .designationHistories;
+      }
+    } catch (e) {
+      log('Error in getOrgUserDesignationHistory: $e');
+    }
+    return [];
+  }
+
+  @override
+  Future<List<EmploymentHistories>> getOrgUserEmploymentHistory(
+      String ordId) async {
+    try {
+      final response =
+          await _profileApiService.getOrgUserEmploymentStatusHistory(ordId);
+      if (response != null) {
+        return EmployeeWorkHistory.fromJson(response)
+            .getOrganizationUserHistory
+            .employmentHistories;
+      }
+    } catch (e) {
+      log('Error in getOrgUserEmploymentHistory: $e');
+    }
+    return [];
   }
 
   @override

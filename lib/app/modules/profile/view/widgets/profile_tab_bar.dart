@@ -16,12 +16,14 @@ class ProfileTabBar extends StatefulWidget {
   final UserDetails userDetails;
   final Future<LeaveSummary> Function() leaveSummaryApiCall;
   final Future<List<GetLeaveRecordsForApp>> Function() getLeaveRecordList;
+  final String orgUserId;
 
   const ProfileTabBar({
     super.key,
     required this.userDetails,
     required this.leaveSummaryApiCall,
     required this.getLeaveRecordList,
+    required this.orgUserId,
   });
 
   @override
@@ -59,7 +61,7 @@ class _CandidateDetailsTabBarState extends State<ProfileTabBar>
               children: [
                 ProfileOverView(
                   userDetails: widget.userDetails,
-                  onRefresh: () {},
+                  orgUserId: widget.orgUserId,
                 ),
                 BuildLeaveRecord(
                   getLeaveRecordList: () => widget.getLeaveRecordList(),

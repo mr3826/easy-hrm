@@ -157,6 +157,24 @@ class ProfileGlobalController extends GetxController with StateMixin {
     change(null, status: RxStatus.success());
   }
 
+  ///get dept history for the org user
+  ///need org user id (both owner n user)
+  Future<List<DeptHistories>> getOrgUserDeptHistory(
+          {required String ordUserId}) async =>
+      await _profileDataSource.getOrgUserDeptHistory(ordUserId);
+
+  ///get designation history for the org user
+  ///need org user id (both owner n user)
+  Future<List<DesignationHistories>> getOrgUserDesignationHistory(
+          {required String ordUserId}) async =>
+      await _profileDataSource.getOrgUserDesignationHistory(ordUserId);
+
+  ///get employment history for the org user
+  ///need org user id (both owner n user)
+  Future<List<EmploymentHistories>> getOrgUserEmploymentHistory(
+          {required String ordUserId}) async =>
+      await _profileDataSource.getOrgUserEmploymentHistory(ordUserId);
+
   Future<void> getEmploymentInfo({String? ordId}) async {
     isEmployeeInfoLoading(true);
     employeeWorkHistory = (await _profileDataSource.getEmploymentInfo(
@@ -286,9 +304,9 @@ class ProfileGlobalController extends GetxController with StateMixin {
             .then((value) {
           if (value == true) {
             Get.find<UserInfoController>().getOrgSubscriptionInfo();
-            if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
-              switchOrganisationDataChange();
-            }
+            // if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+            //   switchOrganisationDataChange();
+            // }
           } else {
             showErrorMessage(message: AppString.error_text);
           }
@@ -305,9 +323,9 @@ class ProfileGlobalController extends GetxController with StateMixin {
         _handleUserInfo(userInfoResponse);
 
         Get.find<UserInfoController>().getOrgSubscriptionInfo();
-        if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
-          switchOrganisationDataChange();
-        }
+        // if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+        //   switchOrganisationDataChange();
+        // }
       }
       Get.back(canPop: false);
       Get.back(canPop: false);
@@ -380,17 +398,17 @@ class ProfileGlobalController extends GetxController with StateMixin {
 
                                           Get.find<UserInfoController>()
                                               .getOrgSubscriptionInfo();
-                                          if (Get.find<UserInfoController>()
-                                              .isSubscriptionExpired
-                                              .isFalse) {
-                                            switchOrganisationDataChange();
-
-                                            Get.back(canPop: false);
-                                            Get.back(canPop: false);
-                                            Get.back(canPop: false);
-
-                                            passwordInputController.clear();
-                                          }
+                                          // if (Get.find<UserInfoController>()
+                                          //     .isSubscriptionExpired
+                                          //     .isFalse) {
+                                          //   switchOrganisationDataChange();
+                                          //
+                                          //   Get.back(canPop: false);
+                                          //   Get.back(canPop: false);
+                                          //   Get.back(canPop: false);
+                                          //
+                                          //   passwordInputController.clear();
+                                          // }
                                         }
                                       }
                                     } catch (e) {
