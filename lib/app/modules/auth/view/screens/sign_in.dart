@@ -160,21 +160,17 @@ class SignInScreen extends GetView<SignInController> {
           // Attempt login
           bool value = await controller.loginWithCredentials(
               email: emailController.text, password: passwordController.text);
-
-          // Handle login success or failure
           if (value) {
-            bool isSubscriptionExpired =
+            bool isUserActive =
                 await Get.find<UserInfoController>().getOrgSubscriptionInfo();
 
-            print(isSubscriptionExpired
+            print(!isUserActive
                 ? "Go to Sub expire screen"
                 : "Go to Main Screen");
 
-            if (!isSubscriptionExpired) {
-              Get.offNamed(Routes.MAIN_SCREEN);
-            } else {
-              Get.offNamed(Routes.SUBSCRIPTION_SCREEN);
-            }
+            isUserActive
+                ? Get.offNamed(Routes.MAIN_SCREEN)
+                : Get.offNamed(Routes.SUBSCRIPTION_SCREEN);
           } else {
             print("Login Unsuccessful");
           }

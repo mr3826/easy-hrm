@@ -274,9 +274,9 @@ class ProfileGlobalController extends GetxController with StateMixin {
             .then((value) {
           if (value == true) {
             Get.find<UserInfoController>().getOrgSubscriptionInfo();
-            if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
-              switchOrganisationDataChange();
-            }
+            // if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+            //   switchOrganisationDataChange();
+            // }
           } else {
             showErrorMessage(message: AppString.error_text);
           }
@@ -293,9 +293,9 @@ class ProfileGlobalController extends GetxController with StateMixin {
         _handleUserInfo(userInfoResponse);
 
         Get.find<UserInfoController>().getOrgSubscriptionInfo();
-        if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
-          switchOrganisationDataChange();
-        }
+        // if (Get.find<UserInfoController>().isSubscriptionExpired.isFalse) {
+        //   switchOrganisationDataChange();
+        // }
       }
       Get.back(canPop: false);
       Get.back(canPop: false);
@@ -368,17 +368,17 @@ class ProfileGlobalController extends GetxController with StateMixin {
 
                                           Get.find<UserInfoController>()
                                               .getOrgSubscriptionInfo();
-                                          if (Get.find<UserInfoController>()
-                                              .isSubscriptionExpired
-                                              .isFalse) {
-                                            switchOrganisationDataChange();
-
-                                            Get.back(canPop: false);
-                                            Get.back(canPop: false);
-                                            Get.back(canPop: false);
-
-                                            passwordInputController.clear();
-                                          }
+                                          // if (Get.find<UserInfoController>()
+                                          //     .isSubscriptionExpired
+                                          //     .isFalse) {
+                                          //   switchOrganisationDataChange();
+                                          //
+                                          //   Get.back(canPop: false);
+                                          //   Get.back(canPop: false);
+                                          //   Get.back(canPop: false);
+                                          //
+                                          //   passwordInputController.clear();
+                                          // }
                                         }
                                       }
                                     } catch (e) {

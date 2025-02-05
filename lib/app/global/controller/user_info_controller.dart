@@ -9,7 +9,6 @@ import '../../../utils/api_endpoints.dart';
 import 'package:dio/dio.dart' as dio;
 
 class UserInfoController {
-  RxBool isSubscriptionExpired = false.obs;
   RxBool isSubscriptionTimeTrackingIsAllow = true.obs;
   UserEnum userRole = UserEnum.employee;
 
@@ -23,11 +22,6 @@ class UserInfoController {
     return userInfo;
   }
 
-
-
-
-
-
   /// Fetches the organization subscription information
   /// and checks the subscription status.
   Future<bool> getOrgSubscriptionInfo() async {
@@ -36,13 +30,14 @@ class UserInfoController {
           .gqlCall(queryString: getOrgSubscriptionInfoQuery);
       if (response.data != null) {
         return _checkIfSubscription(
-            OrgSubscriptionInfoModel.fromJson(response.data!));
+            OrgSubscriptionInfoModel.fromJson(response.data!)
+                    .getAnOrganizationSubscription ??
+                GetAnOrganizationSubscription());
       }
-      return true;
     } catch (ex) {
       log("getOrgSubscriptionInfo: $ex");
-      return true;
     }
+    return false;
   }
 
   /// Checks the subscription status and features of an organization.
@@ -54,29 +49,25 @@ class UserInfoController {
   /// Finally, it navigates to the MAIN_SCREEN route.
   ///
   /// [data] - The organization's subscription information.
-  bool _checkIfSubscription(OrgSubscriptionInfoModel data) {
-    final GetAnOrganizationSubscription? orgSubscriptionInfo =
-        data.getAnOrganizationSubscription;
-
-    // Check if subscription is expired (paused or canceled)
-    try {
-      if (!orgSubscriptionInfo!.status!.contains("active") || !orgSubscriptionInfo.status!.contains("trialing")) {
-        isSubscriptionExpired(true);
-        return true;
-      } else {
-        // Check if "time_tracking" feature is enabled
-        orgSubscriptionInfo.plan?.planFeatures?.forEach((feature) {
-          if (feature.feature?.identifier == "time_tracking") {
-            isSubscriptionTimeTrackingIsAllow(feature.isEnabled ?? false);
-          }
-        });
-      }
-      return false;
-    } catch (e) {
-      isSubscriptionExpired(true);
-      log("_checkIfSubscription: $e");
-      return true;
+  bool _checkIfSubscription(GetAnOrganizationSubscription subscriptionInfo) {
+    // Check if subscription status is active or trialing
+    if (!checkStatus(subscriptionInfo.status ?? "")) {
+      return false; // Return early if subscription is not active or trialing
     }
+    // If the user is active, check the subscription plan features
+    subscriptionInfo.plan?.planFeatures?.forEach((feature) {
+      if (feature.feature?.identifier == "time_tracking") {
+        isSubscriptionTimeTrackingIsAllow(feature.isEnabled ?? false);
+      }
+    });
+    // Return true if the user is active
+    return true;
+  }
+
+
+  bool checkStatus(String status) {
+    if (status.isEmpty) return false;
+    return ["active", "trialing"].contains(status);
   }
 
   UserEnum _getUserRole(List<String> roles) {

@@ -6,7 +6,6 @@ import 'package:payrun_mobile/app/global/view/widgets/custom_network_image.dart'
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/app/modules/profile/models/employee_work_history.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
