@@ -14,11 +14,9 @@ import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 
-
-
 class LogDetailsButton extends StatelessWidget {
   final TaskInfo taskInfo;
-  const LogDetailsButton({super.key,required this.taskInfo});
+  const LogDetailsButton({super.key, required this.taskInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -34,58 +32,51 @@ class LogDetailsButton extends StatelessWidget {
       return _approvedLayout(context: context, taskInfo: taskInfo);
     }
   }
+
   _rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
     return Padding(
-      padding: marginLayout,
-      child: CustomDoubleAppButton(
-          cancelAction: ()=>_removeTask(context: context, taskInfo: taskInfo),
-          buttonText: AppString.text_details.tr,
-          cancelText: AppString.text_remove.tr,
-          onAction: () {
-            _updateDataFromApiResponse(taskInfo: taskInfo);
-            Get.to(() {
-              return UpdateTimeLineLog(
-                projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                    ? HexColor(taskInfo.projectColor)
-                    : AppColor.primaryColor,
-                endDateTime: taskInfo.endTime,
-                startDateTime: taskInfo.startTime,
-                status: taskInfo.status ?? "",
-              );
-            });
-          },
-          btnColor: AppColor.primaryColor),
-    );
+        padding: marginLayout,
+        child: CustomAppButton(
+            isButtonExpanded: true,
+            borderRadius: 40,
+            buttonText: Text(
+              AppString.text_remove.tr,
+              style:
+                  AppStyle.normal_text_grey.copyWith(color: AppColor.cardColor),
+            ),
+            onPressed: () => _removeTask(context: context, taskInfo: taskInfo),
+            buttonColor: AppColor.errorColorLight));
   }
 
   _pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
     return Padding(
       padding: marginLayout,
       child: CustomDoubleAppButton(
-          cancelAction: ()=>_removeTask(context: context, taskInfo: taskInfo),
+          cancelAction: () => _removeTask(context: context, taskInfo: taskInfo),
           buttonText: AppString.text_details.tr,
           cancelText: AppString.text_remove.tr,
           onAction: () {
             _updateDataFromApiResponse(taskInfo: taskInfo);
             Get.to(() => UpdateTimeLineLog(
-              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                  ? HexColor(taskInfo.projectColor)
-                  : AppColor.primaryColor,
-              endDateTime: taskInfo.endTime,
-              startDateTime: taskInfo.startTime,
-              status: taskInfo.status ?? "",
-            ));
+                  projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                      ? HexColor(taskInfo.projectColor)
+                      : AppColor.primaryColor,
+                  endDateTime: taskInfo.endTime,
+                  startDateTime: taskInfo.startTime,
+                  status: taskInfo.status ?? "",
+                ));
           },
           btnColor: AppColor.primaryColor),
     );
   }
 
-  void _removeTask({required BuildContext context, required TaskInfo taskInfo}) {
+  void _removeTask(
+      {required BuildContext context, required TaskInfo taskInfo}) {
     showCustomAlertDialog(
         context: context,
         onConfirm: () async {
-          await Get.find<TimelineGlobalController>()
-              .removeTimelineEntry(timeLogId: taskInfo.timeLineId,orgId: taskInfo.employeeId);
+          await Get.find<TimelineGlobalController>().removeTimelineEntry(
+              timeLogId: taskInfo.timeLineId, orgId: taskInfo.employeeId);
           Get.back(canPop: false);
           Get.back(canPop: false);
         },
@@ -98,11 +89,11 @@ class LogDetailsButton extends StatelessWidget {
         extraInfoText: "",
         descriptionFontSize: Dimensions.fontSizeDefault - 1,
         confirmButtonChild: Obx(() => Get.find<TimelineGlobalController>()
-            .isTimelogEntryOrRemoveLoading
-            .isTrue
+                .isTimelogEntryOrRemoveLoading
+                .isTrue
             ? const CupertinoActivityIndicator(
-          color: Colors.white,
-        )
+                color: Colors.white,
+              )
             : removeTextLayout()));
   }
 
@@ -128,13 +119,13 @@ class LogDetailsButton extends StatelessWidget {
         onPressed: () {
           _updateDataFromApiResponse(taskInfo: taskInfo);
           Get.to(() => UpdateTimeLineLog(
-            projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                ? HexColor(taskInfo.projectColor)
-                : AppColor.primaryColor,
-            endDateTime: taskInfo.endTime,
-            startDateTime: taskInfo.startTime,
-            status: taskInfo.status,
-          ));
+                projectOrTaskColor: taskInfo.projectColor.isNotEmpty
+                    ? HexColor(taskInfo.projectColor)
+                    : AppColor.primaryColor,
+                endDateTime: taskInfo.endTime,
+                startDateTime: taskInfo.startTime,
+                status: taskInfo.status,
+              ));
         },
         buttonColor: AppColor.primaryColor,
         isButtonExpanded: true,
@@ -144,7 +135,8 @@ class LogDetailsButton extends StatelessWidget {
 
   void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
     Get.find<TimelineGlobalController>().status.value = taskInfo.status ?? "";
-    Get.find<TimelineGlobalController>().taskId.value = taskInfo.timeLineId ?? "";
+    Get.find<TimelineGlobalController>().taskId.value =
+        taskInfo.timeLineId ?? "";
     Get.find<TimelineGlobalController>().taskId.value = taskInfo.taskId ?? "";
     Get.find<TimelineGlobalController>().projectId.value =
         taskInfo.projectId ?? "";
@@ -162,11 +154,4 @@ class LogDetailsButton extends StatelessWidget {
     ///if data change then value became true
     Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(false);
   }
-
-
 }
-
-
-
-
-

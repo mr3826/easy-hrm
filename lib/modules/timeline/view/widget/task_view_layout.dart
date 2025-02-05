@@ -76,19 +76,19 @@ class TaskViewLayout extends StatelessWidget {
           /// then it became task name that shown in ui
           /// pass its name to task name
 
-          if (Get.find<EmployeeTimelineController>().projectId.value != data?.projectId) {
-            Get.find<EmployeeTimelineController>().isValueChangeForTimeLogUpdate(true);
+          if (Get.find<TimelineGlobalController>().projectId.value == data?.projectId) {
+            Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
           }
 
 
-          Get.find<EmployeeTimelineController>().taskName.value = data?.name ?? "";
+          Get.find<TimelineGlobalController>().taskName.value = data?.name ?? "";
 
 
-          Get.find<EmployeeTimelineController>().projectId.value = data?.projectId ?? "";
+          Get.find<TimelineGlobalController>().projectId.value = data?.projectId ?? "";
 
-          Get.find<EmployeeTimelineController>().projectColor.value = data?.color ?? "";
+          Get.find<TimelineGlobalController>().projectColor.value = data?.color ?? "";
 
-          Get.find<EmployeeTimelineController>().taskId.value = "";
+          Get.find<TimelineGlobalController>().taskId.value = "";
 
           taskSearchController.clear();
 
@@ -101,7 +101,6 @@ class TaskViewLayout extends StatelessWidget {
   }
 
   Widget _buildAdminTaskList() {
-    print("_buildAdminTaskList_called");
     if (Get.find<TimelineGlobalController>().isProjectListLoading.isTrue) {
       return const Center(child: CupertinoActivityIndicator());
     }
@@ -141,13 +140,6 @@ class TaskViewLayout extends StatelessWidget {
           Get.find<TimelineGlobalController>().projectColor.value = data?.color ?? "";
           Get.find<TimelineGlobalController>().taskId.value = "";
           taskSearchController.clear();
-          print(''''
-          
-          task_newma: ${ Get.find<TimelineGlobalController>().taskName.value}
-          projectId: ${ Get.find<TimelineGlobalController>().projectId.value}
-          projectColor: ${ Get.find<TimelineGlobalController>().projectColor.value}
-          
-          ''');
           Navigator.pop(context);
         });
       },
@@ -212,21 +204,8 @@ _projectListLayout(BuildContext context, GetProjectsDropdown data, Function onSe
 
 Widget _taskLayout(Tasks task, context) {
 
-  TimelineGlobalController controller=Get.find<TimelineGlobalController>();
   return InkWell(
     onTap: () {
-      if(controller.isEmployee.isTrue){
-        if (Get.find<EmployeeTimelineController>().taskId.value != task.taskId) {
-          Get.find<EmployeeTimelineController>().isValueChangeForTimeLogUpdate(true);
-        }
-        taskSearchController.text = task.name ?? "";
-        Get.find<EmployeeTimelineController>().taskName.value = task.name ?? "";
-        Get.find<EmployeeTimelineController>().taskId.value = task.taskId ?? "";
-        Get.find<EmployeeTimelineController>().projectId.value = "";
-        Get.find<EmployeeTimelineController>().projectColor.value = "";
-        Navigator.pop(context);
-        taskSearchController.clear();
-      }else{
         if (Get.find<TimelineGlobalController>().taskId.value != task.taskId) {
           Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
         }
@@ -237,7 +216,6 @@ Widget _taskLayout(Tasks task, context) {
         Get.find<TimelineGlobalController>().projectColor.value = "";
         Navigator.pop(context);
         taskSearchController.clear();
-      }
 
     },
     child: Padding(

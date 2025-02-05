@@ -27,7 +27,6 @@ class AddToTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("isEmployee : $isEmployee");
     return WillPopScope(
       onWillPop: () => Get.find<ExitAppController>().willPopForTimeLog(),
       child: Padding(

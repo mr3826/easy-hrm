@@ -95,7 +95,6 @@ class _TabBarWidgetState extends State<TabBarWidget> {
 class CustomSearchBar extends StatefulWidget {
   final Function(String)? onValueSelected;
   final Function(UserInfo)? userInfo;
-  final Function? onClickRouteAction;
   final Function? onClearAction;
   final String? employeeName;
   final String? employeeImage;
@@ -107,7 +106,6 @@ class CustomSearchBar extends StatefulWidget {
     this.employeeName,
     this.userInfo,
     this.searchTextController,
-    this.onClickRouteAction,
     this.employeeImage,
     this.onClearAction,
   }) : super(key: key);
@@ -194,11 +192,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             (name) {
               setState(() {
                 searchController.text = name.name ?? "";
-
                 profileImgKey = name.imgUrl ?? "";
               });
             },
-        onClickRouteAction: widget.onClickRouteAction ?? () {},
       ),
     );
   }

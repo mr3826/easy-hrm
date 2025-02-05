@@ -22,12 +22,10 @@ import '../../../controller/employment_controller.dart';
 class SearchEmployeeList extends StatelessWidget {
   final Function(String)? onValueSelected;
   final Function(UserInfo)? userInfo;
-  final Function onClickRouteAction;
 
   const SearchEmployeeList(
       {Key? key,
       this.onValueSelected,
-      required this.onClickRouteAction,
       this.userInfo})
       : super(key: key);
 
@@ -54,26 +52,37 @@ class SearchEmployeeList extends StatelessWidget {
                     child: Column(
                       children: [
                         customSpacerHeight(height: 12),
+                        /// Current user section (You)
+
+
 
                         /// Current user section (You)
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     onValueSelected?.call(gs.GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? "");
+                        //     userInfo?.call(UserInfo("${Get.find<ProfileGlobalController>().employeeName.value} (You)", Get.find<ProfileGlobalController>().employeeImeKey.value));
+                        //   },
+                        //   child: _buildOwnInfo(
+                        //       name:Get.find<ProfileGlobalController>()
+                        //           .employeeName.value,
+                        //       role:"Static value",
+                        //       imgUrl: Get.find<ProfileGlobalController>()
+                        //               .employeeImeKey.value ??
+                        //           ""),
+                        // ),
+
                         GestureDetector(
-                          onTap: () {
-                            onValueSelected?.call(gs.GetStorage()
-                                    .read(AppString.ORGANIZATION_USER_ID) ??
-                                "");
-                            userInfo?.call(UserInfo("${Get.find<ProfileGlobalController>().employeeName.value} (You)", Get.find<ProfileGlobalController>().employeeImeKey.value)
+                          onTap: (){
+                            onValueSelected!(gs.GetStorage().read(AppString.ORGANIZATION_USER_ID));
+                            userInfo?.call(UserInfo("${Get.find<ProfileGlobalController>().employeeName.value} (You)", Get.find<ProfileGlobalController>().employeeImeKey.value));
 
-
-                                );
-                            onClickRouteAction.call();
                           },
                           child: _buildOwnInfo(
                               name:Get.find<ProfileGlobalController>()
                                   .employeeName.value,
-                              role: Get.find<ProfileGlobalController>()
-                                  .employeeName.value,
+                              role:"Static value",
                               imgUrl: Get.find<ProfileGlobalController>()
-                                      .employeeImeKey.value ??
+                                  .employeeImeKey.value ??
                                   ""),
                         ),
 
@@ -107,10 +116,8 @@ class SearchEmployeeList extends StatelessWidget {
                           onTap: () {
                             Get.find<EmploymentController>()
                                 .addRecentSearchData(employee !);
-                            userInfo?.call(UserInfo("${employee.profile?.firstName ?? ""} ${employee?.profile?.lastName ?? ""}", employee?.profile?.image ?? ""));
-                        onValueSelected?.call(employee?.id ?? "");
-
-                            onClickRouteAction.call();
+                            userInfo?.call(UserInfo("${employee.profile?.firstName ?? ""} ${employee.profile?.lastName ?? ""}", employee.profile?.image ?? ""));
+                        onValueSelected?.call(employee.id ?? "");
                           },
                           child: _buildEmploymeeInfo(
                               name:
@@ -249,7 +256,6 @@ class SearchEmployeeList extends StatelessWidget {
       onTap: () {
         onValueSelected?.call(employeeData.id ?? "");
         userInfo?.call(UserInfo("${employeeData.profile?.firstName ?? ""} ${employeeData.profile?.lastName ?? ""}", employeeData.profile?.image ?? ""));
-        onClickRouteAction.call();
       },
       child: Padding(
         padding:

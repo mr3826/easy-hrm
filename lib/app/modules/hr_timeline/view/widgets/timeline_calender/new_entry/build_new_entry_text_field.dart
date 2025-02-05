@@ -348,8 +348,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   _employeeSearch(BuildContext context) {
     // Set selected employee info
     return CustomSearchBar(
-      employeeName:
-          "${Get.find<ProfileGlobalController>().employeeName.value} (You)",
+      employeeName: "${Get.find<ProfileGlobalController>().employeeName.value} (You)",
       employeeImage: Get.find<ProfileGlobalController>().employeeImeKey.value,
       onValueSelected: (String orgId) async {
         Navigator.pop(context);
@@ -489,7 +488,8 @@ class BuildNewEntryTextField extends StatelessWidget {
 
   _rejectButton(BuildContext context) {
     return CustomAppButton(
-      isButtonExpanded: false,
+      isButtonExpanded: true,
+      borderRadius: 40,
       buttonText: Text(
         AppString.text_remove.tr,
         style: const TextStyle(color: Colors.white, fontSize: 16),

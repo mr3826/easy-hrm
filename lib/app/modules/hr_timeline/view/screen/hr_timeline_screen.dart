@@ -111,16 +111,44 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     return SliverList(
       delegate: SliverChildListDelegate([
         tabController.index == 0
-            ? Obx(() => controller.isTimelineCalendarByDateLoading.isTrue ||
-                    controller.isTimelineSummaryByDateLoading.isTrue
-                ? const CupertinoActivityIndicator(
-                    color: AppColor.primaryColor,
-                    radius: 20,
-                  )
-                : TimelineCalendar(
-                    timelineSummaryByDate: Get.find<TimelineGlobalController>()
-                            .timelineSummaryByDate ??
-                        TimelineSummaryByDate()))
+            ? Obx((){
+
+          // controller.isTimelineCalendarByDateLoading.isTrue ||
+          //     controller.isTimelineSummaryByDateLoading.isTrue
+          //     ? const CupertinoActivityIndicator(
+          //   color: AppColor.primaryColor,
+          //   radius: 20,
+          // )
+          //     : TimelineCalendar(
+          //     timelineSummaryByDate: Get.find<TimelineGlobalController>()
+          //         .timelineSummaryByDate ??
+          //         TimelineSummaryByDate())
+
+
+          if (controller
+              .isTimelineCalendarByDateLoading
+              .isTrue) {
+            return const CupertinoActivityIndicator(
+              color: AppColor.primaryColor,
+              radius: 20,
+            );
+          } else if (controller
+              .isTimelineSummaryByDateLoading
+              .isTrue) {
+            return const CupertinoActivityIndicator(
+              color: AppColor.primaryColor,
+              radius: 20,
+            );
+          } else {
+            return TimelineCalendar(
+                timelineSummaryByDate: Get.find<TimelineGlobalController>()
+                    .timelineSummaryByDate ??
+                    TimelineSummaryByDate());
+          }
+
+        }
+
+        )
             : _buildTimeSheet(),
       ]),
     );
@@ -170,6 +198,7 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
   _buildEmployeeSearch(TabController tabController) {
     return CustomSearchBar(
+
       onValueSelected: (String orgId) async {
         String startDate =
             "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";

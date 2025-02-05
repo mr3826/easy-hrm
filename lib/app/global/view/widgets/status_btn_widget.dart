@@ -2,18 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
-import 'package:payrun_mobile/common/controller/convart_color_code_controller.dart';
-import 'package:payrun_mobile/common/widget/custom_app_button.dart';
-import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_dialog.dart';
-import '../../../../modules/timeline/view/screen/update_timeline.dart';
 import '../../../../modules/timeline/view/widget/project_view_widget.dart';
-import '../widget/app_margin.dart';
 
 Widget approvedStatusBtn() {
   return CustomStatusButton(
@@ -116,33 +111,7 @@ removeTextLayout() {
   );
 }
 
-_approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
-  return Padding(
-    padding: marginLayout,
-    child: CustomAppButton(
-      borderRadius: 30,
-      buttonText: Text(
-        AppString.text_details.tr,
-        style: AppStyle.mid_large_text.copyWith(
-            color: AppColor.cardColor,
-            fontSize: Dimensions.fontSizeDefault + 2),
-      ),
-      onPressed: () {
-        _updateDataFromApiResponse(taskInfo: taskInfo);
-        Get.to(() => UpdateTimeLineLog(
-              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                  ? HexColor(taskInfo.projectColor)
-                  : AppColor.primaryColor,
-              endDateTime: taskInfo.endTime,
-              startDateTime: taskInfo.startTime,
-              status: taskInfo.status,
-            ));
-      },
-      buttonColor: AppColor.primaryColor,
-      isButtonExpanded: true,
-    ),
-  );
-}
+
 
 void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
   Get.find<TimelineGlobalController>().status.value = taskInfo.status ?? "";

@@ -140,14 +140,13 @@ void showEmployeeSelectionSheet() {
     child: SearchEmployeeList(
       onValueSelected: (String value) {
         print("value id: $value");
+        Get.to(()=>ProfileRouteBase(orgUserId: value));
+
       },
-      onClickRouteAction: _goToProfileRoute,
     ),
     height: 0.8,
   );
 }
-
-_goToProfileRoute() => Get.toNamed(Routes.EMPOLYEE_VIEW_PROFILE);
 
 void showFilterSelectionSheet() {
   customButtonSheet(

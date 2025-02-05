@@ -243,8 +243,8 @@ class TimelineGlobalController extends GetxController {
       orgUserId.value = '';
       status.value = '';
       descriptionController.clear();
-      Get.off(() => const MainScreen(routeIndex: 0));
       refreshTimeline();
+      Get.off(() => const MainScreen(routeIndex: 0));
     }
 
     isUpdateTimeLogLoading(false);
@@ -325,42 +325,63 @@ refreshTimeline() async {
 
   TimelineGlobalController controller = Get.find<TimelineGlobalController>();
   String startDate = controller.selectedTimeLineStartDate.value;
-  String endDte = controller.selectedTimeLineEndDate.value;
 
   if (Get.find<TimelineGlobalController>().isEmployee.isTrue) {
 
-    String startFormatingDate=   "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}";
-    String endFormatingDate= "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}";
-
-    EmployeeTimelineController controller =
-        Get.find<EmployeeTimelineController>();
+    EmployeeTimelineController controller = Get.find<EmployeeTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";
-    await controller.getTimelineCalenderByDate(
 
-        startDate:startFormatingDate, endDate: endFormatingDate
+    await controller.getTimelineCalenderByDate(
+        orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
+        startDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 23, 59, 59)}"
     );
 
-    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate:startFormatingDate, endDate: endFormatingDate);
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+        orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
+        startDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 23, 59, 59)}"
+    );
+
   } else {
-    String startFormatingDate=   "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}";
-    String endFormatingDate= "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}";
 
     HrTimelineController controller = Get.find<HrTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";
-
     if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
       await controller.getTimelineCalenderByDate(
           orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-          startDate:startFormatingDate, endDate: endFormatingDate);
+          startDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 23, 59, 59)}"
+      );
 
       await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
           orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-          startDate:startFormatingDate, endDate: endFormatingDate);
+          startDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 23, 59, 59)}"
+      );
     } else {
       await controller.getTimelineCalenderByDate(
-          startDate:startFormatingDate, endDate: endFormatingDate);
+          startDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 23, 59, 59)}"
+      );
 
-      await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate:startFormatingDate, endDate: endFormatingDate);
+      await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+          startDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+          endDate:
+          "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 23, 59, 59)}"
+      );
     }
   }
 }
+

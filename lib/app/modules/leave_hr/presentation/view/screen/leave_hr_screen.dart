@@ -255,7 +255,6 @@ void _showEmployeeSelectionSheet() {
         controller.selectedEmployeeInfo.value = name.name ?? "";
         controller.selectedEmployeeImgKey.value = name.imgUrl ?? "";
       },
-      onClickRouteAction: () {},
     ),
     height: 0.8,
   );
