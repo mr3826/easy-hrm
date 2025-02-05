@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/custom_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_text_field.dart';
-import 'package:payrun_mobile/modules/auth/presentation/view/widget/common_widget.dart';
+import 'package:payrun_mobile/app/modules/auth/models/common_widget.dart';
 import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -94,7 +94,6 @@ class SignInScreen extends GetView<SignInController> {
       validator: (value) {
         if (value!.isEmpty) {
           return AppString.the_password_field_is_required.tr;
-
         } else if (value.length < 6) {
           return AppString.incorrect_user_or_password.tr;
         } else {
@@ -143,7 +142,6 @@ class SignInScreen extends GetView<SignInController> {
   }
 
   _logInBtnLayout(BuildContext context) {
-
     return CustomAppButton(
       buttonText: controller.isSignInLoading.isFalse
           ? Text(
@@ -165,9 +163,6 @@ class SignInScreen extends GetView<SignInController> {
 
           // Handle login success or failure
           if (value) {
-            print("Login Successful");
-            // Get subscription info only if login is successful
-
             bool isSubscriptionExpired =
                 await Get.find<UserInfoController>().getOrgSubscriptionInfo();
 
@@ -175,11 +170,11 @@ class SignInScreen extends GetView<SignInController> {
                 ? "Go to Sub expire screen"
                 : "Go to Main Screen");
 
-            if(!isSubscriptionExpired){
+            if (!isSubscriptionExpired) {
               Get.offNamed(Routes.MAIN_SCREEN);
+            } else {
+              Get.offNamed(Routes.SUBSCRIPTION_SCREEN);
             }
-
-
           } else {
             print("Login Unsuccessful");
           }

@@ -25,9 +25,6 @@ import 'app/modules/hr_timeline/view/widgets/timeline_calender/buid_timeline_sho
 import 'app/modules/hr_timeline/view/widgets/timeline_calender/build_hr_timeline_calendar.dart';
 import 'app/modules/settings/bindings/setting_bindings.dart';
 
-
-
-
 bool isEmployee = false;
 
 class HrTimelineScreen extends StatefulWidget {

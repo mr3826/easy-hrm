@@ -6,26 +6,21 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:payrun_mobile/app/modules/settings/controller/app_setting_controller.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import 'app/home/view/screen/main_screen.dart';
-import 'app/modules/employee/data/employee_remote_data_source.dart';
 import 'app/modules/employee/model/employee_info.dart';
 import 'app/modules/leave_hr/data/apply_and_update_leave_date_source.dart';
 import 'app/modules/leave_hr/data/leave_remote_data_source.dart';
-import 'app/modules/profile/repositories/profile_data_source.dart';
 import 'modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'modules/leave/data/remote/leave_remote_data_source.dart';
 import 'modules/notification/data/remote/notification_remote_data_source.dart';
-import 'modules/profile/controller/profile_module/hr_profile_controller.dart';
 import 'network/network_client.dart';
 
 import '../../../common/controller/date_time_controller.dart';
 import '../../../common/controller/file_piker_controller.dart';
 import '../../../common/controller/language_controller.dart';
 import '../../../common/controller/leave_helper/leave_data_source.dart';
-import '../../../common/controller/profile_helper/profile_data_source.dart';
 import '../../../modules/leave/presentation/controller/calendar_date_controller.dart';
 import '../../../modules/leave/presentation/controller/file_upload_controller.dart';
 import 'app/modules/profile/controller/log_out_controller.dart';
@@ -56,8 +51,6 @@ Future<void> initApp() async {
   Get.put(NotificationRemoteDataSource(client), permanent: true);
 
   Get.put(LeaveRemoteDataSource(client), permanent: true);
-
-  Get.put(EmployeeRemoteDataSource(client), permanent: true);
 
   Get.put(HrLeaveRemoteDataSource(client), permanent: true);
   Get.put(ApplyAndUpdateLeaveDateSource(client), permanent: true);

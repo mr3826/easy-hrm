@@ -4,7 +4,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:payrun_mobile/app/global/enum/user_enum.dart';
 import 'package:payrun_mobile/app/global/services/api_service.dart';
 import 'package:payrun_mobile/common/domain/user_info.dart';
-import '../../../modules/auth/domain/org_subscription_Info_model.dart';
+import '../models/org_subscription_Info_model.dart';
 import '../../../utils/api_endpoints.dart';
 import 'package:dio/dio.dart' as dio;
 
@@ -60,7 +60,7 @@ class UserInfoController {
 
     // Check if subscription is expired (paused or canceled)
     try {
-      if (!orgSubscriptionInfo!.status!.contains("active")) {
+      if (!orgSubscriptionInfo!.status!.contains("active") || !orgSubscriptionInfo.status!.contains("trialing")) {
         isSubscriptionExpired(true);
         return true;
       } else {
