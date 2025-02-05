@@ -59,7 +59,7 @@ class IndividualTimeLayout extends StatelessWidget {
                     endDate:
                         "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
 
-                await Get.find<EmployeeTimelineController>().getTimelineSummaryByDate(
+                await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
                     startDate:
                         "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)}",
                     endDate:

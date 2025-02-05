@@ -85,7 +85,10 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
                   customSpacerHeight(height: 45),
                   _timelineText(),
                   customSpacerHeight(height: 12),
-                  buildTimelineShortSummary(Get.find<EmployeeTimelineController>().timelineSummaryByMonth ?? TimelineSummaryByMonth()),
+                  buildTimelineShortSummary(
+                      Get.find<EmployeeTimelineController>()
+                              .timelineSummaryByMonth ??
+                          TimelineSummaryByMonth()),
                   customSpacerHeight(height: 6),
                 ],
               ),
@@ -99,21 +102,28 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
   _sliverAppbarBody(TabController tabController) {
     return SliverList(
       delegate: SliverChildListDelegate([
-        Obx(() =>   Get.find<EmployeeTimelineController>()
-        .isTimelineSummaryByDateLoading
-        .isTrue|| Get.find<EmployeeTimelineController>()
-                    .isTimelineCalendarByDateLoading
-                    .isTrue
-
-            ? const CupertinoActivityIndicator(
-                color: AppColor.primaryColor,
-                radius: 20,
-              )
-            : TimelineCalendar(
-
+        Obx(() {
+          if (Get.find<EmployeeTimelineController>()
+              .isTimelineCalendarByDateLoading
+              .isTrue) {
+            return const CupertinoActivityIndicator(
+              color: AppColor.primaryColor,
+              radius: 20,
+            );
+          } else if (Get.find<TimelineGlobalController>()
+              .isTimelineSummaryByDateLoading
+              .isTrue) {
+            return const CupertinoActivityIndicator(
+              color: AppColor.primaryColor,
+              radius: 20,
+            );
+          } else {
+            return TimelineCalendar(
                 timelineSummaryByDate: Get.find<TimelineGlobalController>()
                         .timelineSummaryByDate ??
-                    TimelineSummaryByDate()))
+                    TimelineSummaryByDate());
+          }
+        })
       ]),
     );
   }
@@ -136,10 +146,14 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
   _buildSelectedDate() {
     return BuildSelectDateLayout(
       dateRange: (date) async {
-        String startDate = "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";
-        String endDate = "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 23:59:59.000";
-        await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
-        await Get.find<EmployeeTimelineController>().getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
+        String startDate =
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";
+        String endDate =
+            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 23:59:59.000";
+        await Get.find<TimelineGlobalController>()
+            .getTimelineSummaryByDate(startDate: startDate, endDate: endDate);
+        await Get.find<EmployeeTimelineController>()
+            .getTimelineCalenderByDate(startDate: startDate, endDate: endDate);
       },
     );
   }
@@ -207,10 +221,12 @@ _timerStringOpenBtn({required time, required Function onRoute}) {
 }
 
 Future<void> _refreshScreen() async {
-
-  String startDat = Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value;
-  String startDates = "${DateTime(DateTime.parse(startDat).year, DateTime.parse(startDat).month, DateTime.parse(startDat).day, 0, 0, 0)}";
-  String endDates = "${DateTime(DateTime.parse(startDat).year, DateTime.parse(startDat).month, DateTime.parse(startDat).day, 23, 59, 59)}";
+  String startDat =
+      Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value;
+  String startDates =
+      "${DateTime(DateTime.parse(startDat).year, DateTime.parse(startDat).month, DateTime.parse(startDat).day, 0, 0, 0)}";
+  String endDates =
+      "${DateTime(DateTime.parse(startDat).year, DateTime.parse(startDat).month, DateTime.parse(startDat).day, 23, 59, 59)}";
 
   await Get.find<EmployeeTimelineController>().getTimelineSummaryByMonth(
       startDate:
@@ -218,7 +234,9 @@ Future<void> _refreshScreen() async {
       endDate:
           "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
 
-  await Get.find<EmployeeTimelineController>().getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
+  await Get.find<EmployeeTimelineController>()
+      .getTimelineCalenderByDate(startDate: startDates, endDate: endDates);
 
-  await Get.find<EmployeeTimelineController>().getTimelineSummaryByDate(startDate: startDates, endDate: endDates);
+  await Get.find<TimelineGlobalController>()
+      .getTimelineSummaryByDate(startDate: startDates, endDate: endDates);
 }

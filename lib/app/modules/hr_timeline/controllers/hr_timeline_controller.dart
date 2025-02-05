@@ -10,7 +10,6 @@ import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/models/project_dropdown_response.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by_date.dart';
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/last_input_model.dart';
@@ -381,7 +380,6 @@ class HrTimelineController extends GetxController with StateMixin {
 
     await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
         orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-
         startDate:
         "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
         endDate:

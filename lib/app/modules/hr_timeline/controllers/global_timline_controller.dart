@@ -29,8 +29,10 @@ class TimelineGlobalController extends GetxController {
   TimelineGlobalController(this._timelineDataSource);
   final HrLeaveRemoteDataSource _hrLeaveRemoteDataSource = Get.find();
 
-  RxString selectedTimeLineStartDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
-  RxString selectedTimeLineEndDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  RxString selectedTimeLineStartDate =
+      DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  RxString selectedTimeLineEndDate =
+      DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
 
   final isProjectListLoading = false.obs;
   final isProistLoading = false.obs;
@@ -46,8 +48,8 @@ class TimelineGlobalController extends GetxController {
   RxBool isEmployee = false.obs;
   final isTimeInvalid = false.obs;
   final isAvailableLeaveType = false.obs;
-  int initialIndex=0;
-  String searchEmployeeId ="";
+  int initialIndex = 0;
+  String searchEmployeeId = "";
 
   String addTimeLogId = "";
   RxString taskId = "".obs;
@@ -84,37 +86,34 @@ class TimelineGlobalController extends GetxController {
     return null;
   }
 
-
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getLeaveDetailsById({required String leaveId}) async {
     isLeaveDetailsByLoading(true);
     leaveDetailsById =
-    await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
+        await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
     isLeaveDetailsByLoading(false);
   }
+
   /// Fetches leave type hr .
   Future<void> getAvailableLeaveType({String? orgUserId, String? year}) async {
     isAvailableLeaveType(true);
-    availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(orgUserId:
-    orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
+    availableLeaveType = await _hrLeaveRemoteDataSource.getAvailableLeaveType(
+        orgUserId:
+            orgUserId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID),
         year: year ?? "${DateTime.now().year}");
     isAvailableLeaveType(false);
   }
 
-
-
-
-
-  Future<TimeEntryDetails?> getTimeEntryDetails({String? orgId,required String timelindId}) async {
+  Future<TimeEntryDetails?> getTimeEntryDetails(
+      {String? orgId, required String timelindId}) async {
     isTimeEntryLoading(true);
-    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
-    timeEntryDetails = await _timelineDataSource.getTimeEntryDetails(timelineId: timelindId.toString(),orgId:organizationId);
+    final String organizationId =
+        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    timeEntryDetails = await _timelineDataSource.getTimeEntryDetails(
+        timelineId: timelindId.toString(), orgId: organizationId);
     isTimeEntryLoading(false);
     return null;
   }
-
-
-
 
   Future<bool> saveTimelineEntry() async {
     isTimelogEntryOrRemoveLoading(true);
@@ -155,14 +154,15 @@ class TimelineGlobalController extends GetxController {
     } else {
       isStartTimerLoading(true);
     }
-    startOrEndTimerResponse = await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
+    startOrEndTimerResponse =
+        await _timelineDataSource.startOrEndTimer(timerTyp: timerType);
 
-    if(startOrEndTimerResponse?.startOrStopTimer !=null){
+    if (startOrEndTimerResponse?.startOrStopTimer != null) {
       if (startOrEndTimerResponse?.startOrStopTimer?.endDate == null) {
         showSuccessMessage(message: AppString.timerStartedSuccessfulMessage.tr);
         Get.find<TimeCounterController>().start();
         refreshTimeline();
-      }else {
+      } else {
         if (Get.find<TimeCounterController>().timer.isActive &&
             Get.find<TimeCounterController>().animationTimer.isActive) {
           Get.find<TimeCounterController>().stop();
@@ -181,16 +181,27 @@ class TimelineGlobalController extends GetxController {
 
   Future<bool?> createManualEntry() async {
     isManualEntryLoading(true);
-    Duration timeDifference = DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").difference(DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+    Duration timeDifference = DateTime.parse(
+            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+        .difference(DateTime.parse(
+            "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
 
     if (!timeDifference.isNegative) {
       bool? response = await _timelineDataSource.createManualEntry(
-          startDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc().toString(),
-          endDate: DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc().toString(),
+          startDate: DateTime.parse(
+                  "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}")
+              .toUtc()
+              .toString(),
+          endDate: DateTime.parse(
+                  "${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
+              .toUtc()
+              .toString(),
           des: descriptionController.text,
           projectId: projectId.value,
           taskId: taskId.value,
-          orgId: orgUserId.value.isEmpty ? GetStorage().read(AppString.ORGANIZATION_USER_ID) : orgUserId.value,
+          orgId: orgUserId.value.isEmpty
+              ? GetStorage().read(AppString.ORGANIZATION_USER_ID)
+              : orgUserId.value,
           status: status.value);
       if (response) {
         showSuccessMessage(message: "Time entry created successfully");
@@ -199,7 +210,7 @@ class TimelineGlobalController extends GetxController {
         projectId.value = '';
         orgUserId.value = '';
         status.value = '';
-        searchEmployeeId="";
+        searchEmployeeId = "";
         descriptionController.clear();
         Get.off(() => const MainScreen(routeIndex: 0));
         refreshTimeline();
@@ -214,8 +225,10 @@ class TimelineGlobalController extends GetxController {
   Future<bool?> updateTimelineLogDetails() async {
     isUpdateTimeLogLoading(true);
     bool? response = await _timelineDataSource.updateTimelineLogDetails(
-        startDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-        endDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
+        startDate:
+            "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
+        endDate:
+            "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
         des: descriptionController.text,
         projectId: projectId.value,
         taskId: taskId.value,
@@ -238,11 +251,13 @@ class TimelineGlobalController extends GetxController {
     return null;
   }
 
-  getTimelineSummaryByDate({String? startDate, String? endDate, String? orgId}) async {
+  getTimelineSummaryByDate(
+      {String? startDate, String? endDate, String? orgId}) async {
     isTimelineSummaryByDateLoading(true);
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
-    final String organizationId = orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    final String organizationId =
+        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
     log("getTimelineSummaryByDate start & end ==>$startDate And $endDate $organizationId");
     timelineSummaryByDate = await _timelineDataSource.getTimelineSummaryByDate(
         startDate: formattedStartDate,
@@ -251,7 +266,7 @@ class TimelineGlobalController extends GetxController {
     isTimelineSummaryByDateLoading(false);
   }
 
-  Future<bool?> removeTimelineEntry({String? timeLogId,String ?orgId}) async {
+  Future<bool?> removeTimelineEntry({String? timeLogId, String? orgId}) async {
     String? id = timeLogId ??
         Get.find<TimelineGlobalController>()
             .startOrEndTimerResponse
@@ -259,8 +274,8 @@ class TimelineGlobalController extends GetxController {
             ?.id ??
         "";
     isTimelogEntryOrRemoveLoading(true);
-    bool response =
-        await _timelineDataSource.removeTimelineEntry(timeLogId: id.toString(),orgId: orgId);
+    bool response = await _timelineDataSource.removeTimelineEntry(
+        timeLogId: id.toString(), orgId: orgId);
     if (response) {
       _updateRouteWithTimeEntry();
     }
@@ -288,12 +303,11 @@ class TimelineGlobalController extends GetxController {
     return "${DateTime.parse(date ?? DateTime.now().toString()).toUtc()}";
   }
 
-
   @override
   void onInit() {
-    if(Get.find<UserInfoController>().userRole != UserEnum.employee){
+    if (Get.find<UserInfoController>().userRole != UserEnum.employee) {
       isEmployee(false);
-    }else{
+    } else {
       isEmployee(true);
     }
     super.onInit();
@@ -305,62 +319,48 @@ class TimelineGlobalController extends GetxController {
     searchTextController.dispose();
     super.dispose();
   }
-
-
 }
 
-
 refreshTimeline() async {
+
+  TimelineGlobalController controller = Get.find<TimelineGlobalController>();
+  String startDate = controller.selectedTimeLineStartDate.value;
+  String endDte = controller.selectedTimeLineEndDate.value;
+
   if (Get.find<TimelineGlobalController>().isEmployee.isTrue) {
-    EmployeeTimelineController controller = Get.find<EmployeeTimelineController>();
+
+    String startFormatingDate=   "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}";
+    String endFormatingDate= "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}";
+
+    EmployeeTimelineController controller =
+        Get.find<EmployeeTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";
     await controller.getTimelineCalenderByDate(
-        startDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-        endDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
 
-    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-        startDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-        endDate:
-            "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+        startDate:startFormatingDate, endDate: endFormatingDate
+    );
+
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate:startFormatingDate, endDate: endFormatingDate);
   } else {
+    String startFormatingDate=   "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}";
+    String endFormatingDate= "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}";
+
     HrTimelineController controller = Get.find<HrTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";
 
-
-
-    if(Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
+    if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
       await controller.getTimelineCalenderByDate(
-        orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+          orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
+          startDate:startFormatingDate, endDate: endFormatingDate);
 
       await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
           orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
-    }else{
+          startDate:startFormatingDate, endDate: endFormatingDate);
+    } else {
       await controller.getTimelineCalenderByDate(
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+          startDate:startFormatingDate, endDate: endFormatingDate);
 
-      await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-          startDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 0, 0, 0)}",
-          endDate:
-          "${DateTime(DateTime.parse(Get.find<DateTimeController>().requestedDate.value).year, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).month, DateTime.parse(Get.find<DateTimeController>().requestedDate.value).day, 23, 59, 59)}");
+      await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(startDate:startFormatingDate, endDate: endFormatingDate);
     }
-
-
-
   }
 }

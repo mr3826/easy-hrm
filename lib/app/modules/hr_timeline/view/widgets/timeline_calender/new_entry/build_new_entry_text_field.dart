@@ -9,6 +9,7 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
+import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -97,9 +98,7 @@ class BuildNewEntryTextField extends StatelessWidget {
       ? () {
           final timelineController = Get.find<TimelineGlobalController>();
           if (isFromUpdateTimelogEntry == true) {
-            if (isEmployee == true &&
-                status == "approved" &&
-                isFromUpdateTimelogEntry == true) {
+            if (isEmployee == true && status == "approved" && isFromUpdateTimelogEntry == true) {
               timelineController.status.value = "";
               timelineController.updateTimelineLogDetails();
             } else {
@@ -280,10 +279,16 @@ class BuildNewEntryTextField extends StatelessWidget {
     );
   }
 
-  _selectedTaskLayout(context) => taskInputFieldLayout(
-        onAction: () => customButtonSheet(
-            context: context, height: .7, child: const BuildTaskView()),
-      );
+  _selectedTaskLayout(context) => taskInputFieldLayout(onAction: () {
+        Get.find<TimelineGlobalController>().getProjectList();
+        customButtonSheet(
+            context: context,
+            height: .7,
+            child: Obx(() =>
+                Get.find<TimelineGlobalController>().isProjectListLoading.isTrue
+                    ? const LoadingIndicator()
+                    : const BuildTaskView()));
+      });
 
   _buildButton(BuildContext context) {
     final timelineController = Get.find<TimelineGlobalController>();

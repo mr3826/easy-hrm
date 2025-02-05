@@ -76,22 +76,9 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     super.onInit();
   }
 
-  getTimelineSummaryByDate({String? startDate, String? endDate, String? orgId}) async {
-    isTimelineSummaryByDateLoading(true);
-    final String formattedStartDate = startDate ?? DateTime.now().toString();
-    final String formattedEndDate = endDate ?? DateTime.now().toString();
-    final String organizationId =
-        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
-
-    log("getTimelineSummaryByDate start & end ==>$startDate And $endDate");
-    timelineSummaryByDate = await _timelineDataSource.getTimelineSummaryByDate(startDate: formattedStartDate, endDate: formattedEndDate, orgUserId: organizationId);
-    isTimelineSummaryByDateLoading(false);
-  }
-
   getTimelineCalenderByDate(
       {String? startDate, String? endDate, String? orgId}) async {
-    // isTimelineCalendarByDateLoading(true);
-    change(null, status: RxStatus.loading());
+    isTimelineCalendarByDateLoading(true);
 
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
@@ -214,15 +201,16 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     }
     updateDataAfterTwoMinutes();
 
-   // isTimelineCalendarByDateLoading(false);
-    change(null, status: RxStatus.success());
+    isTimelineCalendarByDateLoading(false);
   }
 
-  getTimelineSummaryByMonth({required String startDate, required String endDate}) async {
+  getTimelineSummaryByMonth(
+      {required String startDate, required String endDate}) async {
     isTimelineSummaryLoading(true);
-    final response = await NetworkClient().graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
+    final response = await NetworkClient()
+        .graphRequest(queryString: getTimelineSummaryByDateQuery, variables: {
       "queryData": {
-        "start_date":startDate,
+        "start_date": startDate,
         "end_date": endDate,
       }
     });
@@ -261,36 +249,6 @@ class EmployeeTimelineController extends GetxController with StateMixin {
       }
     }
   }
-
-
-  _refreshTimeline() async {
-    TimelineGlobalController controller=Get.find<TimelineGlobalController>();
-    String startDate=controller.selectedTimeLineStartDate.value;
-    String endDte=controller.selectedTimeLineEndDate.value;
-      ///Exiting  user (default user)
-      _defaultTimelineUpdate(startDate,endDte);
-  }
-
-
-
-  void _defaultTimelineUpdate(String startDate, String endDte) async{
-
-    await getTimelineSummaryByMonth(startDate: "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}", endDate: "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
-    await getTimelineCalenderByDate(
-        startDate:
-        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
-        endDate:
-        "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
-
-
-    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
-        startDate:
-        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
-        endDate:
-        "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
-  }
-
-
 
 
   void updateDataAfterTwoMinutes() {
@@ -391,6 +349,34 @@ class EmployeeTimelineController extends GetxController with StateMixin {
           .controller
           .addAll(timelogList ?? []);
     });
+  }
+
+  _refreshTimeline() async {
+    TimelineGlobalController controller = Get.find<TimelineGlobalController>();
+    String startDate = controller.selectedTimeLineStartDate.value;
+    String endDte = controller.selectedTimeLineEndDate.value;
+
+    ///Exiting  user (default user)
+    _defaultTimelineUpdate(startDate, endDte);
+  }
+
+  void _defaultTimelineUpdate(String startDate, String endDte) async {
+    await getTimelineSummaryByMonth(
+        startDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)}");
+    await getTimelineCalenderByDate(
+        startDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
+
+    await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
+        startDate:
+        "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
+        endDate:
+        "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
   }
 
   @override
