@@ -41,10 +41,10 @@ class ProfileRouteBaseController extends GetxController with StateMixin {
   }
 
   Future<void> getUserLogHistory({required String ordUserId}) async {
-    isLoadingProfile(true);
+    change(null, status: RxStatus.loading());
     userLogHistory = (await _profileDataSource.getUserLogHistory(ordUserId)) ??
         UserLogHistory();
-    isLoadingProfile(false);
+    change(null, status: RxStatus.success());
   }
 
   Future<List<GetLeaveRecordsForApp>> getLeaveRecordsData(

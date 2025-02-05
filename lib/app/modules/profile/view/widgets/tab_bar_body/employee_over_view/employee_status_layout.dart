@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/utils/time_format_helper.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/dotted_style_layout.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -12,7 +12,6 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../../../common/controller/convart_color_code_controller.dart';
-import '../../../../../../../common/widget/employee/department_info_widget.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../controller/global_profile_controller.dart';
@@ -120,7 +119,7 @@ class EmploymentStatusItem extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          employmentHistory?.employmentStatus?.name ?? "",
+                          employmentHistory?.employmentStatus.name ?? "",
                           style: AppStyle.normal_text_black.copyWith(
                             color: AppColor.normalTextColor,
                             fontSize: Dimensions.fontSizeMid - 2,
@@ -131,7 +130,7 @@ class EmploymentStatusItem extends StatelessWidget {
                         Icon(
                           Icons.circle,
                           color: HexColor(
-                              employmentHistory?.employmentStatus?.color ??
+                              employmentHistory?.employmentStatus.color ??
                                   "#8F99AD"),
                           size: 12,
                         ),
@@ -141,7 +140,7 @@ class EmploymentStatusItem extends StatelessWidget {
                     Wrap(
                       children: [
                         Text(
-                          "${getDateTimeFormat(employmentHistory?.startDate ?? "")} - ",
+                          "${TimeFormatHelper.stringToDateTimeFormat(dateString: employmentHistory?.startDate ?? "")} - ",
                           style: baseTextStyle.copyWith(
                             color: AppColor.hintColor,
                           ),
@@ -175,7 +174,7 @@ class EmploymentStatusItem extends StatelessWidget {
 
   String _calculateDuration(EmploymentHistories employmentHistory) {
     final duration = workingTimeSinceFormString(
-      employmentHistory.startDate ,
+      employmentHistory.startDate,
       employmentHistory.endDate,
     );
     return duration;

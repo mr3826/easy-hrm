@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/utils/time_format_helper.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/employee_over_view/designation_layout.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/employee_over_view/employee_status_layout.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../../../common/widget/employee/department_info_widget.dart';
 import '../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../global/view/widget/app_margin.dart';
 
@@ -115,7 +114,7 @@ class BuildEmployeeStatusLayout extends StatelessWidget {
         ),
         customSpacerWidth(width: 4),
         Text(
-          "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
+          "${AppString.text_from.tr} - ${TimeFormatHelper.stringToDateTimeFormat(dateString: userDetails.getOrganizationUserDetails?.employmentHistories?.first.startDate ?? "")}",
           style: AppStyle.mid_large_text.copyWith(
               color: AppColor.hintColor,
               fontSize: Dimensions.fontSizeDefault - 1),
@@ -143,7 +142,7 @@ class BuildEmployeeStatusLayout extends StatelessWidget {
           ),
         ),
         Text(
-          "${AppString.text_from.tr} - ${getDateTimeFormat("")}",
+          "${AppString.text_from.tr} - ${TimeFormatHelper.stringToDateTimeFormat(dateString: userDetails.getOrganizationUserDetails?.designationHistories?.first.startDate ?? "")}",
 
           ///todo [api query]
           style: AppStyle.mid_large_text.copyWith(

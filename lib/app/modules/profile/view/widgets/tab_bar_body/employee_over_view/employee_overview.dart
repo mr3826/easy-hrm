@@ -63,7 +63,7 @@ class ProfileOverView extends StatelessWidget {
             customSpacerHeight(height: 15),
 
             /// Department layout
-            _buildDepartmentLayout(context),
+            _buildDepartmentLayout(),
 
             customSpacerHeight(height: 5),
 
@@ -167,7 +167,7 @@ class ProfileOverView extends StatelessWidget {
             userDetails.getOrganizationUserDetails?.profile?.address ?? "");
   }
 
-  Widget _buildDepartmentLayout(BuildContext context) {
+  Widget _buildDepartmentLayout() {
     String? department =
         userDetails.getOrganizationUserDetails?.department?.name;
     if (department != null) {

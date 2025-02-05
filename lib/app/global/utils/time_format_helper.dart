@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:intl/intl.dart';
+
 class TimeFormatHelper {
   static String formatSecondsToHours(String secondsStr) {
     // Try to parse the input string as a number
@@ -15,5 +17,21 @@ class TimeFormatHelper {
 
     String result = minutes > 0 ? "${hours}h+" : "${hours}h";
     return isNegative ? "-$result" : result;
+  }
+
+  static String stringToDateTimeFormat(
+      {required String dateString, String? formatPattern}) {
+    if (dateString.isEmpty) return "";
+
+    try {
+      DateTime dateTime = DateTime.parse(dateString);
+      // Format the DateTime to "dd, MMM"
+      return formatPattern != null
+          ? DateFormat(formatPattern).format(dateTime)
+          : DateFormat('dd MMM, yyyy').format(dateTime);
+    } catch (e) {
+      log('stringToDateTimeFormat: $e');
+    }
+    return '';
   }
 }

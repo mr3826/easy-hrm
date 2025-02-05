@@ -24,9 +24,7 @@ class BuildDepartment extends StatelessWidget {
   final String orgUserId;
 
   const BuildDepartment(
-      {super.key,
-      required this.userDetails,
-      required this.orgUserId});
+      {super.key, required this.userDetails, required this.orgUserId});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +77,7 @@ class BuildDepartment extends StatelessWidget {
               if (department != null)
                 Expanded(
                   child: Text(
-                    "${AppString.text_from.tr} - ${_getDateTimeFormat("")}",
+                    "${AppString.text_from.tr} - ${_getDateTimeFormat(userDetails.getOrganizationUserDetails?.deptHistories?.first.startDate)}",
 
                     ///todo [query]
                     style: AppStyle.mid_large_text.copyWith(

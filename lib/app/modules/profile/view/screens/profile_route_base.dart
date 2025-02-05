@@ -21,7 +21,6 @@ import '../widgets/profile_tab_bar.dart';
 
 class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
   final String orgUserId;
-
   const ProfileRouteBase({super.key, required this.orgUserId});
 
   @override
@@ -37,7 +36,6 @@ class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
                     information:
                         Get.find<ProfileRouteBaseController>().userDetails ??
                             UserDetails(),
-                    editIconUrl: Images.EDIT_ICON,
                   ),
                   customSpacerHeight(height: 30),
                   LeaveStatusGoal(

@@ -1,3 +1,5 @@
+import 'employee_work_history.dart';
+
 class UserDetails {
   GetOrganizationUserDetails? getOrganizationUserDetails;
 
@@ -22,6 +24,9 @@ class GetOrganizationUserDetails {
   Organization? organization;
   Designation? designation;
   EmploymentStatusData? employmentStatus;
+  List<DesignationHistories>? designationHistories;
+  List<DeptHistories>? deptHistories;
+  List<EmploymentHistories>? employmentHistories;
 
   GetOrganizationUserDetails(
       {this.employeeId,
@@ -54,10 +59,28 @@ class GetOrganizationUserDetails {
     employmentStatus = json['employment_status'] != null
         ? EmploymentStatusData.fromJson(json['employment_status'])
         : null;
+    if (json['designation_histories'] != null) {
+      designationHistories = <DesignationHistories>[];
+      json['designation_histories'].forEach((v) {
+        designationHistories!.add(new DesignationHistories.fromJson(v));
+      });
+    }
+    if (json['dept_histories'] != null) {
+      deptHistories = <DeptHistories>[];
+      json['dept_histories'].forEach((v) {
+        deptHistories!.add(new DeptHistories.fromJson(v));
+      });
+    }
+    if (json['employment_histories'] != null) {
+      employmentHistories = <EmploymentHistories>[];
+      json['employment_histories'].forEach((v) {
+        employmentHistories!.add(new EmploymentHistories.fromJson(v));
+      });
+    }
   }
-
-
 }
+
+
 
 class Profile {
   String? id;

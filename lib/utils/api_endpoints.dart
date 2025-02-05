@@ -231,6 +231,15 @@ query GetOrganizationUserDetails($orgUserId: UUID) {
       name
       color
     }
+    designation_histories {
+      start_date
+    }
+    dept_histories {
+      start_date
+    }
+    employment_histories {
+      start_date
+    }
   }
 }
 ''';
