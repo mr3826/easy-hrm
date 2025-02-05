@@ -3,6 +3,7 @@ import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by
 import '../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
 import '../../../../../../modules/timeline/view/widget/timelog_summary_working_gol_layout.dart';
 import '../../../../../../utils/app_color.dart';
+import '../../../../../global/utils/balance_helper.dart';
 import '../../../../../global/utils/time_format_helper.dart';
 
 class TimelineCalendar extends StatelessWidget {
@@ -26,15 +27,17 @@ class TimelineCalendar extends StatelessWidget {
       child: workingScheduleLayout(
           schedule: TimeFormatHelper.formatSecondsToHoursSolid(timelineSummaryByDate
                   .getTimelogSummaryForApp?.totalScheduledSeconds ??
-              ""),
-          balanceTime: TimeFormatHelper.formatSecondsToHoursSolid(
-              timelineSummaryByDate.getTimelogSummaryForApp?.balance ?? ""),
+              "0"),
+          balanceTime:BalanceCalculatorHelper.calculateBalance(
+              timelineSummaryByDate.getTimelogSummaryForApp?.totalPendingSeconds??"0",
+              timelineSummaryByDate.getTimelogSummaryForApp?.balance??"0"),
+
           loggedTime: TimeFormatHelper.formatSecondsToHoursSolid(timelineSummaryByDate
                   .getTimelogSummaryForApp?.loggedTotalSeconds ??
-              ""),
+              "0"),
           paidLeave: TimeFormatHelper.formatSecondsToHoursSolid(timelineSummaryByDate
                   .getTimelogSummaryForApp?.totalLeavesSeconds ??
-              "")),
+              "0")),
     );
   }
 }

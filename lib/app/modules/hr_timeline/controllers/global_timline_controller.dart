@@ -181,8 +181,7 @@ class TimelineGlobalController extends GetxController {
 
   Future<bool?> createManualEntry() async {
     isManualEntryLoading(true);
-    Duration timeDifference = DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}")
-        .difference(DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
+    Duration timeDifference = DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").difference(DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}"));
 
     if (!timeDifference.isNegative) {
       bool? response = await _timelineDataSource.createManualEntry(
@@ -216,7 +215,7 @@ class TimelineGlobalController extends GetxController {
     isUpdateTimeLogLoading(true);
     bool? response = await _timelineDataSource.updateTimelineLogDetails(
         startDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().inTime.value}").toUtc()}",
-        endDate: "${DateTime.parse("${Get.find<DateTimePickerController>().outDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
+        endDate: "${DateTime.parse("${Get.find<DateTimePickerController>().inDate.value} ${Get.find<DateTimePickerController>().outTime.value}").toUtc()}",
         des: descriptionController.text,
         projectId: projectId.value,
         taskId: taskId.value,

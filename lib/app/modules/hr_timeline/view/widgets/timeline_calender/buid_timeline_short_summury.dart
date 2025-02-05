@@ -7,6 +7,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../global/utils/balance_helper.dart';
 import '../../../../../global/utils/time_format_helper.dart';
 import '../../../../../global/view/widget/app_margin.dart';
 import '../../../bindings/TimelineSummaryBindings.dart';
@@ -34,9 +35,9 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
                 children: [
                   _countLayout(
                       dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
-                              timelineSummaryByMonth
-                              .getTimelogSummaryForApp
-                              ?.totalScheduledSeconds.toString() ??
+                          timelineSummaryByMonth.getTimelogSummaryForApp
+                                  ?.totalScheduledSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_schedule.tr),
                   const Spacer(),
@@ -44,9 +45,9 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
                   const Spacer(),
                   _countLayout(
                       dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
-                         timelineSummaryByMonth
-                              .getTimelogSummaryForApp
-                              ?.loggedTotalSeconds.toString() ??
+                          timelineSummaryByMonth
+                                  .getTimelogSummaryForApp?.loggedTotalSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_logged.tr),
                   const Spacer(),
@@ -55,18 +56,22 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
                   _countLayout(
                       dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
                           timelineSummaryByMonth
-                              .getTimelogSummaryForApp
-                              ?.totalLeavesSeconds.toString() ??
+                                  .getTimelogSummaryForApp?.totalLeavesSeconds
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_paid_leave.tr),
                   const Spacer(),
                   _divider(),
                   const Spacer(),
                   _countLayout(
-                      dynamicText: TimeFormatHelper.formatSecondsToHoursSolid(
-                         timelineSummaryByMonth
-                              .getTimelogSummaryForApp
-                              ?.balance.toString() ??
+                      dynamicText: BalanceCalculatorHelper.calculateBalance(
+                          timelineSummaryByMonth
+                                  .getTimelogSummaryForApp?.totalPendingSeconds
+                                  .toString() ??
+                              "",
+                          timelineSummaryByMonth
+                                  .getTimelogSummaryForApp?.balance
+                                  .toString() ??
                               ""),
                       staticText: AppString.text_balance.tr),
                 ],
@@ -83,19 +88,22 @@ Widget buildTimelineShortSummary(TimelineSummaryByMonth timelineSummaryByMonth) 
 
 _tabToViewTimeLogSummery() {
   return GestureDetector(
-    onTap: (){
+    onTap: () {
       TimeSheetBindings().dependencies();
-      DateTime now=DateTime.now();
+      DateTime now = DateTime.now();
 
-      Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(DateTime(now.year, now.month, 1, 0, 0, 0).toString());
-      Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(DateTime(now.year, now.month + 1,0).toString());
+      Get.find<TimelineSummaryController>().selectedTimeSheetStartDate(
+          DateTime(now.year, now.month, 1, 0, 0, 0).toString());
+      Get.find<TimelineSummaryController>().selectedTimeSheetEndDate(
+          DateTime(now.year, now.month + 1, 0).toString());
 
       Get.find<TimelineSummaryController>().getTimelineSummaryByDate();
       Get.find<TimelineSummaryController>().getTimelogDetailsByMonth();
 
-      Get.to(()=>const TimeLogSummary(isEmployee: true,));
-
-    } ,
+      Get.to(() => const TimeLogSummary(
+            isEmployee: true,
+          ));
+    },
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

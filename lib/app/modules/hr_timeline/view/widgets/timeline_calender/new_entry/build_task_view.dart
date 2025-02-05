@@ -32,11 +32,15 @@ class BuildTaskView extends StatelessWidget {
               const TaskSearchInputField(),
               customSpacerHeight(height: 12),
               Obx(() {
-                if (Get.find<TimelineGlobalController>().isProjectListLoading.isTrue) {
+                if (Get.find<TimelineGlobalController>()
+                    .isProjectListLoading
+                    .isTrue) {
                   return const Center(child: CupertinoActivityIndicator());
                 }
 
-                final projectDropDownResponse = Get.find<TimelineGlobalController>().projectDropDownResponse;
+                final projectDropDownResponse =
+                    Get.find<TimelineGlobalController>()
+                        .projectDropDownResponse;
                 if (projectDropDownResponse?.getProjectsDropdown?.isEmpty ??
                     true) {
                   return Center(
@@ -106,15 +110,6 @@ _projectListLayout(int index, context) {
                         /// then it became task name that shown in ui
                         /// pass its name to task name
 
-                        if (Get.find<TimelineGlobalController>().projectId.value !=
-                            Get.find<TimelineGlobalController>()
-                                .projectDropDownResponse
-                                ?.getProjectsDropdown?[index]
-                                .projectId) {
-                          Get.find<TimelineGlobalController>()
-                              .isValueChangeForTimeLogUpdate(true);
-                        }
-
                         Get.find<TimelineGlobalController>().taskName.value =
                             Get.find<TimelineGlobalController>()
                                     .projectDropDownResponse
@@ -127,13 +122,25 @@ _projectListLayout(int index, context) {
                                     ?.getProjectsDropdown?[index]
                                     .projectId ??
                                 "";
-                        Get.find<TimelineGlobalController>().projectColor.value =
-                            Get.find<TimelineGlobalController>()
-                                    .projectDropDownResponse
-                                    ?.getProjectsDropdown?[index]
-                                    .color ??
-                                "";
 
+                        Get.find<TimelineGlobalController>()
+                            .projectColor
+                            .value = Get.find<TimelineGlobalController>()
+                                .projectDropDownResponse
+                                ?.getProjectsDropdown?[index]
+                                .color ??
+                            "";
+
+                        if (Get.find<TimelineGlobalController>()
+                                .projectId
+                                .value ==
+                            (Get.find<TimelineGlobalController>()
+                                .projectDropDownResponse
+                                ?.getProjectsDropdown?[index]
+                                .projectId)) {
+                          Get.find<TimelineGlobalController>()
+                              .isValueChangeForTimeLogUpdate(true);
+                        }
                         Get.find<TimelineGlobalController>().taskId.value = "";
                         taskSearchController.clear();
                         Navigator.pop(context);
@@ -182,7 +189,7 @@ _projectListLayout(int index, context) {
 Widget _taskLayout(Tasks task, context) {
   return InkWell(
     onTap: () {
-      if (Get.find<TimelineGlobalController>().taskId.value != task.taskId) {
+      if (Get.find<TimelineGlobalController>().taskId.value == task.taskId) {
         Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
       }
       taskSearchController.text = task.name ?? "";

@@ -50,15 +50,9 @@ class TimeLineCalendar extends StatelessWidget {
             Iterable<String> eventData = events.map((e) => e.description!);
             /// have to sub string
             /// otherwise it returns with (value) pattern
-            String timeLId = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).timeLId)
-                .toString();
+            String timeLId = eventData.map((e) => li.ModelForDescription.fromJson(jsonDecode(e)).timeLId).toString();
 
-            String leaveId = eventData
-                .map((e) =>
-                    li.ModelForDescription.fromJson(jsonDecode(e)).leaveId)
-                .toString();
+            String leaveId = eventData.map((e) => li.ModelForDescription.fromJson(jsonDecode(e)).leaveId).toString();
             ///Event according to api called
             _updatedLogDetails(leaveId,timeLId);
 

@@ -27,5 +27,7 @@ class AddTimeEntryScreen extends StatelessWidget {
     Get.find<TimelineGlobalController>().taskName.value = '';
     Get.find<TimelineGlobalController>().projectColor.value = '';
     Get.find<TimelineGlobalController>().getProjectList();
+    Get.find<TimelineGlobalController>().isTimeInvalid(false);
+    Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(false);
   }
 }

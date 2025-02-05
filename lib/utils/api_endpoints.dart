@@ -564,6 +564,7 @@ query GetSummaryForTimelines($queryData: TimelinesQueryDataInputType) {
     logged_total_seconds
     total_leaves_seconds
     balance
+    pending_total_seconds
   }
 }
 ''';

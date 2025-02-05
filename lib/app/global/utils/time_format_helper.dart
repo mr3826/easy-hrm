@@ -2,6 +2,8 @@
 
 class TimeFormatHelper {
 
+
+
   static String formatSecondsToHours(String secondsStr) {
     // Try to parse the input string as a number
     num? seconds = num.tryParse(secondsStr);
@@ -17,6 +19,8 @@ class TimeFormatHelper {
     String result = minutes > 0 ? "${hours}h+" : "${hours}h";
     return isNegative ? "-$result" : result;
   }
+
+
 
 
 static  String formatSecondsToHoursSolid(String secondsStr) {
@@ -63,5 +67,7 @@ static  String formatSecondsToHoursSolid(String secondsStr) {
       return "";
     }
   }
+
+
 
 }

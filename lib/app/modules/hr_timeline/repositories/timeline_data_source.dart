@@ -40,6 +40,8 @@ class TimelineDataImpl implements TimelineDataSource {
     endDate : $endDate
     orgUserId : $orgUserId
     
+    getTimelineSummaryByDate : $response
+    
     
     ''');
     if (response.data != null) {
@@ -195,6 +197,13 @@ class TimelineDataImpl implements TimelineDataSource {
 
  @override
  Future<bool> createManualEntry({required String startDate,required String endDate,required String des,required String projectId,String ?taskId,String?orgId,String?status}) async {
+
+
+    print(''''
+    createManualEntry: 
+    startDate $startDate
+    endDate $endDate
+    ''');
     try {
      Map<String, dynamic>? response = await  _timelineApiService.createManualEntry( startDate, endDate, des, projectId,taskId,orgId,status);
      if (response != null) {

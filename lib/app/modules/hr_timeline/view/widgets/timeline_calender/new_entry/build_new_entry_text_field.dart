@@ -17,8 +17,8 @@ import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../../../../../common/widget/custom_dialog.dart';
-import '../../../../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
+import '../../../../../../global/utils/container_decoration.dart';
 import '../../../../../../global/view/custom_tabbar_with_search.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
 import '../../../../../../global/view/widget/custom_app_title_text.dart';
@@ -43,29 +43,22 @@ class BuildNewEntryTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.find<TimelineGlobalController>().isTimeInvalid(false);
     return SingleChildScrollView(
       child: Column(
         children: [
           newEntryDurationTime(status: status),
           Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24))),
+            decoration: _decoration,
             padding: marginLayout.copyWith(top: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customSpacerHeight(height: 12),
-                IgnorePointer(
-                    ignoring: isFromUpdateTimelogEntry == true ? true : false,
-                    child: _buildEmployeeSearch(context)),
+                _searchEmployee(context),
                 customAppTitleText(
                     text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
-                Obx(() => _dateLayoutField()),
+                Obx(() => _dateLayoutField(context)),
                 customSpacerHeight(height: 8),
                 _dayScheduleLayout(),
                 customSpacerHeight(height: 20),
@@ -79,16 +72,7 @@ class BuildNewEntryTextField extends StatelessWidget {
                 customSpacerHeight(height: 20),
                 customAppTitleText(text: AppString.text_description.tr),
                 customSpacerHeight(height: 8),
-                InputNote(
-                  controller: Get.find<TimelineGlobalController>()
-                      .descriptionController,
-                  onChanged: (value) {
-                    if (value != null) {
-                      Get.find<TimelineGlobalController>()
-                          .isValueChangeForTimeLogUpdate(true);
-                    }
-                  },
-                ),
+                _buildNote(),
                 customSpacerHeight(height: 20),
                 _buildButton(context),
                 customSpacerHeight(height: 40)
@@ -100,53 +84,93 @@ class BuildNewEntryTextField extends StatelessWidget {
     );
   }
 
-  _dateLayoutField() {
-    return GestureDetector(
-      onTap: () => showDialog<String>(
-        context: Get.context!,
-        builder: (BuildContext context) => Dialog(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                InDatePicker(),
-              ],
-            ),
-          ),
+  Decoration get _decoration =>
+      ContainerDecorationHelper.containerDecoration().copyWith(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24), topRight: Radius.circular(24)));
+
+  String get _getButtonText => isFromUpdateTimelogEntry == true
+      ? AppString.text_save.tr
+      : AppString.text_add.tr;
+
+  Function _clickAction(bool isValueChanged) => isValueChanged
+      ? () {
+          final timelineController = Get.find<TimelineGlobalController>();
+          if (isFromUpdateTimelogEntry == true) {
+            if (isEmployee == true &&
+                status == "approved" &&
+                isFromUpdateTimelogEntry == true) {
+              timelineController.status.value = "";
+              timelineController.updateTimelineLogDetails();
+            } else {
+              timelineController.updateTimelineLogDetails();
+            }
+          } else {
+            timelineController.createManualEntry();
+          }
+        }
+      : () {};
+
+  Color _getBtnColor(isValueChanged) => isValueChanged
+      ? AppColor.primaryColor
+      : AppColor.primaryColor.withOpacity(0.5);
+
+  Widget _dateLayoutField(BuildContext context) => GestureDetector(
+        onTap: () => _showCustomDateRangeDialog(context),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  border: Border.all(width: .8, color: AppColor.hintColor),
+                  borderRadius:
+                      BorderRadius.circular(Dimensions.radiusDefault)),
+              padding: marginLayout.copyWith(
+                  top: 14, bottom: 14, left: 14, right: 14),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                          Get.find<DateTimePickerController>().inDate.value)),
+                      style: AppStyle.normal_text_grey,
+                    ),
+                    const Icon(
+                      Icons.calendar_today_outlined,
+                      color: AppColor.hintColor,
+                    )
+                  ]),
+            )
+          ],
         ),
-      ),
-      child: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                border: Border.all(width: .8, color: AppColor.hintColor),
-                borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-            padding:
-                marginLayout.copyWith(top: 14, bottom: 14, left: 14, right: 14),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                        Get.find<DateTimePickerController>().inDateTime.value)),
-                    style: AppStyle.normal_text_grey,
-                  ),
-                  const Icon(
-                    Icons.calendar_today_outlined,
-                    color: AppColor.hintColor,
-                  )
-                ]),
-          )
-        ],
-      ),
+      );
+
+  void _showCustomDateRangeDialog(BuildContext context) async {
+    final selectedRange = await showDialog<Map<String, DateTime?>>(
+      context: context,
+      builder: (BuildContext context) => CustomCalendarPicker(
+          isRangeSelectionEnabled: false,
+          weekendDays: const [],
+          cancelTextStyle: AppStyle.normal_text.copyWith(
+              color: AppColor.secondaryColor,
+              fontSize: Dimensions.fontSizeDefault + 1),
+          baseColor: AppColor.primaryColor,
+          holidayDates: const []),
     );
+    if (selectedRange != null) {
+      DateTime? startDate = selectedRange["start"];
+      if (startDate != null) {
+        Get.find<DateTimePickerController>().inDateTime.value =
+            DateFormat("yyyy-MM-dd")
+                .format(DateTime.parse(startDate.toString()));
+        Get.find<DateTimePickerController>().inDate.value =
+            DateFormat('yyyy-MM-dd').format(startDate);
+
+        ///For active update leave details button
+        Get.find<TimelineGlobalController>()
+            .isValueChangeForTimeLogUpdate(true);
+      }
+    }
   }
 
   _timerLayout(BuildContext context) {
@@ -192,7 +216,6 @@ class BuildNewEntryTextField extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               dateTimeController.currentIndex.value = index;
-
               final currentDate = DateTime.now();
               switch (index) {
                 case 0:
@@ -211,6 +234,10 @@ class BuildNewEntryTextField extends StatelessWidget {
                   break;
               }
               dateTimePickerController.getInDateTime();
+              Get.find<TimelineGlobalController>()
+                  .isValueChangeForTimeLogUpdate(true);
+
+              ///For enable save button
             },
             child: Obx(() {
               final isSelected = dateTimeController.currentIndex.value == index;
@@ -253,77 +280,50 @@ class BuildNewEntryTextField extends StatelessWidget {
     );
   }
 
-  _selectedTaskLayout(context) {
-    return taskInputFieldLayout(
-      onAction: () {
-        customButtonSheet(
-            context: context, height: .7, child: const BuildTaskView());
-      },
-    );
-  }
+  _selectedTaskLayout(context) => taskInputFieldLayout(
+        onAction: () => customButtonSheet(
+            context: context, height: .7, child: const BuildTaskView()),
+      );
 
   _buildButton(BuildContext context) {
     final timelineController = Get.find<TimelineGlobalController>();
 
     if (status == "reject") {
-      return CustomAppButton(
-        isButtonExpanded: false,
-        buttonText: Text(
-          AppString.text_remove.tr,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
-        onPressed: () {
-          _showRemoveTimeLogDialog(context, timelineController);
-        },
-        buttonColor: AppColor.errorColorLight,
-      );
+      return _rejectButton(context);
+    } else {
+      return Obx(() {
+        if (timelineController.isManualEntryLoading.isTrue ||
+            timelineController.isUpdateTimeLogLoading.isTrue) {
+          return const Center(child: CupertinoActivityIndicator());
+        }
+
+        bool isValueChanged =
+            timelineController.isValueChangeForTimeLogUpdate.value;
+
+        return CustomDoubleAppButton(
+          buttonText: _getButtonText,
+          btnColor: _getBtnColor(isValueChanged),
+          onAction: () => _clickAction(isValueChanged)(),
+          cancelAction: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+            //Before popping than current screen can be popped
+            if (isFromUpdateTimelogEntry == true && Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
+        );
+      });
     }
-
-    return Obx(() {
-      if (timelineController.isManualEntryLoading.isTrue ||
-          timelineController.isUpdateTimeLogLoading.isTrue) {
-        return const Center(child: CupertinoActivityIndicator());
-      }
-
-      bool isValueChanged =
-          timelineController.isValueChangeForTimeLogUpdate.value;
-
-      return CustomDoubleAppButton(
-        buttonText: isFromUpdateTimelogEntry == true
-            ? AppString.text_save.tr
-            : AppString.text_add.tr,
-        btnColor: isValueChanged
-            ? AppColor.primaryColor
-            : AppColor.primaryColor.withOpacity(0.5),
-        onAction: isValueChanged
-            ? () {
-                if (isFromUpdateTimelogEntry == true) {
-                  if (isEmployee == true &&
-                      status == "approved" &&
-                      isFromUpdateTimelogEntry == true) {
-                    timelineController.status.value = "";
-                    timelineController.updateTimelineLogDetails();
-                  } else {
-                    timelineController.updateTimelineLogDetails();
-                  }
-                } else {
-                  timelineController.createManualEntry();
-                }
-              }
-            : () {},
-        cancelAction: () {
-          Navigator.pop(context);
-        },
-      );
-    });
   }
 
-  void _showRemoveTimeLogDialog(
-      BuildContext context, TimelineGlobalController controller) {
+  void _showRemoveTimeLogDialog(BuildContext context) {
     showCustomAlertDialog(
       context: context,
       onConfirm: () async {
-        final result = await controller.removeTimelineEntry();
+        final result =
+            await Get.find<TimelineGlobalController>().removeTimelineEntry();
         if (result == true) {
           Navigator.pop(context);
         }
@@ -406,6 +406,11 @@ class BuildNewEntryTextField extends StatelessWidget {
                   selectedStatusIndex.value = index;
                   Get.find<TimelineGlobalController>().status(
                       selectedStatusIndex.value == 0 ? "pending" : "approved");
+                  selectedStatusIndex.value == 1
+                      ? Get.find<TimelineGlobalController>()
+                          .isValueChangeForTimeLogUpdate(true)
+                      : Get.find<TimelineGlobalController>()
+                          .isValueChangeForTimeLogUpdate(false);
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.2,
@@ -463,6 +468,38 @@ class BuildNewEntryTextField extends StatelessWidget {
     } else {
       return const SizedBox.shrink();
     }
+  }
+
+  _buildNote() {
+    return InputNote(
+      controller: Get.find<TimelineGlobalController>().descriptionController,
+      onChanged: (value) {
+        if (value != null) {
+          Get.find<TimelineGlobalController>()
+              .isValueChangeForTimeLogUpdate(true);
+        }
+      },
+    );
+  }
+
+  _rejectButton(BuildContext context) {
+    return CustomAppButton(
+      isButtonExpanded: false,
+      buttonText: Text(
+        AppString.text_remove.tr,
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
+      onPressed: () {
+        _showRemoveTimeLogDialog(context);
+      },
+      buttonColor: AppColor.errorColorLight,
+    );
+  }
+
+  _searchEmployee(BuildContext context) {
+    return IgnorePointer(
+        ignoring: isFromUpdateTimelogEntry == true ? true : false,
+        child: _buildEmployeeSearch(context));
   }
 }
 

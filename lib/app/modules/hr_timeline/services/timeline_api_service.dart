@@ -33,6 +33,8 @@ class TimelineApiService {
   Future<QueryResult<Object?>> getTimelineSummary( ///get_timeline summary by month
       String startDate, String endDate,
       {String? orgUserId}) async {
+
+    print("called_getTimelineSummary");
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
         "start_date": startDate,

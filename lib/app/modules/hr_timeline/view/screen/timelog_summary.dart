@@ -10,6 +10,8 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../utils/utils.dart';
+import '../../../../global/utils/balance_helper.dart';
+import '../../../../global/utils/time_format_helper.dart';
 import '../../bindings/TimelineSummaryBindings.dart';
 import '../../controllers/hr_timeline_controller.dart';
 import '../widgets/time_sheet/timelog_summary_details.dart';
@@ -47,7 +49,7 @@ class TimeLogSummary extends GetView<TimelineSummaryController> {
                       : Column(
                           children: [
                             _buildWorkingSchedule(),
-                            _buildTimeLogDetails(),
+                           _buildTimeLogDetails(),
                           ],
                         ),
                 ),
@@ -86,13 +88,12 @@ class TimeLogSummary extends GetView<TimelineSummaryController> {
     final summary = controller.timelineSummaryByDate?.getTimelogSummaryForApp;
 
     return workingScheduleLayout(
-      schedule: getConvertSecondsToHours(
+      schedule: TimeFormatHelper.formatSecondsToHoursSolid(
           summary?.totalScheduledSeconds?.toString() ?? "0"),
-      balanceTime:
-          getConvertSecondsToHours(summary?.balance?.toString() ?? "0"),
-      loggedTime: getConvertSecondsToHours(
-          summary?.loggedTotalSeconds?.toString() ?? "0"),
-      paidLeave: getConvertSecondsToHours(
+      balanceTime: BalanceCalculatorHelper.calculateBalance(summary?.totalPendingSeconds?.toString() ?? "0",summary?.balance?.toString() ?? "0"),
+      loggedTime: TimeFormatHelper.formatSecondsToHoursSolid(summary?.loggedTotalSeconds?.toString() ?? "0"),
+
+      paidLeave: TimeFormatHelper.formatSecondsToHoursSolid(
           summary?.totalLeavesSeconds?.toString() ?? "0"),
     );
   }

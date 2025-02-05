@@ -6,6 +6,7 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/timePicker/date_time_picker_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import '../../../app/modules/leave_hr/presentation/controller/hr_leave_controller.dart';
 import '../../../modules/leave/presentation/controller/leave_screen_controller.dart';
 import '../../../modules/leave/presentation/controller/update_leave_controller.dart';
@@ -213,7 +214,6 @@ class _InDatePickerState extends State<InDatePicker> {
               setState(() {
                 today = selectedDay;
                 Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
-
               });
             },
           ),
@@ -237,8 +237,10 @@ class _InDatePickerState extends State<InDatePicker> {
               onTap: () {
                 ///For active timelog details button
                 Get.find<TimelineController>().isSelectDate.value = Get.find<DateTimePickerController>().inDate.value;
+
                 ///For active update leave details button
                 Get.find<UpDateLeaveController>().isSelectDate.value = Get.find<DateTimePickerController>().inDate.value;
+                Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
 
 
                 ///others
@@ -254,14 +256,11 @@ class _InDatePickerState extends State<InDatePicker> {
                     Get.find<DateTimePickerController>().getInDateTime();
                     Get.find<LeaveScreenController>().getLeaveDetailsByDate();
                   } else {
-                    if (Get.find<DateTimePickerController>().inDate.value !=
-                        DateFormat('yyyy-MM-dd').format(today)) {
-                      Get.find<TimelineController>()
-                          .isValueChangeForTimeLogUpdate(true);
+                    if (Get.find<DateTimePickerController>().inDate.value != DateFormat('yyyy-MM-dd').format(today)) {
+                      Get.find<TimelineController>().isValueChangeForTimeLogUpdate(true);
                     }
 
-                    Get.find<DateTimePickerController>().inDate.value =
-                        DateFormat('yyyy-MM-dd').format(today);
+                    Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd').format(today);
 
                     Get.find<DateTimePickerController>().getInDateTime();
                     setIndexForPrevTdayOrTomListTimelog(today);

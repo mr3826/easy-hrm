@@ -81,76 +81,13 @@ statusBtn({required status}) {
   }
 }
 
-Widget buttonLayout({required BuildContext context, required TaskInfo taskInfo}) {
-  if (taskInfo.status == "reject") {
-    return _rejectedBtn(context: context, taskInfo: taskInfo);
-  } else if (taskInfo.status == "pending") {
-    return _pendingLayout(taskInfo: taskInfo, context: context);
-  } else if (taskInfo.status == "cancelled") {
-    return Container();
-  } else if (taskInfo.status == "taken") {
-    return Container();
-  } else {
-    return _approvedLayout(context: context, taskInfo: taskInfo);
-  }
-}
-
-_rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
-  return Padding(
-    padding: marginLayout,
-    child: CustomDoubleAppButton(
-        cancelAction: () async {
-          removeTask(context: context, taskInfo: taskInfo);
-        },
-        buttonText: AppString.text_details.tr,
-        cancelText: AppString.text_remove.tr,
-        onAction: () {
-          _updateDataFromApiResponse(taskInfo: taskInfo);
-          Get.to(() {
-            return UpdateTimeLineLog(
-              projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                  ? HexColor(taskInfo.projectColor)
-                  : AppColor.primaryColor,
-              endDateTime: taskInfo.endTime,
-              startDateTime: taskInfo.startTime,
-              status: taskInfo.status ?? "",
-            );
-          });
-        },
-        btnColor: AppColor.primaryColor),
-  );
-}
-
-_pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
-  return Padding(
-    padding: marginLayout,
-    child: CustomDoubleAppButton(
-        cancelAction: () async {
-          removeTask(context: context, taskInfo: taskInfo);
-        },
-        buttonText: AppString.text_details.tr,
-        cancelText: AppString.text_remove.tr,
-        onAction: () {
-          _updateDataFromApiResponse(taskInfo: taskInfo);
-          Get.to(() => UpdateTimeLineLog(
-                projectOrTaskColor: taskInfo.projectColor.isNotEmpty
-                    ? HexColor(taskInfo.projectColor)
-                    : AppColor.primaryColor,
-                endDateTime: taskInfo.endTime,
-                startDateTime: taskInfo.startTime,
-                status: taskInfo.status ?? "",
-              ));
-        },
-        btnColor: AppColor.primaryColor),
-  );
-}
 
 void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
   showCustomAlertDialog(
       context: context,
       onConfirm: () async {
-        await Get.find<TimelineGlobalController>()
-            .removeTimelineEntry(timeLogId: taskInfo.timeLineId,orgId: taskInfo.employeeId);
+        await Get.find<TimelineGlobalController>().removeTimelineEntry(
+            timeLogId: taskInfo.timeLineId, orgId: taskInfo.employeeId);
         Get.back(canPop: false);
         Get.back(canPop: false);
       },
@@ -211,16 +148,11 @@ void _updateDataFromApiResponse({required TaskInfo taskInfo}) {
   Get.find<TimelineGlobalController>().status.value = taskInfo.status ?? "";
   Get.find<TimelineGlobalController>().taskId.value = taskInfo.timeLineId ?? "";
   Get.find<TimelineGlobalController>().taskId.value = taskInfo.taskId ?? "";
-  Get.find<TimelineGlobalController>().projectId.value =
-      taskInfo.projectId ?? "";
-  Get.find<TimelineGlobalController>().projectColor.value =
-      taskInfo.projectColor ?? "";
-  Get.find<TimelineGlobalController>().taskName.value =
-      taskInfo.taskOrProjectName ?? "";
-  Get.find<TimelineGlobalController>().descriptionController.text =
-      taskInfo.description ?? "";
-  Get.find<TimelineGlobalController>().timeLineId.value =
-      taskInfo.timeLineId ?? "";
+  Get.find<TimelineGlobalController>().projectId.value = taskInfo.projectId ?? "";
+  Get.find<TimelineGlobalController>().projectColor.value = taskInfo.projectColor ?? "";
+  Get.find<TimelineGlobalController>().taskName.value = taskInfo.taskOrProjectName ?? "";
+  Get.find<TimelineGlobalController>().descriptionController.text = taskInfo.description ?? "";
+  Get.find<TimelineGlobalController>().timeLineId.value = taskInfo.timeLineId ?? "";
 
   ///Initially we get data from serve and don't need to update any thing. so..
   ///value=false

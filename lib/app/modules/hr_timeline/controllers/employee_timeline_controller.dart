@@ -90,7 +90,9 @@ class EmployeeTimelineController extends GetxController with StateMixin {
 
   getTimelineCalenderByDate(
       {String? startDate, String? endDate, String? orgId}) async {
-    isTimelineCalendarByDateLoading(true);
+    // isTimelineCalendarByDateLoading(true);
+    change(null, status: RxStatus.loading());
+
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
     final String organizationId =
@@ -212,7 +214,8 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     }
     updateDataAfterTwoMinutes();
 
-    isTimelineCalendarByDateLoading(false);
+   // isTimelineCalendarByDateLoading(false);
+    change(null, status: RxStatus.success());
   }
 
   getTimelineSummaryByMonth({required String startDate, required String endDate}) async {
