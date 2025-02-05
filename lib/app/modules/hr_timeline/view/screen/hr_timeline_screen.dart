@@ -10,6 +10,7 @@ import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/start_timmer_s
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/timeline_calender/slelected_date_picker.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../modules/notification/presentation/view/screen/notification.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_style.dart';
@@ -112,19 +113,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
       delegate: SliverChildListDelegate([
         tabController.index == 0
             ? Obx((){
-
-          // controller.isTimelineCalendarByDateLoading.isTrue ||
-          //     controller.isTimelineSummaryByDateLoading.isTrue
-          //     ? const CupertinoActivityIndicator(
-          //   color: AppColor.primaryColor,
-          //   radius: 20,
-          // )
-          //     : TimelineCalendar(
-          //     timelineSummaryByDate: Get.find<TimelineGlobalController>()
-          //         .timelineSummaryByDate ??
-          //         TimelineSummaryByDate())
-
-
           if (controller
               .isTimelineCalendarByDateLoading
               .isTrue) {
@@ -166,10 +154,13 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
               fontSize: Dimensions.fontSizeMid,
             ),
           ),
-          customSvgImage(
-            imageUrl: Images.notificationIconNavOutLine,
-            height: 26,
-            width: 26,
+          GestureDetector(
+            onTap: ()=>Get.to(()=>const NotificationScreen(isRouteBase: true,)),
+            child: customSvgImage(
+              imageUrl: Images.notificationIconNavOutLine,
+              height: 26,
+              width: 26,
+            ),
           ),
         ],
       ),

@@ -9,6 +9,7 @@ import '../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
+import '../../../../../../modules/notification/presentation/view/screen/notification.dart';
 import '../../../../employee/bindings/employee_bindings.dart';
 import '../../../../employee/controller/employment_controller.dart';
 import '../../../../profile/controller/global_profile_controller.dart';
@@ -75,8 +76,7 @@ class LeaveHrScreen extends StatelessWidget {
       centerTitle: false,
       actions: [
         GestureDetector(
-          // onTap: ()=>Get.to(()=>NotificationScreen()),
-          onTap: () {},
+          onTap: ()=>Get.to(()=>const NotificationScreen(isRouteBase: true)),
           child: customSvgImage(
             imageUrl: Images.notificationIconNavOutLine,
             height: 26,

@@ -146,7 +146,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                 CircularNetworkImage(
                   imageUrl:
                       buildImgIxUrl(imagePath: profileImgKey, isPublic: true),
-                  errorText: getInitials(searchController.text.replaceAll("(You)", "")),
+                  errorText: getInitials(
+                      searchController.text.replaceAll("(You)", "")),
                   radius: 12,
                   borderColor: Colors.transparent,
                 ),

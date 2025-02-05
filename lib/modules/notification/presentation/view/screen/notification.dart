@@ -12,12 +12,13 @@ import '../widget/notification_custom_tabbar.dart';
 
 
 class NotificationScreen extends GetView<NotificationController> {
-  const NotificationScreen({super.key});
+ final bool ?isRouteBase;
+  const NotificationScreen({super.key,this.isRouteBase});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: notificationAppbar(),
+      appBar: notificationAppbar(isRouteBase??false),
       body: _buildBody(),
       floatingActionButton: _buildFloatingActionButton(),
     );
