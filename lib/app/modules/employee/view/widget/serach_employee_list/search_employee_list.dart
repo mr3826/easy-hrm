@@ -54,23 +54,6 @@ class SearchEmployeeList extends StatelessWidget {
                         customSpacerHeight(height: 12),
                         /// Current user section (You)
 
-
-
-                        /// Current user section (You)
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     onValueSelected?.call(gs.GetStorage().read(AppString.ORGANIZATION_USER_ID) ?? "");
-                        //     userInfo?.call(UserInfo("${Get.find<ProfileGlobalController>().employeeName.value} (You)", Get.find<ProfileGlobalController>().employeeImeKey.value));
-                        //   },
-                        //   child: _buildOwnInfo(
-                        //       name:Get.find<ProfileGlobalController>()
-                        //           .employeeName.value,
-                        //       role:"Static value",
-                        //       imgUrl: Get.find<ProfileGlobalController>()
-                        //               .employeeImeKey.value ??
-                        //           ""),
-                        // ),
-
                         GestureDetector(
                           onTap: (){
                             onValueSelected!(gs.GetStorage().read(AppString.ORGANIZATION_USER_ID));

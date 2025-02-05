@@ -110,6 +110,7 @@ class LogDetailsButton extends StatelessWidget {
       padding: marginLayout,
       child: CustomAppButton(
         borderRadius: 30,
+
         buttonText: Text(
           AppString.text_details.tr,
           style: AppStyle.mid_large_text.copyWith(

@@ -166,7 +166,7 @@ final  bool isEmployee;
               confirmButtonText: AppString.text_remove.tr);
         },
         buttonColor: AppColor.errorColorLight,
-        isButtonExpanded: false,
+        isButtonExpanded: true,
       ),
     );
   }
@@ -322,7 +322,7 @@ final  bool isEmployee;
               color: AppColor.cardColor, fontSize: Dimensions.fontSizeMid - 3),
         ),
         borderRadius: 60,
-        isButtonExpanded: false,
+        isButtonExpanded: true,
       ),
     );
   }

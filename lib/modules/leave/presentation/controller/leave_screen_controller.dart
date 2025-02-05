@@ -9,6 +9,7 @@ import 'package:payrun_mobile/modules/leave/data/remote/leave_remote_data_source
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_record_controller.dart';
 import 'package:payrun_mobile/modules/leave/domain/leave_summary_dashboard.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import '../../../../app/modules/hr_dashboard/bindings/employee_dashboard_bindings.dart';
 import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import '../../../../app/modules/leave_hr/data/leave_remote_data_source.dart';
 import '../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
@@ -31,18 +32,16 @@ class LeaveScreenController extends GetxController with StateMixin {
   final LeaveRemoteDataSource _leaveRemoteDataSource =
       Get.find<LeaveRemoteDataSource>();
 
-
   LeaveDetailsById? leaveDetailsById;
-  RxBool isLeaveDetailsByLoading=false.obs;
+  RxBool isLeaveDetailsByLoading = false.obs;
 
   /// Fetches employee leave data and updates the [hrLeaveCalender] object.
   Future<void> getLeaveDetailsById({required String leaveId}) async {
     isLeaveDetailsByLoading(true);
     leaveDetailsById =
-    await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
+        await _hrLeaveRemoteDataSource.getLeaveDetailsById(leaveId);
     isLeaveDetailsByLoading(false);
   }
-
 
   /// Fetches the leave summary for the dashboard and updates the state.
   Future<void> getLeaveSummaryForDashboard() async {
@@ -84,11 +83,12 @@ class LeaveScreenController extends GetxController with StateMixin {
         await _leaveRemoteDataSource.removeLeave(leaveId: leaveId);
 
     if (response) {
+      Get.back(canPop: false);
+      Get.back(canPop: false);
       showSuccessMessage(message: AppString.leaveRemovedSuccessMessage.tr);
       updateData();
       _updateTimelineData();
-      Get.back(canPop: false);
-      Get.back(canPop: false);
+
     }
     cancelLeaveLoader(false);
   }
@@ -132,7 +132,9 @@ class LeaveScreenController extends GetxController with StateMixin {
 
 /// Updates data across different controllers.
 void updateData() {
-  final LeaveScreenController leaveScreenController = Get.find<LeaveScreenController>();
+  EmployeeDashboardBindings().dependencies();
+  final LeaveScreenController leaveScreenController =
+      Get.find<LeaveScreenController>();
   leaveScreenController
     ..getLeaveSummaryForDashboard()
     ..getLeaveDetailsByDate();
@@ -144,53 +146,5 @@ void updateData() {
 
 /// Updates timeline data across different timeline controllers.
 void _updateTimelineData() {
-  final DateTimeController dateTimeController = Get.find<DateTimeController>();
-  final DateTime requestedDate =
-      DateTime.parse(dateTimeController.requestedDate.value);
-
-  final TimelineGlobalController timelineController = Get.find<TimelineGlobalController>();
-
-  final TimelineSummaryController timelineSummaryController = Get.find<TimelineSummaryController>();
-
-  timelineController.getTimelineSummaryByDate(
-    startDate: DateTime(DateTime.now().year, DateTime.now().month, 1, 0, 0, 0)
-        .toString(),
-    endDate:
-        DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59)
-            .toString(),
-  );
-
-  timelineController.getTimelineSummaryByDate(
-    startDate: DateTime(
-            requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)
-        .toString(),
-    endDate: DateTime(requestedDate.year, requestedDate.month,
-            requestedDate.day, 23, 59, 59)
-        .toString(),
-  );
-
-
-  if(Get.find<TimelineGlobalController>().isEmployee.isTrue){
-    Get.find<EmployeeTimelineController>().getTimelineCalenderByDate(
-      startDate: DateTime(
-          requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)
-          .toString(),
-      endDate: DateTime(requestedDate.year, requestedDate.month,
-          requestedDate.day, 23, 59, 59)
-          .toString(),
-    );
-  }else{
-    Get.find<HrTimelineController>().getTimelineCalenderByDate(
-      startDate: DateTime(
-          requestedDate.year, requestedDate.month, requestedDate.day, 0, 0, 0)
-          .toString(),
-      endDate: DateTime(requestedDate.year, requestedDate.month,
-          requestedDate.day, 23, 59, 59)
-          .toString(),
-      orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
-
-
-    );
-  }
-
+  refreshTimeline();
 }

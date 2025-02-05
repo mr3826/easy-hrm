@@ -207,6 +207,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
         .isNegative) {
       Get.find<HrUpdateLeaveController>().updateAssignLeave(
         leaveId: controller.leaveId.toString(),
+        status:  Get.find<LeaveController>().selectedStatusIndex.value==0?"pending":"approved",
         leaveTypeId: controller.leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,
         endDate: Get.find<DateTimePickerController>().outDateTime.value,
@@ -238,15 +239,16 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
           itemBuilder: (context, index) {
             return Obx(() {
               // Checks if the current index is selected.
-              final isSelected =
-                  index == leaveController.selectedStatusIndex.value;
-
-              if (leaveController.selectedStatusIndex.value == 1) {
-                Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
-              }
+              final isSelected = index == leaveController.selectedStatusIndex.value;
 
               return GestureDetector(
-                onTap: () => leaveController.selectedStatusIndex.value = index,
+                onTap: (){
+                  leaveController.selectedStatusIndex(index);
+                  if (leaveController.selectedStatusIndex.value == 1) {
+                    Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
+                  }
+                },
+
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/network/exception_helper.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -34,6 +35,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
         required String key,
         required String size,
         required String name,
+        required String status,
         required String id,
         required String? leaveTypeId}) async {
     isUpdateLeaveLoading(true);
@@ -46,6 +48,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
         "end_date": DateTime.parse(endDate).toUtc().toString(),
         "start_date": DateTime.parse(startDate).toUtc().toString(),
         "leave_type_id": leaveTypeId,
+        "status":status,
         "files": _getFileInfo(
             id: id,
             key: key,
@@ -175,6 +178,7 @@ hrUpdateLeave(PickedFileFormStorage storageForUpload) {
         : controller.selectedRangeEndDate;
     controller.getLeaveRecord(startDate: startDate, endDate: endDate);
   }
+  refreshTimeline();
 
   Get.back(canPop: false);
   Get.back();
