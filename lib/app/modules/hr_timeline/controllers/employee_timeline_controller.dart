@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
@@ -13,9 +12,8 @@ import 'package:payrun_mobile/app/modules/hr_timeline/models/timeline_summary_by
 import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
-import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../../common/domain/last_input_model.dart';
+import '../bindings/timeline_global_bindings.dart';
 import '../models/calendar_timeline.dart';
 import '../repositories/timeline_data_source.dart';
 import 'global_timline_controller.dart';
@@ -23,37 +21,9 @@ import 'global_timline_controller.dart';
 class EmployeeTimelineController extends GetxController with StateMixin {
   final TimelineDataSource _timelineDataSource;
   EmployeeTimelineController(this._timelineDataSource);
-  final isLoading = false.obs;
-  final isManualEntryLoading = false.obs;
   final isTimelineCalendarByDateLoading = false.obs;
-  final isTimelineSummaryByDateLoading = false.obs;
-  final isUpdateTimeLogLoading = false.obs;
-  final taskName = "".obs;
-  final isTimeInvalid = false.obs;
-  final taskId = "".obs;
-  final projectId = "".obs;
-  RxString selectedSummaryDate = "".obs;
-  RxInt selectedYearIndex = 10.obs;
-  RxInt currentYear = DateTime.now().year.obs;
-  String timeLogStatus = "";
-  String timeLogDuration = "";
-  String timeLineID = "";
-  Color timeLogColor = AppColor.primaryColor;
-  RxString projectColor = ''.obs;
-  final searchInputData = TextEditingController().obs;
   late Timer updateDataTime;
-  RxString isSelectDate = ''.obs;
-
-  /// The index of the selected time entry status, used for updating time entry status (e.g., Pending, Approved).
-  RxInt selectedStatusIndex = 0.obs;
-
-  /// List of status options to categorize leave requests (e.g., Pending, Approved).
-  final List<String> statusOptions = ["Pending", "Approved"];
-
-  /// Method to check if the button should be enabled
-  RxBool isValueChangeForTimeLogUpdate = false.obs;
   RxBool isTimelineSummaryLoading = false.obs;
-  TextEditingController descriptionController = TextEditingController();
   CalendarTimeline calendarTimeline = CalendarTimeline();
 
   List<CalendarEventData<String>>? timelogList = <CalendarEventData<String>>[];
@@ -70,7 +40,6 @@ class EmployeeTimelineController extends GetxController with StateMixin {
     }
     updateDataTime = Timer(Duration.zero, () {});
     updateDataAfterTwoMinutes();
-
     _refreshTimeline();
 
     super.onInit();
@@ -377,9 +346,5 @@ class EmployeeTimelineController extends GetxController with StateMixin {
         "${DateTime(DateTime.parse(endDte).year, DateTime.parse(endDte).month, DateTime.parse(endDte).day, 23, 59, 59)}");
   }
 
-  @override
-  void disposeId(Object id) {
-    descriptionController.dispose();
-    super.disposeId(id);
-  }
+
 }

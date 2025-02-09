@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/global/controller/user_info_controller.dart';
 import 'package:payrun_mobile/app/global/enum/user_enum.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_global_bindings.dart';
-import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/employee_timeline_screen.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/hr_timeline_screen.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
@@ -20,6 +18,7 @@ import '../../../../modules/leave/presentation/controller/update_leave_controlle
 import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/notification/presentation/view/screen/notification.dart';
+import '../../../modules/hr_timeline/bindings/hr_timeline_bindings.dart';
 import '../../../modules/profile/view/screens/employee_profile.dart';
 import '../../../modules/profile/view/screens/hr_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';

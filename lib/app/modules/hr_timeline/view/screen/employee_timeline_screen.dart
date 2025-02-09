@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_global_bindings.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/screen/start_timmer_screen.dart';
@@ -37,6 +38,7 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
   @override
   void initState() {
     EmployeeTimelineBindings().dependencies();
+    TimelineGlobalBindings().dependencies();
     Get.find<TimelineGlobalController>().isEmployee(true);
     _tabController = TabController(length: 1, vsync: this);
     super.initState();

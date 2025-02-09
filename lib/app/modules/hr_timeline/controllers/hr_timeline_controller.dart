@@ -43,10 +43,8 @@ class HrTimelineController extends GetxController with StateMixin {
 
   @override
   void onInit() {
-
     TimelineGlobalBindings().dependencies();
     _refreshTimeline();
-
 
     if (!Get.isRegistered<DateTimeController>()) {
       Get.put(DateTimeController());
@@ -276,7 +274,7 @@ class HrTimelineController extends GetxController with StateMixin {
     String endDte=controller.selectedTimeLineEndDate.value;
 
     ///short time log summary
-    await controller. getTimelineSummaryByDate();
+     controller. getTimelineSummaryByDate();
 
     if( Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty){
       ///when employee user id not empty

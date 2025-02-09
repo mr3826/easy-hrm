@@ -11,6 +11,5 @@ class EmployeeTimelineBindings extends Bindings {
     TimelineApiService timelineApiService = Get.put(TimelineApiService(Get.find<ApiService>()));
     TimelineDataSource timelineDataSource = Get.put(TimelineDataImpl(timelineApiService));
     Get.lazyPut(() => EmployeeTimelineController(timelineDataSource));
-    TimelineGlobalBindings().dependencies();
   }
 }
