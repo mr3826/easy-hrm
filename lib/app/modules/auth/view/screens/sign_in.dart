@@ -163,6 +163,7 @@ class SignInScreen extends GetView<SignInController> {
           if (value) {
             bool isUserActive =
                 await Get.find<UserInfoController>().getOrgSubscriptionInfo();
+            print(isUserActive);
 
             print(!isUserActive
                 ? "Go to Sub expire screen"

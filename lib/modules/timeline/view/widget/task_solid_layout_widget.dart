@@ -44,24 +44,35 @@ class TaskSolidLayout extends StatelessWidget {
   }
 
   _endTimeLayout(statusColor, statusIcon, iconColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          endDateTime.isNotEmpty
-              ? timeFormatTo24h(DateTime.parse(endDateTime))
-              : timeFormatTo24h(DateTime.now()),
-          style: AppStyle.mid_large_text.copyWith(
-              color: statusColor,
-              fontSize: Dimensions.fontSizeDefault - 2,
-              overflow: TextOverflow.ellipsis),
-        ),
-        Icon(
-          statusIcon,
-          color: iconColor,
-          size: 20,
-        )
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Minimum width required to show the icon
+        bool canShowIcon = constraints.maxWidth > 16; // Adjust this value as needed
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                endDateTime.isNotEmpty
+                    ? timeFormatTo24h(DateTime.parse(endDateTime))
+                    : timeFormatTo24h(DateTime.now()),
+                style: AppStyle.mid_large_text.copyWith(
+                  color: statusColor,
+                  fontSize: Dimensions.fontSizeDefault - 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            if (canShowIcon) // Show icon only if space is available
+              Icon(
+                statusIcon,
+                color: iconColor,
+                size: 20,
+              ),
+          ],
+        );
+      },
     );
   }
 

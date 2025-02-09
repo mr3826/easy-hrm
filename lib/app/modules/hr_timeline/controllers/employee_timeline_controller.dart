@@ -82,14 +82,12 @@ class EmployeeTimelineController extends GetxController with StateMixin {
 
     final String formattedStartDate = startDate ?? DateTime.now().toString();
     final String formattedEndDate = endDate ?? DateTime.now().toString();
-    final String organizationId =
-        orgId ?? GetStorage().read(AppString.ORGANIZATION_USER_ID);
+
 
     log("getTimelineCalenderByDate_employee ==>$startDate And $endDate");
     calendarTimeline = await _timelineDataSource.getTimelineCalender(
             startDate: formattedStartDate,
-            endDate: formattedEndDate,
-            orgUserId: organizationId) ??
+            endDate: formattedEndDate) ??
         CalendarTimeline();
 
     if (timelogList?.isNotEmpty ?? false) {

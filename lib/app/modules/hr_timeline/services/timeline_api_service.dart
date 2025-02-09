@@ -41,7 +41,7 @@ class TimelineApiService {
         "end_date": endDate,
       }
     };
-    if (orgUserId != null) {
+    if (orgUserId != null && orgUserId.isNotEmpty) {
       variables["queryData"]?["org_user_ids"] = orgUserId;
     }
     return await _apiService.gqlCall(

@@ -327,7 +327,6 @@ refreshTimeline() async {
   String startDate = controller.selectedTimeLineStartDate.value;
 
   if (Get.find<TimelineGlobalController>().isEmployee.isTrue) {
-
     EmployeeTimelineController controller = Get.find<EmployeeTimelineController>();
     Get.find<TimelineGlobalController>().taskId.value = "";
 
