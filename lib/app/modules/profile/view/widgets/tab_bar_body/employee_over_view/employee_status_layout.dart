@@ -148,7 +148,7 @@ class EmploymentStatusItem extends StatelessWidget {
                         _buildEmploymentStatus(employmentHistory),
                         _verticalDividerWidget(),
                         Text(
-                          "from last ${_calculateDuration(employmentHistory!)}",
+                          _calculateDuration(employmentHistory!),
                           style: baseTextStyle.copyWith(
                             color: AppColor.hintColor,
                           ),

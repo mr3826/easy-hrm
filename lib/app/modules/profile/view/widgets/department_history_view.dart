@@ -14,6 +14,7 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../global/utils/date_format_helper.dart';
 import '../../../../global/view/widget/app_margin.dart';
 import '../../controller/global_profile_controller.dart';
 
@@ -177,7 +178,7 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
                 ),
               ),
             TextSpan(
-              text: "${AppString.text_from.tr} $startDate",
+              text: startDate,
               style: AppStyle.mid_large_text.copyWith(
                 color: AppColor.hintColor,
                 fontSize: Dimensions.fontSizeDefault - 4,
@@ -207,7 +208,6 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
   Widget _buildManagerDetails(DeptHistories deptHistory) {
     final managerName = _getManagerFullName(deptHistory);
     final initials = _getManagerInitials(deptHistory);
-
     return Padding(
       padding: const EdgeInsets.only(left: 12.0),
       child: Row(
@@ -222,8 +222,8 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
                 errorText: initials, //Error text
                 radius: 18,
                 imageUrl: buildImgIxUrl(
-                    imgKey:
-                        deptHistory.department?.manager?.profile?.image ?? ""),
+                    isPublic: true,
+                    imgKey: deptHistory.department.manager.profile.image),
                 borderColor: Colors.transparent,
               ),
             ),
@@ -260,6 +260,7 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
         width: AppLayout.getWidth(18),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(5)),
           border: Border(
             left: BorderSide(
               width: .9,
@@ -277,8 +278,8 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
 
   String? _formatDate(String? date) {
     return date != null && date.isNotEmpty
-        ? DateFormat('dd MMM, yyyy').format(DateTime.parse(date))
-        : null;
+        ? DateFormatHelper.formatDate(date: date, format: "dd MMM, yyyy")
+        : "";
   }
 
   String _getParentDepartmentName(DeptHistories deptHistory) {
@@ -286,15 +287,14 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
   }
 
   String _getManagerFullName(DeptHistories deptHistory) {
-    final profile = deptHistory.department?.manager?.profile;
-    return "${profile?.firstName ?? ""} ${profile?.lastName ?? ""}".trim();
+    final profile = deptHistory.department.manager.profile;
+    return "${profile.firstName} ${profile.lastName}".trim();
   }
 
   String _getManagerInitials(DeptHistories deptHistory) {
-    final profile = deptHistory.department?.manager?.profile;
-    final firstInitial =
-        profile?.firstName?.substring(0, 1).toUpperCase() ?? "";
-    final lastInitial = profile?.lastName?.substring(0, 1).toUpperCase() ?? "";
+    final profile = deptHistory.department.manager.profile;
+    final firstInitial = profile.firstName.substring(0, 1).toUpperCase();
+    final lastInitial = profile.lastName.substring(0, 1).toUpperCase();
     return "$firstInitial$lastInitial";
   }
 }

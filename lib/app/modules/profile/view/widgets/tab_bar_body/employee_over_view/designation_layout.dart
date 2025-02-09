@@ -85,8 +85,7 @@ class DesignationLayout extends GetView<ProfileGlobalController> {
 
     final developerStatus = designationHistory?.designation.name;
     final date = _formatDate(designationHistory?.startDate);
-    final durationText =
-        "${AppString.text_form_last.tr} ${workingTimeSinceFormString(designationHistory?.startDate ?? "", designationHistory?.endDate ?? "")}";
+    final durationText = workingTimeSinceFormString(designationHistory?.startDate ?? "", designationHistory?.endDate ?? "");
     final employeeCurrentStatus = designationHistory!.endDate.isEmpty
         ? AppString.textPresent.tr
         : dateMonthYearFormatFromDatetime(designationHistory.endDate);

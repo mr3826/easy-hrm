@@ -49,7 +49,7 @@ class StatusBtnHelper {
   static Widget cancelStatusBtn() {
     return CustomStatusButton(
       textColor: AppColor.bgColor,
-      bgColor: AppColor.errorColorLight.withOpacity(.9),
+      bgColor: AppColor.hintColor.withOpacity(0.6),
       text: AppString.text_cancel.tr,
       paddingTop: 0,
       textSize: Dimensions.fontSizeSmall,
