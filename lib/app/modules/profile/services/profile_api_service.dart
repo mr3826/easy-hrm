@@ -24,6 +24,7 @@ class ProfileApiService {
   Future<Map<String, dynamic>?>? getOrgUserDeptHistory(String ordId) async {
     QueryResult<Object?> response = await _apiService.gqlCall(
         queryString: getOrgUserDeptHistoryQuery, variables: {"orgUserId": ordId});
+    print("getOrgUserDeptHistory: ${response}");
     return response.data;
   }
 

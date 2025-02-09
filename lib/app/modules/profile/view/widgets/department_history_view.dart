@@ -223,7 +223,7 @@ class DepartmentHistoryView extends GetView<ProfileGlobalController> {
                 radius: 18,
                 imageUrl: buildImgIxUrl(
                     isPublic: true,
-                    imgKey: deptHistory.department.manager.profile.image),
+                    imagePath: deptHistory.department.manager.profile.image),
                 borderColor: Colors.transparent,
               ),
             ),
