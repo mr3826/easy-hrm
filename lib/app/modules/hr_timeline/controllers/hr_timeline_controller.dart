@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_global_bindings.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import 'package:payrun_mobile/common/controller/date_time_controller.dart';
 import 'package:payrun_mobile/common/domain/files_model.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
@@ -70,6 +71,31 @@ class HrTimelineController extends GetxController with StateMixin {
     isTimeEntryLoading(false);
     return null;
   }
+
+
+
+  Future<bool?> removeTimelineEntryDetails({String? timeLogId, String? orgId,String? startDate,String ?endDate}) async {
+    isTimelogEntryOrRemoveLoading(true);
+    bool response = await _timelineDataSource.removeTimelineEntry(
+        timeLogId: timeLogId.toString(), orgId: orgId);
+    if (response) {
+      Get.back(canPop: false);
+      //   _updateRouteWithTimeEntry();
+      Get.find<TimelineSummaryController>()
+          .getTimelineSummaryByDate(orgId: orgId);
+      Get.find<TimelineSummaryController>()
+          .getTimelogDetailsByMonth(orgId: orgId);
+
+      getTimeEntryDetails(startDate: startDate.toString(),endDate: endDate.toString());
+    }
+    isTimelogEntryOrRemoveLoading(false);
+    return null;
+  }
+
+
+
+
+
 
   Future<TimeLogsEntriesDetails?> updateTimeLogEntryById(
       {String? status, String? timelineId}) async {

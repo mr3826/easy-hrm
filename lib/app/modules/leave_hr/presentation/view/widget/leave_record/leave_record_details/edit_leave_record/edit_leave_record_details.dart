@@ -75,26 +75,9 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isEmployee == false) ...[
-                _buildText("Employee & type"),
-                _spacer(18),
+              _buildEmployeeSearch(context),
 
-                /// Displays the title and a required leave type dropdown.
-                _buildTitleText(
-                    text: AppString.textEmployees.tr, isRequired: true),
-                _spacer(8),
-                _buildSearchBar(context),
-              ],
-
-              _spacer(18),
-              _buildTitleText(
-                  text: AppString.textLeaveYear.tr, isRequired: true),
-
-              _spacer(8),
-
-              _buildLeaveYear(),
-
-              ///Timeline [This year,Next year]
+              _buildEmployeeLeaveYear(),
 
               _spacer(18),
               _buildTitleText(
@@ -104,15 +87,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
               _spacer(18),
               _leaveCountStyleLayout(),
 
-              if (isEmployee == false) ...[
-                /// Displays the title and a status selection tab.
-                _buildTitleText(text: AppString.text_status.tr),
-                _spacer(8),
-
-                _buildStatusTabSelector(),
-
-                _spacer(18),
-              ],
+              _buildEmployeeStatus(),
 
               _buildText("Application details"),
 
@@ -207,7 +182,9 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
         .isNegative) {
       Get.find<HrUpdateLeaveController>().updateAssignLeave(
         leaveId: controller.leaveId.toString(),
-        status: Get.find<LeaveController>().selectedStatusIndex.value ==1?"approved":"",
+        status: Get.find<LeaveController>().selectedStatusIndex.value == 1
+            ? "approved"
+            : "",
         leaveTypeId: controller.leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,
         endDate: Get.find<DateTimePickerController>().outDateTime.value,
@@ -239,16 +216,17 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
           itemBuilder: (context, index) {
             return Obx(() {
               // Checks if the current index is selected.
-              final isSelected = index == leaveController.selectedStatusIndex.value;
+              final isSelected =
+                  index == leaveController.selectedStatusIndex.value;
 
               return GestureDetector(
-                onTap: (){
+                onTap: () {
                   leaveController.selectedStatusIndex(index);
                   if (leaveController.selectedStatusIndex.value == 1) {
-                    Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
+                    Get.find<HrLeaveController>()
+                        .isUpdateLeaveChangeValue(true);
                   }
                 },
-
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.2,
                   decoration: BoxDecoration(
@@ -307,6 +285,67 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
           Get.find<HrLeaveController>().getAvailableLeaveType(year: year);
           Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
         });
+  }
+
+  _buildEmployeeSearch(BuildContext context) {
+    if(isEmployee == false){
+      return Column(
+        children: [
+          _buildText("Employee & type"),
+          _spacer(18),
+
+          /// Displays the title and a required leave type dropdown.
+          _buildTitleText(
+              text: AppString.textEmployees.tr, isRequired: true),
+          _spacer(8),
+          _buildSearchBar(context),
+        ],
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+
+  }
+
+  _buildEmployeeLeaveYear() {
+    if (isEmployee == false){
+      return Column(
+        children: [
+          _spacer(18),
+          _buildTitleText(
+              text: AppString.textLeaveYear.tr, isRequired: true),
+
+          _spacer(8),
+
+          _buildLeaveYear(),
+
+          ///Timeline [This year,Next year]
+        ],
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+
+  }
+
+  _buildEmployeeStatus() {
+    if (isEmployee == false){
+      return Column(
+        children: [
+          /// Displays the title and a status selection tab.
+          _buildTitleText(text: AppString.text_status.tr),
+          _spacer(8),
+
+          _buildStatusTabSelector(),
+
+          _spacer(18),
+        ],
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+
+
   }
 }
 

@@ -296,6 +296,8 @@ class TimelineGlobalController extends GetxController {
     descriptionController.clear();
     Get.find<TimeCounterController>().reset();
     isTimelogEntryOrRemoveLoading(false);
+
+
   }
 
   /// Formats the date string to UTC format. Defaults to the current date and time if [date] is null.

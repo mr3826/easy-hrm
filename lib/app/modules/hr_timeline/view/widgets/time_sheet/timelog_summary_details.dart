@@ -20,7 +20,6 @@ import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../settings/controller/app_setting_controller.dart';
 import '../../../controllers/global_timline_controller.dart';
-import '../../../controllers/timelog_summary_controller.dart';
 
 class TimeLogSummaryDetails extends GetView<HrTimelineController> {
   final String? leaveId;
@@ -81,34 +80,11 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
                               Row(
                                 children: [
                                   Expanded(child: _buildText(data: data)),
-                                  PopupMenuButton<String>(
-                                    position: PopupMenuPosition.under,
-                                    shadowColor: Colors.grey.shade100,
-                                    onSelected: (value) => _handleMenuSelection(
-                                        value, data ?? Data(), context),
-                                    shape: roundedRectangleBorder,
-                                    color: AppColor.cardColor,
-                                    surfaceTintColor: AppColor.cardColor,
-                                    icon: const Icon(Icons.more_horiz),
-                                    itemBuilder: (BuildContext context) =>
-                                        <PopupMenuEntry<String>>[
-                                      _buildMenuItem("Edit"),
-                                      if (data?.status != "approved")
-                                        _buildMenuItem("Approve"),
-                                      if (data?.status != "approved")
-                                        if (data?.status != "reject")
-                                          _buildMenuItem("Reject"),
-                                      _buildMenuItem("View notes"),
-                                      _buildMenuItem("Remove"),
-                                    ],
-                                  ),
+                                  _buildMoreButton(data ?? Data(), context),
                                 ],
                               ),
-                              _buildText(
-                                  value: getConvertSecondsToHours(
-                                      data?.loggedTotalSeconds ?? "0"),
-                                  color: AppColor.hintColor),
-                              _buildText(value: data?.project?.name ?? ""),
+
+                              _buildDuration(data ?? Data()),
                               _buildText(
                                   value: data?.project != null
                                       ? data?.project?.name ?? ""
@@ -192,6 +168,9 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
       case 'approved':
         return StatusBtnHelper.approvedStatusBtn();
       case 'rejected':
+        return StatusBtnHelper.rejectedStatusBtn();
+
+      case 'reject':
         return StatusBtnHelper.rejectedStatusBtn();
       case 'pending':
         return StatusBtnHelper.pendingStatusBtn();
@@ -357,14 +336,14 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
     showCustomAlertDialog(
         context: context,
         onConfirm: () async {
-          await Get.find<TimelineGlobalController>().removeTimelineEntry(
-              timeLogId: taskInfo.id, orgId: taskInfo.orgUserId);
-          Get.back(canPop: false);
-          Get.back(canPop: false);
-          Get.find<TimelineSummaryController>()
-              .getTimelineSummaryByDate(orgId: taskInfo.orgUserId);
-          Get.find<TimelineSummaryController>()
-              .getTimelogDetailsByMonth(orgId: taskInfo.orgUserId);
+          await Get.find<HrTimelineController>().removeTimelineEntryDetails(
+            timeLogId: taskInfo.id,
+            orgId: taskInfo.orgUserId,
+            startDate:
+                "${formatDate(date: taskInfo.startDate.toString(), format: "yyyy-MM-dd")} 00:00:00.000",
+            endDate:
+                "${formatDate(date: taskInfo.endDate.toString(), format: "yyyy-MM-dd")} 23:59:59.000",
+          );
         },
         iconData: Icons.delete_outline_outlined,
         titleText: AppString.text_remove_timelog.tr,
@@ -374,13 +353,12 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
         confirmButtonText: "",
         extraInfoText: "",
         descriptionFontSize: Dimensions.fontSizeDefault - 1,
-        confirmButtonChild: Obx(() => Get.find<TimelineGlobalController>()
-                .isTimelogEntryOrRemoveLoading
-                .isTrue
-            ? const CupertinoActivityIndicator(
-                color: Colors.white,
-              )
-            : removeTextLayout()));
+        confirmButtonChild:
+            Obx(() => controller.isTimelogEntryOrRemoveLoading.isTrue
+                ? const CupertinoActivityIndicator(
+                    color: Colors.white,
+                  )
+                : removeTextLayout()));
   }
 
   removeTextLayout() {
@@ -389,6 +367,35 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
       style: AppStyle.normal_text_grey.copyWith(
           fontSize: Dimensions.fontSizeDefault + 1, color: AppColor.cardColor),
     );
+  }
+
+  _buildMoreButton(Data data, BuildContext context) {
+    return PopupMenuButton<String>(
+      position: PopupMenuPosition.under,
+      shadowColor: Colors.grey.shade100,
+      onSelected: (value) => _handleMenuSelection(value, data, context),
+      shape: roundedRectangleBorder,
+      color: AppColor.cardColor,
+      surfaceTintColor: AppColor.cardColor,
+      icon: const Icon(Icons.more_horiz),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        _buildMenuItem("Edit"),
+        if (data.status != "approved") _buildMenuItem("Approve"),
+        if (data.status != "approved")
+          if (data.status != "reject") _buildMenuItem("Reject"),
+        _buildMenuItem("View notes"),
+        _buildMenuItem("Remove"),
+      ],
+    );
+  }
+
+  _buildDuration(Data data) {
+    if (getConvertSecondsToHours(data.loggedTotalSeconds ?? "0") != "0m") {
+      return _buildText(
+          value: getConvertSecondsToHours(data.loggedTotalSeconds ?? "0"),
+          color: AppColor.hintColor);
+    }
+    return const SizedBox();
   }
 }
 
