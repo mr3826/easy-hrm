@@ -334,7 +334,6 @@ refreshTimeline() async {
     Get.find<TimelineGlobalController>().taskId.value = "";
 
     await controller.getTimelineCalenderByDate(
-        orgId: Get.find<TimelineGlobalController>().searchEmployeeId,
         startDate:
         "${DateTime(DateTime.parse(startDate).year, DateTime.parse(startDate).month, DateTime.parse(startDate).day, 0, 0, 0)}",
         endDate:

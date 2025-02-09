@@ -40,8 +40,6 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
     HrTimelineBindings().dependencies();
     TimeSheetBindings().dependencies();
 
-    Get.find<TimelineGlobalController>().isEmployee(false);
-
     _tabController = TabController(
         length: 2,
         vsync: this,

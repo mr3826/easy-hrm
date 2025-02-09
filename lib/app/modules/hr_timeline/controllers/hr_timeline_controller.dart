@@ -43,9 +43,8 @@ class HrTimelineController extends GetxController with StateMixin {
 
   @override
   void onInit() {
-    TimelineGlobalBindings().dependencies();
-    _refreshTimeline();
 
+    _refreshTimeline();
     if (!Get.isRegistered<DateTimeController>()) {
       Get.put(DateTimeController());
     }
@@ -269,6 +268,7 @@ class HrTimelineController extends GetxController with StateMixin {
   }
 
   _refreshTimeline() async {
+    TimelineGlobalBindings().dependencies();
     TimelineGlobalController controller=Get.find<TimelineGlobalController>();
     String startDate=controller.selectedTimeLineStartDate.value;
     String endDte=controller.selectedTimeLineEndDate.value;
