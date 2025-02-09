@@ -18,7 +18,6 @@ import '../../../../../enum.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../timeline/view/widget/timeline_calendar.dart';
 import '../../../domain/leave_record_response.dart';
-import '../../controller/leave_screen_controller.dart';
 import '../widget/leave_record_details_view.dart';
 import '../../../../../app/global/view/widgets/status_btn_widget.dart';
 import '../widget/widget.dart';

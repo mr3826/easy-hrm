@@ -207,7 +207,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
         .isNegative) {
       Get.find<HrUpdateLeaveController>().updateAssignLeave(
         leaveId: controller.leaveId.toString(),
-        status:  Get.find<LeaveController>().selectedStatusIndex.value==0?"pending":"approved",
+        status: Get.find<LeaveController>().selectedStatusIndex.value ==1?"approved":"",
         leaveTypeId: controller.leaveTypeId,
         startDate: Get.find<DateTimePickerController>().inDateTime.value,
         endDate: Get.find<DateTimePickerController>().outDateTime.value,

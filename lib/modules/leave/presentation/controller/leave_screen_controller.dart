@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/bindings/timeline_employee_bindings.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/employee_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
@@ -146,5 +147,6 @@ void updateData() {
 
 /// Updates timeline data across different timeline controllers.
 void _updateTimelineData() {
+  EmployeeTimelineBindings().dependencies();
   refreshTimeline();
 }

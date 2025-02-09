@@ -9,7 +9,6 @@ import 'package:payrun_mobile/modules/timeline/view/widget/timelog_summary_worki
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
-import '../../../../../utils/utils.dart';
 import '../../../../global/utils/balance_helper.dart';
 import '../../../../global/utils/time_format_helper.dart';
 import '../../bindings/TimelineSummaryBindings.dart';

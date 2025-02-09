@@ -241,11 +241,11 @@ class _InDatePickerState extends State<InDatePicker> {
               child: const SizedBox(width: 50, child: Text('Ok')),
               onTap: () {
                 ///For active timelog details button
-                Get.find<TimelineController>().isSelectDate.value = Get.find<DateTimePickerController>().inDate.value;
+              //  Get.find<TimelineController>().isSelectDate.value = Get.find<DateTimePickerController>().inDate.value;
 
                 ///For active update leave details button
                 Get.find<UpDateLeaveController>().isSelectDate.value = Get.find<DateTimePickerController>().inDate.value;
-                Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
+               // Get.find<TimelineGlobalController>().isValueChangeForTimeLogUpdate(true);
 
 
                 ///others

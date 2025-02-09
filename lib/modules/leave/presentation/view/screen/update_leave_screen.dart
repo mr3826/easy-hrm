@@ -78,11 +78,7 @@ class UpdateLeave extends StatelessWidget {
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
-
     leaveNoteController.text = leaveRecords?.description ?? "";
-    // Get.find<UpDateLeaveController>().isNoteRequired.value = leaveRecords?.leaveType?.isAddNoteRequired ?? false;
-    //
-    // Get.find<UpDateLeaveController>().isDocumentRequired.value = leaveRecords?.leaveType?.isAttachDocumentRequired ?? false;
   }
 }
 
@@ -307,6 +303,7 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
   }
 
   void _updateLeaveMethod() {
+
     if (!DateTime.parse(Get.find<DateTimePickerController>().outDateTime.value).difference(DateTime.parse(
             Get.find<DateTimePickerController>().inDateTime.value))
         .isNegative) {

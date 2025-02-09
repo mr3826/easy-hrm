@@ -181,9 +181,7 @@ final  bool isEmployee;
             showCustomAlertDialog(
               context: context,
               onConfirm: () {
-
                 Get.find<LeaveScreenController>().cancelLeave(leaveId: leaveRecords.id ?? "");
-
               },
               confirmButtonChild: Obx(() => _cancelLeaveProgress()),
               extraInfoText: "",

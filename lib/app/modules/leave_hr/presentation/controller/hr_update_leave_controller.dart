@@ -35,7 +35,7 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
         required String key,
         required String size,
         required String name,
-        required String status,
+         String ?status,
         required String id,
         required String? leaveTypeId}) async {
     isUpdateLeaveLoading(true);
@@ -48,7 +48,6 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
         "end_date": DateTime.parse(endDate).toUtc().toString(),
         "start_date": DateTime.parse(startDate).toUtc().toString(),
         "leave_type_id": leaveTypeId,
-        "status":status,
         "files": _getFileInfo(
             id: id,
             key: key,
@@ -58,6 +57,11 @@ class HrUpdateLeaveController extends GetxController with StateMixin {
             uploadPolicyResponse: uploadPolicyResponse)
       }
     };
+
+    if(status !=null && status.isNotEmpty){
+      inputData["inputData"]["status"]=status;
+
+    }
 
     // Sending the GraphQL request using NetworkClient
     final bool response =
