@@ -13,10 +13,7 @@ import '../../modules/employee/view/widget/serach_employee_list/search_employee_
 class TabBarWidget extends StatefulWidget {
   final List<TabItem> tabs;
   final ValueChanged<int> onTabSelect;
-
-  const TabBarWidget(
-      {super.key, required this.tabs, required this.onTabSelect});
-
+  const TabBarWidget({super.key, required this.tabs, required this.onTabSelect});
   @override
   State<TabBarWidget> createState() => _TabBarWidgetState();
 }
@@ -135,7 +132,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         child: Card(
           elevation: 0,
           color: AppColor.cardColor,
-          shape: _buildCardShape(),
+          shape: _buildCardShape,
           child: Row(
             children: [
               customSpacerWidth(width: 12),
@@ -155,26 +152,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               Expanded(
                 child: Text(
                   searchController.text,
-                  style: AppStyle.normal_text.copyWith(
-                      color: searchController.text.isNotEmpty &&
-                                  searchController.text != "Search employee" ||
-                              widget.employeeName != null
-                          ? Colors.black
-                          : AppColor.normalTextColor.withOpacity(0.7)),
+                  style: _style,
                 ),
               ),
-              if (searchController.text.isNotEmpty &&
-                      searchController.text != "Search employee" ||
-                  widget.employeeName != null)
-                InkWell(
-                  onTap: () => setState(() {
-                    widget.onClearAction!();
-                    profileImgKey = "";
-                    searchController.text = "Search employee";
-                  }),
-                  child: const Icon(CupertinoIcons.clear,
-                      color: AppColor.hintColor, size: 23),
-                ),
+              _clear(),
               customSpacerWidth(width: 12),
             ],
           ),
@@ -183,31 +164,52 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     );
   }
 
-  void _showSearchBottomSheet() {
-    customButtonSheet(
-      context: context,
-      height: 0.8,
-      child: SearchEmployeeList(
-        onValueSelected: widget.onValueSelected,
-        userInfo: widget.userInfo ??
-            (name) {
-              setState(() {
-                searchController.text = name.name ?? "";
-                profileImgKey = name.imgUrl ?? "";
-              });
-            },
-      ),
-    );
-  }
+  void _showSearchBottomSheet() => customButtonSheet(
+        context: context,
+        height: 0.8,
+        child: SearchEmployeeList(
+          onValueSelected: widget.onValueSelected,
+          userInfo: widget.userInfo ??
+              (name) {
+                setState(() {
+                  searchController.text = name.name ?? "";
+                  profileImgKey = name.imgUrl ?? "";
+                });
+              },
+        ),
+      );
 
-  RoundedRectangleBorder _buildCardShape() {
-    return roundedRectangleBorder.copyWith(
-      side: BorderSide(
-        color: AppColor.hintColor.withOpacity(0.3),
-        width: 1.3,
-      ),
-      borderRadius: BorderRadius.circular(Dimensions.fontSizeMid + 2),
-    );
+  RoundedRectangleBorder get _buildCardShape => roundedRectangleBorder.copyWith(
+        side: BorderSide(
+          color: AppColor.hintColor.withOpacity(0.3),
+          width: 1.3,
+        ),
+        borderRadius: BorderRadius.circular(Dimensions.fontSizeMid + 2),
+      );
+
+  TextStyle get _style => AppStyle.normal_text.copyWith(
+      color: searchController.text.isNotEmpty &&
+              searchController.text != "Search employee" &&
+              widget.employeeName != null
+          ? Colors.black
+          : AppColor.normalTextColor.withOpacity(0.7));
+
+   _clear(){
+    if (searchController.text.isNotEmpty &&
+        searchController.text != "Search employee" &&
+        widget.employeeName != null) {
+     return InkWell(
+        onTap: () => setState(() {
+          widget.onClearAction!();
+          profileImgKey = "";
+          searchController.text = "Search employee";
+        }),
+        child: const Icon(CupertinoIcons.clear,
+            color: AppColor.hintColor, size: 23),
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
   }
 }
 

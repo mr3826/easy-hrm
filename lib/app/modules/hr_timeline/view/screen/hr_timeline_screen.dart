@@ -189,12 +189,10 @@ class _HrTimelineScreenState extends State<HrTimelineScreen>
 
   _buildEmployeeSearch(TabController tabController) {
     return CustomSearchBar(
-
+      employeeName:  Get.find<TimelineGlobalController>().searchEmployeeName,
       onValueSelected: (String orgId) async {
-        String startDate =
-            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";
-        String endDate =
-            "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 23:59:59.000";
+        String startDate = "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 00:00:00.000";
+        String endDate = "${Get.find<TimelineGlobalController>().selectedTimeLineStartDate.value} 23:59:59.000";
         Navigator.pop(context);
         await Get.find<TimelineGlobalController>().getTimelineSummaryByDate(
             startDate: startDate, endDate: endDate, orgId: orgId);

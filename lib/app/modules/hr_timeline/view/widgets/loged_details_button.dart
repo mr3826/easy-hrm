@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/timelog_summary_details.dart';
 import '../../../../../common/controller/convart_color_code_controller.dart';
 import '../../../../../common/widget/custom_dialog.dart';
 import '../../../../../common/widget/custom_double_app_button.dart';
@@ -21,19 +22,21 @@ class LogDetailsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (taskInfo.status == "reject") {
-      return _rejectedBtn(context: context, taskInfo: taskInfo);
+      return _rejectedBtn(context: context);
     } else if (taskInfo.status == "pending") {
-      return _pendingLayout(taskInfo: taskInfo, context: context);
+      return _pendingLayout(
+        context: context,
+      );
     } else if (taskInfo.status == "cancelled") {
       return Container();
     } else if (taskInfo.status == "taken") {
       return Container();
     } else {
-      return _approvedLayout(context: context, taskInfo: taskInfo);
+      return _approvedLayout(context: context);
     }
   }
 
-  _rejectedBtn({required BuildContext context, required TaskInfo taskInfo}) {
+  _rejectedBtn({required BuildContext context}) {
     return Padding(
         padding: marginLayout,
         child: CustomAppButton(
@@ -48,7 +51,7 @@ class LogDetailsButton extends StatelessWidget {
             buttonColor: AppColor.errorColorLight));
   }
 
-  _pendingLayout({required BuildContext context, required TaskInfo taskInfo}) {
+  _pendingLayout({required BuildContext context}) {
     return Padding(
       padding: marginLayout,
       child: CustomDoubleAppButton(
@@ -63,6 +66,8 @@ class LogDetailsButton extends StatelessWidget {
                       : AppColor.primaryColor,
                   endDateTime: taskInfo.endTime,
                   startDateTime: taskInfo.startTime,
+                  logSummaryUserInfo:
+                      LogSummaryUserInfo(name: taskInfo.employeeName),
                   status: taskInfo.status ?? "",
                 ));
           },
@@ -105,12 +110,11 @@ class LogDetailsButton extends StatelessWidget {
     );
   }
 
-  _approvedLayout({required BuildContext context, required TaskInfo taskInfo}) {
+  _approvedLayout({required BuildContext context}) {
     return Padding(
       padding: marginLayout,
       child: CustomAppButton(
         borderRadius: 30,
-
         buttonText: Text(
           AppString.text_details.tr,
           style: AppStyle.mid_large_text.copyWith(
@@ -123,6 +127,8 @@ class LogDetailsButton extends StatelessWidget {
                 projectOrTaskColor: taskInfo.projectColor.isNotEmpty
                     ? HexColor(taskInfo.projectColor)
                     : AppColor.primaryColor,
+                logSummaryUserInfo:
+                    LogSummaryUserInfo(name: taskInfo.employeeName),
                 endDateTime: taskInfo.endTime,
                 startDateTime: taskInfo.startTime,
                 status: taskInfo.status,

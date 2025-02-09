@@ -13,7 +13,6 @@ import 'package:payrun_mobile/modules/timeline/model/timer_entry_response.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import '../../../../common/domain/last_input_model.dart';
-import '../bindings/timeline_global_bindings.dart';
 import '../models/calendar_timeline.dart';
 import '../repositories/timeline_data_source.dart';
 import 'global_timline_controller.dart';

@@ -222,19 +222,6 @@ class TimelineDataImpl implements TimelineDataSource {
 
  @override
  Future<bool> updateTimelineLogDetails({required String startDate,required String endDate,required String status,required String des,required String projectId,required String timelineId,String ?taskId}) async {
-
-  print('''
-  
- startDate $startDate
- endDate  $endDate
-des  $des
- projectId $projectId
- timelineId $timelineId
- taskId $taskId
-  
-  
-  ''');
-
    try {
      Map<String, dynamic>? response =
      await  _timelineApiService.updateTimelineLogDetails( startDate, endDate, des, projectId, timelineId,status,taskId);

@@ -100,11 +100,6 @@ class TimelineApiService {
         "org_user_id": orgId
       }
     };
-    print('''
-    timeline_id $timelineId
-    org_user_id $orgId
-    
-    ''');
     return await _apiService.gqlCall(
         queryString: getTimeEntryDetailsQuery, variables: variables);
   }
@@ -147,12 +142,6 @@ class TimelineApiService {
 
 
     Future<QueryResult<Object?>> getTimeLogEntries(String startDate,String endDate,[String ?orgId]) async {
-
-    print('''
-    startDate $startDate
-    endDate $endDate
-    
-    ''');
     Map<String, Map<String, dynamic>> variables = {
       "queryData": {
         "start_date": startDate,
@@ -253,17 +242,6 @@ class TimelineApiService {
   }
 
   Future<Map<String, dynamic>?>? updateTimelineLogDetails(String startDate, String endDate, String des, String projectId, String timelineId, [String? status, String? taskId]) async {
-
-    print('''
-    
-    "start_date": $startDate,
-        "end_date":$endDate,
-        "description": $des,
-        "status": $status ?? "pending",
-        "project_id": $projectId,
-        "timeline_id": $timelineId
-        "timeline_id": $taskId
-    ''');
     Map<String, Map<String, dynamic>> variables = {
       "inputData": {
         "start_date": startDate,

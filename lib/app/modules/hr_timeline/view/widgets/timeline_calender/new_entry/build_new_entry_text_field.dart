@@ -9,7 +9,6 @@ import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_double_app_button.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/input_note.dart';
-import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/task_field_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -56,8 +55,7 @@ class BuildNewEntryTextField extends StatelessWidget {
               children: [
                 customSpacerHeight(height: 12),
                 _searchEmployee(context),
-                customAppTitleText(
-                    text: AppString.text_date.tr, isRequired: true),
+                customAppTitleText(text: AppString.text_date.tr, isRequired: true),
                 customSpacerHeight(height: 8),
                 Obx(() => _dateLayoutField(context)),
                 customSpacerHeight(height: 8),
@@ -282,12 +280,7 @@ class BuildNewEntryTextField extends StatelessWidget {
   _selectedTaskLayout(context) => taskInputFieldLayout(onAction: () {
         Get.find<TimelineGlobalController>().getProjectList();
         customButtonSheet(
-            context: context,
-            height: .7,
-            child: Obx(() =>
-                Get.find<TimelineGlobalController>().isProjectListLoading.isTrue
-                    ? const LoadingIndicator()
-                    : const BuildTaskView()));
+            context: context, height: .7, child: const BuildTaskView());
       });
 
   _buildButton(BuildContext context) {
@@ -302,9 +295,7 @@ class BuildNewEntryTextField extends StatelessWidget {
           return const Center(child: CupertinoActivityIndicator());
         }
 
-        bool isValueChanged =
-            timelineController.isValueChangeForTimeLogUpdate.value;
-
+        bool isValueChanged = timelineController.isValueChangeForTimeLogUpdate.value;
         return CustomDoubleAppButton(
           buttonText: _getButtonText,
           btnColor: _getBtnColor(isValueChanged),
@@ -348,7 +339,8 @@ class BuildNewEntryTextField extends StatelessWidget {
   _employeeSearch(BuildContext context) {
     // Set selected employee info
     return CustomSearchBar(
-      employeeName: "${Get.find<ProfileGlobalController>().employeeName.value} (You)",
+      employeeName:
+          "${Get.find<ProfileGlobalController>().employeeName.value} (You)",
       employeeImage: Get.find<ProfileGlobalController>().employeeImeKey.value,
       onValueSelected: (String orgId) async {
         Navigator.pop(context);
@@ -362,6 +354,7 @@ class BuildNewEntryTextField extends StatelessWidget {
 
   _employeeSearchLogSummary(BuildContext context,
       [LogSummaryUserInfo? logSummaryUserInfo]) {
+    Get.find<TimelineGlobalController>().searchEmployeeName=logSummaryUserInfo?.name??"";
     return IgnorePointer(
       ignoring: true,
       child: CustomSearchBar(

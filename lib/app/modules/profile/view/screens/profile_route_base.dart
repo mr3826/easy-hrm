@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_log_history.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
-import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/employee_over_view/employee_overview.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/user_info_layout.dart';
 import '../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/images.dart';
 import '../../../../../common/widget/loading_indicator.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
@@ -16,7 +13,6 @@ import '../../../../../utils/dimensions.dart';
 import '../../bindings/route_base_profile_binding.dart';
 import '../../controller/global_profile_controller.dart';
 import '../../controller/route_base_profile_controller.dart';
-import '../widgets/profile_appbar.dart';
 import '../widgets/profile_tab_bar.dart';
 
 class ProfileRouteBase extends GetView<ProfileRouteBaseController> {
