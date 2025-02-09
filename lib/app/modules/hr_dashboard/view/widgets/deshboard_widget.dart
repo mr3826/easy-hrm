@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/view/widgets/custom_network_image.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/global_profile_controller.dart';
-import 'package:payrun_mobile/common/widget/hr_deshboard/custom_network_img.dart';
 import '../../../../../common/widget/custom_dialog.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../common/widget/custom_svg_image.dart';
-import '../../../../../modules/dashboard/domain/profile_summary_for_dashboard.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
@@ -54,12 +53,10 @@ userInfoAppbarLayout(BuildContext context) {
 }
 
 _userImageLayout(String imgUrl, String error) {
-  return CustomNetworkImage(
-    radius: 22,
+  return CircularNetworkImage(
+    imageUrl: buildImgIxUrl(imagePath: imgUrl, isPublic: true),
     errorText: getInitials(error),
-    isCircleImage: true,
-    borderColor: AppColor.primaryColor,
-    imageUrl: imgUrl,
+    radius: 22,
   );
 }
 

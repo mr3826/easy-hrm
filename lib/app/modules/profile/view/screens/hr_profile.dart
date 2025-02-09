@@ -77,5 +77,6 @@ class HrProfileScreen extends GetView<HrProfileController> {
   void _initializationDependencies() {
     HrProfileBindings().dependencies();
     Get.put(ProfileGlobalController());
+    Get.find<ProfileGlobalController>().isEmployee(false);
   }
 }

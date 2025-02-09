@@ -81,13 +81,7 @@ class UpdateProfileActionView extends StatelessWidget {
    Get.find<PikedProfileImgController>().storageForUpload.filePath.value = "";
 
    _setDataForUpdateChecker(userDetails); ///Save data
-
-   ProfileGlobalController controller =Get.find<ProfileGlobalController>();
-   ///Clear controller
-   controller.firstName.value = "";
-   controller.lastName.value = "";
-   controller.address.value = "";
-   controller.description.value = "";
+   Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(false);
    Get.to(()=>UpdateProfileScreen(userDetails: userDetails,));
  }
 
@@ -96,11 +90,11 @@ class UpdateProfileActionView extends StatelessWidget {
  void _setDataForUpdateChecker(UserDetails? userDetails) {
    editFirstNameController.text = userDetails?.getOrganizationUserDetails?.profile?.firstName ?? "";
    editLastNameController.text = userDetails?.getOrganizationUserDetails?.profile?.lastName ?? "";
+   Get.find<ProfileGlobalController>().editEmployeeIDController.text = userDetails?.getOrganizationUserDetails?.employeeId ?? "";
    editAddressController.text = userDetails?.getOrganizationUserDetails?.profile?.address ?? "";
    editPhoneController.text = userDetails?.getOrganizationUserDetails?.profile?.personalNumber ?? "";
    editEmergencyPhoneController.text = userDetails?.getOrganizationUserDetails?.profile?.emergencyNumber ?? "";
    editBioController.text = userDetails?.getOrganizationUserDetails?.profile?.about ?? "";
-
    //todo
    Get.find<ProfileGlobalController>().editEmployeeIDController.text =  userDetails?.getOrganizationUserDetails?.employeeId??"";
 

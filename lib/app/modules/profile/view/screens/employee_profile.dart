@@ -20,12 +20,12 @@ class EmployeeProfileScreen extends StatelessWidget {
   const EmployeeProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
-
     EmployeeProfileBindings().dependencies();
     Get.put(ProfileGlobalController());
 
     UserLogHistory? userLogHistory =
         Get.find<ProfileGlobalController>().userLogHistory;
+    Get.find<ProfileGlobalController>().isEmployee(true);
 
     return Obx(() {
       if (Get.find<EmployeeProfileController>().isLoadingProfile.isTrue) {
@@ -33,13 +33,16 @@ class EmployeeProfileScreen extends StatelessWidget {
       }
       return Scaffold(
           backgroundColor: AppColor.backgroundColor,
-          appBar: _profileAppbar(context,
-              Get.find<EmployeeProfileController>().userDetails ?? UserDetails()),
+          appBar: _profileAppbar(
+              context,
+              Get.find<EmployeeProfileController>().userDetails ??
+                  UserDetails()),
           body: Column(
             children: [
               UserInfoLayout(
                 information:
-                    Get.find<EmployeeProfileController>().userDetails ?? UserDetails(),
+                    Get.find<EmployeeProfileController>().userDetails ??
+                        UserDetails(),
                 editIconUrl: Images.EDIT_ICON,
               ),
               customSpacerHeight(height: 30),
@@ -49,7 +52,9 @@ class EmployeeProfileScreen extends StatelessWidget {
               Expanded(
                   child: ProfileOverView(
                 userDetails:
-                    Get.find<EmployeeProfileController>().userDetails ?? UserDetails(), orgUserId: GetStorage().read(AppString.ORGANIZATION_USER_ID),
+                    Get.find<EmployeeProfileController>().userDetails ??
+                        UserDetails(),
+                orgUserId: GetStorage().read(AppString.ORGANIZATION_USER_ID),
               )),
             ],
           ));

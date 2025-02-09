@@ -2,11 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:payrun_mobile/app/modules/profile/controller/employee_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/success_message.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/profile_image_selected_controller.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import 'package:payrun_mobile/utils/api_endpoints.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
+import '../../../home/view/screen/main_screen.dart';
 import 'global_profile_controller.dart';
 import 'hr_profile_controller.dart';
 import '../../../../common/domain/upload_policy.dart';
@@ -39,14 +41,17 @@ class UpdateProfileController extends GetxController {
     if (response.hasException) {
       ExceptionHelper.errorHandler(exception: response.exception!, methodName: "updateUserProfile");
     } else {
-     Get.find<HrProfileController>().getUserProfile();
-     // Get.find<ProfileController>().getUserProfile();
-      Get.back(canPop: false);
-      Get.back(canPop: false);
-      Get.back(canPop: false);
+      if( Get.find<ProfileGlobalController>().isEmployee.isTrue){
+        Get.find<EmployeeProfileController>().getUserProfile();
+        Get.find<EmployeeDashboardController>().getProfileInfoForDashboard();
+
+      }else{
+        Get.find<HrProfileController>().getUserProfile();
+        Get.find<ProfileGlobalController>().employeeId="";
+      }
+      Get.to(()=>const MainScreen(routeIndex: 4));
       showSuccessMessage(message: AppString.profile_update_successfully_text.tr);
       Get.find<PikedProfileImgController>().storageForUpload.filePath.value="";
-      Get.find<EmployeeDashboardController>().getProfileInfoForDashboard();
     }
 
     isLoading(false);
@@ -104,7 +109,8 @@ class UpdateProfileController extends GetxController {
             "${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user",
         "filename":
             "${DateTime.now().millisecondsSinceEpoch.toString()}.${fileName.split('.').last}",
-        "directive": "Files"
+        "directive": "Files",
+        "type":"public"
       }
     });
 
@@ -117,6 +123,8 @@ class UpdateProfileController extends GetxController {
           url: uploadPolicyResponse.getUploadPolicy?.url ?? "",
           fileName: fileName,
           list: uploadPolicyResponse.getUploadPolicy?.policyData);
+
+      Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(true);
     }
     isUploadPolicyLoading(false);
   }

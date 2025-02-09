@@ -9,7 +9,6 @@ import 'package:payrun_mobile/common/widget/custom_inside_appbar.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/common/widget/warning_message.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/update_profile_controller.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
@@ -18,14 +17,14 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../global/view/widget/app_margin.dart';
 import '../../../../global/view/widgets/custom_network_image.dart';
 import '../../../../../utils/utils.dart';
+import '../../controller/global_profile_controller.dart';
 import '../../controller/profile_image_selected_controller.dart';
 import '../../models/user_profile.dart';
 import 'edit_profile_text_field.dart';
 
-
 class UpdateProfileScreen extends StatelessWidget {
   final UserDetails userDetails;
-  UpdateProfileScreen({super.key,required this.userDetails});
+  UpdateProfileScreen({super.key, required this.userDetails});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -35,26 +34,24 @@ class UpdateProfileScreen extends StatelessWidget {
       key: _formKey,
       child: Scaffold(
         appBar: _buildAppbar(),
-
         body: Obx(() => Get.find<UpdateProfileController>().isLoading.isTrue
             ? const LoadingIndicator()
             : Padding(
-          padding: marginLayout,
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                _profileSectionLayout(context),
-                customSpacerHeight(height: 30),
-                TextFiledLayout(
-                  formKey: _formKey,
-                  userDetails: userDetails,
-                )
-              ],
-            ),
-          ),
-        )),
-
+                padding: marginLayout,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      _profileSectionLayout(context),
+                      customSpacerHeight(height: 30),
+                      TextFiledLayout(
+                        formKey: _formKey,
+                        userDetails: userDetails,
+                      )
+                    ],
+                  ),
+                ),
+              )),
       ),
     );
   }
@@ -172,7 +169,8 @@ class UpdateProfileScreen extends StatelessWidget {
             },
             iconData: Icons.delete_outline_outlined,
             titleText: AppString.text_remove_photo.tr,
-            descriptionText: AppString.text_sure_you_want_to_deleted_this_photo.tr,
+            descriptionText:
+                AppString.text_sure_you_want_to_deleted_this_photo.tr,
             iconBackgroundColor: AppColor.errorColorLight,
             confirmButtonColor: AppColor.errorColorLight,
             confirmButtonText: AppString.text_remove.tr,
@@ -200,31 +198,38 @@ class UpdateProfileScreen extends StatelessWidget {
   }
 
   bool _hasValidImageExtension(String key) {
-    List<String> validExtensions = ['.jpeg', '.jpg', '.png','.JPEG', '.JPG', '.PNG'];
+    List<String> validExtensions = [
+      '.jpeg',
+      '.jpg',
+      '.png',
+      '.JPEG',
+      '.JPG',
+      '.PNG'
+    ];
     return validExtensions.any((ext) => key.toLowerCase().endsWith(ext));
   }
 
   bool _isProfileInfoValid() {
-    return editFirstNameController.text.isNotEmpty && editLastNameController.text.isNotEmpty;
+    return editFirstNameController.text.isNotEmpty &&
+        editLastNameController.text.isNotEmpty;
   }
 
   _profileImageLayout() {
     return Get.find<PikedProfileImgController>()
-        .storageForUpload
-        .filePath
-        .value
-        .isNotEmpty
+            .storageForUpload
+            .filePath
+            .value
+            .isNotEmpty
         ? CircleAvatar(
-        radius: 42,
-        backgroundColor: AppColor.hintColor.withOpacity(0.8),
-        child: CircleAvatar(
-          backgroundColor: AppColor.cardColor,
-          radius: 41,
-          child: _imageLayout(),
-        ))
+            radius: 42,
+            backgroundColor: AppColor.hintColor.withOpacity(0.8),
+            child: CircleAvatar(
+              backgroundColor: AppColor.cardColor,
+              radius: 41,
+              child: _imageLayout(),
+            ))
         : _placeholderImage();
   }
-
 
   Map<String, dynamic>? _addVariables() {
     Map<String, dynamic> inputData = {};
@@ -244,39 +249,30 @@ class UpdateProfileScreen extends StatelessWidget {
     // Set user first name
     _addInputUserFirstName(inputData);
 
-    inputData["org_user_id"] = GetStorage().read(AppString.ORGANIZATION_USER_ID);
+    inputData["org_user_id"] =
+        GetStorage().read(AppString.ORGANIZATION_USER_ID);
 
     inputData["department_id"] =
-        userDetails
-        .getOrganizationUserDetails
-        ?.department
-        ?.id ??
-        "";
-   // inputData["image"] = "";
-    _addInputProfileImage(inputData);
+        userDetails.getOrganizationUserDetails?.department?.id ?? "";
+    inputData["image"] = "";
+    _addInputEmployeeId(inputData);
+
     return inputData;
   }
 
-  void _addInputProfileImage(Map<String, dynamic> inputData) {
-    if (Get.find<PikedProfileImgController>()
-        .storageForUpload
-        .filePath
-        .value
-        .isNotEmpty) {
-      inputData["image"] =
-      "files/${GetStorage().read(AppString.ORGANIZATION_ID)}/org-user/${Get.find<UpdateProfileController>().uploadPolicyResponse.getUploadPolicy?.policyData?.firstWhere((e) => e.name == 'key'.toLowerCase()).value?.split("/").last ?? ""}";
-    }
-  }
   void _addInputUserFirstName(Map<String, dynamic> inputData) {
     if (editFirstNameController.text.isNotEmpty) {
       inputData["first_name"] = editFirstNameController.text;
     } else {
       inputData["first_name"] =
-          userDetails
-          .getOrganizationUserDetails
-          ?.profile
-          ?.firstName ??
-          "";
+          userDetails.getOrganizationUserDetails?.profile?.firstName ?? "";
+    }
+  }
+
+  void _addInputEmployeeId(Map<String, dynamic> inputData) {
+    if (Get.find<ProfileGlobalController>().employeeId.isNotEmpty) {
+      inputData["employee_id"] =
+          Get.find<ProfileGlobalController>().editEmployeeIDController.text;
     }
   }
 
@@ -304,8 +300,8 @@ class UpdateProfileScreen extends StatelessWidget {
       /// file image
       return _selectedImageViewLayout();
     } else if (Get.find<UpdateProfileController>()
-        .isFileUploadedSuccessfully
-        .isFalse &&
+            .isFileUploadedSuccessfully
+            .isFalse &&
         Get.find<UpdateProfileController>().isUploadPolicyLoading.isFalse) {
       if (Get.find<PikedProfileImgController>()
           .storageForUpload
@@ -320,15 +316,15 @@ class UpdateProfileScreen extends StatelessWidget {
         } else {
           return const Center(
               child: CupertinoActivityIndicator(
-                color: AppColor.primaryColor,
-              ));
+            color: AppColor.primaryColor,
+          ));
         }
       }
     } else {
       return const Center(
           child: CupertinoActivityIndicator(
-            color: AppColor.primaryColor,
-          ));
+        color: AppColor.primaryColor,
+      ));
     }
   }
 
@@ -342,9 +338,12 @@ class UpdateProfileScreen extends StatelessWidget {
 
   _placeholderImage() {
     return CircularNetworkImage(
-      errorText:getInitials("${userDetails.getOrganizationUserDetails?.profile?.firstName} ${userDetails.getOrganizationUserDetails?.profile?.lastName}"),
+      errorText: getInitials(
+          "${userDetails.getOrganizationUserDetails?.profile?.firstName} ${userDetails.getOrganizationUserDetails?.profile?.lastName}"),
       radius: 42,
-      imageUrl: buildImgIxUrl(imagePath: userDetails.getOrganizationUserDetails?.profile?.image,isPublic: true),
+      imageUrl: buildImgIxUrl(
+          imagePath: userDetails.getOrganizationUserDetails?.profile?.image,
+          isPublic: true),
     );
   }
 
@@ -353,24 +352,20 @@ class UpdateProfileScreen extends StatelessWidget {
       radius: 39,
       backgroundColor: AppColor.primaryColor,
       backgroundImage: FileImage(File(Get.find<PikedProfileImgController>()
-          .storageForUpload
-          .filePath
-          .value)
+              .storageForUpload
+              .filePath
+              .value)
           .absolute),
     );
   }
 
   _buildAppbar() {
-    return customInsideAppbar(title: AppString.text_edit_profile.tr,onPressAction: () {
-      _clearInputField();
-      Get.back(canPop: false);
-      Get.back(canPop: false);
-    });
+    return customInsideAppbar(
+        title: AppString.text_edit_profile.tr,
+        onPressAction: () {
+          _clearInputField();
+          Get.back(canPop: false);
+          Get.back(canPop: false);
+        });
   }
-
 }
-
-
-
-
-

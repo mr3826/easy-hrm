@@ -5,6 +5,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/utils.dart';
 import '../../../leave_hr/presentation/view/widget/assign_leave/assign_leave.dart';
+import '../../controller/global_profile_controller.dart';
 import '../../controller/update_profile_controller.dart';
 
 class PersonalPhoneNumber extends StatefulWidget {
@@ -28,9 +29,10 @@ class _PersonalPhoneNumberState extends State<PersonalPhoneNumber> {
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
       onInputChanged: (PhoneNumber number) {
-        print("onInputChanged:: ${number.phoneNumber}");
         Get.find<UpdateProfileController>().initialPersonalPhoneNumber.value =
             number.phoneNumber.toString();
+        Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(true);
+
       },
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.DIALOG,
@@ -92,9 +94,10 @@ class _EmergencyPhoneNumberState extends State<EmergencyPhoneNumber> {
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
       onInputChanged: (PhoneNumber number) {
-        print("onInputChanged:: ${number.phoneNumber}");
         Get.find<UpdateProfileController>().initialEmergencyPhoneNumber.value =
             number.phoneNumber.toString();
+        Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(true);
+
       },
       onInputValidated: (bool value) {
         print(value);

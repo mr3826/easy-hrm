@@ -58,6 +58,8 @@ class ProfileGlobalController extends GetxController with StateMixin {
   RxInt seconds = 59.obs;
   RxBool timerActive = false.obs;
   RxBool isOTPProvided = false.obs;
+  RxBool isEmployee = false.obs;
+  RxBool isEnableProfileUpdateButton = false.obs;
   String otpCode = "";
   String isSelectLeaveType = "";
   String leaveTypeId = "";
@@ -65,6 +67,7 @@ class ProfileGlobalController extends GetxController with StateMixin {
   RxString availableLeave = "".obs;
   String leaveStatusId = "";
   RxString employeeName = "".obs;
+  String employeeId = "";
   RxString employeeImeKey = "".obs;
 
   final NetworkClient _networkClient = Get.find<NetworkClient>();
@@ -83,34 +86,11 @@ class ProfileGlobalController extends GetxController with StateMixin {
 
   RxBool isValue = true.obs;
 
-  changeVal() {
-    return isValue.value = !isValue.value;
-  }
 
-  var firstName = "".obs;
-  var lastName = "".obs;
-  var address = "".obs;
-  var description = "".obs;
+  RxString firstName = "".obs;
+  RxString lastName = "".obs;
 
-  bool get isEnableEditButton {
-    return firstName.isNotEmpty ||
-        lastName.isNotEmpty ||
-        address.isNotEmpty ||
-        Get.find<UpdateProfileController>()
-            .initialEmergencyPhoneNumber
-            .value
-            .isNotEmpty ||
-        Get.find<UpdateProfileController>()
-            .initialPersonalPhoneNumber
-            .value
-            .isNotEmpty ||
-        description.isNotEmpty ||
-        Get.find<PikedProfileImgController>()
-            .storageForUpload
-            .filePath
-            .value
-            .isNotEmpty;
-  }
+
 
   EmployeeWorkHistory? employeeWorkHistory;
   UserLogHistory? userLogHistory;
