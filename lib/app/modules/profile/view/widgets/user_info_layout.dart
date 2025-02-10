@@ -452,21 +452,21 @@ employmentStatus(String? employmentStatus) {
   }
   if (employmentStatus.toLowerCase() == EmploymentStatus.active.name) {
     return CustomStatusButton(
-      statusIcon: Icons.check_circle,
+      statusIcon: Icons.done,
       text: EmploymentStatus.active.name.capitalizeFirst.toString(),
       bgColor: AppColor.successColor.withOpacity(.2),
       textColor: AppColor.successColor,
     );
   } else if (employmentStatus.toLowerCase() == EmploymentStatus.inactive.name) {
     return CustomStatusButton(
-      statusIcon: Icons.stop_circle_outlined,
+      statusIcon: Icons.block_flipped,
       text: EmploymentStatus.inactive.name.capitalizeFirst.toString(),
       bgColor: AppColor.disableColor.withOpacity(.2),
       textColor: Colors.black87,
     );
   } else if (employmentStatus.toLowerCase() == EmploymentStatus.invited.name) {
     return CustomStatusButton(
-      statusIcon: Icons.send,
+      statusIcon: Icons.mail_outline,
       text: EmploymentStatus.invited.name.capitalizeFirst.toString(),
       bgColor: AppColor.pendingColor.withOpacity(.2),
       textColor: AppColor.pendingColor,
