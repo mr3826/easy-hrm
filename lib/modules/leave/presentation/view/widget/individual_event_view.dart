@@ -13,6 +13,7 @@ import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../../common/domain/files_model.dart';
@@ -70,21 +71,7 @@ class IndividualEventView extends StatelessWidget {
         : _eventList();
   }
 
-  _getStatusButton(String leaveStatus) {
-    if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
-      return approvedStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
-      return rejectedStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
-      return pendingStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
-      return tokenStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
-      return canceledStatusBtn();
-    } else {
-      return Container();
-    }
-  }
+
 
   _eventList() => Get.find<LeaveScreenController>().leaveDetailsByDate ==
               null ||
@@ -185,7 +172,7 @@ class IndividualEventView extends StatelessWidget {
                               : Container(),
                         ],
                       ),
-                      _getStatusButton(Get.find<LeaveScreenController>()
+                    StatusBtnHelperByContext.statusBtnByContext(Get.find<LeaveScreenController>()
                               .leaveDetailsByDate
                               ?.getLeaveRequests?[index]
                               .status ??

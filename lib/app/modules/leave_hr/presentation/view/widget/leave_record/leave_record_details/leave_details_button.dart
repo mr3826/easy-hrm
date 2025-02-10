@@ -12,7 +12,7 @@ import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/images.dart';
 import 'more_leave_record_details.dart';
 
-Widget buildPendingBtn({required String leaveDate, required String leaveId}) {
+Widget buildPendingBtn({required String leaveDate, required String leaveId,required BuildContext context}) {
   return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Obx(
@@ -25,8 +25,8 @@ Widget buildPendingBtn({required String leaveDate, required String leaveId}) {
             : Row(
           children: [
             Expanded(
-              
               child: CustomAppButton(
+                hasOutline: true,
                 buttonText: Text(
                   AppString.textReject.tr,
                   style: TextStyle(
@@ -34,8 +34,10 @@ Widget buildPendingBtn({required String leaveDate, required String leaveId}) {
                       fontSize: Dimensions.fontSizeDefault),
                 ),
                 onPressed: () {
-                  showRejectDialog(Get.context!, leaveDate.toString(),
+                  showRejectDialog(context, leaveDate.toString(),
                       leaveId: leaveId);
+
+
                 },
                 buttonColor: AppColor.cardColor,
                 borderColor: AppColor.errorColor,
@@ -81,7 +83,6 @@ Widget buildApprovedBtn({required String leaveDate, required String leaveId}) {
       ),
     )
         : CustomAppButton(
-      isButtonExpanded: false,
       buttonText: Text(
         AppString.text_cancel.tr,
         style: TextStyle(

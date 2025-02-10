@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../../../../common/widget/hr_timeline/custom_network_image.dart';
+import '../../../../../../../global/utils/status_btn_helper_by_context.dart';
 import '../../../../view/widget/leave_record/leave_record_details/leave_record_details.dart';
 import '../../../../view/widget/leave_record/leave_record_details/more_leave_record_details.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
@@ -86,11 +88,10 @@ class TaskCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomNetworkImage(
-                  profileImageKey: task.imageUrls[0],
+                CircularNetworkImage(
+                  imageUrl: buildImgIxUrl(imagePath:  task.imageUrls[0], isPublic: true),
                   errorText: getInitials(task.imageUrls[0]),
-                  height: 18,
-                  imgUrlKey: "",
+                  radius: 18,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -120,7 +121,7 @@ class TaskCard extends StatelessWidget {
                       const SizedBox(height: 5),
                       Row(
                         children: [
-                          showStatusButton(
+                          StatusBtnHelperByContext.statusBtnByContext(
                             task.status ?? "",
                           ),
                           const Spacer(),

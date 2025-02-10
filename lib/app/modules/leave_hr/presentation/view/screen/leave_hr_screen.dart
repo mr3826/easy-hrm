@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payrun_mobile/app/global/view/widgets/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_card_style.dart';
-import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import '../../../../../../common/widget/custom_appbar.dart';
@@ -10,6 +10,7 @@ import '../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../common/widget/custom_drawer.dart';
 import '../../../../../../common/widget/custom_svg_image.dart';
 import '../../../../../../modules/notification/presentation/view/screen/notification.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../employee/bindings/employee_bindings.dart';
 import '../../../../employee/controller/employment_controller.dart';
 import '../../../../profile/controller/global_profile_controller.dart';
@@ -141,17 +142,7 @@ class LeaveHrScreen extends StatelessWidget {
                 const Icon(CupertinoIcons.search,
                     color: AppColor.hintColor, size: 25),
                 customSpacerWidth(width: 8),
-                if (controller.selectedEmployeeImgKey.isNotEmpty) ...[
-                  CustomNetworkImage(
-                    imgUrlKey: controller.selectedEmployeeImgKey.value,
-                    errorText: "Er",
-                    height: 12,
-                    borderColor: Colors.transparent,
-                    errorTextStyle: AppStyle.normal_text_black
-                        .copyWith(fontSize: 14, color: AppColor.secondaryColor),
-                  ),
-                  customSpacerWidth(width: 6),
-                ],
+               _employeeProfile(controller),
                 Expanded(
                   child: Text(
                     controller.selectedEmployeeInfo.value,
@@ -233,6 +224,21 @@ class LeaveHrScreen extends StatelessWidget {
     Get.find<HrLeaveController>().selectedEmployeeImgKey.value = "";
     Get.find<HrLeaveController>().storageForUpload.filePath.value = "";
     Get.find<HrLeaveController>().isFileUploadedSuccessfully(false);
+  }
+
+  _employeeProfile(HrLeaveController controller) {
+
+    if(controller.selectedEmployeeImgKey.isNotEmpty && controller.selectedEmployeeInfo.value!="Search employee"){
+      return Row(
+        children: [
+          CircularNetworkImage(imageUrl: buildImgIxUrl(imagePath: controller.selectedEmployeeImgKey.value,isPublic: true),radius: 12,errorText:getInitials(controller.selectedEmployeeInfo.value.replaceAll("(You)", "")) ,),
+          customSpacerWidth(width: 6),
+        ],
+      );
+    }else{
+      return const SizedBox.shrink();
+    }
+
   }
 }
 

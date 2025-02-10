@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
+import '../../../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../../../enum.dart';
 import '../../../../../../../../utils/utils.dart';
 
@@ -122,7 +123,12 @@ class OverlappingAvatars extends StatelessWidget {
           for (int index = 0; index < displayCount; index++)
             Positioned(
               left: index * overlap,
-              child: CustomNetworkImage(profileImageKey: imageUrls[index], errorText:  getInitials(imageUrls[index]),imgUrlKey: "",height: 18,),
+              child: CircularNetworkImage(
+                imageUrl: buildImgIxUrl(imagePath:imageUrls[index], isPublic: true),
+                errorText: getInitials(imageUrls[index]),
+                radius: 18,
+              ),
+
             ),
           if (remainingCount > 0)
             Positioned(

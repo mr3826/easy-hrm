@@ -17,6 +17,8 @@ import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
+import '../../../../../app/global/utils/app_status_helper.dart';
+import '../../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/leave_hr/presentation/controller/leave_controller.dart';
 import '../../../../../common/widget/timePicker/date_time_picker_controller.dart';
@@ -25,48 +27,48 @@ import 'package:payrun_mobile/app/modules/leave_hr/presentation/model/leave_deta
 import '../../../../../app/modules/leave_hr/presentation/controller/hr_leave_controller.dart';
 import '../../../../../app/modules/leave_hr/presentation/view/widget/leave_record/leave_record_details/edit_leave_record/edit_leave_record_details.dart';
 
-
 class LeaveRecordDetailsById extends StatelessWidget {
   final GetLeaveDetailsById? data;
-final  bool isEmployee;
-  const LeaveRecordDetailsById({super.key, this.data,required this.isEmployee});
+  final bool isEmployee;
+  const LeaveRecordDetailsById(
+      {super.key, this.data, required this.isEmployee});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Column(
-              children: [
-                customButtonSheetAppbar(
-                    text: "",
-                    subtext: _getDate(data ?? GetLeaveDetailsById()),
-                    isLeave: true,
-                    status: data?.status ?? "",
-                    duration: getLeaveDuration(data?.totalDuration,
-                        data?.numberOfDays.toString() ?? "")),
-                customSpacerHeight(height: 12),
-                _infoLayoutById(
-                    text: AppString.text_type_dot.tr,
-                    dynamicText: data?.leaveType?.type ?? ""),
-                _infoLayoutById(
-                    text: "${AppString.text_duration.tr}:",
-                    dynamicText: getLeaveDuration(data?.totalDuration,
-                        data?.numberOfDays.toString() ?? "")),
-                _infoLayoutById(
-                    text: AppString.text_satus.tr,
-                    widget: _statusBtnById(data?.status ?? "")),
-                _infoLayoutById(
-                    text: AppString.text_date_of_application.tr,
-                    dynamicText:
-                        dateMonthYearFormatFromDatetime(data?.createdAt ?? "")),
-                customSpacerHeight(height: 50),
-                _buttonLayoutById(
-                    context, data?.status ?? "", data ?? GetLeaveDetailsById())
-              ],
-            ),
-          );
+      padding: const EdgeInsets.all(4.0),
+      child: Column(
+        children: [
+          customButtonSheetAppbar(
+              text: "",
+              subtext: _getDate(data ?? GetLeaveDetailsById()),
+              isLeave: true,
+              status: data?.status ?? "",
+              duration: getLeaveDuration(
+                  data?.totalDuration, data?.numberOfDays.toString() ?? "")),
+          customSpacerHeight(height: 12),
+          _infoLayoutById(
+              text: AppString.text_type_dot.tr,
+              dynamicText: data?.leaveType?.type ?? ""),
+          _infoLayoutById(
+              text: "${AppString.text_duration.tr}:",
+              dynamicText: getLeaveDuration(
+                  data?.totalDuration, data?.numberOfDays.toString() ?? "")),
+          _infoLayoutById(
+              text: AppString.text_satus.tr,
+              widget: StatusBtnHelperByContext.statusBtnByContext(
+                  data?.status ?? "")),
+          _infoLayoutById(
+              text: AppString.text_date_of_application.tr,
+              dynamicText:
+                  dateMonthYearFormatFromDatetime(data?.createdAt ?? "")),
+          customSpacerHeight(height: 50),
+          _buttonLayoutById(
+              context, data?.status ?? "", data ?? GetLeaveDetailsById())
+        ],
+      ),
+    );
   }
-
 
   _buttonLayoutById(
       BuildContext context, String status, GetLeaveDetailsById leaveRecords) {
@@ -80,22 +82,6 @@ final  bool isEmployee;
       return _approvedLayout(context, leaveRecords);
     } else if (status == LeaveStatus.cancelled.name) {
       return Container();
-    } else {
-      return Container();
-    }
-  }
-
-  _statusBtnById(String status) {
-    if (status == "rejected") {
-      return rejectedStatusBtn();
-    } else if (status == "pending") {
-      return pendingStatusBtn();
-    } else if (status == "token") {
-      return tokenStatusBtn();
-    } else if (status == LeaveStatus.approved.name) {
-      return approvedStatusBtn();
-    } else if (status == LeaveStatus.cancelled.name) {
-      return cancelStatusBtn();
     } else {
       return Container();
     }
@@ -129,6 +115,7 @@ final  bool isEmployee;
     return Padding(
       padding: marginLayout,
       child: CustomAppButton(
+        borderRadius: 50,
         buttonText: Text(
           AppString.text_remove.tr,
           style: AppStyle.mid_large_text.copyWith(
@@ -149,8 +136,7 @@ final  bool isEmployee;
                       .isTrue
                   ? const Center(
                       child: CupertinoActivityIndicator(
-                      radius: 16,
-                      color: Colors.blueAccent,
+                      color: Colors.white,
                     ))
                   : Text(
                       AppString.text_remove.tr,
@@ -181,11 +167,13 @@ final  bool isEmployee;
             showCustomAlertDialog(
               context: context,
               onConfirm: () {
-                Get.find<LeaveScreenController>().cancelLeave(leaveId: leaveRecords.id ?? "");
+                Get.find<LeaveScreenController>()
+                    .cancelLeave(leaveId: leaveRecords.id ?? "");
               },
               confirmButtonChild: Obx(() => _cancelLeaveProgress()),
               extraInfoText: "",
-              iconWidget: customSvgImage(imageUrl: Images.cancelLeave, height: 60, width: 60),
+              iconWidget: customSvgImage(
+                  imageUrl: Images.cancelLeave, height: 60, width: 60),
               titleText: AppString.cancelLeaveText.tr,
               descriptionText: AppString.cancelLeaveNotificationText.tr,
               iconBackgroundColor: AppColor.cardColor,
@@ -216,76 +204,57 @@ final  bool isEmployee;
   }
 
   void _clear() {
-    if (isEmployee==false) {
-      HrLeaveController controller=   Get.put(HrLeaveController());
-     controller.selectedEmployeeInfo.value = AppString.textSearchEmployee.tr;
+    if (isEmployee == false) {
+      HrLeaveController controller = Get.put(HrLeaveController());
+      controller.selectedEmployeeInfo.value = AppString.textSearchEmployee.tr;
       controller.storageForUpload.filePath.value = "";
       controller.isFileUploadedSuccessfully(false);
     }
   }
 
   void _updateDateFromResponseById(GetLeaveDetailsById leaveRecords) {
- HrLeaveController controller=   Get.put(HrLeaveController());
- LeaveController leaveController=   Get.put(LeaveController());
+    HrLeaveController controller = Get.put(HrLeaveController());
+    LeaveController leaveController = Get.put(LeaveController());
 
     controller.getAvailableLeaveType();
     controller.selectedEmployeeImgKey.value = controller.leaveDetailsById
-        ?.getLeaveDetailsById?.organizationUser?.profile?.image ??
+            ?.getLeaveDetailsById?.organizationUser?.profile?.image ??
         "";
     controller.selectedEmployeeInfo.value =
-    "${leaveRecords.organizationUser?.profile?.firstName ?? "No added yet"} "
+        "${leaveRecords.organizationUser?.profile?.firstName ?? "No added yet"} "
         "${leaveRecords.organizationUser?.profile?.lastName ?? ""}";
-    controller.leaveTypeId =
-        leaveRecords.leaveType?.id ?? "";
-    controller.leaveId = leaveRecords
-        .leaveDetails?.first.leaveId ??
-        "";
-    controller.calculateAllowanceOfLeave.value = leaveRecords.leaveType?.calculateAllowanceBy
-        .toString() ??
-        "";
+    controller.leaveTypeId = leaveRecords.leaveType?.id ?? "";
+    controller.leaveId = leaveRecords.leaveDetails?.first.leaveId ?? "";
+    controller.calculateAllowanceOfLeave.value =
+        leaveRecords.leaveType?.calculateAllowanceBy.toString() ?? "";
     controller.storageForUpload.filePath.value = "";
     controller.isFileUploadedSuccessfully(false);
 
-    if (leaveRecords.files?.isNotEmpty??false) {
-      controller.fileName =
-          leaveRecords.files?.first.name ??
-              "";
-      controller.fileKey =
-          leaveRecords.files?.first.key ??
-              "";
-      controller.fileId =
-          leaveRecords.files?.first.id ??
-              "";
-      controller.fileSize = leaveRecords.files?.first.size
-          .toString() ??
-          "";
+    if (leaveRecords.files?.isNotEmpty ?? false) {
+      controller.fileName = leaveRecords.files?.first.name ?? "";
+      controller.fileKey = leaveRecords.files?.first.key ?? "";
+      controller.fileId = leaveRecords.files?.first.id ?? "";
+      controller.fileSize = leaveRecords.files?.first.size.toString() ?? "";
     }
 
- leaveController.selectedStatusIndex.value =
-    leaveRecords.status == "pending"
-        ? 0
-        : 1;
+    leaveController.selectedStatusIndex.value =
+        leaveRecords.status == "pending" ? 0 : 1;
 
     Get.find<DateTimePickerController>().inTime.value = DateFormat('HH:mm')
         .format(DateTime.parse(
-        leaveRecords.startDate ??
-            DateTime.now().toString()));
+            leaveRecords.startDate ?? DateTime.now().toString()));
     Get.find<DateTimePickerController>().inDate.value = DateFormat('yyyy-MM-dd')
         .format(DateTime.parse(
-        leaveRecords.startDate ??
-            DateTime.now().toString()));
+            leaveRecords.startDate ?? DateTime.now().toString()));
 
     Get.find<DateTimePickerController>().outTime.value = DateFormat('HH:mm')
-        .format(DateTime.parse(
-        leaveRecords.endDate ??
-            DateTime.now().toString()));
+        .format(
+            DateTime.parse(leaveRecords.endDate ?? DateTime.now().toString()));
     Get.find<DateTimePickerController>().outDate.value =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(
-            leaveRecords.endDate ??
-                DateTime.now().toString()));
+        DateFormat('yyyy-MM-dd').format(
+            DateTime.parse(leaveRecords.endDate ?? DateTime.now().toString()));
 
-    leaveNoteController.text =
-        leaveRecords.description ?? "";
+    leaveNoteController.text = leaveRecords.description ?? "";
 
     Get.find<DateTimePickerController>().getInDateTime();
     Get.find<DateTimePickerController>().getOutDateTime();
@@ -339,7 +308,6 @@ final  bool isEmployee;
   }
 
   _getDate(GetLeaveDetailsById leaveRecords) {
-
     isSameDate(
         startDate: leaveRecords.startDate ?? "",
         endDate: leaveRecords.endDate ?? "");

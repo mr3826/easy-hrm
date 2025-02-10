@@ -1,25 +1,8 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../../../../../enum.dart';
 import '../../../../../utils/app_color.dart';
-import '../../../../../app/global/view/widgets/status_btn_widget.dart';
 
-Widget getStatusButton(String leaveStatus) {
-  if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
-    return approvedStatusBtn();
-  } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
-    return rejectedStatusBtn();
-  } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
-    return pendingStatusBtn();
-  } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
-    return tokenStatusBtn();
-  } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
-    return canceledStatusBtn();
-  } else {
-    return Container();
-  }
-}
+
 
 Widget dotsDecorator({required currentIndex}) {
   return DotsIndicator(

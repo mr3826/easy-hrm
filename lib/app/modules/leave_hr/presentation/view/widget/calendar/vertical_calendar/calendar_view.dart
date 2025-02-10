@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../../../../global/utils/date_format_helper.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import '../../../../controller/leave_controller.dart';
 import 'calendar_task_card_widget.dart';
@@ -23,7 +24,7 @@ class CalendarView extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DateTime> monthDates = _generateDatesForCurrentMonth();
     Map<String, List<Task>> taskData =
-    Get.find<HrLeaveController>().getTaskDataFromLeaves();
+        Get.find<HrLeaveController>().getTaskDataFromLeaves();
 
     return RefreshIndicator(
       onRefresh: _refreshScreen,
@@ -58,11 +59,12 @@ class CalendarView extends StatelessWidget {
                         children: [
                           Center(
                             child: Text(
-                              DateFormat("dd").format(date),
+                              DateFormatHelper.formatDate(
+                                  date: date.toString(), format: "dd"),
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontSize:
-                                MediaQuery.of(context).size.width * 0.05,
+                                    MediaQuery.of(context).size.width * 0.05,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -82,14 +84,14 @@ class CalendarView extends StatelessWidget {
                       children: tasks.isEmpty
                           ? [const VerticalDottedDivider()]
                           : tasks
-                          .map((task) => Padding(
-                        padding: const EdgeInsets.only(
-                            left: 12, right: 12),
-                        child: TaskCard(
-                          task: task,
-                        ),
-                      ))
-                          .toList(),
+                              .map((task) => Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 12, right: 12),
+                                    child: TaskCard(
+                                      task: task,
+                                    ),
+                                  ))
+                              .toList(),
                     ),
                   ),
                 ],

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:payrun_mobile/common/widget/hr_timeline/custom_network_image.dart';
+import '../../../../../../../global/utils/container_decoration.dart';
 import '../../../../controller/hr_update_leave_controller.dart';
 import '../../../../controller/leave_controller.dart';
 import '../../../../model/leave_details_by_id.dart';
@@ -23,8 +25,6 @@ import '../../../../../../../../utils/images.dart';
 import '../../../../../../../../utils/utils.dart';
 import '../../../../controller/hr_leave_controller.dart';
 import 'edit_leave_record/edit_leave_record_details.dart';
-
-
 
 /// A widget that displays detailed information for a specific leave record,
 /// including options to approve, reject, edit, and view attached documents.
@@ -62,9 +62,15 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///Conditional actions based on application status
-                      if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name || controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.approved.name) ...[
-
-                        if (controller.leaveDetailsById?.getLeaveDetailsById?.status == LeaveStatus.pending.name) ...[
+                      if (controller.leaveDetailsById?.getLeaveDetailsById
+                                  ?.status ==
+                              LeaveStatus.pending.name ||
+                          controller.leaveDetailsById?.getLeaveDetailsById
+                                  ?.status ==
+                              LeaveStatus.approved.name) ...[
+                        if (controller.leaveDetailsById?.getLeaveDetailsById
+                                ?.status ==
+                            LeaveStatus.pending.name) ...[
                           Obx(
                             () => Get.find<HrLeaveController>()
                                     .updateLeaveLoader
@@ -73,7 +79,6 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                                     child: CupertinoActivityIndicator())
                                 : _buildActionOption(AppString.textApprove.tr,
                                     () {
-
                                     Get.find<HrLeaveController>().updateLeave(
                                         leaveId: leaveId ?? "",
                                         status: "approved");
@@ -94,27 +99,28 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                           _divider(),
                         ],
                       ],
-                      _buildActionOption(AppString.textSeeDocument.tr, _showBuildAttachedFile),
+                      _buildActionOption(
+                          AppString.textSeeDocument.tr, _showBuildAttachedFile),
 
-                _divider(),
+                      _divider(),
 
-                _buildActionOption(AppString.textViewLeaveRecord.tr, () {
-                  controller.getLeaveRecord(
-                      startDate: controller.leaveDetailsById
-                          ?.getLeaveDetailsById?.startDate,
-                      endDate: controller
-                          .leaveDetailsById?.getLeaveDetailsById?.endDate,
-                      assignedLeaveId: controller.leaveDetailsById
-                          ?.getLeaveDetailsById?.organizationUser?.id);
-                  leaveController.tabLength(1);
-                  Get.back(canPop: false);
-                }),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ));
+                      _buildActionOption(AppString.textViewLeaveRecord.tr, () {
+                        controller.getLeaveRecord(
+                            startDate: controller.leaveDetailsById
+                                ?.getLeaveDetailsById?.startDate,
+                            endDate: controller
+                                .leaveDetailsById?.getLeaveDetailsById?.endDate,
+                            assignedLeaveId: controller.leaveDetailsById
+                                ?.getLeaveDetailsById?.organizationUser?.id);
+                        leaveController.tabLength(1);
+                        Get.back(canPop: false);
+                      }),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ));
   }
 
   /// Builds an action button for various leave options like Approve, Reject, Edit.
@@ -165,10 +171,10 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
                 height: 4, width: 120, color: AppColor.backgroundColor),
           ),
           customSpacerHeight(height: 12),
-          CustomNetworkImage(
-            profileImageKey: imageUrl,
-            imgUrlKey: "",
-            errorText: "ER",
+          CircularNetworkImage(
+            imageUrl: buildImgIxUrl(imagePath: imageUrl, isPublic: true),
+            errorText: getInitials(name.toString()),
+            radius: 30,
           ),
           customSpacerHeight(height: 12),
           Text(
@@ -250,7 +256,7 @@ class MoreLeaveRecordDetails extends GetView<HrLeaveController> {
       onClose: _clear,
       height: MediaQuery.of(Get.context!).size.height / 1.2,
       child: EditLeaveRecordDetails(
-        isEmployee: false,
+          isEmployee: false,
           getLeaveDetailsById: GetLeaveDetailsById(
               files: controller.leaveDetailsById?.getLeaveDetailsById?.files ??
                   [])),
@@ -408,9 +414,11 @@ Widget _buildDialogActions(String leaveId) {
   return SizedBox(
     height: 40,
     child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Cancel Button
         CustomAppButton(
+          isButtonExpanded: false,
           buttonText: Row(
             children: [
               const Icon(Icons.close, color: AppColor.hintColor),
@@ -427,6 +435,7 @@ Widget _buildDialogActions(String leaveId) {
           onPressed: () => Get.back(), // Closes the dialog on press
           buttonColor: AppColor.cardColor,
           borderColor: AppColor.hintColor.withOpacity(0.6),
+          hasOutline: true,
           textColor: AppColor.hintColor,
           borderRadius: Dimensions.radiusDefault,
         ),
@@ -436,18 +445,17 @@ Widget _buildDialogActions(String leaveId) {
 
         // Confirm Button
         CustomAppButton(
+          isButtonExpanded: false,
           buttonText: Row(
             children: [
               const Icon(Icons.done, color: AppColor.cardColor),
               customSpacerWidth(width: 8),
-              Expanded(
-                child: Text(
-                  AppString.text_confirm.tr,
-                  style: AppStyle.normal_text.copyWith(
-                    color: AppColor.cardColor,
-                    fontSize: Dimensions.fontSizeDefault + 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              Text(
+                AppString.text_confirm.tr,
+                style: AppStyle.normal_text.copyWith(
+                  color: AppColor.cardColor,
+                  fontSize: Dimensions.fontSizeDefault + 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -466,5 +474,3 @@ Widget _buildDialogActions(String leaveId) {
     ),
   );
 }
-
-

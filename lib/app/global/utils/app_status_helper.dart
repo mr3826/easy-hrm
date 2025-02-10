@@ -48,31 +48,23 @@ class StatusBtnHelper {
 
   static Widget cancelStatusBtn() {
     return CustomStatusButton(
-      textColor: AppColor.bgColor,
-      bgColor: AppColor.hintColor.withOpacity(0.6),
+      textColor: AppColor.hintColor,
+      bgColor: AppColor.disableColor.withOpacity(0.6),
       text: AppString.text_cancel.tr,
       paddingTop: 0,
       textSize: Dimensions.fontSizeSmall,
     );
   }
 
-
   static Widget cancelledStatusBtn() {
     return CustomStatusButton(
       textColor: AppColor.hintColor,
-      bgColor: AppColor.hintColor.withOpacity(0.2),
+      bgColor: AppColor.disableColor.withOpacity(0.6),
       text: AppString.textCancelled.tr,
       paddingTop: 0,
       textSize: Dimensions.fontSizeSmall,
     );
   }
 
-
-
-
-
-
-
-
-
 }
+

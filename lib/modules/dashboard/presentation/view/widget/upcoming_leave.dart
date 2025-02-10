@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
+import '../../../../../app/global/utils/app_status_helper.dart';
+import '../../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../../utils/app_color.dart';
@@ -93,7 +95,7 @@ class UpcomingLeaveLayout extends StatelessWidget {
                             _leaveInfoRow(index, controller),
                           ],
                         ),
-                        getStatusButton(controller.upcommingLeaveDashboard
+                        StatusBtnHelperByContext.statusBtnByContext(controller.upcommingLeaveDashboard
                                 ?.getUpcomingLeavesForApp?[index].status ??
                             "taken"),
                       ],

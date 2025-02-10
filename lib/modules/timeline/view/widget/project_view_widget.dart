@@ -8,6 +8,7 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../app/global/view/widget/app_margin.dart';
 import '../../../../app/modules/hr_timeline/view/widgets/loged_details_button.dart';
 
@@ -34,7 +35,7 @@ Widget btnSheetViewLayout({required BuildContext context, required TaskInfo task
         ///status layout
         _infoLayout(
             text: "${AppString.text_status.tr}:",
-            widget: statusBtn(status: taskInfo.status)),
+            widget:  StatusBtnHelperByContext.statusBtnByContext(taskInfo.status.toString())),
         customSpacerHeight(height: 6),
 
         ///project/task name

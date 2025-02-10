@@ -2,80 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/global_timline_controller.dart';
-import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../common/widget/custom_dialog.dart';
 import '../../../../modules/timeline/view/widget/project_view_widget.dart';
-
-Widget approvedStatusBtn() {
-  return CustomStatusButton(
-    textColor: AppColor.successColor,
-    bgColor: AppColor.successColor.withOpacity(0.1),
-    text: AppString.text_approved.tr,
-  );
-}
-
-Widget rejectedStatusBtn() {
-  return CustomStatusButton(
-    textColor: AppColor.errorColorLight,
-    bgColor: AppColor.errorColor.withOpacity(0.1),
-    text: AppString.text_rejected.tr,
-  );
-}
-
-Widget pendingStatusBtn() {
-  return CustomStatusButton(
-    textColor: AppColor.pendingColor,
-    bgColor: AppColor.pendingColor.withOpacity(0.1),
-    text: AppString.text_pendding.tr,
-  );
-}
-
-Widget tokenStatusBtn() {
-  return CustomStatusButton(
-    textColor: AppColor.primaryColor,
-    bgColor: AppColor.primaryColor.withOpacity(0.1),
-    text: AppString.text_token.tr,
-  );
-}
-
-Widget cancelStatusBtn() {
-  return CustomStatusButton(
-    textColor: AppColor.bgColor,
-    bgColor: AppColor.errorColorLight.withOpacity(.9),
-    text: AppString.text_cancel.tr,
-  );
-}
-
-Widget canceledStatusBtn() {
-  return CustomStatusButton(
-    textColor: AppColor.errorColorLight,
-    bgColor: AppColor.errorColorLight.withOpacity(0.1),
-    text: AppString.text_canceled.tr,
-  );
-}
-
-statusBtn({required status}) {
-  if (status == "reject") {
-    return rejectedStatusBtn();
-  } else if (status == "pending") {
-    return pendingStatusBtn();
-  } else if (status == "taken") {
-    return tokenStatusBtn();
-  } else if (status == "approved") {
-    return approvedStatusBtn();
-  } else if (status == "rejected") {
-    return rejectedStatusBtn();
-  } else if (status == "cancelled") {
-    return canceledStatusBtn();
-  } else {
-    return approvedStatusBtn();
-  }
-}
-
 
 void removeTask({required BuildContext context, required TaskInfo taskInfo}) {
   showCustomAlertDialog(

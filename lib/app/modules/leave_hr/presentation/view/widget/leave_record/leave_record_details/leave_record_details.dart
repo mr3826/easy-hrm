@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/leave_hr/presentation/view/widget/leave_record/leave_record_details/leave_details_button.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
-import '../../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../../common/widget/custom_text_field.dart';
-import '../../../../../../../../common/widget/employee/status_button_helper.dart';
+import '../../../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../../../enum.dart';
 import '../../../../../../../../utils/app_color.dart';
 import '../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../../utils/utils.dart';
+import '../../../../../../../global/utils/status_btn_helper_by_context.dart';
 import '../../../../controller/hr_leave_controller.dart';
 
 class LeaveRecordDetails extends GetView<HrLeaveController> {
@@ -65,7 +65,7 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
         ),
         _buildRow(
             label: AppString.text_status.tr,
-            widget: _showStatusButton(controller
+            widget: StatusBtnHelperByContext.statusBtnByContext(controller
                 .leaveDetailsById?.getLeaveDetailsById?.status ??
                 "")),
         _buildRow(
@@ -76,6 +76,7 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
                     "",
                 format: "dd MMMM yyyy")),
         _buildActionButtons(
+          context: context,
             leaveId: leaveId.toString(),
             leaveDate: controller.leaveDetailsById?.getLeaveDetailsById
                 ?.leaveDetails?.first.date ??
@@ -108,9 +109,10 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
   Widget _buildActionButtons(
       {required String status,
         required String leaveId,
+        required BuildContext context,
         required String leaveDate}) {
     if (status == LeaveStatus.pending.name) {
-     return buildPendingBtn(leaveId: leaveId, leaveDate: leaveDate);
+     return buildPendingBtn(leaveId: leaveId, leaveDate: leaveDate,context: context);
     } else if (status == LeaveStatus.approved.name) {
       return buildApprovedBtn(leaveId: leaveId, leaveDate: leaveDate);
     } else {
@@ -140,11 +142,13 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
                 height: 4, width: 120, color: AppColor.backgroundColor),
           ),
           customSpacerHeight(height: 12),
-          CustomNetworkImage(
-            profileImageKey: imgUrl,
-            imgUrlKey: "",
-            errorText: "ER",
+
+          CircularNetworkImage(
+            imageUrl: buildImgIxUrl(imagePath: imgUrl, isPublic: true),
+            errorText: getInitials(employeeName.toString()),
+            radius: 30,
           ),
+
           customSpacerHeight(height: 12),
           Text(
             employeeName ?? "",
@@ -168,24 +172,6 @@ class LeaveRecordDetails extends GetView<HrLeaveController> {
     );
   }
 
-  Widget _showStatusButton(String status) {
-    switch (status.toLowerCase()) {
-      case 'approved':
-        return StatusBtnHelper.approvedStatusBtn();
-      case 'rejected':
-        return StatusBtnHelper.rejectedStatusBtn();
-      case 'pending':
-        return StatusBtnHelper.pendingStatusBtn();
-      case 'taken':
-        return StatusBtnHelper.tokenStatusBtn();
-      case 'cancelled':
-        return StatusBtnHelper.cancelledStatusBtn();
-      case 'cancel':
-        return StatusBtnHelper.cancelStatusBtn();
-      default:
-        return Container();
-    }
-  }
 }
 
 class LeaveRecordDetailsModel {

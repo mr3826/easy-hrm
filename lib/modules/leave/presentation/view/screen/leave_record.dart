@@ -10,16 +10,16 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
+import '../../../../../app/global/utils/app_status_helper.dart';
+import '../../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart'as lv_del_by_id;
 import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_dotted_border.dart';
-import '../../../../../enum.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../timeline/view/widget/timeline_calendar.dart';
 import '../../../domain/leave_record_response.dart';
 import '../widget/leave_record_details_view.dart';
-import '../../../../../app/global/view/widgets/status_btn_widget.dart';
 import '../widget/widget.dart';
 
 class LeaveRecordScreen extends GetView<LeaveRecordsController> {
@@ -220,7 +220,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
                   ],
                 ),
               ),
-              _showStatusButton(leaveRecord.status ?? ""),
+              StatusBtnHelperByContext.statusBtnByContext(leaveRecord.status ?? ""),
             ],
           ),
         ),
@@ -276,21 +276,7 @@ class LeaveRecordScreen extends GetView<LeaveRecordsController> {
     );
   }
 
-  _showStatusButton(String leaveStatus) {
-    if (leaveStatus.toLowerCase() == LeaveStatus.approved.name) {
-      return approvedStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.rejected.name) {
-      return rejectedStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.pending.name) {
-      return pendingStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.taken.name) {
-      return tokenStatusBtn();
-    } else if (leaveStatus.toLowerCase() == LeaveStatus.cancelled.name) {
-      return canceledStatusBtn();
-    } else {
-      return Container();
-    }
-  }
+
 
   Future<void> _refreshScreen() async {
     controller.getLeaveRecordsData();

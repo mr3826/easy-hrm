@@ -18,6 +18,7 @@ import '../../../../../../enum.dart';
 import '../../../../../../modules/timeline/view/screen/update_timeline.dart';
 import '../../../../../../utils/app_string.dart';
 import '../../../../../../utils/utils.dart';
+import '../../../../../global/utils/status_btn_helper_by_context.dart';
 import '../../../../settings/controller/app_setting_controller.dart';
 import '../../../controllers/global_timline_controller.dart';
 
@@ -97,7 +98,7 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
                               /// Removing fixed height
                               SizedBox(
                                 width: AppLayout.getWidth(100),
-                                child: _showStatusButton(data?.status ?? ""),
+                                child: StatusBtnHelperByContext.statusBtnByContext(data?.status ?? ""),
                               ),
                             ],
                           ),
@@ -163,27 +164,7 @@ class TimeLogSummaryDetails extends GetView<HrTimelineController> {
     );
   }
 
-  Widget _showStatusButton(String status) {
-    switch (status.toLowerCase()) {
-      case 'approved':
-        return StatusBtnHelper.approvedStatusBtn();
-      case 'rejected':
-        return StatusBtnHelper.rejectedStatusBtn();
 
-      case 'reject':
-        return StatusBtnHelper.rejectedStatusBtn();
-      case 'pending':
-        return StatusBtnHelper.pendingStatusBtn();
-      case 'taken':
-        return StatusBtnHelper.tokenStatusBtn();
-      case 'cancelled':
-        return StatusBtnHelper.cancelledStatusBtn();
-      case 'cancel':
-        return StatusBtnHelper.cancelStatusBtn();
-      default:
-        return Container();
-    }
-  }
 
   /// Builds the header containing profile image, name, and leave details.
   Widget _buildHeader({String? imageUrl, String? name, String? details}) {

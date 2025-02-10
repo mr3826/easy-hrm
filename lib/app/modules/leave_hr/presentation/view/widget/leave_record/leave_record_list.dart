@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
-import '../../../../../../../common/widget/custom_network_image.dart';
-import '../../../../../../../common/widget/employee/status_button_helper.dart';
+import '../../../../../../../common/widget/hr_timeline/custom_network_image.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../../../global/utils/status_btn_helper_by_context.dart';
 import '../../../controller/hr_leave_controller.dart';
 import 'leave_record_details/leave_record_details.dart';
 import 'leave_record_details/more_leave_record_details.dart';
@@ -109,11 +109,7 @@ class LeaveRecordList extends GetView<HrLeaveController> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomNetworkImage(
-            imgUrlKey: leaveRecordDetailsModel.imgUrl ?? "",
-            errorText: getInitials(leaveRecordDetailsModel.employeeName ?? ""),
-            height: 20,
-          ),
+          CircularNetworkImage(imageUrl: buildImgIxUrl(imagePath:  leaveRecordDetailsModel.imgUrl ?? "",isPublic: true),radius: 20,errorText:getInitials(leaveRecordDetailsModel.employeeName ?? "")),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -146,7 +142,7 @@ class LeaveRecordList extends GetView<HrLeaveController> {
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    showStatusButton(
+                    StatusBtnHelperByContext.statusBtnByContext(
                       leaveRecordDetailsModel.applicationStatus ?? "Unknown",
                     ),
                     const Spacer(),
@@ -224,24 +220,7 @@ class LeaveRecordList extends GetView<HrLeaveController> {
   }
 }
 
-Widget showStatusButton(String leaveStatus) {
-  switch (leaveStatus.toLowerCase()) {
-    case 'approved':
-      return StatusBtnHelper.approvedStatusBtn();
-    case 'rejected':
-      return StatusBtnHelper.rejectedStatusBtn();
-    case 'pending':
-      return StatusBtnHelper.pendingStatusBtn();
-    case 'taken':
-      return StatusBtnHelper.tokenStatusBtn();
-    case 'cancel':
-      return StatusBtnHelper.cancelStatusBtn();
-    case 'cancelled':
-      return StatusBtnHelper.cancelledStatusBtn();
-    default:
-      return Container();
-  }
-}
+
 
 Future<void> _refreshScreen() async {
   final leaveController = Get.find<HrLeaveController>();
