@@ -65,8 +65,7 @@ class IndividualTimeLayout extends StatelessWidget {
                     endDate:
                         "${DateTime(requestedDate.year, requestedDate.month, requestedDate.day, 23, 59, 59)}");
               } else {
-
-                _showLeaveRecordDetailsSheet(requestedDate);
+                _showLeaveRecordDetailsSheet(requestedDate,context);
               }
             },
             child: _infoTextLayout(index));
@@ -210,8 +209,7 @@ class IndividualTimeLayout extends StatelessWidget {
     );
   }
 
-  void _showLeaveRecordDetailsSheet(DateTime entryDate) {
-
+  void _showLeaveRecordDetailsSheet(DateTime entryDate,BuildContext context) {
     Get.find<HrTimelineController>().getTimeEntryDetails(
         startDate:
             "${DateTime(entryDate.year, entryDate.month, entryDate.day, 0, 0, 0)}",
@@ -220,8 +218,8 @@ class IndividualTimeLayout extends StatelessWidget {
         orgUserId: Get.find<HrTimelineController>().orgUserId);
 
     showCustomBottomSheet(
-      context: Get.context!,
-      height: MediaQuery.of(Get.context!).size.height / 1.5,
+      context: context,
+      height: MediaQuery.of(context).size.height / 1.5,
       child:  TimeLogSummaryDetails(logSummaryUserInfo:logSummaryUserInfo ,),
     );
   }
