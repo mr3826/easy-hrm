@@ -31,9 +31,8 @@ class SearchEmployeeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     EmployeeBindings().dependencies();
-
+    _clearSearchField();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -58,7 +57,6 @@ class SearchEmployeeList extends StatelessWidget {
                           onTap: (){
                             onValueSelected!(gs.GetStorage().read(AppString.ORGANIZATION_USER_ID));
                             userInfo?.call(UserInfo("${Get.find<ProfileGlobalController>().employeeName.value} (You)", Get.find<ProfileGlobalController>().employeeImeKey.value));
-
                           },
                           child: _buildOwnInfo(
                               name:Get.find<ProfileGlobalController>()
@@ -101,6 +99,7 @@ class SearchEmployeeList extends StatelessWidget {
                                 .addRecentSearchData(employee !);
                             userInfo?.call(UserInfo("${employee.profile?.firstName ?? ""} ${employee.profile?.lastName ?? ""}", employee.profile?.image ?? ""));
                         onValueSelected?.call(employee.id ?? "");
+
                           },
                           child: _buildEmploymeeInfo(
                               name:

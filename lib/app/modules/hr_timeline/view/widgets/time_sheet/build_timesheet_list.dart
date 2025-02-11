@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/hr_timeline_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import 'package:payrun_mobile/app/modules/hr_timeline/view/widgets/time_sheet/timelog_summary_details.dart';
@@ -13,6 +14,7 @@ import '../../../../../../utils/app_style.dart';
 import '../../../../../../utils/dimensions.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../bindings/TimelineSummaryBindings.dart';
+import '../../../controllers/global_timline_controller.dart';
 import '../../screen/timelog_summary.dart';
 
 class BuildTimesheetList extends GetView<TimeSheetController> {
@@ -20,6 +22,7 @@ class BuildTimesheetList extends GetView<TimeSheetController> {
 
   @override
   Widget build(BuildContext context) {
+    _updateTimeSheet();
     return Obx(() {
       if (controller.isTimeSheetLoading.isTrue) {
         return const CupertinoActivityIndicator(
@@ -275,4 +278,26 @@ Widget _profileInfo(Data data) {
       ),
     ],
   );
+}
+
+void _updateTimeSheet() {
+  if (Get.find<TimelineGlobalController>().searchEmployeeId.isEmpty) {
+    Get.find<TimeSheetController>().selectedStartDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.now());
+    Get.find<TimeSheetController>().selectedEndDate.value =
+        DateFormat('yyyy-MM-dd').format(DateTime.now());
+  }
+  if (Get.find<TimeSheetController>()
+      .timeSheetModel
+      ?.getUsersTimeSheet
+      ?.data
+      ?.isEmpty ??
+      true) {
+    if (Get.find<TimelineGlobalController>().searchEmployeeId.isNotEmpty) {
+      Get.find<TimeSheetController>().getTimesheetByDate(
+          orgId: Get.find<TimelineGlobalController>().searchEmployeeId);
+    } else {
+      Get.find<TimeSheetController>().getTimesheetByDate();
+    }
+  }
 }

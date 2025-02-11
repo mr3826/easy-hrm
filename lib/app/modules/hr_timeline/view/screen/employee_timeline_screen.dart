@@ -37,8 +37,7 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
 
   @override
   void initState() {
-    EmployeeTimelineBindings().dependencies();
-    TimelineGlobalBindings().dependencies();
+    _initializeBindings();
     Get.find<TimelineGlobalController>().isEmployee(true);
     _tabController = TabController(length: 1, vsync: this);
     super.initState();
@@ -165,6 +164,11 @@ class _HrTimelineScreenState extends State<EmployeeTimelineScreen>
       AppString.text_time_line.tr,
       style: AppStyle.mid_large_text.copyWith(fontSize: 20),
     );
+  }
+
+  void _initializeBindings() {
+    EmployeeTimelineBindings().dependencies();
+    TimelineGlobalBindings().dependencies();
   }
 }
 
