@@ -70,7 +70,7 @@ class _KanbanBoardPageViewState extends State<KanbanBoardPageView> {
       onWillAccept: (data) => true, // Always accept drops
       builder: (context, candidateData, rejectedData) {
         return Container(
-          margin: EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(8),
