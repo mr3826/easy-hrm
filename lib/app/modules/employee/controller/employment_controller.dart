@@ -26,7 +26,6 @@ class EmploymentController extends GetxController with StateMixin {
   TextEditingController searchController = TextEditingController();
   TextEditingController terminationEditNoteController = TextEditingController();
 
-
   List<Data>? employeeList = <Data>[];
 
   List<Data>? searchedEmployeeList = <Data>[];
@@ -57,7 +56,8 @@ class EmploymentController extends GetxController with StateMixin {
     isEmployeesInfoLoading(true);
 
     List<String> departmentIds = getSelectedCheckBoxValues(departmentList);
-    List<String> employmentStatusIds = getSelectedCheckBoxValues(employmentStatusList);
+    List<String> employmentStatusIds =
+        getSelectedCheckBoxValues(employmentStatusList);
     List<String> userStatusIds = getSelectedCheckBoxValues(userStatusList);
     List<String> attendanceIds = getSelectedCheckBoxValues(attendanceList);
 
@@ -109,8 +109,9 @@ class EmploymentController extends GetxController with StateMixin {
     isEmploymentHistoryApiCalled = true;
     employmentStatuses = await _employeeDataSource.getEmploymentsStatus();
     if (employmentStatuses != null) {
-
-      employmentStatusList = employmentStatuses!.statuses.map((emp_wrk_inf.EmploymentStatus employmentStatus) => CheckBoxModel(
+      employmentStatusList = employmentStatuses!.statuses
+          .map(
+            (emp_wrk_inf.EmploymentStatus employmentStatus) => CheckBoxModel(
                 checkBoxName: employmentStatus.name,
                 checkBoxNameValue: employmentStatus.id),
           )
@@ -153,7 +154,6 @@ class EmploymentController extends GetxController with StateMixin {
     return false;
   }
 
-
   void resetCheckBoxList(List<CheckBoxModel> checkBoxList) {
     for (CheckBoxModel item in checkBoxList) {
       item.value = false;
@@ -185,7 +185,6 @@ class EmploymentController extends GetxController with StateMixin {
     await box.clear();
   }
 
-
   final List<String> items = [
     'Permanent',
     'Ad-hoc',
@@ -198,7 +197,6 @@ class EmploymentController extends GetxController with StateMixin {
         .map((item) => item.checkBoxNameValue) // Extract checkBoxNameValue
         .toList();
   }
-
 
   @override
   void onInit() {

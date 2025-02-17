@@ -7,7 +7,8 @@ import '../model/org_user_info.dart';
 import '../model/user_work_info_dropdown.dart';
 
 abstract class EmployeeDataSource {
-  Future<EmployeeInfo?> getEmployees({required Map<String, Map<String, Object>> queryVariable});
+  Future<EmployeeInfo?> getEmployees(
+      {required Map<String, Map<String, Object>> queryVariable});
 
   Future<EmploymentStatusList?>? getEmploymentsStatus();
 
@@ -71,7 +72,8 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
   }
 
   @override
-  Future<EmployeeInfo?> getEmployees({required Map<String, Map<String, Object>> queryVariable}) async {
+  Future<EmployeeInfo?> getEmployees(
+      {required Map<String, Map<String, Object>> queryVariable}) async {
     try {
       Map<String, dynamic>? response =
           await _employeeApiService.getEmployees(queryVariable: queryVariable);
@@ -91,14 +93,15 @@ class EmployeeDataSourceImpl implements EmployeeDataSource {
       final Map<String, dynamic>? response =
           await _employeeApiService.terminateAUser(terminateUserModel);
       if (response != null) {
-        String status = response["getOrganizationUsers"]["status"] ?? "";
-        return status;
+        return TerminateOrgUserRes.fromJson(response)
+            .terminateOrganizationUser
+            ?.status;
       }
-      return null;
     } catch (e) {
       log('Error in terminateAUser: $e');
       return null;
     }
+    return null;
   }
 
   @override

@@ -16,3 +16,30 @@ class TerminateUserModel {
     return 'TerminateUserModel{orgUserId: $orgUserId, terminationTypeEnum: $terminationTypeEnum, terminationOrResignationDate: $terminationOrResignationDate, terminationOrResignationReason: $terminationOrResignationReason}';
   }
 }
+
+
+class TerminateOrgUserRes {
+  TerminateOrganizationUser? terminateOrganizationUser;
+
+  TerminateOrgUserRes({this.terminateOrganizationUser});
+
+  TerminateOrgUserRes.fromJson(Map<String, dynamic> json) {
+    terminateOrganizationUser = json['terminateOrganizationUser'] != null
+        ? new TerminateOrganizationUser.fromJson(
+        json['terminateOrganizationUser'])
+        : null;
+  }
+}
+
+class TerminateOrganizationUser {
+  String? id;
+  String? status;
+
+  TerminateOrganizationUser({this.id, this.status});
+
+  TerminateOrganizationUser.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    status = json['status'];
+  }
+
+}
