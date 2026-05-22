@@ -7,7 +7,6 @@ import 'package:payrun_mobile/common/widget/custom_dialog.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_status_button.dart';
 import 'package:payrun_mobile/enum.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/log_out_controller.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/update_profile_action_view.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
@@ -342,13 +341,13 @@ _organisationLayout(context, UserDetails userDetails) {
                 ),
                 customSpacerHeight(height: 6),
                 if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                            ?.designationHistories !=
+                            .designationHistories !=
                         null &&
-                    controller.employeeWorkHistory!.getOrganizationUserHistory!
-                        .designationHistories!.isNotEmpty)
+                    controller.employeeWorkHistory!.getOrganizationUserHistory
+                        .designationHistories.isNotEmpty)
                   Text(
                     controller.employeeWorkHistory?.getOrganizationUserHistory
-                            ?.designationHistories?[0].designation?.name ??
+                            .designationHistories[0].designation.name ??
                         "",
                     style: AppStyle.mid_large_text.copyWith(
                       color: AppColor.normalTextColor,
@@ -409,16 +408,16 @@ _profileInfoDrawerLayout(UserDetails userDetails) {
                         .copyWith(color: AppColor.normalTextColor),
                   ),
                   if (controller.employeeWorkHistory?.getOrganizationUserHistory
-                              ?.designationHistories !=
+                              .designationHistories !=
                           null &&
                       controller
                           .employeeWorkHistory!
-                          .getOrganizationUserHistory!
-                          .designationHistories!
+                          .getOrganizationUserHistory
+                          .designationHistories
                           .isNotEmpty)
                     Text(
                       controller.employeeWorkHistory?.getOrganizationUserHistory
-                              ?.designationHistories?[0].designation?.name ??
+                              .designationHistories[0].designation.name ??
                           "Not designation",
                       style: AppStyle.normal_text_grey
                           .copyWith(fontSize: Dimensions.fontSizeDefault - 1),
@@ -481,7 +480,7 @@ organisationLogoLayout(UserDetails userDetails) {
     radius: AppLayout.getHeight(25),
     imageUrl: buildImgIxUrl(
         imgKey:
-            "${userDetails?.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
+            "${userDetails.getOrganizationUserDetails?.organization?.organizationSetting?.logoIconKey}",
         isPublic: true,
         fileDirectory: "profile_images"),
     errorText: getInitials(

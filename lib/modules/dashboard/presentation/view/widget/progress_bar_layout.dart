@@ -3,14 +3,12 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
-import '../../../../../app/modules/profile/controller/global_profile_controller.dart';
 import '../../../../../app/modules/profile/models/user_profile.dart';
 import '../../../../../common/widget/custom_network_image.dart';
 import '../../../../../common/widget/custom_spacer.dart';
 import '../../../../../utils/app_color.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
-import '../../../../../app/modules/auth/view/screens/otp_screen.dart';
 import '../../controller/employee_dashboard_controller.dart';
 import 'dashboad_widget.dart';
 

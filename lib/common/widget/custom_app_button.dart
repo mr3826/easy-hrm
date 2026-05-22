@@ -1,6 +1,5 @@
 import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:payrun_mobile/utils/dimensions.dart';
 
 class CustomAppButton extends StatelessWidget {
   final bool hasOutline;

@@ -60,7 +60,7 @@ class Data {
     if (json['hiring_stages'] != null) {
       hiringStages = <HiringStages>[];
       json['hiring_stages'].forEach((v) {
-        hiringStages!.add(new HiringStages.fromJson(v));
+        hiringStages!.add(HiringStages.fromJson(v));
       });
     }
   }

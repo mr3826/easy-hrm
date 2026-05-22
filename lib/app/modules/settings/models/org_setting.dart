@@ -5,14 +5,14 @@ class OrgSetting {
 
   OrgSetting.fromJson(Map<String, dynamic> json) {
     getOrganizationSetting = json['getOrganizationSetting'] != null
-        ? new GetOrganizationSetting.fromJson(json['getOrganizationSetting'])
+        ? GetOrganizationSetting.fromJson(json['getOrganizationSetting'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getOrganizationSetting != null) {
-      data['getOrganizationSetting'] = this.getOrganizationSetting!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getOrganizationSetting != null) {
+      data['getOrganizationSetting'] = getOrganizationSetting!.toJson();
     }
     return data;
   }
@@ -44,13 +44,13 @@ class GetOrganizationSetting {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['time_zone'] = this.timeZone;
-    data['time_format'] = this.timeFormat;
-    data['country_code'] = this.countryCode;
-    data['date_format'] = this.dateFormat;
-    data['language'] = this.language;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['time_zone'] = timeZone;
+    data['time_format'] = timeFormat;
+    data['country_code'] = countryCode;
+    data['date_format'] = dateFormat;
+    data['language'] = language;
     return data;
   }
 }

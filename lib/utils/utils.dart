@@ -572,12 +572,12 @@ String capitalizeWords(String input) {
 
 Future<void> openUrlInBrowser(String url) async {
   try {
-    final Uri? _url = Uri.tryParse(url);
-    if (_url == null) {
+    final Uri? url0 = Uri.tryParse(url);
+    if (url0 == null) {
       throw FormatException('Invalid URL format: $url');
     }
 
-    if (!await launchUrl(_url)) {
+    if (!await launchUrl(url0)) {
       throw Exception('Failed to launch the URL: $url');
     }
   } catch (e) {

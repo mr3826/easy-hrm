@@ -7,7 +7,6 @@ import '../../../../../utils/app_layout.dart';
 import '../../../../../utils/app_string.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
-import '../../../../../utils/images.dart';
 import '../../controller/apply_leave_controller.dart';
 import '../../../domain/leave_type.dart';
 

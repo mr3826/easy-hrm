@@ -5,16 +5,16 @@ class UserProfileModel {
 
   UserProfileModel.fromJson(Map<String, dynamic> json) {
     getOrganizationUserDetails = json['getOrganizationUserDetails'] != null
-        ? new GetOrganizationUserDetails.fromJson(
+        ? GetOrganizationUserDetails.fromJson(
         json['getOrganizationUserDetails'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getOrganizationUserDetails != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getOrganizationUserDetails != null) {
       data['getOrganizationUserDetails'] =
-          this.getOrganizationUserDetails!.toJson();
+          getOrganizationUserDetails!.toJson();
     }
     return data;
   }
@@ -38,33 +38,33 @@ class GetOrganizationUserDetails {
 
   GetOrganizationUserDetails.fromJson(Map<String, dynamic> json) {
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     department = json['department'] != null
-        ? new Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
     status = json['status'];
     employeeId = json['employee_id'];
     organization = json['organization'] != null
-        ? new Organization.fromJson(json['organization'])
+        ? Organization.fromJson(json['organization'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.profile != null) {
-      data['profile'] = this.profile!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (profile != null) {
+      data['profile'] = profile!.toJson();
     }
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.department != null) {
-      data['department'] = this.department!.toJson();
+    if (department != null) {
+      data['department'] = department!.toJson();
     }
-    data['status'] = this.status;
-    data['employee_id'] = this.employeeId;
-    if (this.organization != null) {
-      data['organization'] = this.organization!.toJson();
+    data['status'] = status;
+    data['employee_id'] = employeeId;
+    if (organization != null) {
+      data['organization'] = organization!.toJson();
     }
     return data;
   }
@@ -102,15 +102,15 @@ class Profile {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['about'] = this.about;
-    data['address'] = this.address;
-    data['emergency_number'] = this.emergencyNumber;
-    data['first_name'] = this.firstName;
-    data['image'] = this.image;
-    data['last_name'] = this.lastName;
-    data['personal_number'] = this.personalNumber;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['about'] = about;
+    data['address'] = address;
+    data['emergency_number'] = emergencyNumber;
+    data['first_name'] = firstName;
+    data['image'] = image;
+    data['last_name'] = lastName;
+    data['personal_number'] = personalNumber;
     return data;
   }
 }
@@ -127,9 +127,9 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['email'] = email;
+    data['id'] = id;
     return data;
   }
 }
@@ -147,17 +147,17 @@ class Department {
     id = json['id'];
     parent = json['parent'];
     workShift = json['work_shift'] != null
-        ? new WorkShift.fromJson(json['work_shift'])
+        ? WorkShift.fromJson(json['work_shift'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['id'] = this.id;
-    data['parent'] = this.parent;
-    if (this.workShift != null) {
-      data['work_shift'] = this.workShift!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['id'] = id;
+    data['parent'] = parent;
+    if (workShift != null) {
+      data['work_shift'] = workShift!.toJson();
     }
     return data;
   }
@@ -174,17 +174,17 @@ class WorkShift {
     if (json['work_schedules'] != null) {
       workSchedules = <WorkSchedules>[];
       json['work_schedules'].forEach((v) {
-        workSchedules!.add(new WorkSchedules.fromJson(v));
+        workSchedules!.add(WorkSchedules.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    if (this.workSchedules != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    if (workSchedules != null) {
       data['work_schedules'] =
-          this.workSchedules!.map((v) => v.toJson()).toList();
+          workSchedules!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -206,11 +206,11 @@ class WorkSchedules {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['day'] = this.day;
-    data['end_time'] = this.endTime;
-    data['start_time'] = this.startTime;
-    data['is_holiday'] = this.isHoliday;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['day'] = day;
+    data['end_time'] = endTime;
+    data['start_time'] = startTime;
+    data['is_holiday'] = isHoliday;
     return data;
   }
 }
@@ -224,19 +224,19 @@ class Organization {
 
   Organization.fromJson(Map<String, dynamic> json) {
     organizationSetting = json['organization_setting'] != null
-        ? new OrganizationSetting.fromJson(json['organization_setting'])
+        ? OrganizationSetting.fromJson(json['organization_setting'])
         : null;
     name = json['name'];
     id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.organizationSetting != null) {
-      data['organization_setting'] = this.organizationSetting!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (organizationSetting != null) {
+      data['organization_setting'] = organizationSetting!.toJson();
     }
-    data['name'] = this.name;
-    data['id'] = this.id;
+    data['name'] = name;
+    data['id'] = id;
     return data;
   }
 }
@@ -255,10 +255,10 @@ class OrganizationSetting {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['logo_key'] = this.logoKey;
-    data['logo_icon_key'] = this.logoIconKey;
-    data['language'] = this.language;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['logo_key'] = logoKey;
+    data['logo_icon_key'] = logoIconKey;
+    data['language'] = language;
     return data;
   }
 }

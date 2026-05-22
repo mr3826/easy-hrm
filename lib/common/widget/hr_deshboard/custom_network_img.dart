@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:imgix_core_dart/url_builder.dart';
-import 'package:payrun_mobile/utils/images.dart';
 import '../../../utils/api_endpoints.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_string.dart';

@@ -188,6 +188,7 @@ class TextFiledLayout extends StatelessWidget {
         isRequired: false,
         onChanged: (String? value) {
           Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(true);
+          return null;
         },
         controller: editBioController,
         isNoteFieldVisible: true);
@@ -198,6 +199,7 @@ class TextFiledLayout extends StatelessWidget {
         isRequired: false,
         onChanged: (String? value) {
           Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(true);
+          return null;
         },
         titleText: AppString.text_address.tr,
         controller: editAddressController,
@@ -210,6 +212,7 @@ class TextFiledLayout extends StatelessWidget {
         titleText: AppString.text_last_name.tr,
         onChanged: (String? value) {
           Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(true);
+          return null;
         },
         validator: (value) {
           if (value!.isEmpty) {
@@ -230,6 +233,7 @@ class TextFiledLayout extends StatelessWidget {
             Get.find<ProfileGlobalController>().employeeId=id??"";
             Get.find<ProfileGlobalController>()
                 .isEnableProfileUpdateButton(true);
+            return null;
           },
           hintText: AppString.text_employee_Id.tr,
           titleText: AppString.text_employee_Id.tr,
@@ -244,6 +248,7 @@ class TextFiledLayout extends StatelessWidget {
         titleText: AppString.text_first_name.tr,
         onChanged: (String? value) {
           Get.find<ProfileGlobalController>().isEnableProfileUpdateButton(true);
+          return null;
         },
         validator: (value) {
           if (value!.isEmpty) {

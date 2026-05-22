@@ -16,7 +16,6 @@ import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../../common/widget/custom_buttom_sheet.dart';
 import '../../../../../../../common/widget/custom_card_style.dart';
-import '../../../../../../../common/widget/custom_network_image.dart';
 import '../../../../../../../common/widget/timePicker/date_time_picker_controller.dart';
 import '../../../../../../../common/widget/warning_message.dart';
 import '../../../../../../../modules/leave/presentation/controller/leave_screen_controller.dart';

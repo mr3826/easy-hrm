@@ -8,7 +8,6 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/app/modules/auth/view/screens/forgot_password.dart';
 import 'package:payrun_mobile/app/modules/auth/models/common_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
-import 'package:payrun_mobile/utils/app_layout.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
@@ -16,7 +15,6 @@ import 'package:payrun_mobile/utils/images.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../../common/widget/warning_message.dart';
 import '../../../../global/view/widget/app_margin.dart';
-import '../../controller/forgot_password_controller.dart';
 import '../../controller/otp_controller.dart';
 
 class OTPScreen extends StatefulWidget {

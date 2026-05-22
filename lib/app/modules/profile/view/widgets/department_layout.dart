@@ -5,7 +5,6 @@ import 'package:payrun_mobile/common/widget/custom_card_style.dart';
 import 'package:payrun_mobile/common/widget/custom_buttom_sheet.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/app/modules/auth/view/screens/otp_screen.dart';
 import 'package:payrun_mobile/app/modules/profile/models/user_profile.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';

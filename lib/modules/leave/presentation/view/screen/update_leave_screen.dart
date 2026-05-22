@@ -236,9 +236,11 @@ class UpdateLeaveButtonLayout extends GetView<UpDateLeaveController> {
             return null;
           }
         }
+        return null;
       },
       onChanged: (String? value) {
         Get.find<UpDateLeaveController>().noteValue.value = value!;
+        return null;
       },
       controller: leaveNoteController,
       hintText: AppString.text_add_note.tr,

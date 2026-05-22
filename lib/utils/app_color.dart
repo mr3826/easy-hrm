@@ -7,9 +7,10 @@ class AppColor {
 
   factory AppColor() => _instance;
 
-  static const Color primaryColor = Color(0xFF2C67FF);
+  // Brand: Easy HRM - Teal primary, Amber accent
+  static const Color primaryColor = Color(0xFF00796B); // Teal 700
   static const Color backgroundColor = Color(0xFFFFFFFF);
-  static const Color secondaryColor = Color(0xFF1A3AA1);
+  static const Color secondaryColor = Color(0xFFFFA000); // Amber 700
   static const Color alertDgIconBgColor = Color(0xFFfed8b1);
   static const Color successColor = Color(0xFF0CAA1B);
   static const Color noColor = Color(0x0fffff00);

@@ -5,14 +5,14 @@ class UpdateTimelogEntry {
 
   UpdateTimelogEntry.fromJson(Map<String, dynamic> json) {
     updateTimelineEntry = json['updateTimelineEntry'] != null
-        ? new UpdateTimelineEntry.fromJson(json['updateTimelineEntry'])
+        ? UpdateTimelineEntry.fromJson(json['updateTimelineEntry'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.updateTimelineEntry != null) {
-      data['updateTimelineEntry'] = this.updateTimelineEntry!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (updateTimelineEntry != null) {
+      data['updateTimelineEntry'] = updateTimelineEntry!.toJson();
     }
     return data;
   }
@@ -34,11 +34,11 @@ class UpdateTimelineEntry {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['org_user_id'] = this.orgUserId;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['org_user_id'] = orgUserId;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
     return data;
   }
 }

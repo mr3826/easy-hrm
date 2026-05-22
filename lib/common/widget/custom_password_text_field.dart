@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 
-import '../../utils/app_string.dart';
 import '../../utils/app_style.dart';
 import '../../utils/dimensions.dart';
 

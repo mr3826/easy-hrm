@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import 'package:payrun_mobile/app/modules/profile/models/leave_summary.dart';
@@ -11,8 +10,6 @@ import '../../../../../../../../../utils/app_string.dart';
 import '../../../../../../../../../utils/app_style.dart';
 import '../../../../../../../../../utils/dimensions.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
-import '../../../../../auth/view/screens/otp_screen.dart';
-import '../../../../controller/global_profile_controller.dart';
 import '../../../../controller/leave_allowance_controller.dart';
 import 'leave_allowance.dart';
 

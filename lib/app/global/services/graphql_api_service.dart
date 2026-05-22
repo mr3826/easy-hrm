@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:payrun_mobile/common/widget/error_message.dart';
-import 'package:payrun_mobile/utils/app_string.dart';
 import '../../../utils/api_endpoints.dart';
 import 'auth_token_service.dart';
 import 'token_refresh_service.dart';

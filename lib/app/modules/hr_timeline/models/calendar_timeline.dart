@@ -20,7 +20,7 @@ class GetCalenderTimelinesForApp {
   GetCalenderTimelinesForApp({this.data});
 
   GetCalenderTimelinesForApp.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new CalendarData.fromJson(json['data']) : null;
+    data = json['data'] != null ? CalendarData.fromJson(json['data']) : null;
   }
 
 }
@@ -84,16 +84,16 @@ class Timelines {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['description'] = this.description;
-    data['end_date'] = this.endDate;
-    data['start_date'] = this.startDate;
-    data['status'] = this.status;
-    data['task'] = this.task;
-    data['total_minutes'] = this.totalMinutes;
-    if (this.project != null) {
-      data['project'] = this.project!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['description'] = description;
+    data['end_date'] = endDate;
+    data['start_date'] = startDate;
+    data['status'] = status;
+    data['task'] = task;
+    data['total_minutes'] = totalMinutes;
+    if (project != null) {
+      data['project'] = project!.toJson();
     }
     return data;
   }
@@ -110,9 +110,9 @@ class Task {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -131,10 +131,10 @@ class Project {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['color'] = this.color;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['color'] = color;
     return data;
   }
 }

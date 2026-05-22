@@ -7,7 +7,7 @@ class LeaveTypeDropdown {
     if (json['getAvailableLeaveTypes'] != null) {
       getAvailableLeaveTypes = <GetAvailableLeaveTypes>[];
       json['getAvailableLeaveTypes'].forEach((v) {
-        getAvailableLeaveTypes!.add(new GetAvailableLeaveTypes.fromJson(v));
+        getAvailableLeaveTypes!.add(GetAvailableLeaveTypes.fromJson(v));
       });
     }
   }

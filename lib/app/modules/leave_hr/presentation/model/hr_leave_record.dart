@@ -7,16 +7,16 @@ class HrLeaveRecorde {
     if (json['getLeaveRequests'] != null) {
       getLeaveRequests = <GetLeaveRequests>[];
       json['getLeaveRequests'].forEach((v) {
-        getLeaveRequests!.add(new GetLeaveRequests.fromJson(v));
+        getLeaveRequests!.add(GetLeaveRequests.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getLeaveRequests != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getLeaveRequests != null) {
       data['getLeaveRequests'] =
-          this.getLeaveRequests!.map((v) => v.toJson()).toList();
+          getLeaveRequests!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -51,44 +51,44 @@ class GetLeaveRequests {
     description = json['description'];
     status = json['status'];
     leaveType = json['leaveType'] != null
-        ? new LeaveType.fromJson(json['leaveType'])
+        ? LeaveType.fromJson(json['leaveType'])
         : null;
     if (json['leave_details'] != null) {
       leaveDetails = <LeaveDetails>[];
       json['leave_details'].forEach((v) {
-        leaveDetails!.add(new LeaveDetails.fromJson(v));
+        leaveDetails!.add(LeaveDetails.fromJson(v));
       });
     }
     if (json['files'] != null) {
       files = <Files>[];
       json['files'].forEach((v) {
-        files!.add(new Files.fromJson(v));
+        files!.add(Files.fromJson(v));
       });
     }
     organizationUser = json['organization_user'] != null
-        ? new OrganizationUser.fromJson(json['organization_user'])
+        ? OrganizationUser.fromJson(json['organization_user'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['description'] = this.description;
-    data['status'] = this.status;
-    if (this.leaveType != null) {
-      data['leaveType'] = this.leaveType!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    data['description'] = description;
+    data['status'] = status;
+    if (leaveType != null) {
+      data['leaveType'] = leaveType!.toJson();
     }
-    if (this.leaveDetails != null) {
+    if (leaveDetails != null) {
       data['leave_details'] =
-          this.leaveDetails!.map((v) => v.toJson()).toList();
+          leaveDetails!.map((v) => v.toJson()).toList();
     }
-    if (this.files != null) {
-      data['files'] = this.files!.map((v) => v.toJson()).toList();
+    if (files != null) {
+      data['files'] = files!.map((v) => v.toJson()).toList();
     }
-    if (this.organizationUser != null) {
-      data['organization_user'] = this.organizationUser!.toJson();
+    if (organizationUser != null) {
+      data['organization_user'] = organizationUser!.toJson();
     }
     return data;
   }
@@ -120,13 +120,13 @@ class LeaveType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['number_of_days'] = this.numberOfDays;
-    data['number_of_applications'] = this.numberOfApplications;
-    data['application_date'] = this.applicationDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['type'] = type;
+    data['number_of_days'] = numberOfDays;
+    data['number_of_applications'] = numberOfApplications;
+    data['application_date'] = applicationDate;
     return data;
   }
 }
@@ -143,9 +143,9 @@ class LeaveDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['leave_id'] = this.leaveId;
-    data['leave_seconds'] = this.leaveSeconds;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['leave_id'] = leaveId;
+    data['leave_seconds'] = leaveSeconds;
     return data;
   }
 }
@@ -166,11 +166,11 @@ class Files {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['size'] = this.size;
-    data['key'] = this.key;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['size'] = size;
+    data['key'] = key;
     return data;
   }
 }
@@ -188,21 +188,21 @@ class OrganizationUser {
     designation = json['designation'];
     status = json['status'];
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
     department = json['department'] != null
-        ? new Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['designation'] = this.designation;
-    data['status'] = this.status;
-    if (this.profile != null) {
-      data['profile'] = this.profile!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['designation'] = designation;
+    data['status'] = status;
+    if (profile != null) {
+      data['profile'] = profile!.toJson();
     }
-    if (this.department != null) {
-      data['department'] = this.department!.toJson();
+    if (department != null) {
+      data['department'] = department!.toJson();
     }
     return data;
   }
@@ -224,11 +224,11 @@ class Profile {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['image'] = image;
     return data;
   }
 }
@@ -245,9 +245,9 @@ class Department {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }

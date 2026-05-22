@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/employee/bindings/employee_bindings.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
-import 'package:payrun_mobile/routes/app_pages.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../utils/app_color.dart';
 import '../../../../../../utils/app_string.dart';

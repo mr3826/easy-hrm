@@ -179,6 +179,7 @@ class ApplyLeaveButtonLayout extends GetView<ApplyLeaveController> {
             return null;
           }
         }
+        return null;
       },
       controller: leaveNoteController,
       hintText: AppString.text_add_note.tr,

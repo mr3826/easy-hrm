@@ -5,7 +5,7 @@ class CandidateList {
 
   CandidateList.fromJson(Map<String, dynamic> json) {
     getCandidates = json['getCandidates'] != null
-        ? new GetCandidates.fromJson(json['getCandidates'])
+        ? GetCandidates.fromJson(json['getCandidates'])
         : null;
   }
 }
@@ -19,7 +19,7 @@ class GetCandidates {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
@@ -38,12 +38,12 @@ class Data {
     id = json['id'];
     avgRating = json['avg_rating'];
     candidate = json['candidate'] != null
-        ? new Candidate.fromJson(json['candidate'])
+        ? Candidate.fromJson(json['candidate'])
         : null;
     hiringStage = json['hiring_stage'] != null
-        ? new HiringStage.fromJson(json['hiring_stage'])
+        ? HiringStage.fromJson(json['hiring_stage'])
         : null;
-    job = json['job'] != null ? new Job.fromJson(json['job']) : null;
+    job = json['job'] != null ? Job.fromJson(json['job']) : null;
   }
 }
 
@@ -91,7 +91,7 @@ class Job {
     title = json['title'];
     type = json['type'];
     department = json['department'] != null
-        ? new Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
   }
 }

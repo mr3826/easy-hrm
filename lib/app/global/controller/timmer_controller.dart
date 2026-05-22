@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:payrun_mobile/network/network_client.dart';
 import '../../../modules/timeline/model/timer_status_response.dart';
 import '../../../network/exception_helper.dart';
 import '../../../utils/api_endpoints.dart';
-import '../../../utils/utils.dart';
-import '../../modules/settings/controller/app_setting_controller.dart';
 
 class TimeCounterController extends SuperController {
   @override

@@ -7,16 +7,16 @@ class FilterJobsDropdown {
     if (json['getJobsDropdown'] != null) {
       getJobsDropdown = <GetJobsDropdown>[];
       json['getJobsDropdown'].forEach((v) {
-        getJobsDropdown!.add(new GetJobsDropdown.fromJson(v));
+        getJobsDropdown!.add(GetJobsDropdown.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getJobsDropdown != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getJobsDropdown != null) {
       data['getJobsDropdown'] =
-          this.getJobsDropdown!.map((v) => v.toJson()).toList();
+          getJobsDropdown!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -35,17 +35,17 @@ class GetJobsDropdown {
     title = json['title'];
     slug = json['slug'];
     department = json['department'] != null
-        ? new Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['slug'] = this.slug;
-    if (this.department != null) {
-      data['department'] = this.department!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['slug'] = slug;
+    if (department != null) {
+      data['department'] = department!.toJson();
     }
     return data;
   }
@@ -63,9 +63,9 @@ class Department {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }

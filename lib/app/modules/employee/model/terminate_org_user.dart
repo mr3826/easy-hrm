@@ -25,7 +25,7 @@ class TerminateOrgUserRes {
 
   TerminateOrgUserRes.fromJson(Map<String, dynamic> json) {
     terminateOrganizationUser = json['terminateOrganizationUser'] != null
-        ? new TerminateOrganizationUser.fromJson(
+        ? TerminateOrganizationUser.fromJson(
         json['terminateOrganizationUser'])
         : null;
   }

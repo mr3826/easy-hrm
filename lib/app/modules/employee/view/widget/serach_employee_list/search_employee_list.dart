@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart' as gs;
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:payrun_mobile/app/modules/employee/bindings/employee_bindings.dart';
 import 'package:payrun_mobile/app/modules/employee/model/employee_info.dart';

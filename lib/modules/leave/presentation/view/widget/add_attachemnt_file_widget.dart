@@ -16,7 +16,6 @@ import 'package:payrun_mobile/utils/images.dart';
 import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_network_image.dart';
-import '../../../domain/leave_records.dart';
 
 class AddAttachmentFile extends StatelessWidget {
   final bool? isFromApplyLeave;

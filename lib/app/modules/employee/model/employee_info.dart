@@ -9,7 +9,7 @@ class EmployeeInfo {
 
   EmployeeInfo.fromJson(Map<String, dynamic> json) {
     getOrganizationUsers = json['getOrganizationUsers'] != null
-        ? new GetOrganizationUsers.fromJson(json['getOrganizationUsers'])
+        ? GetOrganizationUsers.fromJson(json['getOrganizationUsers'])
         : null;
   }
 }
@@ -24,11 +24,11 @@ class GetOrganizationUsers {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     metaData = json['metaData'] != null
-        ? new MetaData.fromJson(json['metaData'])
+        ? MetaData.fromJson(json['metaData'])
         : null;
   }
 }
@@ -43,8 +43,8 @@ class MetaData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['filteredRows'] = this.filteredRows;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['filteredRows'] = filteredRows;
     return data;
   }
 }
@@ -104,14 +104,14 @@ class Data extends HiveObject {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['profile'] = this.profile?.toJson();
-    data['employment_status'] = this.employmentStatus?.toJson();
-    data['designation'] = this.designation?.toJson();
-    data['department'] = this.department?.toJson();
-    data['user'] = this.user?.toJson();
-    data['user_id'] = this.userId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['profile'] = profile?.toJson();
+    data['employment_status'] = employmentStatus?.toJson();
+    data['designation'] = designation?.toJson();
+    data['department'] = department?.toJson();
+    data['user'] = user?.toJson();
+    data['user_id'] = userId;
     return data;
   }
 }
@@ -136,10 +136,10 @@ class Profile extends HiveObject {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['image'] = image;
     return data;
   }
 }
@@ -164,9 +164,9 @@ class EmploymentStatus extends HiveObject {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['color'] = this.color;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['color'] = color;
     return data;
   }
 }
@@ -187,9 +187,9 @@ class User extends HiveObject {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['email'] = this.email;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
     return data;
   }
 }

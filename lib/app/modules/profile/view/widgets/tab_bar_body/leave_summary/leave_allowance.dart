@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/global_profile_controller.dart';
-import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
 import '../../../../../../../../../common/widget/custom_app_button.dart';
 import '../../../../../../../../../common/widget/custom_card_style.dart';

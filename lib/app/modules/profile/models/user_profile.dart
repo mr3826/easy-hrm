@@ -62,19 +62,19 @@ class GetOrganizationUserDetails {
     if (json['designation_histories'] != null) {
       designationHistories = <DesignationHistories>[];
       json['designation_histories'].forEach((v) {
-        designationHistories!.add(new DesignationHistories.fromJson(v));
+        designationHistories!.add(DesignationHistories.fromJson(v));
       });
     }
     if (json['dept_histories'] != null) {
       deptHistories = <DeptHistories>[];
       json['dept_histories'].forEach((v) {
-        deptHistories!.add(new DeptHistories.fromJson(v));
+        deptHistories!.add(DeptHistories.fromJson(v));
       });
     }
     if (json['employment_histories'] != null) {
       employmentHistories = <EmploymentHistories>[];
       json['employment_histories'].forEach((v) {
-        employmentHistories!.add(new EmploymentHistories.fromJson(v));
+        employmentHistories!.add(EmploymentHistories.fromJson(v));
       });
     }
   }

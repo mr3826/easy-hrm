@@ -19,7 +19,6 @@ import '../../../../../global/view/widget/app_margin.dart';
 import '../../../../../global/view/widgets/custom_date_picker.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../auth/view/screens/otp_screen.dart';
 import '../../../controller/employment_controller.dart';
 import '../../../model/user_work_info_dropdown.dart';
 

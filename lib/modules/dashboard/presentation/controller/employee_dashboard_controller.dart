@@ -1,11 +1,9 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:payrun_mobile/modules/dashboard/data/remote/dashboard_remote_data_source.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/timeline_summary_dashboard.dart';
 import 'package:payrun_mobile/modules/dashboard/domain/upcomming_leave_dashboard.dart';
 import '../../../../app/modules/leave_hr/data/leave_remote_data_source.dart';
 import '../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
-import '../../../../utils/app_string.dart';
 import '../../domain/profile_summary_for_dashboard.dart';
 
 /// [EmployeeDashboardController] handles the fetching of dashboard-related data

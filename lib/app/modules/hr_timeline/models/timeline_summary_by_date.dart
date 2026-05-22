@@ -19,7 +19,7 @@ class TimelineSummaryByDate {
 
   TimelineSummaryByDate.fromJson(Map<String, dynamic> json) {
     getTimelogSummaryForApp = json['getSummaryForTimelines'] != null
-        ? new GetTimelogSummaryForApp.fromJson(json['getSummaryForTimelines'])
+        ? GetTimelogSummaryForApp.fromJson(json['getSummaryForTimelines'])
         : null;
   }
 }

@@ -5,7 +5,7 @@ class CandidateDetails {
 
   CandidateDetails.fromJson(Map<String, dynamic> json) {
     getCandidateDetails = json['getCandidateDetails'] != null
-        ? new GetCandidateDetails.fromJson(json['getCandidateDetails'])
+        ? GetCandidateDetails.fromJson(json['getCandidateDetails'])
         : null;
   }
 }
@@ -31,12 +31,12 @@ class GetCandidateDetails {
     avgRating = json['avg_rating'];
     totalReview = json['total_review'];
     candidate = json['candidate'] != null
-        ? new Candidate.fromJson(json['candidate'])
+        ? Candidate.fromJson(json['candidate'])
         : null;
     hiringStage = json['hiring_stage'] != null
-        ? new HiringStage.fromJson(json['hiring_stage'])
+        ? HiringStage.fromJson(json['hiring_stage'])
         : null;
-    job = json['job'] != null ? new HiringStage.fromJson(json['job']) : null;
+    job = json['job'] != null ? HiringStage.fromJson(json['job']) : null;
   }
 }
 

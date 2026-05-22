@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:payrun_mobile/common/widget/custom_network_image.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import '../../../../../../../../common/widget/hr_timeline/custom_network_image.dart';

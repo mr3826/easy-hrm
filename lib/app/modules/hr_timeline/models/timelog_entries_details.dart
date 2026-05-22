@@ -5,14 +5,14 @@ class TimeLogsEntriesDetails {
 
   TimeLogsEntriesDetails.fromJson(Map<String, dynamic> json) {
     getTimeLineEntries = json['getTimeLineEntries'] != null
-        ? new GetTimeLineEntries.fromJson(json['getTimeLineEntries'])
+        ? GetTimeLineEntries.fromJson(json['getTimeLineEntries'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getTimeLineEntries != null) {
-      data['getTimeLineEntries'] = this.getTimeLineEntries!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getTimeLineEntries != null) {
+      data['getTimeLineEntries'] = getTimeLineEntries!.toJson();
     }
     return data;
   }
@@ -27,13 +27,13 @@ class GetTimeLineEntries {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -71,29 +71,29 @@ class Data {
     endDate = json['end_date'];
     status = json['status'];
     project =
-    json['project'] != null ? new Project.fromJson(json['project']) : null;
+    json['project'] != null ? Project.fromJson(json['project']) : null;
     description = json['description'];
     loggedTotalSeconds = json['logged_total_seconds'];
     orgUserId = json['org_user_id'];
     isFlaggedTimelog = json['is_flagged_timelog'];
-    task = json['task'] != null ? new Task.fromJson(json['task']) : null;
+    task = json['task'] != null ? Task.fromJson(json['task']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['status'] = this.status;
-    if (this.project != null) {
-      data['project'] = this.project!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    data['status'] = status;
+    if (project != null) {
+      data['project'] = project!.toJson();
     }
-    data['description'] = this.description;
-    data['logged_total_seconds'] = this.loggedTotalSeconds;
-    data['org_user_id'] = this.orgUserId;
-    data['is_flagged_timelog'] = this.isFlaggedTimelog;
-    if (this.task != null) {
-      data['task'] = this.task!.toJson();
+    data['description'] = description;
+    data['logged_total_seconds'] = loggedTotalSeconds;
+    data['org_user_id'] = orgUserId;
+    data['is_flagged_timelog'] = isFlaggedTimelog;
+    if (task != null) {
+      data['task'] = task!.toJson();
     }
     return data;
   }
@@ -113,10 +113,10 @@ class Project {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['color'] = this.color;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['color'] = color;
+    data['name'] = name;
     return data;
   }
 }
@@ -134,16 +134,16 @@ class Task {
     name = json['name'];
     projectId = json['project_id'];
     project =
-    json['project'] != null ? new Project.fromJson(json['project']) : null;
+    json['project'] != null ? Project.fromJson(json['project']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['project_id'] = this.projectId;
-    if (this.project != null) {
-      data['project'] = this.project!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['project_id'] = projectId;
+    if (project != null) {
+      data['project'] = project!.toJson();
     }
     return data;
   }

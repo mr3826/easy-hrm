@@ -5,7 +5,7 @@ class TimeEntryDetails {
 
   TimeEntryDetails.fromJson(Map<String, dynamic> json) {
     getTimeEntryDetails = json['getTimeEntryDetails'] != null
-        ? new GetTimeEntryDetails.fromJson(json['getTimeEntryDetails'])
+        ? GetTimeEntryDetails.fromJson(json['getTimeEntryDetails'])
         : null;
   }
 }
@@ -37,10 +37,10 @@ class GetTimeEntryDetails {
     status = json['status'];
     description = json['description'];
     project =
-    json['project'] != null ? new Project.fromJson(json['project']) : null;
-    task = json['task'] != null ? new Task.fromJson(json['task']) : null;
+    json['project'] != null ? Project.fromJson(json['project']) : null;
+    task = json['task'] != null ? Task.fromJson(json['task']) : null;
     organizationUser = json['organization_user'] != null
-        ? new OrganizationUser.fromJson(json['organization_user'])
+        ? OrganizationUser.fromJson(json['organization_user'])
         : null;
   }
 
@@ -74,7 +74,7 @@ class Task {
     name = json['name'];
     projectId = json['project_id'];
     project =
-    json['project'] != null ? new Project.fromJson(json['project']) : null;
+    json['project'] != null ? Project.fromJson(json['project']) : null;
   }
 
 }
@@ -94,14 +94,14 @@ class OrganizationUser {
     if (json['roles'] != null) {
       roles = <Roles>[];
       json['roles'].forEach((v) {
-        roles!.add(new Roles.fromJson(v));
+        roles!.add(Roles.fromJson(v));
       });
     }
     department = json['department'] != null
-        ? new Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
     userId = json['user_id'];
   }
 

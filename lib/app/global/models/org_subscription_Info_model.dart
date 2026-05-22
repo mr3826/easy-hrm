@@ -6,7 +6,7 @@ class OrgSubscriptionInfoModel {
   OrgSubscriptionInfoModel.fromJson(Map<String, dynamic> json) {
     getAnOrganizationSubscription =
     json['getAnOrganizationSubscription'] != null
-        ? new GetAnOrganizationSubscription.fromJson(
+        ? GetAnOrganizationSubscription.fromJson(
         json['getAnOrganizationSubscription'])
         : null;
   }
@@ -17,10 +17,10 @@ class OrgSubscriptionInfoModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getAnOrganizationSubscription != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getAnOrganizationSubscription != null) {
       data['getAnOrganizationSubscription'] =
-          this.getAnOrganizationSubscription!.toJson();
+          getAnOrganizationSubscription!.toJson();
     }
     return data;
   }
@@ -41,14 +41,14 @@ class GetAnOrganizationSubscription {
 
   GetAnOrganizationSubscription.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    plan = json['plan'] != null ? new Plan.fromJson(json['plan']) : null;
+    plan = json['plan'] != null ? Plan.fromJson(json['plan']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.plan != null) {
-      data['plan'] = this.plan!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (plan != null) {
+      data['plan'] = plan!.toJson();
     }
     return data;
   }
@@ -64,16 +64,16 @@ class Plan {
     if (json['plan_features'] != null) {
       planFeatures = <PlanFeatures>[];
       json['plan_features'].forEach((v) {
-        planFeatures!.add(new PlanFeatures.fromJson(v));
+        planFeatures!.add(PlanFeatures.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.planFeatures != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (planFeatures != null) {
       data['plan_features'] =
-          this.planFeatures!.map((v) => v.toJson()).toList();
+          planFeatures!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -98,16 +98,16 @@ class PlanFeatures {
 
   PlanFeatures.fromJson(Map<String, dynamic> json) {
     feature =
-    json['feature'] != null ? new Feature.fromJson(json['feature']) : null;
+    json['feature'] != null ? Feature.fromJson(json['feature']) : null;
     isEnabled = json['is_enabled'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.feature != null) {
-      data['feature'] = this.feature!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (feature != null) {
+      data['feature'] = feature!.toJson();
     }
-    data['is_enabled'] = this.isEnabled;
+    data['is_enabled'] = isEnabled;
     return data;
   }
 }
@@ -130,9 +130,9 @@ class Feature {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['identifier'] = this.identifier;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['identifier'] = identifier;
+    data['name'] = name;
     return data;
   }
 }

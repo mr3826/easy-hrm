@@ -7,7 +7,7 @@ import '../../../../../../../common/widget/custom_appbar.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/custom_text_field.dart';
 import '../../../../../../../common/widget/custom_title_text_widget.dart';
-import '../../../../../../../init_ app.dart';
+import '../../../../../../../init_app.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../global/view/widget/app_margin.dart';
 import '../../../controllers/hr_deshboard_controller.dart';
@@ -65,15 +65,17 @@ class BuildEditCandidate extends StatelessWidget {
     return CustomDoubleAppButton(onAction: () {
       FocusScope.of(context).requestFocus(FocusNode());
       if (_formKey.currentState!.validate()) {
-        controller.updateCandidate(
-            candidateId: controller.selectedCandidateId.value,
-            jobId: controller.selectedJobId.value,
-            email: controller.candidateEmail.text,
-            firstName: controller.candidateFirstName.text,
-            lastName: controller.candidateLastName.text).then((e){
-              Get.back(canPop: false);
-              Get.back(canPop: false);
-              controller.getCandidateBySearch();
+        controller
+            .updateCandidate(
+                candidateId: controller.selectedCandidateId.value,
+                jobId: controller.selectedJobId.value,
+                email: controller.candidateEmail.text,
+                firstName: controller.candidateFirstName.text,
+                lastName: controller.candidateLastName.text)
+            .then((e) {
+          Get.back(canPop: false);
+          Get.back(canPop: false);
+          controller.getCandidateBySearch();
         });
       }
     }, cancelAction: () {

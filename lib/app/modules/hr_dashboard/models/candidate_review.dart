@@ -5,14 +5,14 @@ class CandidateReviewModel {
 
   CandidateReviewModel.fromJson(Map<String, dynamic> json) {
     getTeamNotes = json['getTeamNotes'] != null
-        ? new GetTeamNotes.fromJson(json['getTeamNotes'])
+        ? GetTeamNotes.fromJson(json['getTeamNotes'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getTeamNotes != null) {
-      data['getTeamNotes'] = this.getTeamNotes!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getTeamNotes != null) {
+      data['getTeamNotes'] = getTeamNotes!.toJson();
     }
     return data;
   }
@@ -27,13 +27,13 @@ class GetTeamNotes {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -61,31 +61,31 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     candidateReview = json['candidate_review'] != null
-        ? new CandidateReview.fromJson(json['candidate_review'])
+        ? CandidateReview.fromJson(json['candidate_review'])
         : null;
     id = json['id'];
     note = json['note'];
     type = json['type'];
     createdAt = json['createdAt'];
     createdBy = json['createdBy'] != null
-        ? new CreatedBy.fromJson(json['createdBy'])
+        ? CreatedBy.fromJson(json['createdBy'])
         : null;
     immutable = json['immutable'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.candidateReview != null) {
-      data['candidate_review'] = this.candidateReview!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (candidateReview != null) {
+      data['candidate_review'] = candidateReview!.toJson();
     }
-    data['id'] = this.id;
-    data['note'] = this.note;
-    data['type'] = this.type;
-    data['createdAt'] = this.createdAt;
-    if (this.createdBy != null) {
-      data['createdBy'] = this.createdBy!.toJson();
+    data['id'] = id;
+    data['note'] = note;
+    data['type'] = type;
+    data['createdAt'] = createdAt;
+    if (createdBy != null) {
+      data['createdBy'] = createdBy!.toJson();
     }
-    data['immutable'] = this.immutable;
+    data['immutable'] = immutable;
     return data;
   }
 }
@@ -113,12 +113,12 @@ class CandidateReview {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['createdAt'] = this.createdAt;
-    data['id'] = this.id;
-    data['job_application_id'] = this.jobApplicationId;
-    data['rate'] = this.rate;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['createdAt'] = createdAt;
+    data['id'] = id;
+    data['job_application_id'] = jobApplicationId;
+    data['rate'] = rate;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }
@@ -130,13 +130,13 @@ class CreatedBy {
 
   CreatedBy.fromJson(Map<String, dynamic> json) {
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.profile != null) {
-      data['profile'] = this.profile!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (profile != null) {
+      data['profile'] = profile!.toJson();
     }
     return data;
   }
@@ -160,12 +160,12 @@ class Profile {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['user_id'] = this.userId;
-    data['image'] = this.image;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['user_id'] = userId;
+    data['image'] = image;
+    data['id'] = id;
     return data;
   }
 }

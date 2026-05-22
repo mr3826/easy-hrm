@@ -1,9 +1,9 @@
 class EnvConfig {
-  static final String apiBaseUrl = String.fromEnvironment('API_BASE_URL');
-  static final String cdnDomain = String.fromEnvironment('CDN_DOMAIN');
-  static final String cdnKey = String.fromEnvironment('CDN_KEY');
+  static const String apiBaseUrl = String.fromEnvironment('API_BASE_URL');
+  static const String cdnDomain = String.fromEnvironment('CDN_DOMAIN');
+  static const String cdnKey = String.fromEnvironment('CDN_KEY');
 
-  static final String flavor =
+  static const String flavor =
       String.fromEnvironment('FLAVOR', defaultValue: 'prod');
 
   static bool get isProduction => flavor == 'prod';

@@ -2,26 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/modules/profile/view/widgets/tab_bar_body/employee_over_view/expanded_text_layout.dart';
-import '../../../../../../../common/widget/custom_card_style.dart';
-import '../../../../../../../common/widget/custom_svg_image.dart';
-import '../../../../../../../utils/images.dart';
 import '../../../../../../global/view/widget/app_margin.dart';
-import '../../../../../auth/view/screens/otp_screen.dart';
 import '../../../../../../../common/widget/custom_spacer.dart';
 import '../../../../../../../common/widget/success_message.dart';
 import '../../../../../../../utils/app_color.dart';
 import '../../../../../../../utils/app_string.dart';
 import '../../../../../../../utils/app_style.dart';
 import '../../../../../../../utils/dimensions.dart';
-import '../../../../../../../modules/timeline/view/widget/timeline_calendar.dart';
-import '../../../../controller/global_profile_controller.dart';
 import '../../../../models/user_profile.dart';
-import 'designation_layout.dart';
 import '../../user_info_section_layout.dart';
-import '../../department_history_view.dart';
 import '../../department_layout.dart';
 import '../../employee_status.dart';
-import 'employee_status_layout.dart';
 
 class ProfileOverView extends StatelessWidget {
   final UserDetails userDetails;

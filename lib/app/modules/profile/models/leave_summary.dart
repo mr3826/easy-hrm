@@ -8,7 +8,7 @@ class LeaveSummary {
       getOrganizationUsersLeaveSummary = <GetOrganizationUsersLeaveSummary>[];
       json['getOrganizationUsersLeaveSummary'].forEach((v) {
         getOrganizationUsersLeaveSummary!
-            .add(new GetOrganizationUsersLeaveSummary.fromJson(v));
+            .add(GetOrganizationUsersLeaveSummary.fromJson(v));
       });
     }
   }
@@ -67,23 +67,23 @@ class GetOrganizationUsersLeaveSummary {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['allocated'] = this.allocated;
-    data['approved'] = this.approved;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['allocated'] = allocated;
+    data['approved'] = approved;
     data['available_number_of_applications'] =
-        this.availableNumberOfApplications;
-    data['available_number_of_days'] = this.availableNumberOfDays;
-    data['calculate_allowance_by'] = this.calculateAllowanceBy;
-    data['earned_days'] = this.earnedDays;
-    data['is_earned'] = this.isEarned;
-    data['leave_status_id'] = this.leaveStatusId;
-    data['leave_type_id'] = this.leaveTypeId;
-    data['maximum_consecutive_days'] = this.maximumConsecutiveDays;
-    data['name'] = this.name;
-    data['org_user_id'] = this.orgUserId;
-    data['pending_req'] = this.pendingReq;
-    data['taken'] = this.taken;
-    data['type'] = this.type;
+        availableNumberOfApplications;
+    data['available_number_of_days'] = availableNumberOfDays;
+    data['calculate_allowance_by'] = calculateAllowanceBy;
+    data['earned_days'] = earnedDays;
+    data['is_earned'] = isEarned;
+    data['leave_status_id'] = leaveStatusId;
+    data['leave_type_id'] = leaveTypeId;
+    data['maximum_consecutive_days'] = maximumConsecutiveDays;
+    data['name'] = name;
+    data['org_user_id'] = orgUserId;
+    data['pending_req'] = pendingReq;
+    data['taken'] = taken;
+    data['type'] = type;
     return data;
   }
 }

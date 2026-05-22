@@ -77,7 +77,7 @@ class ModelForDescription {
     if (json['leave_details'] != null) {
       leaveDetails = <LeaveDetails>[];
       json['leave_details'].forEach((v) {
-        leaveDetails!.add(new LeaveDetails.fromJson(v));
+        leaveDetails!.add(LeaveDetails.fromJson(v));
       });
     }
     numberOfDays = json['numberOfDays'];

@@ -7,7 +7,6 @@ import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
-import '../../../../controller/global_profile_controller.dart';
 import '../../../../models/user_profile.dart';
 
 class BuildEmail extends StatelessWidget {

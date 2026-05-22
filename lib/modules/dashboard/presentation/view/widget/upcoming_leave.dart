@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/common/widget/loading_indicator.dart';
-import '../../../../../app/global/utils/app_status_helper.dart';
 import '../../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
 import '../../../../../utils/app_color.dart';
-import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_card_style.dart';
 import '../../../../../common/widget/custom_spacer.dart';
-import '../../../../leave/domain/leave_records.dart';
 import '../../../../leave/presentation/view/widget/leave_record_details_view.dart';
 import '../../../../timeline/view/widget/timeline_calendar.dart';
 import '../../../../../utils/app_style.dart';
 import '../../../../../utils/dimensions.dart';
 import '../../../../../utils/utils.dart';
 import '../../controller/employee_dashboard_controller.dart';
-import 'dashboad_widget.dart';
 
 class UpcomingLeaveLayout extends StatelessWidget {
   const UpcomingLeaveLayout({super.key});

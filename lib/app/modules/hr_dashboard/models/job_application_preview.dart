@@ -5,7 +5,7 @@ class JobApplicationPreviewModel {
 
   JobApplicationPreviewModel.fromJson(Map<String, dynamic> json) {
     getJobApplicationPreview = json['getJobApplicationPreview'] != null
-        ? new GetJobApplicationPreview.fromJson(
+        ? GetJobApplicationPreview.fromJson(
         json['getJobApplicationPreview'])
         : null;
   }
@@ -22,7 +22,7 @@ class GetJobApplicationPreview {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
@@ -57,7 +57,7 @@ class Data {
     if (json['form_fields'] != null) {
       formFields = <FormFields>[];
       json['form_fields'].forEach((v) {
-        formFields!.add(new FormFields.fromJson(v));
+        formFields!.add(FormFields.fromJson(v));
       });
     }
     isDuplicatable = json['is_duplicatable'];
@@ -125,7 +125,7 @@ class FormFieldValues {
 
   FormFieldValues.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    file = json['file'] != null ? new File.fromJson(json['file']) : null;
+    file = json['file'] != null ? File.fromJson(json['file']) : null;
     value = json['value'];
   }
 
@@ -181,20 +181,20 @@ class FormFields1 {
     if (json['form_field_values'] != null) {
       formFieldValues = <FormFieldValues>[];
       json['form_field_values'].forEach((v) {
-        formFieldValues!.add(new FormFieldValues.fromJson(v));
+        formFieldValues!.add(FormFieldValues.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['priority'] = this.priority;
-    data['field_width'] = this.fieldWidth;
-    data['is_required'] = this.isRequired;
-    data['group_serial_id'] = this.groupSerialId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['type'] = type;
+    data['priority'] = priority;
+    data['field_width'] = fieldWidth;
+    data['is_required'] = isRequired;
+    data['group_serial_id'] = groupSerialId;
 
     return data;
   }
@@ -202,7 +202,7 @@ class FormFields1 {
 
 class FormFieldValues1 {
   String? id;
-  Null? file;
+  void file;
   String? value;
 
   FormFieldValues1({this.id, this.file, this.value});
@@ -214,10 +214,10 @@ class FormFieldValues1 {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['file'] = this.file;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['file'] = file;
+    data['value'] = value;
     return data;
   }
 }

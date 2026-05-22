@@ -8,7 +8,7 @@ class CandidateActivitiesLogs {
     if (json['getLogs'] != null) {
       getLogs = <GetLogs>[];
       json['getLogs'].forEach((v) {
-        getLogs!.add(new GetLogs.fromJson(v));
+        getLogs!.add(GetLogs.fromJson(v));
       });
     }
   }
@@ -52,20 +52,20 @@ class GetLogs {
     newNumber = json['new_number'];
     newText = json['new_text'];
     newHiringStage = json['newHiringStage'] != null
-        ? new NewHiringStage.fromJson(json['newHiringStage'])
+        ? NewHiringStage.fromJson(json['newHiringStage'])
         : null;
     createdByUser = json['createdByUser'] != null
-        ? new CreatedByUser.fromJson(json['createdByUser'])
+        ? CreatedByUser.fromJson(json['createdByUser'])
         : null;
-    job = json['job'] != null ? new Job.fromJson(json['job']) : null;
+    job = json['job'] != null ? Job.fromJson(json['job']) : null;
     candidate = json['candidate'] != null
-        ? new Candidate.fromJson(json['candidate'])
+        ? Candidate.fromJson(json['candidate'])
         : null;
     review = json['review'];
     if (json['files'] != null) {
       files = <Files>[];
       json['files'].forEach((v) {
-        files!.add(new Files.fromJson(v));
+        files!.add(Files.fromJson(v));
       });
     }
   }
@@ -82,9 +82,9 @@ class Job {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
     return data;
   }
 }
@@ -97,7 +97,7 @@ class CreatedByUser {
   CreatedByUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
   }
 
 }
@@ -155,9 +155,9 @@ class NewHiringStage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
     return data;
   }
 }

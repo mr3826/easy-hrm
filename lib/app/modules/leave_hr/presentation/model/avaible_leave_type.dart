@@ -7,16 +7,16 @@ class AvailableLeaveType {
     if (json['getAvailableLeaveTypes'] != null) {
       getAvailableLeaveTypes = <GetAvailableLeaveTypes>[];
       json['getAvailableLeaveTypes'].forEach((v) {
-        getAvailableLeaveTypes!.add(new GetAvailableLeaveTypes.fromJson(v));
+        getAvailableLeaveTypes!.add(GetAvailableLeaveTypes.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getAvailableLeaveTypes != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getAvailableLeaveTypes != null) {
       data['getAvailableLeaveTypes'] =
-          this.getAvailableLeaveTypes!.map((v) => v.toJson()).toList();
+          getAvailableLeaveTypes!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -57,16 +57,16 @@ class GetAvailableLeaveTypes {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['add_note_required'] = this.addNoteRequired;
-    data['attach_document_required'] = this.attachDocumentRequired;
-    data['availableLeave'] = this.availableLeave;
-    data['calculate_allowance_by'] = this.calculateAllowanceBy;
-    data['is_default'] = this.isDefault;
-    data['is_enable'] = this.isEnable;
-    data['leave_type_id'] = this.leaveTypeId;
-    data['name'] = this.name;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['add_note_required'] = addNoteRequired;
+    data['attach_document_required'] = attachDocumentRequired;
+    data['availableLeave'] = availableLeave;
+    data['calculate_allowance_by'] = calculateAllowanceBy;
+    data['is_default'] = isDefault;
+    data['is_enable'] = isEnable;
+    data['leave_type_id'] = leaveTypeId;
+    data['name'] = name;
+    data['type'] = type;
     return data;
   }
 }

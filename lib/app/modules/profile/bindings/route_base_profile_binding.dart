@@ -1,4 +1,3 @@
-import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:get/get.dart';
 import 'package:payrun_mobile/app/global/services/api_service.dart';
 import '../../../../common/controller/leave_helper/leave_data_source.dart';

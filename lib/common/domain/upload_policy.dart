@@ -5,14 +5,14 @@ class UploadPolicyResponse {
 
   UploadPolicyResponse.fromJson(Map<String, dynamic> json) {
     getUploadPolicy = json['getUploadPolicy'] != null
-        ? new GetUploadPolicy.fromJson(json['getUploadPolicy'])
+        ? GetUploadPolicy.fromJson(json['getUploadPolicy'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getUploadPolicy != null) {
-      data['getUploadPolicy'] = this.getUploadPolicy!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getUploadPolicy != null) {
+      data['getUploadPolicy'] = getUploadPolicy!.toJson();
     }
     return data;
   }
@@ -29,16 +29,16 @@ class GetUploadPolicy {
     if (json['policy_data'] != null) {
       policyData = <PolicyData>[];
       json['policy_data'].forEach((v) {
-        policyData!.add(new PolicyData.fromJson(v));
+        policyData!.add(PolicyData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    if (this.policyData != null) {
-      data['policy_data'] = this.policyData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    if (policyData != null) {
+      data['policy_data'] = policyData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -56,9 +56,9 @@ class PolicyData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['value'] = value;
     return data;
   }
 }

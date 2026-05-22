@@ -6,16 +6,16 @@ class LeaveTimeLogSummary {
   LeaveTimeLogSummary.fromJson(Map<String, dynamic> json) {
     getLeaveAndTimelogRequestSummary =
     json['getLeaveAndTimelogRequestSummary'] != null
-        ? new GetLeaveAndTimelogRequestSummary.fromJson(
+        ? GetLeaveAndTimelogRequestSummary.fromJson(
         json['getLeaveAndTimelogRequestSummary'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getLeaveAndTimelogRequestSummary != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getLeaveAndTimelogRequestSummary != null) {
       data['getLeaveAndTimelogRequestSummary'] =
-          this.getLeaveAndTimelogRequestSummary!.toJson();
+          getLeaveAndTimelogRequestSummary!.toJson();
     }
     return data;
   }
@@ -36,10 +36,10 @@ class GetLeaveAndTimelogRequestSummary {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_candidates'] = this.totalCandidates;
-    data['leave_request'] = this.leaveRequest;
-    data['timelog_request'] = this.timelogRequest;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_candidates'] = totalCandidates;
+    data['leave_request'] = leaveRequest;
+    data['timelog_request'] = timelogRequest;
     return data;
   }
 }

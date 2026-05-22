@@ -1,8 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payrun_mobile/app/modules/employee/model/user_work_info_dropdown.dart';
 import 'package:payrun_mobile/app/modules/profile/controller/hr_profile_controller.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/utils/app_string.dart';

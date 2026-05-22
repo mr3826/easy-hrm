@@ -68,10 +68,10 @@ class LeaveDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['schedule_hour'] = this.scheduleHour;
-    data['leave_hour'] = this.leaveHour;
-    data['date'] = this.date;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['schedule_hour'] = scheduleHour;
+    data['leave_hour'] = leaveHour;
+    data['date'] = date;
     return data;
   }
 }

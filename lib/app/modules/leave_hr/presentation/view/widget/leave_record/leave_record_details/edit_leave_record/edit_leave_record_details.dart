@@ -264,6 +264,7 @@ class EditLeaveRecordDetails extends GetView<HrLeaveController> {
         if (value != null) {
           Get.find<HrLeaveController>().isUpdateLeaveChangeValue(true);
         }
+        return null;
       },
     );
   }

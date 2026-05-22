@@ -5,7 +5,7 @@ class TimelogDetailsByMonth {
 
   TimelogDetailsByMonth.fromJson(Map<String, dynamic> json) {
     getDailyTimeEntries = json['getDailyTimeEntries'] != null
-        ? new GetDailyTimeEntries.fromJson(json['getDailyTimeEntries'])
+        ? GetDailyTimeEntries.fromJson(json['getDailyTimeEntries'])
         : null;
   }
 }
@@ -19,7 +19,7 @@ class GetDailyTimeEntries {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }

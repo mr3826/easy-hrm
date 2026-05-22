@@ -18,7 +18,6 @@ import '../../../../modules/leave/presentation/controller/update_leave_controlle
 import '../../../../modules/leave/presentation/view/screen/leave_screen.dart';
 import '../../../../modules/notification/presentation/controller/notification_controller.dart';
 import '../../../../modules/notification/presentation/view/screen/notification.dart';
-import '../../../modules/hr_timeline/bindings/hr_timeline_bindings.dart';
 import '../../../modules/profile/view/screens/employee_profile.dart';
 import '../../../modules/profile/view/screens/hr_profile.dart';
 import '../../../../modules/timeline/controller/timeline_controller.dart';

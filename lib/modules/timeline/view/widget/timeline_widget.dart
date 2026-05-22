@@ -12,7 +12,6 @@ import '../../../../app/global/view/widget/app_margin.dart';
 import '../../../../app/modules/hr_timeline/bindings/TimelineSummaryBindings.dart';
 import '../../../../app/modules/hr_timeline/controllers/timelog_summary_controller.dart';
 import '../../../../app/modules/hr_timeline/view/screen/timelog_summary.dart';
-import '../../../../common/controller/date_time_controller.dart';
 import '../../../../utils/utils.dart';
 
 Widget timelineLayout() {

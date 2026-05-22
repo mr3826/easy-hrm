@@ -65,16 +65,16 @@ class AppPages {
     GetPage(
       name: _Paths.ALL_CANDIDATES,
       transition: Transition.size,
-      page: () => AllCandidatesScreen(),
+      page: () => const AllCandidatesScreen(),
     ),
     GetPage(
       name: _Paths.JOB_DETAILS,
       transition: Transition.size,
-      page: () => JobDetailsScreen(),
+      page: () => const JobDetailsScreen(),
     ), GetPage(
       name: _Paths.CANDIDATES_DETAILS,
       transition: Transition.size,
-      page: () => CandidateDetailsScreen(),
+      page: () => const CandidateDetailsScreen(),
     ),
     GetPage(
       name: _Paths.PASSWORD_UPDATE_SCRREN,

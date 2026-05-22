@@ -475,6 +475,7 @@ class BuildNewEntryTextField extends StatelessWidget {
           Get.find<TimelineGlobalController>()
               .isValueChangeForTimeLogUpdate(true);
         }
+        return null;
       },
     );
   }
@@ -630,7 +631,7 @@ Widget buildTimerTextField(
 }
 
 class _InTimePicker extends StatelessWidget {
-  const _InTimePicker({super.key});
+  const _InTimePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -704,7 +705,7 @@ class _InTimePicker extends StatelessWidget {
 }
 
 class _OutTimePicker extends StatelessWidget {
-  const _OutTimePicker({super.key});
+  const _OutTimePicker();
 
   @override
   Widget build(BuildContext context) {

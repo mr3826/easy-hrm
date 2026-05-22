@@ -11,13 +11,11 @@ import 'package:payrun_mobile/common/widget/custom_spacer.dart';
 import 'package:payrun_mobile/common/widget/custom_svg_image.dart';
 import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
-import 'package:payrun_mobile/app/global/view/widgets/status_btn_widget.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_string.dart';
 import 'package:payrun_mobile/utils/app_style.dart';
 import 'package:payrun_mobile/utils/dimensions.dart';
 import 'package:payrun_mobile/utils/images.dart';
-import '../../../../../app/global/utils/app_status_helper.dart';
 import '../../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/leave_hr/presentation/controller/leave_controller.dart';
@@ -318,7 +316,7 @@ class LeaveRecordDetailsById extends StatelessWidget {
         endDate: leaveRecords.endDate ?? "")) {
       return "${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords.startDate ?? "")} - ${DateFormat('yyyy').format(dateTime)}";
     } else {
-      return "${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords.startDate ?? "")} - ${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords?.endDate ?? "")}";
+      return "${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords.startDate ?? "")} - ${dateMonthFormatFromDatetimeForLeaveDetails(leaveRecords.endDate ?? "")}";
     }
   }
 }

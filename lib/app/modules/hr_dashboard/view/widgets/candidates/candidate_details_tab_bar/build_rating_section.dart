@@ -98,6 +98,7 @@ class _CandidateRatingSectionState extends State<CandidateRatingSection> {
         borderRadius: BorderRadius.circular(4),
         onChanged: (value) {
           controller.reviewerInputValue.value = value!;
+          return null;
         },
       ),
     );

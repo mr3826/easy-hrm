@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:payrun_mobile/common/widget/custom_spacer.dart';
-import 'package:payrun_mobile/enum.dart';
 import 'package:payrun_mobile/modules/leave/presentation/controller/leave_screen_controller.dart';
-import 'package:payrun_mobile/modules/leave/domain/leave_records.dart';
-import 'package:payrun_mobile/app/global/view/widgets/status_btn_widget.dart';
 import 'package:payrun_mobile/modules/timeline/view/widget/timeline_calendar.dart';
 import 'package:payrun_mobile/utils/app_color.dart';
 import 'package:payrun_mobile/utils/app_layout.dart';
@@ -16,12 +13,10 @@ import 'package:payrun_mobile/utils/dimensions.dart';
 import '../../../../../app/global/utils/status_btn_helper_by_context.dart';
 import '../../../../../app/global/view/widget/app_margin.dart';
 import '../../../../../app/modules/leave_hr/presentation/model/leave_details_by_id.dart';
-import '../../../../../common/domain/files_model.dart';
 import '../../../../../common/widget/custom_dotted_border.dart';
 import '../../../../../common/widget/loading_indicator.dart';
 import '../../../../../common/widget/timePicker/custom_time_picker_in_time.dart';
 import '../../../../../utils/utils.dart';
-import '../../../domain/leave_record_response.dart';
 import 'leave_record_details_view.dart';
 
 class IndividualEventView extends StatelessWidget {

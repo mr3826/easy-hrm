@@ -50,7 +50,7 @@ class GetUpcomingLeavesForApp {
     if (json['leave_details'] != null) {
       leaveDetails = <LeaveDetails>[];
       json['leave_details'].forEach((v) {
-        leaveDetails!.add(new LeaveDetails.fromJson(v));
+        leaveDetails!.add(LeaveDetails.fromJson(v));
       });
     }
     if (json['files'] != null) {
@@ -79,10 +79,10 @@ class LeaveDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['schedule_seconds'] = scheduleSecond;
     data['leave_seconds'] = leaveSecond;
-    data['date'] = this.date;
+    data['date'] = date;
     return data;
   }
 }

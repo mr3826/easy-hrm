@@ -5,14 +5,14 @@ class TimeSheetModel {
 
   TimeSheetModel.fromJson(Map<String, dynamic> json) {
     getUsersTimeSheet = json['getUsersTimeSheet'] != null
-        ? new GetUsersTimeSheet.fromJson(json['getUsersTimeSheet'])
+        ? GetUsersTimeSheet.fromJson(json['getUsersTimeSheet'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.getUsersTimeSheet != null) {
-      data['getUsersTimeSheet'] = this.getUsersTimeSheet!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (getUsersTimeSheet != null) {
+      data['getUsersTimeSheet'] = getUsersTimeSheet!.toJson();
     }
     return data;
   }
@@ -27,13 +27,13 @@ class GetUsersTimeSheet {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -65,7 +65,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     organizationUser = json['organization_user'] != null
-        ? new OrganizationUser.fromJson(json['organization_user'])
+        ? OrganizationUser.fromJson(json['organization_user'])
         : null;
     orgUserId = json['org_user_id'];
     timelineStartDate = json['timeline_start_date'];
@@ -78,25 +78,25 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.organizationUser != null) {
-      data['organization_user'] = this.organizationUser!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (organizationUser != null) {
+      data['organization_user'] = organizationUser!.toJson();
     }
-    data['org_user_id'] = this.orgUserId;
-    data['timeline_start_date'] = this.timelineStartDate;
-    data['timeline_end_date'] = this.timelineEndDate;
-    data['total_scheduled_seconds'] = this.totalScheduledSeconds;
-    data['logged_total_seconds'] = this.loggedTotalSeconds;
-    data['is_flagged_timelog'] = this.isFlaggedTimelog;
-    data['total_leaves_seconds'] = this.totalLeavesSeconds;
-    data['balance'] = this.balance;
+    data['org_user_id'] = orgUserId;
+    data['timeline_start_date'] = timelineStartDate;
+    data['timeline_end_date'] = timelineEndDate;
+    data['total_scheduled_seconds'] = totalScheduledSeconds;
+    data['logged_total_seconds'] = loggedTotalSeconds;
+    data['is_flagged_timelog'] = isFlaggedTimelog;
+    data['total_leaves_seconds'] = totalLeavesSeconds;
+    data['balance'] = balance;
     return data;
   }
 }
 
 class OrganizationUser {
   String? id;
-  Null? roles;
+  void roles;
   Department? department;
   Profile? profile;
 
@@ -106,21 +106,21 @@ class OrganizationUser {
     id = json['id'];
     roles = json['roles'];
     department = json['department'] != null
-        ? new Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['roles'] = this.roles;
-    if (this.department != null) {
-      data['department'] = this.department!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['roles'] = roles;
+    if (department != null) {
+      data['department'] = department!.toJson();
     }
-    if (this.profile != null) {
-      data['profile'] = this.profile!.toJson();
+    if (profile != null) {
+      data['profile'] = profile!.toJson();
     }
     return data;
   }
@@ -136,8 +136,8 @@ class Department {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
     return data;
   }
 }
@@ -156,10 +156,10 @@ class Profile {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['image'] = image;
     return data;
   }
 }

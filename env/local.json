@@ -1,6 +1,6 @@
 {
-  "PUBLIC_URL": "https://api.local.payrun.app",
-  "CDN_DOMAIN": "payrun-local-private.imgix.net",
+  "PUBLIC_URL": "https://api.local.easyhrm.app",
+  "CDN_DOMAIN": "easyhrm-local-private.imgix.net",
   "CDN_KEY": "E355eASKXSN9jkA9"
 }
 

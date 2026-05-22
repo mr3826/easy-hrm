@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: KanbanBoardPageView(),
     );
   }
 }
 
 class KanbanBoardPageView extends StatefulWidget {
+  const KanbanBoardPageView({super.key});
+
   @override
   _KanbanBoardPageViewState createState() => _KanbanBoardPageViewState();
 }
@@ -39,7 +43,7 @@ class _KanbanBoardPageViewState extends State<KanbanBoardPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Kanban Board")),
+      appBar: AppBar(title: const Text("Kanban Board")),
       body: Stack(
         children: [
           PageView.builder(
@@ -57,7 +61,7 @@ class _KanbanBoardPageViewState extends State<KanbanBoardPageView> {
 
   Widget buildColumn(String column) {
     return DragTarget<String>(
-      onAccept: (task) {
+      onAcceptWithDetails: (task) {
         setState(() {
           tasks[column]!.add(task);
           if (sourceColumn != null) {
@@ -67,7 +71,7 @@ class _KanbanBoardPageViewState extends State<KanbanBoardPageView> {
           sourceColumn = null;
         });
       },
-      onWillAccept: (data) => true, // Always accept drops
+      onWillAcceptWithDetails: (data) => true, // Always accept drops
       builder: (context, candidateData, rejectedData) {
         return Container(
           margin: const EdgeInsets.all(8),
@@ -80,15 +84,15 @@ class _KanbanBoardPageViewState extends State<KanbanBoardPageView> {
             children: [
               // Column Title
               Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
                 ),
                 child: Center(
                   child: Text(
                     column,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -135,15 +139,15 @@ class _KanbanBoardPageViewState extends State<KanbanBoardPageView> {
         }
       },
       child: Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.blue,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           task,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
@@ -157,15 +161,15 @@ class _KanbanBoardPageViewState extends State<KanbanBoardPageView> {
           child: Material(
             color: Colors.transparent,
             child: Container(
-              padding: EdgeInsets.all(16),
-              margin: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Colors.blue.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 draggedItem ?? '',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
