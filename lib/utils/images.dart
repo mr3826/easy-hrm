@@ -8,10 +8,10 @@ class Images {
   Images.__();
 
   static String demoImage ="https://media.istockphoto.com/id/964216874/photo/worried-programmer-having-problems-while-working-on-new-computer-program-in-the-office.jpg?s=612x612&w=0&k=20&c=evobpENGDXI4uijYb7JOlrmxfl3l1wSdDzKZDZaioZg=";
-  static String appLogo = "assets/images/app_logo.svg";
+    static String appLogo = "assets/images/easyhrm_logo.svg";
 
   static String networkError = "assets/images/network_error.svg";
-  static String splashLogo = "assets/images/splash_logo.svg";
+    static String splashLogo = "assets/images/easyhrm_logo.svg";
   static String employeeOn = "assets/images/employee_on.svg";
   static String leaveOn = "assets/images/leave _on.svg";
   static String timeLogOn = "assets/images/timelog_on.svg";
